@@ -1,0 +1,6 @@
+<select class="form-select" [(ngModel)]="selectedValue">
+    <option value=""></option>
+    @for (value of allValues; track value) {
+        <option [value]="value">{{ value }}</option>
+    }
+</select>

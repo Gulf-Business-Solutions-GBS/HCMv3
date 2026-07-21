@@ -1,0 +1,180 @@
+{
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Standalone_Here}}",
+			"condition": "{{Project_Version_Here}} >= 140000 && {{Project_Version_Here}} <= 140010",
+			"content": ",
+                            standalone: false"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400 && {{Project_Version_Here}} < 080500",
+			"content": "import { Table } from 'primeng/components/table/table'"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Table } from 'primeng/table'"
+		},
+		{
+			"placeholder": "{{DataTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "import { DataTable } from 'primeng/components/datatable/datatable'"
+		},
+		{
+			"placeholder": "{{DataTable_Dec_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "Data"
+		},
+		{
+			"placeholder": "{{TruboTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400",
+			"content": "primengTableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "primengDatatableHelper"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { Paginator } from 'primeng/components/paginator/paginator';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500 && {{Project_Version_Here}} < 100000",
+			"content": "import { Paginator } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/public_api';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 100000",
+			"content": "import { Paginator } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/api';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		},
+		{
+             "placeholder" : "{{Import_Standalone_Imports_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "{{NgIf_Component_Standalone_Import_Here}}
+				import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+                import { FormsModule } from '@angular/forms';
+                import { FileUploadModule } from 'primeng/fileupload';
+                import { TableModule } from 'primeng/table';
+                import { PaginatorModule } from 'primeng/paginator';
+				import { BusyIfDirective } from '@shared/utils/busy-if.directive';"
+        },
+        {
+             "placeholder" : "{{Components_For_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "imports: [
+				{{NgIf_Component_Standalone_Here}}
+				LocalizePipe,
+                FormsModule,
+                FileUploadModule,
+                TableModule,
+                PaginatorModule,
+				ModalDirective,
+				BusyIfDirective
+             ]"
+        },
+		{
+             "placeholder" : "{{NgIf_Component_Standalone_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "import { NgIf } from '@angular/common';"
+        },
+        {
+             "placeholder" : "{{NgIf_Component_Standalone_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : ""
+        },
+        {
+             "placeholder" : "{{NgIf_Component_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "NgIf,"
+        },
+		{
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "Injector,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "inject,"
+        },
+        {
+             "placeholder" : "{{Super_Metod_Input_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "injector"
+        },
+        {
+             "placeholder" : "{{Service_Constructor_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                injector: Injector,
+				private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy
+            "
+        },
+        {
+             "placeholder" : "{{Service_Inject_Set_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "private _{{entity_Name_Plural_Here}}ServiceProxy = inject({{Entity_Name_Plural_Here}}ServiceProxy);"
+        },
+        {
+             "placeholder" : "{{View_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : ",ViewChild"
+        },
+		{
+             "placeholder" : "{{View_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : ",viewChild"
+        },
+		{
+             "placeholder" : "{{View_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+				@ViewChild('dataTable', { static: true }) dataTable: {{DataTable_Dec_Here}}Table;
+				@ViewChild('paginator', { static: true }) paginator: Paginator;
+            "
+        },
+		{
+             "placeholder" : "{{View_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+				readonly modal = viewChild<ModalDirective>('createOrEditModal');
+				readonly dataTable = viewChild<Table>('dataTable');
+				readonly paginator = viewChild<Paginator>('paginator');
+			 "
+        },
+		{
+             "placeholder" : "{{Output_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "@Output() modalSave: EventEmitter<any> = new EventEmitter<any>();"
+        },
+		{
+             "placeholder" : "{{Output_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+				 readonly modalSave = output<any>();
+			 "
+        },
+		{
+             "placeholder" : "{{Signal_Syntax_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "()"
+        },
+	]}

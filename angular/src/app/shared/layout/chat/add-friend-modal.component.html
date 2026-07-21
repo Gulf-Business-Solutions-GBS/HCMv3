@@ -1,0 +1,76 @@
+<div
+    appBsModal
+    #modal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{ 'AddFriend' | localize }}
+                </h4>
+                <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')"></button>
+            </div>
+            <div class="modal-body">
+                @if (interTenantChatAllowed()) {
+                    <div class="row text-end mb-3">
+                        <div class="col">
+                            <button (click)="addFromDifferentTenantModal.show()" class="btn btn-primary">
+                                {{ 'AddFriendFromDifferentTenant' | localize }}
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                @if (canListUsersInTenant()) {
+                    <friendsLookupTable (itemSelected)="this.addFriendSelected($event)" />
+                } @else {
+                    <form #addFriendForm="ngForm" class="mt-5" (ngSubmit)="save()">
+                        <div class="row">
+                            <label class="col-4 form-label">
+                                <label class="form-label">{{ 'UserName' | localize }}</label>
+                            </label>
+                            <label class="col form-label">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    id="UserName"
+                                    [ngModel]="userName()"
+                                    (ngModelChange)="userName.set($event)"
+                                    name="UserName"
+                                    required />
+                            </label>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            (click)="save()"
+                            class="btn btn-primary"
+                            [disabled]="saving() || !addFriendForm.form.valid">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                        <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                    </div>
+                }
+            </div>
+
+            @if (canListUsersInTenant()) {
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<addFromDifferentTenantModal #addFromDifferentTenantModal />

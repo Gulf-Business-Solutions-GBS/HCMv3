@@ -1,0 +1,26 @@
+﻿@using HCMv3.Maui.Services.Navigation
+@inherits HCMv3MainLayoutPageComponentBase
+
+@attribute [Route("/" + NavigationUrlConsts.HostDashboard)]
+@inject IJSRuntime JS
+
+<div class="card m-5">
+    <div class="card-body p-4">
+        <h6>Top Stats Data</h6>
+        <canvas id="getTopStatsData" class="mh-200px"></canvas>
+    </div>
+</div>
+
+<div class="card m-5">
+    <div class="card-body p-4">
+        <h6>Income statistics</h6>
+        <canvas id="incomeStatistics" class="mh-200px"></canvas>
+    </div>
+</div>
+
+<div class="card m-5">
+    <div class="card-body p-4">
+        <h6>Edition statistics</h6>
+        <canvas id="editionStatistics" class="mh-200px"></canvas>
+    </div>
+</div>

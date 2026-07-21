@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if (('Pages.Administration.OrganizationUnits.ManageMembers' | permission) && organizationUnit()) {
+            <button (click)="openAddMemberModal()" class="btn btn-outline btn-outline-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'AddMember' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <div id="OuMembersTable">
+            <!--<Primeng-TurboTable-Start>-->
+            <div
+                class="primeng-datatable-container"
+                [busyIf]="primengTableHelper.isLoading()"
+                [hidden]="!organizationUnit()">
+                <p-table
+                    #dataTable
+                    sortMode="multiple"
+                    (onLazyLoad)="getOrganizationUnitUsers($event)"
+                    [value]="primengTableHelper.records()"
+                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                    [paginator]="false"
+                    [lazy]="true"
+                    [tableStyle]="{ 'min-width': '25rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th
+                                style="width: 15%"
+                                [hidden]="!('Pages.Administration.OrganizationUnits.ManageMembers' | permission)">
+                                {{ 'Delete' | localize }}
+                            </th>
+                            <th pSortableColumn="userName">
+                                {{ 'UserName' | localize }}
+                                <p-sortIcon field="userName" />
+                            </th>
+                            <th pSortableColumn="addedTime">
+                                {{ 'AddedTime' | localize }}
+                                <p-sortIcon field="addedTime" />
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-record="$implicit">
+                        <tr>
+                            <td [hidden]="!('Pages.Administration.OrganizationUnits.ManageMembers' | permission)">
+                                <button
+                                    class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
+                                    (click)="removeMember(record)"
+                                    title="{{ 'Delete' | localize }}">
+                                    <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                </button>
+                            </td>
+                            <td>
+                                {{ record.userName }}
+                            </td>
+                            <td>
+                                {{ record.addedTime | luxonFormat: 'F' }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                @if (primengTableHelper.totalRecordsCount() == 0) {
+                    <div class="primeng-no-data">
+                        {{ 'NoData' | localize }}
+                    </div>
+                }
+                <div class="primeng-paging-container">
+                    <p-paginator
+                        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                        #paginator
+                        (onPageChange)="getOrganizationUnitUsers($event)"
+                        [totalRecords]="primengTableHelper.totalRecordsCount()"
+                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                        [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="
+                            'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                        " />
+                </div>
+            </div>
+            <!--<Primeng-TurboTable-End>-->
+        </div>
+    </div>
+</div>
+
+@if (!organizationUnit()) {
+    <div class="text-muted">
+        {{ 'SelectAnOrganizationUnitToSeeMembers' | localize }}
+    </div>
+}
+
+<addMemberModal #addMemberModal (membersAdded)="addMembers($event)" />

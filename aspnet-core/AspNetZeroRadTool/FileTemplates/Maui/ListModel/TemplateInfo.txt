@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Maui\\Models\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\{{Entity_Name_Here}}ListModel.cs",
+	"condition": "{{Generate_Maui_Code}} == true",
+}

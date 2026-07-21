@@ -1,0 +1,23 @@
+{
+"propertyTemplates":[
+	],
+"navigationPropertyTemplates":[
+		
+	],
+"conditionalTemplates":[
+		{
+            "placeholder": "{{Upload_File_Controller_Methods_Here}}",
+            "condition": "{{Has_File_Type_Property}} == true",
+            "content": "
+					public async Task<FileUploadCacheOutput> UploadFile(Stream stream, string fileName)
+					{
+						return await ApiClient.PostMultipartAsync<FileUploadCacheOutput>(
+							\"app/\" + \"{{Entity_Name_Plural_Here}}/\" + nameof(UploadFile),
+							stream,
+							fileName
+						);
+					}
+				"
+        },
+	]
+}

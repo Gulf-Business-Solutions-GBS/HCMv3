@@ -1,0 +1,124 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Roles' | localize" [description]="'RolesHeaderInfo' | localize">
+        <div role="actions">
+            @if ('Pages.Administration.Roles.Create' | permission) {
+                <button (click)="createRole()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNewRole' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-5">
+                                <permission-tree-modal #permissionFilterTreeModal (onModalclose)="getRoles()" />
+                            </div>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button name="RefreshButton" class="btn btn-primary float-end" (click)="getRoles()">
+                                <i class="la la-refresh btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    {{ 'Refresh' | localize }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeRoleMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getRoles()"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                ['Pages.Administration.Roles.Edit', 'Pages.Administration.Roles.Delete']
+                                                | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th>{{ 'RoleName' | localize }}</th>
+                                    <th>{{ 'CreationTime' | localize }}</th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        [hidden]="
+                                            !(
+                                                ([
+                                                    'Pages.Administration.Roles.Edit',
+                                                    'Pages.Administration.Roles.Delete',
+                                                ] | permissionAny) || entityHistoryEnabled()
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showRoleMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{ record.displayName }}
+                                            @if (record.isStatic) {
+                                                <span
+                                                    class="badge badge-primary m-1"
+                                                    pTooltip="{{ 'StaticRole_Tooltip' | localize }}"
+                                                    tooltipPosition="top">
+                                                    {{ 'Static' | localize }}
+                                                </span>
+                                            }
+                                            @if (record.isDefault) {
+                                                <span
+                                                    class="badge badge-dark m-1"
+                                                    pTooltip="{{ 'DefaultRole_Description' | localize }}"
+                                                    tooltipPosition="top">
+                                                    {{ 'Default' | localize }}
+                                                </span>
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="ui-table-footer"></div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditRoleModal #createOrEditRoleModal (modalSave)="getRoles()" />
+</div>

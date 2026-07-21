@@ -1,0 +1,19 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header align-items-center border-0">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="fw-bolder text-gray-900">
+                {{ 'Editor' | localize }}
+            </span>
+        </h3>
+    </div>
+    <div class="card-body">
+        <p-editor
+            [ngModel]="htmlEditorInput()"
+            (ngModelChange)="htmlEditorInput.set($event)"
+            name="HtmlEditorInput"
+            [style]="{ height: '300px' }" />
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-primary" (click)="submitValue()" type="button">{{ 'Submit' | localize }}</button>
+    </div>
+</div>

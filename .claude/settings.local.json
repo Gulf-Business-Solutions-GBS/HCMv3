@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "Bash(python:*)",
+      "Bash($env:PYTHONIOENCODING='utf-8')",
+      "WebFetch(domain:cursor.com)",
+      "Bash(del:*)"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+<div class="header-logo me-5 me-md-10">
+    <a href="/">
+        @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+            <img alt="Logo" [src]="defaultLogoUrl" class="logo-default h-25px" height="38" />
+        }
+        @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+            <img alt="Logo" [src]="defaultSmallLogoUrl" class="logo-sticky h-25px" height="38" />
+        }
+        @if (appSession.tenant && appSession.tenant.HasLogo()) {
+            <img alt="Logo" [src]="tenantLogoUrl" class="logo-default h-25px" />
+        }
+        @if (appSession.tenant && appSession.tenant.HasLogo()) {
+            <img alt="Logo" [src]="tenantSmallLogoUrl" class="logo-sticky h-25px" />
+        }
+    </a>
+</div>

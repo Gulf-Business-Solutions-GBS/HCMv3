@@ -1,0 +1,48 @@
+﻿{{NP_Using_Looped_Template_Here}}
+{{Enum_Using_Looped_Template_Here}}
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Abp.Domain.Uow;
+using Abp.IdentityFramework;
+using Abp.Extensions;
+using Abp.ObjectMapping;
+using Abp.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Importing.Dto;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using {{Namespace_Here}}.DataImporting.Excel;
+using {{Namespace_Here}}.Notifications;
+using {{Namespace_Here}}.Storage;
+using System;
+using Abp.UI;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+
+public class Import{{Entity_Name_Plural_Here}}ToExcelJob(
+    IObjectMapper objectMapper,
+    IUnitOfWorkManager unitOfWorkManager,
+    {{Entity_Name_Here}}ListExcelDataReader dataReader,
+    Invalid{{Entity_Name_Here}}Exporter invalidEntityExporter,
+    IAppNotifier appNotifier,
+    IRepository<{{Entity_Name_Here}}{{Primary_Key_With_Comma_Here}}> {{entity_Name_Here}}Repository,
+    {{NP_Repository_Here}}
+    IBinaryObjectManager binaryObjectManager)
+    : ImportToExcelJobBase<Import{{Entity_Name_Here}}Dto, {{Entity_Name_Here}}ListExcelDataReader, Invalid{{Entity_Name_Here}}Exporter>(appNotifier,
+        binaryObjectManager, unitOfWorkManager, dataReader, invalidEntityExporter)
+{
+    public override string ErrorMessageKey => "FileCantBeConvertedTo{{Entity_Name_Here}}List";
+    
+    public override string SuccessMessageKey => "All{{Entity_Name_Plural_Here}}SuccessfullyImportedFromExcel";
+
+    protected override async Task CreateEntityAsync(Import{{Entity_Name_Here}}Dto entity)
+    {
+        var {{entity_Name_Here}} = objectMapper.Map<{{Entity_Name_Here}}>(entity);
+        
+        {{NP_Mapping_Here}}
+
+        // Add your custom validation here.
+
+        await {{entity_Name_Here}}Repository.InsertAsync({{entity_Name_Here}});
+    }
+}

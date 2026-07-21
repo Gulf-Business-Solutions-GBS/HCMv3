@@ -1,0 +1,39 @@
+using Abp.Collections.Extensions;
+using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+namespace HCMv3.Web.Swagger;
+
+public class SwaggerOperationFilter : IOperationFilter
+{
+    public void Apply(OpenApiOperation operation, OperationFilterContext context)
+    {
+        if (operation.Parameters == null)
+        {
+            return;
+        }
+        
+        for (var i = 0; i < operation.Parameters.Count; ++i)
+        {
+            var parameter = operation.Parameters[i];
+
+            var enumType = context.ApiDescription.ParameterDescriptions[i].ParameterDescriptor.ParameterType;
+            if (!enumType.IsEnum)
+            {
+                continue;
+            }
+
+            var schema = context.SchemaRepository.Schemas.GetOrAdd($"{enumType.Name}", () =>
+                context.SchemaGenerator.GenerateSchema(enumType, context.SchemaRepository)
+            );
+
+            if (parameter is not OpenApiParameter schemaParameter)
+            {
+                continue;
+            }
+            
+            schemaParameter.Schema = schema;
+        }
+    }
+}
+

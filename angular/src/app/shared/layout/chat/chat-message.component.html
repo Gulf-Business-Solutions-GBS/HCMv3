@@ -1,0 +1,21 @@
+@if (chatMessageType === 'image') {
+    <a [href]="chatMessage" target="_blank">
+        <img [src]="chatMessage" class="chat-image-preview" />
+    </a>
+}
+@if (chatMessageType === 'file') {
+    <a [href]="chatMessage" target="_blank" class="chat-file-preview">
+        <i class="fa fa-file"></i>
+        {{ fileName }}
+        <i class="fa fa-download pull-right"></i>
+    </a>
+}
+@if (chatMessageType === 'link') {
+    <a [href]="chatMessage" target="_blank" class="chat-link-message">
+        <i class="fa fa-link"></i>
+        {{ chatMessage }}
+    </a>
+}
+@if (chatMessageType === 'text') {
+    <span [innerHTML]="chatMessage"></span>
+}

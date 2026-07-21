@@ -1,0 +1,82 @@
+@if (settings()) {
+    <tabset>
+        <tab heading="{{ 'UiCustomization_Layout' | localize }}" class="p-5">
+            <div class="form">
+                <form>
+                    <div class="mb-5 row">
+                        <h5 class="col">{{ 'UiCustomization_Width' | localize }}</h5>
+                        <div class="col-lg-12">
+                            <select
+                                name="LayoutType"
+                                class="form-select w-25"
+                                [(ngModel)]="settings().layout.layoutType">
+                                <option value="fluid">{{ 'UiCustomization_Fluid' | localize }}</option>
+                                <option value="fixed">{{ 'UiCustomization_Fixed' | localize }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </tab>
+        <tab heading="{{ 'UiCustomization_Menu' | localize }}" class="p-5">
+            <div class="form">
+                <form>
+                    <div class="mb-5 row">
+                        <div class="col-lg-12">
+                            <label class="form-check form-check-custom form-check-solid col-lg-12">
+                                <input
+                                    type="checkbox"
+                                    name="DefaultMinimizedAside"
+                                    class="form-check-input"
+                                    [(ngModel)]="settings().menu.searchActive" />
+                                <span class="form-check-label">
+                                    {{ 'ShowMenuSearchInput' | localize }}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </tab>
+        <tab heading="{{ 'UiCustomization_Footer' | localize }}" class="p-5">
+            <div class="form">
+                <form>
+                    <div class="mb-5 row">
+                        <h5 class="col">{{ 'UiCustomization_Width' | localize }}</h5>
+                        <div class="col-lg-12">
+                            <select
+                                name="footerWidthType"
+                                class="form-select w-25"
+                                [(ngModel)]="settings().footer.footerWidthType">
+                                <option value="fluid">{{ 'UiCustomization_Fluid' | localize }}</option>
+                                <option value="fixed">{{ 'UiCustomization_Fixed' | localize }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </tab>
+    </tabset>
+}
+
+<div class="mt-4">
+    @if ('Pages.Administration.UiCustomization' | permission) {
+        <button (click)="updateDefaultUiManagementSettings()" class="btn btn-primary">
+            <i class="fa fa-save"></i>
+            {{ 'SaveAsSystemDefault' | localize }}
+        </button>
+    }
+
+    @if (!('Pages.Administration.UiCustomization' | permission)) {
+        <button (click)="updateUiManagementSettings()" class="btn btn-primary">
+            <i class="fa fa-save"></i>
+            {{ 'Save' | localize }}
+        </button>
+    }
+
+    @if (!('Pages.Administration.UiCustomization' | permission)) {
+        <button (click)="useSystemDefaultSettings()" class="btn btn btn-secondary btn-hover-brand">
+            {{ 'UseSystemDefaults' | localize }}
+        </button>
+    }
+</div>

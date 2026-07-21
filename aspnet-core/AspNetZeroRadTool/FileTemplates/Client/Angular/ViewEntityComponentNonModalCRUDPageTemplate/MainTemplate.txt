@@ -1,0 +1,44 @@
+﻿import { Component, ViewChild, {{Injector_Component_Import_Here}} Output, EventEmitter, OnInit } from '@angular/core';
+import { {{Entity_Name_Plural_Here}}ServiceProxy, Get{{Entity_Name_Here}}ForViewDto, {{Entity_Name_Here}}Dto {{Enum_Import_After_V060600_Here}}{{Enum_Import_Before_V060600_Here}}} from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { ActivatedRoute } from '@angular/router';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+{{Import_App_Const_Here}}
+{{Import_Breadcrumb_Here}}
+{{Import_Standalone_Imports_Here}}
+
+@Component({
+    templateUrl: './{{master_Detail_Child_Prefix_Here}}view-{{entity_Name_Here}}.component.html',
+    animations: [appModuleAnimation()]{{Standalone_Here}},
+    {{Components_For_Standalone_Here}}
+})
+export class {{Master_Detail_Child_Pascal_Case_Prefix_Here}}View{{Entity_Name_Here}}Component extends AppComponentBase implements OnInit {
+    {{Service_Inject_Set_Here}}
+
+    active = false;
+    saving = false;
+
+    item: Get{{Entity_Name_Here}}ForViewDto;
+{{enum_Def_After_V060600_Here}}{{enum_Def_Before_V060600_Here}}
+{{Breadcrumb_Definitions_Here}}
+    constructor(
+        {{Service_Constructor_Inject_Here}}
+    ) {
+        super({{Super_Metod_Input_Here}});
+        this.item = new Get{{Entity_Name_Here}}ForViewDto();
+        this.item.{{entity_Name_Here}} = new {{Entity_Name_Here}}Dto();        
+    }
+
+    ngOnInit(): void {
+        this.show(this._activatedRoute.snapshot.queryParams['id']);
+    }
+
+    show({{entity_Name_Here}}Id: {{Primary_Key_Type_Here}}): void {
+      this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Here}}ForView({{entity_Name_Here}}Id).subscribe(result => {      
+                 this.item = result;
+                this.active = true;
+            });       
+    }
+    
+    {{Get_Download_Url_Here}}
+}

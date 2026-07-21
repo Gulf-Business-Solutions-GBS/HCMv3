@@ -1,0 +1,58 @@
+<div [@routerTransition]>
+    <sub-header [title]="'HealthCheck' | localize"></sub-header>
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="d-flex justify-content-end mb-3">
+                    <button (click)="refreshHealthChecks()" class="btn btn-primary">
+                        <i class="fa fa-sync"></i>
+                        {{ 'RefreshHealthChecks' | localize }}
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                        <thead>
+                            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                <th>{{ 'Name' | localize }}</th>
+                                <th>{{ 'Status' | localize }}</th>
+                                <th>{{ 'Duration' | localize }}</th>
+                                <th>{{ 'Description' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (loading()) {
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </td>
+                                </tr>
+                            }
+                            @for (healthCheck of healthChecks(); track healthCheck.name) {
+                                <tr>
+                                    <td>{{ healthCheck.name }}</td>
+                                    <td>
+                                        <span [class]="getStatusBadgeClass(healthCheck.status)">
+                                            {{ getStatusText(healthCheck.status) }}
+                                        </span>
+                                    </td>
+                                    <td>{{ formatDuration(healthCheck.duration) }}</td>
+                                    <td>{{ healthCheck.description }}</td>
+                                </tr>
+                            }
+                            @if (!loading() && healthChecks().length === 0) {
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        {{ 'NoData' | localize }}
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-muted small mt-2">
+                    {{ autoRefreshMessage() }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

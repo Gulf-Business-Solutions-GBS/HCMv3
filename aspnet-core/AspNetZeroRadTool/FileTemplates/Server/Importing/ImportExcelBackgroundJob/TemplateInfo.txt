@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Application\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\Importing\\Import{{Entity_Name_Plural_Here}}ToExcelJob.cs",
+	"condition": "{{Is_Master_Detail_Page_Child_Here}} == false && {{Create_Excel_Import_Here}} == true"
+}

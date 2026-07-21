@@ -1,0 +1,28 @@
+{
+  "styles": [
+    {
+      "output": "view-resources/Views/Ui/Login.min.css",
+      "input": [
+        "wwwroot/view-resources/Views/Ui/Login.css"
+      ]
+    },
+    {
+      "output": "view-resources/Views/Ui/Index.min.css",
+      "input": [
+        "wwwroot/view-resources/Views/Ui/Index.css"
+      ]
+    },
+    {
+      "output": "view-resources/Views/Authorize/Authorize.min.css",
+      "input": [
+        "wwwroot/view-resources/Views/Authorize/Authorize.css"
+      ]
+    },
+    {
+      "output": "view-resources/Views/Error/Index.min.css",
+      "input": [
+        "wwwroot/view-resources/Views/Error/Index.css"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Remove_File_Prop_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 100100",
+			"templates" : [
+					{
+					"type" : "file",
+					"content" : "Task Remove{{Property_Name_Here}}File(EntityDto{{Primary_Key_Inside_Tag_Here}} input);
+		
+		"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Method_Declaration_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",
+					"preventDuplicate":true,
+					"content" : "
+		Task<PagedResultDto<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>> GetAll{{NP_Foreign_Entity_Name_Here}}ForLookupTable(GetAllForLookupTableInput input);
+		"
+					},
+                    {
+                    "relation" : "single",
+                    "viewType": "Typeahead",
+                    "preventDuplicate":true,
+                    "content" : "
+        Task<PagedResultDto<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>> GetAll{{NP_Foreign_Entity_Name_Here}}ForLookupTable(GetAllForLookupTableInput input);
+        "
+                    },
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",
+					"preventDuplicate":true,
+					"content" : "
+		Task<List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>> GetAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown();
+		"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Get_Foreign_Entity_For_Lookup_Method}}",
+			"templates" : [					
+                {
+                "relation" : "single",
+				"preventDuplicate":true,
+				"viewType": "Typeahead",
+                "content" : "
+					Task<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto> Get{{NP_Foreign_Entity_Name_Here}}For{{Entity_Name_Here}}Lookup(EntityDto<int> input);
+				"
+                }
+            ]
+		},
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'int'",
+			"content": "<{{Primary_Key_Here}}>"
+		},
+        {
+            "placeholder": "{{Overridable_Entity_Base_Here}}",
+            "condition": "{{Generate_Overridable_Entity_Here}} == true",
+            "content": "Base"
+        },
+		{
+			"placeholder": "{{Get_Excel_Method_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "Task<FileDto> Get{{Entity_Name_Plural_Here}}ToExcel(GetAll{{Entity_Name_Plural_Here}}ForExcelInput input);
+
+		"
+		},
+		{
+			"placeholder": "{{GetForView_Method_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true",
+			"content": "
+
+        Task<Get{{Entity_Name_Here}}ForViewDto> Get{{Entity_Name_Here}}ForView(EntityDto<{{Primary_Key_Here}}> input);"
+		},
+        {
+            "placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+            "condition": "{{Primary_Key_Here}} != 'int'",
+            "content": "<{{Primary_Key_Here}}>"
+        },        
+        {
+            "placeholder": "{{Get_Excel_Columns_Method_Here}}",
+            "condition": "{{Create_Excel_Export_Here}} == true && {{Project_Version_Here}} >= 130200",
+            "content": "Task<List<string>> Get{{Entity_Name_Here}}ExcelColumnsToExcel();"
+        },
+		{
+			"placeholder": "{{NP_Using_Looped_Template_Here}}",
+			"condition": "{{NP_Is_Dropdown_View}} == true",
+			"content": "using System.Collections.Generic;"
+		},
+	]
+}

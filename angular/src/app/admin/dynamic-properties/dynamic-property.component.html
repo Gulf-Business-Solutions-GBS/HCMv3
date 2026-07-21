@@ -1,0 +1,90 @@
+<div [@routerTransition]>
+    <sub-header [title]="'DynamicPropertyManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <tabset>
+                        <tab class="p-5" heading=" {{ 'DynamicProperties' | localize }}">
+                            <div class="row justify-content-end px-5 pb-5">
+                                <div class="col">
+                                    @if ('Pages.Administration.DynamicProperties.Create' | permission) {
+                                        <button class="btn btn-primary float-end" (click)="addNewDynamicProperty()">
+                                            <i class="fa fa-plus btn-md-icon"></i>
+                                            <span class="d-none d-md-inline-block">
+                                                {{ 'AddNewDynamicProperty' | localize }}
+                                            </span>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+
+                            <!--<Primeng-TurboTable-Start>-->
+                            <p-tieredMenu
+                                #actionsMenu
+                                [model]="activeDynamicPropertyMenuItems()"
+                                [popup]="true"
+                                appendTo="body" />
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                                <p-table
+                                    #dataTable
+                                    (onLazyLoad)="getDynamicProperties()"
+                                    [value]="primengTableHelper.records()"
+                                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                    [paginator]="false"
+                                    [lazy]="true"
+                                    [tableStyle]="{ 'min-width': '50rem' }">
+                                    <ng-template #header>
+                                        <tr>
+                                            <th style="width: 130px"></th>
+                                            <th>{{ 'PropertyName' | localize }}</th>
+                                            <th>{{ 'DisplayName' | localize }}</th>
+                                            <th>{{ 'InputType' | localize }}</th>
+                                            <th>{{ 'Permission' | localize }}</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template #body let-record="$implicit">
+                                        <tr>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-primary btn-sm dropdown-toggle"
+                                                    (click)="showDynamicPropertyMenu($event, record, actionsMenu)">
+                                                    <i class="fa fa-cog"></i>
+                                                    {{ 'Actions' | localize }}
+                                                </button>
+                                            </td>
+                                            <td>
+                                                {{ record.propertyName }}
+                                            </td>
+                                            <td>
+                                                {{ record.displayName }}
+                                            </td>
+                                            <td>
+                                                {{ record.inputType }}
+                                            </td>
+                                            <td>
+                                                {{ record.permission }}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                @if (primengTableHelper.totalRecordsCount() == 0) {
+                                    <div class="primeng-no-data">
+                                        {{ 'NoData' | localize }}
+                                    </div>
+                                }
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                        </tab>
+                        <tab class="p-5" heading=" {{ 'DynamicEntityProperties' | localize }}">
+                            <dynamic-entity-property-list />
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+        <dynamic-property-value-modal #dynamicPropertyValueModal />
+        <create-or-edit-dynamic-property-modal #createOrEditDynamicProperty (modalSave)="getDynamicProperties()" />
+    </div>
+</div>

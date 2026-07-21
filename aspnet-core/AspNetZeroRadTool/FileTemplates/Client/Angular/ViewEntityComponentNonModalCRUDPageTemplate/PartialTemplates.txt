@@ -1,0 +1,167 @@
+{
+    "propertyTemplates": [
+    ],
+	"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Import_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : ", {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Import_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : ", {{Enum_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{enum_Def_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : "    {{enum_Name_Here}} = {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}};
+"
+		},
+		{
+			"placeholder" : "{{enum_Def_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : "    {{enum_Name_Here}} = {{Enum_Name_Here}};
+"
+		}
+	],
+	"conditionalTemplates":[
+        {
+            "placeholder": "{{Standalone_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140000 && {{Project_Version_Here}} <= 140010",
+            "content": ",
+                            standalone: false"
+        },
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'Guid'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'Guid'",
+			"content": "number"
+		},
+        {
+            "placeholder": "{{Import_Breadcrumb_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "import { BreadcrumbItem, SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';"
+        },
+        {
+            "placeholder": "{{Breadcrumb_Definitions_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "breadcrumbs: BreadcrumbItem[]= [
+                        new BreadcrumbItem(this.l(\"{{Entity_Name_Here}}\"),\"/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}\"),
+                        new BreadcrumbItem(this.l('{{Entity_Name_Plural_Here}}') + '' + this.l('Details')),
+                    ];"
+        },
+		{
+             "placeholder" : "{{Import_App_Const_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "import {AppConsts} from '@shared/AppConsts';"
+        },
+        {
+             "placeholder" : "{{Get_Download_Url_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "
+                 getDownloadUrl(id: string): string {
+                     return AppConsts.remoteServiceBaseUrl + '/File/DownloadBinaryFile?id=' + id;
+                 }
+             "
+        },
+        {
+            "placeholder": "{{Excel_Import_Imports_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "
+                    import { FileUpload, FileUploadModule} from 'primeng/fileupload';
+            "
+         },
+         {
+            "placeholder": "{{Excel_Import_File_Module_Here}}",
+            "condition": "{{Create_Excel_Import_Here}} == true",
+            "content": "FileUploadModule,"
+        },
+		{
+             "placeholder" : "{{Import_Standalone_Imports_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+                import { FormsModule } from '@angular/forms';
+                {{Excel_Import_Imports_Here}}
+                import { TableModule } from 'primeng/table';
+                import { PaginatorModule } from 'primeng/paginator';
+                {{DateTime_Component_Imports_Here}}
+                {{NgIf_Component_Imports_Here}}"
+        },
+        {
+             "placeholder" : "{{Components_For_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "imports: [
+                SubHeaderComponent,
+				LocalizePipe,
+                FormsModule,
+               {{Excel_Import_File_Module_Here}}
+                TableModule,
+                PaginatorModule,
+                {{DateTime_Component_Here}}
+                {{NgIf_Component_Here}}
+             ]"
+        },
+        {
+             "placeholder" : "{{DateTime_Component_Imports_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : "import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';"
+        },
+		{
+             "placeholder" : "{{DateTime_Component_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : "LuxonFormatPipe,"
+        },
+        {
+             "placeholder" : "{{NgIf_Component_Imports_Here}}",
+             "condition": "{{Has_Bool_Type_Property}} == true && {{Project_Version_Here}} >= 140100 && {{Project_Version_Here}} < 140200",
+             "content" : "import { NgIf } from '@node_modules/@angular/common';"
+        },
+		{
+             "placeholder" : "{{NgIf_Component_Here}}",
+             "condition": "{{Has_Bool_Type_Property}} == true && {{Project_Version_Here}} >= 140100 && {{Project_Version_Here}} < 140200",
+             "content" : "NgIf,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "Injector,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "inject,"
+        },
+        {
+             "placeholder" : "{{Super_Metod_Input_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "injector"
+        },
+        {
+             "placeholder" : "{{Service_Constructor_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                injector: Injector,
+                private _activatedRoute: ActivatedRoute,
+                private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy
+            "
+        },
+        {
+             "placeholder" : "{{Service_Inject_Set_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+                private _activatedRoute = inject(ActivatedRoute);
+                private _{{entity_Name_Plural_Here}}ServiceProxy = inject({{Entity_Name_Plural_Here}}ServiceProxy);
+             "
+        },
+    ]
+}

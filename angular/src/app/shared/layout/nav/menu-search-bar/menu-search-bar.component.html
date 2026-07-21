@@ -1,0 +1,12 @@
+@if (isMenuSearchActive) {
+    <p-autoComplete
+        [(ngModel)]="selected"
+        [suggestions]="searchMenuResults"
+        (completeMethod)="searchMenuItem($event)"
+        (onSelect)="selectMenuItem($event)"
+        optionLabel="name"
+        placeholder="{{ 'QuickNav' | localize }}"
+        [minLength]="1"
+        inputStyleClass="form-control menuSearchBarInput"
+        styleClass="menuSearchBarContainer" />
+}

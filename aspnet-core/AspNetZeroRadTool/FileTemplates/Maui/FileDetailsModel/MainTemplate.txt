@@ -1,0 +1,10 @@
+﻿using Abp.AutoMapper;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+
+namespace {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+
+public class FileDetails
+{
+    public string FileToken { get; set; }
+    public string FileName { get; set; }
+}

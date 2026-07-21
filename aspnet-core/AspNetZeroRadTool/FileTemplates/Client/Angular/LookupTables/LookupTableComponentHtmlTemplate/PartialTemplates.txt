@@ -1,0 +1,30 @@
+{
+"propertyTemplates":[
+	],
+"navigationPropertyTemplates":[
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{PrimeNG_PTemplate_Attribute}}",
+			"condition": "{{Project_Version_Here}} > 140200",
+			"content": "#body"
+		},
+		{
+			"placeholder": "{{PrimeNG_PTemplate_Attribute}}",
+			"condition": "{{Project_Version_Here}} <= 140200",
+			"content": "pTemplate=\"body\""
+		},
+		{
+		  "placeholder": "{{PrimeNG_Scroll_Width_Attribute}}",
+		  "condition": "{{Project_Version_Here}} > 140200",
+		  "content": ""
+		},
+		{
+		  "placeholder": "{{PrimeNG_Scroll_Width_Attribute}}",
+		  "condition": "{{Project_Version_Here}} <= 140200",
+		  "content": "ScrollWidth=\"100%\""
+		},
+	]
+}

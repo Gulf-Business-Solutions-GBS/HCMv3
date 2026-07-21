@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Maui\\Pages\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\{{Entity_Name_Here}}Index.razor",
+	"condition": "{{Generate_Maui_Code}} == true"
+}

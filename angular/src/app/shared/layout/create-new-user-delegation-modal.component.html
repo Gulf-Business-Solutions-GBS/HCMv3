@@ -1,0 +1,100 @@
+<div
+    appBsModal
+    #userDelegationModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #userDelegationForm="ngForm" novalidate (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span>{{ 'DelegateNewUser' | localize }}</span>
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="UsernameOrEmailAddress">{{ 'Username' | localize }}</label>
+                            <div class="input-group">
+                                <input
+                                    name="UsernameOrEmailAddress"
+                                    class="form-control"
+                                    type="text"
+                                    readonly="readonly"
+                                    disabled="disabled"
+                                    [value]="selectedUsername" />
+                                <button class="btn btn-primary blue" (click)="showCommonLookupModal()" type="button">
+                                    <i class="fa fa-search"></i>
+                                    {{ l('Pick') }}
+                                </button>
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="StartTime">{{ 'StartTime' | localize }}</label>
+                            <p-datepicker
+                                inputId="StartTime"
+                                name="StartTime"
+                                datePickerLuxonModifier
+                                [date]="userDelegation.startTime"
+                                (dateChange)="userDelegation.startTime = $event"
+                                [maxDate]="userDelegation.endTime?.toJSDate()"
+                                [showIcon]="true"
+                                [iconDisplay]="'input'"
+                                appendTo="body"
+                                [baseZIndex]="10000"
+                                [fluid]="true" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EndTime">{{ 'EndTime' | localize }}</label>
+                            <p-datepicker
+                                inputId="EndTime"
+                                name="EndTime"
+                                datePickerLuxonModifier
+                                [date]="userDelegation.endTime"
+                                (dateChange)="userDelegation.endTime = $event"
+                                [minDate]="userDelegation.startTime?.toJSDate()"
+                                [showIcon]="true"
+                                [iconDisplay]="'input'"
+                                appendTo="body"
+                                [baseZIndex]="10000"
+                                [fluid]="true" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="
+                                !userDelegation.targetUserId || !userDelegation.startTime || !userDelegation.endTime
+                            "
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+<commonLookupModal #userLookupModal (itemSelected)="userSelected($event)" />

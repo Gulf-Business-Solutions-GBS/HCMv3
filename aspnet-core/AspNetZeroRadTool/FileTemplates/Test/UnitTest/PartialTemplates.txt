@@ -1,0 +1,265 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Seed_Default_Value}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [					
+                    {
+					"type" : "string",
+					"content" : "{{Property_Name_Here}} = GetRandomString({{Get_Property_MaxLength_Here}}{{Get_Property_MinLength_Here}}{{Get_Property_Regex_Here}}),"
+					},
+                    {
+					"type" : "DateTime",
+					"content" : "{{Property_Name_Here}} = DateTime.Now,"
+					},
+					{
+					"type" : "numeric",
+					"content" : "{{Property_Name_Here}} = 0,"
+					},
+					{
+					"type" : "enum",
+					"content" : "{{Property_Name_Here}} = 0,"
+					},
+                    {
+                    "type" : "Guid",
+                    "content" : "{{Property_Name_Here}} = Guid.Empty,"
+                    },
+					{
+					"type" : "bool",
+					"content" : "{{Property_Name_Here}} = false,"
+					},
+					{
+					"type" : "file",
+					"content" : "{{Property_Name_Here}} = null,"
+					},
+					{
+					"type" : "default",
+					"content" : "{{Property_Name_Here}} = null,"
+					}
+				]
+		},
+		{
+            "placeholder" : "{{Define_Updated_Value}}",
+            "condition" : "{{Property_CreateOrEdit_Here}} == true",
+            "templates" : [					
+                    {
+                    "type" : "string",
+                    "content" : "var {{property_Name_Here}} = GetRandomString({{Get_Property_MaxLength_Here}}{{Get_Property_MinLength_Here}}{{Get_Property_Regex_Here}});
+                    "
+                    },
+                ]
+        },
+		{
+			"placeholder" : "{{Seed_Updated_Value}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [					
+                    {
+					"type" : "string",
+					"content" : "{{Property_Name_Here}} = {{property_Name_Here}},"
+					},
+                    {
+					"type" : "DateTime",
+					"content" : "{{Property_Name_Here}} = Clock.Now.AddDays(3).Date,"
+					},
+					{
+					"type" : "numeric",
+					"content" : "{{Property_Name_Here}} = 1,"
+					},
+					{
+					"type" : "enum",
+					"content" : "{{Property_Name_Here}} = 0,"
+					},
+                    {
+                    "type" : "Guid",
+                    "content" : "{{Property_Name_Here}} = Guid.Empty,"
+                    },
+					{
+					"type" : "bool",
+					"content" : "{{Property_Name_Here}} = true,"
+					},
+					{
+					"type" : "file",
+					"content" : "{{Property_Name_Here}} = null,"
+					},
+					{
+					"type" : "default",
+					"content" : "{{Property_Name_Here}} = null,"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Test_Updated_Value}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [					
+                    {
+					"type" : "string",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBe({{property_Name_Here}});"
+					},
+                    {
+					"type" : "DateTime",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBe(Clock.Now.AddDays(3).Date);"
+					},
+                    {
+                    "type" : "byte",
+                    "content" : "
+                    entity.{{Property_Name_Here}}.ShouldBeEquivalentTo((byte)1);"
+                    },                    {
+                    "type" : "short",
+                    "content" : "
+                    entity.{{Property_Name_Here}}.ShouldBeEquivalentTo((short)1);"
+                    },
+                    {
+                    "type" : "Guid",
+                    "content" : "
+                    entity.{{Property_Name_Here}}.ShouldBe(Guid.Empty);"
+                    },
+					{
+					"type" : "numeric",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBe(1);"
+					},
+					{
+					"type" : "enum",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBe(({{Property_Type_Here}}) 0);"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBe(true);"
+					},
+					{
+					"type" : "file",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBeNull();"
+					},
+					{
+					"type" : "default",
+					"content" : "
+					entity.{{Property_Name_Here}}.ShouldBeNull();"
+					}
+				]
+		},
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Using_Looped_Template_Here}}",
+			"preventDuplicate":true,
+			"content" : "using {{Enum_Namespace_Here}};
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+            "placeholder" : "{{Seed_Entity_Data}}",
+			"condition": "{{Is_Available_To_Tenant_Here}} == true",
+            "content" : "var currentTenant = GetCurrentTenant();
+
+            var {{entity_Name_Here}} = new {{Entity_Name_Here}}
+            {
+                {{Seed_Default_Value}}
+                Id = _{{entity_Name_Here}}TestId,
+                TenantId = currentTenant.Id
+            };"
+        },
+	    {
+            "placeholder" : "{{Seed_Entity_Data}}",
+			"condition": "{{Is_Available_To_Tenant_Here}} == false",
+            "content" : "var {{entity_Name_Here}} = new {{Entity_Name_Here}}
+            {
+                {{Seed_Default_Value}}
+                Id = _{{entity_Name_Here}}TestId
+            };"
+        },
+        {
+            "placeholder" : "{{Primary_Key_Test_Value}}",
+            "condition": "{{Primary_Key_Here}} == 'int'",
+            "content" : "1"
+        },
+        {
+            "placeholder" : "{{Primary_Key_Test_Value}}",
+            "condition": "{{Primary_Key_Here}} == 'guid'",
+            "content" : "Guid.NewGuid()"
+        },
+        {
+            "placeholder" : "{{Primary_Key_Test_Value}}",
+            "condition": "{{Primary_Key_Here}} == 'short'",
+            "content" : "1"
+        },
+        {
+            "placeholder" : "{{Primary_Key_Test_Value}}",
+            "condition": "{{Primary_Key_Here}} == 'string'",
+            "content" : "Guid.NewGuid().ToString()"
+        },
+        {
+            "placeholder" : "{{Primary_Key_Test_Value}}",
+            "condition": "{{Primary_Key_Here}} == 'long'",
+            "content" : "1"
+        },
+		{
+			"placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'int'",
+			"content": "<{{Primary_Key_Here}}>"
+		},
+        {
+            "placeholder": "{{Get_Property_MaxLength_Here}}",
+            "condition": "{{Property_MaxLength_Here}} != -1",
+            "content": "{{Property_MaxLength_Here}}"
+        },
+        {
+            "placeholder": "{{Get_Property_MaxLength_Here}}",
+            "condition": "{{Property_MaxLength_Here}} == -1",
+            "content": "13"
+        },
+        {
+            "placeholder": "{{Get_Property_MinLength_Here}}",
+            "condition": "{{Property_MinLength_Here}} != -1",
+            "content": ", {{Property_MinLength_Here}}"
+        },
+        {
+            "placeholder": "{{Get_Property_MinLength_Here}}",
+            "condition": "{{Property_MinLength_Here}} == -1",
+            "content": ", 0"
+        },
+        {
+            "placeholder": "{{Get_Property_Regex_Here}}",
+            "condition": "{{Property_Regex_Here}} != ''",
+            "content": ", @\"{{Property_Regex_Here}}\""
+        },
+        {
+            "placeholder": "{{Get_Random_String_Function_Here}}",
+            "condition": "{{Project_Version_Here}} < 130100",
+            "content": "        
+                private string GetRandomString(int maxlength = 13, int minLength = 13, string regexPattern = \"[^A-Za-z0-9]\")
+                {
+                    const string DefaultStringChars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";
+                
+                    if (minLength < 0 || maxLength < 0 || minLength > maxLength)
+                    {
+                        throw new AbpException(\"Invalid minLength or maxLength parameters\");
+                    }
+        
+                    var random = new Random();
+                    var regex = new Regex(regexPattern);
+        
+                    var length = random.Next(minLength, maxLength + 1);
+        
+                    var filteredChars = new string(DefaultStringChars.Where(c => !regex.IsMatch(c.ToString())).ToArray());
+        
+                    return new string(Enumerable.Repeat(filteredChars, length)
+                        .Select(s => s[random.Next(s.Length)]).ToArray());
+                }
+            "
+        },
+        {
+            "placeholder": "{{Random_String_Using_Template_Here}}",
+            "condition": "{{Project_Version_Here}} < 130100",
+            "content": "        
+                using Abp;
+                using System.Text.RegularExpressions;
+            "
+        }
+	],
+}

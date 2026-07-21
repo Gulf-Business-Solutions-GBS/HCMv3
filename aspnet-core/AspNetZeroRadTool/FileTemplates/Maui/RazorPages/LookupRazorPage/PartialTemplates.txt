@@ -1,0 +1,38 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Maui_Here}} == true",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "<div class=\"text-gray-400 d-block fs-6 m-2\">
+                            <span class=\"fw-bold text-gray-800\">
+                                @L(\"{{Property_Name_Here}}\"):
+                            </span> @model.{{Entity_Name_Here}}.{{Property_Name_Here}}
+                        </div>
+                        "
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "<div class=\"text-gray-400 d-block fs-6 m-2\">
+                            <span class=\"fw-bold text-gray-800\">
+                                @L(\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\"):
+                            </span> @model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}
+                        </div>"
+					}
+				]
+		},
+	],
+"enumTemplates":[
+	],
+"conditionalTemplates":[
+	]
+}

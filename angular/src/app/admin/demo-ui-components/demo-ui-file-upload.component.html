@@ -1,0 +1,48 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header align-items-center border-0">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="fw-bolder text-gray-900">
+                {{ 'FileUpload' | localize }}
+            </span>
+        </h3>
+    </div>
+    <div class="card-body">
+        <label class="form-label" for="DefaultFileUploadFileInput">Default file uploader</label>
+        <p-fileUpload
+            id="DefaultFileUploadFileInput"
+            name="DefaultFileUploadFileInput[]"
+            [url]="uploadUrl()"
+            [multiple]="true"
+            accept="image/*"
+            [maxFileSize]="1000000"
+            (onUpload)="onUpload($event)"
+            (onBeforeSend)="onBeforeSend($event)"
+            chooseLabel="Choose"
+            uploadLabel="Upload"
+            cancelLabel="Cancel"
+            chooseIcon="pi pi-plus"
+            uploadIcon="pi pi-upload"
+            cancelIcon="pi pi-times">
+            <ng-template #empty>
+                <div class="d-flex align-items-center justify-content-center flex-column py-4">
+                    <i class="pi pi-cloud-upload text-muted" style="font-size: 3rem"></i>
+                    <p class="mt-3 mb-0 text-muted">Drag and drop files here to upload.</p>
+                </div>
+            </ng-template>
+            <ng-template #content>
+                @if (uploadedFiles().length) {
+                    <div class="p-fileupload-file-list">
+                        @for (file of uploadedFiles(); track file.name) {
+                            <div class="p-fileupload-file">
+                                <div class="p-fileupload-file-info">
+                                    <div class="p-fileupload-file-name">{{ file.name }}</div>
+                                    <div class="p-fileupload-file-size">{{ file.size }} bytes</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </ng-template>
+        </p-fileUpload>
+    </div>
+</div>

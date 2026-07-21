@@ -1,0 +1,14 @@
+<p-datepicker
+    #datePicker
+    selectionMode="range"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [(ngModel)]="lastDates"
+    (onSelect)="onSelect($event)"
+    (onClear)="onClear()"
+    [showIcon]="true"
+    [iconDisplay]="'input'"
+    appendTo="body"
+    [baseZIndex]="baseZIndex()"
+    [readonlyInput]="true"
+    styleClass="w-100" />

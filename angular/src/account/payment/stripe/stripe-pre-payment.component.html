@@ -1,0 +1,46 @@
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-gray-900 fs-4 fs-1-lg">
+            {{ 'Purchase' | localize }}
+        </h3>
+    </div>
+    <div class="form-actions">
+        @for (product of payment().subscriptionPaymentProducts; track product) {
+            <div class="d-flex justify-content-between">
+                <span>{{ product.count }} x {{ product.description }}</span>
+                <span>
+                    {{ appSession.application.currencySign }}{{ product.count * product.amount | number: '.2' }}
+                </span>
+            </div>
+        }
+        <hr class="border-green" />
+        <div class="mb-5 row">
+            <label class="col-sm-4 form-label">{{ 'Price' | localize }}</label>
+            <div class="col-sm-8 text-end">
+                <p class="form-control-static text-bold" id="totalPrice">
+                    {{ appSession.application.currencySign }}{{ payment().totalAmount | number: '.2' }}
+                </p>
+            </div>
+        </div>
+        @if (payment().isRecurring && payment().isProrationPayment) {
+            <div class="mb-5 row">
+                <label class="col-sm-12 form-label">{{ 'RecurringSubscriptionUpgradeNote' | localize }}</label>
+            </div>
+        }
+        @if (payment().isRecurring && !payment().isProrationPayment) {
+            <div class="mb-5 row">
+                <div class="col-sm-12 text-end">
+                    <p class="form-control-static text-bold" id="totalPrice">
+                        {{ 'AutomaticBilling' | localize }}
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+    <button id="stripe-checkout" class="btn btn-primary btn-block" [disabled]="stripeIsLoading()">
+        {{ 'Purchase' | localize }}
+    </button>
+    @if (stripeIsLoading()) {
+        <div [busyIf]="stripeIsLoading()"></div>
+    }
+</div>

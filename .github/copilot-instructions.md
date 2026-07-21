@@ -1,0 +1,305 @@
+# GitHub Copilot / VS Code Instructions — ASP.NET Zero (ABP) Solution
+
+🎯 Purpose
+
+You are an AI coding assistant working inside an ASP.NET Zero solution built on ASP.NET Boilerplate (ABP).
+
+Your primary goal is to generate production-ready, maintainable, and consistent code that strictly follows:
+
+- ASP.NET Zero best practices
+- ASP.NET Boilerplate (ABP) architectural patterns
+- Clean Architecture & DDD principles
+- Existing project structure and conventions
+
+⚠️ Never generate generic ASP.NET Core code if it conflicts with ASP.NET Zero or ABP patterns.
+
+---
+
+## ✅ Acknowledge Before Answering
+
+Before generating code, confirm internally:
+
+“This solution uses ASP.NET Zero & ABP. I must follow its architecture and conventions strictly.”
+
+---
+
+## 🧱 Solution Architecture Overview
+
+**Server-Side Structure** (`aspnet-core/src`)
+
+Follow **strict layer separation**. Never bypass layers.
+
+### Core.Shared
+Contains **constants, enums, value objects, and helper classes**. Shared between Web, Mobile (MAUI), and other clients.
+- ❌ No EF Core
+- ❌ No Application logic
+
+### Core
+Domain layer.
+- Contains Entities, Aggregate roots, Domain services
+- ❌ No DTOs
+- ❌ No Application Services
+- ❌ No dependency on EF Core or Web
+
+### Application.Shared
+Contains application service interfaces and DTOs.
+- DTOs must be Serializable and Validation-ready
+- ❌ No business logic
+
+### Application
+Contains application services and orchestration.
+- Uses repositories (interfaces)
+- Uses DTOs from Application.Shared
+- Enforces authorization & validation
+- ❌ No direct DbContext usage
+
+### EntityFrameworkCore
+Contains DbContext, repository implementations, EF Core configurations, and migrations.
+- ❌ No business logic
+
+### Web.Host
+Pure remote API host.
+- No MVC, no Views, no UI assets
+- Used by Angular, MAUI, and external clients
+- Uses token-based authentication
+
+### Web.Mvc
+MVC & API presentation layer.
+- Controllers must be thin and delegate to Application Services
+
+### Web.Core
+Shared web-level utilities for MVC and Host.
+
+### Web.Public
+Public website / landing pages. No authenticated application logic.
+
+### Migrator
+Console app for database migrations only.
+- ❌ No business logic
+
+### ConsoleApiClient
+Example API client used to test OpenIddict authentication.
+
+### Tests
+Unit and integration tests.
+- **MANDATORY: Always write unit tests for ALL generated/modified code**
+- Test project location: `aspnet-core/test/HCMv3.Tests/`
+- Use xUnit framework with Shouldly assertions and NSubstitute for mocking
+- Inherit from `AppTestBase` (the non-generic wrapper in the Tests project, which extends `AppTestBase<HCMv3TestModule>`) for integration tests
+- Test file naming: `{ClassName}_Tests.cs` or `{ClassName}_{MethodName}_Tests.cs` when method-scoped (e.g., `UserAppService_Create_Tests.cs`)
+- Test method naming: `Should_{ExpectedBehavior}` (e.g., `Should_Create_User_For_Tenant`)
+- **Test coverage requirements:**
+  - Application Services: Test all public methods (Create, Update, Delete, Get, GetAll)
+  - Domain Services: Test business logic and validation rules
+  - Controllers: Test authorization and parameter validation (if business logic exists)
+  - Complex logic: Test edge cases, error scenarios, and boundary conditions
+- **Test structure:**
+  - Use Arrange-Act-Assert pattern
+  - Test one behavior per test method
+  - Use `[Fact]` for single-tenant tests, `[MultiTenantFact]` for multi-tenant tests
+  - Mock external dependencies (repositories, services) using NSubstitute
+  - Use `UsingDbContextAsync` for database assertions
+- **When creating tests:**
+  1. Check if test base class exists (e.g., `UserAppServiceTestBase`)
+  2. If not, create appropriate test base class following existing patterns
+  3. Place tests in appropriate subfolder matching source structure
+  4. Ensure tests compile and run successfully before completing the task
+- Prefer application service tests and domain logic tests
+- **DO NOT skip writing tests** - tests are mandatory for code quality and maintainability
+
+---
+
+## 🌐 Client Side
+
+### Angular
+- Entry point: `angular/src/main.ts`
+- Uses standalone components
+- Communicates only with Web.Host
+- Uses token-based authentication
+- ❌ No direct coupling to server internals
+- Communicate via server using TypeScript service-proxies
+- Service proxies are automatically generated using NSWAG
+
+### MAUI
+- Uses Web.Host as backend API
+- Token-based authentication
+- ❌ No shared server-side code
+
+### React
+- Entry point: `react/src/main.tsx`
+- Communicates only with Web.Host via token auth
+- ❌ No direct coupling to server internals
+- Ant Design v5 for UI, Metronic 8 for layout, Redux Toolkit, Vite 7
+- Service proxies are automatically generated using NSwag via `useServiceProxy()`
+
+### Angular Service Proxies (IMPORTANT)
+- **NEVER manually create service proxy classes** (e.g., `*ServiceProxy`, DTOs) in the Angular project.
+- All service proxies are **auto-generated by NSwag** from the backend Swagger/OpenAPI specification.
+- To generate/update proxies:
+  1. Run the `Web.Host` project (backend must be running)
+  2. Execute `angular/nswag/refresh.bat` (or `refresh.sh` on Linux/Mac)
+- Generated proxies are output to `angular/src/shared/service-proxies/service-proxies.ts`.
+- When adding new backend services, implement the backend; proxies will be generated automatically.
+- Frontend components should import from `@shared/service-proxies/service-proxies`.
+
+### React Service Proxies (IMPORTANT)
+- **NEVER manually edit `react/src/api/generated/service-proxies.ts`** — it is auto-generated by NSwag.
+- Use `useServiceProxy(ServiceProxy, [])` inside components; `createServiceProxy(ServiceProxy)` outside components.
+- To generate/update proxies:
+  1. Run the `Web.Host` project (backend must be running)
+  2. Execute `react/nswag/refresh.bat`
+- NSwag flattens `EntityDto` for GET/DELETE methods: pass the raw `id` number directly, never `{ id }`.
+- Frontend components import from `@api/generated/service-proxies`.
+
+---
+
+## 📏 Mandatory Coding Rules
+
+### General
+- Follow ABP conventions (naming, layering, dependency injection)
+- Prefer existing ABP abstractions over custom implementations
+- Use async/await everywhere
+- Never introduce breaking architectural shortcuts
+
+### Localization (XML)
+- When you introduce or use a new localization key in generated/modified code, add it to the Core localization XML files under `aspnet-core/src/HCMv3.Core/Localization/HCMv3/`.
+- `HCMv3.xml` is the English (default) file; other languages are in `HCMv3-{CODE}.xml` (e.g., `HCMv3-tr.xml`).
+
+**When adding localization entries to XML files:**
+
+1. **ALWAYS search for existing keys first** before adding new entries
+   - Check all XML files in the localization directory to avoid duplicates
+   - Use one of the following commands based on your environment:
+
+2. **NEVER add duplicate keys** - ABP framework throws `AbpException` if same key appears twice
+
+3. **Reuse existing localization keys** when possible instead of creating new ones
+
+4. **Before adding localization entries, check if key exists:**
+   
+   **PowerShell (Windows):**
+   ```powershell
+   Select-String -Pattern 'name="YourKeyName"' -Path aspnet-core/src/HCMv3.Core/Localization/HCMv3/*.xml
+   ```
+   
+   **Git Bash / WSL / Linux / Mac:**
+   ```bash
+   grep -n 'name="YourKeyName"' aspnet-core/src/HCMv3.Core/Localization/HCMv3/*.xml
+   ```
+   
+   **CMD (Windows):**
+   ```cmd
+   findstr /n "name=\"YourKeyName\"" aspnet-core\src\HCMv3.Core\Localization\HCMv3\*.xml
+   ```
+
+### Entities & Domain
+- Use Entity where appropriate
+- Always inherit from FullAuditedEntity unless user says the opposite
+- Keep entities persistence-ignorant
+- No DTOs in Domain layer
+
+### Application Services
+- Inherit from ApplicationService where applicable
+- Don't inject an application service into another application service
+- Use authorization attributes and validation
+- Return DTOs, never entities
+- Use generic repositories where possible like `IRepository<TEntity, TPrimaryKeyType>`
+- Don't use double.Max on DTO properties as max attribute.
+- Always map Entity -> DTO when returning data from Application Services to the client.
+- Always map DTO -> Entity when creating/updating entities in Application Services.
+- After mapping DTO -> Entity, set `TenantId` from `AbpSession.TenantId` manually.
+- In GetForEdit Application Service methods, always require an identifier; do not return an empty DTO if identifier is not sent from the client.
+- For maintainability, in `CreateAsync` and `UpdateAsync`, map DTO -> Entity first.
+- **Add `[HttpPost]` to `Get{Feature}s` list methods that take a custom input DTO** (e.g. `GetRoles(GetRolesInput)`). ABP maps `Get*` to HTTP GET by default; NSwag then emits the input as individual query-string params and never generates the DTO class in `service-proxies.ts`, breaking React/Angular clients. Do NOT add `[HttpPost]` to `GetForEdit` or other `Get*` methods that take standard ABP types (`EntityDto`, `NullableIdDto`).
+
+### Repositories & EF Core
+- Use repository pattern
+- No DbContext access outside EF Core layer
+- Keep queries efficient and explicit
+
+### Web / API
+- Controllers must be thin
+- No business logic in controllers
+- Prefer application services
+
+### Angular & MAUI
+- Assume backend is remote API
+- Handle auth via tokens
+- Do not assume server-side state
+- Don't call `getRecords` in `ngOnInit` of Angular components when PrimeNG table `(onLazyLoad)` is set.
+- Don't use `[responsive]` attribute for Angular tables.
+
+### React
+- Use `useServiceProxy(ServiceProxy, [])` for all API calls — NEVER raw `fetch`.
+- Use `useDataTable<Dto>(fetchFn)` for table paging, sorting, and loading state.
+- Use `usePermissions()` + `isGranted()` on all action buttons and create buttons.
+- Use `L("Key")` for all user-facing text — no hardcoded strings.
+- NSwag flattens `EntityDto` for GET/DELETE: pass `id` directly (e.g. `deleteProduct(id)`, not `deleteProduct({ id })`).
+
+---
+
+## 🚫 Hard Restrictions (Never Do These)
+
+- ❌ Do NOT bypass Application layer
+- ❌ Do NOT put business logic in Controllers
+- ❌ Do NOT access DbContext outside EF Core project
+- ❌ Do NOT generate “plain ASP.NET Core” patterns
+- ❌ Do NOT mix DTOs and Entities
+- ❌ Do NOT introduce new architectural styles
+
+---
+
+## 🧠 AI Behavior Expectations
+
+When responding:
+
+- Ask clarification questions if requirements are ambiguous
+- Explain architectural decisions briefly
+- Prefer existing ASP.NET Zero patterns
+- Generate minimal but complete code
+- Assume this is a long-lived enterprise project
+
+---
+
+## 📌 Output Expectations
+
+- Code must be:
+  - Compilable
+  - Layer-correct
+  - ASP.NET Zero and ASP.NET Boilerpalte compliant
+  - **Tested with unit tests** (tests must be written and passing)
+- Prefer examples that fit directly into this solution structure
+- Always mention which project/layer the code belongs to
+- **Always include unit tests** when generating new code or modifying existing code
+- **Always verify tests pass** before completing the task
+
+---
+
+## 🛠️ Available Prompts
+
+This project includes pre-defined prompts in `.github/prompts/` (automatically loaded in GitHub Copilot Chat):
+
+### Code Generation
+- **add-feature** - End-to-end feature generation: entity, DTOs, mappers, app service, permissions, localization, tests
+- **generate-entity** - Scaffold a new domain entity with DbContext registration and EF Core migration
+- **generate-appservice** - Generate complete CRUD application service: interface, DTOs, Mapperly mappers, implementation
+- **generate-permission** - Add a complete CRUD permission set (constants, registration, localization)
+- **generate-localization** - Add localization entries to HCMv3.xml with duplicate detection
+- **generate-migration** - Generate EF Core migration after verifying the build succeeds
+- **generate-tests** - Generate xUnit test class for an existing application service
+- **generate-angular-crud** - Generate Angular CRUD page with PrimeNG table, modal, routing, and menu entry
+- **generate-react-crud** - Generate React CRUD page with Ant Design table/modal, Metronic layout, and permission guards
+
+### Build & Infrastructure
+- **create-bundles** - Creates dev bundles for Angular or MVC after JS/CSS changes
+- **generate-service-proxies** - Generates Angular and/or React NSwag service proxies from backend API
+
+### Review & Quality
+- **review-permissions** - Audit permission consistency across all layers
+- **review-pre-push** - Pre-push quality checks: build, tests, layer violations, localization completeness
+
+### Utilities
+- **code-explain** - Explain code's layer, dependencies, architectural role, and data flow
+- **smart-debug** - AI-powered root cause analysis for runtime errors, build failures, and integration issues
+
+These prompts provide platform-specific instructions (PowerShell, Bash, WSL) for common development tasks.

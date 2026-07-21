@@ -1,0 +1,82 @@
+﻿using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.Maui.Core.Components;
+using {{Namespace_Here}}.Maui.Core.Threading;
+using {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.Maui.Services.Navigation;
+using {{Namespace_Here}}.Maui.Services.UI;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
+using {{Namespace_Here}}.Maui.Core;
+
+namespace {{Namespace_Here}}.Maui.Pages.{{Namespace_Relative_Full_Here}};
+
+public partial class {{Entity_Name_Here}}Index : {{Project_Name_Here}}MainLayoutPageComponentBase
+{
+    private const int BlockSize = 95;
+    
+    private readonly bool _hasCreatePermission;
+    
+    private readonly GetAll{{Entity_Name_Plural_Here}}Input _filter = new();
+    
+    private I{{Entity_Name_Plural_Here}}AppService {{Entity_Name_Plural_Here}}AppService { get; }
+
+    private Virtualize<{{Entity_Name_Here}}ListModel> {{Entity_Name_Here}}ListContainer { get; set; }
+    
+    public {{Entity_Name_Here}}Index()
+    {
+        {{Entity_Name_Plural_Here}}AppService = Resolve<I{{Entity_Name_Plural_Here}}AppService>();
+        _hasCreatePermission = PermissionService.HasPermission(AppPermissions.Pages_{{Entity_Name_Plural_Here}}_Create);
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var headerButtons = _hasCreatePermission ? new List<PageHeaderButton> { new PageHeaderButton("Create", MauiConsts.Icons.AddIcon, OpenCreatePage) } : null;
+        await SetPageHeader(L("{{Entity_Name_Plural_Here}}"), L("{{Entity_Name_Plural_Here}}HeaderInfo"), headerButtons);
+    }
+
+    private Task OpenCreatePage()
+    {
+        NavigationService.NavigateTo(NavigationUrlConsts.{{Entity_Name_Plural_Here}}_Create_Or_Edit);
+        return Task.CompletedTask;
+    }
+
+    {{Item_OnClick_Route_Method_Here}}
+    
+    private async Task RefreshList()
+    {
+        await {{Entity_Name_Here}}ListContainer.RefreshDataAsync();
+        StateHasChanged();
+    }
+    
+    private async ValueTask<ItemsProviderResult<{{Entity_Name_Here}}ListModel>> Load{{Entity_Name_Plural_Here}}(ItemsProviderRequest request)
+    {
+        _filter.MaxResultCount = request.Count;
+        _filter.SkipCount = request.StartIndex;
+
+        await UserDialogsService.Block();
+
+        ItemsProviderResult<{{Entity_Name_Here}}ListModel> {{entity_Name_Plural_Here}} = new();
+
+        await WebRequestExecuter.Execute(
+            async () => await {{Entity_Name_Plural_Here}}AppService.GetAll(_filter),
+            async (result) =>
+            {
+                if (result == null)
+                {
+                    await UserDialogsService.UnBlock();
+                    return;
+                }
+
+                var {{entity_Name_Here}}List = ObjectMapper.Map<List<{{Entity_Name_Here}}ListModel>>(result.Items);
+
+                 {{entity_Name_Plural_Here}} = new ItemsProviderResult<{{Entity_Name_Here}}ListModel>({{entity_Name_Here}}List, result.TotalCount);
+
+                await UserDialogsService.UnBlock();
+            }
+        );
+
+        return {{entity_Name_Plural_Here}};
+    }
+}

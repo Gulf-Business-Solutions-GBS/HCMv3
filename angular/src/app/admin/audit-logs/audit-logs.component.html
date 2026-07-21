@@ -1,0 +1,475 @@
+<div [@routerTransition]>
+    <sub-header [title]="'AuditLogs' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <tabset>
+                    <tab heading="{{ 'OperationLogs' | localize }}">
+                        <div class="row m-2 mt-5">
+                            <div class="col-sm-12 text-end">
+                                <button type="button" class="btn btn-primary float-end" (click)="getAuditLogs()">
+                                    <i class="fa fa-sync btn-md-icon"></i>
+                                    <span class="d-none d-md-inline-block">
+                                        {{ 'Refresh' | localize }}
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-success float-end me-1"
+                                    (click)="exportToExcelAuditLogs()">
+                                    <i class="far fa-file-excel btn-md-icon"></i>
+                                    <span class="d-none d-md-inline-block">
+                                        {{ 'ExportToExcel' | localize }}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form">
+                            <form #auditFilterForm="ngForm" (ngSubmit)="getAuditLogs()">
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-md-6 mb-5">
+                                        <label class="form-label" for="StartEndRange">
+                                            {{ 'DateRange' | localize }}
+                                        </label>
+                                        <p-datepicker
+                                            inputId="StartEndRange"
+                                            name="StartEndRange"
+                                            dateRangePickerLuxonModifier
+                                            selectionMode="range"
+                                            [dateRange]="dateRange()"
+                                            (dateRangeChange)="onAuditLogsDateRangeChange($event)"
+                                            [showIcon]="true"
+                                            [iconDisplay]="'input'"
+                                            appendTo="body"
+                                            [baseZIndex]="10000"
+                                            [readonlyInput]="true"
+                                            styleClass="w-100" />
+                                    </div>
+                                    <div class="col-md-6 mb-5">
+                                        <label class="form-label" for="UsernameAuditLog">
+                                            {{ 'UserName' | localize }}
+                                        </label>
+                                        <input
+                                            id="UsernameAuditLog"
+                                            type="text"
+                                            name="UsernameAuditLog"
+                                            class="form-control"
+                                            [ngModel]="usernameAuditLog()"
+                                            (ngModelChange)="usernameAuditLog.set($event)" />
+                                    </div>
+                                </div>
+                                @if (advancedFiltersAreShown()) {
+                                    <div class="row">
+                                        <div class="col-md-6 mb-5">
+                                            <label class="form-label" for="ServiceName">
+                                                {{ 'Service' | localize }}
+                                            </label>
+                                            <input
+                                                id="ServiceName"
+                                                name="ServiceName"
+                                                type="text"
+                                                class="form-control"
+                                                [ngModel]="serviceName()"
+                                                (ngModelChange)="serviceName.set($event)" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label d-block">{{ 'Duration' | localize }}</label>
+                                            <div class="input-group" style="width: 250px !important">
+                                                <input
+                                                    type="text"
+                                                    name="MinExecutionDuration"
+                                                    only-number=""
+                                                    class="form-control"
+                                                    min="0"
+                                                    max="86400000"
+                                                    ng-minlength="0"
+                                                    ng-maxlength="8"
+                                                    [ngModel]="minExecutionDuration()"
+                                                    (ngModelChange)="minExecutionDuration.set($event)" />
+                                                <span class="input-group-text">---</span>
+                                                <input
+                                                    type="text"
+                                                    name="MaxExecutionDuration"
+                                                    only-number=""
+                                                    class="form-control"
+                                                    min="0"
+                                                    max="86400000"
+                                                    ng-minlength="0"
+                                                    ng-maxlength="8"
+                                                    [ngModel]="maxExecutionDuration()"
+                                                    (ngModelChange)="maxExecutionDuration.set($event)" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-5">
+                                            <label class="form-label" for="MethodName">{{ 'Action' | localize }}</label>
+                                            <input
+                                                id="MethodName"
+                                                type="text"
+                                                name="MethodName"
+                                                class="form-control"
+                                                [ngModel]="methodName()"
+                                                (ngModelChange)="methodName.set($event)" />
+                                        </div>
+                                        <div class="col-md-6 mb-5">
+                                            <label class="form-label" for="HasException">
+                                                {{ 'ErrorState' | localize }}
+                                            </label>
+                                            <select
+                                                id="HasException"
+                                                name="HasException"
+                                                class="form-control"
+                                                [ngModel]="hasException()"
+                                                (ngModelChange)="
+                                                    hasException.set($event === '' ? undefined : $event === 'true')
+                                                ">
+                                                <option value="">{{ 'All' | localize }}</option>
+                                                <option value="false">{{ 'Success' | localize }}</option>
+                                                <option value="true">{{ 'HasError' | localize }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mb-5">
+                                            <label class="form-label" for="BrowserInfo">
+                                                {{ 'Browser' | localize }}
+                                            </label>
+                                            <input
+                                                id="BrowserInfo"
+                                                type="text"
+                                                name="BrowserInfo"
+                                                class="form-control"
+                                                [ngModel]="browserInfo()"
+                                                (ngModelChange)="browserInfo.set($event)" />
+                                        </div>
+                                        <div class="col-md-6 mb-5"></div>
+                                    </div>
+                                }
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                        @if (!advancedFiltersAreShown()) {
+                                            <span
+                                                class="clickable-item text-muted"
+                                                (click)="advancedFiltersAreShown.set(!advancedFiltersAreShown())">
+                                                <i class="fa fa-angle-down"></i>
+                                                {{ 'ShowAdvancedFilters' | localize }}
+                                            </span>
+                                        }
+                                        @if (advancedFiltersAreShown()) {
+                                            <span
+                                                class="clickable-item text-muted"
+                                                (click)="advancedFiltersAreShown.set(!advancedFiltersAreShown())">
+                                                <i class="fa fa-angle-up"></i>
+                                                {{ 'HideAdvancedFilters' | localize }}
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row align-items-center">
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelperAuditLogs.isLoading()">
+                                <p-table
+                                    #dataTableAuditLogs
+                                    sortMode="multiple"
+                                    (onLazyLoad)="getAuditLogs($event)"
+                                    [value]="primengTableHelperAuditLogs.records()"
+                                    rows="{{ primengTableHelperAuditLogs.defaultRecordsCountPerPage }}"
+                                    [paginator]="false"
+                                    [lazy]="true"
+                                    [scrollable]="true"
+                                    [tableStyle]="{ 'min-width': '50rem' }"
+                                    resizableColumns="primengTableHelperAuditLogs.resizableColumns">
+                                    <ng-template #header>
+                                        <tr>
+                                            <th style="width: 75px"></th>
+                                            <th style="width: 75px"></th>
+                                            <th style="width: 150px" pSortableColumn="userName">
+                                                {{ 'UserName' | localize }}
+                                                <p-sortIcon field="userName" />
+                                            </th>
+                                            <th style="width: 250px">
+                                                {{ 'Service' | localize }}
+                                            </th>
+                                            <th style="width: 250px">
+                                                {{ 'Action' | localize }}
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="executionDuration">
+                                                {{ 'Duration' | localize }}
+                                                <p-sortIcon field="executionDuration" />
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{ 'IpAddress' | localize }}
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{ 'Client' | localize }}
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{ 'Browser' | localize }}
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="executionTime">
+                                                {{ 'Time' | localize }}
+                                                <p-sortIcon field="executionTime" />
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template #body let-record="$implicit">
+                                        <tr>
+                                            <td style="width: 75px">
+                                                <div class="text-center">
+                                                    <button
+                                                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+                                                        (click)="showAuditLogDetails(record)">
+                                                        <i class="la la-search" [attr.aria-label]="l('Search')"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td style="width: 75px">
+                                                <div class="text-center">
+                                                    @if (record.exception) {
+                                                        <i class="fa fa-exclamation-triangle text-warning"></i>
+                                                    }
+
+                                                    @if (!record.exception) {
+                                                        <i class="fa fa-check-circle text-success"></i>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.userName }}
+                                            </td>
+                                            <td style="width: 250px">
+                                                {{ record.serviceName }}
+                                            </td>
+                                            <td style="width: 250px">
+                                                {{ record.methodName }}
+                                            </td>
+                                            <td style="width: 100px">{{ record.executionDuration }}ms</td>
+                                            <td style="width: 150px">
+                                                {{ record.clientIpAddress }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.clientName }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span title="{{ record.browserInfo }}">
+                                                    {{ truncateStringWithPostfix(record.browserInfo, 20) }}
+                                                </span>
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.executionTime | luxonFormat: 'F' }}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                @if (primengTableHelperAuditLogs.totalRecordsCount() == 0) {
+                                    <div class="primeng-no-data">
+                                        {{ 'NoData' | localize }}
+                                    </div>
+                                }
+                                <div class="primeng-paging-container">
+                                    <p-paginator
+                                        [rows]="primengTableHelperAuditLogs.defaultRecordsCountPerPage"
+                                        #paginatorAuditLogs
+                                        (onPageChange)="getAuditLogs($event)"
+                                        [totalRecords]="primengTableHelperAuditLogs.totalRecordsCount()"
+                                        [rowsPerPageOptions]="primengTableHelperAuditLogs.predefinedRecordsCountPerPage"
+                                        [showCurrentPageReport]="true"
+                                        [currentPageReportTemplate]="
+                                            'TotalRecordsCount'
+                                                | localize: primengTableHelperAuditLogs.totalRecordsCount()
+                                        " />
+                                </div>
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                        </div>
+                    </tab>
+                    <tab heading="{{ 'ChangeLogs' | localize }}">
+                        <div class="row m-2 mt-5">
+                            <div class="col-sm-12 text-end">
+                                <button type="button" class="btn btn-primary float-end" (click)="getEntityChanges()">
+                                    <i class="fa fa-sync btn-md-icon"></i>
+                                    <span class="d-none d-md-inline-block">
+                                        {{ 'Refresh' | localize }}
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-success float-end me-1"
+                                    (click)="exportToExcelEntityChanges()">
+                                    <i class="far fa-file-excel btn-md-icon"></i>
+                                    <span class="d-none d-md-inline-block">
+                                        {{ 'ExportToExcel' | localize }}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form">
+                            <form #entityChangeFilterForm="ngForm" (ngSubmit)="getEntityChanges()">
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-md-6 mb-5">
+                                        <label class="form-label" for="StartEndRangeEntityChange">
+                                            {{ 'DateRange' | localize }}
+                                        </label>
+                                        <p-datepicker
+                                            inputId="StartEndRangeEntityChange"
+                                            name="StartEndRangeEntityChange"
+                                            dateRangePickerLuxonModifier
+                                            selectionMode="range"
+                                            [dateRange]="dateRange()"
+                                            (dateRangeChange)="onEntityChangesDateRangeChange($event)"
+                                            [showIcon]="true"
+                                            [iconDisplay]="'input'"
+                                            appendTo="body"
+                                            [baseZIndex]="10000"
+                                            [readonlyInput]="true"
+                                            styleClass="w-100" />
+                                    </div>
+                                    <div class="col-md-6 mb-5">
+                                        <label class="form-label" for="UserNameEntityChange">
+                                            {{ 'UserName' | localize }}
+                                        </label>
+                                        <input
+                                            id="UserNameEntityChange"
+                                            type="text"
+                                            name="UserNameEntityChange"
+                                            class="form-control"
+                                            [ngModel]="usernameEntityChange()"
+                                            (ngModelChange)="usernameEntityChange.set($event)" />
+                                    </div>
+                                    <div class="col-md-6 mb-5">
+                                        <label class="form-label" for="EntityTypeFullName">
+                                            {{ 'Object' | localize }}
+                                        </label>
+                                        <select
+                                            id="EntityTypeFullName"
+                                            name="EntityTypeFullName"
+                                            class="form-control"
+                                            [ngModel]="entityTypeFullName()"
+                                            (ngModelChange)="entityTypeFullName.set($event)">
+                                            <option value="undefined" selected="selected">
+                                                {{ 'All' | localize }}
+                                            </option>
+                                            @for (objectType of objectTypes(); track objectType.value) {
+                                                <option [value]="objectType.value">
+                                                    {{ objectType.name }}
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <!--<Primeng-TurboTable-Start>-->
+                            <p-tieredMenu
+                                #entityChangeActionsMenu
+                                [model]="activeEntityChangeMenuItems()"
+                                [popup]="true"
+                                appendTo="body" />
+                            <div
+                                class="primeng-datatable-container"
+                                [busyIf]="primengTableHelperEntityChanges.isLoading()">
+                                <p-table
+                                    #dataTableEntityChanges
+                                    sortMode="multiple"
+                                    (onLazyLoad)="getEntityChanges($event)"
+                                    [value]="primengTableHelperEntityChanges.records()"
+                                    rows="{{ primengTableHelperEntityChanges.defaultRecordsCountPerPage }}"
+                                    [paginator]="false"
+                                    [lazy]="true"
+                                    scrollable="true"
+                                    [tableStyle]="{ 'min-width': '50rem' }"
+                                    resizableColumns="primengTableHelperEntityChanges.resizableColumns">
+                                    <ng-template #header>
+                                        <tr>
+                                            <th style="width: 40px"></th>
+                                            <th style="width: 150px">
+                                                {{ 'Action' | localize }}
+                                            </th>
+                                            <th style="width: 250px">
+                                                {{ 'Object' | localize }}
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="userName">
+                                                {{ 'UserName' | localize }}
+                                                <p-sortIcon field="userName" />
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{ 'ImpersonatorUserName' | localize }}
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="changeTime">
+                                                {{ 'Time' | localize }}
+                                                <p-sortIcon field="changeTime" />
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template #body let-record="$implicit">
+                                        <tr>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-primary btn-sm dropdown-toggle"
+                                                    (click)="
+                                                        showEntityChangeMenu($event, record, entityChangeActionsMenu)
+                                                    ">
+                                                    <i class="fa fa-cog"></i>
+                                                    {{ 'Actions' | localize }}
+                                                </button>
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span title="{{ record.changeTypeName }}">
+                                                    {{ l(record.changeTypeName) }}
+                                                </span>
+                                            </td>
+                                            <td style="width: 250px">
+                                                {{ record.entityTypeFullName }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.userName }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="p-column-title">
+                                                    {{ 'ImpersonatorUserName' | localize }}
+                                                </span>
+                                                {{ record.impersonatorUserName }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.changeTime | luxonFormat: 'yyyy-LL-dd HH:mm:ss' }}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                @if (primengTableHelperEntityChanges.totalRecordsCount() == 0) {
+                                    <div class="primeng-no-data">
+                                        {{ 'NoData' | localize }}
+                                    </div>
+                                }
+                                <div class="primeng-paging-container">
+                                    <p-paginator
+                                        [rows]="primengTableHelperEntityChanges.defaultRecordsCountPerPage"
+                                        #paginatorEntityChanges
+                                        (onPageChange)="getEntityChanges($event)"
+                                        [totalRecords]="primengTableHelperEntityChanges.totalRecordsCount()"
+                                        [rowsPerPageOptions]="
+                                            primengTableHelperEntityChanges.predefinedRecordsCountPerPage
+                                        "
+                                        [showCurrentPageReport]="true"
+                                        [currentPageReportTemplate]="
+                                            'TotalRecordsCount'
+                                                | localize: primengTableHelperEntityChanges.totalRecordsCount()
+                                        " />
+                                </div>
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+    <auditLogDetailModal #auditLogDetailModal />
+    <entityChangeDetailModal #entityChangeDetailModal />
+</div>

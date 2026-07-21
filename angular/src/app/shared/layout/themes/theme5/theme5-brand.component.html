@@ -1,0 +1,15 @@
+<a href="/">
+    @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+        <img [src]="defaultLogoUrl" alt="logo" class="d-none d-lg-inline h-30px" />
+    }
+    @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
+        <img [src]="defaultSmallLogoUrl" alt="logo" class="d-lg-none h-25px" />
+    }
+
+    @if (appSession.tenant && appSession.tenant.HasLogo()) {
+        <img [src]="tenantLogoUrl" alt="logo" class="d-none d-lg-inline h-30px" />
+    }
+    @if (appSession.tenant && appSession.tenant.HasLogo()) {
+        <img [src]="tenantSmallLogoUrl" alt="logo" class="d-lg-none h-25px" />
+    }
+</a>

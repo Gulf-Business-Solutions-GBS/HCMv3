@@ -1,0 +1,42 @@
+﻿@using {{Namespace_Here}}.Maui.Services.Navigation
+@inherits {{Project_Name_Here}}MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.{{Entity_Name_Plural_Here}})]
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="input-group">
+                <input type="text" id="{{Entity_Name_Plural_Here}}TableFilter" class="form-control" @bind="_filter.Filter" placeholder="@L("SearchWithThreeDot")">
+                <button @onclick="RefreshList" class="btn btn-primary px-5" type="button">
+                    <i class="fa fa-search p-0" aria-label="Search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <Virtualize @ref="{{Entity_Name_Here}}ListContainer" Context="model" ItemsProvider="@Load{{Entity_Name_Plural_Here}}" ItemSize="BlockSize">
+        <ItemContent>
+            <div class="card mb-3" @onclick="() => Open{{Item_OnClick_Page_Value_Here}}Page(model.{{Entity_Name_Here}})">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-fill">
+                            {{Property_Looped_Template_Here}}
+                            {{NP_Looped_Template_Here}}
+                        </div>
+                        <div>
+                            <i class="fa fa-chevron-right text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ItemContent>
+        <Placeholder>
+            Loading...
+        </Placeholder>
+        <EmptyContent>
+            <div class="alert alert-warning">
+                There is no data to display
+            </div>
+        </EmptyContent>
+    </Virtualize>
+</div>

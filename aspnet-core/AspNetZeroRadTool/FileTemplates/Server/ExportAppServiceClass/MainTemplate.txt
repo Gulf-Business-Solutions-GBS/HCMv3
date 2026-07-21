@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+{{Threading_Tasks_Namespace_Here}}
+using Abp.Runtime.Session;
+using Abp.Timing.Timezone;
+{{Excel_Reporter_Using_Here}}
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using {{Namespace_Here}}.Dto;
+using {{Namespace_Here}}.Storage;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Exporting;
+
+public class {{Entity_Name_Plural_Here}}ExcelExporter{{Primary_Constructor_Inject_Here}} : {{Excel_Reporter_Base_Here}}, I{{Entity_Name_Plural_Here}}ExcelExporter
+{
+    {{Dependency_Field_Inject_Here}}
+    
+    {{Property_Info_Helper_Property_Here}}
+
+    {{Constructor_Inject_Here}}
+
+    public {{Return_Type_Here}} ExportToFile(List<Get{{Entity_Name_Here}}ForViewDto> {{entity_Name_Plural_Here}}{{Excel_Selected_Column_Parameter_Here}})
+    {
+        {{ExportToFile_Method_Content_Here}}
+    }
+    
+    {{List_Handle_Method_Here}}
+}
+

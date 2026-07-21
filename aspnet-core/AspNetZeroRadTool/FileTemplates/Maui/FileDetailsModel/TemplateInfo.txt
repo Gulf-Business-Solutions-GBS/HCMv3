@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Maui\\Models\\{{Namespace_Relative_Full_Reverse_Slash_Here}}\\FileDetails.cs",
+	"condition": "{{Has_File_Type_Property}} ==  true && {{Generate_Maui_Code}} == true",
+}

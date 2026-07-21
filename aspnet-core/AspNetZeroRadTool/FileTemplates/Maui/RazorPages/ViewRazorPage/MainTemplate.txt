@@ -1,0 +1,26 @@
+﻿@using Abp.Application.Services.Dto
+@using {{Namespace_Here}}.Maui.Services.Navigation
+@inherits {{Project_Name_Here}}MainLayoutPageComponentBase
+@attribute [Route("/" + NavigationUrlConsts.{{Entity_Name_Plural_Here}}_View + "/{{{Entity_Name_Here}}Id:{{Primary_Key_Here}}?}")]
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div class="flex-fill">
+                    @if (View{{Entity_Name_Here}}Model?.{{Entity_Name_Here}} != null)
+                    {
+                        {{Property_Looped_Template_Here}}
+                        {{NP_Looped_Template_Here}}
+                    }
+                </div>
+            </div>
+             <div class="mt-3">
+                @if (View{{Entity_Name_Here}}Model?.{{Entity_Name_Here}} != null)
+                {
+                    <button type="button" class="btn btn-warning w-100" @onclick="() => OpenEditPage(new EntityDto<{{Primary_Key_Here}}>(View{{Entity_Name_Here}}Model.{{Entity_Name_Here}}.Id))">@L("Edit")</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

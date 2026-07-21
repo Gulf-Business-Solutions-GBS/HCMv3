@@ -1,0 +1,51 @@
+﻿{{NP_Using_Looped_Template_Here}}
+{{Enum_Using_Looped_Template_Here}}
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Text;
+using Abp.Localization;
+using Abp.Localization.Sources;
+using System.Linq;
+{{Threading_Tasks_Namespace_Here}}
+using Abp.Collections.Extensions;
+using {{Namespace_Here}}.DataExporting.Excel.MiniExcel;
+using {{Namespace_Here}}.DataImporting.Excel;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Importing.Dto;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+
+public class {{Entity_Name_Here}}ListExcelDataReader(ILocalizationManager localizationManager)
+    : {{MiniExcel_Base_Here}} IExcelDataReader<Import{{Entity_Name_Here}}Dto>
+{
+    {{LocalizationSource_Here}}
+
+    {{GetEntitiesFromExcel_Here}}
+
+    private Import{{Entity_Name_Here}}Dto ProcessExcelRow(dynamic row)
+    {
+
+        var exceptionMessage = new StringBuilder();
+        var {{entity_Name_Here}} = new Import{{Entity_Name_Here}}Dto();
+
+        try
+        {
+            {{Get_Excel_Columns_Here}}    
+            {{NP_Get_Excel_Columns_Here}}            
+        }
+        catch (Exception exception)
+        {
+            {{entity_Name_Here}}.Exception = exception.Message;
+        }
+
+        return {{entity_Name_Here}};
+    }
+
+    {{GetRequiredValueFromRowOrNull_Here}}
+
+    {{GetOptionalValueFromRowOrNull_Here}}
+    
+    {{GetLocalizedExceptionMessagePart_Here}}
+    
+    {{ConvertToRequiredPrimaryKey_Here}}
+}

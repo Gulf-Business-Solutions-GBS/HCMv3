@@ -1,0 +1,14 @@
+﻿@inherits HCMv3ComponentBase
+
+<div class="fv-row fv-plugins-icon-container mb-5">
+    <label class="fs-6 fw-semibold mb-2">@L("Theme")</label>
+    <InputSelect @bind-Value="SelectedTheme" class="form-select form-select-solid" data-control="select2"
+                 data-hide-search="true" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+        @foreach (var item in _themes)
+        {
+            <option value="@item">
+                @item
+            </option>
+        }
+    </InputSelect>
+</div>

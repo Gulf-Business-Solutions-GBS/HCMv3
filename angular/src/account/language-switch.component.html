@@ -1,0 +1,12 @@
+@if (languages().length > 1) {
+    <div class="ms-1 mx-auto">
+        @for (language of languages(); track language) {
+            <div
+                class="btn language-switch-btn btn-clean btn-icon p-0 me-1"
+                (click)="changeLanguage(language)"
+                title="{{ language.displayName }}">
+                <i class="{{ language.icon }}" [attr.aria-label]="language.displayName"></i>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,40 @@
+.login__options {
+    a {
+        cursor: pointer;
+
+        &.btn + .btn{
+            margin-left: 0 !important;
+        }
+
+        i.fa-openidconnect {
+            &::before{
+                content: "\f19b";
+            }
+        }
+
+        i.fa-wsfederation {
+            margin-right: 2px;
+
+            &::before{
+                content: "\f20e";
+            }
+        }
+    }
+}
+
+// Hide safari shadow DOM form elements (autofill still possible in username field)
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+
+input[type="password"]::-webkit-caps-lock-indicator {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}

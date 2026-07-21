@@ -1,0 +1,14 @@
+.form-switch.no-animation .form-check-input {
+    transition: none !important;
+}
+
+.form-switch .form-check-input {
+    transition: background-position .12s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: background-position;
+}
+
+.form-switch .form-check-input:checked,
+.form-switch .form-check-input:not(:checked) {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+} 

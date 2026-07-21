@@ -1,0 +1,120 @@
+﻿import {AppConsts} from '@shared/AppConsts';
+import { Component, {{Injector_Component_Import_Here}} ViewEncapsulation, OnInit {{View_Child_Import_Here}} } from '@angular/core';
+import { ActivatedRoute , Router, RouterLink} from '@angular/router';
+import { {{Entity_Name_Plural_Here}}ServiceProxy, {{Entity_Name_Here}}Dto {{Enum_Import_After_V060600_Here}}{{Enum_Import_Before_V060600_Here}} } from '@shared/service-proxies/service-proxies';
+{{Notify_Service_Here}}
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+{{Import_Create_Or_Edit_Component_Here}}
+{{View_Component_Import_Here}}
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+{{DataTable_Import_Here}}{{TurboTable_Import_Here}};
+{{PrimeNG_Imports_Here}}
+import { FileDownloadService } from '@shared/utils/file-download.service';{{EntityTypeHistoryModalComponent_Import_Here}}
+{{Import_Lodash_Filter_Here}}
+{{Import_Datetime_Here}}
+{{Import_DateTime_Service_Here}}
+{{Excel_Import_Imports_Here}}
+{{Excel_Column_Selection_Importing_Here}}
+{{Import_Standalone_Imports_Here}}
+
+@Component({
+    templateUrl: './{{entity_Name_Plural_Here}}.component.html',
+    encapsulation: ViewEncapsulation.None,
+    animations: [appModuleAnimation()]{{Standalone_Here}},
+    {{Components_For_Standalone_Here}}
+})
+export class {{Entity_Name_Plural_Here}}Component extends AppComponentBase{{Implement_OnInit_Here}} {
+    {{Service_Inject_Set_Here}}
+
+    {{EntityTypeHistoryModal_Dev_Here}}
+
+    {{View_Child_Create_Or_Edit_Modal_Def_Here}}   
+
+    {{View_Child_Inject_Here}}
+
+    {{Excel_Import_ViewChild_Here}}
+    {{Excel_Column_Selection_ViewChild_Here}}
+
+    advancedFiltersAreShown = false;
+    filterText = '';
+
+    {{Property_Filter_Def_Here}}{{NP_Filter_Def_Here}}
+    {{Enum_Def_After_V060600_Here}}{{Enum_Def_Before_V060600_Here}}
+    {{EntityHistory_Decs_Here}}
+    {{Master_Detail_Table_Row_Selection_Here}}
+    {{Master_Detail_Table_Edit_Selection_Here}}
+    {{Excel_Import_Properties_Here}}
+
+    constructor(
+        {{Service_Constructor_Inject_Here}}
+    ) {
+        super({{Super_Metod_Input_Here}});
+        {{Excel_Import_Set_UploadUrl_Here}}
+    }
+{{On_Init_Function_Here}}
+    get{{Entity_Name_Plural_Here}}(event?: LazyLoadEvent) {
+        if (this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.shouldResetPaging(event)) {
+            this.paginator{{Signal_Syntax_Inject_Here}}.changePage(0);
+            if (this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records &&
+                this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records.length > 0) {
+                return;
+            }
+        }
+
+        this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.showLoadingIndicator();
+
+        this._{{entity_Name_Plural_Here}}ServiceProxy.getAll(
+            this.filterText,{{Property_Filter_Param_Here}}{{NP_Filter_Param_Here}}
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getSorting(this.dataTable{{Signal_Syntax_Inject_Here}}),
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getSkipCount(this.paginator{{Signal_Syntax_Inject_Here}}, event),
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getMaxResultCount(this.paginator{{Signal_Syntax_Inject_Here}}, event)
+        ).subscribe(result => {
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.totalRecordsCount = result.totalCount;
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records = result.items;
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.hideLoadingIndicator();
+        });
+    }
+
+    reloadPage(): void {
+        this.paginator{{Signal_Syntax_Inject_Here}}.changePage(this.paginator{{Signal_Syntax_Inject_Here}}.getPage());
+    }
+
+    create{{Entity_Name_Here}}(): void {
+        {{On_Click_Create_Here}}        
+    }
+
+{{EntityTypeHistoryModal_Open_Here}}
+    delete{{Entity_Name_Here}}({{entity_Name_Here}}: {{Entity_Name_Here}}Dto): void {
+        this.message.confirm(
+            '',
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._{{entity_Name_Plural_Here}}ServiceProxy.delete({{entity_Name_Here}}.id)
+                        .subscribe(() => {
+                            this.reloadPage();
+                            this.notify.success(this.l('SuccessfullyDeleted'));
+                        });
+                }
+            }
+        );
+    }{{Get_Excel_Method_Here}}
+    
+    {{Get_Excel_Import_Method_Here}}
+    
+    {{Master_Detail_Table_Select_Edit_Table_Here}}
+    {{Master_Detail_Table_Row_Opener_Here}}
+    {{Master_Detail_Table_Close_All_Child_Rows_Here}}
+    {{Get_Download_Url_Here}}
+
+    resetFilters(): void {
+        this.filterText = '';
+        {{Property_Filter_Def_Clear_Here}}{{NP_Filter_Def_Clear_Here}}
+        this.get{{Entity_Name_Plural_Here}}();
+    }
+    
+    {{Show_Excel_Column_Selection_Modal_Here}}
+    
+    {{Set_Entity_History_Enabled_Function_Here}}
+}

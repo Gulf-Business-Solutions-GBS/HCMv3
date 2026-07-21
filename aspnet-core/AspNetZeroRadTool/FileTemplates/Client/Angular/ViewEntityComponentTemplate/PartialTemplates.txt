@@ -1,0 +1,134 @@
+{
+"propertyTemplates": [
+],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Import_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : ", {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Import_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : ", {{Enum_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{enum_Def_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : "    {{enum_Name_Here}} = {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}};
+"
+		},
+		{
+			"placeholder" : "{{enum_Def_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : "    {{enum_Name_Here}} = {{Enum_Name_Here}};
+"
+		}
+	],
+	"conditionalTemplates":[		
+        {
+            "placeholder": "{{Standalone_Here}}",
+            "condition": "{{Project_Version_Here}} >= 140000 && {{Project_Version_Here}} <= 140010",
+            "content": ",
+                            standalone: false"
+        },
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		},
+        {
+             "placeholder" : "{{Get_Download_Url_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "
+                 getDownloadUrl(id: string): string {
+                     return AppConsts.remoteServiceBaseUrl + '/File/DownloadBinaryFile?id=' + id;
+                 }
+             "
+        },
+		{
+             "placeholder" : "{{Components_For_Standalone_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140100",
+             "content" : "imports: [ModalDirective{{DateTime_Component_Here}}{{NgIf_Component_Here}}]"
+        },
+		{
+             "placeholder" : "{{DateTime_Component_Imports_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : "import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';"
+        },
+		{
+             "placeholder" : "{{DateTime_Component_Here}}",
+             "condition": "{{Has_DateTime_Type_Property}} == true && {{Project_Version_Here}} >= 140100",
+             "content" : ", LuxonFormatPipe"
+        },
+		{
+             "placeholder" : "{{NgIf_Component_Imports_Here}}",
+             "condition": "{{Has_Bool_Type_Property}} == true && {{Project_Version_Here}} >= 140100 && {{Project_Version_Here}} < 140200",
+             "content" : "import { NgIf } from '@node_modules/@angular/common';"
+        },
+		{
+             "placeholder" : "{{NgIf_Component_Here}}",
+             "condition": "{{Has_Bool_Type_Property}} == true && {{Project_Version_Here}} >= 140100 && {{Project_Version_Here}} < 140200",
+             "content" : ", NgIf"
+        },
+
+		{
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "Injector,"
+        },
+        {
+             "placeholder" : "{{Injector_Component_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "inject,"
+        },
+        {
+             "placeholder" : "{{Super_Metod_Input_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "injector"
+        },
+        {
+             "placeholder" : "{{Service_Constructor_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                        injector: Injector
+            "
+        },
+        {
+             "placeholder" : "{{View_And_Output_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : ",ViewChild, Output"
+        },
+		{
+             "placeholder" : "{{View_And_Output_Child_Import_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : ",viewChild, output"
+        },
+        {
+             "placeholder" : "{{View_And_Output_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} < 140200",
+             "content" : "
+                    @ViewChild('createOrEditModal', { static: true }) ModalDirective: ModalDirective;
+                    @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+            "
+        },
+		{
+             "placeholder" : "{{View_And_Output_Child_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "
+				readonly modal = viewChild<ModalDirective>('createOrEditModal');
+                readonly modalSave = output<any>();
+			 "
+        },
+		{
+             "placeholder" : "{{Signal_Syntax_Inject_Here}}",
+             "condition": "{{Project_Version_Here}} >= 140200",
+             "content" : "()"
+        },
+	]
+}

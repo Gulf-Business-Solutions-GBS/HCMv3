@@ -1,0 +1,10 @@
+﻿using Abp.AutoMapper;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+
+namespace {{Namespace_Here}}.Maui.Models.{{Namespace_Relative_Full_Here}};
+
+[AutoMapFrom(typeof(Get{{Entity_Name_Here}}ForViewDto))]
+public class View{{Entity_Name_Here}}Model : Get{{Entity_Name_Here}}ForViewDto
+{
+	
+}

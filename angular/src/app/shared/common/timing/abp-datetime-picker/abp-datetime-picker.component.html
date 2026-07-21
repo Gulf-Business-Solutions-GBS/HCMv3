@@ -1,0 +1,12 @@
+<p-datepicker
+    [ngModel]="lastDate()"
+    (ngModelChange)="setDate($event)"
+    [showTime]="withTimepicker()"
+    [showIcon]="showIcon()"
+    [iconDisplay]="'input'"
+    [disabled]="effectiveDisabled()"
+    [placeholder]="placeholder()"
+    [fluid]="true"
+    appendTo="body"
+    [baseZIndex]="10000"
+    dateFormat="dd/mm/yy" />

@@ -1,0 +1,131 @@
+﻿.ui-fileupload .ui-corner-top {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+.ui-fileupload .ui-corner-bottom {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.ui-fileupload .ui-button {
+  border-radius: 2px;
+}
+.p-datepicker-panel {
+    z-index: 1100 !important;
+}
+
+p-datepicker {
+    display: block;
+    width: 100%;
+}
+
+p-datepicker .p-datepicker-input {
+    width: 100%;
+}
+
+.p-fileupload:not(.p-fileupload-basic) {
+    display: block !important;
+    width: 100%;
+}
+
+.p-fileupload-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.475rem 0.475rem 0 0;
+}
+
+.p-fileupload-content {
+    padding: 1rem;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-top: none;
+    border-radius: 0 0 0.475rem 0.475rem;
+    min-height: 100px;
+}
+
+.p-fileupload-header .p-button {
+    margin-right: 0.25rem;
+}
+
+.p-fileupload-header .p-button.p-fileupload-choose-button {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.p-fileupload-header .p-button.p-fileupload-choose-button:hover {
+    background-color: var(--bs-primary-dark, #0a6edb) !important;
+    border-color: var(--bs-primary-dark, #0a6edb) !important;
+}
+
+.p-fileupload-header .p-button:not(.p-fileupload-choose-button) {
+    background-color: var(--bs-secondary-bg) !important;
+    border: 1px solid var(--bs-border-color) !important;
+}
+
+.p-fileupload-header .p-button:not(.p-fileupload-choose-button):hover {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+.p-fileupload-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.p-fileupload-file {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    background: var(--bs-tertiary-bg);
+}
+
+.p-fileupload-file-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    margin-right: 1rem;
+}
+
+.p-fileupload-file-info {
+    flex: 1;
+}
+
+.p-fileupload-file-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.p-fileupload-file-size {
+    font-size: 0.875rem;
+    color: var(--bs-secondary-color);
+}
+
+.p-fileupload-file-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.p-fileupload-file-actions .p-button {
+    padding: 0.5rem;
+}
+
+html[data-bs-theme=dark] .p-fileupload-header,
+html[data-bs-theme=dark] .p-fileupload-content {
+    background: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+}
+
+html[data-bs-theme=dark] .p-fileupload-file {
+    background: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+}

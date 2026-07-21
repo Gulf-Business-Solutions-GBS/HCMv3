@@ -1,0 +1,137 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Languages' | localize" [description]="'LanguagesHeaderInfo' | localize">
+        <div role="actions">
+            @if (('Pages.Administration.Languages.Create' | permission) && multiTenancySideIsHost) {
+                <button (click)="createOrEditLanguageModal.show()" class="btn btn-primary">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNewLanguage' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeLanguageMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="col-12 primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getLanguages()"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.Administration.Languages.Edit',
+                                                    'Pages.Administration.Languages.ChangeTexts',
+                                                    'Pages.Administration.Languages.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'Name' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'Code' | localize }}
+                                    </th>
+                                    @if (appSession.tenantId ? true : false) {
+                                        <th>{{ 'Default' | localize }} *</th>
+                                    }
+                                    <th>
+                                        {{ 'IsEnabled' | localize }}
+                                    </th>
+                                    <th>
+                                        {{ 'CreationTime' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px; text-align: center">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showLanguageMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <span [ngClass]="{ 'text-bold': defaultLanguageName === record.name }">
+                                            <i [ngClass]="record.icon" class="margin-right-5 d-inline-block"></i>
+                                            {{ record.displayName }}
+                                            @if (defaultLanguageName === record.name) {
+                                                <span>({{ 'Default' | localize }})</span>
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{ record.name }}
+                                    </td>
+                                    @if (appSession.tenantId ? true : false) {
+                                        <td>
+                                            @if (record.name === defaultLanguageName) {
+                                                <span class="badge badge-success">
+                                                    {{ 'Yes' | localize }}
+                                                </span>
+                                            }
+                                            @if (record.name !== defaultLanguageName) {
+                                                <span class="badge badge-dark">
+                                                    {{ 'No' | localize }}
+                                                </span>
+                                            }
+                                        </td>
+                                    }
+                                    <td>
+                                        @if (!record.isDisabled) {
+                                            <span class="badge badge-success">
+                                                {{ 'Yes' | localize }}
+                                            </span>
+                                        }
+                                        @if (record.isDisabled) {
+                                            <span class="badge badge-dark">
+                                                {{ 'No' | localize }}
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="ui-table-footer">
+                            {{ 'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount() }}
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+
+                    @if (appSession.tenantId) {
+                        <p class="col-12 mt-2">* {{ 'CanNotEditOrDeleteDefaultLanguages' | localize }}</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditLanguageModal #createOrEditLanguageModal (modalSave)="getLanguages()" />
+</div>

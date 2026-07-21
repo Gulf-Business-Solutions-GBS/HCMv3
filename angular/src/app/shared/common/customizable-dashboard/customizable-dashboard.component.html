@@ -1,0 +1,224 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Dashboard' | localize" [description]="'DashboardHeaderInfo' | localize">
+        <div role="actions" class="d-flex align-items-center">
+            @if (!loading() && userDashboard()?.filters?.length > 0) {
+                <button type="button" class="btn btn-light-primary btn-filter" (click)="filterModal.show()">
+                    <i class="fa fa-filter"></i>
+                    {{ 'Filter' | localize }}
+                </button>
+            }
+
+            <label class="form-check form-check-custom form-check-solid form-switch">
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    (change)="changeEditMode()"
+                    [checked]="editModeEnabled()" />
+                <span class="form-check-label">
+                    {{ 'EditMode' | localize }}
+                </span>
+            </label>
+        </div>
+    </sub-header>
+
+    @if (!loading()) {
+        <div [class]="containerClass">
+            @if (!userDashboard()?.pages?.length) {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-warning" role="alert">
+                            {{ 'Dashboard_NoPageDefined_Warning' | localize }}
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-md-12" style="z-index: 0">
+                    <tabset #dashboardTabs [justified]="false" [ngClass]="{ 'nav-hidden': !moreThanOnePage() }">
+                        @for (page of userDashboard()?.pages || []; track page.id; let i = $index) {
+                            <tab heading="{{ page.name }}" (selectTab)="selectPageTab(page.id)">
+                                <gridster [options]="options()[i]" [ngClass]="{ 'no-tab': !moreThanOnePage() }">
+                                    @for (widget of page.widgets; track widget.guid) {
+                                        <gridster-item
+                                            [item]="widget.gridInformation"
+                                            (itemResize)="onGridSterItemResize(widget)">
+                                            @if (widgetSubjects()[widget.guid]) {
+                                                <ng-container
+                                                    *ngComponentOutlet="
+                                                        widget.component;
+                                                        injector: widgetSubjects()[widget.guid].injector
+                                                    " />
+                                            }
+                                            @if (editModeEnabled()) {
+                                                <button
+                                                    class="btn btn-sm bg-danger deleteWidgetButton"
+                                                    (click)="removeItem(widget.gridInformation)">
+                                                    <i class="la la-times text-white"></i>
+                                                </button>
+                                            }
+                                        </gridster-item>
+                                    }
+                                </gridster>
+                            </tab>
+                        }
+                    </tabset>
+                </div>
+                @if (editModeEnabled()) {
+                    <div class="div-dashboard-customization d-flex w-auto shadow-lg">
+                        <div class="me-1 border-right">
+                            <button
+                                type="button"
+                                id="AddWidgetButton"
+                                class="btn btn-sm btn-warning btn-elevate-hover btn-pill"
+                                (click)="openAddWidgetModal()"
+                                [disabled]="selectedPage().id === ''">
+                                <i class="fa fa-plus"></i>
+                                {{ 'AddWidget' | localize }}
+                            </button>
+                            &nbsp;
+                        </div>
+                        <div class="ms-1 me-1 border-right">
+                            <button
+                                #addPageButton
+                                type="button"
+                                class="btn btn-sm btn-primary btn-elevate-hover btn-pill"
+                                (click)="showAddPagePanel(addPageButton)">
+                                <i class="fa fa-plus"></i>
+                                {{ 'AddPage' | localize }}
+                            </button>
+                            <p-overlay #addPagePanel appendTo="body" [(visible)]="addPagePanelVisible">
+                                <div class="overlay-panel-content p-4 bg-white rounded shadow-lg">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">{{ 'NewPageName' | localize }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder=""
+                                            [ngModel]="addPageInput()"
+                                            (ngModelChange)="addPageInput.set($event)"
+                                            (keyup.enter)="
+                                                addNewPage(addPageInput()); addPagePanelVisible.set(false)
+                                            " />
+                                    </div>
+                                    <button
+                                        class="btn btn-sm w-100 btn-primary"
+                                        (click)="addNewPage(addPageInput()); addPagePanelVisible.set(false)">
+                                        <i class="fa fa-save me-1"></i>
+                                        {{ 'Save' | localize }}
+                                    </button>
+                                </div>
+                            </p-overlay>
+                            <button
+                                #renamePageButton
+                                type="button"
+                                class="btn btn-sm btn-info btn-elevate-hover btn-pill"
+                                (click)="showRenamePagePanel(renamePageButton)"
+                                [disabled]="selectedPage().id === ''">
+                                <i class="fa fa-edit"></i>
+                                {{ 'RenamePage' | localize }}
+                            </button>
+                            <p-overlay #renamePagePanel appendTo="body" [(visible)]="renamePagePanelVisible">
+                                <div class="overlay-panel-content p-4 bg-white rounded shadow-lg">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">{{ 'PageNewName' | localize }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="{{ selectedPage().name }}"
+                                            [ngModel]="renamePageInput()"
+                                            (ngModelChange)="renamePageInput.set($event)"
+                                            (keyup.enter)="
+                                                renamePage(renamePageInput()); renamePagePanelVisible.set(false)
+                                            " />
+                                    </div>
+                                    <button
+                                        class="btn btn-sm w-100 btn-primary"
+                                        (click)="renamePage(renamePageInput()); renamePagePanelVisible.set(false)">
+                                        <i class="fa fa-save me-1"></i>
+                                        {{ 'Save' | localize }}
+                                    </button>
+                                </div>
+                            </p-overlay>
+                            <button
+                                id="DeletePageButton"
+                                class="btn btn-sm btn-danger btn-elevate-hover btn-pill"
+                                (click)="deletePage()"
+                                [disabled]="selectedPage().id === ''">
+                                <i class="fa fa-trash"></i>
+                                @if (userDashboard()?.pages?.length > 1) {
+                                    <span>
+                                        {{ 'DeletePage' | localize }}
+                                    </span>
+                                }
+                                @if (userDashboard()?.pages?.length == 1) {
+                                    <span>
+                                        {{ 'BackToDefaultPage' | localize }}
+                                    </span>
+                                }
+                                @if (!userDashboard() || userDashboard()?.pages?.length == 0) {
+                                    <span>
+                                        {{ 'BackToDefaultPage' | localize }}
+                                    </span>
+                                }
+                            </button>
+                            &nbsp;
+                        </div>
+                        <div class="ms-1">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-success btn-elevate-hover btn-pill"
+                                (click)="savePage()">
+                                <i class="fa fa-save"></i>
+                                {{ 'Save' | localize }}
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    @if (dashboardName()) {
+        <add-widget-modal #addWidgetModal (onClose)="addWidget($event)" />
+    }
+
+    <div
+        appBsModal
+        #filterModal="bs-modal"
+        class="modal fade filterModal"
+        tabindex="-1"
+        role="dialog"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{ 'DashboardFilters' | localize }}</span>
+                    </h5>
+                    <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')"></button>
+                </div>
+                @if (userDashboard()) {
+                    <div class="modal-body">
+                        @for (filter of userDashboard().filters; track filter; let i = $index) {
+                            <div>
+                                <div class="row">
+                                    <h6>{{ filter.name | localize }}</h6>
+                                    <div class="col-md-12">
+                                        <ng-container *ngComponentOutlet="filter.component" />
+                                    </div>
+                                </div>
+                                @if (i != userDashboard().filters.length - 1) {
+                                    <hr />
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
