@@ -59,6 +59,125 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<AccessUnit> AccessUnits { get; set; }
 
+    public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<BankFile> BankFiles { get; set; }
+
+    public virtual DbSet<BenefitType> BenefitTypes { get; set; }
+
+    public virtual DbSet<ContractType> ContractTypes { get; set; }
+
+    public virtual DbSet<DateType> DateTypes { get; set; }
+
+    public virtual DbSet<DocumentPlace> DocumentPlaces { get; set; }
+
+    public virtual DbSet<Education> Educations { get; set; }
+
+    public virtual DbSet<EducationBranch> EducationBranches { get; set; }
+
+    public virtual DbSet<Governate> Governates { get; set; }
+
+    public virtual DbSet<GrievanceType> GrievanceTypes { get; set; }
+
+    public virtual DbSet<HRServiceType> HRServiceTypes { get; set; }
+
+    public virtual DbSet<ITServiceType> ITServiceTypes { get; set; }
+
+    public virtual DbSet<LanguageInfo> LanguageInfos { get; set; }
+
+    public virtual DbSet<MaritalStatus> MaritalStatuses { get; set; }
+
+    public virtual DbSet<NationalityGroup> NationalityGroups { get; set; }
+
+    public virtual DbSet<NewsType> NewsTypes { get; set; }
+
+    public virtual DbSet<PassportType> PassportTypes { get; set; }
+
+    public virtual DbSet<PostingGroup> PostingGroups { get; set; }
+
+    public virtual DbSet<Qualification> Qualifications { get; set; }
+
+    public virtual DbSet<RecruitmentType> RecruitmentTypes { get; set; }
+
+    public virtual DbSet<RelationshipType> RelationshipTypes { get; set; }
+
+    public virtual DbSet<Religion> Religions { get; set; }
+
+    public virtual DbSet<State> States { get; set; }
+
+    public virtual DbSet<TaskType> TaskTypes { get; set; }
+
+    public virtual DbSet<Title> Titles { get; set; }
+
+    public virtual DbSet<TrainingType> TrainingTypes { get; set; }
+
+    public virtual DbSet<University> Universities { get; set; }
+
+    public virtual DbSet<VisaType> VisaTypes { get; set; }
+
+    public virtual DbSet<WorkVisaType> WorkVisaTypes { get; set; }
+
+    public virtual DbSet<AssetType> AssetTypes { get; set; }
+
+    public virtual DbSet<City> Cities { get; set; }
+
+    public virtual DbSet<Institution> Institutions { get; set; }
+
+    public virtual DbSet<Nationality> Nationalities { get; set; }
+
+    public virtual DbSet<DependantType> DependantTypes { get; set; }
+
+    public virtual DbSet<Currency> Currencies { get; set; }
+
+    public virtual DbSet<SeparationReason> SeparationReasons { get; set; }
+
+    public virtual DbSet<DisciplinaryDeductionType> DisciplinaryDeductionTypes { get; set; }
+
+    public virtual DbSet<PersonalAction> PersonalActions { get; set; }
+
+    public virtual DbSet<PersonalActionReason> PersonalActionReasons { get; set; }
+
+    public virtual DbSet<Bank> Banks { get; set; }
+
+    public virtual DbSet<PayeeBankDetail> PayeeBankDetails { get; set; }
+
+    public virtual DbSet<BudgetingGroup> BudgetingGroups { get; set; }
+
+    public virtual DbSet<BudgetingGroupRateDetail> BudgetingGroupRateDetails { get; set; }
+
+    public virtual DbSet<ClearanceRequestType> ClearanceRequestTypes { get; set; }
+
+    public virtual DbSet<ClearanceRequestField> ClearanceRequestFields { get; set; }
+
+    public virtual DbSet<ClearanceRequestFieldDetail> ClearanceRequestFieldDetails { get; set; }
+
+    public virtual DbSet<DisciplinaryType> DisciplinaryTypes { get; set; }
+
+    public virtual DbSet<DisciplinaryTypeDetail> DisciplinaryTypeDetails { get; set; }
+
+    public virtual DbSet<NotificationConfig> NotificationConfigs { get; set; }
+
+    public virtual DbSet<NotificationGroup> NotificationGroups { get; set; }
+
+    public virtual DbSet<DocumentType> DocumentTypes { get; set; }
+
+    public virtual DbSet<DocumentPrintForm> DocumentPrintForms { get; set; }
+
+    public virtual DbSet<LoanType> LoanTypes { get; set; }
+
+    public virtual DbSet<LoanTypeDetail> LoanTypeDetails { get; set; }
+
+    public virtual DbSet<OvertimeType> OvertimeTypes { get; set; }
+
+    public virtual DbSet<OvertimeTypeDetail> OvertimeTypeDetails { get; set; }
+
+    public virtual DbSet<Asset> Assets { get; set; }
+
+    public virtual DbSet<NumberSeries> NumberSeries { get; set; }
+
+    public virtual DbSet<CurrencyConvertor> CurrencyConvertors { get; set; }
+
+
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
     {
@@ -157,6 +276,23 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         {
             b.HasIndex(e => new { e.TenantId, e.Code });
             b.HasIndex(e => new { e.TenantId, e.NameEn });
+        });
+
+        modelBuilder.Entity<CurrencyConvertor>(b =>
+        {
+            // Dual FK to Currency: explicit config with Restrict avoids SQL Server's
+            // multiple-cascade-path error that a default Cascade delete would trigger here.
+            b.HasOne(e => e.FromCurr)
+                .WithMany()
+                .HasForeignKey(e => e.FromCurrId)
+                .HasConstraintName("FK_CurrencyConvertors_Currencies_FromCurrId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ToCurr)
+                .WithMany()
+                .HasForeignKey(e => e.ToCurrId)
+                .HasConstraintName("FK_CurrencyConvertors_Currencies_ToCurrId")
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.ConfigureOpenIddict();

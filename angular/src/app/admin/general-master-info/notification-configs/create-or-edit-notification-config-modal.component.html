@@ -1,0 +1,156 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #notificationConfigForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (notificationConfig().id) {
+                                <span>{{ 'EditingNotificationConfig' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewNotificationConfig' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="NotificationConfig_Name">{{ 'Name' | localize }}</label>
+                            <input
+                                id="NotificationConfig_Name"
+                                #nameInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="Name"
+                                [ngModel]="notificationConfig().name"
+                                (ngModelChange)="updateField('name', $event)"
+                                required
+                                maxlength="200" />
+                            <validation-messages [formCtrl]="nameInput" />
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_SendNotification"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="SendNotification"
+                                [ngModel]="notificationConfig().sendNotification"
+                                (ngModelChange)="updateField('sendNotification', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_SendNotification">{{ 'SendNotification' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_SendEmail"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="SendEmail"
+                                [ngModel]="notificationConfig().sendEmail"
+                                (ngModelChange)="updateField('sendEmail', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_SendEmail">{{ 'SendEmail' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_ToEmployee"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="ToEmployee"
+                                [ngModel]="notificationConfig().toEmployee"
+                                (ngModelChange)="updateField('toEmployee', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_ToEmployee">{{ 'ToEmployee' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_ToRequestCreator"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="ToRequestCreator"
+                                [ngModel]="notificationConfig().toRequestCreator"
+                                (ngModelChange)="updateField('toRequestCreator', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_ToRequestCreator">{{ 'ToRequestCreator' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_ToManager"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="ToManager"
+                                [ngModel]="notificationConfig().toManager"
+                                (ngModelChange)="updateField('toManager', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_ToManager">{{ 'ToManager' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_SendToAll"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="SendToAll"
+                                [ngModel]="notificationConfig().sendToAll"
+                                (ngModelChange)="updateField('sendToAll', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_SendToAll">{{ 'SendToAll' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_SendToAllApproved"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="SendToAllApproved"
+                                [ngModel]="notificationConfig().sendToAllApproved"
+                                (ngModelChange)="updateField('sendToAllApproved', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_SendToAllApproved">{{ 'SendToAllApproved' | localize }}</label>
+                        </div>
+
+                        <div class="mb-5 form-check">
+                            <input
+                                id="NotificationConfig_SendToApprover"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="SendToApprover"
+                                [ngModel]="notificationConfig().sendToApprover"
+                                (ngModelChange)="updateField('sendToApprover', $event)" />
+                            <label class="form-check-label" for="NotificationConfig_SendToApprover">{{ 'SendToApprover' | localize }}</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!notificationConfigForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

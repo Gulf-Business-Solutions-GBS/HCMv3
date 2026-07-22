@@ -39,6 +39,302 @@ public class AppAuthorizationProvider : AuthorizationProvider
         accessUnits.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AccessUnits_Edit, L("EditingAccessUnit"));
         accessUnits.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AccessUnits_Delete, L("DeletingAccessUnit"));
 
+        var countries = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Countries, L("Countries"));
+        countries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Countries_Create, L("CreateNewItem"));
+        countries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Countries_Edit, L("EditItem"));
+        countries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Countries_Delete, L("DeleteItem"));
+
+        var bankFiles = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BankFiles, L("BankFiles"));
+        bankFiles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BankFiles_Create, L("CreateNewItem"));
+        bankFiles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BankFiles_Edit, L("EditItem"));
+        bankFiles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BankFiles_Delete, L("DeleteItem"));
+
+        var benefitTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BenefitTypes, L("BenefitTypes"));
+        benefitTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BenefitTypes_Create, L("CreateNewItem"));
+        benefitTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BenefitTypes_Edit, L("EditItem"));
+        benefitTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BenefitTypes_Delete, L("DeleteItem"));
+
+        var contractTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ContractTypes, L("ContractTypes"));
+        contractTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ContractTypes_Create, L("CreateNewItem"));
+        contractTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ContractTypes_Edit, L("EditItem"));
+        contractTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ContractTypes_Delete, L("DeleteItem"));
+
+        var dateTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DateTypes, L("DateTypes"));
+        dateTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DateTypes_Create, L("CreateNewItem"));
+        dateTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DateTypes_Edit, L("EditItem"));
+        dateTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DateTypes_Delete, L("DeleteItem"));
+
+        var documentPlaces = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPlaces, L("DocumentPlaces"));
+        documentPlaces.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPlaces_Create, L("CreateNewItem"));
+        documentPlaces.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPlaces_Edit, L("EditItem"));
+        documentPlaces.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPlaces_Delete, L("DeleteItem"));
+
+        var educations = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Educations, L("Educations"));
+        educations.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Educations_Create, L("CreateNewItem"));
+        educations.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Educations_Edit, L("EditItem"));
+        educations.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Educations_Delete, L("DeleteItem"));
+
+        var educationBranches = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches, L("EducationBranches"));
+        educationBranches.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches_Create, L("CreateNewItem"));
+        educationBranches.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches_Edit, L("EditItem"));
+        educationBranches.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches_Delete, L("DeleteItem"));
+
+        var governates = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates, L("Governates"));
+        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Create, L("CreateNewItem"));
+        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Edit, L("EditItem"));
+        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Delete, L("DeleteItem"));
+
+        var grievanceTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes, L("GrievanceTypes"));
+        grievanceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes_Create, L("CreateNewItem"));
+        grievanceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes_Edit, L("EditItem"));
+        grievanceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes_Delete, L("DeleteItem"));
+
+        var hRServiceTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_HRServiceTypes, L("HRServiceTypes"));
+        hRServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_HRServiceTypes_Create, L("CreateNewItem"));
+        hRServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_HRServiceTypes_Edit, L("EditItem"));
+        hRServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_HRServiceTypes_Delete, L("DeleteItem"));
+
+        var iTServiceTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ITServiceTypes, L("ITServiceTypes"));
+        iTServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ITServiceTypes_Create, L("CreateNewItem"));
+        iTServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ITServiceTypes_Edit, L("EditItem"));
+        iTServiceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ITServiceTypes_Delete, L("DeleteItem"));
+
+        var languageInfos = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LanguageInfos, L("LanguageInfos"));
+        languageInfos.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LanguageInfos_Create, L("CreateNewItem"));
+        languageInfos.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LanguageInfos_Edit, L("EditItem"));
+        languageInfos.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LanguageInfos_Delete, L("DeleteItem"));
+
+        var maritalStatuses = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_MaritalStatuses, L("MaritalStatuses"));
+        maritalStatuses.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_MaritalStatuses_Create, L("CreateNewItem"));
+        maritalStatuses.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_MaritalStatuses_Edit, L("EditItem"));
+        maritalStatuses.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_MaritalStatuses_Delete, L("DeleteItem"));
+
+        var nationalityGroups = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NationalityGroups, L("NationalityGroups"));
+        nationalityGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NationalityGroups_Create, L("CreateNewItem"));
+        nationalityGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NationalityGroups_Edit, L("EditItem"));
+        nationalityGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NationalityGroups_Delete, L("DeleteItem"));
+
+        var newsTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NewsTypes, L("NewsTypes"));
+        newsTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NewsTypes_Create, L("CreateNewItem"));
+        newsTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NewsTypes_Edit, L("EditItem"));
+        newsTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NewsTypes_Delete, L("DeleteItem"));
+
+        var passportTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PassportTypes, L("PassportTypes"));
+        passportTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PassportTypes_Create, L("CreateNewItem"));
+        passportTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PassportTypes_Edit, L("EditItem"));
+        passportTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PassportTypes_Delete, L("DeleteItem"));
+
+        var postingGroups = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PostingGroups, L("PostingGroups"));
+        postingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PostingGroups_Create, L("CreateNewItem"));
+        postingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PostingGroups_Edit, L("EditItem"));
+        postingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PostingGroups_Delete, L("DeleteItem"));
+
+        var qualifications = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Qualifications, L("Qualifications"));
+        qualifications.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Qualifications_Create, L("CreateNewItem"));
+        qualifications.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Qualifications_Edit, L("EditItem"));
+        qualifications.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Qualifications_Delete, L("DeleteItem"));
+
+        var recruitmentTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RecruitmentTypes, L("RecruitmentTypes"));
+        recruitmentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RecruitmentTypes_Create, L("CreateNewItem"));
+        recruitmentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RecruitmentTypes_Edit, L("EditItem"));
+        recruitmentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RecruitmentTypes_Delete, L("DeleteItem"));
+
+        var relationshipTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RelationshipTypes, L("RelationshipTypes"));
+        relationshipTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RelationshipTypes_Create, L("CreateNewItem"));
+        relationshipTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RelationshipTypes_Edit, L("EditItem"));
+        relationshipTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_RelationshipTypes_Delete, L("DeleteItem"));
+
+        var religions = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Religions, L("Religions"));
+        religions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Religions_Create, L("CreateNewItem"));
+        religions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Religions_Edit, L("EditItem"));
+        religions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Religions_Delete, L("DeleteItem"));
+
+        var states = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_States, L("States"));
+        states.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_States_Create, L("CreateNewItem"));
+        states.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_States_Edit, L("EditItem"));
+        states.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_States_Delete, L("DeleteItem"));
+
+        var taskTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TaskTypes, L("TaskTypes"));
+        taskTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TaskTypes_Create, L("CreateNewItem"));
+        taskTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TaskTypes_Edit, L("EditItem"));
+        taskTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TaskTypes_Delete, L("DeleteItem"));
+
+        var titles = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Titles, L("Titles"));
+        titles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Titles_Create, L("CreateNewItem"));
+        titles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Titles_Edit, L("EditItem"));
+        titles.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Titles_Delete, L("DeleteItem"));
+
+        var trainingTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TrainingTypes, L("TrainingTypes"));
+        trainingTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TrainingTypes_Create, L("CreateNewItem"));
+        trainingTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TrainingTypes_Edit, L("EditItem"));
+        trainingTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_TrainingTypes_Delete, L("DeleteItem"));
+
+        var universities = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Universities, L("Universities"));
+        universities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Universities_Create, L("CreateNewItem"));
+        universities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Universities_Edit, L("EditItem"));
+        universities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Universities_Delete, L("DeleteItem"));
+
+        var visaTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_VisaTypes, L("VisaTypes"));
+        visaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_VisaTypes_Create, L("CreateNewItem"));
+        visaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_VisaTypes_Edit, L("EditItem"));
+        visaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_VisaTypes_Delete, L("DeleteItem"));
+
+        var workVisaTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_WorkVisaTypes, L("WorkVisaTypes"));
+        workVisaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_WorkVisaTypes_Create, L("CreateNewItem"));
+        workVisaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_WorkVisaTypes_Edit, L("EditItem"));
+        workVisaTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_WorkVisaTypes_Delete, L("DeleteItem"));
+
+        var assetTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AssetTypes, L("AssetTypes"));
+        assetTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AssetTypes_Create, L("CreateNewItem"));
+        assetTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AssetTypes_Edit, L("EditItem"));
+        assetTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_AssetTypes_Delete, L("DeleteItem"));
+
+        var cities = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Cities, L("Cities"));
+        cities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Cities_Create, L("CreateNewItem"));
+        cities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Cities_Edit, L("EditItem"));
+        cities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Cities_Delete, L("DeleteItem"));
+
+        var institutions = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Institutions, L("Institutions"));
+        institutions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Institutions_Create, L("CreateNewItem"));
+        institutions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Institutions_Edit, L("EditItem"));
+        institutions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Institutions_Delete, L("DeleteItem"));
+
+        var nationalities = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Nationalities, L("Nationalities"));
+        nationalities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Nationalities_Create, L("CreateNewItem"));
+        nationalities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Nationalities_Edit, L("EditItem"));
+        nationalities.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Nationalities_Delete, L("DeleteItem"));
+
+        var dependantTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DependantTypes, L("DependantTypes"));
+        dependantTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DependantTypes_Create, L("CreateNewItem"));
+        dependantTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DependantTypes_Edit, L("EditItem"));
+        dependantTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DependantTypes_Delete, L("DeleteItem"));
+
+        var currencies = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Currencies, L("Currencies"));
+        currencies.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Currencies_Create, L("CreateNewItem"));
+        currencies.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Currencies_Edit, L("EditItem"));
+        currencies.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Currencies_Delete, L("DeleteItem"));
+
+        var separationReasons = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_SeparationReasons, L("SeparationReasons"));
+        separationReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_SeparationReasons_Create, L("CreateNewItem"));
+        separationReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_SeparationReasons_Edit, L("EditItem"));
+        separationReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_SeparationReasons_Delete, L("DeleteItem"));
+
+        var disciplinaryDeductionTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryDeductionTypes, L("DisciplinaryDeductionTypes"));
+        disciplinaryDeductionTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryDeductionTypes_Create, L("CreateNewItem"));
+        disciplinaryDeductionTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryDeductionTypes_Edit, L("EditItem"));
+        disciplinaryDeductionTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryDeductionTypes_Delete, L("DeleteItem"));
+
+        var personalActions = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActions, L("PersonalActions"));
+        personalActions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActions_Create, L("CreateNewItem"));
+        personalActions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActions_Edit, L("EditItem"));
+        personalActions.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActions_Delete, L("DeleteItem"));
+
+        var personalActionReasons = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActionReasons, L("PersonalActionReasons"));
+        personalActionReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActionReasons_Create, L("CreateNewItem"));
+        personalActionReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActionReasons_Edit, L("EditItem"));
+        personalActionReasons.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PersonalActionReasons_Delete, L("DeleteItem"));
+
+        var banks = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Banks, L("Banks"));
+        banks.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Banks_Create, L("CreateNewItem"));
+        banks.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Banks_Edit, L("EditItem"));
+        banks.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Banks_Delete, L("DeleteItem"));
+
+        var payeeBankDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PayeeBankDetails, L("PayeeBankDetails"));
+        payeeBankDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PayeeBankDetails_Create, L("CreateNewItem"));
+        payeeBankDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PayeeBankDetails_Edit, L("EditItem"));
+        payeeBankDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_PayeeBankDetails_Delete, L("DeleteItem"));
+
+        var budgetingGroups = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroups, L("BudgetingGroups"));
+        budgetingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroups_Create, L("CreateNewItem"));
+        budgetingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroups_Edit, L("EditItem"));
+        budgetingGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroups_Delete, L("DeleteItem"));
+
+        var budgetingGroupRateDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroupRateDetails, L("BudgetingGroupRateDetails"));
+        budgetingGroupRateDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroupRateDetails_Create, L("CreateNewItem"));
+        budgetingGroupRateDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroupRateDetails_Edit, L("EditItem"));
+        budgetingGroupRateDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_BudgetingGroupRateDetails_Delete, L("DeleteItem"));
+
+        var clearanceRequestTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestTypes, L("ClearanceRequestTypes"));
+        clearanceRequestTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestTypes_Create, L("CreateNewItem"));
+        clearanceRequestTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestTypes_Edit, L("EditItem"));
+        clearanceRequestTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestTypes_Delete, L("DeleteItem"));
+
+        var clearanceRequestFields = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFields, L("ClearanceRequestFields"));
+        clearanceRequestFields.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFields_Create, L("CreateNewItem"));
+        clearanceRequestFields.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFields_Edit, L("EditItem"));
+        clearanceRequestFields.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFields_Delete, L("DeleteItem"));
+
+        var clearanceRequestFieldDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFieldDetails, L("ClearanceRequestFieldDetails"));
+        clearanceRequestFieldDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFieldDetails_Create, L("CreateNewItem"));
+        clearanceRequestFieldDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFieldDetails_Edit, L("EditItem"));
+        clearanceRequestFieldDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFieldDetails_Delete, L("DeleteItem"));
+
+        var disciplinaryTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypes, L("DisciplinaryTypes"));
+        disciplinaryTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypes_Create, L("CreateNewItem"));
+        disciplinaryTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypes_Edit, L("EditItem"));
+        disciplinaryTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypes_Delete, L("DeleteItem"));
+
+        var disciplinaryTypeDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypeDetails, L("DisciplinaryTypeDetails"));
+        disciplinaryTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypeDetails_Create, L("CreateNewItem"));
+        disciplinaryTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypeDetails_Edit, L("EditItem"));
+        disciplinaryTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DisciplinaryTypeDetails_Delete, L("DeleteItem"));
+
+        var notificationConfigs = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs, L("NotificationConfigs"));
+        notificationConfigs.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs_Create, L("CreateNewItem"));
+        notificationConfigs.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs_Edit, L("EditItem"));
+        notificationConfigs.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationConfigs_Delete, L("DeleteItem"));
+
+        var notificationGroups = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationGroups, L("NotificationGroups"));
+        notificationGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationGroups_Create, L("CreateNewItem"));
+        notificationGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationGroups_Edit, L("EditItem"));
+        notificationGroups.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NotificationGroups_Delete, L("DeleteItem"));
+
+        var documentTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes, L("DocumentTypes"));
+        documentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes_Create, L("CreateNewItem"));
+        documentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes_Edit, L("EditItem"));
+        documentTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentTypes_Delete, L("DeleteItem"));
+
+        var documentPrintForms = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms, L("DocumentPrintForms"));
+        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Create, L("CreateNewItem"));
+        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Edit, L("EditItem"));
+        documentPrintForms.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_DocumentPrintForms_Delete, L("DeleteItem"));
+
+        var loanTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes, L("LoanTypes"));
+        loanTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes_Create, L("CreateNewItem"));
+        loanTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes_Edit, L("EditItem"));
+        loanTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypes_Delete, L("DeleteItem"));
+
+        var loanTypeDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypeDetails, L("LoanTypeDetails"));
+        loanTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypeDetails_Create, L("CreateNewItem"));
+        loanTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypeDetails_Edit, L("EditItem"));
+        loanTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_LoanTypeDetails_Delete, L("DeleteItem"));
+
+        var overtimeTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypes, L("OvertimeTypes"));
+        overtimeTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypes_Create, L("CreateNewItem"));
+        overtimeTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypes_Edit, L("EditItem"));
+        overtimeTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypes_Delete, L("DeleteItem"));
+
+        var overtimeTypeDetails = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypeDetails, L("OvertimeTypeDetails"));
+        overtimeTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypeDetails_Create, L("CreateNewItem"));
+        overtimeTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypeDetails_Edit, L("EditItem"));
+        overtimeTypeDetails.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_OvertimeTypeDetails_Delete, L("DeleteItem"));
+
+        var assets = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Assets, L("Assets"));
+        assets.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Assets_Create, L("CreateNewItem"));
+        assets.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Assets_Edit, L("EditItem"));
+        assets.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Assets_Delete, L("DeleteItem"));
+
+        var numberSeries = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NumberSeries, L("NumberSeries"));
+        numberSeries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NumberSeries_Create, L("CreateNewItem"));
+        numberSeries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NumberSeries_Edit, L("EditItem"));
+        numberSeries.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_NumberSeries_Delete, L("DeleteItem"));
+
+        var currencyConvertors = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors, L("CurrencyConvertors"));
+        currencyConvertors.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors_Create, L("CreateNewItem"));
+        currencyConvertors.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors_Edit, L("EditItem"));
+        currencyConvertors.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors_Delete, L("DeleteItem"));
+
+
         var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 
         var roles = administration.CreateChildPermission(AppPermissions.Pages_Administration_Roles, L("Roles"));

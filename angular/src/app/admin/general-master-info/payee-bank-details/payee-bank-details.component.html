@@ -1,0 +1,144 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayeeBankDetails' | localize" [description]="'GeneralMasterInfo' | localize">
+        <div role="actions">
+            @if ('Pages.GeneralMasterInfo.PayeeBankDetails.Create' | permission) {
+                <button (click)="createPayeeBankDetail()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getPayeeBankDetails()" />
+                                <button class="btn btn-primary" (click)="getPayeeBankDetails()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getPayeeBankDetails($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.PayeeBankDetails.Edit',
+                                                    'Pages.GeneralMasterInfo.PayeeBankDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Bank' | localize }}
+                                    </th>
+                                    <th style="min-width: 180px">
+                                        {{ 'PayeeBank' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="bankCode">
+                                        {{ 'BankCode' | localize }}
+                                        <p-sortIcon field="bankCode" />
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'BankFile' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GeneralMasterInfo.PayeeBankDetails.Edit',
+                                                    'Pages.GeneralMasterInfo.PayeeBankDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.bankName }}" class="hide-overflown">{{ record.bankName }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.payeeBankName }}" class="hide-overflown">{{ record.payeeBankName }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.bankCode }}" class="hide-overflown">{{ record.bankCode }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.bankFileName }}" class="hide-overflown">{{ record.bankFileName }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getPayeeBankDetails($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditPayeeBankDetailModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

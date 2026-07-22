@@ -1,0 +1,106 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #budgetingGroupRateDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (budgetingGroupRateDetail().id) {
+                                <span>{{ 'EditingBudgetingGroupRateDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewBudgetingGroupRateDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="BudgetingGroupRateDetail_BudgetingGroupId">{{ 'BudgetingGroup' | localize }}</label>
+                            <select
+                                id="BudgetingGroupRateDetail_BudgetingGroupId"
+                                class="form-select"
+                                name="BudgetingGroupId"
+                                [ngModel]="budgetingGroupRateDetail().budgetingGroupId"
+                                (ngModelChange)="updateField('budgetingGroupId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (budgetingGroup of budgetingGroups(); track budgetingGroup.id) {
+                                    <option [ngValue]="budgetingGroup.id">{{ budgetingGroup.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="BudgetingGroupRateDetail_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="BudgetingGroupRateDetail_StartDate"
+                                type="date"
+                                class="form-control"
+                                name="StartDate"
+                                [ngModel]="budgetingGroupRateDetail().startDate?.toISODate()"
+                                (ngModelChange)="updateDateField('startDate', $event)" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="BudgetingGroupRateDetail_EndDate">{{ 'EndDate' | localize }}</label>
+                            <input
+                                id="BudgetingGroupRateDetail_EndDate"
+                                type="date"
+                                class="form-control"
+                                name="EndDate"
+                                [ngModel]="budgetingGroupRateDetail().endDate?.toISODate()"
+                                (ngModelChange)="updateDateField('endDate', $event)" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="BudgetingGroupRateDetail_BonusRate">{{ 'BonusRate' | localize }}</label>
+                            <input
+                                id="BudgetingGroupRateDetail_BonusRate"
+                                #bonusRateInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                name="BonusRate"
+                                [ngModel]="budgetingGroupRateDetail().bonusRate"
+                                (ngModelChange)="updateField('bonusRate', $event)"
+                                required
+                                step="0.01"
+                                min="0" />
+                            <validation-messages [formCtrl]="bonusRateInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!budgetingGroupRateDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

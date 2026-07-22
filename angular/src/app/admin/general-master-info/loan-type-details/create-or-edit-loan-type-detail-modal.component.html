@@ -1,0 +1,84 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #loanTypeDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (loanTypeDetail().id) {
+                                <span>{{ 'EditingLoanTypeDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewLoanTypeDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="LoanTypeDetail_LoanTypeId">{{ 'LoanType' | localize }}</label>
+                            <select
+                                id="LoanTypeDetail_LoanTypeId"
+                                class="form-select"
+                                name="LoanTypeId"
+                                [ngModel]="loanTypeDetail().loanTypeId"
+                                (ngModelChange)="updateField('loanTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (loanType of loanTypes(); track loanType.id) {
+                                    <option [ngValue]="loanType.id">{{ loanType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="LoanTypeDetail_Percent">{{ 'Percent' | localize }}</label>
+                            <input
+                                id="LoanTypeDetail_Percent"
+                                #percentInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                name="Percent"
+                                [ngModel]="loanTypeDetail().percent"
+                                (ngModelChange)="updateField('percent', $event)"
+                                required
+                                step="0.01"
+                                min="0" />
+                            <validation-messages [formCtrl]="percentInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!loanTypeDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

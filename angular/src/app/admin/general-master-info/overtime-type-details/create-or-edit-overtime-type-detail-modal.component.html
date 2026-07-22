@@ -1,0 +1,119 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #overtimeTypeDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (overtimeTypeDetail().id) {
+                                <span>{{ 'EditingOvertimeTypeDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewOvertimeTypeDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeTypeDetail_OvertimeTypeId">{{ 'OvertimeType' | localize }}</label>
+                            <select
+                                id="OvertimeTypeDetail_OvertimeTypeId"
+                                class="form-select"
+                                name="OvertimeTypeId"
+                                [ngModel]="overtimeTypeDetail().overtimeTypeId"
+                                (ngModelChange)="updateField('overtimeTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (overtimeType of overtimeTypes(); track overtimeType.id) {
+                                    <option [ngValue]="overtimeType.id">{{ overtimeType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeTypeDetail_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="OvertimeTypeDetail_StartDate"
+                                type="date"
+                                class="form-control"
+                                name="StartDate"
+                                [ngModel]="overtimeTypeDetail().startDate?.toISODate()"
+                                (ngModelChange)="updateDateField('startDate', $event)" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeTypeDetail_EndDate">{{ 'EndDate' | localize }}</label>
+                            <input
+                                id="OvertimeTypeDetail_EndDate"
+                                type="date"
+                                class="form-control"
+                                name="EndDate"
+                                [ngModel]="overtimeTypeDetail().endDate?.toISODate()"
+                                (ngModelChange)="updateDateField('endDate', $event)" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeTypeDetail_OvertimeRateType">{{ 'OvertimeRateType' | localize }}</label>
+                            <select
+                                id="OvertimeTypeDetail_OvertimeRateType"
+                                class="form-select"
+                                name="OvertimeRateType"
+                                [ngModel]="overtimeTypeDetail().overtimeRateType"
+                                (ngModelChange)="updateField('overtimeRateType', $event)">
+                                <option [ngValue]="0">{{ 'Actual' | localize }}</option>
+                                <option [ngValue]="1">{{ 'Fixed' | localize }}</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="OvertimeTypeDetail_Rate">{{ 'Rate' | localize }}</label>
+                            <input
+                                id="OvertimeTypeDetail_Rate"
+                                #rateInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                name="Rate"
+                                [ngModel]="overtimeTypeDetail().rate"
+                                (ngModelChange)="updateField('rate', $event)"
+                                required
+                                step="0.01"
+                                min="0" />
+                            <validation-messages [formCtrl]="rateInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!overtimeTypeDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

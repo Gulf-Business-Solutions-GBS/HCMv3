@@ -1,0 +1,111 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #payeeBankDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (payeeBankDetail().id) {
+                                <span>{{ 'EditingPayeeBankDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreatingNewPayeeBankDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="PayeeBankDetail_BankId">{{ 'Bank' | localize }}</label>
+                            <select
+                                id="PayeeBankDetail_BankId"
+                                class="form-select"
+                                name="BankId"
+                                [ngModel]="payeeBankDetail().bankId"
+                                (ngModelChange)="updateField('bankId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (bank of banks(); track bank.id) {
+                                    <option [ngValue]="bank.id">{{ bank.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="PayeeBankDetail_PayeeBankId">{{ 'PayeeBank' | localize }}</label>
+                            <select
+                                id="PayeeBankDetail_PayeeBankId"
+                                class="form-select"
+                                name="PayeeBankId"
+                                [ngModel]="payeeBankDetail().payeeBankId"
+                                (ngModelChange)="updateField('payeeBankId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (payeeBank of banks(); track payeeBank.id) {
+                                    <option [ngValue]="payeeBank.id">{{ payeeBank.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="PayeeBankDetail_BankCode">{{ 'BankCode' | localize }}</label>
+                            <input
+                                id="PayeeBankDetail_BankCode"
+                                class="form-control"
+                                type="text"
+                                name="BankCode"
+                                [ngModel]="payeeBankDetail().bankCode"
+                                (ngModelChange)="updateField('bankCode', $event)"
+                                maxlength="50" />
+                            
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="PayeeBankDetail_BankFileId">{{ 'BankFile' | localize }}</label>
+                            <select
+                                id="PayeeBankDetail_BankFileId"
+                                class="form-select"
+                                name="BankFileId"
+                                [ngModel]="payeeBankDetail().bankFileId"
+                                (ngModelChange)="updateField('bankFileId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (bankFile of bankFiles(); track bankFile.id) {
+                                    <option [ngValue]="bankFile.id">{{ bankFile.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payeeBankDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
