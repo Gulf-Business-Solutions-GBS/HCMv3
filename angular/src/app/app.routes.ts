@@ -310,6 +310,30 @@ export const appRoutes: Routes = [
                             ).then((m) => m.OvertimeTypeDetailsComponent),
                         data: { permission: 'Pages.GeneralMasterInfo.OvertimeTypeDetails' },
                     },
+                    {
+                        path: 'assets',
+                        loadComponent: () =>
+                            import('./admin/general-master-info/assets/assets.component').then(
+                                (m) => m.AssetsComponent
+                            ),
+                        data: { permission: 'Pages.GeneralMasterInfo.Assets' },
+                    },
+                    {
+                        path: 'number-series',
+                        loadComponent: () =>
+                            import('./admin/general-master-info/number-series/number-series.component').then(
+                                (m) => m.NumberSeriesComponent
+                            ),
+                        data: { permission: 'Pages.GeneralMasterInfo.NumberSeries' },
+                    },
+                    {
+                        path: 'currency-convertors',
+                        loadComponent: () =>
+                            import(
+                                './admin/general-master-info/currency-convertors/currency-convertors.component'
+                            ).then((m) => m.CurrencyConvertorsComponent),
+                        data: { permission: 'Pages.GeneralMasterInfo.CurrencyConvertors' },
+                    },
                     simpleLookupRoute('asset-types', 'AssetTypes', 'AssetTypes', AssetTypesServiceProxy),
                     simpleLookupRoute('countries', 'Countries', 'Countries', CountriesServiceProxy),
                     simpleLookupRoute('budgeting-groups', 'BudgetingGroups', 'BudgetingGroups', BudgetingGroupsServiceProxy),

@@ -99,6 +99,9 @@ export class AppNavigationService {
                     new AppMenuItem('LoanTypeDetails', 'Pages.GeneralMasterInfo.LoanTypeDetails', 'flaticon-list-3', '/app/admin/loan-type-details'),
                     new AppMenuItem('OvertimeTypes', 'Pages.GeneralMasterInfo.OvertimeTypes', 'flaticon-list-3', '/app/admin/overtime-types'),
                     new AppMenuItem('OvertimeTypeDetails', 'Pages.GeneralMasterInfo.OvertimeTypeDetails', 'flaticon-list-3', '/app/admin/overtime-type-details'),
+                    new AppMenuItem('Assets', 'Pages.GeneralMasterInfo.Assets', 'flaticon-list-3', '/app/admin/assets'),
+                    new AppMenuItem('NumberSeries', 'Pages.GeneralMasterInfo.NumberSeries', 'flaticon-list-3', '/app/admin/number-series'),
+                    new AppMenuItem('CurrencyConvertors', 'Pages.GeneralMasterInfo.CurrencyConvertors', 'flaticon-list-3', '/app/admin/currency-convertors'),
                 ]
             ),
             new AppMenuItem(
