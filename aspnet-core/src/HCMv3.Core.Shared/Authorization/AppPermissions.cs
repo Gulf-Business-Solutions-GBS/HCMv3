@@ -258,6 +258,54 @@ public static class AppPermissions
     public const string Pages_GeneralMasterInfo_CurrencyConvertors_Edit = "Pages.GeneralMasterInfo.CurrencyConvertors.Edit";
     public const string Pages_GeneralMasterInfo_CurrencyConvertors_Delete = "Pages.GeneralMasterInfo.CurrencyConvertors.Delete";
 
+    //ORGANIZATION MANAGEMENT
+    public const string Pages_OrganizationManagement = "Pages.OrganizationManagement";
+
+    public const string Pages_OrganizationManagement_CostCenterGroups = "Pages.OrganizationManagement.CostCenterGroups";
+    public const string Pages_OrganizationManagement_CostCenterGroups_Create = "Pages.OrganizationManagement.CostCenterGroups.Create";
+    public const string Pages_OrganizationManagement_CostCenterGroups_Edit = "Pages.OrganizationManagement.CostCenterGroups.Edit";
+    public const string Pages_OrganizationManagement_CostCenterGroups_Delete = "Pages.OrganizationManagement.CostCenterGroups.Delete";
+
+    public const string Pages_OrganizationManagement_CostCenters = "Pages.OrganizationManagement.CostCenters";
+    public const string Pages_OrganizationManagement_CostCenters_Create = "Pages.OrganizationManagement.CostCenters.Create";
+    public const string Pages_OrganizationManagement_CostCenters_Edit = "Pages.OrganizationManagement.CostCenters.Edit";
+    public const string Pages_OrganizationManagement_CostCenters_Delete = "Pages.OrganizationManagement.CostCenters.Delete";
+
+    public const string Pages_OrganizationManagement_CostElementTypes = "Pages.OrganizationManagement.CostElementTypes";
+    public const string Pages_OrganizationManagement_CostElementTypes_Create = "Pages.OrganizationManagement.CostElementTypes.Create";
+    public const string Pages_OrganizationManagement_CostElementTypes_Edit = "Pages.OrganizationManagement.CostElementTypes.Edit";
+    public const string Pages_OrganizationManagement_CostElementTypes_Delete = "Pages.OrganizationManagement.CostElementTypes.Delete";
+
+    public const string Pages_OrganizationManagement_CostElements = "Pages.OrganizationManagement.CostElements";
+    public const string Pages_OrganizationManagement_CostElements_Create = "Pages.OrganizationManagement.CostElements.Create";
+    public const string Pages_OrganizationManagement_CostElements_Edit = "Pages.OrganizationManagement.CostElements.Edit";
+    public const string Pages_OrganizationManagement_CostElements_Delete = "Pages.OrganizationManagement.CostElements.Delete";
+
+    public const string Pages_OrganizationManagement_JobTitles = "Pages.OrganizationManagement.JobTitles";
+    public const string Pages_OrganizationManagement_JobTitles_Create = "Pages.OrganizationManagement.JobTitles.Create";
+    public const string Pages_OrganizationManagement_JobTitles_Edit = "Pages.OrganizationManagement.JobTitles.Edit";
+    public const string Pages_OrganizationManagement_JobTitles_Delete = "Pages.OrganizationManagement.JobTitles.Delete";
+
+    public const string Pages_OrganizationManagement_OrganizationUnitTypes = "Pages.OrganizationManagement.OrganizationUnitTypes";
+    public const string Pages_OrganizationManagement_OrganizationUnitTypes_Create = "Pages.OrganizationManagement.OrganizationUnitTypes.Create";
+    public const string Pages_OrganizationManagement_OrganizationUnitTypes_Edit = "Pages.OrganizationManagement.OrganizationUnitTypes.Edit";
+    public const string Pages_OrganizationManagement_OrganizationUnitTypes_Delete = "Pages.OrganizationManagement.OrganizationUnitTypes.Delete";
+
+    public const string Pages_OrganizationManagement_OrgUnits = "Pages.OrganizationManagement.OrgUnits";
+    public const string Pages_OrganizationManagement_OrgUnits_Create = "Pages.OrganizationManagement.OrgUnits.Create";
+    public const string Pages_OrganizationManagement_OrgUnits_Edit = "Pages.OrganizationManagement.OrgUnits.Edit";
+    public const string Pages_OrganizationManagement_OrgUnits_Delete = "Pages.OrganizationManagement.OrgUnits.Delete";
+
+    public const string Pages_OrganizationManagement_OrganizationBankInfos = "Pages.OrganizationManagement.OrganizationBankInfos";
+    public const string Pages_OrganizationManagement_OrganizationBankInfos_Create = "Pages.OrganizationManagement.OrganizationBankInfos.Create";
+    public const string Pages_OrganizationManagement_OrganizationBankInfos_Edit = "Pages.OrganizationManagement.OrganizationBankInfos.Edit";
+    public const string Pages_OrganizationManagement_OrganizationBankInfos_Delete = "Pages.OrganizationManagement.OrganizationBankInfos.Delete";
+
+    public const string Pages_OrganizationManagement_WorkLocations = "Pages.OrganizationManagement.WorkLocations";
+    public const string Pages_OrganizationManagement_WorkLocations_Create = "Pages.OrganizationManagement.WorkLocations.Create";
+    public const string Pages_OrganizationManagement_WorkLocations_Edit = "Pages.OrganizationManagement.WorkLocations.Edit";
+    public const string Pages_OrganizationManagement_WorkLocations_Delete = "Pages.OrganizationManagement.WorkLocations.Delete";
+
     public const string Pages_Administration_Roles = "Pages.Administration.Roles";
     public const string Pages_Administration_Roles_Create = "Pages.Administration.Roles.Create";
     public const string Pages_Administration_Roles_Edit = "Pages.Administration.Roles.Edit";

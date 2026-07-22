@@ -19,6 +19,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
+using HCMv3.OrganizationManagement;
 using HCMv3.Storage;
 
 namespace HCMv3.EntityFrameworkCore;
@@ -177,6 +178,24 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<CurrencyConvertor> CurrencyConvertors { get; set; }
 
+    public virtual DbSet<CostCenterGroup> CostCenterGroups { get; set; }
+
+    public virtual DbSet<CostCenter> CostCenters { get; set; }
+
+    public virtual DbSet<CostElementType> CostElementTypes { get; set; }
+
+    public virtual DbSet<CostElement> CostElements { get; set; }
+
+    public virtual DbSet<JobTitle> JobTitles { get; set; }
+
+    public virtual DbSet<OrganizationUnitType> OrganizationUnitTypes { get; set; }
+
+    public virtual DbSet<OrganizationBankInfo> OrganizationBankInfos { get; set; }
+
+    public virtual DbSet<WorkLocation> WorkLocations { get; set; }
+
+    public virtual DbSet<OrgUnitProfile> OrgUnitProfiles { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -292,6 +311,23 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.ToCurrId)
                 .HasConstraintName("FK_CurrencyConvertors_Currencies_ToCurrId")
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<OrgUnitProfile>(b =>
+        {
+            b.HasIndex(e => e.OrganizationUnitId).IsUnique();
+
+            // Cascade so deleting via Zero's own built-in OrganizationUnit admin screen (which has no
+            // knowledge of this HR-specific profile row) doesn't leave an orphan.
+            b.HasOne(e => e.OrganizationUnit)
+                .WithMany()
+                .HasForeignKey(e => e.OrganizationUnitId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(e => e.OrganizationUnitType)
+                .WithMany()
+                .HasForeignKey(e => e.OrganizationUnitTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

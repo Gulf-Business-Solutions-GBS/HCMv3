@@ -334,6 +334,54 @@ public class AppAuthorizationProvider : AuthorizationProvider
         currencyConvertors.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors_Edit, L("EditItem"));
         currencyConvertors.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_CurrencyConvertors_Delete, L("DeleteItem"));
 
+        //ORGANIZATION MANAGEMENT
+        var organizationManagement = pages.CreateChildPermission(AppPermissions.Pages_OrganizationManagement, L("OrganizationManagement"));
+
+        var costCenterGroups = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenterGroups, L("CostCenterGroups"));
+        costCenterGroups.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenterGroups_Create, L("CreateNewItem"));
+        costCenterGroups.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenterGroups_Edit, L("EditItem"));
+        costCenterGroups.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenterGroups_Delete, L("DeleteItem"));
+
+        var costCenters = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenters, L("CostCenters"));
+        costCenters.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenters_Create, L("CreateNewItem"));
+        costCenters.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenters_Edit, L("EditItem"));
+        costCenters.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostCenters_Delete, L("DeleteItem"));
+
+        var costElementTypes = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElementTypes, L("CostElementTypes"));
+        costElementTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElementTypes_Create, L("CreateNewItem"));
+        costElementTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElementTypes_Edit, L("EditItem"));
+        costElementTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElementTypes_Delete, L("DeleteItem"));
+
+        var costElements = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElements, L("CostElements"));
+        costElements.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElements_Create, L("CreateNewItem"));
+        costElements.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElements_Edit, L("EditItem"));
+        costElements.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CostElements_Delete, L("DeleteItem"));
+
+        var jobTitles = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles, L("JobTitles"));
+        jobTitles.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles_Create, L("CreateNewItem"));
+        jobTitles.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles_Edit, L("EditItem"));
+        jobTitles.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_JobTitles_Delete, L("DeleteItem"));
+
+        var organizationUnitTypes = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes, L("OrganizationUnitTypes"));
+        organizationUnitTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes_Create, L("CreateNewItem"));
+        organizationUnitTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes_Edit, L("EditItem"));
+        organizationUnitTypes.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationUnitTypes_Delete, L("DeleteItem"));
+
+        var orgUnits = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits, L("OrgUnits"));
+        orgUnits.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits_Create, L("CreateNewItem"));
+        orgUnits.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits_Edit, L("EditItem"));
+        orgUnits.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits_Delete, L("DeleteItem"));
+
+        var organizationBankInfos = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos, L("OrganizationBankInfos"));
+        organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Create, L("CreateNewItem"));
+        organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Edit, L("EditItem"));
+        organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Delete, L("DeleteItem"));
+
+        var workLocations = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_WorkLocations, L("WorkLocations"));
+        workLocations.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_WorkLocations_Create, L("CreateNewItem"));
+        workLocations.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_WorkLocations_Edit, L("EditItem"));
+        workLocations.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_WorkLocations_Delete, L("DeleteItem"));
+
 
         var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 

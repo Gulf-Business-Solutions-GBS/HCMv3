@@ -82,8 +82,8 @@ export class OrganizationUnitRolesComponent extends AppComponentBase {
     }
 
     reloadPage(): void {
-        this.getOrganizationUnitRoles(null);
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getOrganizationUnitRoles({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     refreshRoles(): void {

@@ -105,6 +105,24 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'OrganizationManagement',
+                '',
+                'flaticon-list-3',
+                '',
+                [],
+                [
+                    new AppMenuItem('CostCenterGroups', 'Pages.OrganizationManagement.CostCenterGroups', 'flaticon-list-3', '/app/admin/cost-center-groups'),
+                    new AppMenuItem('CostElementTypes', 'Pages.OrganizationManagement.CostElementTypes', 'flaticon-list-3', '/app/admin/cost-element-types'),
+                    new AppMenuItem('JobTitles', 'Pages.OrganizationManagement.JobTitles', 'flaticon-list-3', '/app/admin/job-titles'),
+                    new AppMenuItem('CostCenters', 'Pages.OrganizationManagement.CostCenters', 'flaticon-list-3', '/app/admin/cost-centers'),
+                    new AppMenuItem('CostElements', 'Pages.OrganizationManagement.CostElements', 'flaticon-list-3', '/app/admin/cost-elements'),
+                    new AppMenuItem('OrganizationUnitTypes', 'Pages.OrganizationManagement.OrganizationUnitTypes', 'flaticon-list-3', '/app/admin/organization-unit-types'),
+                    new AppMenuItem('WorkLocations', 'Pages.OrganizationManagement.WorkLocations', 'flaticon-list-3', '/app/admin/work-locations'),
+                    new AppMenuItem('OrganizationBankInfo', 'Pages.OrganizationManagement.OrganizationBankInfos', 'flaticon-list-3', '/app/admin/organization-bank-infos'),
+                    new AppMenuItem('OrgUnits', 'Pages.OrganizationManagement.OrgUnits', 'flaticon-list-3', '/app/admin/org-units'),
+                ]
+            ),
+            new AppMenuItem(
                 'Administration',
                 '',
                 'flaticon-interface-8',

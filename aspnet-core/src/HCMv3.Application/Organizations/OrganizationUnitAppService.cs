@@ -7,8 +7,10 @@ using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.Organizations;
+using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Organizations.Dto;
+using HCMv3.OrganizationManagement;
 using System.Linq.Dynamic.Core;
 using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -128,6 +130,13 @@ public class OrganizationUnitAppService : HCMv3AppServiceBase, IOrganizationUnit
     [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageOrganizationTree)]
     public async Task<OrganizationUnitDto> CreateOrganizationUnit(CreateOrganizationUnitInput input)
     {
+        var resultingDepth = await OrganizationUnitDepthHelper.ComputeResultingDepthAsync(
+            _organizationUnitRepository, input.ParentId);
+        if (resultingDepth > OrganizationUnitDepthHelper.MaxDepth)
+        {
+            throw new UserFriendlyException(L("OrganizationUnitMaxDepthExceeded", OrganizationUnitDepthHelper.MaxDepth));
+        }
+
         var organizationUnit = new OrganizationUnit(AbpSession.TenantId, input.DisplayName, input.ParentId);
 
         await _organizationUnitManager.CreateAsync(organizationUnit);
@@ -151,6 +160,13 @@ public class OrganizationUnitAppService : HCMv3AppServiceBase, IOrganizationUnit
     [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageOrganizationTree)]
     public async Task<OrganizationUnitDto> MoveOrganizationUnit(MoveOrganizationUnitInput input)
     {
+        var resultingDepth = await OrganizationUnitDepthHelper.ComputeResultingDepthAsync(
+            _organizationUnitRepository, input.NewParentId, input.Id);
+        if (resultingDepth > OrganizationUnitDepthHelper.MaxDepth)
+        {
+            throw new UserFriendlyException(L("OrganizationUnitMaxDepthExceeded", OrganizationUnitDepthHelper.MaxDepth));
+        }
+
         await _organizationUnitManager.MoveAsync(input.Id, input.NewParentId);
 
         return await CreateOrganizationUnitDto(

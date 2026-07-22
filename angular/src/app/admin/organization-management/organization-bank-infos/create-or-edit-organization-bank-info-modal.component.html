@@ -1,0 +1,110 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #organizationBankInfoForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (organizationBankInfo().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'OrganizationBankInfo' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'OrganizationBankInfo' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label" for="OrganizationBankInfo_OrganizationUnitId">{{ 'OrgUnit' | localize }}</label>
+                            <select
+                                id="OrganizationBankInfo_OrganizationUnitId"
+                                class="form-select"
+                                name="OrganizationUnitId"
+                                [ngModel]="organizationBankInfo().organizationUnitId"
+                                (ngModelChange)="updateField('organizationUnitId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (unit of organizationUnits(); track unit.id) {
+                                    <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OrganizationBankInfo_BankId">{{ 'Bank' | localize }}</label>
+                            <select
+                                id="OrganizationBankInfo_BankId"
+                                class="form-select"
+                                name="BankId"
+                                [ngModel]="organizationBankInfo().bankId"
+                                (ngModelChange)="updateField('bankId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (bank of banks(); track bank.id) {
+                                    <option [ngValue]="bank.id">{{ bank.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label required" for="OrganizationBankInfo_AccountNo">{{ 'AccountNo' | localize }}</label>
+                            <input
+                                id="OrganizationBankInfo_AccountNo"
+                                #accountNoInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="AccountNo"
+                                [ngModel]="organizationBankInfo().accountNo"
+                                (ngModelChange)="updateField('accountNo', $event)"
+                                required
+                                maxlength="100" />
+                            <validation-messages [formCtrl]="accountNoInput" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OrganizationBankInfo_SC_Code">{{ 'SC_Code' | localize }}</label>
+                            <input
+                                id="OrganizationBankInfo_SC_Code"
+                                class="form-control"
+                                type="text"
+                                name="SC_Code"
+                                [ngModel]="organizationBankInfo().sC_Code"
+                                (ngModelChange)="updateField('sC_Code', $event)"
+                                maxlength="50" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!organizationBankInfoForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

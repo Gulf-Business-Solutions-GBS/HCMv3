@@ -82,8 +82,8 @@ export class OrganizationUnitMembersComponent extends AppComponentBase {
     }
 
     reloadPage(): void {
-        this.getOrganizationUnitUsers(null);
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getOrganizationUnitUsers({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     refreshMembers(): void {

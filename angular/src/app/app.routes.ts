@@ -35,6 +35,9 @@ import {
     UniversitiesServiceProxy,
     VisaTypesServiceProxy,
     WorkVisaTypesServiceProxy,
+    CostCenterGroupsServiceProxy,
+    CostElementTypesServiceProxy,
+    JobTitlesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -42,9 +45,10 @@ function simpleLookupRoute(
     path: string,
     permissionSuffix: string,
     titleKey: string,
-    serviceProxyType: Type<ISimpleLookupServiceProxy>
+    serviceProxyType: Type<ISimpleLookupServiceProxy>,
+    modulePrefix: string = 'GeneralMasterInfo'
 ): Route {
-    const base = `Pages.GeneralMasterInfo.${permissionSuffix}`;
+    const base = `Pages.${modulePrefix}.${permissionSuffix}`;
     return {
         path,
         loadComponent: () =>
@@ -366,6 +370,57 @@ export const appRoutes: Routes = [
                     simpleLookupRoute('universities', 'Universities', 'Universities', UniversitiesServiceProxy),
                     simpleLookupRoute('visa-types', 'VisaTypes', 'VisaTypes', VisaTypesServiceProxy),
                     simpleLookupRoute('work-visa-types', 'WorkVisaTypes', 'WorkVisaTypes', WorkVisaTypesServiceProxy),
+                    simpleLookupRoute('cost-center-groups', 'CostCenterGroups', 'CostCenterGroups', CostCenterGroupsServiceProxy, 'OrganizationManagement'),
+                    simpleLookupRoute('cost-element-types', 'CostElementTypes', 'CostElementTypes', CostElementTypesServiceProxy, 'OrganizationManagement'),
+                    simpleLookupRoute('job-titles', 'JobTitles', 'JobTitles', JobTitlesServiceProxy, 'OrganizationManagement'),
+                    {
+                        path: 'cost-centers',
+                        loadComponent: () =>
+                            import('./admin/organization-management/cost-centers/cost-centers.component').then(
+                                (m) => m.CostCentersComponent
+                            ),
+                        data: { permission: 'Pages.OrganizationManagement.CostCenters' },
+                    },
+                    {
+                        path: 'cost-elements',
+                        loadComponent: () =>
+                            import('./admin/organization-management/cost-elements/cost-elements.component').then(
+                                (m) => m.CostElementsComponent
+                            ),
+                        data: { permission: 'Pages.OrganizationManagement.CostElements' },
+                    },
+                    {
+                        path: 'organization-unit-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/organization-management/organization-unit-types/organization-unit-types.component'
+                            ).then((m) => m.OrganizationUnitTypesComponent),
+                        data: { permission: 'Pages.OrganizationManagement.OrganizationUnitTypes' },
+                    },
+                    {
+                        path: 'work-locations',
+                        loadComponent: () =>
+                            import('./admin/organization-management/work-locations/work-locations.component').then(
+                                (m) => m.WorkLocationsComponent
+                            ),
+                        data: { permission: 'Pages.OrganizationManagement.WorkLocations' },
+                    },
+                    {
+                        path: 'organization-bank-infos',
+                        loadComponent: () =>
+                            import(
+                                './admin/organization-management/organization-bank-infos/organization-bank-infos.component'
+                            ).then((m) => m.OrganizationBankInfosComponent),
+                        data: { permission: 'Pages.OrganizationManagement.OrganizationBankInfos' },
+                    },
+                    {
+                        path: 'org-units',
+                        loadComponent: () =>
+                            import('./admin/organization-management/org-units/org-units.component').then(
+                                (m) => m.OrgUnitsComponent
+                            ),
+                        data: { permission: 'Pages.OrganizationManagement.OrgUnits' },
+                    },
                     {
                         path: 'auditLogs',
                         loadComponent: () =>
