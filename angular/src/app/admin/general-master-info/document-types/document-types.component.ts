@@ -78,7 +78,8 @@ export class DocumentTypesComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getDocumentTypes({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createDocumentType(): void {

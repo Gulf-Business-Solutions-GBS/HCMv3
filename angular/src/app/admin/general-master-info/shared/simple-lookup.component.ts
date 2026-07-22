@@ -92,7 +92,8 @@ export class SimpleLookupComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getRecords({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createRecord(): void {

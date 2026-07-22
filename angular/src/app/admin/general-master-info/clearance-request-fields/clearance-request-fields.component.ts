@@ -78,7 +78,8 @@ export class ClearanceRequestFieldsComponent extends AppComponentBase implements
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getClearanceRequestFields({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createClearanceRequestField(): void {

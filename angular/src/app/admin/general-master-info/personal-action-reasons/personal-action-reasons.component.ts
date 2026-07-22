@@ -78,7 +78,8 @@ export class PersonalActionReasonsComponent extends AppComponentBase implements 
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getPersonalActionReasons({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createPersonalActionReason(): void {

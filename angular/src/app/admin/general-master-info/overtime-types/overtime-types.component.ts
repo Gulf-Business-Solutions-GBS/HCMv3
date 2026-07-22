@@ -78,7 +78,8 @@ export class OvertimeTypesComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getOvertimeTypes({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createOvertimeType(): void {

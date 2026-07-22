@@ -77,7 +77,8 @@ export class DocumentPrintFormsComponent extends AppComponentBase implements OnI
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getDocumentPrintForms({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createDocumentPrintForm(): void {

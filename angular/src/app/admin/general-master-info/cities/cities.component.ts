@@ -78,7 +78,8 @@ export class CitiesComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getCities({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createCity(): void {

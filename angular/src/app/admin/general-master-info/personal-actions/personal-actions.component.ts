@@ -78,7 +78,8 @@ export class PersonalActionsComponent extends AppComponentBase implements OnInit
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getPersonalActions({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createPersonalAction(): void {

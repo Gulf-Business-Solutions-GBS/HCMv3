@@ -77,7 +77,8 @@ export class NotificationGroupsComponent extends AppComponentBase implements OnI
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getNotificationGroups({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createNotificationGroup(): void {

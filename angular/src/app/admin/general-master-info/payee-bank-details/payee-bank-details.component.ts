@@ -77,7 +77,8 @@ export class PayeeBankDetailsComponent extends AppComponentBase implements OnIni
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getPayeeBankDetails({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createPayeeBankDetail(): void {

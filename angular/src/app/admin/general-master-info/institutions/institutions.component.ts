@@ -78,7 +78,8 @@ export class InstitutionsComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getInstitutions({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createInstitution(): void {

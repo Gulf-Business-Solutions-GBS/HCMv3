@@ -79,7 +79,8 @@ export class OvertimeTypeDetailsComponent extends AppComponentBase implements On
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getOvertimeTypeDetails({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createOvertimeTypeDetail(): void {

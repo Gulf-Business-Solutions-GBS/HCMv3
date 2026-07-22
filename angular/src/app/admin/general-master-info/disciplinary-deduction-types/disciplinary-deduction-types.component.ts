@@ -79,7 +79,8 @@ export class DisciplinaryDeductionTypesComponent extends AppComponentBase implem
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getDisciplinaryDeductionTypes({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createDisciplinaryDeductionType(): void {

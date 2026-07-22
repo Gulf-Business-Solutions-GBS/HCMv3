@@ -78,7 +78,8 @@ export class DisciplinaryTypesComponent extends AppComponentBase implements OnIn
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getDisciplinaryTypes({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createDisciplinaryType(): void {

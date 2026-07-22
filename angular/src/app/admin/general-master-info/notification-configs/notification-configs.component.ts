@@ -78,7 +78,8 @@ export class NotificationConfigsComponent extends AppComponentBase implements On
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getNotificationConfigs({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createNotificationConfig(): void {

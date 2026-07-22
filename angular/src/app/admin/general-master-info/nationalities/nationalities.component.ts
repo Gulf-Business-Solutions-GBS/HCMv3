@@ -78,7 +78,8 @@ export class NationalitiesComponent extends AppComponentBase implements OnInit {
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getNationalities({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createNationality(): void {

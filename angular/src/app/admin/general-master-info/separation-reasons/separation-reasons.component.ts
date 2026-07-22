@@ -78,7 +78,8 @@ export class SeparationReasonsComponent extends AppComponentBase implements OnIn
     }
 
     reloadPage(): void {
-        this.paginator().changePage(this.paginator().getPage());
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getSeparationReasons({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
     }
 
     createSeparationReason(): void {
