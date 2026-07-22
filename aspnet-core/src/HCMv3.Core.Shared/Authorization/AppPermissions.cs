@@ -53,10 +53,10 @@ public static class AppPermissions
     public const string Pages_GeneralMasterInfo_EducationBranches_Create = "Pages.GeneralMasterInfo.EducationBranches.Create";
     public const string Pages_GeneralMasterInfo_EducationBranches_Edit = "Pages.GeneralMasterInfo.EducationBranches.Edit";
     public const string Pages_GeneralMasterInfo_EducationBranches_Delete = "Pages.GeneralMasterInfo.EducationBranches.Delete";
-    public const string Pages_GeneralMasterInfo_Governates = "Pages.GeneralMasterInfo.Governates";
-    public const string Pages_GeneralMasterInfo_Governates_Create = "Pages.GeneralMasterInfo.Governates.Create";
-    public const string Pages_GeneralMasterInfo_Governates_Edit = "Pages.GeneralMasterInfo.Governates.Edit";
-    public const string Pages_GeneralMasterInfo_Governates_Delete = "Pages.GeneralMasterInfo.Governates.Delete";
+    public const string Pages_GeneralMasterInfo_Governorates = "Pages.GeneralMasterInfo.Governorates";
+    public const string Pages_GeneralMasterInfo_Governorates_Create = "Pages.GeneralMasterInfo.Governorates.Create";
+    public const string Pages_GeneralMasterInfo_Governorates_Edit = "Pages.GeneralMasterInfo.Governorates.Edit";
+    public const string Pages_GeneralMasterInfo_Governorates_Delete = "Pages.GeneralMasterInfo.Governorates.Delete";
     public const string Pages_GeneralMasterInfo_GrievanceTypes = "Pages.GeneralMasterInfo.GrievanceTypes";
     public const string Pages_GeneralMasterInfo_GrievanceTypes_Create = "Pages.GeneralMasterInfo.GrievanceTypes.Create";
     public const string Pages_GeneralMasterInfo_GrievanceTypes_Edit = "Pages.GeneralMasterInfo.GrievanceTypes.Edit";

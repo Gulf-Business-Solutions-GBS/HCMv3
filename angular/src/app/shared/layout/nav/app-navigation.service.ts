@@ -61,7 +61,7 @@ export class AppNavigationService {
                     new AppMenuItem('DocumentPlaces', 'Pages.GeneralMasterInfo.DocumentPlaces', 'flaticon-list-3', '/app/admin/document-places'),
                     new AppMenuItem('Educations', 'Pages.GeneralMasterInfo.Educations', 'flaticon-list-3', '/app/admin/educations'),
                     new AppMenuItem('EducationBranches', 'Pages.GeneralMasterInfo.EducationBranches', 'flaticon-list-3', '/app/admin/education-branches'),
-                    new AppMenuItem('Governates', 'Pages.GeneralMasterInfo.Governates', 'flaticon-list-3', '/app/admin/governates'),
+                    new AppMenuItem('Governorates', 'Pages.GeneralMasterInfo.Governorates', 'flaticon-list-3', '/app/admin/governorates'),
                     new AppMenuItem('GrievanceTypes', 'Pages.GeneralMasterInfo.GrievanceTypes', 'flaticon-list-3', '/app/admin/grievance-types'),
                     new AppMenuItem('HRServiceTypes', 'Pages.GeneralMasterInfo.HRServiceTypes', 'flaticon-list-3', '/app/admin/hr-service-types'),
                     new AppMenuItem('ITServiceTypes', 'Pages.GeneralMasterInfo.ITServiceTypes', 'flaticon-list-3', '/app/admin/it-service-types'),

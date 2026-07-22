@@ -3617,7 +3617,7 @@ namespace HCMv3.Migrations
                     b.ToTable("EducationBranches");
                 });
 
-            modelBuilder.Entity("HCMv3.GeneralMasterInfo.Governate", b =>
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.Governorate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3665,7 +3665,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Governates");
+                    b.ToTable("Governorates");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.GrievanceType", b =>

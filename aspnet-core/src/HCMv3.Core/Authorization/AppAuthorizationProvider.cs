@@ -79,10 +79,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         educationBranches.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches_Edit, L("EditItem"));
         educationBranches.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_EducationBranches_Delete, L("DeleteItem"));
 
-        var governates = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates, L("Governates"));
-        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Create, L("CreateNewItem"));
-        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Edit, L("EditItem"));
-        governates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governates_Delete, L("DeleteItem"));
+        var governorates = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governorates, L("Governorates"));
+        governorates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governorates_Create, L("CreateNewItem"));
+        governorates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governorates_Edit, L("EditItem"));
+        governorates.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_Governorates_Delete, L("DeleteItem"));
 
         var grievanceTypes = generalMasterInfo.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes, L("GrievanceTypes"));
         grievanceTypes.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo_GrievanceTypes_Create, L("CreateNewItem"));

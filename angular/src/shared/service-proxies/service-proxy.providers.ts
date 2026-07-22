@@ -64,7 +64,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.DocumentPlacesServiceProxy,
     ApiServiceProxies.EducationsServiceProxy,
     ApiServiceProxies.EducationBranchesServiceProxy,
-    ApiServiceProxies.GovernatesServiceProxy,
+    ApiServiceProxies.GovernoratesServiceProxy,
     ApiServiceProxies.GrievanceTypesServiceProxy,
     ApiServiceProxies.HRServiceTypesServiceProxy,
     ApiServiceProxies.ITServiceTypesServiceProxy,

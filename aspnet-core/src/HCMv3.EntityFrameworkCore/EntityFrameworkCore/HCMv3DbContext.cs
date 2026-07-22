@@ -75,7 +75,7 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EducationBranch> EducationBranches { get; set; }
 
-    public virtual DbSet<Governate> Governates { get; set; }
+    public virtual DbSet<Governorate> Governorates { get; set; }
 
     public virtual DbSet<GrievanceType> GrievanceTypes { get; set; }
 

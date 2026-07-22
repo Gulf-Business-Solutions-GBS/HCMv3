@@ -11375,7 +11375,7 @@ export class FriendshipServiceProxy {
 }
 
 @Injectable()
-export class GovernatesServiceProxy {
+export class GovernoratesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -11390,7 +11390,7 @@ export class GovernatesServiceProxy {
      * @return OK
      */
     getAll(body?: GetAllSimpleLookupsInput | undefined): Observable<PagedResultDtoOfSimpleLookupDto> {
-        let url_ = this.baseUrl + "/api/services/app/Governates/GetAll";
+        let url_ = this.baseUrl + "/api/services/app/Governorates/GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -11446,7 +11446,7 @@ export class GovernatesServiceProxy {
      * @return OK
      */
     getForEdit(id?: number | undefined): Observable<CreateOrEditSimpleLookupDto> {
-        let url_ = this.baseUrl + "/api/services/app/Governates/GetForEdit?";
+        let url_ = this.baseUrl + "/api/services/app/Governorates/GetForEdit?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -11502,7 +11502,7 @@ export class GovernatesServiceProxy {
      * @return OK
      */
     createOrEdit(body?: CreateOrEditSimpleLookupDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Governates/CreateOrEdit";
+        let url_ = this.baseUrl + "/api/services/app/Governorates/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -11554,7 +11554,7 @@ export class GovernatesServiceProxy {
      * @return OK
      */
     delete(id?: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Governates/Delete?";
+        let url_ = this.baseUrl + "/api/services/app/Governorates/Delete?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
