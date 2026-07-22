@@ -13,6 +13,14 @@ public static class AppPermissions
     public const string Pages_DemoUiComponents = "Pages.DemoUiComponents";
     public const string Pages_Administration = "Pages.Administration";
 
+    //GENERAL MASTER INFO
+    public const string Pages_GeneralMasterInfo = "Pages.GeneralMasterInfo";
+
+    public const string Pages_GeneralMasterInfo_AccessUnits = "Pages.GeneralMasterInfo.AccessUnits";
+    public const string Pages_GeneralMasterInfo_AccessUnits_Create = "Pages.GeneralMasterInfo.AccessUnits.Create";
+    public const string Pages_GeneralMasterInfo_AccessUnits_Edit = "Pages.GeneralMasterInfo.AccessUnits.Edit";
+    public const string Pages_GeneralMasterInfo_AccessUnits_Delete = "Pages.GeneralMasterInfo.AccessUnits.Delete";
+
     public const string Pages_Administration_Roles = "Pages.Administration.Roles";
     public const string Pages_Administration_Roles_Create = "Pages.Administration.Roles.Create";
     public const string Pages_Administration_Roles_Edit = "Pages.Administration.Roles.Edit";

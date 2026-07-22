@@ -17,6 +17,234 @@ import { DateTime, Duration } from "luxon";
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
+export class AccessUnitsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllAccessUnitsInput | undefined): Observable<PagedResultDtoOfAccessUnitDto> {
+        let url_ = this.baseUrl + "/api/services/app/AccessUnits/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAccessUnitDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAccessUnitDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAccessUnitDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAccessUnitDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getAccessUnitForEdit(id?: number | undefined): Observable<GetAccessUnitForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/AccessUnits/GetAccessUnitForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAccessUnitForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAccessUnitForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAccessUnitForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAccessUnitForEditOutput>;
+        }));
+    }
+
+    protected processGetAccessUnitForEdit(response: HttpResponseBase): Observable<GetAccessUnitForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAccessUnitForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditAccessUnitDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AccessUnits/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AccessUnits/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AccountServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -16219,6 +16447,62 @@ export interface IAcceptFriendshipRequestInput {
     tenantId: number | undefined;
 }
 
+export class AccessUnitDto implements IAccessUnitDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    ipAddress!: string | undefined;
+    locked!: number;
+
+    constructor(data?: IAccessUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.ipAddress = _data["ipAddress"];
+            this.locked = _data["locked"];
+        }
+    }
+
+    static fromJS(data: any): AccessUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AccessUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["ipAddress"] = this.ipAddress;
+        data["locked"] = this.locked;
+        return data;
+    }
+}
+
+export interface IAccessUnitDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    ipAddress: string | undefined;
+    locked: number;
+}
+
 export class ActivateEmailInput implements IActivateEmailInput {
     userId!: number;
     confirmationCode!: string | undefined;
@@ -17721,6 +18005,62 @@ export interface ICreateMassNotificationInput {
     userIds: number[] | undefined;
     organizationUnitIds: number[] | undefined;
     targetNotifiers: string[] | undefined;
+}
+
+export class CreateOrEditAccessUnitDto implements ICreateOrEditAccessUnitDto {
+    id!: number | undefined;
+    code!: string | undefined;
+    nameEn!: string;
+    nameAr!: string;
+    ipAddress!: string | undefined;
+    locked!: number;
+
+    constructor(data?: ICreateOrEditAccessUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.ipAddress = _data["ipAddress"];
+            this.locked = _data["locked"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAccessUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAccessUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["ipAddress"] = this.ipAddress;
+        data["locked"] = this.locked;
+        return data;
+    }
+}
+
+export interface ICreateOrEditAccessUnitDto {
+    id: number | undefined;
+    code: string | undefined;
+    nameEn: string;
+    nameAr: string;
+    ipAddress: string | undefined;
+    locked: number;
 }
 
 export class CreateOrUpdateLanguageInput implements ICreateOrUpdateLanguageInput {
@@ -20635,6 +20975,90 @@ export class GenerateGoogleAuthenticatorKeyOutput implements IGenerateGoogleAuth
 export interface IGenerateGoogleAuthenticatorKeyOutput {
     qrCodeSetupImageUrl: string | undefined;
     googleAuthenticatorKey: string | undefined;
+}
+
+export class GetAccessUnitForEditOutput implements IGetAccessUnitForEditOutput {
+    accessUnit!: CreateOrEditAccessUnitDto;
+
+    constructor(data?: IGetAccessUnitForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.accessUnit = _data["accessUnit"] ? CreateOrEditAccessUnitDto.fromJS(_data["accessUnit"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetAccessUnitForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAccessUnitForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["accessUnit"] = this.accessUnit ? this.accessUnit.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetAccessUnitForEditOutput {
+    accessUnit: CreateOrEditAccessUnitDto;
+}
+
+export class GetAllAccessUnitsInput implements IGetAllAccessUnitsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+
+    constructor(data?: IGetAllAccessUnitsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetAllAccessUnitsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllAccessUnitsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetAllAccessUnitsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllAvailableWebhooksOutput implements IGetAllAvailableWebhooksOutput {
@@ -25779,6 +26203,54 @@ export interface IPage {
     id: string | undefined;
     name: string | undefined;
     widgets: Widget[] | undefined;
+}
+
+export class PagedResultDtoOfAccessUnitDto implements IPagedResultDtoOfAccessUnitDto {
+    items!: AccessUnitDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAccessUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AccessUnitDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAccessUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAccessUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAccessUnitDto {
+    items: AccessUnitDto[] | undefined;
+    totalCount: number;
 }
 
 export class PagedResultDtoOfAuditLogListDto implements IPagedResultDtoOfAuditLogListDto {

@@ -15,6 +15,7 @@ using HCMv3.Chat;
 using HCMv3.Editions;
 using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
@@ -55,6 +56,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 	public virtual DbSet<UserAccountLink> UserAccountLinks { get; set; }
 
     public virtual DbSet<UserSession> UserSessions { get; set; }
+
+    public virtual DbSet<AccessUnit> AccessUnits { get; set; }
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -148,6 +151,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasIndex(e => new { e.UserId, e.IsActive });
             b.HasIndex(e => e.SessionToken).IsUnique();
             b.HasIndex(e => new { e.TenantId, e.UserId });
+        });
+
+        modelBuilder.Entity<AccessUnit>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.Code });
+            b.HasIndex(e => new { e.TenantId, e.NameEn });
         });
 
         modelBuilder.ConfigureOpenIddict();

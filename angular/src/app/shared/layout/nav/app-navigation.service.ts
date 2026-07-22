@@ -31,6 +31,21 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'GeneralMasterInfo',
+                '',
+                'flaticon-list-3',
+                '',
+                [],
+                [
+                    new AppMenuItem(
+                        'AccessUnits',
+                        'Pages.GeneralMasterInfo.AccessUnits',
+                        'flaticon-map-location',
+                        '/app/admin/access-units'
+                    ),
+                ]
+            ),
+            new AppMenuItem(
                 'Administration',
                 '',
                 'flaticon-interface-8',

@@ -50,6 +50,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Roles' },
                     },
                     {
+                        path: 'access-units',
+                        loadComponent: () =>
+                            import('./admin/general-master-info/access-units/access-units.component').then(
+                                (m) => m.AccessUnitsComponent
+                            ),
+                        data: { permission: 'Pages.GeneralMasterInfo.AccessUnits' },
+                    },
+                    {
                         path: 'auditLogs',
                         loadComponent: () =>
                             import('./admin/audit-logs/audit-logs.component').then((m) => m.AuditLogsComponent),

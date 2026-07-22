@@ -55,6 +55,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.TwitterServiceProxy,
     ApiServiceProxies.EntityChangeServiceProxy,
     ApiServiceProxies.UserSessionServiceProxy,
+    ApiServiceProxies.AccessUnitsServiceProxy,
     { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
     { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },
     { provide: HTTP_INTERCEPTORS, useClass: ZeroTemplateHttpInterceptor, multi: true },
