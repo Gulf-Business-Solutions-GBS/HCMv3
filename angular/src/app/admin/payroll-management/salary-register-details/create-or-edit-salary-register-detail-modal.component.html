@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #salaryRegisterDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (salaryRegisterDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SalaryRegisterDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SalaryRegisterDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SalaryRegisterDetail_SalaryRegisterId">{{ 'SalaryRegisterId' | localize }}</label>
+                                <input
+                                    id="SalaryRegisterDetail_SalaryRegisterId"
+                                    #salaryRegisterIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="SalaryRegisterId"
+                                    [ngModel]="salaryRegisterDetail().salaryRegisterId"
+                                    (ngModelChange)="updateField('salaryRegisterId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="salaryRegisterIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SalaryRegisterDetail_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                <select
+                                    id="SalaryRegisterDetail_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="salaryRegisterDetail().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wt of wageTypes(); track wt.id) {
+                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SalaryRegisterDetail_Rate">{{ 'Rate' | localize }}</label>
+                                <input
+                                    id="SalaryRegisterDetail_Rate"
+                                    #rateInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Rate"
+                                    [ngModel]="salaryRegisterDetail().rate"
+                                    (ngModelChange)="updateField('rate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="rateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SalaryRegisterDetail_Number">{{ 'Number' | localize }}</label>
+                                <input
+                                    id="SalaryRegisterDetail_Number"
+                                    #numberInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Number"
+                                    [ngModel]="salaryRegisterDetail().number"
+                                    (ngModelChange)="updateField('number', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="numberInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SalaryRegisterDetail_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="SalaryRegisterDetail_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Amount"
+                                    [ngModel]="salaryRegisterDetail().amount"
+                                    (ngModelChange)="updateField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!salaryRegisterDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

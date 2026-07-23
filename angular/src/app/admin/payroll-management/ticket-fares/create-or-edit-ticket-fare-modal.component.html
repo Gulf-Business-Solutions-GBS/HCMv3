@@ -1,0 +1,138 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #ticketFareForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (ticketFare().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TicketFares' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TicketFares' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TicketFare_TicketRouteId">{{ 'TicketRouteId' | localize }}</label>
+                                <select
+                                    id="TicketFare_TicketRouteId"
+                                    #ticketRouteIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketRouteId"
+                                    [ngModel]="ticketFare().ticketRouteId"
+                                    (ngModelChange)="updateField('ticketRouteId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (route of ticketRoutes(); track route.id) {
+                                        <option [ngValue]="route.id">{{ route.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketRouteIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TicketFare_TicketPaxTypeId">{{ 'TicketPaxTypeId' | localize }}</label>
+                                <select
+                                    id="TicketFare_TicketPaxTypeId"
+                                    #ticketPaxTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketPaxTypeId"
+                                    [ngModel]="ticketFare().ticketPaxTypeId"
+                                    (ngModelChange)="updateField('ticketPaxTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (paxType of ticketPaxTypes(); track paxType.id) {
+                                        <option [ngValue]="paxType.id">{{ paxType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketPaxTypeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TicketFare_TicketClassId">{{ 'TicketClassId' | localize }}</label>
+                                <select
+                                    id="TicketFare_TicketClassId"
+                                    #ticketClassIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketClassId"
+                                    [ngModel]="ticketFare().ticketClassId"
+                                    (ngModelChange)="updateField('ticketClassId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (ticketClass of ticketClasses(); track ticketClass.id) {
+                                        <option [ngValue]="ticketClass.id">{{ ticketClass.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketClassIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TicketFare_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="TicketFare_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="ticketFare().startDate?.toISODate()"
+                                    (ngModelChange)="updateStartDate($event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TicketFare_OneWayTicketFare">{{ 'OneWayTicketFare' | localize }}</label>
+                                <input
+                                    id="TicketFare_OneWayTicketFare"
+                                    class="form-control"
+                                    type="number"
+                                    name="OneWayTicketFare"
+                                    [ngModel]="ticketFare().oneWayTicketFare"
+                                    (ngModelChange)="updateField('oneWayTicketFare', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TicketFare_ReturnTicketFare">{{ 'ReturnTicketFare' | localize }}</label>
+                                <input
+                                    id="TicketFare_ReturnTicketFare"
+                                    class="form-control"
+                                    type="number"
+                                    name="ReturnTicketFare"
+                                    [ngModel]="ticketFare().returnTicketFare"
+                                    (ngModelChange)="updateField('returnTicketFare', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!ticketFareForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

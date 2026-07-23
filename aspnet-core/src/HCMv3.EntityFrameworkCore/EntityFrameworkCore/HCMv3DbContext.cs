@@ -20,6 +20,7 @@ using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.OrganizationManagement;
+using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Storage;
 using HCMv3.TimeManagement;
@@ -306,6 +307,150 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TimeTransfer> TimeTransfers { get; set; }
 
+    public virtual DbSet<AXBatch> AXBatches { get; set; }
+
+    public virtual DbSet<AbsenceType> AbsenceTypes { get; set; }
+
+    public virtual DbSet<AbsenceTypeException> AbsenceTypeExceptions { get; set; }
+
+    public virtual DbSet<AbsenceDeductionRule> AbsenceDeductionRules { get; set; }
+
+    public virtual DbSet<AbsenceDedRuleDetail> AbsenceDedRuleDetails { get; set; }
+
+    public virtual DbSet<AbsenceViolationRule> AbsenceViolationRules { get; set; }
+
+    public virtual DbSet<AbsenceViolationRuleDetail> AbsenceViolationRuleDetails { get; set; }
+
+    public virtual DbSet<AbsenceViolationRuleException> AbsenceViolationRuleExceptions { get; set; }
+
+    public virtual DbSet<AttendanceType> AttendanceTypes { get; set; }
+
+    public virtual DbSet<AccountType> PayrollAccountTypes { get; set; }
+
+    public virtual DbSet<AccountInfo> AccountInfos { get; set; }
+
+    public virtual DbSet<EmployeeGroup> EmployeeGroups { get; set; }
+
+    public virtual DbSet<PayrollReasonType> PayrollReasonTypes { get; set; }
+
+    public virtual DbSet<EmployeeSubGroup> EmployeeSubGroups { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupAbsence> EmployeeSubGroupAbsences { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupAbsenceType> EmployeeSubGroupAbsenceTypes { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupAssetAllowance> EmployeeSubGroupAssetAllowances { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupBenefit> EmployeeSubGroupBenefits { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupBenefitDetail> EmployeeSubGroupBenefitDetails { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupBonus> EmployeeSubGroupBonuses { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupCommission> EmployeeSubGroupCommissions { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupFund> EmployeeSubGroupFunds { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupGratuity> EmployeeSubGroupGratuities { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupHealthReimburse> EmployeeSubGroupHealthReimburses { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupPayment> EmployeeSubGroupPayments { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupTicket> EmployeeSubGroupTickets { get; set; }
+
+    public virtual DbSet<EmployeeSubGroupWageType> EmployeeSubGroupWageTypes { get; set; }
+
+    public virtual DbSet<PayrollPeriod> PayrollPeriods { get; set; }
+
+    public virtual DbSet<PayrollArea> PayrollAreas { get; set; }
+
+    public virtual DbSet<PayrollCalendar> PayrollCalendars { get; set; }
+
+    public virtual DbSet<PayrollControlRecord> PayrollControlRecords { get; set; }
+
+    public virtual DbSet<IndemnityPayRule> IndemnityPayRules { get; set; }
+
+    public virtual DbSet<IndemnityPayRuleDetail> IndemnityPayRuleDetails { get; set; }
+
+    public virtual DbSet<OrgUnitWageAccGroup> OrgUnitWageAccGroups { get; set; }
+
+    public virtual DbSet<WageAccGroup> WageAccGroups { get; set; }
+
+    public virtual DbSet<WageAccGroupDetail> WageAccGroupDetails { get; set; }
+
+    public virtual DbSet<WageType> WageTypes { get; set; }
+
+    public virtual DbSet<WageTypeException> WageTypeExceptions { get; set; }
+
+    public virtual DbSet<WageTypeLeave> WageTypeLeaves { get; set; }
+
+    public virtual DbSet<WageTypeSecurityRole> WageTypeSecurityRoles { get; set; }
+
+    public virtual DbSet<WageAccount> WageAccounts { get; set; }
+
+    public virtual DbSet<SocialSecurity> SocialSecurities { get; set; }
+
+    public virtual DbSet<SocialSecurityDetail> SocialSecurityDetails { get; set; }
+
+    public virtual DbSet<SocialSecurityMaritalAllowance> SocialSecurityMaritalAllowances { get; set; }
+
+    public virtual DbSet<SocialSecurityEducationAllowance> SocialSecurityEducationAllowances { get; set; }
+
+    public virtual DbSet<SocialSecurityRule> SocialSecurityRules { get; set; }
+
+    public virtual DbSet<TicketClass> TicketClasses { get; set; }
+
+    public virtual DbSet<TicketPaxType> TicketPaxTypes { get; set; }
+
+    public virtual DbSet<TicketRoute> TicketRoutes { get; set; }
+
+    public virtual DbSet<TicketFare> TicketFares { get; set; }
+
+    public virtual DbSet<TicketType> TicketTypes { get; set; }
+
+    public virtual DbSet<EmployeeWageAccGroup> EmployeeWageAccGroups { get; set; }
+
+    public virtual DbSet<EmployeeWageAccount> EmployeeWageAccounts { get; set; }
+
+    public virtual DbSet<EmployeePayrollStatus> EmployeePayrollStatuses { get; set; }
+
+    public virtual DbSet<AbsencePayment> AbsencePayments { get; set; }
+
+    public virtual DbSet<TempBenefitType> TempBenefitTypes { get; set; }
+
+    public virtual DbSet<TempEmployeeBenefit> TempEmployeeBenefits { get; set; }
+
+    public virtual DbSet<WageTypeRegister> WageTypeRegisters { get; set; }
+
+    public virtual DbSet<PayrollLog> PayrollLogs { get; set; }
+
+    public virtual DbSet<CostRegister> CostRegisters { get; set; }
+
+    public virtual DbSet<CostRegisterDetail> CostRegisterDetails { get; set; }
+
+    public virtual DbSet<SalaryRegister> SalaryRegisters { get; set; }
+
+    public virtual DbSet<SalaryRegisterDetail> SalaryRegisterDetails { get; set; }
+
+    public virtual DbSet<SalaryRegisterDaysDetail> SalaryRegisterDaysDetails { get; set; }
+
+    public virtual DbSet<SimulationSalaryRegister> SimulationSalaryRegisters { get; set; }
+
+    public virtual DbSet<SimulationSalaryRegisterDetail> SimulationSalaryRegisterDetails { get; set; }
+
+    public virtual DbSet<SimulationSalaryRegisterDaysDetail> SimulationSalaryRegisterDaysDetails { get; set; }
+
+    public virtual DbSet<AbsenceViolationActionRecord> AbsenceViolationActionRecords { get; set; }
+
+    public virtual DbSet<AbsenceViolationActionLog> AbsenceViolationActionLogs { get; set; }
+
+    public virtual DbSet<GratuityAccrualSummary> GratuityAccrualSummaries { get; set; }
+
+    public virtual DbSet<LeaveAccrualSummary> LeaveAccrualSummaries { get; set; }
+
+    public virtual DbSet<TicketAccrualSummary> TicketAccrualSummaries { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -534,6 +679,35 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.Day5Duty).WithMany().HasForeignKey(e => e.Day5DutyId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(e => e.Day6Duty).WithMany().HasForeignKey(e => e.Day6DutyId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(e => e.Day7Duty).WithMany().HasForeignKey(e => e.Day7DutyId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<AbsenceTypeException>(b =>
+        {
+            // Same multi-cascade-path concern as WageTypeException: two required FKs to AbsenceTypes.
+            b.HasOne(e => e.AbsenceType)
+                .WithMany()
+                .HasForeignKey(e => e.AbsenceTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ExceptAbsenceType)
+                .WithMany()
+                .HasForeignKey(e => e.ExceptAbsenceTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<WageTypeException>(b =>
+        {
+            // Two required FKs to the same WageTypes table would otherwise both default to Cascade,
+            // which SQL Server rejects as "multiple cascade paths" to WageTypeExceptions.
+            b.HasOne(e => e.WageType)
+                .WithMany()
+                .HasForeignKey(e => e.WageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ExceptWageType)
+                .WithMany()
+                .HasForeignKey(e => e.ExceptWageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.ConfigureOpenIddict();

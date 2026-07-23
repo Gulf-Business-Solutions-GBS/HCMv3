@@ -1,0 +1,90 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupPayments' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupPayment_WageTypeId">{{ 'WageType' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupPayment_WageTypeId"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    required
+                                    [ngModel]="record().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wageType of wageTypes(); track wageType.id) {
+                                        <option [ngValue]="wageType.id">{{ wageType.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupPayment_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupPayment_Amount"
+                                    class="form-control"
+                                    type="number"
+                                    name="Amount"
+                                    [ngModel]="record().amount"
+                                    (ngModelChange)="updateField('amount', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupPayment_PayInterval">{{ 'PayInterval' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupPayment_PayInterval"
+                                    class="form-select"
+                                    name="PayInterval"
+                                    [ngModel]="record().payInterval"
+                                    (ngModelChange)="updateField('payInterval', $event)">
+                                    @for (interval of payIntervals; track interval.value) {
+                                        <option [ngValue]="interval.value">{{ interval.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="EmployeeSubGroupPayment_PayMonth">{{ 'PayMonth' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupPayment_PayMonth"
+                                    class="form-select"
+                                    name="PayMonth"
+                                    [ngModel]="record().payMonth"
+                                    (ngModelChange)="updateField('payMonth', $event)">
+                                    @for (month of customStartMonths; track month.value) {
+                                        <option [ngValue]="month.value">{{ month.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

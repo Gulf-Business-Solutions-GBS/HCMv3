@@ -1,0 +1,117 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #socialSecurityMaritalAllowanceForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (socialSecurityMaritalAllowance().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SocialSecurityMaritalAllowances' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SocialSecurityMaritalAllowances' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="SocialSecurityMaritalAllowance_SocialSecurityId">{{ 'SocialSecurityId' | localize }}</label>
+                                <select
+                                    id="SocialSecurityMaritalAllowance_SocialSecurityId"
+                                    #socialSecurityIdInput="ngModel"
+                                    class="form-select"
+                                    name="SocialSecurityId"
+                                    [ngModel]="socialSecurityMaritalAllowance().socialSecurityId"
+                                    (ngModelChange)="updateField('socialSecurityId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (ss of socialSecurities(); track ss.id) {
+                                        <option [ngValue]="ss.id">{{ ss.nationalityName }} ({{ ss.startDate?.toISODate() }})</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="socialSecurityIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SocialSecurityMaritalAllowance_EducationBranchId">{{ 'EducationBranchId' | localize }}</label>
+                                <select
+                                    id="SocialSecurityMaritalAllowance_EducationBranchId"
+                                    #educationBranchIdInput="ngModel"
+                                    class="form-select"
+                                    name="EducationBranchId"
+                                    [ngModel]="socialSecurityMaritalAllowance().educationBranchId"
+                                    (ngModelChange)="updateField('educationBranchId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (branch of educationBranches(); track branch.id) {
+                                        <option [ngValue]="branch.id">{{ branch.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="educationBranchIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SocialSecurityMaritalAllowance_MaritalStatusId">{{ 'MaritalStatusId' | localize }}</label>
+                                <select
+                                    id="SocialSecurityMaritalAllowance_MaritalStatusId"
+                                    #maritalStatusIdInput="ngModel"
+                                    class="form-select"
+                                    name="MaritalStatusId"
+                                    [ngModel]="socialSecurityMaritalAllowance().maritalStatusId"
+                                    (ngModelChange)="updateField('maritalStatusId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (status of maritalStatuses(); track status.id) {
+                                        <option [ngValue]="status.id">{{ status.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="maritalStatusIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SocialSecurityMaritalAllowance_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="SocialSecurityMaritalAllowance_Amount"
+                                    class="form-control"
+                                    type="number"
+                                    name="Amount"
+                                    [ngModel]="socialSecurityMaritalAllowance().amount"
+                                    (ngModelChange)="updateField('amount', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!socialSecurityMaritalAllowanceForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

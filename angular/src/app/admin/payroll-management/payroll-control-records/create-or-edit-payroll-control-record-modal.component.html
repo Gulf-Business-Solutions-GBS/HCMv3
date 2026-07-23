@@ -1,0 +1,121 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #payrollControlRecordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (payrollControlRecord().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollControlRecords' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollControlRecords' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="PayrollControlRecord_PayrollAreaId">{{ 'PayrollAreaId' | localize }}</label>
+                                <select
+                                    id="PayrollControlRecord_PayrollAreaId"
+                                    #payrollAreaIdInput="ngModel"
+                                    class="form-select"
+                                    name="PayrollAreaId"
+                                    [ngModel]="payrollControlRecord().payrollAreaId"
+                                    (ngModelChange)="updateField('payrollAreaId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (area of payrollAreas(); track area.id) {
+                                        <option [ngValue]="area.id">{{ area.name }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="payrollAreaIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollControlRecord_PayrollMonth">{{ 'PayrollMonth' | localize }}</label>
+                                <input
+                                    id="PayrollControlRecord_PayrollMonth"
+                                    #payrollMonthInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayrollMonth"
+                                    required
+                                    min="1"
+                                    max="12"
+                                    [ngModel]="payrollControlRecord().payrollMonth"
+                                    (ngModelChange)="updateField('payrollMonth', $event)" />
+                                <validation-messages [formCtrl]="payrollMonthInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollControlRecord_PayrollYear">{{ 'PayrollYear' | localize }}</label>
+                                <input
+                                    id="PayrollControlRecord_PayrollYear"
+                                    #payrollYearInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayrollYear"
+                                    required
+                                    [ngModel]="payrollControlRecord().payrollYear"
+                                    (ngModelChange)="updateField('payrollYear', $event)" />
+                                <validation-messages [formCtrl]="payrollYearInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5 form-check form-switch">
+                                <input
+                                    id="PayrollControlRecord_PeriodLocked"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="PeriodLocked"
+                                    [ngModel]="payrollControlRecord().periodLocked"
+                                    (ngModelChange)="updateField('periodLocked', $event)" />
+                                <label class="form-check-label" for="PayrollControlRecord_PeriodLocked">{{ 'PeriodLocked' | localize }}</label>
+                            </div>
+                            <div class="col-md-6 mb-5 form-check form-switch">
+                                <input
+                                    id="PayrollControlRecord_PeriodClosed"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="PeriodClosed"
+                                    [ngModel]="payrollControlRecord().periodClosed"
+                                    (ngModelChange)="updateField('periodClosed', $event)" />
+                                <label class="form-check-label" for="PayrollControlRecord_PeriodClosed">{{ 'PeriodClosed' | localize }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payrollControlRecordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -655,6 +655,368 @@ public static class AppPermissions
     public const string Pages_TimeManagement_TimeTransfers_Edit = "Pages.TimeManagement.TimeTransfers.Edit";
     public const string Pages_TimeManagement_TimeTransfers_Delete = "Pages.TimeManagement.TimeTransfers.Delete";
 
+    public const string Pages_PayrollManagement = "Pages.PayrollManagement";
+
+    public const string Pages_PayrollManagement_AXBatches = "Pages.PayrollManagement.AXBatches";
+    public const string Pages_PayrollManagement_AXBatches_Create = "Pages.PayrollManagement.AXBatches.Create";
+    public const string Pages_PayrollManagement_AXBatches_Edit = "Pages.PayrollManagement.AXBatches.Edit";
+    public const string Pages_PayrollManagement_AXBatches_Delete = "Pages.PayrollManagement.AXBatches.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceTypes = "Pages.PayrollManagement.AbsenceTypes";
+    public const string Pages_PayrollManagement_AbsenceTypes_Create = "Pages.PayrollManagement.AbsenceTypes.Create";
+    public const string Pages_PayrollManagement_AbsenceTypes_Edit = "Pages.PayrollManagement.AbsenceTypes.Edit";
+    public const string Pages_PayrollManagement_AbsenceTypes_Delete = "Pages.PayrollManagement.AbsenceTypes.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceTypeExceptions = "Pages.PayrollManagement.AbsenceTypeExceptions";
+    public const string Pages_PayrollManagement_AbsenceTypeExceptions_Create = "Pages.PayrollManagement.AbsenceTypeExceptions.Create";
+    public const string Pages_PayrollManagement_AbsenceTypeExceptions_Edit = "Pages.PayrollManagement.AbsenceTypeExceptions.Edit";
+    public const string Pages_PayrollManagement_AbsenceTypeExceptions_Delete = "Pages.PayrollManagement.AbsenceTypeExceptions.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceDeductionRules = "Pages.PayrollManagement.AbsenceDeductionRules";
+    public const string Pages_PayrollManagement_AbsenceDeductionRules_Create = "Pages.PayrollManagement.AbsenceDeductionRules.Create";
+    public const string Pages_PayrollManagement_AbsenceDeductionRules_Edit = "Pages.PayrollManagement.AbsenceDeductionRules.Edit";
+    public const string Pages_PayrollManagement_AbsenceDeductionRules_Delete = "Pages.PayrollManagement.AbsenceDeductionRules.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceDedRuleDetails = "Pages.PayrollManagement.AbsenceDedRuleDetails";
+    public const string Pages_PayrollManagement_AbsenceDedRuleDetails_Create = "Pages.PayrollManagement.AbsenceDedRuleDetails.Create";
+    public const string Pages_PayrollManagement_AbsenceDedRuleDetails_Edit = "Pages.PayrollManagement.AbsenceDedRuleDetails.Edit";
+    public const string Pages_PayrollManagement_AbsenceDedRuleDetails_Delete = "Pages.PayrollManagement.AbsenceDedRuleDetails.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceViolationRules = "Pages.PayrollManagement.AbsenceViolationRules";
+    public const string Pages_PayrollManagement_AbsenceViolationRules_Create = "Pages.PayrollManagement.AbsenceViolationRules.Create";
+    public const string Pages_PayrollManagement_AbsenceViolationRules_Edit = "Pages.PayrollManagement.AbsenceViolationRules.Edit";
+    public const string Pages_PayrollManagement_AbsenceViolationRules_Delete = "Pages.PayrollManagement.AbsenceViolationRules.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceViolationRuleDetails = "Pages.PayrollManagement.AbsenceViolationRuleDetails";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleDetails_Create = "Pages.PayrollManagement.AbsenceViolationRuleDetails.Create";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleDetails_Edit = "Pages.PayrollManagement.AbsenceViolationRuleDetails.Edit";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleDetails_Delete = "Pages.PayrollManagement.AbsenceViolationRuleDetails.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceViolationRuleExceptions = "Pages.PayrollManagement.AbsenceViolationRuleExceptions";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleExceptions_Create = "Pages.PayrollManagement.AbsenceViolationRuleExceptions.Create";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleExceptions_Edit = "Pages.PayrollManagement.AbsenceViolationRuleExceptions.Edit";
+    public const string Pages_PayrollManagement_AbsenceViolationRuleExceptions_Delete = "Pages.PayrollManagement.AbsenceViolationRuleExceptions.Delete";
+
+    public const string Pages_PayrollManagement_AttendanceTypes = "Pages.PayrollManagement.AttendanceTypes";
+    public const string Pages_PayrollManagement_AttendanceTypes_Create = "Pages.PayrollManagement.AttendanceTypes.Create";
+    public const string Pages_PayrollManagement_AttendanceTypes_Edit = "Pages.PayrollManagement.AttendanceTypes.Edit";
+    public const string Pages_PayrollManagement_AttendanceTypes_Delete = "Pages.PayrollManagement.AttendanceTypes.Delete";
+
+    public const string Pages_PayrollManagement_AccountTypes = "Pages.PayrollManagement.AccountTypes";
+    public const string Pages_PayrollManagement_AccountTypes_Create = "Pages.PayrollManagement.AccountTypes.Create";
+    public const string Pages_PayrollManagement_AccountTypes_Edit = "Pages.PayrollManagement.AccountTypes.Edit";
+    public const string Pages_PayrollManagement_AccountTypes_Delete = "Pages.PayrollManagement.AccountTypes.Delete";
+
+    public const string Pages_PayrollManagement_AccountInfos = "Pages.PayrollManagement.AccountInfos";
+    public const string Pages_PayrollManagement_AccountInfos_Create = "Pages.PayrollManagement.AccountInfos.Create";
+    public const string Pages_PayrollManagement_AccountInfos_Edit = "Pages.PayrollManagement.AccountInfos.Edit";
+    public const string Pages_PayrollManagement_AccountInfos_Delete = "Pages.PayrollManagement.AccountInfos.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeGroups = "Pages.PayrollManagement.EmployeeGroups";
+    public const string Pages_PayrollManagement_EmployeeGroups_Create = "Pages.PayrollManagement.EmployeeGroups.Create";
+    public const string Pages_PayrollManagement_EmployeeGroups_Edit = "Pages.PayrollManagement.EmployeeGroups.Edit";
+    public const string Pages_PayrollManagement_EmployeeGroups_Delete = "Pages.PayrollManagement.EmployeeGroups.Delete";
+
+    public const string Pages_PayrollManagement_PayrollReasonTypes = "Pages.PayrollManagement.PayrollReasonTypes";
+    public const string Pages_PayrollManagement_PayrollReasonTypes_Create = "Pages.PayrollManagement.PayrollReasonTypes.Create";
+    public const string Pages_PayrollManagement_PayrollReasonTypes_Edit = "Pages.PayrollManagement.PayrollReasonTypes.Edit";
+    public const string Pages_PayrollManagement_PayrollReasonTypes_Delete = "Pages.PayrollManagement.PayrollReasonTypes.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroups = "Pages.PayrollManagement.EmployeeSubGroups";
+    public const string Pages_PayrollManagement_EmployeeSubGroups_Create = "Pages.PayrollManagement.EmployeeSubGroups.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroups_Edit = "Pages.PayrollManagement.EmployeeSubGroups.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroups_Delete = "Pages.PayrollManagement.EmployeeSubGroups.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsences = "Pages.PayrollManagement.EmployeeSubGroupAbsences";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsences_Create = "Pages.PayrollManagement.EmployeeSubGroupAbsences.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsences_Edit = "Pages.PayrollManagement.EmployeeSubGroupAbsences.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsences_Delete = "Pages.PayrollManagement.EmployeeSubGroupAbsences.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsenceTypes = "Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsenceTypes_Create = "Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsenceTypes_Edit = "Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAbsenceTypes_Delete = "Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupAssetAllowances = "Pages.PayrollManagement.EmployeeSubGroupAssetAllowances";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAssetAllowances_Create = "Pages.PayrollManagement.EmployeeSubGroupAssetAllowances.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAssetAllowances_Edit = "Pages.PayrollManagement.EmployeeSubGroupAssetAllowances.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupAssetAllowances_Delete = "Pages.PayrollManagement.EmployeeSubGroupAssetAllowances.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefits = "Pages.PayrollManagement.EmployeeSubGroupBenefits";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefits_Create = "Pages.PayrollManagement.EmployeeSubGroupBenefits.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefits_Edit = "Pages.PayrollManagement.EmployeeSubGroupBenefits.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefits_Delete = "Pages.PayrollManagement.EmployeeSubGroupBenefits.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefitDetails = "Pages.PayrollManagement.EmployeeSubGroupBenefitDetails";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefitDetails_Create = "Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefitDetails_Edit = "Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBenefitDetails_Delete = "Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupBonuses = "Pages.PayrollManagement.EmployeeSubGroupBonuses";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBonuses_Create = "Pages.PayrollManagement.EmployeeSubGroupBonuses.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBonuses_Edit = "Pages.PayrollManagement.EmployeeSubGroupBonuses.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupBonuses_Delete = "Pages.PayrollManagement.EmployeeSubGroupBonuses.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupCommissions = "Pages.PayrollManagement.EmployeeSubGroupCommissions";
+    public const string Pages_PayrollManagement_EmployeeSubGroupCommissions_Create = "Pages.PayrollManagement.EmployeeSubGroupCommissions.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupCommissions_Edit = "Pages.PayrollManagement.EmployeeSubGroupCommissions.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupCommissions_Delete = "Pages.PayrollManagement.EmployeeSubGroupCommissions.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupFunds = "Pages.PayrollManagement.EmployeeSubGroupFunds";
+    public const string Pages_PayrollManagement_EmployeeSubGroupFunds_Create = "Pages.PayrollManagement.EmployeeSubGroupFunds.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupFunds_Edit = "Pages.PayrollManagement.EmployeeSubGroupFunds.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupFunds_Delete = "Pages.PayrollManagement.EmployeeSubGroupFunds.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupGratuities = "Pages.PayrollManagement.EmployeeSubGroupGratuities";
+    public const string Pages_PayrollManagement_EmployeeSubGroupGratuities_Create = "Pages.PayrollManagement.EmployeeSubGroupGratuities.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupGratuities_Edit = "Pages.PayrollManagement.EmployeeSubGroupGratuities.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupGratuities_Delete = "Pages.PayrollManagement.EmployeeSubGroupGratuities.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupHealthReimburses = "Pages.PayrollManagement.EmployeeSubGroupHealthReimburses";
+    public const string Pages_PayrollManagement_EmployeeSubGroupHealthReimburses_Create = "Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupHealthReimburses_Edit = "Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupHealthReimburses_Delete = "Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupPayments = "Pages.PayrollManagement.EmployeeSubGroupPayments";
+    public const string Pages_PayrollManagement_EmployeeSubGroupPayments_Create = "Pages.PayrollManagement.EmployeeSubGroupPayments.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupPayments_Edit = "Pages.PayrollManagement.EmployeeSubGroupPayments.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupPayments_Delete = "Pages.PayrollManagement.EmployeeSubGroupPayments.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupTickets = "Pages.PayrollManagement.EmployeeSubGroupTickets";
+    public const string Pages_PayrollManagement_EmployeeSubGroupTickets_Create = "Pages.PayrollManagement.EmployeeSubGroupTickets.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupTickets_Edit = "Pages.PayrollManagement.EmployeeSubGroupTickets.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupTickets_Delete = "Pages.PayrollManagement.EmployeeSubGroupTickets.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeSubGroupWageTypes = "Pages.PayrollManagement.EmployeeSubGroupWageTypes";
+    public const string Pages_PayrollManagement_EmployeeSubGroupWageTypes_Create = "Pages.PayrollManagement.EmployeeSubGroupWageTypes.Create";
+    public const string Pages_PayrollManagement_EmployeeSubGroupWageTypes_Edit = "Pages.PayrollManagement.EmployeeSubGroupWageTypes.Edit";
+    public const string Pages_PayrollManagement_EmployeeSubGroupWageTypes_Delete = "Pages.PayrollManagement.EmployeeSubGroupWageTypes.Delete";
+
+    public const string Pages_PayrollManagement_PayrollPeriods = "Pages.PayrollManagement.PayrollPeriods";
+    public const string Pages_PayrollManagement_PayrollPeriods_Create = "Pages.PayrollManagement.PayrollPeriods.Create";
+    public const string Pages_PayrollManagement_PayrollPeriods_Edit = "Pages.PayrollManagement.PayrollPeriods.Edit";
+    public const string Pages_PayrollManagement_PayrollPeriods_Delete = "Pages.PayrollManagement.PayrollPeriods.Delete";
+
+    public const string Pages_PayrollManagement_PayrollAreas = "Pages.PayrollManagement.PayrollAreas";
+    public const string Pages_PayrollManagement_PayrollAreas_Create = "Pages.PayrollManagement.PayrollAreas.Create";
+    public const string Pages_PayrollManagement_PayrollAreas_Edit = "Pages.PayrollManagement.PayrollAreas.Edit";
+    public const string Pages_PayrollManagement_PayrollAreas_Delete = "Pages.PayrollManagement.PayrollAreas.Delete";
+
+    public const string Pages_PayrollManagement_PayrollCalendars = "Pages.PayrollManagement.PayrollCalendars";
+    public const string Pages_PayrollManagement_PayrollCalendars_Create = "Pages.PayrollManagement.PayrollCalendars.Create";
+    public const string Pages_PayrollManagement_PayrollCalendars_Edit = "Pages.PayrollManagement.PayrollCalendars.Edit";
+    public const string Pages_PayrollManagement_PayrollCalendars_Delete = "Pages.PayrollManagement.PayrollCalendars.Delete";
+
+    public const string Pages_PayrollManagement_PayrollControlRecords = "Pages.PayrollManagement.PayrollControlRecords";
+    public const string Pages_PayrollManagement_PayrollControlRecords_Create = "Pages.PayrollManagement.PayrollControlRecords.Create";
+    public const string Pages_PayrollManagement_PayrollControlRecords_Edit = "Pages.PayrollManagement.PayrollControlRecords.Edit";
+    public const string Pages_PayrollManagement_PayrollControlRecords_Delete = "Pages.PayrollManagement.PayrollControlRecords.Delete";
+
+    public const string Pages_PayrollManagement_IndemnityPayRules = "Pages.PayrollManagement.IndemnityPayRules";
+    public const string Pages_PayrollManagement_IndemnityPayRules_Create = "Pages.PayrollManagement.IndemnityPayRules.Create";
+    public const string Pages_PayrollManagement_IndemnityPayRules_Edit = "Pages.PayrollManagement.IndemnityPayRules.Edit";
+    public const string Pages_PayrollManagement_IndemnityPayRules_Delete = "Pages.PayrollManagement.IndemnityPayRules.Delete";
+
+    public const string Pages_PayrollManagement_IndemnityPayRuleDetails = "Pages.PayrollManagement.IndemnityPayRuleDetails";
+    public const string Pages_PayrollManagement_IndemnityPayRuleDetails_Create = "Pages.PayrollManagement.IndemnityPayRuleDetails.Create";
+    public const string Pages_PayrollManagement_IndemnityPayRuleDetails_Edit = "Pages.PayrollManagement.IndemnityPayRuleDetails.Edit";
+    public const string Pages_PayrollManagement_IndemnityPayRuleDetails_Delete = "Pages.PayrollManagement.IndemnityPayRuleDetails.Delete";
+
+    public const string Pages_PayrollManagement_OrgUnitWageAccGroups = "Pages.PayrollManagement.OrgUnitWageAccGroups";
+    public const string Pages_PayrollManagement_OrgUnitWageAccGroups_Create = "Pages.PayrollManagement.OrgUnitWageAccGroups.Create";
+    public const string Pages_PayrollManagement_OrgUnitWageAccGroups_Edit = "Pages.PayrollManagement.OrgUnitWageAccGroups.Edit";
+    public const string Pages_PayrollManagement_OrgUnitWageAccGroups_Delete = "Pages.PayrollManagement.OrgUnitWageAccGroups.Delete";
+
+    public const string Pages_PayrollManagement_WageAccGroups = "Pages.PayrollManagement.WageAccGroups";
+    public const string Pages_PayrollManagement_WageAccGroups_Create = "Pages.PayrollManagement.WageAccGroups.Create";
+    public const string Pages_PayrollManagement_WageAccGroups_Edit = "Pages.PayrollManagement.WageAccGroups.Edit";
+    public const string Pages_PayrollManagement_WageAccGroups_Delete = "Pages.PayrollManagement.WageAccGroups.Delete";
+
+    public const string Pages_PayrollManagement_WageAccGroupDetails = "Pages.PayrollManagement.WageAccGroupDetails";
+    public const string Pages_PayrollManagement_WageAccGroupDetails_Create = "Pages.PayrollManagement.WageAccGroupDetails.Create";
+    public const string Pages_PayrollManagement_WageAccGroupDetails_Edit = "Pages.PayrollManagement.WageAccGroupDetails.Edit";
+    public const string Pages_PayrollManagement_WageAccGroupDetails_Delete = "Pages.PayrollManagement.WageAccGroupDetails.Delete";
+
+    public const string Pages_PayrollManagement_WageTypes = "Pages.PayrollManagement.WageTypes";
+    public const string Pages_PayrollManagement_WageTypes_Create = "Pages.PayrollManagement.WageTypes.Create";
+    public const string Pages_PayrollManagement_WageTypes_Edit = "Pages.PayrollManagement.WageTypes.Edit";
+    public const string Pages_PayrollManagement_WageTypes_Delete = "Pages.PayrollManagement.WageTypes.Delete";
+
+    public const string Pages_PayrollManagement_WageTypeExceptions = "Pages.PayrollManagement.WageTypeExceptions";
+    public const string Pages_PayrollManagement_WageTypeExceptions_Create = "Pages.PayrollManagement.WageTypeExceptions.Create";
+    public const string Pages_PayrollManagement_WageTypeExceptions_Edit = "Pages.PayrollManagement.WageTypeExceptions.Edit";
+    public const string Pages_PayrollManagement_WageTypeExceptions_Delete = "Pages.PayrollManagement.WageTypeExceptions.Delete";
+
+    public const string Pages_PayrollManagement_WageTypeLeaves = "Pages.PayrollManagement.WageTypeLeaves";
+    public const string Pages_PayrollManagement_WageTypeLeaves_Create = "Pages.PayrollManagement.WageTypeLeaves.Create";
+    public const string Pages_PayrollManagement_WageTypeLeaves_Edit = "Pages.PayrollManagement.WageTypeLeaves.Edit";
+    public const string Pages_PayrollManagement_WageTypeLeaves_Delete = "Pages.PayrollManagement.WageTypeLeaves.Delete";
+
+    public const string Pages_PayrollManagement_WageTypeSecurityRoles = "Pages.PayrollManagement.WageTypeSecurityRoles";
+    public const string Pages_PayrollManagement_WageTypeSecurityRoles_Create = "Pages.PayrollManagement.WageTypeSecurityRoles.Create";
+    public const string Pages_PayrollManagement_WageTypeSecurityRoles_Edit = "Pages.PayrollManagement.WageTypeSecurityRoles.Edit";
+    public const string Pages_PayrollManagement_WageTypeSecurityRoles_Delete = "Pages.PayrollManagement.WageTypeSecurityRoles.Delete";
+
+    public const string Pages_PayrollManagement_WageAccounts = "Pages.PayrollManagement.WageAccounts";
+    public const string Pages_PayrollManagement_WageAccounts_Create = "Pages.PayrollManagement.WageAccounts.Create";
+    public const string Pages_PayrollManagement_WageAccounts_Edit = "Pages.PayrollManagement.WageAccounts.Edit";
+    public const string Pages_PayrollManagement_WageAccounts_Delete = "Pages.PayrollManagement.WageAccounts.Delete";
+
+    public const string Pages_PayrollManagement_SocialSecurities = "Pages.PayrollManagement.SocialSecurities";
+    public const string Pages_PayrollManagement_SocialSecurities_Create = "Pages.PayrollManagement.SocialSecurities.Create";
+    public const string Pages_PayrollManagement_SocialSecurities_Edit = "Pages.PayrollManagement.SocialSecurities.Edit";
+    public const string Pages_PayrollManagement_SocialSecurities_Delete = "Pages.PayrollManagement.SocialSecurities.Delete";
+
+    public const string Pages_PayrollManagement_SocialSecurityDetails = "Pages.PayrollManagement.SocialSecurityDetails";
+    public const string Pages_PayrollManagement_SocialSecurityDetails_Create = "Pages.PayrollManagement.SocialSecurityDetails.Create";
+    public const string Pages_PayrollManagement_SocialSecurityDetails_Edit = "Pages.PayrollManagement.SocialSecurityDetails.Edit";
+    public const string Pages_PayrollManagement_SocialSecurityDetails_Delete = "Pages.PayrollManagement.SocialSecurityDetails.Delete";
+
+    public const string Pages_PayrollManagement_SocialSecurityMaritalAllowances = "Pages.PayrollManagement.SocialSecurityMaritalAllowances";
+    public const string Pages_PayrollManagement_SocialSecurityMaritalAllowances_Create = "Pages.PayrollManagement.SocialSecurityMaritalAllowances.Create";
+    public const string Pages_PayrollManagement_SocialSecurityMaritalAllowances_Edit = "Pages.PayrollManagement.SocialSecurityMaritalAllowances.Edit";
+    public const string Pages_PayrollManagement_SocialSecurityMaritalAllowances_Delete = "Pages.PayrollManagement.SocialSecurityMaritalAllowances.Delete";
+
+    public const string Pages_PayrollManagement_SocialSecurityEducationAllowances = "Pages.PayrollManagement.SocialSecurityEducationAllowances";
+    public const string Pages_PayrollManagement_SocialSecurityEducationAllowances_Create = "Pages.PayrollManagement.SocialSecurityEducationAllowances.Create";
+    public const string Pages_PayrollManagement_SocialSecurityEducationAllowances_Edit = "Pages.PayrollManagement.SocialSecurityEducationAllowances.Edit";
+    public const string Pages_PayrollManagement_SocialSecurityEducationAllowances_Delete = "Pages.PayrollManagement.SocialSecurityEducationAllowances.Delete";
+
+    public const string Pages_PayrollManagement_SocialSecurityRules = "Pages.PayrollManagement.SocialSecurityRules";
+    public const string Pages_PayrollManagement_SocialSecurityRules_Create = "Pages.PayrollManagement.SocialSecurityRules.Create";
+    public const string Pages_PayrollManagement_SocialSecurityRules_Edit = "Pages.PayrollManagement.SocialSecurityRules.Edit";
+    public const string Pages_PayrollManagement_SocialSecurityRules_Delete = "Pages.PayrollManagement.SocialSecurityRules.Delete";
+
+    public const string Pages_PayrollManagement_TicketClasses = "Pages.PayrollManagement.TicketClasses";
+    public const string Pages_PayrollManagement_TicketClasses_Create = "Pages.PayrollManagement.TicketClasses.Create";
+    public const string Pages_PayrollManagement_TicketClasses_Edit = "Pages.PayrollManagement.TicketClasses.Edit";
+    public const string Pages_PayrollManagement_TicketClasses_Delete = "Pages.PayrollManagement.TicketClasses.Delete";
+
+    public const string Pages_PayrollManagement_TicketPaxTypes = "Pages.PayrollManagement.TicketPaxTypes";
+    public const string Pages_PayrollManagement_TicketPaxTypes_Create = "Pages.PayrollManagement.TicketPaxTypes.Create";
+    public const string Pages_PayrollManagement_TicketPaxTypes_Edit = "Pages.PayrollManagement.TicketPaxTypes.Edit";
+    public const string Pages_PayrollManagement_TicketPaxTypes_Delete = "Pages.PayrollManagement.TicketPaxTypes.Delete";
+
+    public const string Pages_PayrollManagement_TicketRoutes = "Pages.PayrollManagement.TicketRoutes";
+    public const string Pages_PayrollManagement_TicketRoutes_Create = "Pages.PayrollManagement.TicketRoutes.Create";
+    public const string Pages_PayrollManagement_TicketRoutes_Edit = "Pages.PayrollManagement.TicketRoutes.Edit";
+    public const string Pages_PayrollManagement_TicketRoutes_Delete = "Pages.PayrollManagement.TicketRoutes.Delete";
+
+    public const string Pages_PayrollManagement_TicketFares = "Pages.PayrollManagement.TicketFares";
+    public const string Pages_PayrollManagement_TicketFares_Create = "Pages.PayrollManagement.TicketFares.Create";
+    public const string Pages_PayrollManagement_TicketFares_Edit = "Pages.PayrollManagement.TicketFares.Edit";
+    public const string Pages_PayrollManagement_TicketFares_Delete = "Pages.PayrollManagement.TicketFares.Delete";
+
+    public const string Pages_PayrollManagement_TicketTypes = "Pages.PayrollManagement.TicketTypes";
+    public const string Pages_PayrollManagement_TicketTypes_Create = "Pages.PayrollManagement.TicketTypes.Create";
+    public const string Pages_PayrollManagement_TicketTypes_Edit = "Pages.PayrollManagement.TicketTypes.Edit";
+    public const string Pages_PayrollManagement_TicketTypes_Delete = "Pages.PayrollManagement.TicketTypes.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeWageAccGroups = "Pages.PayrollManagement.EmployeeWageAccGroups";
+    public const string Pages_PayrollManagement_EmployeeWageAccGroups_Create = "Pages.PayrollManagement.EmployeeWageAccGroups.Create";
+    public const string Pages_PayrollManagement_EmployeeWageAccGroups_Edit = "Pages.PayrollManagement.EmployeeWageAccGroups.Edit";
+    public const string Pages_PayrollManagement_EmployeeWageAccGroups_Delete = "Pages.PayrollManagement.EmployeeWageAccGroups.Delete";
+
+    public const string Pages_PayrollManagement_EmployeeWageAccounts = "Pages.PayrollManagement.EmployeeWageAccounts";
+    public const string Pages_PayrollManagement_EmployeeWageAccounts_Create = "Pages.PayrollManagement.EmployeeWageAccounts.Create";
+    public const string Pages_PayrollManagement_EmployeeWageAccounts_Edit = "Pages.PayrollManagement.EmployeeWageAccounts.Edit";
+    public const string Pages_PayrollManagement_EmployeeWageAccounts_Delete = "Pages.PayrollManagement.EmployeeWageAccounts.Delete";
+
+    public const string Pages_PayrollManagement_EmployeePayrollStatuses = "Pages.PayrollManagement.EmployeePayrollStatuses";
+    public const string Pages_PayrollManagement_EmployeePayrollStatuses_Create = "Pages.PayrollManagement.EmployeePayrollStatuses.Create";
+    public const string Pages_PayrollManagement_EmployeePayrollStatuses_Edit = "Pages.PayrollManagement.EmployeePayrollStatuses.Edit";
+    public const string Pages_PayrollManagement_EmployeePayrollStatuses_Delete = "Pages.PayrollManagement.EmployeePayrollStatuses.Delete";
+
+    public const string Pages_PayrollManagement_AbsencePayments = "Pages.PayrollManagement.AbsencePayments";
+    public const string Pages_PayrollManagement_AbsencePayments_Create = "Pages.PayrollManagement.AbsencePayments.Create";
+    public const string Pages_PayrollManagement_AbsencePayments_Edit = "Pages.PayrollManagement.AbsencePayments.Edit";
+    public const string Pages_PayrollManagement_AbsencePayments_Delete = "Pages.PayrollManagement.AbsencePayments.Delete";
+
+    public const string Pages_PayrollManagement_TempBenefitTypes = "Pages.PayrollManagement.TempBenefitTypes";
+    public const string Pages_PayrollManagement_TempBenefitTypes_Create = "Pages.PayrollManagement.TempBenefitTypes.Create";
+    public const string Pages_PayrollManagement_TempBenefitTypes_Edit = "Pages.PayrollManagement.TempBenefitTypes.Edit";
+    public const string Pages_PayrollManagement_TempBenefitTypes_Delete = "Pages.PayrollManagement.TempBenefitTypes.Delete";
+
+    public const string Pages_PayrollManagement_TempEmployeeBenefits = "Pages.PayrollManagement.TempEmployeeBenefits";
+    public const string Pages_PayrollManagement_TempEmployeeBenefits_Create = "Pages.PayrollManagement.TempEmployeeBenefits.Create";
+    public const string Pages_PayrollManagement_TempEmployeeBenefits_Edit = "Pages.PayrollManagement.TempEmployeeBenefits.Edit";
+    public const string Pages_PayrollManagement_TempEmployeeBenefits_Delete = "Pages.PayrollManagement.TempEmployeeBenefits.Delete";
+
+    public const string Pages_PayrollManagement_WageTypeRegisters = "Pages.PayrollManagement.WageTypeRegisters";
+    public const string Pages_PayrollManagement_WageTypeRegisters_Create = "Pages.PayrollManagement.WageTypeRegisters.Create";
+    public const string Pages_PayrollManagement_WageTypeRegisters_Edit = "Pages.PayrollManagement.WageTypeRegisters.Edit";
+    public const string Pages_PayrollManagement_WageTypeRegisters_Delete = "Pages.PayrollManagement.WageTypeRegisters.Delete";
+
+    public const string Pages_PayrollManagement_PayrollLogs = "Pages.PayrollManagement.PayrollLogs";
+    public const string Pages_PayrollManagement_PayrollLogs_Create = "Pages.PayrollManagement.PayrollLogs.Create";
+    public const string Pages_PayrollManagement_PayrollLogs_Edit = "Pages.PayrollManagement.PayrollLogs.Edit";
+    public const string Pages_PayrollManagement_PayrollLogs_Delete = "Pages.PayrollManagement.PayrollLogs.Delete";
+
+    public const string Pages_PayrollManagement_CostRegisters = "Pages.PayrollManagement.CostRegisters";
+    public const string Pages_PayrollManagement_CostRegisters_Create = "Pages.PayrollManagement.CostRegisters.Create";
+    public const string Pages_PayrollManagement_CostRegisters_Edit = "Pages.PayrollManagement.CostRegisters.Edit";
+    public const string Pages_PayrollManagement_CostRegisters_Delete = "Pages.PayrollManagement.CostRegisters.Delete";
+
+    public const string Pages_PayrollManagement_CostRegisterDetails = "Pages.PayrollManagement.CostRegisterDetails";
+    public const string Pages_PayrollManagement_CostRegisterDetails_Create = "Pages.PayrollManagement.CostRegisterDetails.Create";
+    public const string Pages_PayrollManagement_CostRegisterDetails_Edit = "Pages.PayrollManagement.CostRegisterDetails.Edit";
+    public const string Pages_PayrollManagement_CostRegisterDetails_Delete = "Pages.PayrollManagement.CostRegisterDetails.Delete";
+
+    public const string Pages_PayrollManagement_SalaryRegisters = "Pages.PayrollManagement.SalaryRegisters";
+    public const string Pages_PayrollManagement_SalaryRegisters_Create = "Pages.PayrollManagement.SalaryRegisters.Create";
+    public const string Pages_PayrollManagement_SalaryRegisters_Edit = "Pages.PayrollManagement.SalaryRegisters.Edit";
+    public const string Pages_PayrollManagement_SalaryRegisters_Delete = "Pages.PayrollManagement.SalaryRegisters.Delete";
+
+    public const string Pages_PayrollManagement_SalaryRegisterDetails = "Pages.PayrollManagement.SalaryRegisterDetails";
+    public const string Pages_PayrollManagement_SalaryRegisterDetails_Create = "Pages.PayrollManagement.SalaryRegisterDetails.Create";
+    public const string Pages_PayrollManagement_SalaryRegisterDetails_Edit = "Pages.PayrollManagement.SalaryRegisterDetails.Edit";
+    public const string Pages_PayrollManagement_SalaryRegisterDetails_Delete = "Pages.PayrollManagement.SalaryRegisterDetails.Delete";
+
+    public const string Pages_PayrollManagement_SalaryRegisterDaysDetails = "Pages.PayrollManagement.SalaryRegisterDaysDetails";
+    public const string Pages_PayrollManagement_SalaryRegisterDaysDetails_Create = "Pages.PayrollManagement.SalaryRegisterDaysDetails.Create";
+    public const string Pages_PayrollManagement_SalaryRegisterDaysDetails_Edit = "Pages.PayrollManagement.SalaryRegisterDaysDetails.Edit";
+    public const string Pages_PayrollManagement_SalaryRegisterDaysDetails_Delete = "Pages.PayrollManagement.SalaryRegisterDaysDetails.Delete";
+
+    public const string Pages_PayrollManagement_SimulationSalaryRegisters = "Pages.PayrollManagement.SimulationSalaryRegisters";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisters_Create = "Pages.PayrollManagement.SimulationSalaryRegisters.Create";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisters_Edit = "Pages.PayrollManagement.SimulationSalaryRegisters.Edit";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisters_Delete = "Pages.PayrollManagement.SimulationSalaryRegisters.Delete";
+
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDetails = "Pages.PayrollManagement.SimulationSalaryRegisterDetails";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDetails_Create = "Pages.PayrollManagement.SimulationSalaryRegisterDetails.Create";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDetails_Edit = "Pages.PayrollManagement.SimulationSalaryRegisterDetails.Edit";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDetails_Delete = "Pages.PayrollManagement.SimulationSalaryRegisterDetails.Delete";
+
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDaysDetails = "Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDaysDetails_Create = "Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Create";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDaysDetails_Edit = "Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Edit";
+    public const string Pages_PayrollManagement_SimulationSalaryRegisterDaysDetails_Delete = "Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceViolationActionRecords = "Pages.PayrollManagement.AbsenceViolationActionRecords";
+    public const string Pages_PayrollManagement_AbsenceViolationActionRecords_Create = "Pages.PayrollManagement.AbsenceViolationActionRecords.Create";
+    public const string Pages_PayrollManagement_AbsenceViolationActionRecords_Edit = "Pages.PayrollManagement.AbsenceViolationActionRecords.Edit";
+    public const string Pages_PayrollManagement_AbsenceViolationActionRecords_Delete = "Pages.PayrollManagement.AbsenceViolationActionRecords.Delete";
+
+    public const string Pages_PayrollManagement_AbsenceViolationActionLogs = "Pages.PayrollManagement.AbsenceViolationActionLogs";
+    public const string Pages_PayrollManagement_AbsenceViolationActionLogs_Create = "Pages.PayrollManagement.AbsenceViolationActionLogs.Create";
+    public const string Pages_PayrollManagement_AbsenceViolationActionLogs_Edit = "Pages.PayrollManagement.AbsenceViolationActionLogs.Edit";
+    public const string Pages_PayrollManagement_AbsenceViolationActionLogs_Delete = "Pages.PayrollManagement.AbsenceViolationActionLogs.Delete";
+
+    public const string Pages_PayrollManagement_GratuityAccrualSummaries = "Pages.PayrollManagement.GratuityAccrualSummaries";
+    public const string Pages_PayrollManagement_GratuityAccrualSummaries_Create = "Pages.PayrollManagement.GratuityAccrualSummaries.Create";
+    public const string Pages_PayrollManagement_GratuityAccrualSummaries_Edit = "Pages.PayrollManagement.GratuityAccrualSummaries.Edit";
+    public const string Pages_PayrollManagement_GratuityAccrualSummaries_Delete = "Pages.PayrollManagement.GratuityAccrualSummaries.Delete";
+
+    public const string Pages_PayrollManagement_LeaveAccrualSummaries = "Pages.PayrollManagement.LeaveAccrualSummaries";
+    public const string Pages_PayrollManagement_LeaveAccrualSummaries_Create = "Pages.PayrollManagement.LeaveAccrualSummaries.Create";
+    public const string Pages_PayrollManagement_LeaveAccrualSummaries_Edit = "Pages.PayrollManagement.LeaveAccrualSummaries.Edit";
+    public const string Pages_PayrollManagement_LeaveAccrualSummaries_Delete = "Pages.PayrollManagement.LeaveAccrualSummaries.Delete";
+
+    public const string Pages_PayrollManagement_TicketAccrualSummaries = "Pages.PayrollManagement.TicketAccrualSummaries";
+    public const string Pages_PayrollManagement_TicketAccrualSummaries_Create = "Pages.PayrollManagement.TicketAccrualSummaries.Create";
+    public const string Pages_PayrollManagement_TicketAccrualSummaries_Edit = "Pages.PayrollManagement.TicketAccrualSummaries.Edit";
+    public const string Pages_PayrollManagement_TicketAccrualSummaries_Delete = "Pages.PayrollManagement.TicketAccrualSummaries.Delete";
+
     //TENANT-SPECIFIC PERMISSIONS
 
     public const string Pages_Tenant_Dashboard = "Pages.Tenant.Dashboard";

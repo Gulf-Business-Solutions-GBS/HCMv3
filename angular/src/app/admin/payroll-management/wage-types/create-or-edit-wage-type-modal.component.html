@@ -1,0 +1,247 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #wageTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (wageType().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WageTypes' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WageTypes' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="WageType_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="WageType_Code"
+                                    #codeInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Code"
+                                    required
+                                    maxlength="32"
+                                    [ngModel]="wageType().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="WageType_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="WageType_NameEn"
+                                    #nameEnInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameEn"
+                                    required
+                                    maxlength="128"
+                                    [ngModel]="wageType().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)" />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-5 mb-5">
+                                <label class="form-label required" for="WageType_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="WageType_NameAr"
+                                    #nameArInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameAr"
+                                    required
+                                    maxlength="128"
+                                    dir="rtl"
+                                    [ngModel]="wageType().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)" />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WageType_ShortNameEn">{{ 'ShortNameEn' | localize }}</label>
+                                <input
+                                    id="WageType_ShortNameEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="ShortNameEn"
+                                    maxlength="32"
+                                    [ngModel]="wageType().shortNameEn"
+                                    (ngModelChange)="updateField('shortNameEn', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="WageType_ShortNameAr">{{ 'ShortNameAr' | localize }}</label>
+                                <input
+                                    id="WageType_ShortNameAr"
+                                    class="form-control"
+                                    type="text"
+                                    name="ShortNameAr"
+                                    maxlength="32"
+                                    dir="rtl"
+                                    [ngModel]="wageType().shortNameAr"
+                                    (ngModelChange)="updateField('shortNameAr', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_BillingType">{{ 'BillingType' | localize }}</label>
+                                <select
+                                    id="WageType_BillingType"
+                                    class="form-select"
+                                    name="BillingType"
+                                    [ngModel]="wageType().billingType"
+                                    (ngModelChange)="updateField('billingType', $event)">
+                                    @for (item of billingTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_BillingMethod">{{ 'BillingMethod' | localize }}</label>
+                                <select
+                                    id="WageType_BillingMethod"
+                                    class="form-select"
+                                    name="BillingMethod"
+                                    [ngModel]="wageType().billingMethod"
+                                    (ngModelChange)="updateField('billingMethod', $event)">
+                                    @for (item of billingMethods; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_ProrateMethod">{{ 'ProrateMethod' | localize }}</label>
+                                <select
+                                    id="WageType_ProrateMethod"
+                                    class="form-select"
+                                    name="ProrateMethod"
+                                    [ngModel]="wageType().prorateMethod"
+                                    (ngModelChange)="updateField('prorateMethod', $event)">
+                                    @for (item of prorateMethods; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_Category">{{ 'Category' | localize }}</label>
+                                <select
+                                    id="WageType_Category"
+                                    class="form-select"
+                                    name="Category"
+                                    [ngModel]="wageType().category"
+                                    (ngModelChange)="updateField('category', $event)">
+                                    @for (item of categories; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_FixedDays">{{ 'FixedDays' | localize }}</label>
+                                <input
+                                    id="WageType_FixedDays"
+                                    class="form-control"
+                                    type="number"
+                                    name="FixedDays"
+                                    [ngModel]="wageType().fixedDays"
+                                    (ngModelChange)="updateField('fixedDays', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_Rate">{{ 'Rate' | localize }}</label>
+                                <input
+                                    id="WageType_Rate"
+                                    class="form-control"
+                                    type="number"
+                                    name="Rate"
+                                    [ngModel]="wageType().rate"
+                                    (ngModelChange)="updateField('rate', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_PayrollOrder">{{ 'PayrollOrder' | localize }}</label>
+                                <input
+                                    id="WageType_PayrollOrder"
+                                    class="form-control"
+                                    type="number"
+                                    name="PayrollOrder"
+                                    [ngModel]="wageType().payrollOrder"
+                                    (ngModelChange)="updateField('payrollOrder', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="WageType_ArrearSourceWageTypeId">{{ 'ArrearSourceWageTypeId' | localize }}</label>
+                                <select
+                                    id="WageType_ArrearSourceWageTypeId"
+                                    class="form-select"
+                                    name="ArrearSourceWageTypeId"
+                                    [ngModel]="wageType().arrearSourceWageTypeId"
+                                    (ngModelChange)="updateField('arrearSourceWageTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wt of arrearSourceWageTypes(); track wt.id) {
+                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check form-switch">
+                                <input
+                                    id="WageType_Status"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="Status"
+                                    [ngModel]="wageType().status"
+                                    (ngModelChange)="updateField('status', $event)" />
+                                <label class="form-check-label" for="WageType_Status">{{ 'Status' | localize }}</label>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @for (flag of includeFlags; track flag.field) {
+                                <div class="col-md-3 mb-3 form-check form-switch">
+                                    <input
+                                        [id]="'WageType_' + flag.field"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        [name]="flag.field"
+                                        [ngModel]="getFlag(flag.field)"
+                                        (ngModelChange)="updateField(flag.field, $event)" />
+                                    <label class="form-check-label" [for]="'WageType_' + flag.field">{{ flag.key | localize }}</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!wageTypeForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

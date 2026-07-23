@@ -1,0 +1,50 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupWageTypes' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="EmployeeSubGroupWageType_WageTypeId">{{ 'WageType' | localize }}</label>
+                            <select
+                                id="EmployeeSubGroupWageType_WageTypeId"
+                                class="form-select"
+                                name="WageTypeId"
+                                required
+                                [ngModel]="record().wageTypeId"
+                                (ngModelChange)="updateField('wageTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (wageType of wageTypes(); track wageType.id) {
+                                    <option [ngValue]="wageType.id">{{ wageType.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -27,6 +27,9 @@ import { EmployeeTimePoliciesComponent } from './time-policies/employee-time-pol
 import { EmployeeSubstituteDutiesComponent } from './substitute-duties/employee-substitute-duties.component';
 import { EmployeeDutySchedulesComponent } from './duty-schedules/employee-duty-schedules.component';
 import { EmployeeTimesheetsComponent } from './timesheets/employee-timesheets.component';
+import { EmployeeWageAccGroupsComponent } from './wage-acc-groups/employee-wage-acc-groups.component';
+import { EmployeeWageAccountsComponent } from './wage-accounts/employee-wage-accounts.component';
+import { EmployeePayrollStatusComponent } from './payroll-status/employee-payroll-status.component';
 
 @Component({
     templateUrl: './employee-detail.component.html',
@@ -57,6 +60,9 @@ import { EmployeeTimesheetsComponent } from './timesheets/employee-timesheets.co
         EmployeeSubstituteDutiesComponent,
         EmployeeDutySchedulesComponent,
         EmployeeTimesheetsComponent,
+        EmployeeWageAccGroupsComponent,
+        EmployeeWageAccountsComponent,
+        EmployeePayrollStatusComponent,
     ],
 })
 export class EmployeeDetailComponent extends AppComponentBase implements OnInit {

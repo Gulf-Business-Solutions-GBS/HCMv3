@@ -77,6 +77,15 @@
                         <tab heading="{{ 'EmployeeTimesheets' | localize }}">
                             <employee-timesheets [employeeId]="employeeId()" />
                         </tab>
+                        <tab heading="{{ 'EmployeeWageAccGroups' | localize }}">
+                            <employee-wage-acc-groups [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeWageAccounts' | localize }}">
+                            <employee-wage-accounts [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeePayrollStatuses' | localize }}">
+                            <employee-payroll-status [employeeId]="employeeId()" />
+                        </tab>
                     </tabset>
                 }
             </div>

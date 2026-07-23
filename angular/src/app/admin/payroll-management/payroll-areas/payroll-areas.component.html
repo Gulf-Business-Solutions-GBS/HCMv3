@@ -1,0 +1,117 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayrollAreas' | localize" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            @if ('Pages.PayrollManagement.PayrollAreas.Create' | permission) {
+                <button (click)="createPayrollArea()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <input
+                            type="text"
+                            class="form-control"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)"
+                            (keyup.enter)="reloadPage()" />
+                    </div>
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getPayrollAreas($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.PayrollManagement.PayrollAreas.Edit', 'Pages.PayrollManagement.PayrollAreas.Delete'] | permissionAny)
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="name">
+                                        {{ 'Name' | localize }}
+                                        <p-sortIcon field="name" />
+                                    </th>
+                                    <th style="min-width: 150px">{{ 'PayrollPeriodId' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'CurrencyId' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'CutOffDay' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'FICompanyId' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'FIBankId' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'CountryId' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.PayrollManagement.PayrollAreas.Edit', 'Pages.PayrollManagement.PayrollAreas.Delete'] | permissionAny)
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 100px">{{ record.code }}</td>
+                                    <td style="min-width: 180px">{{ record.name }}</td>
+                                    <td style="min-width: 150px">{{ record.payrollPeriodName }}</td>
+                                    <td style="min-width: 130px">{{ record.currencyName }}</td>
+                                    <td style="min-width: 100px">{{ record.cutOffDay }}</td>
+                                    <td style="min-width: 150px">{{ record.fiCompanyName }}</td>
+                                    <td style="min-width: 150px">{{ record.fiBankName }}</td>
+                                    <td style="min-width: 130px">{{ record.countryName }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getPayrollAreas($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditPayrollAreaModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

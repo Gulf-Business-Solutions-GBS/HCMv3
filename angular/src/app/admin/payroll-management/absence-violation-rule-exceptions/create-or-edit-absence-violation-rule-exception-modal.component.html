@@ -1,0 +1,118 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #absenceViolationRuleExceptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (absenceViolationRuleException().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AbsenceViolationRuleExceptions' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AbsenceViolationRuleExceptions' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsenceViolationRuleException_AbsenceViolationRuleId">{{ 'AbsenceViolationRules' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleException_AbsenceViolationRuleId"
+                                    #absenceViolationRuleIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceViolationRuleId"
+                                    [ngModel]="absenceViolationRuleException().absenceViolationRuleId"
+                                    (ngModelChange)="updateField('absenceViolationRuleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rule of absenceViolationRules(); track rule.id) {
+                                        <option [ngValue]="rule.id">{{ rule.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceViolationRuleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsenceViolationRuleException_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="AbsenceViolationRuleException_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="absenceViolationRuleException().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsenceViolationRuleException_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationRuleException_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="absenceViolationRuleException().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="AbsenceViolationRuleException_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="AbsenceViolationRuleException_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="absenceViolationRuleException().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!absenceViolationRuleExceptionForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

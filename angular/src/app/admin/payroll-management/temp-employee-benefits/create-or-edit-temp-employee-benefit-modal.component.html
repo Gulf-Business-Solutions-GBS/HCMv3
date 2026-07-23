@@ -1,0 +1,82 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #tempEmployeeBenefitForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (tempEmployeeBenefit().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TempEmployeeBenefits' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TempEmployeeBenefits' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TempEmployeeBenefit_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="TempEmployeeBenefit_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="tempEmployeeBenefit().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TempEmployeeBenefit_TempBenefitTypeId">{{ 'TempBenefitTypeId' | localize }}</label>
+                                <select
+                                    id="TempEmployeeBenefit_TempBenefitTypeId"
+                                    #tempBenefitTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TempBenefitTypeId"
+                                    [ngModel]="tempEmployeeBenefit().tempBenefitTypeId"
+                                    (ngModelChange)="updateField('tempBenefitTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of tempBenefitTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.grade }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="tempBenefitTypeIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!tempEmployeeBenefitForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

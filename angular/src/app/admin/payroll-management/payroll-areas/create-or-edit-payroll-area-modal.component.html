@@ -1,0 +1,176 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #payrollAreaForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (payrollArea().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PayrollAreas' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PayrollAreas' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollArea_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="PayrollArea_Code"
+                                    class="form-control"
+                                    type="text"
+                                    name="Code"
+                                    maxlength="16"
+                                    [ngModel]="payrollArea().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                            </div>
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label required" for="PayrollArea_Name">{{ 'Name' | localize }}</label>
+                                <input
+                                    id="PayrollArea_Name"
+                                    #nameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Name"
+                                    required
+                                    maxlength="128"
+                                    [ngModel]="payrollArea().name"
+                                    (ngModelChange)="updateField('name', $event)" />
+                                <validation-messages [formCtrl]="nameInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollArea_PayrollPeriodId">{{ 'PayrollPeriodId' | localize }}</label>
+                                <select
+                                    id="PayrollArea_PayrollPeriodId"
+                                    #payrollPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="PayrollPeriodId"
+                                    [ngModel]="payrollArea().payrollPeriodId"
+                                    (ngModelChange)="updateField('payrollPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (period of payrollPeriods(); track period.id) {
+                                        <option [ngValue]="period.id">{{ period.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="payrollPeriodIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PayrollArea_CurrencyId">{{ 'CurrencyId' | localize }}</label>
+                                <select
+                                    id="PayrollArea_CurrencyId"
+                                    #currencyIdInput="ngModel"
+                                    class="form-select"
+                                    name="CurrencyId"
+                                    [ngModel]="payrollArea().currencyId"
+                                    (ngModelChange)="updateField('currencyId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (currency of currencies(); track currency.id) {
+                                        <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="currencyIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PayrollArea_CutOffDay">{{ 'CutOffDay' | localize }}</label>
+                                <input
+                                    id="PayrollArea_CutOffDay"
+                                    #cutOffDayInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="CutOffDay"
+                                    required
+                                    [ngModel]="payrollArea().cutOffDay"
+                                    (ngModelChange)="updateField('cutOffDay', $event)" />
+                                <validation-messages [formCtrl]="cutOffDayInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PayrollArea_CountryId">{{ 'CountryId' | localize }}</label>
+                                <select
+                                    id="PayrollArea_CountryId"
+                                    class="form-select"
+                                    name="CountryId"
+                                    [ngModel]="payrollArea().countryId"
+                                    (ngModelChange)="updateField('countryId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (country of countries(); track country.id) {
+                                        <option [ngValue]="country.id">{{ country.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PayrollArea_FICompanyId">{{ 'FICompanyId' | localize }}</label>
+                                <select
+                                    id="PayrollArea_FICompanyId"
+                                    class="form-select"
+                                    name="FICompanyId"
+                                    [ngModel]="payrollArea().fiCompanyId"
+                                    (ngModelChange)="updateField('fiCompanyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (costElement of costElements(); track costElement.id) {
+                                        <option [ngValue]="costElement.id">{{ costElement.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PayrollArea_FIBankId">{{ 'FIBankId' | localize }}</label>
+                                <select
+                                    id="PayrollArea_FIBankId"
+                                    class="form-select"
+                                    name="FIBankId"
+                                    [ngModel]="payrollArea().fiBankId"
+                                    (ngModelChange)="updateField('fiBankId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (account of accountInfos(); track account.id) {
+                                        <option [ngValue]="account.id">{{ account.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payrollAreaForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #tempBenefitTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (tempBenefitType().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TempBenefitTypes' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TempBenefitTypes' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TempBenefitType_Grade">{{ 'Grade' | localize }}</label>
+                                <input
+                                    id="TempBenefitType_Grade"
+                                    #gradeInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Grade"
+                                    maxlength="256"
+                                    [ngModel]="tempBenefitType().grade"
+                                    (ngModelChange)="updateField('grade', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="gradeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            @for (field of textFields; track field) {
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" [for]="'TempBenefitType_' + field">{{ fieldLabel(field) | localize }}</label>
+                                    <input
+                                        [id]="'TempBenefitType_' + field"
+                                        class="form-control"
+                                        type="text"
+                                        [name]="field"
+                                        [ngModel]="getFieldValue(field)"
+                                        (ngModelChange)="updateField(field, $event)" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!tempBenefitTypeForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

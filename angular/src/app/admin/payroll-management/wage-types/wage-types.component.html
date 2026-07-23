@@ -1,0 +1,119 @@
+<div [@routerTransition]>
+    <sub-header [title]="'WageTypes' | localize" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            @if ('Pages.PayrollManagement.WageTypes.Create' | permission) {
+                <button (click)="createWageType()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <input
+                            type="text"
+                            class="form-control"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            [ngModel]="filterText()"
+                            (ngModelChange)="filterText.set($event)"
+                            (keyup.enter)="reloadPage()" />
+                    </div>
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getWageTypes($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="nameEn">
+                                        {{ 'Name' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 130px">{{ 'BillingType' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'BillingMethod' | localize }}</th>
+                                    <th style="min-width: 100px" pSortableColumn="rate">
+                                        {{ 'Rate' | localize }}
+                                        <p-sortIcon field="rate" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="payrollOrder">
+                                        {{ 'PayrollOrder' | localize }}
+                                        <p-sortIcon field="payrollOrder" />
+                                    </th>
+                                    <th style="min-width: 90px">{{ 'Status' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 100px">{{ record.code }}</td>
+                                    <td style="min-width: 180px">{{ record.nameEn }}</td>
+                                    <td style="min-width: 130px">{{ record.billingType }}</td>
+                                    <td style="min-width: 150px">{{ record.billingMethod }}</td>
+                                    <td style="min-width: 100px">{{ record.rate }}</td>
+                                    <td style="min-width: 100px">{{ record.payrollOrder }}</td>
+                                    <td style="min-width: 90px">
+                                        <i class="fa" [class.fa-check]="record.status" [class.text-success]="record.status" [class.fa-times]="!record.status" [class.text-danger]="!record.status"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getWageTypes($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditWageTypeModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

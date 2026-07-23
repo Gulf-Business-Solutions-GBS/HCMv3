@@ -1,0 +1,109 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #ticketAccrualSummaryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (ticketAccrualSummary().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TicketAccrualSummaries' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TicketAccrualSummaries' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="TicketAccrualSummary_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <input
+                                    id="TicketAccrualSummary_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="EmployeeId"
+                                    [ngModel]="ticketAccrualSummary().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TicketAccrualSummary_Year">{{ 'Year' | localize }}</label>
+                                <input
+                                    id="TicketAccrualSummary_Year"
+                                    class="form-control"
+                                    type="number"
+                                    name="Year"
+                                    [ngModel]="ticketAccrualSummary().year"
+                                    (ngModelChange)="updateField('year', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="TicketAccrualSummary_Month">{{ 'Month' | localize }}</label>
+                                <input
+                                    id="TicketAccrualSummary_Month"
+                                    class="form-control"
+                                    type="number"
+                                    name="Month"
+                                    min="1"
+                                    max="12"
+                                    [ngModel]="ticketAccrualSummary().month"
+                                    (ngModelChange)="updateField('month', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TicketAccrualSummary_TicketAccrued">{{ 'TicketAccrued' | localize }}</label>
+                                <input
+                                    id="TicketAccrualSummary_TicketAccrued"
+                                    class="form-control"
+                                    type="number"
+                                    name="TicketAccrued"
+                                    [ngModel]="ticketAccrualSummary().ticketAccrued"
+                                    (ngModelChange)="updateField('ticketAccrued', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TicketAccrualSummary_TicketUsed">{{ 'TicketUsed' | localize }}</label>
+                                <input
+                                    id="TicketAccrualSummary_TicketUsed"
+                                    class="form-control"
+                                    type="number"
+                                    name="TicketUsed"
+                                    [ngModel]="ticketAccrualSummary().ticketUsed"
+                                    (ngModelChange)="updateField('ticketUsed', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!ticketAccrualSummaryForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

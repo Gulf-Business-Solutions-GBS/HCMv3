@@ -1,0 +1,173 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #wageAccGroupDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (wageAccGroupDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'WageAccGroupDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'WageAccGroupDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="WageAccGroupDetail_WageAccGroupId">{{ 'WageAccGroupId' | localize }}</label>
+                                <select
+                                    id="WageAccGroupDetail_WageAccGroupId"
+                                    #wageAccGroupIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageAccGroupId"
+                                    [ngModel]="wageAccGroupDetail().wageAccGroupId"
+                                    (ngModelChange)="updateField('wageAccGroupId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (group of wageAccGroups(); track group.id) {
+                                        <option [ngValue]="group.id">{{ group.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageAccGroupIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="WageAccGroupDetail_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                <select
+                                    id="WageAccGroupDetail_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="wageAccGroupDetail().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wt of wageTypes(); track wt.id) {
+                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="WageAccGroupDetail_AccountInfoId">{{ 'AccountInfoId' | localize }}</label>
+                                <select
+                                    id="WageAccGroupDetail_AccountInfoId"
+                                    #accountInfoIdInput="ngModel"
+                                    class="form-select"
+                                    name="AccountInfoId"
+                                    [ngModel]="wageAccGroupDetail().accountInfoId"
+                                    (ngModelChange)="updateField('accountInfoId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (account of accountInfos(); track account.id) {
+                                        <option [ngValue]="account.id">{{ account.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="accountInfoIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="WageAccGroupDetail_OffsetAccountInfoType">{{ 'OffsetAccountInfoType' | localize }}</label>
+                                <select
+                                    id="WageAccGroupDetail_OffsetAccountInfoType"
+                                    class="form-select"
+                                    name="OffsetAccountInfoType"
+                                    [ngModel]="wageAccGroupDetail().offsetAccountInfoType"
+                                    (ngModelChange)="updateField('offsetAccountInfoType', $event)">
+                                    @for (item of offsetAccountInfoTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="WageAccGroupDetail_OffsetAccountInfoId">{{ 'OffsetAccountInfoId' | localize }}</label>
+                                <select
+                                    id="WageAccGroupDetail_OffsetAccountInfoId"
+                                    class="form-select"
+                                    name="OffsetAccountInfoId"
+                                    [ngModel]="wageAccGroupDetail().offsetAccountInfoId"
+                                    (ngModelChange)="updateField('offsetAccountInfoId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (account of accountInfos(); track account.id) {
+                                        <option [ngValue]="account.id">{{ account.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="WageAccGroupDetail_CostPercentage">{{ 'CostPercentage' | localize }}</label>
+                                <input
+                                    id="WageAccGroupDetail_CostPercentage"
+                                    class="form-control"
+                                    type="number"
+                                    name="CostPercentage"
+                                    [ngModel]="wageAccGroupDetail().costPercentage"
+                                    (ngModelChange)="updateField('costPercentage', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check form-switch">
+                                <input
+                                    id="WageAccGroupDetail_MergeOffsetAccount"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="MergeOffsetAccount"
+                                    [ngModel]="wageAccGroupDetail().mergeOffsetAccount"
+                                    (ngModelChange)="updateField('mergeOffsetAccount', $event)" />
+                                <label class="form-check-label" for="WageAccGroupDetail_MergeOffsetAccount">{{ 'MergeOffsetAccount' | localize }}</label>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @for (field of costElementFields; track field; let i = $index) {
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" [for]="'WageAccGroupDetail_' + field">{{ ('CostElement' + (i + 1) + 'Id') | localize }}</label>
+                                    <select
+                                        [id]="'WageAccGroupDetail_' + field"
+                                        class="form-select"
+                                        [name]="field"
+                                        [ngModel]="getCostElementValue(field)"
+                                        (ngModelChange)="updateField(field, $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (ce of costElements(); track ce.id) {
+                                            <option [ngValue]="ce.id">{{ ce.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!wageAccGroupDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #costRegisterDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (costRegisterDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'CostRegisterDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'CostRegisterDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegisterDetail_CostRegisterId">{{ 'CostRegisterId' | localize }}</label>
+                                <input
+                                    id="CostRegisterDetail_CostRegisterId"
+                                    #costRegisterIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="CostRegisterId"
+                                    [ngModel]="costRegisterDetail().costRegisterId"
+                                    (ngModelChange)="updateField('costRegisterId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="costRegisterIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegisterDetail_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                <select
+                                    id="CostRegisterDetail_WageTypeId"
+                                    #wageTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="costRegisterDetail().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wt of wageTypes(); track wt.id) {
+                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="wageTypeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegisterDetail_AccountInfoId">{{ 'AccountInfoId' | localize }}</label>
+                                <select
+                                    id="CostRegisterDetail_AccountInfoId"
+                                    #accountInfoIdInput="ngModel"
+                                    class="form-select"
+                                    name="AccountInfoId"
+                                    [ngModel]="costRegisterDetail().accountInfoId"
+                                    (ngModelChange)="updateField('accountInfoId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (account of accountInfos(); track account.id) {
+                                        <option [ngValue]="account.id">{{ account.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="accountInfoIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="CostRegisterDetail_Amount">{{ 'Amount' | localize }}</label>
+                                <input
+                                    id="CostRegisterDetail_Amount"
+                                    #amountInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Amount"
+                                    [ngModel]="costRegisterDetail().amount"
+                                    (ngModelChange)="updateField('amount', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="amountInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="CostRegisterDetail_CurrencyId">{{ 'CurrencyId' | localize }}</label>
+                                <select
+                                    id="CostRegisterDetail_CurrencyId"
+                                    class="form-select"
+                                    name="CurrencyId"
+                                    [ngModel]="costRegisterDetail().currencyId"
+                                    (ngModelChange)="updateField('currencyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (currency of currencies(); track currency.id) {
+                                        <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @for (field of costElementFields; track field; let i = $index) {
+                                <div class="col-md-3 mb-5">
+                                    <label class="form-label" [for]="'CostRegisterDetail_' + field">{{ ('CostElement' + (i + 1) + 'Id') | localize }}</label>
+                                    <select
+                                        [id]="'CostRegisterDetail_' + field"
+                                        class="form-select"
+                                        [name]="field"
+                                        [ngModel]="getCostElementValue(field)"
+                                        (ngModelChange)="updateField(field, $event)">
+                                        <option [ngValue]="undefined"></option>
+                                        @for (ce of costElements(); track ce.id) {
+                                            <option [ngValue]="ce.id">{{ ce.nameEn }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!costRegisterDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

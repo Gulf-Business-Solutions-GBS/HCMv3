@@ -41,6 +41,13 @@ import {
     TimeTypesServiceProxy,
     TransTypesServiceProxy,
     TimeTransferTypesServiceProxy,
+    AccountTypesServiceProxy,
+    PayrollReasonTypesServiceProxy,
+    TicketClassesServiceProxy,
+    TicketRoutesServiceProxy,
+    AbsenceViolationRulesServiceProxy,
+    PayrollPeriodsServiceProxy,
+    WageAccGroupsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -650,6 +657,405 @@ export const appRoutes: Routes = [
                                 (m) => m.TimeTransfersComponent
                             ),
                         data: { permission: 'Pages.TimeManagement.TimeTransfers' },
+                    },
+                    simpleLookupRoute('account-types', 'AccountTypes', 'AccountTypes', AccountTypesServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('payroll-reason-types', 'PayrollReasonTypes', 'PayrollReasonTypes', PayrollReasonTypesServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('ticket-classes', 'TicketClasses', 'TicketClasses', TicketClassesServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('ticket-routes', 'TicketRoutes', 'TicketRoutes', TicketRoutesServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('absence-violation-rules', 'AbsenceViolationRules', 'AbsenceViolationRules', AbsenceViolationRulesServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('payroll-periods', 'PayrollPeriods', 'PayrollPeriods', PayrollPeriodsServiceProxy, 'PayrollManagement'),
+                    simpleLookupRoute('wage-acc-groups', 'WageAccGroups', 'WageAccGroups', WageAccGroupsServiceProxy, 'PayrollManagement'),
+                    {
+                        path: 'attendance-types',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/attendance-types/attendance-types.component').then(
+                                (m) => m.AttendanceTypesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AttendanceTypes' },
+                    },
+                    {
+                        path: 'ticket-pax-types',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/ticket-pax-types/ticket-pax-types.component').then(
+                                (m) => m.TicketPaxTypesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.TicketPaxTypes' },
+                    },
+                    {
+                        path: 'account-infos',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/account-infos/account-infos.component').then(
+                                (m) => m.AccountInfosComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AccountInfos' },
+                    },
+                    {
+                        path: 'absence-deduction-rules',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-deduction-rules/absence-deduction-rules.component'
+                            ).then((m) => m.AbsenceDeductionRulesComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceDeductionRules' },
+                    },
+                    {
+                        path: 'absence-ded-rule-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-ded-rule-details/absence-ded-rule-details.component'
+                            ).then((m) => m.AbsenceDedRuleDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceDedRuleDetails' },
+                    },
+                    {
+                        path: 'absence-violation-rule-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-violation-rule-details/absence-violation-rule-details.component'
+                            ).then((m) => m.AbsenceViolationRuleDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceViolationRuleDetails' },
+                    },
+                    {
+                        path: 'absence-violation-rule-exceptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-violation-rule-exceptions/absence-violation-rule-exceptions.component'
+                            ).then((m) => m.AbsenceViolationRuleExceptionsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceViolationRuleExceptions' },
+                    },
+                    {
+                        path: 'absence-type-exceptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-type-exceptions/absence-type-exceptions.component'
+                            ).then((m) => m.AbsenceTypeExceptionsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceTypeExceptions' },
+                    },
+                    {
+                        path: 'wage-type-exceptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/wage-type-exceptions/wage-type-exceptions.component'
+                            ).then((m) => m.WageTypeExceptionsComponent),
+                        data: { permission: 'Pages.PayrollManagement.WageTypeExceptions' },
+                    },
+                    {
+                        path: 'absence-payments',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/absence-payments/absence-payments.component').then(
+                                (m) => m.AbsencePaymentsComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AbsencePayments' },
+                    },
+                    {
+                        path: 'absence-violation-action-records',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-violation-action-records/absence-violation-action-records.component'
+                            ).then((m) => m.AbsenceViolationActionRecordsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceViolationActionRecords' },
+                    },
+                    {
+                        path: 'absence-violation-action-logs',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/absence-violation-action-logs/absence-violation-action-logs.component'
+                            ).then((m) => m.AbsenceViolationActionLogsComponent),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceViolationActionLogs' },
+                    },
+                    {
+                        path: 'absence-types',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/absence-types/absence-types.component').then(
+                                (m) => m.AbsenceTypesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceTypes' },
+                    },
+                    {
+                        path: 'employee-groups',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/employee-groups/employee-groups.component').then(
+                                (m) => m.EmployeeGroupsComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.EmployeeGroups' },
+                    },
+                    {
+                        path: 'employee-sub-groups',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/employee-sub-groups/employee-sub-groups.component'
+                            ).then((m) => m.EmployeeSubGroupsComponent),
+                        data: { permission: 'Pages.PayrollManagement.EmployeeSubGroups' },
+                    },
+                    {
+                        path: 'employee-sub-groups/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/employee-sub-group-detail/employee-sub-group-detail.component'
+                            ).then((m) => m.EmployeeSubGroupDetailComponent),
+                        data: { permission: 'Pages.PayrollManagement.EmployeeSubGroups' },
+                    },
+                    {
+                        path: 'payroll-areas',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/payroll-areas/payroll-areas.component').then(
+                                (m) => m.PayrollAreasComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.PayrollAreas' },
+                    },
+                    {
+                        path: 'payroll-calendars',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/payroll-calendars/payroll-calendars.component').then(
+                                (m) => m.PayrollCalendarsComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.PayrollCalendars' },
+                    },
+                    {
+                        path: 'payroll-control-records',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/payroll-control-records/payroll-control-records.component'
+                            ).then((m) => m.PayrollControlRecordsComponent),
+                        data: { permission: 'Pages.PayrollManagement.PayrollControlRecords' },
+                    },
+                    {
+                        path: 'wage-types',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/wage-types/wage-types.component').then(
+                                (m) => m.WageTypesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.WageTypes' },
+                    },
+                    {
+                        path: 'wage-acc-group-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/wage-acc-group-details/wage-acc-group-details.component'
+                            ).then((m) => m.WageAccGroupDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.WageAccGroupDetails' },
+                    },
+                    {
+                        path: 'wage-accounts',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/wage-accounts/wage-accounts.component').then(
+                                (m) => m.WageAccountsComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.WageAccounts' },
+                    },
+                    {
+                        path: 'wage-type-leaves',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/wage-type-leaves/wage-type-leaves.component').then(
+                                (m) => m.WageTypeLeavesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.WageTypeLeaves' },
+                    },
+                    {
+                        path: 'wage-type-security-roles',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/wage-type-security-roles/wage-type-security-roles.component'
+                            ).then((m) => m.WageTypeSecurityRolesComponent),
+                        data: { permission: 'Pages.PayrollManagement.WageTypeSecurityRoles' },
+                    },
+                    {
+                        path: 'wage-type-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/wage-type-registers/wage-type-registers.component'
+                            ).then((m) => m.WageTypeRegistersComponent),
+                        data: { permission: 'Pages.PayrollManagement.WageTypeRegisters' },
+                    },
+                    {
+                        path: 'indemnity-pay-rules',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/indemnity-pay-rules/indemnity-pay-rules.component'
+                            ).then((m) => m.IndemnityPayRulesComponent),
+                        data: { permission: 'Pages.PayrollManagement.IndemnityPayRules' },
+                    },
+                    {
+                        path: 'indemnity-pay-rule-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/indemnity-pay-rule-details/indemnity-pay-rule-details.component'
+                            ).then((m) => m.IndemnityPayRuleDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.IndemnityPayRuleDetails' },
+                    },
+                    {
+                        path: 'org-unit-wage-acc-groups',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/org-unit-wage-acc-groups/org-unit-wage-acc-groups.component'
+                            ).then((m) => m.OrgUnitWageAccGroupsComponent),
+                        data: { permission: 'Pages.PayrollManagement.OrgUnitWageAccGroups' },
+                    },
+                    {
+                        path: 'social-securities',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/social-securities/social-securities.component'
+                            ).then((m) => m.SocialSecuritiesComponent),
+                        data: { permission: 'Pages.PayrollManagement.SocialSecurities' },
+                    },
+                    {
+                        path: 'social-security-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/social-security-details/social-security-details.component'
+                            ).then((m) => m.SocialSecurityDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.SocialSecurityDetails' },
+                    },
+                    {
+                        path: 'social-security-marital-allowances',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/social-security-marital-allowances/social-security-marital-allowances.component'
+                            ).then((m) => m.SocialSecurityMaritalAllowancesComponent),
+                        data: { permission: 'Pages.PayrollManagement.SocialSecurityMaritalAllowances' },
+                    },
+                    {
+                        path: 'social-security-education-allowances',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/social-security-education-allowances/social-security-education-allowances.component'
+                            ).then((m) => m.SocialSecurityEducationAllowancesComponent),
+                        data: { permission: 'Pages.PayrollManagement.SocialSecurityEducationAllowances' },
+                    },
+                    {
+                        path: 'social-security-rules',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/social-security-rules/social-security-rules.component'
+                            ).then((m) => m.SocialSecurityRulesComponent),
+                        data: { permission: 'Pages.PayrollManagement.SocialSecurityRules' },
+                    },
+                    {
+                        path: 'ticket-types',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/ticket-types/ticket-types.component').then(
+                                (m) => m.TicketTypesComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.TicketTypes' },
+                    },
+                    {
+                        path: 'ticket-fares',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/ticket-fares/ticket-fares.component').then(
+                                (m) => m.TicketFaresComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.TicketFares' },
+                    },
+                    {
+                        path: 'ticket-accrual-summaries',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/ticket-accrual-summaries/ticket-accrual-summaries.component'
+                            ).then((m) => m.TicketAccrualSummariesComponent),
+                        data: { permission: 'Pages.PayrollManagement.TicketAccrualSummaries' },
+                    },
+                    {
+                        path: 'temp-benefit-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/temp-benefit-types/temp-benefit-types.component'
+                            ).then((m) => m.TempBenefitTypesComponent),
+                        data: { permission: 'Pages.PayrollManagement.TempBenefitTypes' },
+                    },
+                    {
+                        path: 'temp-employee-benefits',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/temp-employee-benefits/temp-employee-benefits.component'
+                            ).then((m) => m.TempEmployeeBenefitsComponent),
+                        data: { permission: 'Pages.PayrollManagement.TempEmployeeBenefits' },
+                    },
+                    {
+                        path: 'payroll-logs',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/payroll-logs/payroll-logs.component').then(
+                                (m) => m.PayrollLogsComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.PayrollLogs' },
+                    },
+                    {
+                        path: 'cost-registers',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/cost-registers/cost-registers.component').then(
+                                (m) => m.CostRegistersComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.CostRegisters' },
+                    },
+                    {
+                        path: 'cost-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/cost-register-details/cost-register-details.component'
+                            ).then((m) => m.CostRegisterDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.CostRegisterDetails' },
+                    },
+                    {
+                        path: 'salary-registers',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/salary-registers/salary-registers.component').then(
+                                (m) => m.SalaryRegistersComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.SalaryRegisters' },
+                    },
+                    {
+                        path: 'salary-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/salary-register-details/salary-register-details.component'
+                            ).then((m) => m.SalaryRegisterDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.SalaryRegisterDetails' },
+                    },
+                    {
+                        path: 'salary-register-days-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/salary-register-days-details/salary-register-days-details.component'
+                            ).then((m) => m.SalaryRegisterDaysDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.SalaryRegisterDaysDetails' },
+                    },
+                    {
+                        path: 'simulation-salary-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/simulation-salary-registers/simulation-salary-registers.component'
+                            ).then((m) => m.SimulationSalaryRegistersComponent),
+                        data: { permission: 'Pages.PayrollManagement.SimulationSalaryRegisters' },
+                    },
+                    {
+                        path: 'simulation-salary-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/simulation-salary-register-details/simulation-salary-register-details.component'
+                            ).then((m) => m.SimulationSalaryRegisterDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.SimulationSalaryRegisterDetails' },
+                    },
+                    {
+                        path: 'simulation-salary-register-days-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/simulation-salary-register-days-details/simulation-salary-register-days-details.component'
+                            ).then((m) => m.SimulationSalaryRegisterDaysDetailsComponent),
+                        data: { permission: 'Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails' },
+                    },
+                    {
+                        path: 'gratuity-accrual-summaries',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/gratuity-accrual-summaries/gratuity-accrual-summaries.component'
+                            ).then((m) => m.GratuityAccrualSummariesComponent),
+                        data: { permission: 'Pages.PayrollManagement.GratuityAccrualSummaries' },
+                    },
+                    {
+                        path: 'leave-accrual-summaries',
+                        loadComponent: () =>
+                            import(
+                                './admin/payroll-management/leave-accrual-summaries/leave-accrual-summaries.component'
+                            ).then((m) => m.LeaveAccrualSummariesComponent),
+                        data: { permission: 'Pages.PayrollManagement.LeaveAccrualSummaries' },
                     },
                     {
                         path: 'auditLogs',

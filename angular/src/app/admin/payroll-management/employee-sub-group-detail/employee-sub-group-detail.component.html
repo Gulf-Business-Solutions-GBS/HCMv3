@@ -1,0 +1,58 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeSubGroups' | localize" [description]="'PayrollManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (employeeSubGroup()) {
+                            <span>{{ employeeSubGroup().code }} - {{ employeeSubGroup().nameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (employeeSubGroupId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'EmployeeSubGroupAbsenceTypes' | localize }}" [active]="true">
+                            <employee-sub-group-absence-types [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupAbsences' | localize }}">
+                            <employee-sub-group-absences [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupAssetAllowances' | localize }}">
+                            <employee-sub-group-asset-allowances [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupBenefits' | localize }}">
+                            <employee-sub-group-benefits [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupBonuses' | localize }}">
+                            <employee-sub-group-bonuses [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupCommissions' | localize }}">
+                            <employee-sub-group-commissions [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupFunds' | localize }}">
+                            <employee-sub-group-funds [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupGratuities' | localize }}">
+                            <employee-sub-group-gratuities [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupHealthReimburses' | localize }}">
+                            <employee-sub-group-health-reimburses [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupPayments' | localize }}">
+                            <employee-sub-group-payments [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupTickets' | localize }}">
+                            <employee-sub-group-tickets [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubGroupWageTypes' | localize }}">
+                            <employee-sub-group-wage-types [employeeSubGroupId]="employeeSubGroupId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

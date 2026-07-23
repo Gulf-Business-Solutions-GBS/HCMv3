@@ -1,0 +1,112 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'EmployeeSubGroupFunds' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="EmployeeSubGroupFund_FromPay">{{ 'FromPay' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_FromPay"
+                                    class="form-control"
+                                    type="number"
+                                    name="FromPay"
+                                    [ngModel]="record().fromPay"
+                                    (ngModelChange)="updateField('fromPay', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="EmployeeSubGroupFund_ToPay">{{ 'ToPay' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_ToPay"
+                                    class="form-control"
+                                    type="number"
+                                    name="ToPay"
+                                    [ngModel]="record().toPay"
+                                    (ngModelChange)="updateField('toPay', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="EmployeeSubGroupFund_FundDedType">{{ 'FundDedType' | localize }}</label>
+                                <select
+                                    id="EmployeeSubGroupFund_FundDedType"
+                                    class="form-select"
+                                    name="FundDedType"
+                                    [ngModel]="record().fundDedType"
+                                    (ngModelChange)="updateField('fundDedType', $event)">
+                                    @for (type of fundDedTypes; track type.value) {
+                                        <option [ngValue]="type.value">{{ type.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupFund_Percentage">{{ 'Percentage' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_Percentage"
+                                    class="form-control"
+                                    type="number"
+                                    name="Percentage"
+                                    [ngModel]="record().percentage"
+                                    (ngModelChange)="updateField('percentage', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupFund_MinAmount">{{ 'MinAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_MinAmount"
+                                    class="form-control"
+                                    type="number"
+                                    name="MinAmount"
+                                    [ngModel]="record().minAmount"
+                                    (ngModelChange)="updateField('minAmount', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupFund_MaxAmount">{{ 'MaxAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_MaxAmount"
+                                    class="form-control"
+                                    type="number"
+                                    name="MaxAmount"
+                                    [ngModel]="record().maxAmount"
+                                    (ngModelChange)="updateField('maxAmount', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="EmployeeSubGroupFund_FixAmount">{{ 'FixAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeSubGroupFund_FixAmount"
+                                    class="form-control"
+                                    type="number"
+                                    name="FixAmount"
+                                    [ngModel]="record().fixAmount"
+                                    (ngModelChange)="updateField('fixAmount', $event)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
