@@ -1,0 +1,158 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Employees' | localize" [description]="'PersonnelAdministration' | localize">
+        <div role="actions">
+            @if ('Pages.PersonnelAdministration.Employees.Create' | permission) {
+                <button (click)="createEmployee()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getEmployees()" />
+                                <button class="btn btn-primary" (click)="getEmployees()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getEmployees($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="fullNameEn">
+                                        {{ 'FullNameEn' | localize }}
+                                        <p-sortIcon field="fullNameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="fullNameAr">
+                                        {{ 'FullNameAr' | localize }}
+                                        <p-sortIcon field="fullNameAr" />
+                                    </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'Status' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="civilID">
+                                        {{ 'CivilID' | localize }}
+                                        <p-sortIcon field="civilID" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="email">
+                                        {{ 'Email' | localize }}
+                                        <p-sortIcon field="email" />
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Nationality' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Title' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <a href="javascript:;" (click)="viewDetails(record)">{{ record.fullNameEn }}</a>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        {{ record.fullNameAr }}
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        @if (record.status === 1) {
+                                            <span class="badge badge-success">{{ 'Active' | localize }}</span>
+                                        } @else {
+                                            <span class="badge badge-secondary">{{ 'Inactive' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.civilID }}
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        {{ record.email }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.nationalityName }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.titleName }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getEmployees($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeeModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

@@ -1,0 +1,267 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #monthlyTimeRegisterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (monthlyTimeRegister().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'MonthlyTimeRegister' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'MonthlyTimeRegister' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 75vh; overflow-y: auto">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="MonthlyTimeRegister_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="MonthlyTimeRegister_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="monthlyTimeRegister().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="MonthlyTimeRegister_Month">{{ 'Month' | localize }}</label>
+                                <input
+                                    id="MonthlyTimeRegister_Month"
+                                    #monthInput="ngModel"
+                                    type="month"
+                                    class="form-control"
+                                    name="Month"
+                                    [ngModel]="monthlyTimeRegister().month?.toFormat('yyyy-MM')"
+                                    (ngModelChange)="updateMonthField('month', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="monthInput" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'LeaveBalances' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AnnualLeaveDays">{{ 'AnnualLeaveDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AnnualLeaveDays" class="form-control" type="number" step="any" name="AnnualLeaveDays"
+                                    [ngModel]="monthlyTimeRegister().annualLeaveDays" (ngModelChange)="updateField('annualLeaveDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_UnpaidLeaveDays">{{ 'UnpaidLeaveDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_UnpaidLeaveDays" class="form-control" type="number" step="any" name="UnpaidLeaveDays"
+                                    [ngModel]="monthlyTimeRegister().unpaidLeaveDays" (ngModelChange)="updateField('unpaidLeaveDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_SickLeavePaidDays">{{ 'SickLeavePaidDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_SickLeavePaidDays" class="form-control" type="number" step="any" name="SickLeavePaidDays"
+                                    [ngModel]="monthlyTimeRegister().sickLeavePaidDays" (ngModelChange)="updateField('sickLeavePaidDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_SickLeaveUnpaidDays">{{ 'SickLeaveUnpaidDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_SickLeaveUnpaidDays" class="form-control" type="number" step="any" name="SickLeaveUnpaidDays"
+                                    [ngModel]="monthlyTimeRegister().sickLeaveUnpaidDays" (ngModelChange)="updateField('sickLeaveUnpaidDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_GratuityDays">{{ 'GratuityDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_GratuityDays" class="form-control" type="number" step="any" name="GratuityDays"
+                                    [ngModel]="monthlyTimeRegister().gratuityDays" (ngModelChange)="updateField('gratuityDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_GratuityPaidDays">{{ 'GratuityPaidDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_GratuityPaidDays" class="form-control" type="number" step="any" name="GratuityPaidDays"
+                                    [ngModel]="monthlyTimeRegister().gratuityPaidDays" (ngModelChange)="updateField('gratuityPaidDays', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_PublicHolidays">{{ 'PublicHolidays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_PublicHolidays" class="form-control" type="number" step="any" name="PublicHolidays"
+                                    [ngModel]="monthlyTimeRegister().publicHolidays" (ngModelChange)="updateField('publicHolidays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_WeeklyOffs">{{ 'WeeklyOffs' | localize }}</label>
+                                <input id="MonthlyTimeRegister_WeeklyOffs" class="form-control" type="number" step="any" name="WeeklyOffs"
+                                    [ngModel]="monthlyTimeRegister().weeklyOffs" (ngModelChange)="updateField('weeklyOffs', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_RestDays">{{ 'RestDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_RestDays" class="form-control" type="number" step="any" name="RestDays"
+                                    [ngModel]="monthlyTimeRegister().restDays" (ngModelChange)="updateField('restDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AnnualLeaveAccrualDays">{{ 'AnnualLeaveAccrualDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AnnualLeaveAccrualDays" class="form-control" type="number" step="any" name="AnnualLeaveAccrualDays"
+                                    [ngModel]="monthlyTimeRegister().annualLeaveAccrualDays" (ngModelChange)="updateField('annualLeaveAccrualDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AnnualLeaveOpeningBal">{{ 'AnnualLeaveOpeningBal' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AnnualLeaveOpeningBal" class="form-control" type="number" step="any" name="AnnualLeaveOpeningBal"
+                                    [ngModel]="monthlyTimeRegister().annualLeaveOpeningBal" (ngModelChange)="updateField('annualLeaveOpeningBal', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AnnualLeaveClosingBal">{{ 'AnnualLeaveClosingBal' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AnnualLeaveClosingBal" class="form-control" type="number" step="any" name="AnnualLeaveClosingBal"
+                                    [ngModel]="monthlyTimeRegister().annualLeaveClosingBal" (ngModelChange)="updateField('annualLeaveClosingBal', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_TicketAccrualDays">{{ 'TicketAccrualDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_TicketAccrualDays" class="form-control" type="number" step="any" name="TicketAccrualDays"
+                                    [ngModel]="monthlyTimeRegister().ticketAccrualDays" (ngModelChange)="updateField('ticketAccrualDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_TicketAccrualOpeningBal">{{ 'TicketAccrualOpeningBal' | localize }}</label>
+                                <input id="MonthlyTimeRegister_TicketAccrualOpeningBal" class="form-control" type="number" step="any" name="TicketAccrualOpeningBal"
+                                    [ngModel]="monthlyTimeRegister().ticketAccrualOpeningBal" (ngModelChange)="updateField('ticketAccrualOpeningBal', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_TicketAccrualClosingBal">{{ 'TicketAccrualClosingBal' | localize }}</label>
+                                <input id="MonthlyTimeRegister_TicketAccrualClosingBal" class="form-control" type="number" step="any" name="TicketAccrualClosingBal"
+                                    [ngModel]="monthlyTimeRegister().ticketAccrualClosingBal" (ngModelChange)="updateField('ticketAccrualClosingBal', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AirTicketPaidDays">{{ 'AirTicketPaidDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AirTicketPaidDays" class="form-control" type="number" step="any" name="AirTicketPaidDays"
+                                    [ngModel]="monthlyTimeRegister().airTicketPaidDays" (ngModelChange)="updateField('airTicketPaidDays', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'WorkingTimeSection' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_ActiveDays">{{ 'ActiveDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_ActiveDays" class="form-control" type="number" step="any" name="ActiveDays"
+                                    [ngModel]="monthlyTimeRegister().activeDays" (ngModelChange)="updateField('activeDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_PlannedWorkingMins">{{ 'PlannedWorkingMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_PlannedWorkingMins" class="form-control" type="number" name="PlannedWorkingMins"
+                                    [ngModel]="monthlyTimeRegister().plannedWorkingMins" (ngModelChange)="updateField('plannedWorkingMins', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_ActualWorkingMins">{{ 'ActualWorkingMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_ActualWorkingMins" class="form-control" type="number" name="ActualWorkingMins"
+                                    [ngModel]="monthlyTimeRegister().actualWorkingMins" (ngModelChange)="updateField('actualWorkingMins', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_ActualAbsenceMins">{{ 'ActualAbsenceMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_ActualAbsenceMins" class="form-control" type="number" name="ActualAbsenceMins"
+                                    [ngModel]="monthlyTimeRegister().actualAbsenceMins" (ngModelChange)="updateField('actualAbsenceMins', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_PlannedWorkingDays">{{ 'PlannedWorkingDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_PlannedWorkingDays" class="form-control" type="number" step="any" name="PlannedWorkingDays"
+                                    [ngModel]="monthlyTimeRegister().plannedWorkingDays" (ngModelChange)="updateField('plannedWorkingDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_ActualWorkingDays">{{ 'ActualWorkingDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_ActualWorkingDays" class="form-control" type="number" step="any" name="ActualWorkingDays"
+                                    [ngModel]="monthlyTimeRegister().actualWorkingDays" (ngModelChange)="updateField('actualWorkingDays', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_ExtraWorkingDays">{{ 'ExtraWorkingDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_ExtraWorkingDays" class="form-control" type="number" step="any" name="ExtraWorkingDays"
+                                    [ngModel]="monthlyTimeRegister().extraWorkingDays" (ngModelChange)="updateField('extraWorkingDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_LieuDays">{{ 'LieuDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_LieuDays" class="form-control" type="number" step="any" name="LieuDays"
+                                    [ngModel]="monthlyTimeRegister().lieuDays" (ngModelChange)="updateField('lieuDays', $event)" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AdvLeaveRecoveryDays">{{ 'AdvLeaveRecoveryDays' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AdvLeaveRecoveryDays" class="form-control" type="number" step="any" name="AdvLeaveRecoveryDays"
+                                    [ngModel]="monthlyTimeRegister().advLeaveRecoveryDays" (ngModelChange)="updateField('advLeaveRecoveryDays', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'OvertimeSection' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_NormalDayOTMins">{{ 'NormalDayOTMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_NormalDayOTMins" class="form-control" type="number" name="NormalDayOTMins"
+                                    [ngModel]="monthlyTimeRegister().normalDayOTMins" (ngModelChange)="updateField('normalDayOTMins', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_RestDayOTMins">{{ 'RestDayOTMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_RestDayOTMins" class="form-control" type="number" name="RestDayOTMins"
+                                    [ngModel]="monthlyTimeRegister().restDayOTMins" (ngModelChange)="updateField('restDayOTMins', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_HolidayOTMins">{{ 'HolidayOTMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_HolidayOTMins" class="form-control" type="number" name="HolidayOTMins"
+                                    [ngModel]="monthlyTimeRegister().holidayOTMins" (ngModelChange)="updateField('holidayOTMins', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_WeekendOTMins">{{ 'WeekendOTMins' | localize }}</label>
+                                <input id="MonthlyTimeRegister_WeekendOTMins" class="form-control" type="number" name="WeekendOTMins"
+                                    [ngModel]="monthlyTimeRegister().weekendOTMins" (ngModelChange)="updateField('weekendOTMins', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'AdvancesSection' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AdvanceLeavePaids">{{ 'AdvanceLeavePaids' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AdvanceLeavePaids" class="form-control" type="number" step="any" name="AdvanceLeavePaids"
+                                    [ngModel]="monthlyTimeRegister().advanceLeavePaids" (ngModelChange)="updateField('advanceLeavePaids', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="MonthlyTimeRegister_AdvanceTicketPaids">{{ 'AdvanceTicketPaids' | localize }}</label>
+                                <input id="MonthlyTimeRegister_AdvanceTicketPaids" class="form-control" type="number" step="any" name="AdvanceTicketPaids"
+                                    [ngModel]="monthlyTimeRegister().advanceTicketPaids" (ngModelChange)="updateField('advanceTicketPaids', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!monthlyTimeRegisterForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

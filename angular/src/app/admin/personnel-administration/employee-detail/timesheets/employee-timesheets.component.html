@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.TimeManagement.EmployeeTimesheets.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                scrollDirection="horizontal"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.TimeManagement.EmployeeTimesheets.Edit',
+                                        'Pages.TimeManagement.EmployeeTimesheets.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th>{{ 'TransDate' | localize }}</th>
+                        <th>{{ 'ActualStartTime' | localize }}</th>
+                        <th>{{ 'ActualEndTime' | localize }}</th>
+                        <th>{{ 'TotalHours' | localize }}</th>
+                        <th>{{ 'Approved' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.TimeManagement.EmployeeTimesheets.Edit',
+                                        'Pages.TimeManagement.EmployeeTimesheets.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.transDate | luxonFormat: 'DD' }}</td>
+                        <td>{{ record.actualStartTime }}</td>
+                        <td>{{ record.actualEndTime }}</td>
+                        <td>{{ record.totalHours }}</td>
+                        <td>{{ record.approved }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditEmployeeTimesheetModal #createOrEditModal (modalSave)="reloadPage()" />

@@ -1,0 +1,138 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #timeLogForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (timeLog().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TimeLog' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TimeLog' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TimeLog_RunTimeStamp">{{ 'RunTimeStamp' | localize }}</label>
+                                <input
+                                    id="TimeLog_RunTimeStamp"
+                                    type="datetime-local"
+                                    class="form-control"
+                                    name="RunTimeStamp"
+                                    [ngModel]="toDateTimeLocal(timeLog().runTimeStamp)"
+                                    (ngModelChange)="updateDateTimeField('runTimeStamp', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TimeLog_DayDate">{{ 'DayDate' | localize }}</label>
+                                <input
+                                    id="TimeLog_DayDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="DayDate"
+                                    [ngModel]="timeLog().dayDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('dayDate', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TimeLog_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="TimeLog_EmployeeId"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="timeLog().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeLog_Status">{{ 'Status' | localize }}</label>
+                                <input
+                                    id="TimeLog_Status"
+                                    class="form-control"
+                                    type="number"
+                                    name="Status"
+                                    [ngModel]="timeLog().status"
+                                    (ngModelChange)="updateField('status', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeLog_NoOfEmployee">{{ 'NoOfEmployee' | localize }}</label>
+                                <input
+                                    id="TimeLog_NoOfEmployee"
+                                    class="form-control"
+                                    type="number"
+                                    name="NoOfEmployee"
+                                    [ngModel]="timeLog().noOfEmployee"
+                                    (ngModelChange)="updateField('noOfEmployee', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5 d-flex align-items-center">
+                                <div class="form-check">
+                                    <input
+                                        id="TimeLog_StopFlag"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="StopFlag"
+                                        [ngModel]="timeLog().stopFlag"
+                                        (ngModelChange)="updateField('stopFlag', $event)" />
+                                    <label class="form-check-label" for="TimeLog_StopFlag">{{ 'StopFlag' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="TimeLog_Message">{{ 'Message' | localize }}</label>
+                                <textarea
+                                    id="TimeLog_Message"
+                                    class="form-control"
+                                    rows="4"
+                                    name="Message"
+                                    [ngModel]="timeLog().message"
+                                    (ngModelChange)="updateField('message', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!timeLogForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

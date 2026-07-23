@@ -1,0 +1,130 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeCertification_Course">{{ 'Course' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_Course"
+                                #courseInput="ngModel"
+                                class="form-control"
+                                type="text"
+                                name="Course"
+                                [ngModel]="record().course"
+                                (ngModelChange)="updateField('course', $event)"
+                                required />
+                            <validation-messages [formCtrl]="courseInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeCertification_InstitutionId">{{ 'Institution' | localize }}</label>
+                            <select
+                                id="EmployeeCertification_InstitutionId"
+                                #institutionInput="ngModel"
+                                class="form-select"
+                                name="InstitutionId"
+                                [ngModel]="record().institutionId"
+                                (ngModelChange)="updateField('institutionId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of institutions(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="institutionInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeCertification_Duration">{{ 'Duration' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_Duration"
+                                class="form-control"
+                                type="text"
+                                name="Duration"
+                                [ngModel]="record().duration"
+                                (ngModelChange)="updateField('duration', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeCertification_Certificate">{{ 'Certificate' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_Certificate"
+                                class="form-control"
+                                type="text"
+                                name="Certificate"
+                                [ngModel]="record().certificate"
+                                (ngModelChange)="updateField('certificate', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeCertification_Grade">{{ 'Grade' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_Grade"
+                                class="form-control"
+                                type="text"
+                                name="Grade"
+                                [ngModel]="record().grade"
+                                (ngModelChange)="updateField('grade', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeCertification_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_StartDate"
+                                #startDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="StartDate"
+                                [ngModel]="record().startDate?.toISODate()"
+                                (ngModelChange)="updateDateField('startDate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="startDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeCertification_EndDate">{{ 'EndDate' | localize }}</label>
+                            <input
+                                id="EmployeeCertification_EndDate"
+                                #endDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="EndDate"
+                                [ngModel]="record().endDate?.toISODate()"
+                                (ngModelChange)="updateDateField('endDate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="endDateInput" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

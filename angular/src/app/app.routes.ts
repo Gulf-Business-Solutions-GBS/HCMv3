@@ -38,6 +38,9 @@ import {
     CostCenterGroupsServiceProxy,
     CostElementTypesServiceProxy,
     JobTitlesServiceProxy,
+    TimeTypesServiceProxy,
+    TransTypesServiceProxy,
+    TimeTransferTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -421,6 +424,233 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.OrganizationManagement.OrgUnits' },
                     },
+                    simpleLookupRoute('time-types', 'TimeTypes', 'TimeTypes', TimeTypesServiceProxy, 'TimeManagement'),
+                    simpleLookupRoute('trans-types', 'TransTypes', 'TransTypes', TransTypesServiceProxy, 'TimeManagement'),
+                    simpleLookupRoute('time-transfer-types', 'TimeTransferTypes', 'TimeTransferTypes', TimeTransferTypesServiceProxy, 'TimeManagement'),
+                    {
+                        path: 'break-shifts',
+                        loadComponent: () =>
+                            import('./admin/time-management/break-shifts/break-shifts.component').then(
+                                (m) => m.BreakShiftsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.BreakShifts' },
+                    },
+                    {
+                        path: 'duties',
+                        loadComponent: () =>
+                            import('./admin/time-management/duties/duties.component').then(
+                                (m) => m.DutiesComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.Duties' },
+                    },
+                    {
+                        path: 'daily-duties',
+                        loadComponent: () =>
+                            import('./admin/time-management/daily-duties/daily-duties.component').then(
+                                (m) => m.DailyDutiesComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.DailyDuties' },
+                    },
+                    {
+                        path: 'holiday-calendars',
+                        loadComponent: () =>
+                            import('./admin/time-management/holiday-calendars/holiday-calendars.component').then(
+                                (m) => m.HolidayCalendarsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.HolidayCalendars' },
+                    },
+                    {
+                        path: 'holidays',
+                        loadComponent: () =>
+                            import('./admin/time-management/holidays/holidays.component').then(
+                                (m) => m.HolidaysComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.Holidays' },
+                    },
+                    {
+                        path: 'holiday-periods',
+                        loadComponent: () =>
+                            import('./admin/time-management/holiday-periods/holiday-periods.component').then(
+                                (m) => m.HolidayPeriodsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.HolidayPeriods' },
+                    },
+                    {
+                        path: 'time-policies',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-policies/time-policies.component').then(
+                                (m) => m.TimePoliciesComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimePolicies' },
+                    },
+                    {
+                        path: 'duty-periods',
+                        loadComponent: () =>
+                            import('./admin/time-management/duty-periods/duty-periods.component').then(
+                                (m) => m.DutyPeriodsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.DutyPeriods' },
+                    },
+                    {
+                        path: 'duty-period-details',
+                        loadComponent: () =>
+                            import('./admin/time-management/duty-period-details/duty-period-details.component').then(
+                                (m) => m.DutyPeriodDetailsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.DutyPeriodDetails' },
+                    },
+                    {
+                        path: 'roster-duty-periods',
+                        loadComponent: () =>
+                            import('./admin/time-management/roster-duty-periods/roster-duty-periods.component').then(
+                                (m) => m.RosterDutyPeriodsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.RosterDutyPeriods' },
+                    },
+                    {
+                        path: 'roster-duty-period-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/roster-duty-period-details/roster-duty-period-details.component'
+                            ).then((m) => m.RosterDutyPeriodDetailsComponent),
+                        data: { permission: 'Pages.TimeManagement.RosterDutyPeriodDetails' },
+                    },
+                    {
+                        path: 'roster-duty-schedules',
+                        loadComponent: () =>
+                            import('./admin/time-management/roster-duty-schedules/roster-duty-schedules.component').then(
+                                (m) => m.RosterDutySchedulesComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.RosterDutySchedules' },
+                    },
+                    {
+                        path: 'roster-groups',
+                        loadComponent: () =>
+                            import('./admin/time-management/roster-groups/roster-groups.component').then(
+                                (m) => m.RosterGroupsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.RosterGroups' },
+                    },
+                    {
+                        path: 'roster-group-details',
+                        loadComponent: () =>
+                            import('./admin/time-management/roster-group-details/roster-group-details.component').then(
+                                (m) => m.RosterGroupDetailsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.RosterGroupDetails' },
+                    },
+                    {
+                        path: 'roster-group-schedules',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/roster-group-schedules/roster-group-schedules.component'
+                            ).then((m) => m.RosterGroupSchedulesComponent),
+                        data: { permission: 'Pages.TimeManagement.RosterGroupSchedules' },
+                    },
+                    {
+                        path: 'roster-daily-duties',
+                        loadComponent: () =>
+                            import('./admin/time-management/roster-daily-duties/roster-daily-duties.component').then(
+                                (m) => m.RosterDailyDutiesComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.RosterDailyDuties' },
+                    },
+                    {
+                        path: 'work-location-duty-periods',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/work-location-duty-periods/work-location-duty-periods.component'
+                            ).then((m) => m.WorkLocationDutyPeriodsComponent),
+                        data: { permission: 'Pages.TimeManagement.WorkLocationDutyPeriods' },
+                    },
+                    {
+                        path: 'time-events',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-events/time-events.component').then(
+                                (m) => m.TimeEventsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeEvents' },
+                    },
+                    {
+                        path: 'time-att-apis',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-att-apis/time-att-apis.component').then(
+                                (m) => m.TimeAttAPIsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeAttAPIs' },
+                    },
+                    {
+                        path: 'time-logs',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-logs/time-logs.component').then(
+                                (m) => m.TimeLogsComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeLogs' },
+                    },
+                    {
+                        path: 'time-registers',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-registers/time-registers.component').then(
+                                (m) => m.TimeRegistersComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeRegisters' },
+                    },
+                    {
+                        path: 'monthly-time-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/monthly-time-registers/monthly-time-registers.component'
+                            ).then((m) => m.MonthlyTimeRegistersComponent),
+                        data: { permission: 'Pages.TimeManagement.MonthlyTimeRegisters' },
+                    },
+                    {
+                        path: 'monthly-time-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/monthly-time-register-details/monthly-time-register-details.component'
+                            ).then((m) => m.MonthlyTimeRegisterDetailsComponent),
+                        data: { permission: 'Pages.TimeManagement.MonthlyTimeRegisterDetails' },
+                    },
+                    {
+                        path: 'yearly-time-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/yearly-time-registers/yearly-time-registers.component'
+                            ).then((m) => m.YearlyTimeRegistersComponent),
+                        data: { permission: 'Pages.TimeManagement.YearlyTimeRegisters' },
+                    },
+                    {
+                        path: 'yearly-time-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/yearly-time-register-details/yearly-time-register-details.component'
+                            ).then((m) => m.YearlyTimeRegisterDetailsComponent),
+                        data: { permission: 'Pages.TimeManagement.YearlyTimeRegisterDetails' },
+                    },
+                    {
+                        path: 'simulation-time-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/simulation-time-registers/simulation-time-registers.component'
+                            ).then((m) => m.SimulationTimeRegistersComponent),
+                        data: { permission: 'Pages.TimeManagement.SimulationTimeRegisters' },
+                    },
+                    {
+                        path: 'simulation-time-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/simulation-time-register-details/simulation-time-register-details.component'
+                            ).then((m) => m.SimulationTimeRegisterDetailsComponent),
+                        data: { permission: 'Pages.TimeManagement.SimulationTimeRegisterDetails' },
+                    },
+                    {
+                        path: 'time-transfers',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-transfers/time-transfers.component').then(
+                                (m) => m.TimeTransfersComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeTransfers' },
+                    },
                     {
                         path: 'auditLogs',
                         loadComponent: () =>
@@ -486,6 +716,22 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/tenants/tenants.component').then((m) => m.TenantsComponent),
                         data: { permission: 'Pages.Tenants' },
+                    },
+                    {
+                        path: 'employees',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/employees/employees.component').then(
+                                (m) => m.EmployeesComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.Employees' },
+                    },
+                    {
+                        path: 'employees/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-detail/employee-detail.component'
+                            ).then((m) => m.EmployeeDetailComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.Employees' },
                     },
                     {
                         path: 'organization-units',

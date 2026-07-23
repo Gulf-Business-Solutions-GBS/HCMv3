@@ -20,7 +20,9 @@ using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.OrganizationManagement;
+using HCMv3.PersonnelAdministration;
 using HCMv3.Storage;
+using HCMv3.TimeManagement;
 
 namespace HCMv3.EntityFrameworkCore;
 
@@ -196,6 +198,114 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<OrgUnitProfile> OrgUnitProfiles { get; set; }
 
+    public virtual DbSet<Employee> Employees { get; set; }
+
+    public virtual DbSet<EmployeeDate> EmployeeDates { get; set; }
+
+    public virtual DbSet<EmployeeManager> EmployeeManagers { get; set; }
+
+    public virtual DbSet<EmployeeDottedLineManager> EmployeeDottedLineManagers { get; set; }
+
+    public virtual DbSet<EmployeeDelegation> EmployeeDelegations { get; set; }
+
+    public virtual DbSet<EmployeeRelationship> EmployeeRelationships { get; set; }
+
+    public virtual DbSet<EmployeeSignature> EmployeeSignatures { get; set; }
+
+    public virtual DbSet<EmployeeEducation> EmployeeEducations { get; set; }
+
+    public virtual DbSet<EmployeeCertification> EmployeeCertifications { get; set; }
+
+    public virtual DbSet<EmployeeWorkExperience> EmployeeWorkExperiences { get; set; }
+
+    public virtual DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
+
+    public virtual DbSet<EmployeeDocumentMvmt> EmployeeDocumentMvmts { get; set; }
+
+    public virtual DbSet<EmployeeVisaInfo> EmployeeVisaInfos { get; set; }
+
+    public virtual DbSet<EmployeeOrgAssignment> EmployeeOrgAssignments { get; set; }
+
+    public virtual DbSet<EmployeeContract> EmployeeContracts { get; set; }
+
+    public virtual DbSet<EmployeeAction> EmployeeActions { get; set; }
+
+    public virtual DbSet<EmployeeSeparation> EmployeeSeparations { get; set; }
+
+    public virtual DbSet<EmployeeRejoin> EmployeeRejoins { get; set; }
+
+    public virtual DbSet<TimeType> TimeTypes { get; set; }
+
+    public virtual DbSet<TransType> TransTypes { get; set; }
+
+    public virtual DbSet<TimeTransferType> TimeTransferTypes { get; set; }
+
+    public virtual DbSet<BreakShift> BreakShifts { get; set; }
+
+    public virtual DbSet<Duty> Duties { get; set; }
+
+    public virtual DbSet<DailyDuty> DailyDuties { get; set; }
+
+    public virtual DbSet<HolidayCalendar> HolidayCalendars { get; set; }
+
+    public virtual DbSet<Holiday> Holidays { get; set; }
+
+    public virtual DbSet<HolidayPeriod> HolidayPeriods { get; set; }
+
+    public virtual DbSet<TimePolicy> TimePolicies { get; set; }
+
+    public virtual DbSet<DutyPeriod> DutyPeriods { get; set; }
+
+    public virtual DbSet<DutyPeriodDetail> DutyPeriodDetails { get; set; }
+
+    public virtual DbSet<RosterDutyPeriod> RosterDutyPeriods { get; set; }
+
+    public virtual DbSet<RosterDutyPeriodDetail> RosterDutyPeriodDetails { get; set; }
+
+    public virtual DbSet<RosterDutySchedule> RosterDutySchedules { get; set; }
+
+    public virtual DbSet<RosterGroup> RosterGroups { get; set; }
+
+    public virtual DbSet<RosterGroupDetail> RosterGroupDetails { get; set; }
+
+    public virtual DbSet<RosterGroupSchedule> RosterGroupSchedules { get; set; }
+
+    public virtual DbSet<RosterDailyDuty> RosterDailyDuties { get; set; }
+
+    public virtual DbSet<EmployeeDutyPeriod> EmployeeDutyPeriods { get; set; }
+
+    public virtual DbSet<EmployeeTimePolicy> EmployeeTimePolicies { get; set; }
+
+    public virtual DbSet<EmployeeSubstituteDuty> EmployeeSubstituteDuties { get; set; }
+
+    public virtual DbSet<EmployeeDutySchedule> EmployeeDutySchedules { get; set; }
+
+    public virtual DbSet<WorkLocationDutyPeriod> WorkLocationDutyPeriods { get; set; }
+
+    public virtual DbSet<EmployeeTimesheet> EmployeeTimesheets { get; set; }
+
+    public virtual DbSet<TimeEvent> TimeEvents { get; set; }
+
+    public virtual DbSet<TimeAttAPI> TimeAttAPIs { get; set; }
+
+    public virtual DbSet<TimeLog> TimeLogs { get; set; }
+
+    public virtual DbSet<TimeRegister> TimeRegisters { get; set; }
+
+    public virtual DbSet<MonthlyTimeRegister> MonthlyTimeRegisters { get; set; }
+
+    public virtual DbSet<MonthlyTimeRegisterDetail> MonthlyTimeRegisterDetails { get; set; }
+
+    public virtual DbSet<YearlyTimeRegister> YearlyTimeRegisters { get; set; }
+
+    public virtual DbSet<YearlyTimeRegisterDetail> YearlyTimeRegisterDetails { get; set; }
+
+    public virtual DbSet<SimulationTimeRegister> SimulationTimeRegisters { get; set; }
+
+    public virtual DbSet<SimulationTimeRegisterDetail> SimulationTimeRegisterDetails { get; set; }
+
+    public virtual DbSet<TimeTransfer> TimeTransfers { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -329,6 +439,101 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.OrganizationUnitTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeManager>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .HasConstraintName("FK_EmployeeManagers_Employees_EmployeeId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Manager)
+                .WithMany()
+                .HasForeignKey(e => e.ManagerId)
+                .HasConstraintName("FK_EmployeeManagers_Employees_ManagerId")
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeDottedLineManager>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .HasConstraintName("FK_EmployeeDottedLineManagers_Employees_EmployeeId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Manager)
+                .WithMany()
+                .HasForeignKey(e => e.ManagerId)
+                .HasConstraintName("FK_EmployeeDottedLineManagers_Employees_ManagerId")
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeDelegation>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .HasConstraintName("FK_EmployeeDelegations_Employees_EmployeeId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.DelegateTo)
+                .WithMany()
+                .HasForeignKey(e => e.DelegateToId)
+                .HasConstraintName("FK_EmployeeDelegations_Employees_DelegateToId")
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeRelationship>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .HasConstraintName("FK_EmployeeRelationships_Employees_EmployeeId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.RelatedEmployee)
+                .WithMany()
+                .HasForeignKey(e => e.RelatedEmployeeId)
+                .HasConstraintName("FK_EmployeeRelationships_Employees_RelatedEmployeeId")
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<DutyPeriod>(b =>
+        {
+            // 7 separate FKs to the same Duty table from one row would otherwise each default to
+            // Cascade, which SQL Server rejects as "multiple cascade paths" to DutyPeriods.
+            b.HasOne(e => e.SundayDuty).WithMany().HasForeignKey(e => e.SundayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.MondayDuty).WithMany().HasForeignKey(e => e.MondayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.TuesdayDuty).WithMany().HasForeignKey(e => e.TuesdayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.WednesdayDuty).WithMany().HasForeignKey(e => e.WednesdayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.ThursdayDuty).WithMany().HasForeignKey(e => e.ThursdayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.FridayDuty).WithMany().HasForeignKey(e => e.FridayDutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.SaturdayDuty).WithMany().HasForeignKey(e => e.SaturdayDutyId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<DutyPeriodDetail>(b =>
+        {
+            b.HasOne(e => e.Day1Duty).WithMany().HasForeignKey(e => e.Day1DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day2Duty).WithMany().HasForeignKey(e => e.Day2DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day3Duty).WithMany().HasForeignKey(e => e.Day3DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day4Duty).WithMany().HasForeignKey(e => e.Day4DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day5Duty).WithMany().HasForeignKey(e => e.Day5DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day6Duty).WithMany().HasForeignKey(e => e.Day6DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day7Duty).WithMany().HasForeignKey(e => e.Day7DutyId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<RosterDutyPeriodDetail>(b =>
+        {
+            b.HasOne(e => e.Day1Duty).WithMany().HasForeignKey(e => e.Day1DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day2Duty).WithMany().HasForeignKey(e => e.Day2DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day3Duty).WithMany().HasForeignKey(e => e.Day3DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day4Duty).WithMany().HasForeignKey(e => e.Day4DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day5Duty).WithMany().HasForeignKey(e => e.Day5DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day6Duty).WithMany().HasForeignKey(e => e.Day6DutyId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Day7Duty).WithMany().HasForeignKey(e => e.Day7DutyId).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.ConfigureOpenIddict();

@@ -1,0 +1,189 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #dutyPeriodDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (dutyPeriodDetail().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'DutyPeriodDetail' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'DutyPeriodDetail' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="DutyPeriodDetail_DutyPeriodId">{{ 'DutyPeriod' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_DutyPeriodId"
+                                    #dutyPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="DutyPeriodId"
+                                    [ngModel]="dutyPeriodDetail().dutyPeriodId"
+                                    (ngModelChange)="updateField('dutyPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (dutyPeriod of dutyPeriods(); track dutyPeriod.id) {
+                                        <option [ngValue]="dutyPeriod.id">{{ dutyPeriod.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="dutyPeriodIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="DutyPeriodDetail_Week">{{ 'Week' | localize }}</label>
+                                <input
+                                    id="DutyPeriodDetail_Week"
+                                    #weekInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Week"
+                                    [ngModel]="dutyPeriodDetail().week"
+                                    (ngModelChange)="updateField('week', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="weekInput" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'WeeklyDutyAssignment' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day1DutyId">{{ 'Day1' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day1DutyId"
+                                    class="form-select"
+                                    name="Day1DutyId"
+                                    [ngModel]="dutyPeriodDetail().day1DutyId"
+                                    (ngModelChange)="updateField('day1DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day2DutyId">{{ 'Day2' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day2DutyId"
+                                    class="form-select"
+                                    name="Day2DutyId"
+                                    [ngModel]="dutyPeriodDetail().day2DutyId"
+                                    (ngModelChange)="updateField('day2DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day3DutyId">{{ 'Day3' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day3DutyId"
+                                    class="form-select"
+                                    name="Day3DutyId"
+                                    [ngModel]="dutyPeriodDetail().day3DutyId"
+                                    (ngModelChange)="updateField('day3DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day4DutyId">{{ 'Day4' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day4DutyId"
+                                    class="form-select"
+                                    name="Day4DutyId"
+                                    [ngModel]="dutyPeriodDetail().day4DutyId"
+                                    (ngModelChange)="updateField('day4DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day5DutyId">{{ 'Day5' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day5DutyId"
+                                    class="form-select"
+                                    name="Day5DutyId"
+                                    [ngModel]="dutyPeriodDetail().day5DutyId"
+                                    (ngModelChange)="updateField('day5DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day6DutyId">{{ 'Day6' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day6DutyId"
+                                    class="form-select"
+                                    name="Day6DutyId"
+                                    [ngModel]="dutyPeriodDetail().day6DutyId"
+                                    (ngModelChange)="updateField('day6DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="DutyPeriodDetail_Day7DutyId">{{ 'Day7' | localize }}</label>
+                                <select
+                                    id="DutyPeriodDetail_Day7DutyId"
+                                    class="form-select"
+                                    name="Day7DutyId"
+                                    [ngModel]="dutyPeriodDetail().day7DutyId"
+                                    (ngModelChange)="updateField('day7DutyId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (duty of duties(); track duty.id) {
+                                        <option [ngValue]="duty.id">{{ duty.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!dutyPeriodDetailForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

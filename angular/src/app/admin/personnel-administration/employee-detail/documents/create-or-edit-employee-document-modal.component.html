@@ -1,0 +1,114 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeDocument_DocumentTypeId">{{ 'DocumentType' | localize }}</label>
+                            <select
+                                id="EmployeeDocument_DocumentTypeId"
+                                #documentTypeInput="ngModel"
+                                class="form-select"
+                                name="DocumentTypeId"
+                                [ngModel]="record().documentTypeId"
+                                (ngModelChange)="updateField('documentTypeId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of documentTypes(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="documentTypeInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeDocument_DocumentNum">{{ 'DocumentNum' | localize }}</label>
+                            <input
+                                id="EmployeeDocument_DocumentNum"
+                                class="form-control"
+                                type="text"
+                                name="DocumentNum"
+                                [ngModel]="record().documentNum"
+                                (ngModelChange)="updateField('documentNum', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeDocument_IssueDate">{{ 'IssueDate' | localize }}</label>
+                            <input
+                                id="EmployeeDocument_IssueDate"
+                                #issueDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="IssueDate"
+                                [ngModel]="record().issueDate?.toISODate()"
+                                (ngModelChange)="updateDateField('issueDate', $event)"
+                                required />
+                            <validation-messages [formCtrl]="issueDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeDocument_ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
+                            <input
+                                id="EmployeeDocument_ExpiryDate"
+                                class="form-control"
+                                type="date"
+                                name="ExpiryDate"
+                                [ngModel]="record().expiryDate?.toISODate()"
+                                (ngModelChange)="updateDateField('expiryDate', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeDocument_Description">{{ 'Description' | localize }}</label>
+                            <input
+                                id="EmployeeDocument_Description"
+                                class="form-control"
+                                type="text"
+                                name="Description"
+                                [ngModel]="record().description"
+                                (ngModelChange)="updateField('description', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeDocument_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeDocument_Comments"
+                                class="form-control"
+                                name="Comments"
+                                rows="2"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

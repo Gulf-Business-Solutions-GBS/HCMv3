@@ -1,0 +1,140 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_SubmissionDate">{{ 'SubmissionDate' | localize }}</label>
+                            <input
+                                id="EmployeeSeparation_SubmissionDate"
+                                #submissionDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="SubmissionDate"
+                                [ngModel]="record().submissionDate?.toISODate()"
+                                (ngModelChange)="updateSubmissionDate($event)"
+                                required />
+                            <validation-messages [formCtrl]="submissionDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_LastDayInService">{{ 'LastDayInService' | localize }}</label>
+                            <input
+                                id="EmployeeSeparation_LastDayInService"
+                                #lastDayInServiceInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="LastDayInService"
+                                [ngModel]="record().lastDayInService?.toISODate()"
+                                (ngModelChange)="updateLastDayInService($event)"
+                                required />
+                            <validation-messages [formCtrl]="lastDayInServiceInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_NoticePeriodDays">{{ 'NoticePeriodDays' | localize }}</label>
+                            <input
+                                id="EmployeeSeparation_NoticePeriodDays"
+                                #noticePeriodDaysInput="ngModel"
+                                class="form-control"
+                                type="number"
+                                name="NoticePeriodDays"
+                                [ngModel]="record().noticePeriodDays"
+                                (ngModelChange)="updateField('noticePeriodDays', $event)"
+                                required />
+                            <validation-messages [formCtrl]="noticePeriodDaysInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_PlannedLastDayInService">{{ 'PlannedLastDayInService' | localize }}</label>
+                            <input
+                                id="EmployeeSeparation_PlannedLastDayInService"
+                                #plannedLastDayInServiceInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="PlannedLastDayInService"
+                                [ngModel]="record().plannedLastDayInService?.toISODate()"
+                                (ngModelChange)="updatePlannedLastDayInService($event)"
+                                required />
+                            <validation-messages [formCtrl]="plannedLastDayInServiceInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_SeparationType">{{ 'SeparationType' | localize }}</label>
+                            <select
+                                id="EmployeeSeparation_SeparationType"
+                                #separationTypeInput="ngModel"
+                                class="form-select"
+                                name="SeparationType"
+                                [ngModel]="record().separationType"
+                                (ngModelChange)="updateField('separationType', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of separationTypes; track item.value) {
+                                    <option [ngValue]="item.value">{{ item.name }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="separationTypeInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeSeparation_SeparationReasonId">{{ 'SeparationReason' | localize }}</label>
+                            <select
+                                id="EmployeeSeparation_SeparationReasonId"
+                                #separationReasonInput="ngModel"
+                                class="form-select"
+                                name="SeparationReasonId"
+                                [ngModel]="record().separationReasonId"
+                                (ngModelChange)="updateField('separationReasonId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of separationReasons(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="separationReasonInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeSeparation_RevokeDate">{{ 'RevokeDate' | localize }}</label>
+                            <input
+                                id="EmployeeSeparation_RevokeDate"
+                                class="form-control"
+                                type="date"
+                                name="RevokeDate"
+                                [ngModel]="record().revokeDate?.toISODate()"
+                                (ngModelChange)="updateRevokeDate($event)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeOrgAssignment_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="EmployeeOrgAssignment_StartDate"
+                                #startDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="StartDate"
+                                [ngModel]="record().startDate?.toISODate()"
+                                (ngModelChange)="updateStartDate($event)"
+                                required />
+                            <validation-messages [formCtrl]="startDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_JobTitleId"
+                                class="form-select"
+                                name="JobTitleId"
+                                [ngModel]="record().jobTitleId"
+                                (ngModelChange)="updateField('jobTitleId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of jobTitles(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_CostCenterId">{{ 'CostCenter' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_CostCenterId"
+                                class="form-select"
+                                name="CostCenterId"
+                                [ngModel]="record().costCenterId"
+                                (ngModelChange)="updateField('costCenterId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of costCenters(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_WorkLocationId">{{ 'WorkLocation' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_WorkLocationId"
+                                class="form-select"
+                                name="WorkLocationId"
+                                [ngModel]="record().workLocationId"
+                                (ngModelChange)="updateField('workLocationId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of workLocations(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_PostingGroupId">{{ 'PostingGroup' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_PostingGroupId"
+                                class="form-select"
+                                name="PostingGroupId"
+                                [ngModel]="record().postingGroupId"
+                                (ngModelChange)="updateField('postingGroupId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of postingGroups(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_BudgetingGroupId">{{ 'BudgetingGroup' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_BudgetingGroupId"
+                                class="form-select"
+                                name="BudgetingGroupId"
+                                [ngModel]="record().budgetingGroupId"
+                                (ngModelChange)="updateField('budgetingGroupId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of budgetingGroups(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeOrgAssignment_OrganizationUnitId">{{ 'OrganizationUnit' | localize }}</label>
+                            <select
+                                id="EmployeeOrgAssignment_OrganizationUnitId"
+                                class="form-select"
+                                name="OrganizationUnitId"
+                                [ngModel]="record().organizationUnitId"
+                                (ngModelChange)="updateField('organizationUnitId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of organizationUnits(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.displayName }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

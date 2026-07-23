@@ -6218,6 +6218,1430 @@ namespace HCMv3.Migrations
                     b.ToTable("WorkLocations");
                 });
 
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessID")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("AlternateEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("BirthPlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BlockNum")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("BloodGroup")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("BuildingNum")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("BusinessExtension")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("BusinessLandline")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<long>("CivilID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CriticalIllness")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("CurrentAddress")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EmergencyContact")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EmergencyContactAddress")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("EmergencyNumber")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("EmergencyRelation")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FatherNameAr")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FatherNameEn")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FirstNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FirstNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FlatNumn")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("FloorNum")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("FullNameAr")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("FullNameEn")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GovernorateId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoiningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LaneNumber")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LastNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("LastNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("LoginID")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int?>("MaritalStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Mobile")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("MotherNameAr")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("MotherNameEn")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("NationalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PACINumber")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("PermanentAddress")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<long>("PermanentTelephone")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PreviousEmpCode")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("ProbationDays")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ProbationEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("QualificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecruitmentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReferenceCode")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("ReligionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecondNameAr")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("SecondNameEn")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetNum")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<long>("Telephone")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThirdNameAr")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ThirdNameEn")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int?>("TitleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BirthPlaceId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("GovernorateId");
+
+                    b.HasIndex("MaritalStatusId");
+
+                    b.HasIndex("NationalityId");
+
+                    b.HasIndex("QualificationId");
+
+                    b.HasIndex("RecruitmentTypeId");
+
+                    b.HasIndex("ReligionId");
+
+                    b.HasIndex("TitleId");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActionReasonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("PersonalActionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecommendedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionReasonId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PersonalActionId");
+
+                    b.ToTable("EmployeeActions");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeCertification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Certificate")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Course")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Duration")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.ToTable("EmployeeCertifications");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeContract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ContractTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeActionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractTypeId");
+
+                    b.HasIndex("EmployeeActionId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeContracts");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DateTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("DayData")
+                        .HasColumnType("float");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DateTypeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeDates");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDelegation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("DelegateToId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DelegateToId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeDelegations");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("DocumentNum")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeDocuments");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocumentMvmt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ActualReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeDocumentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("WithdrawDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeDocumentId");
+
+                    b.ToTable("EmployeeDocumentMvmts");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDottedLineManager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("EmployeeDottedLineManagers");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeEducation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DurationOfCourse")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EducationBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EducationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UniversityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("YearOfPassing")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("EducationBranchId");
+
+                    b.HasIndex("EducationId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("EmployeeEducations");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeManager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("EmployeeManagers");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOrgAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BudgetingGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CostCenterId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeActionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobTitleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("OrganizationUnitId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("PostingGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkLocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetingGroupId");
+
+                    b.HasIndex("CostCenterId");
+
+                    b.HasIndex("EmployeeActionId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("JobTitleId");
+
+                    b.HasIndex("OrganizationUnitId");
+
+                    b.HasIndex("PostingGroupId");
+
+                    b.HasIndex("WorkLocationId");
+
+                    b.ToTable("EmployeeOrgAssignments");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRejoin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CarryForwardIndemnityBalance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CarryForwardLeaveBalance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CarryForwardLoanBalance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CarryForwardTicketBalance")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("RejoinDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeRejoins");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRelationship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RelatedEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RelationshipTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RelatedEmployeeId");
+
+                    b.HasIndex("RelationshipTypeId");
+
+                    b.ToTable("EmployeeRelationships");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSeparation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeActionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastDayInService")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("NoticePeriodDays")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PlannedLastDayInService")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RevokeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SeparationReasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeparationType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmissionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeActionId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("SeparationReasonId");
+
+                    b.ToTable("EmployeeSeparations");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSignature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("Signature")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeSignatures");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeVisaInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorizedSign")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CurrentContractNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<double>("CurrentContractSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CurrentFileNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("CurrentLicenseNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("CurrentResidencyPeriod")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EntryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IssuePlacePassport")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("MOIFileNumber")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("NewProfesion")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NewProfessionAr")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OldCompany")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OldContractNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<double>("OldContractSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OldFileNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("OldLicenseNo")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("OldProfession")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OldSponser")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("PassportExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PassportIssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PassportTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PreviousResidencyPeriod")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<long>("ResidencyNum")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TerminationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeOfPassport")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<long>("VisaNum")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PassportTypeId");
+
+                    b.ToTable("EmployeeVisaInfos");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeWorkExperience", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Company")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Position")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ReasonForLeaving")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeWorkExperiences");
+                });
+
             modelBuilder.Entity("HCMv3.Storage.BinaryObject", b =>
                 {
                     b.Property<Guid>("Id")
@@ -6240,6 +7664,2654 @@ namespace HCMv3.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("AppBinaryObjects");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.BreakShift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsBreakEndNextDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBreakStartNextDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BreakShifts");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DailyDuty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AllowTransEnd")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowTransStart")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("BreakShiftId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNightShift")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BreakShiftId");
+
+                    b.ToTable("DailyDuties");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.Duty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AllowTransEnd")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowTransStart")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("BreakShiftId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("FlexiEndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("FlexiStartTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHalfDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNightShift")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRestDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWeeklyOff")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("OvertimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BreakShiftId");
+
+                    b.HasIndex("OvertimeTypeId");
+
+                    b.ToTable("Duties");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FridayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HolidayCalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("MondayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("SaturdayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SundayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ThursdayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TuesdayDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WednesdayDutyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FridayDutyId");
+
+                    b.HasIndex("HolidayCalendarId");
+
+                    b.HasIndex("MondayDutyId");
+
+                    b.HasIndex("SaturdayDutyId");
+
+                    b.HasIndex("SundayDutyId");
+
+                    b.HasIndex("ThursdayDutyId");
+
+                    b.HasIndex("TuesdayDutyId");
+
+                    b.HasIndex("WednesdayDutyId");
+
+                    b.ToTable("DutyPeriods");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriodDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("Day1DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day2DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day3DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day4DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day5DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day6DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day7DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Week")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Day1DutyId");
+
+                    b.HasIndex("Day2DutyId");
+
+                    b.HasIndex("Day3DutyId");
+
+                    b.HasIndex("Day4DutyId");
+
+                    b.HasIndex("Day5DutyId");
+
+                    b.HasIndex("Day6DutyId");
+
+                    b.HasIndex("Day7DutyId");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.ToTable("DutyPeriodDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutyPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeDutyPeriods");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutySchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RosterDutyScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RosterDutyScheduleId");
+
+                    b.ToTable("EmployeeDutySchedules");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeSubstituteDuty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("SubstituteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeSubstituteDuties");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimePolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimePolicyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TimePolicyId");
+
+                    b.ToTable("EmployeeTimePolicies");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimesheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeSpan>("ActualEndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("ActualStartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("Approved")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("BreakEndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("BreakStartTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("TransDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeTimesheets");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.Holiday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HolidayCalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("OvertimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HolidayCalendarId");
+
+                    b.HasIndex("OvertimeTypeId");
+
+                    b.ToTable("Holidays");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.HolidayCalendar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HolidayCalendars");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.HolidayPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("HolidayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HolidayId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HolidayId");
+
+                    b.ToTable("HolidayPeriods");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ActiveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualAbsenceMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvLeaveRecoveryDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvanceLeavePaids")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvanceTicketPaids")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AirTicketPaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveAccrualDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveClosingBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveOpeningBal")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ExtraWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GratuityDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GratuityPaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("HolidayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("LieuDays")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("NormalDayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PlannedWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PlannedWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PublicHolidays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestDayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SickLeavePaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SickLeaveUnpaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TicketAccrualClosingBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TicketAccrualDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TicketAccrualOpeningBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnpaidLeaveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WeekendOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WeeklyOffs")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("MonthlyTimeRegisters");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegisterDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("MonthlyTimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthlyTimeRegisterId");
+
+                    b.HasIndex("TimeTypeId");
+
+                    b.ToTable("MonthlyTimeRegisterDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDailyDuty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CalendarDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("DailyDutyId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RosterDutyScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailyDutyId");
+
+                    b.HasIndex("RosterDutyScheduleId");
+
+                    b.ToTable("RosterDailyDuties");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDutyPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RosterDutyPeriods");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDutyPeriodDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("Day1DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day2DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day3DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day4DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day5DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day6DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Day7DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RosterDutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Week")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Day1DutyId");
+
+                    b.HasIndex("Day2DutyId");
+
+                    b.HasIndex("Day3DutyId");
+
+                    b.HasIndex("Day4DutyId");
+
+                    b.HasIndex("Day5DutyId");
+
+                    b.HasIndex("Day6DutyId");
+
+                    b.HasIndex("Day7DutyId");
+
+                    b.HasIndex("RosterDutyPeriodId");
+
+                    b.ToTable("RosterDutyPeriodDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDutySchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HolidayCalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StartPoint")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("HolidayCalendarId");
+
+                    b.ToTable("RosterDutySchedules");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RosterGroups");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RosterGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RosterGroupId");
+
+                    b.ToTable("RosterGroupDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RosterGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StartPoint")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("RosterGroupId");
+
+                    b.ToTable("RosterGroupSchedules");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("SimulationTimeRegisters");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegisterDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SimulationTimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SimulationTimeRegisterId");
+
+                    b.HasIndex("TimeTypeId");
+
+                    b.ToTable("SimulationTimeRegisterDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeAttAPI", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BreakInCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BreakOutCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Company")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DevicesUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("NoOfRecords")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PunchInCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PunchOutCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TokenUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("TransactionsUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeAttAPIs");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AccessUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ActualTransTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeviceAgentString")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GeoSelfiePath")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("IPAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PIN")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("PunchInRange")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("RangeDifference")
+                        .HasColumnType("float");
+
+                    b.Property<long>("RecordSource")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransSource")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkLocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccessUnitId");
+
+                    b.HasIndex("ActualTransTypeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TransTypeId");
+
+                    b.HasIndex("WorkLocationId");
+
+                    b.ToTable("TimeEvents");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NoOfEmployee")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RunTimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("StopFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("TimeLogs");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimePolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AllowPunchInFromExtWorklocation")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPunchInFromWorkLocationOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPunchOutFromExtWorklocation")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPunchOutFromWorkLocationOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("BreakEarlyOutTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BreakInLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BreakLateInTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BreakOutLimit")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("CalcBreakEarlyOutAfterTolerance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CalcBreakLateInAfterTolerance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CalcEarlyOutAfterTolerance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CalcLateInAfterTolerance")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("ClockInLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ClockOutLimit")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("EarlyOutTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("EarlyPunchOutNotiTimeLimit")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEarlyPunchOutNotiEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFaceRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLatePunchInNotiEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMissedPunchInNotiEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMissedPunchOutNotiEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("LateInTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LatePunchInNotiTimeLimit")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("MarkWeekoffOnHoliday")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("MissedPunchInNotiTimeLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MissedPunchOutNotiTimeLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MonthlyAfterTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MonthlyEarlyOutTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MonthlyLateInTolerance")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MonthlyToleranceType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<double>("OTMinLimit")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("ShouldBreakSignIn")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShouldBreakSignOut")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShouldSignIn")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShouldSignOut")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeEventRule")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeMgmtStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimePolicies");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("AbsentDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActiveDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualAbsenceMins")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ActualBreakEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ActualBreakStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ActualEndTime1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ActualIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ActualOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ActualStartTime1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("ActualWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AirTicketPaidDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveAccrualPerDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedAbsentDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedActualWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedDedLateInEarlyOutMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AttendanceDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AttendanceMinutes")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("AttendanceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("BreakDeductionEarlyOut")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BreakDeductionLateIn")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BreakEarlyOut")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("BreakEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BreakIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("BreakLateIn")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("BreakOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BreakStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DedAfterMonthlyTol")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DedLateInEarlyOutDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DedLateInEarlyOutMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DeductionEarlyOut")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DeductionLateIn")
+                        .HasColumnType("float");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DutyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("EarlyOut")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("InactiveDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IncludeInLeavePay")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("LateIn")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LeaveAdjDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LeaveDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LeaveMinutes")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("OvertimeMinutes")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("OvertimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PlannedWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PlannedWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PublicHoliday")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<double>("RestDay")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ShiftEndTime1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ShiftStartTime1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("SickLeavePaidDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SickLeaveUnpaidDay")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TicketAccrualPerDay")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("TimePolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnpaidLeaveDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WeeklyOff")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyId");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("OvertimeTypeId");
+
+                    b.HasIndex("TimePolicyId");
+
+                    b.ToTable("TimeRegisters");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeTransfer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TransferCount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("TransferDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransferTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TransferTypeId");
+
+                    b.ToTable("TimeTransfers");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeTransferType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeTransferTypes");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeTypes");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TransType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransTypes");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.WorkLocationDutyPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DutyPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkLocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DutyPeriodId");
+
+                    b.HasIndex("WorkLocationId");
+
+                    b.ToTable("WorkLocationDutyPeriods");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ActiveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualAbsenceMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvLeaveRecoveryDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvanceLeavePaids")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AdvanceTicketPaids")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AirTicketPaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveAccrualDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveClosingBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AnnualLeaveOpeningBal")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ExtraWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GratuityDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("GratuityPaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("HolidayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("LieuDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("NormalDayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PlannedWorkingDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PlannedWorkingMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PublicHolidays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestDayOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RestDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SickLeavePaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SickLeaveUnpaidDays")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TicketAccrualClosingBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TicketAccrualDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TicketAccrualOpeningBal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnpaidLeaveDays")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WeekendOTMins")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WeeklyOffs")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Year")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("YearlyTimeRegisters");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegisterDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearlyTimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TimeTypeId");
+
+                    b.HasIndex("YearlyTimeRegisterId");
+
+                    b.ToTable("YearlyTimeRegisterDetails");
                 });
 
             modelBuilder.Entity("HCMv3.Editions.SubscribableEdition", b =>
@@ -6780,6 +10852,1054 @@ namespace HCMv3.Migrations
                     b.Navigation("Bank");
 
                     b.Navigation("OrganizationUnit");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.Employee", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.City", "BirthPlace")
+                        .WithMany()
+                        .HasForeignKey("BirthPlaceId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Governorate", "Governorate")
+                        .WithMany()
+                        .HasForeignKey("GovernorateId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.MaritalStatus", "MaritalStatus")
+                        .WithMany()
+                        .HasForeignKey("MaritalStatusId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Nationality", "Nationality")
+                        .WithMany()
+                        .HasForeignKey("NationalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Qualification", "Qualification")
+                        .WithMany()
+                        .HasForeignKey("QualificationId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.RecruitmentType", "RecruitmentType")
+                        .WithMany()
+                        .HasForeignKey("RecruitmentTypeId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Religion", "Religion")
+                        .WithMany()
+                        .HasForeignKey("ReligionId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Title", "Title")
+                        .WithMany()
+                        .HasForeignKey("TitleId");
+
+                    b.Navigation("BirthPlace");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Governorate");
+
+                    b.Navigation("MaritalStatus");
+
+                    b.Navigation("Nationality");
+
+                    b.Navigation("Qualification");
+
+                    b.Navigation("RecruitmentType");
+
+                    b.Navigation("Religion");
+
+                    b.Navigation("Title");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeAction", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.PersonalActionReason", "ActionReason")
+                        .WithMany()
+                        .HasForeignKey("ActionReasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.PersonalAction", "PersonalAction")
+                        .WithMany()
+                        .HasForeignKey("PersonalActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ActionReason");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PersonalAction");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeCertification", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeContract", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.ContractType", "ContractType")
+                        .WithMany()
+                        .HasForeignKey("ContractTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeAction", "EmployeeAction")
+                        .WithMany()
+                        .HasForeignKey("EmployeeActionId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContractType");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("EmployeeAction");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDate", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.DateType", "DateType")
+                        .WithMany()
+                        .HasForeignKey("DateTypeId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DateType");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDelegation", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "DelegateTo")
+                        .WithMany()
+                        .HasForeignKey("DelegateToId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeDelegations_Employees_DelegateToId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeDelegations_Employees_EmployeeId");
+
+                    b.Navigation("DelegateTo");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocument", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDocumentMvmt", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeDocument", "EmployeeDocument")
+                        .WithMany()
+                        .HasForeignKey("EmployeeDocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeDocument");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeDottedLineManager", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeDottedLineManagers_Employees_EmployeeId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeDottedLineManagers_Employees_ManagerId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeEducation", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.EducationBranch", "EducationBranch")
+                        .WithMany()
+                        .HasForeignKey("EducationBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Education", "Education")
+                        .WithMany()
+                        .HasForeignKey("EducationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.University", "University")
+                        .WithMany()
+                        .HasForeignKey("UniversityId");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Education");
+
+                    b.Navigation("EducationBranch");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Institution");
+
+                    b.Navigation("University");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeManager", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeManagers_Employees_EmployeeId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeManagers_Employees_ManagerId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOrgAssignment", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.BudgetingGroup", "BudgetingGroup")
+                        .WithMany()
+                        .HasForeignKey("BudgetingGroupId");
+
+                    b.HasOne("HCMv3.OrganizationManagement.CostCenter", "CostCenter")
+                        .WithMany()
+                        .HasForeignKey("CostCenterId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeAction", "EmployeeAction")
+                        .WithMany()
+                        .HasForeignKey("EmployeeActionId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.OrganizationManagement.JobTitle", "JobTitle")
+                        .WithMany()
+                        .HasForeignKey("JobTitleId");
+
+                    b.HasOne("Abp.Organizations.OrganizationUnit", "OrganizationUnit")
+                        .WithMany()
+                        .HasForeignKey("OrganizationUnitId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.PostingGroup", "PostingGroup")
+                        .WithMany()
+                        .HasForeignKey("PostingGroupId");
+
+                    b.HasOne("HCMv3.OrganizationManagement.WorkLocation", "WorkLocation")
+                        .WithMany()
+                        .HasForeignKey("WorkLocationId");
+
+                    b.Navigation("BudgetingGroup");
+
+                    b.Navigation("CostCenter");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("EmployeeAction");
+
+                    b.Navigation("JobTitle");
+
+                    b.Navigation("OrganizationUnit");
+
+                    b.Navigation("PostingGroup");
+
+                    b.Navigation("WorkLocation");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRejoin", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeRelationship", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeRelationships_Employees_EmployeeId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "RelatedEmployee")
+                        .WithMany()
+                        .HasForeignKey("RelatedEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_EmployeeRelationships_Employees_RelatedEmployeeId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.RelationshipType", "RelationshipType")
+                        .WithMany()
+                        .HasForeignKey("RelationshipTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("RelatedEmployee");
+
+                    b.Navigation("RelationshipType");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSeparation", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeAction", "EmployeeAction")
+                        .WithMany()
+                        .HasForeignKey("EmployeeActionId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.SeparationReason", "SeparationReason")
+                        .WithMany()
+                        .HasForeignKey("SeparationReasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("EmployeeAction");
+
+                    b.Navigation("SeparationReason");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeSignature", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeVisaInfo", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.PassportType", "PassportType")
+                        .WithMany()
+                        .HasForeignKey("PassportTypeId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PassportType");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeWorkExperience", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DailyDuty", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.BreakShift", "BreakShift")
+                        .WithMany()
+                        .HasForeignKey("BreakShiftId");
+
+                    b.Navigation("BreakShift");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.Duty", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.BreakShift", "BreakShift")
+                        .WithMany()
+                        .HasForeignKey("BreakShiftId");
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
+                        .WithMany()
+                        .HasForeignKey("OvertimeTypeId");
+
+                    b.Navigation("BreakShift");
+
+                    b.Navigation("OvertimeType");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriod", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.Duty", "FridayDuty")
+                        .WithMany()
+                        .HasForeignKey("FridayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.HolidayCalendar", "HolidayCalendar")
+                        .WithMany()
+                        .HasForeignKey("HolidayCalendarId");
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "MondayDuty")
+                        .WithMany()
+                        .HasForeignKey("MondayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "SaturdayDuty")
+                        .WithMany()
+                        .HasForeignKey("SaturdayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "SundayDuty")
+                        .WithMany()
+                        .HasForeignKey("SundayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "ThursdayDuty")
+                        .WithMany()
+                        .HasForeignKey("ThursdayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "TuesdayDuty")
+                        .WithMany()
+                        .HasForeignKey("TuesdayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "WednesdayDuty")
+                        .WithMany()
+                        .HasForeignKey("WednesdayDutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("FridayDuty");
+
+                    b.Navigation("HolidayCalendar");
+
+                    b.Navigation("MondayDuty");
+
+                    b.Navigation("SaturdayDuty");
+
+                    b.Navigation("SundayDuty");
+
+                    b.Navigation("ThursdayDuty");
+
+                    b.Navigation("TuesdayDuty");
+
+                    b.Navigation("WednesdayDuty");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.DutyPeriodDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day1Duty")
+                        .WithMany()
+                        .HasForeignKey("Day1DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day2Duty")
+                        .WithMany()
+                        .HasForeignKey("Day2DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day3Duty")
+                        .WithMany()
+                        .HasForeignKey("Day3DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day4Duty")
+                        .WithMany()
+                        .HasForeignKey("Day4DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day5Duty")
+                        .WithMany()
+                        .HasForeignKey("Day5DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day6Duty")
+                        .WithMany()
+                        .HasForeignKey("Day6DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Day7Duty")
+                        .WithMany()
+                        .HasForeignKey("Day7DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Day1Duty");
+
+                    b.Navigation("Day2Duty");
+
+                    b.Navigation("Day3Duty");
+
+                    b.Navigation("Day4Duty");
+
+                    b.Navigation("Day5Duty");
+
+                    b.Navigation("Day6Duty");
+
+                    b.Navigation("Day7Duty");
+
+                    b.Navigation("DutyPeriod");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutyPeriod", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeDutySchedule", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.RosterDutySchedule", "RosterDutySchedule")
+                        .WithMany()
+                        .HasForeignKey("RosterDutyScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("RosterDutySchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeSubstituteDuty", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Duty")
+                        .WithMany()
+                        .HasForeignKey("DutyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Duty");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimePolicy", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimePolicy", "TimePolicy")
+                        .WithMany()
+                        .HasForeignKey("TimePolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("TimePolicy");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.EmployeeTimesheet", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.Holiday", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.HolidayCalendar", "HolidayCalendar")
+                        .WithMany()
+                        .HasForeignKey("HolidayCalendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
+                        .WithMany()
+                        .HasForeignKey("OvertimeTypeId");
+
+                    b.Navigation("HolidayCalendar");
+
+                    b.Navigation("OvertimeType");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.HolidayPeriod", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.Holiday", "Holiday")
+                        .WithMany()
+                        .HasForeignKey("HolidayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Holiday");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegister", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.MonthlyTimeRegisterDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.MonthlyTimeRegister", "MonthlyTimeRegister")
+                        .WithMany()
+                        .HasForeignKey("MonthlyTimeRegisterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimeType", "TimeType")
+                        .WithMany()
+                        .HasForeignKey("TimeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MonthlyTimeRegister");
+
+                    b.Navigation("TimeType");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDailyDuty", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "DailyDuty")
+                        .WithMany()
+                        .HasForeignKey("DailyDutyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.RosterDutySchedule", "RosterDutySchedule")
+                        .WithMany()
+                        .HasForeignKey("RosterDutyScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyDuty");
+
+                    b.Navigation("RosterDutySchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDutyPeriodDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day1Duty")
+                        .WithMany()
+                        .HasForeignKey("Day1DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day2Duty")
+                        .WithMany()
+                        .HasForeignKey("Day2DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day3Duty")
+                        .WithMany()
+                        .HasForeignKey("Day3DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day4Duty")
+                        .WithMany()
+                        .HasForeignKey("Day4DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day5Duty")
+                        .WithMany()
+                        .HasForeignKey("Day5DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day6Duty")
+                        .WithMany()
+                        .HasForeignKey("Day6DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.DailyDuty", "Day7Duty")
+                        .WithMany()
+                        .HasForeignKey("Day7DutyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.TimeManagement.RosterDutyPeriod", "RosterDutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("RosterDutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Day1Duty");
+
+                    b.Navigation("Day2Duty");
+
+                    b.Navigation("Day3Duty");
+
+                    b.Navigation("Day4Duty");
+
+                    b.Navigation("Day5Duty");
+
+                    b.Navigation("Day6Duty");
+
+                    b.Navigation("Day7Duty");
+
+                    b.Navigation("RosterDutyPeriod");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterDutySchedule", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.HolidayCalendar", "HolidayCalendar")
+                        .WithMany()
+                        .HasForeignKey("HolidayCalendarId");
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("HolidayCalendar");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupDetail", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.RosterGroup", "RosterGroup")
+                        .WithMany()
+                        .HasForeignKey("RosterGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("RosterGroup");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.RosterGroupSchedule", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.RosterGroup", "RosterGroup")
+                        .WithMany()
+                        .HasForeignKey("RosterGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("RosterGroup");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegister", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.SimulationTimeRegisterDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.SimulationTimeRegister", "SimulationTimeRegister")
+                        .WithMany()
+                        .HasForeignKey("SimulationTimeRegisterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimeType", "TimeType")
+                        .WithMany()
+                        .HasForeignKey("TimeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SimulationTimeRegister");
+
+                    b.Navigation("TimeType");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeEvent", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.AccessUnit", "AccessUnit")
+                        .WithMany()
+                        .HasForeignKey("AccessUnitId");
+
+                    b.HasOne("HCMv3.TimeManagement.TransType", "ActualTransType")
+                        .WithMany()
+                        .HasForeignKey("ActualTransTypeId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TransType", "TransType")
+                        .WithMany()
+                        .HasForeignKey("TransTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.OrganizationManagement.WorkLocation", "WorkLocation")
+                        .WithMany()
+                        .HasForeignKey("WorkLocationId");
+
+                    b.Navigation("AccessUnit");
+
+                    b.Navigation("ActualTransType");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("TransType");
+
+                    b.Navigation("WorkLocation");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLog", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeRegister", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.Duty", "Duty")
+                        .WithMany()
+                        .HasForeignKey("DutyId");
+
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId");
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
+                        .WithMany()
+                        .HasForeignKey("OvertimeTypeId");
+
+                    b.HasOne("HCMv3.TimeManagement.TimePolicy", "TimePolicy")
+                        .WithMany()
+                        .HasForeignKey("TimePolicyId");
+
+                    b.Navigation("Duty");
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("OvertimeType");
+
+                    b.Navigation("TimePolicy");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeTransfer", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimeTransferType", "TransferType")
+                        .WithMany()
+                        .HasForeignKey("TransferTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("TransferType");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.WorkLocationDutyPeriod", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.OrganizationManagement.WorkLocation", "WorkLocation")
+                        .WithMany()
+                        .HasForeignKey("WorkLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DutyPeriod");
+
+                    b.Navigation("WorkLocation");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegister", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.YearlyTimeRegisterDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.TimeType", "TimeType")
+                        .WithMany()
+                        .HasForeignKey("TimeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.YearlyTimeRegister", "YearlyTimeRegister")
+                        .WithMany()
+                        .HasForeignKey("YearlyTimeRegisterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TimeType");
+
+                    b.Navigation("YearlyTimeRegister");
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>

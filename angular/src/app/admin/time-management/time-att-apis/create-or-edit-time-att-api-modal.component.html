@@ -1,0 +1,209 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #timeAttAPIForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (timeAttAPI().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'TimeAttAPI' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'TimeAttAPI' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_TokenUrl">{{ 'TokenUrl' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_TokenUrl"
+                                    #tokenUrlInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="TokenUrl"
+                                    [ngModel]="timeAttAPI().tokenUrl"
+                                    (ngModelChange)="updateField('tokenUrl', $event)"
+                                    required
+                                    maxlength="500" />
+                                <validation-messages [formCtrl]="tokenUrlInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_TransactionsUrl">{{ 'TransactionsUrl' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_TransactionsUrl"
+                                    #transactionsUrlInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="TransactionsUrl"
+                                    [ngModel]="timeAttAPI().transactionsUrl"
+                                    (ngModelChange)="updateField('transactionsUrl', $event)"
+                                    required
+                                    maxlength="500" />
+                                <validation-messages [formCtrl]="transactionsUrlInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_DevicesUrl">{{ 'DevicesUrl' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_DevicesUrl"
+                                    #devicesUrlInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="DevicesUrl"
+                                    [ngModel]="timeAttAPI().devicesUrl"
+                                    (ngModelChange)="updateField('devicesUrl', $event)"
+                                    required
+                                    maxlength="500" />
+                                <validation-messages [formCtrl]="devicesUrlInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_Username">{{ 'Username' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_Username"
+                                    #usernameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Username"
+                                    [ngModel]="timeAttAPI().username"
+                                    (ngModelChange)="updateField('username', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="usernameInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_Password">{{ 'Password' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_Password"
+                                    #passwordInput="ngModel"
+                                    class="form-control"
+                                    type="password"
+                                    name="Password"
+                                    [ngModel]="timeAttAPI().password"
+                                    (ngModelChange)="updateField('password', $event)"
+                                    required
+                                    maxlength="200"
+                                    autocomplete="new-password" />
+                                <validation-messages [formCtrl]="passwordInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="TimeAttAPI_NoOfRecords">{{ 'NoOfRecords' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_NoOfRecords"
+                                    #noOfRecordsInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="NoOfRecords"
+                                    [ngModel]="timeAttAPI().noOfRecords"
+                                    (ngModelChange)="updateField('noOfRecords', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="noOfRecordsInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeAttAPI_Email">{{ 'Email' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_Email"
+                                    class="form-control"
+                                    type="text"
+                                    name="Email"
+                                    [ngModel]="timeAttAPI().email"
+                                    (ngModelChange)="updateField('email', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="TimeAttAPI_Company">{{ 'Company' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_Company"
+                                    class="form-control"
+                                    type="text"
+                                    name="Company"
+                                    [ngModel]="timeAttAPI().company"
+                                    (ngModelChange)="updateField('company', $event)" />
+                            </div>
+                        </div>
+
+                        <h6>{{ 'PunchCodes' | localize }}</h6>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeAttAPI_PunchInCode">{{ 'PunchInCode' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_PunchInCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="PunchInCode"
+                                    [ngModel]="timeAttAPI().punchInCode"
+                                    (ngModelChange)="updateField('punchInCode', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeAttAPI_PunchOutCode">{{ 'PunchOutCode' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_PunchOutCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="PunchOutCode"
+                                    [ngModel]="timeAttAPI().punchOutCode"
+                                    (ngModelChange)="updateField('punchOutCode', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeAttAPI_BreakOutCode">{{ 'BreakOutCode' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_BreakOutCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="BreakOutCode"
+                                    [ngModel]="timeAttAPI().breakOutCode"
+                                    (ngModelChange)="updateField('breakOutCode', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="TimeAttAPI_BreakInCode">{{ 'BreakInCode' | localize }}</label>
+                                <input
+                                    id="TimeAttAPI_BreakInCode"
+                                    class="form-control"
+                                    type="text"
+                                    name="BreakInCode"
+                                    [ngModel]="timeAttAPI().breakInCode"
+                                    (ngModelChange)="updateField('breakInCode', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            [disabled]="saving()"
+                            type="button"
+                            class="btn btn-light-primary fw-bold"
+                            (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!timeAttAPIForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

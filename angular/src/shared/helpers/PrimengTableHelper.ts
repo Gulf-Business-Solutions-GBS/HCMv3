@@ -57,27 +57,23 @@ export class PrimengTableHelper {
     }
 
     getMaxResultCount(paginator: Paginator, event: TableLazyLoadEvent): number {
-        if (paginator.rows) {
-            return paginator.rows;
+        const paginatorRows = Number(paginator?.rows);
+        if (paginatorRows) {
+            return paginatorRows;
         }
 
-        if (!event) {
-            return 0;
-        }
-
-        return event.rows;
+        const eventRows = Number(event?.rows);
+        return Number.isFinite(eventRows) ? eventRows : this.defaultRecordsCountPerPage;
     }
 
     getSkipCount(paginator: Paginator, event: TableLazyLoadEvent): number {
-        if (paginator.first) {
-            return paginator.first;
+        const paginatorFirst = Number(paginator?.first);
+        if (paginatorFirst) {
+            return paginatorFirst;
         }
 
-        if (!event) {
-            return 0;
-        }
-
-        return event.first;
+        const eventFirst = Number(event?.first);
+        return Number.isFinite(eventFirst) ? eventFirst : 0;
     }
 
     shouldResetPaging(event: TableLazyLoadEvent): boolean {

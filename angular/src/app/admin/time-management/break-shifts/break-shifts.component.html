@@ -1,0 +1,184 @@
+<div [@routerTransition]>
+    <sub-header [title]="'BreakShifts' | localize" [description]="'TimeManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TimeManagement.BreakShifts.Create' | permission) {
+                <button (click)="createBreakShift()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getBreakShifts()" />
+                                <button class="btn btn-primary" (click)="getBreakShifts()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getBreakShifts($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.BreakShifts.Edit',
+                                                    'Pages.TimeManagement.BreakShifts.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameEn">
+                                        {{ 'NameEn' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="nameAr">
+                                        {{ 'NameAr' | localize }}
+                                        <p-sortIcon field="nameAr" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'StartTime' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'EndTime' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px">
+                                        {{ 'IsPaid' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'IsBreakStartNextDay' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'IsBreakEndNextDay' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TimeManagement.BreakShifts.Edit',
+                                                    'Pages.TimeManagement.BreakShifts.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.nameAr }}" class="hide-overflown">{{ record.nameAr }}</span>
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.startDate | luxonFormat:'yyyy-MM-dd' }}
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        {{ record.endDate | luxonFormat:'yyyy-MM-dd' }}
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        {{ record.startTime }}
+                                    </td>
+                                    <td style="min-width: 110px">
+                                        {{ record.endTime }}
+                                    </td>
+                                    <td style="min-width: 100px">
+                                        <i class="fa" [ngClass]="record.isPaid ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <i class="fa" [ngClass]="record.isBreakStartNextDay ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <i class="fa" [ngClass]="record.isBreakEndNextDay ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getBreakShifts($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBreakShiftModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

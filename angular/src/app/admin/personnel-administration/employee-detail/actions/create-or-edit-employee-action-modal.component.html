@@ -1,0 +1,112 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeAction_PersonalActionId">{{ 'PersonalAction' | localize }}</label>
+                            <select
+                                id="EmployeeAction_PersonalActionId"
+                                #personalActionInput="ngModel"
+                                class="form-select"
+                                name="PersonalActionId"
+                                [ngModel]="record().personalActionId"
+                                (ngModelChange)="updateField('personalActionId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of personalActions(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="personalActionInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeAction_ActionReasonId">{{ 'ActionReason' | localize }}</label>
+                            <select
+                                id="EmployeeAction_ActionReasonId"
+                                #actionReasonInput="ngModel"
+                                class="form-select"
+                                name="ActionReasonId"
+                                [ngModel]="record().actionReasonId"
+                                (ngModelChange)="updateField('actionReasonId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of personalActionReasons(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="actionReasonInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label required" for="EmployeeAction_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="EmployeeAction_StartDate"
+                                #startDateInput="ngModel"
+                                class="form-control"
+                                type="date"
+                                name="StartDate"
+                                [ngModel]="record().startDate?.toISODate()"
+                                (ngModelChange)="updateStartDate($event)"
+                                required />
+                            <validation-messages [formCtrl]="startDateInput" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeAction_RecommendedBy">{{ 'RecommendedBy' | localize }}</label>
+                            <input
+                                id="EmployeeAction_RecommendedBy"
+                                class="form-control"
+                                type="text"
+                                name="RecommendedBy"
+                                maxlength="256"
+                                [ngModel]="record().recommendedBy"
+                                (ngModelChange)="updateField('recommendedBy', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeAction_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeAction_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

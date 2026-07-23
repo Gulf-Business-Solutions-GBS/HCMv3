@@ -1,0 +1,85 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Employees' | localize" [description]="'PersonnelAdministration' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (employee()) {
+                            <span>{{ employee().code }} - {{ employee().firstNameEn }} {{ employee().lastNameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (employeeId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'Dates' | localize }}" [active]="true">
+                            <employee-dates [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeManagers' | localize }}">
+                            <employee-managers [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeDottedLineManagers' | localize }}">
+                            <employee-dotted-line-managers [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeDelegations' | localize }}">
+                            <employee-delegations [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeRelationships' | localize }}">
+                            <employee-relationships [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeEducations' | localize }}">
+                            <employee-educations [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeCertifications' | localize }}">
+                            <employee-certifications [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeWorkExperiences' | localize }}">
+                            <employee-work-experiences [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeDocuments' | localize }}">
+                            <employee-documents [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'Signature' | localize }}">
+                            <employee-signature [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeVisaInfos' | localize }}">
+                            <employee-visa-info [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeOrgAssignments' | localize }}">
+                            <employee-org-assignments [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeContracts' | localize }}">
+                            <employee-contracts [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeActions' | localize }}">
+                            <employee-actions [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSeparations' | localize }}">
+                            <employee-separations [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeRejoins' | localize }}">
+                            <employee-rejoins [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeDutyPeriods' | localize }}">
+                            <employee-duty-periods [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeTimePolicies' | localize }}">
+                            <employee-time-policies [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeSubstituteDuties' | localize }}">
+                            <employee-substitute-duties [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeDutySchedules' | localize }}">
+                            <employee-duty-schedules [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeTimesheets' | localize }}">
+                            <employee-timesheets [employeeId]="employeeId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

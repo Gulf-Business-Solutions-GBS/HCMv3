@@ -1,0 +1,119 @@
+<div
+    appBsModal
+    #movementsModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ 'DocumentMovements' | localize }}</h4>
+                    <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>{{ 'WithdrawDate' | localize }}</th>
+                                <th>{{ 'ReturnDate' | localize }}</th>
+                                <th>{{ 'ActualReturnDate' | localize }}</th>
+                                <th>{{ 'Comments' | localize }}</th>
+                                @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Delete' | permission) {
+                                    <th></th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of movements(); track item.id) {
+                                <tr>
+                                    <td>{{ item.withdrawDate | luxonFormat: 'DD' }}</td>
+                                    <td>{{ item.returnDate | luxonFormat: 'DD' }}</td>
+                                    <td>{{ item.actualReturnDate | luxonFormat: 'DD' }}</td>
+                                    <td>{{ item.comments }}</td>
+                                    @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Delete' | permission) {
+                                        <td>
+                                            <button class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm" (click)="deleteMovement(item)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                            @if (movements().length === 0) {
+                                <tr>
+                                    <td colspan="5">{{ 'NoData' | localize }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @if ('Pages.PersonnelAdministration.EmployeeDocumentMvmts.Create' | permission) {
+                        <form #mvmtForm="ngForm" (ngSubmit)="addMovement()" class="row align-items-end">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label required" for="Mvmt_WithdrawDate">{{ 'WithdrawDate' | localize }}</label>
+                                <input
+                                    id="Mvmt_WithdrawDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="WithdrawDate"
+                                    [ngModel]="newRecord().withdrawDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('withdrawDate', $event)"
+                                    required />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label required" for="Mvmt_ReturnDate">{{ 'ReturnDate' | localize }}</label>
+                                <input
+                                    id="Mvmt_ReturnDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="ReturnDate"
+                                    [ngModel]="newRecord().returnDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('returnDate', $event)"
+                                    required />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="Mvmt_ActualReturnDate">{{ 'ActualReturnDate' | localize }}</label>
+                                <input
+                                    id="Mvmt_ActualReturnDate"
+                                    class="form-control"
+                                    type="date"
+                                    name="ActualReturnDate"
+                                    [ngModel]="newRecord().actualReturnDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('actualReturnDate', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="Mvmt_Comments">{{ 'Comments' | localize }}</label>
+                                <input
+                                    id="Mvmt_Comments"
+                                    class="form-control"
+                                    type="text"
+                                    name="Comments"
+                                    [ngModel]="newRecord().comments"
+                                    (ngModelChange)="updateField('comments', $event)" />
+                            </div>
+                            <div class="col-12">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-sm"
+                                    [disabled]="!mvmtForm.form.valid"
+                                    [buttonBusy]="saving()"
+                                    [busyText]="l('SavingWithThreeDot')">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'CreateNew' | localize }}
+                                </button>
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
