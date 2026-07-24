@@ -128,6 +128,21 @@
                                 (ngModelChange)="updateField('orgGeoLocation', $event)"
                                 maxlength="500" />
                         </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OrgUnit_PayrollAreaId">{{ 'PayrollAreaId' | localize }}</label>
+                            <select
+                                id="OrgUnit_PayrollAreaId"
+                                class="form-select"
+                                name="PayrollAreaId"
+                                [ngModel]="orgUnit().payrollAreaId"
+                                (ngModelChange)="updateField('payrollAreaId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (area of payrollAreas(); track area.id) {
+                                    <option [ngValue]="area.id">{{ area.name }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

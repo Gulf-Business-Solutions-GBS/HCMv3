@@ -1,0 +1,94 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeReward_RewardType">{{ 'RewardType' | localize }}</label>
+                                <input
+                                    id="EmployeeReward_RewardType"
+                                    #rewardTypeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="RewardType"
+                                    [ngModel]="record().rewardType"
+                                    (ngModelChange)="updateField('rewardType', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="rewardTypeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeReward_RewardDate">{{ 'RewardDate' | localize }}</label>
+                                <input
+                                    id="EmployeeReward_RewardDate"
+                                    #rewardDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="RewardDate"
+                                    [ngModel]="record().rewardDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('rewardDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="rewardDateInput" />
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeReward_Certificate">{{ 'Certificate' | localize }}</label>
+                            <input
+                                id="EmployeeReward_Certificate"
+                                type="text"
+                                class="form-control"
+                                name="Certificate"
+                                [ngModel]="record().certificate"
+                                (ngModelChange)="updateField('certificate', $event)" />
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeReward_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeReward_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

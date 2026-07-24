@@ -48,6 +48,9 @@ import {
     AbsenceViolationRulesServiceProxy,
     PayrollPeriodsServiceProxy,
     WageAccGroupsServiceProxy,
+    BusinessTypesServiceProxy,
+    GovtJobCategoriesServiceProxy,
+    ProjectTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -1138,6 +1141,249 @@ export const appRoutes: Routes = [
                                 './admin/personnel-administration/employee-detail/employee-detail.component'
                             ).then((m) => m.EmployeeDetailComponent),
                         data: { permission: 'Pages.PersonnelAdministration.Employees' },
+                    },
+                    {
+                        path: 'employee-basic-pay-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-basic-pay-details/employee-basic-pay-details.component'
+                            ).then((m) => m.EmployeeBasicPayDetailsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeBasicPayDetails' },
+                    },
+                    {
+                        path: 'employee-loan-exemptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-loan-exemptions/employee-loan-exemptions.component'
+                            ).then((m) => m.EmployeeLoanExemptionsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeLoanExemptions' },
+                    },
+                    {
+                        path: 'employee-loan-recoveries',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-loan-recoveries/employee-loan-recoveries.component'
+                            ).then((m) => m.EmployeeLoanRecoveriesComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeLoanRecoveries' },
+                    },
+                    {
+                        path: 'loan-installments',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/loan-installments/loan-installments.component'
+                            ).then((m) => m.LoanInstallmentsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.LoanInstallments' },
+                    },
+                    {
+                        path: 'employee-fund-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-fund-details/employee-fund-details.component'
+                            ).then((m) => m.EmployeeFundDetailsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeFundDetails' },
+                    },
+                    {
+                        path: 'employee-fund-exemptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-fund-exemptions/employee-fund-exemptions.component'
+                            ).then((m) => m.EmployeeFundExemptionsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeFundExemptions' },
+                    },
+                    {
+                        path: 'employee-dependant-exceptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-dependant-exceptions/employee-dependant-exceptions.component'
+                            ).then((m) => m.EmployeeDependantExceptionsComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeDependantExceptions' },
+                    },
+                    simpleLookupRoute('business-types', 'BusinessTypes', 'BusinessTypes', BusinessTypesServiceProxy, 'GovtRelationsManagement'),
+                    simpleLookupRoute('govt-job-categories', 'GovtJobCategories', 'GovtJobCategories', GovtJobCategoriesServiceProxy, 'GovtRelationsManagement'),
+                    {
+                        path: 'govt-job-titles',
+                        loadComponent: () =>
+                            import('./admin/govt-relations-management/govt-job-titles/govt-job-titles.component').then(
+                                (m) => m.GovtJobTitlesComponent
+                            ),
+                        data: { permission: 'Pages.GovtRelationsManagement.GovtJobTitles' },
+                    },
+                    {
+                        path: 'signatories',
+                        loadComponent: () =>
+                            import('./admin/govt-relations-management/signatories/signatories.component').then(
+                                (m) => m.SignatoriesComponent
+                            ),
+                        data: { permission: 'Pages.GovtRelationsManagement.Signatories' },
+                    },
+                    {
+                        path: 'organization-documents',
+                        loadComponent: () =>
+                            import(
+                                './admin/govt-relations-management/organization-documents/organization-documents.component'
+                            ).then((m) => m.OrganizationDocumentsComponent),
+                        data: { permission: 'Pages.GovtRelationsManagement.OrganizationDocuments' },
+                    },
+                    {
+                        path: 'sponsors',
+                        loadComponent: () =>
+                            import('./admin/govt-relations-management/sponsors/sponsors.component').then(
+                                (m) => m.SponsorsComponent
+                            ),
+                        data: { permission: 'Pages.GovtRelationsManagement.Sponsors' },
+                    },
+                    {
+                        path: 'sponsors/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/govt-relations-management/sponsor-detail/sponsor-detail.component'
+                            ).then((m) => m.SponsorDetailComponent),
+                        data: { permission: 'Pages.GovtRelationsManagement.Sponsors' },
+                    },
+                    {
+                        path: 'locations',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/locations/locations.component').then(
+                                (m) => m.LocationsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Locations' },
+                    },
+                    {
+                        path: 'buildings',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/buildings/buildings.component').then(
+                                (m) => m.BuildingsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Buildings' },
+                    },
+                    {
+                        path: 'building-contracts',
+                        loadComponent: () =>
+                            import(
+                                './admin/accommodation-management/building-contracts/building-contracts.component'
+                            ).then((m) => m.BuildingContractsComponent),
+                        data: { permission: 'Pages.AccommodationManagement.BuildingContracts' },
+                    },
+                    {
+                        path: 'floors',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/floors/floors.component').then(
+                                (m) => m.FloorsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Floors' },
+                    },
+                    {
+                        path: 'flats',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/flats/flats.component').then(
+                                (m) => m.FlatsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Flats' },
+                    },
+                    {
+                        path: 'rooms',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/rooms/rooms.component').then(
+                                (m) => m.RoomsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Rooms' },
+                    },
+                    {
+                        path: 'beds',
+                        loadComponent: () =>
+                            import('./admin/accommodation-management/beds/beds.component').then(
+                                (m) => m.BedsComponent
+                            ),
+                        data: { permission: 'Pages.AccommodationManagement.Beds' },
+                    },
+                    {
+                        path: 'accommodation-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/accommodation-management/accommodation-types/accommodation-types.component'
+                            ).then((m) => m.AccommodationTypesComponent),
+                        data: { permission: 'Pages.AccommodationManagement.AccommodationTypes' },
+                    },
+                    {
+                        path: 'accommodation-service-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/accommodation-management/accommodation-service-types/accommodation-service-types.component'
+                            ).then((m) => m.AccommodationServiceTypesComponent),
+                        data: { permission: 'Pages.AccommodationManagement.AccommodationServiceTypes' },
+                    },
+                    {
+                        path: 'employee-accommodations',
+                        loadComponent: () =>
+                            import(
+                                './admin/accommodation-management/employee-accommodations/employee-accommodations.component'
+                            ).then((m) => m.EmployeeAccommodationsComponent),
+                        data: { permission: 'Pages.AccommodationManagement.EmployeeAccommodations' },
+                    },
+                    {
+                        path: 'accommodation-services',
+                        loadComponent: () =>
+                            import(
+                                './admin/accommodation-management/accommodation-services/accommodation-services.component'
+                            ).then((m) => m.AccommodationServicesComponent),
+                        data: { permission: 'Pages.AccommodationManagement.AccommodationServices' },
+                    },
+                    simpleLookupRoute('project-types', 'ProjectTypes', 'ProjectTypes', ProjectTypesServiceProxy, 'ProjectManagement'),
+                    {
+                        path: 'projects',
+                        loadComponent: () =>
+                            import('./admin/project-management/projects/projects.component').then(
+                                (m) => m.ProjectsComponent
+                            ),
+                        data: { permission: 'Pages.ProjectManagement.Projects' },
+                    },
+                    {
+                        path: 'project-wage-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/project-wage-types/project-wage-types.component'
+                            ).then((m) => m.ProjectWageTypesComponent),
+                        data: { permission: 'Pages.ProjectManagement.ProjectWageTypes' },
+                    },
+                    {
+                        path: 'employee-projects',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/employee-projects/employee-projects.component'
+                            ).then((m) => m.EmployeeProjectsComponent),
+                        data: { permission: 'Pages.ProjectManagement.EmployeeProjects' },
+                    },
+                    {
+                        path: 'employee-project-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/employee-project-details/employee-project-details.component'
+                            ).then((m) => m.EmployeeProjectDetailsComponent),
+                        data: { permission: 'Pages.ProjectManagement.EmployeeProjectDetails' },
+                    },
+                    {
+                        path: 'project-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/project-registers/project-registers.component'
+                            ).then((m) => m.ProjectRegistersComponent),
+                        data: { permission: 'Pages.ProjectManagement.ProjectRegisters' },
+                    },
+                    {
+                        path: 'project-register-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/project-register-details/project-register-details.component'
+                            ).then((m) => m.ProjectRegisterDetailsComponent),
+                        data: { permission: 'Pages.ProjectManagement.ProjectRegisterDetails' },
+                    },
+                    {
+                        path: 'project-logs',
+                        loadComponent: () =>
+                            import('./admin/project-management/project-logs/project-logs.component').then(
+                                (m) => m.ProjectLogsComponent
+                            ),
+                        data: { permission: 'Pages.ProjectManagement.ProjectLogs' },
                     },
                     {
                         path: 'organization-units',

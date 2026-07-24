@@ -1,0 +1,115 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="EmployeeLoanRecovery_EmployeeLoanId">{{ 'EmployeeLoanId' | localize }}</label>
+                                <select
+                                    id="EmployeeLoanRecovery_EmployeeLoanId"
+                                    #employeeLoanIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeLoanId"
+                                    [ngModel]="record().employeeLoanId"
+                                    (ngModelChange)="updateField('employeeLoanId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (loan of employeeLoans(); track loan.id) {
+                                        <option [ngValue]="loan.id">
+                                            {{ loan.employeeCode }} - {{ loan.employeeFullNameEn }} - {{ loan.loanTypeName }} ({{ loan.startDate | luxonFormat: 'yyyy-MM-dd' }})
+                                        </option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeLoanIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeLoanRecovery_RecoveryDate">{{ 'RecoveryDate' | localize }}</label>
+                                <input
+                                    id="EmployeeLoanRecovery_RecoveryDate"
+                                    #recoveryDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="RecoveryDate"
+                                    [ngModel]="record().recoveryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('recoveryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="recoveryDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeLoanRecovery_RecoveryAmount">{{ 'RecoveryAmount' | localize }}</label>
+                                <input
+                                    id="EmployeeLoanRecovery_RecoveryAmount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="RecoveryAmount"
+                                    [ngModel]="record().recoveryAmount"
+                                    (ngModelChange)="updateNumberField('recoveryAmount', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeLoanRecovery_LoanRecoveryMethod">{{ 'LoanRecoveryMethod' | localize }}</label>
+                                <select
+                                    id="EmployeeLoanRecovery_LoanRecoveryMethod"
+                                    class="form-select"
+                                    name="LoanRecoveryMethod"
+                                    [ngModel]="record().loanRecoveryMethod"
+                                    (ngModelChange)="updateField('loanRecoveryMethod', $event)">
+                                    @for (option of loanRecoveryMethods; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeLoanRecovery_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeLoanRecovery_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

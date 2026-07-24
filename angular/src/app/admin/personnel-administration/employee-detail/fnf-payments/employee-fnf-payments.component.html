@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.PersonnelAdministration.EmployeeFnFPayments.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                scrollDirection="horizontal"
+                [tableStyle]="{ 'min-width': '110rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PersonnelAdministration.EmployeeFnFPayments.Edit',
+                                        'Pages.PersonnelAdministration.EmployeeFnFPayments.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th pSortableColumn="compensationDate">
+                            {{ 'CompensationDate' | localize }}
+                            <p-sortIcon field="compensationDate" />
+                        </th>
+                        <th>{{ 'LeaveCompensateDays' | localize }}</th>
+                        <th>{{ 'GratuityCompensateDays' | localize }}</th>
+                        <th>{{ 'IndemnityCompensateAmount' | localize }}</th>
+                        <th>{{ 'IndemnityPayAdjustment' | localize }}</th>
+                        <th>{{ 'TicketCompensateCount' | localize }}</th>
+                        <th>{{ 'CompensateLoanAmount' | localize }}</th>
+                        <th>{{ 'CompensateBonusPay' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PersonnelAdministration.EmployeeFnFPayments.Edit',
+                                        'Pages.PersonnelAdministration.EmployeeFnFPayments.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.compensationDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                        <td>{{ record.leaveCompensateDays }}</td>
+                        <td>{{ record.gratuityCompensateDays }}</td>
+                        <td>{{ record.indemnityCompensateAmount }}</td>
+                        <td>{{ record.indemnityPayAdjustment }}</td>
+                        <td>{{ record.ticketCompensateCount }}</td>
+                        <td>{{ record.compensateLoanAmount }}</td>
+                        <td>{{ record.compensateBonusPay }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditEmployeeFnFPaymentModal #createOrEditModal (modalSave)="reloadPage()" />

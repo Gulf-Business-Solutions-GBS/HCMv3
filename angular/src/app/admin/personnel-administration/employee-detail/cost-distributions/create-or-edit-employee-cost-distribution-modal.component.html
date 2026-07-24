@@ -1,0 +1,113 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="EmployeeCostDistribution_OrganizationUnitId">{{ 'OrganizationUnitId' | localize }}</label>
+                                <select
+                                    id="EmployeeCostDistribution_OrganizationUnitId"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="record().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeCostDistribution_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeCostDistribution_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeCostDistribution_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeCostDistribution_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeCostDistribution_CostCount">{{ 'CostCount' | localize }}</label>
+                                <input
+                                    id="EmployeeCostDistribution_CostCount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="CostCount"
+                                    [ngModel]="record().costCount"
+                                    (ngModelChange)="updateNumberField('costCount', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeCostDistribution_UsedDays">{{ 'UsedDays' | localize }}</label>
+                                <input
+                                    id="EmployeeCostDistribution_UsedDays"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="UsedDays"
+                                    [ngModel]="record().usedDays"
+                                    (ngModelChange)="updateNumberField('usedDays', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

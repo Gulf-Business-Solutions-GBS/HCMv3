@@ -1,0 +1,109 @@
+import { Component, inject, output, signal, viewChild } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import {
+    CreateOrEditEmployeeNonPayrollTransDto,
+    CurrenciesServiceProxy,
+    CurrencyDto,
+    EmployeeNonPayrollTransServiceProxy,
+    GetAllCurrenciesInput,
+    GetAllWageTypesInput,
+    WageTypeDto,
+    WageTypesServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { finalize } from 'rxjs/operators';
+import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
+import { FormsModule } from '@angular/forms';
+import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
+import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { DateTime } from 'luxon';
+
+@Component({
+    selector: 'createOrEditEmployeeNonPayrollTranModal',
+    templateUrl: './create-or-edit-employee-non-payroll-tran-modal.component.html',
+    imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
+})
+export class CreateOrEditEmployeeNonPayrollTranModalComponent extends AppComponentBase {
+    private _service = inject(EmployeeNonPayrollTransServiceProxy);
+    private _wageTypesService = inject(WageTypesServiceProxy);
+    private _currenciesService = inject(CurrenciesServiceProxy);
+
+    readonly modal = viewChild<ModalDirective>('createOrEditModal');
+    readonly modalSave = output<void>();
+
+    readonly active = signal<boolean>(false);
+    readonly saving = signal<boolean>(false);
+    readonly record = signal<CreateOrEditEmployeeNonPayrollTransDto>(new CreateOrEditEmployeeNonPayrollTransDto());
+
+    readonly wageTypes = signal<WageTypeDto[]>([]);
+    readonly currencies = signal<CurrencyDto[]>([]);
+
+    show(employeeId: number, id?: number): void {
+        this.active.set(true);
+
+        this.loadLookups();
+
+        if (!id) {
+            const record = new CreateOrEditEmployeeNonPayrollTransDto();
+            record.employeeId = employeeId;
+            record.amount = 0;
+            record.isLocked = false;
+            record.notificationSent = false;
+            this.record.set(record);
+            this.modal().show();
+        } else {
+            this._service.getEmployeeNonPayrollTransForEdit(id).subscribe((result) => {
+                this.record.set(result.employeeNonPayrollTrans);
+                this.modal().show();
+            });
+        }
+    }
+
+    private loadLookups(): void {
+        this._wageTypesService
+            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.wageTypes.set(result.items));
+
+        this._currenciesService
+            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.currencies.set(result.items));
+    }
+
+    onShown(): void {
+        document.getElementById('EmployeeNonPayrollTran_WageTypeId')?.focus();
+    }
+
+    save(): void {
+        this.saving.set(true);
+        this._service
+            .createOrEdit(this.record())
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit();
+            });
+    }
+
+    close(): void {
+        this.active.set(false);
+        this.modal().hide();
+    }
+
+    updateField(field: keyof CreateOrEditEmployeeNonPayrollTransDto, value: any): void {
+        const current = this.record();
+        (current as any)[field] = value;
+        const next = new CreateOrEditEmployeeNonPayrollTransDto();
+        Object.assign(next, current);
+        this.record.set(next);
+    }
+
+    updateDateField(field: keyof CreateOrEditEmployeeNonPayrollTransDto, value: string): void {
+        this.updateField(field, value ? DateTime.fromISO(value) : (undefined as any));
+    }
+
+    updateNumberField(field: keyof CreateOrEditEmployeeNonPayrollTransDto, value: string): void {
+        this.updateField(field, value !== null && value !== undefined && value !== '' ? Number(value) : 0);
+    }
+}

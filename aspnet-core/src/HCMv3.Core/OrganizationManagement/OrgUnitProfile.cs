@@ -3,6 +3,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.PayrollManagement;
 
 namespace HCMv3.OrganizationManagement;
 
@@ -22,7 +23,8 @@ namespace HCMv3.OrganizationManagement;
 /// tree-position code, e.g. "00001.00002") -- <see cref="Code"/> here is a separate, user-assigned short
 /// business reference code, auto-generated when left blank like every other lookup in this port.
 ///
-/// DEFERRED (not implemented): legacy <c>PayrollArea</c> FK (Payroll module not ported).
+/// <see cref="PayrollAreaId"/> FKs <c>HCMv3.PayrollManagement.PayrollArea</c> (Wave 4 gap-fill -- PayrollManagement
+/// is now ported, so this legacy FK, previously deferred, is added here).
 ///
 /// Tree depth is capped at 10 levels -- enforced in <c>OrganizationUnitAppService</c> (Zero's own,
 /// patched) and <c>OrgUnitsAppService</c> (this entity's own create/move path), not here.
@@ -57,4 +59,8 @@ public class OrgUnitProfile : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(500)]
     public virtual string OrgGeoLocation { get; set; }
+
+    public virtual int? PayrollAreaId { get; set; }
+
+    public virtual PayrollArea PayrollArea { get; set; }
 }

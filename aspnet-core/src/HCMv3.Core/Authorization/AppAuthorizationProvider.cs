@@ -476,6 +476,231 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeRejoins.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRejoins_Edit, L("EditItem"));
         employeeRejoins.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRejoins_Delete, L("DeleteItem"));
 
+        var employeeAbsences = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences, L("EmployeeAbsences"));
+        employeeAbsences.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Create, L("CreateNewItem"));
+        employeeAbsences.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Edit, L("EditItem"));
+        employeeAbsences.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsences_Delete, L("DeleteItem"));
+
+        var employeeAbsenceQuotas = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsenceQuotas, L("EmployeeAbsenceQuotas"));
+        employeeAbsenceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsenceQuotas_Create, L("CreateNewItem"));
+        employeeAbsenceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsenceQuotas_Edit, L("EditItem"));
+        employeeAbsenceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsenceQuotas_Delete, L("DeleteItem"));
+
+        var employeeAbsAdjustments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsAdjustments, L("EmployeeAbsAdjustments"));
+        employeeAbsAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsAdjustments_Create, L("CreateNewItem"));
+        employeeAbsAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsAdjustments_Edit, L("EditItem"));
+        employeeAbsAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsAdjustments_Delete, L("DeleteItem"));
+
+        var employeeAbsQuotaForfeits = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsQuotaForfeits, L("EmployeeAbsQuotaForfeits"));
+        employeeAbsQuotaForfeits.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsQuotaForfeits_Create, L("CreateNewItem"));
+        employeeAbsQuotaForfeits.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsQuotaForfeits_Edit, L("EditItem"));
+        employeeAbsQuotaForfeits.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAbsQuotaForfeits_Delete, L("DeleteItem"));
+
+        var employeeAttendances = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances, L("EmployeeAttendances"));
+        employeeAttendances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances_Create, L("CreateNewItem"));
+        employeeAttendances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances_Edit, L("EditItem"));
+        employeeAttendances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendances_Delete, L("DeleteItem"));
+
+        var employeeAttendanceQuotas = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendanceQuotas, L("EmployeeAttendanceQuotas"));
+        employeeAttendanceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendanceQuotas_Create, L("CreateNewItem"));
+        employeeAttendanceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendanceQuotas_Edit, L("EditItem"));
+        employeeAttendanceQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAttendanceQuotas_Delete, L("DeleteItem"));
+
+        var employeeBasicPays = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPays, L("EmployeeBasicPays"));
+        employeeBasicPays.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPays_Create, L("CreateNewItem"));
+        employeeBasicPays.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPays_Edit, L("EditItem"));
+        employeeBasicPays.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPays_Delete, L("DeleteItem"));
+
+        var employeeBasicPayDetails = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails, L("EmployeeBasicPayDetails"));
+        employeeBasicPayDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails_Create, L("CreateNewItem"));
+        employeeBasicPayDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails_Edit, L("EditItem"));
+        employeeBasicPayDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails_Delete, L("DeleteItem"));
+
+        var employeeOnHolds = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOnHolds, L("EmployeeOnHolds"));
+        employeeOnHolds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOnHolds_Create, L("CreateNewItem"));
+        employeeOnHolds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOnHolds_Edit, L("EditItem"));
+        employeeOnHolds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOnHolds_Delete, L("DeleteItem"));
+
+        var employeeGratuities = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities, L("EmployeeGratuities"));
+        employeeGratuities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities_Create, L("CreateNewItem"));
+        employeeGratuities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities_Edit, L("EditItem"));
+        employeeGratuities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuities_Delete, L("DeleteItem"));
+
+        var employeeGratuityQuotas = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuityQuotas, L("EmployeeGratuityQuotas"));
+        employeeGratuityQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuityQuotas_Create, L("CreateNewItem"));
+        employeeGratuityQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuityQuotas_Edit, L("EditItem"));
+        employeeGratuityQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGratuityQuotas_Delete, L("DeleteItem"));
+
+        var employeeLoans = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans, L("EmployeeLoans"));
+        employeeLoans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans_Create, L("CreateNewItem"));
+        employeeLoans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans_Edit, L("EditItem"));
+        employeeLoans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoans_Delete, L("DeleteItem"));
+
+        var employeeLoanExemptions = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanExemptions, L("EmployeeLoanExemptions"));
+        employeeLoanExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanExemptions_Create, L("CreateNewItem"));
+        employeeLoanExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanExemptions_Edit, L("EditItem"));
+        employeeLoanExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanExemptions_Delete, L("DeleteItem"));
+
+        var employeeLoanRecoveries = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries, L("EmployeeLoanRecoveries"));
+        employeeLoanRecoveries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries_Create, L("CreateNewItem"));
+        employeeLoanRecoveries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries_Edit, L("EditItem"));
+        employeeLoanRecoveries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLoanRecoveries_Delete, L("DeleteItem"));
+
+        var loanInstallments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LoanInstallments, L("LoanInstallments"));
+        loanInstallments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LoanInstallments_Create, L("CreateNewItem"));
+        loanInstallments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LoanInstallments_Edit, L("EditItem"));
+        loanInstallments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_LoanInstallments_Delete, L("DeleteItem"));
+
+        var employeeFunds = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFunds, L("EmployeeFunds"));
+        employeeFunds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFunds_Create, L("CreateNewItem"));
+        employeeFunds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFunds_Edit, L("EditItem"));
+        employeeFunds.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFunds_Delete, L("DeleteItem"));
+
+        var employeeFundDetails = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails, L("EmployeeFundDetails"));
+        employeeFundDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails_Create, L("CreateNewItem"));
+        employeeFundDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails_Edit, L("EditItem"));
+        employeeFundDetails.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundDetails_Delete, L("DeleteItem"));
+
+        var employeeFundExemptions = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundExemptions, L("EmployeeFundExemptions"));
+        employeeFundExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundExemptions_Create, L("CreateNewItem"));
+        employeeFundExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundExemptions_Edit, L("EditItem"));
+        employeeFundExemptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFundExemptions_Delete, L("DeleteItem"));
+
+        var employeeTickets = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTickets, L("EmployeeTickets"));
+        employeeTickets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTickets_Create, L("CreateNewItem"));
+        employeeTickets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTickets_Edit, L("EditItem"));
+        employeeTickets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTickets_Delete, L("DeleteItem"));
+
+        var employeeTicketQuotas = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketQuotas, L("EmployeeTicketQuotas"));
+        employeeTicketQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketQuotas_Create, L("CreateNewItem"));
+        employeeTicketQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketQuotas_Edit, L("EditItem"));
+        employeeTicketQuotas.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketQuotas_Delete, L("DeleteItem"));
+
+        var employeeTicketRoutes = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketRoutes, L("EmployeeTicketRoutes"));
+        employeeTicketRoutes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketRoutes_Create, L("CreateNewItem"));
+        employeeTicketRoutes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketRoutes_Edit, L("EditItem"));
+        employeeTicketRoutes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTicketRoutes_Delete, L("DeleteItem"));
+
+        var employeeTktAdjustments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTktAdjustments, L("EmployeeTktAdjustments"));
+        employeeTktAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTktAdjustments_Create, L("CreateNewItem"));
+        employeeTktAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTktAdjustments_Edit, L("EditItem"));
+        employeeTktAdjustments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTktAdjustments_Delete, L("DeleteItem"));
+
+        var employeeSocialSecurities = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurities, L("EmployeeSocialSecurities"));
+        employeeSocialSecurities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurities_Create, L("CreateNewItem"));
+        employeeSocialSecurities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurities_Edit, L("EditItem"));
+        employeeSocialSecurities.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurities_Delete, L("DeleteItem"));
+
+        var employeeSocialSecurityClaims = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurityClaims, L("EmployeeSocialSecurityClaims"));
+        employeeSocialSecurityClaims.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurityClaims_Create, L("CreateNewItem"));
+        employeeSocialSecurityClaims.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurityClaims_Edit, L("EditItem"));
+        employeeSocialSecurityClaims.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSocialSecurityClaims_Delete, L("DeleteItem"));
+
+        var employeeDependants = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependants, L("EmployeeDependants"));
+        employeeDependants.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependants_Create, L("CreateNewItem"));
+        employeeDependants.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependants_Edit, L("EditItem"));
+        employeeDependants.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependants_Delete, L("DeleteItem"));
+
+        var employeeDependantExceptions = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependantExceptions, L("EmployeeDependantExceptions"));
+        employeeDependantExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependantExceptions_Create, L("CreateNewItem"));
+        employeeDependantExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependantExceptions_Edit, L("EditItem"));
+        employeeDependantExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDependantExceptions_Delete, L("DeleteItem"));
+
+        var employeeSponsors = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSponsors, L("EmployeeSponsors"));
+        employeeSponsors.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSponsors_Create, L("CreateNewItem"));
+        employeeSponsors.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSponsors_Edit, L("EditItem"));
+        employeeSponsors.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeSponsors_Delete, L("DeleteItem"));
+
+        var employeeFnFPayments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments, L("EmployeeFnFPayments"));
+        employeeFnFPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Create, L("CreateNewItem"));
+        employeeFnFPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Edit, L("EditItem"));
+        employeeFnFPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeFnFPayments_Delete, L("DeleteItem"));
+
+        var employeeBanks = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBanks, L("EmployeeBanks"));
+        employeeBanks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBanks_Create, L("CreateNewItem"));
+        employeeBanks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBanks_Edit, L("EditItem"));
+        employeeBanks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBanks_Delete, L("DeleteItem"));
+
+        var employeeAssets = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets, L("EmployeeAssets"));
+        employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Create, L("CreateNewItem"));
+        employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Edit, L("EditItem"));
+        employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Delete, L("DeleteItem"));
+
+        var employeeAssetInvoices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices, L("EmployeeAssetInvoices"));
+        employeeAssetInvoices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Create, L("CreateNewItem"));
+        employeeAssetInvoices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Edit, L("EditItem"));
+        employeeAssetInvoices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Delete, L("DeleteItem"));
+
+        var employeeDisciplinaries = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDisciplinaries, L("EmployeeDisciplinaries"));
+        employeeDisciplinaries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDisciplinaries_Create, L("CreateNewItem"));
+        employeeDisciplinaries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDisciplinaries_Edit, L("EditItem"));
+        employeeDisciplinaries.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDisciplinaries_Delete, L("DeleteItem"));
+
+        var employeeGrievances = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGrievances, L("EmployeeGrievances"));
+        employeeGrievances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGrievances_Create, L("CreateNewItem"));
+        employeeGrievances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGrievances_Edit, L("EditItem"));
+        employeeGrievances.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeGrievances_Delete, L("DeleteItem"));
+
+        var employeeHealthReimburses = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHealthReimburses, L("EmployeeHealthReimburses"));
+        employeeHealthReimburses.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHealthReimburses_Create, L("CreateNewItem"));
+        employeeHealthReimburses.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHealthReimburses_Edit, L("EditItem"));
+        employeeHealthReimburses.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHealthReimburses_Delete, L("DeleteItem"));
+
+        var employeeOvertimes = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes, L("EmployeeOvertimes"));
+        employeeOvertimes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes_Create, L("CreateNewItem"));
+        employeeOvertimes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes_Edit, L("EditItem"));
+        employeeOvertimes.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOvertimes_Delete, L("DeleteItem"));
+
+        var employeePayments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments, L("EmployeePayments"));
+        employeePayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Create, L("CreateNewItem"));
+        employeePayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Edit, L("EditItem"));
+        employeePayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Delete, L("DeleteItem"));
+
+        var employeeRecurringPayments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments, L("EmployeeRecurringPayments"));
+        employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Create, L("CreateNewItem"));
+        employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Edit, L("EditItem"));
+        employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Delete, L("DeleteItem"));
+
+        var employeeRemunerations = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRemunerations, L("EmployeeRemunerations"));
+        employeeRemunerations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRemunerations_Create, L("CreateNewItem"));
+        employeeRemunerations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRemunerations_Edit, L("EditItem"));
+        employeeRemunerations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRemunerations_Delete, L("DeleteItem"));
+
+        var employeeRewards = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRewards, L("EmployeeRewards"));
+        employeeRewards.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRewards_Create, L("CreateNewItem"));
+        employeeRewards.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRewards_Edit, L("EditItem"));
+        employeeRewards.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRewards_Delete, L("DeleteItem"));
+
+        var employeeCostDistributions = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeCostDistributions, L("EmployeeCostDistributions"));
+        employeeCostDistributions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeCostDistributions_Create, L("CreateNewItem"));
+        employeeCostDistributions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeCostDistributions_Edit, L("EditItem"));
+        employeeCostDistributions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeCostDistributions_Delete, L("DeleteItem"));
+
+        var employeeAccountAssignments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAccountAssignments, L("EmployeeAccountAssignments"));
+        employeeAccountAssignments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAccountAssignments_Create, L("CreateNewItem"));
+        employeeAccountAssignments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAccountAssignments_Edit, L("EditItem"));
+        employeeAccountAssignments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAccountAssignments_Delete, L("DeleteItem"));
+
+        var employeeExtdWorkLocations = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeExtdWorkLocations, L("EmployeeExtdWorkLocations"));
+        employeeExtdWorkLocations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeExtdWorkLocations_Create, L("CreateNewItem"));
+        employeeExtdWorkLocations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeExtdWorkLocations_Edit, L("EditItem"));
+        employeeExtdWorkLocations.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeExtdWorkLocations_Delete, L("DeleteItem"));
+
+        var employeeBenefitExceptions = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBenefitExceptions, L("EmployeeBenefitExceptions"));
+        employeeBenefitExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBenefitExceptions_Create, L("CreateNewItem"));
+        employeeBenefitExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBenefitExceptions_Edit, L("EditItem"));
+        employeeBenefitExceptions.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeBenefitExceptions_Delete, L("DeleteItem"));
+
+        var employeeNonPayrollTrans = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans, L("EmployeeNonPayrollTrans"));
+        employeeNonPayrollTrans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans_Create, L("CreateNewItem"));
+        employeeNonPayrollTrans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans_Edit, L("EditItem"));
+        employeeNonPayrollTrans.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeNonPayrollTrans_Delete, L("DeleteItem"));
+
+        var employeeTasks = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks, L("EmployeeTasks"));
+        employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Create, L("CreateNewItem"));
+        employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Edit, L("EditItem"));
+        employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Delete, L("DeleteItem"));
+
         var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 
         var roles = administration.CreateChildPermission(AppPermissions.Pages_Administration_Roles, L("Roles"));
@@ -1089,6 +1314,162 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ticketAccrualSummaries.CreateChildPermission(AppPermissions.Pages_PayrollManagement_TicketAccrualSummaries_Create, L("CreateNewItem"));
         ticketAccrualSummaries.CreateChildPermission(AppPermissions.Pages_PayrollManagement_TicketAccrualSummaries_Edit, L("EditItem"));
         ticketAccrualSummaries.CreateChildPermission(AppPermissions.Pages_PayrollManagement_TicketAccrualSummaries_Delete, L("DeleteItem"));
+
+        var projectManagement = pages.CreateChildPermission(AppPermissions.Pages_ProjectManagement, L("ProjectManagement"));
+
+        var projectTypes = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectTypes, L("ProjectTypes"));
+        projectTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectTypes_Create, L("CreateNewItem"));
+        projectTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectTypes_Edit, L("EditItem"));
+        projectTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectTypes_Delete, L("DeleteItem"));
+
+        var projects = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_Projects, L("Projects"));
+        projects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_Projects_Create, L("CreateNewItem"));
+        projects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_Projects_Edit, L("EditItem"));
+        projects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_Projects_Delete, L("DeleteItem"));
+
+        var projectWageTypes = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectWageTypes, L("ProjectWageTypes"));
+        projectWageTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectWageTypes_Create, L("CreateNewItem"));
+        projectWageTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectWageTypes_Edit, L("EditItem"));
+        projectWageTypes.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectWageTypes_Delete, L("DeleteItem"));
+
+        var employeeProjects = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjects, L("EmployeeProjects"));
+        employeeProjects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjects_Create, L("CreateNewItem"));
+        employeeProjects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjects_Edit, L("EditItem"));
+        employeeProjects.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjects_Delete, L("DeleteItem"));
+
+        var employeeProjectDetails = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjectDetails, L("EmployeeProjectDetails"));
+        employeeProjectDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjectDetails_Create, L("CreateNewItem"));
+        employeeProjectDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjectDetails_Edit, L("EditItem"));
+        employeeProjectDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_EmployeeProjectDetails_Delete, L("DeleteItem"));
+
+        var projectRegisters = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisters, L("ProjectRegisters"));
+        projectRegisters.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisters_Create, L("CreateNewItem"));
+        projectRegisters.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisters_Edit, L("EditItem"));
+        projectRegisters.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisters_Delete, L("DeleteItem"));
+
+        var projectRegisterDetails = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisterDetails, L("ProjectRegisterDetails"));
+        projectRegisterDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisterDetails_Create, L("CreateNewItem"));
+        projectRegisterDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisterDetails_Edit, L("EditItem"));
+        projectRegisterDetails.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectRegisterDetails_Delete, L("DeleteItem"));
+
+        var projectLogs = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs, L("ProjectLogs"));
+        projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Create, L("CreateNewItem"));
+        projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Edit, L("EditItem"));
+        projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Delete, L("DeleteItem"));
+
+        var govtRelationsManagement = pages.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement, L("GovtRelationsManagement"));
+
+        var businessTypes = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_BusinessTypes, L("BusinessTypes"));
+        businessTypes.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_BusinessTypes_Create, L("CreateNewItem"));
+        businessTypes.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_BusinessTypes_Edit, L("EditItem"));
+        businessTypes.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_BusinessTypes_Delete, L("DeleteItem"));
+
+        var govtJobCategories = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobCategories, L("GovtJobCategories"));
+        govtJobCategories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobCategories_Create, L("CreateNewItem"));
+        govtJobCategories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobCategories_Edit, L("EditItem"));
+        govtJobCategories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobCategories_Delete, L("DeleteItem"));
+
+        var govtJobTitles = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobTitles, L("GovtJobTitles"));
+        govtJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobTitles_Create, L("CreateNewItem"));
+        govtJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobTitles_Edit, L("EditItem"));
+        govtJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_GovtJobTitles_Delete, L("DeleteItem"));
+
+        var signatories = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Signatories, L("Signatories"));
+        signatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Signatories_Create, L("CreateNewItem"));
+        signatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Signatories_Edit, L("EditItem"));
+        signatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Signatories_Delete, L("DeleteItem"));
+
+        var sponsors = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Sponsors, L("Sponsors"));
+        sponsors.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Sponsors_Create, L("CreateNewItem"));
+        sponsors.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Sponsors_Edit, L("EditItem"));
+        sponsors.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_Sponsors_Delete, L("DeleteItem"));
+
+        var sponsorJobTitles = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorJobTitles, L("SponsorJobTitles"));
+        sponsorJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorJobTitles_Create, L("CreateNewItem"));
+        sponsorJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorJobTitles_Edit, L("EditItem"));
+        sponsorJobTitles.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorJobTitles_Delete, L("DeleteItem"));
+
+        var sponsorSignatories = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorSignatories, L("SponsorSignatories"));
+        sponsorSignatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorSignatories_Create, L("CreateNewItem"));
+        sponsorSignatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorSignatories_Edit, L("EditItem"));
+        sponsorSignatories.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorSignatories_Delete, L("DeleteItem"));
+
+        var sponsorGovtRepresentatives = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorGovtRepresentatives, L("SponsorGovtRepresentatives"));
+        sponsorGovtRepresentatives.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorGovtRepresentatives_Create, L("CreateNewItem"));
+        sponsorGovtRepresentatives.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorGovtRepresentatives_Edit, L("EditItem"));
+        sponsorGovtRepresentatives.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorGovtRepresentatives_Delete, L("DeleteItem"));
+
+        var sponsorLicenseInfos = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorLicenseInfos, L("SponsorLicenseInfos"));
+        sponsorLicenseInfos.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorLicenseInfos_Create, L("CreateNewItem"));
+        sponsorLicenseInfos.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorLicenseInfos_Edit, L("EditItem"));
+        sponsorLicenseInfos.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorLicenseInfos_Delete, L("DeleteItem"));
+
+        var sponsorBanks = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorBanks, L("SponsorBanks"));
+        sponsorBanks.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorBanks_Create, L("CreateNewItem"));
+        sponsorBanks.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorBanks_Edit, L("EditItem"));
+        sponsorBanks.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_SponsorBanks_Delete, L("DeleteItem"));
+
+        var organizationDocuments = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments, L("OrganizationDocuments"));
+        organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Create, L("CreateNewItem"));
+        organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Edit, L("EditItem"));
+        organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Delete, L("DeleteItem"));
+
+        var accommodationManagement = pages.CreateChildPermission(AppPermissions.Pages_AccommodationManagement, L("AccommodationManagement"));
+
+        var locations = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Locations, L("Locations"));
+        locations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Locations_Create, L("CreateNewItem"));
+        locations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Locations_Edit, L("EditItem"));
+        locations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Locations_Delete, L("DeleteItem"));
+
+        var buildings = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Buildings, L("Buildings"));
+        buildings.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Buildings_Create, L("CreateNewItem"));
+        buildings.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Buildings_Edit, L("EditItem"));
+        buildings.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Buildings_Delete, L("DeleteItem"));
+
+        var buildingContracts = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_BuildingContracts, L("BuildingContracts"));
+        buildingContracts.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_BuildingContracts_Create, L("CreateNewItem"));
+        buildingContracts.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_BuildingContracts_Edit, L("EditItem"));
+        buildingContracts.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_BuildingContracts_Delete, L("DeleteItem"));
+
+        var floors = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Floors, L("Floors"));
+        floors.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Floors_Create, L("CreateNewItem"));
+        floors.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Floors_Edit, L("EditItem"));
+        floors.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Floors_Delete, L("DeleteItem"));
+
+        var flats = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Flats, L("Flats"));
+        flats.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Flats_Create, L("CreateNewItem"));
+        flats.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Flats_Edit, L("EditItem"));
+        flats.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Flats_Delete, L("DeleteItem"));
+
+        var rooms = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Rooms, L("Rooms"));
+        rooms.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Rooms_Create, L("CreateNewItem"));
+        rooms.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Rooms_Edit, L("EditItem"));
+        rooms.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Rooms_Delete, L("DeleteItem"));
+
+        var beds = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Beds, L("Beds"));
+        beds.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Beds_Create, L("CreateNewItem"));
+        beds.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Beds_Edit, L("EditItem"));
+        beds.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_Beds_Delete, L("DeleteItem"));
+
+        var accommodationTypes = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationTypes, L("AccommodationTypes"));
+        accommodationTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationTypes_Create, L("CreateNewItem"));
+        accommodationTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationTypes_Edit, L("EditItem"));
+        accommodationTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationTypes_Delete, L("DeleteItem"));
+
+        var accommodationServiceTypes = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServiceTypes, L("AccommodationServiceTypes"));
+        accommodationServiceTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServiceTypes_Create, L("CreateNewItem"));
+        accommodationServiceTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServiceTypes_Edit, L("EditItem"));
+        accommodationServiceTypes.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServiceTypes_Delete, L("DeleteItem"));
+
+        var employeeAccommodations = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_EmployeeAccommodations, L("EmployeeAccommodations"));
+        employeeAccommodations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_EmployeeAccommodations_Create, L("CreateNewItem"));
+        employeeAccommodations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_EmployeeAccommodations_Edit, L("EditItem"));
+        employeeAccommodations.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_EmployeeAccommodations_Delete, L("DeleteItem"));
+
+        var accommodationServices = accommodationManagement.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices, L("AccommodationServices"));
+        accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Create, L("CreateNewItem"));
+        accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Edit, L("EditItem"));
+        accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Delete, L("DeleteItem"));
 
         //TENANT-SPECIFIC PERMISSIONS
 

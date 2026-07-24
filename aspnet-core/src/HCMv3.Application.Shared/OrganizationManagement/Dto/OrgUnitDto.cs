@@ -31,4 +31,8 @@ public class OrgUnitDto : EntityDto<long>
     public string Address { get; set; }
 
     public string OrgGeoLocation { get; set; }
+
+    public int? PayrollAreaId { get; set; }
+
+    public string PayrollAreaName { get; set; }
 }

@@ -2,11 +2,14 @@ import { Component, computed, inject, output, signal, viewChild } from '@angular
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CreateOrEditOrgUnitDto,
+    GetAllPayrollAreasInput,
     GetAllSimpleLookupsInput,
     OrganizationUnitDto,
     OrganizationUnitServiceProxy,
     OrganizationUnitTypesServiceProxy,
     OrgUnitsServiceProxy,
+    PayrollAreaDto,
+    PayrollAreasServiceProxy,
     SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -32,6 +35,7 @@ export class CreateOrEditOrgUnitModalComponent extends AppComponentBase {
     private _orgUnitsService = inject(OrgUnitsServiceProxy);
     private _organizationUnitService = inject(OrganizationUnitServiceProxy);
     private _organizationUnitTypesService = inject(OrganizationUnitTypesServiceProxy);
+    private _payrollAreasService = inject(PayrollAreasServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -41,6 +45,7 @@ export class CreateOrEditOrgUnitModalComponent extends AppComponentBase {
     readonly orgUnit = signal<CreateOrEditOrgUnitDto>(new CreateOrEditOrgUnitDto());
     readonly allOrganizationUnits = signal<OrganizationUnitDto[]>([]);
     readonly organizationUnitTypes = signal<SimpleLookupDto[]>([]);
+    readonly payrollAreas = signal<PayrollAreaDto[]>([]);
 
     /** Parent dropdown options: excludes the record's own id so a unit can't be made its own parent. */
     readonly parentOptions = computed(() => {
@@ -59,6 +64,12 @@ export class CreateOrEditOrgUnitModalComponent extends AppComponentBase {
             .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
             .subscribe((result) => {
                 this.organizationUnitTypes.set(result.items);
+            });
+
+        this._payrollAreasService
+            .getAll(new GetAllPayrollAreasInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => {
+                this.payrollAreas.set(result.items);
             });
 
         if (!orgUnitId) {

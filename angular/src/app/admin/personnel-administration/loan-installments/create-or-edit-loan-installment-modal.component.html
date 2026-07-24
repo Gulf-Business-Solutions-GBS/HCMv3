@@ -1,0 +1,105 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="LoanInstallment_EmployeeLoanId">{{ 'EmployeeLoanId' | localize }}</label>
+                                <select
+                                    id="LoanInstallment_EmployeeLoanId"
+                                    #employeeLoanIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeLoanId"
+                                    [ngModel]="record().employeeLoanId"
+                                    (ngModelChange)="updateField('employeeLoanId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (loan of employeeLoans(); track loan.id) {
+                                        <option [ngValue]="loan.id">
+                                            {{ loan.employeeCode }} - {{ loan.employeeFullNameEn }} - {{ loan.loanTypeName }} ({{ loan.startDate | luxonFormat: 'yyyy-MM-dd' }})
+                                        </option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeLoanIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="LoanInstallment_InstallmentDate">{{ 'InstallmentDate' | localize }}</label>
+                                <input
+                                    id="LoanInstallment_InstallmentDate"
+                                    #installmentDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="InstallmentDate"
+                                    [ngModel]="record().installmentDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('installmentDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="installmentDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="LoanInstallment_InstallmentAmount">{{ 'InstallmentAmount' | localize }}</label>
+                                <input
+                                    id="LoanInstallment_InstallmentAmount"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="InstallmentAmount"
+                                    [ngModel]="record().installmentAmount"
+                                    (ngModelChange)="updateNumberField('installmentAmount', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="LoanInstallment_InstallmentStatus">{{ 'InstallmentStatus' | localize }}</label>
+                                <select
+                                    id="LoanInstallment_InstallmentStatus"
+                                    class="form-select"
+                                    name="InstallmentStatus"
+                                    [ngModel]="record().installmentStatus"
+                                    (ngModelChange)="updateField('installmentStatus', $event)">
+                                    @for (option of installmentStatuses; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

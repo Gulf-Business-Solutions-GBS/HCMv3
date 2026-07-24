@@ -234,6 +234,65 @@ export class AppNavigationService {
                 [],
                 [
                     new AppMenuItem('Employees', 'Pages.PersonnelAdministration.Employees', 'flaticon-user', '/app/admin/employees'),
+                    new AppMenuItem('EmployeeBasicPayDetails', 'Pages.PersonnelAdministration.EmployeeBasicPayDetails', 'flaticon-list-3', '/app/admin/employee-basic-pay-details'),
+                    new AppMenuItem('EmployeeLoanExemptions', 'Pages.PersonnelAdministration.EmployeeLoanExemptions', 'flaticon-list-3', '/app/admin/employee-loan-exemptions'),
+                    new AppMenuItem('EmployeeLoanRecoveries', 'Pages.PersonnelAdministration.EmployeeLoanRecoveries', 'flaticon-list-3', '/app/admin/employee-loan-recoveries'),
+                    new AppMenuItem('LoanInstallments', 'Pages.PersonnelAdministration.LoanInstallments', 'flaticon-list-3', '/app/admin/loan-installments'),
+                    new AppMenuItem('EmployeeFundDetails', 'Pages.PersonnelAdministration.EmployeeFundDetails', 'flaticon-list-3', '/app/admin/employee-fund-details'),
+                    new AppMenuItem('EmployeeFundExemptions', 'Pages.PersonnelAdministration.EmployeeFundExemptions', 'flaticon-list-3', '/app/admin/employee-fund-exemptions'),
+                    new AppMenuItem('EmployeeDependantExceptions', 'Pages.PersonnelAdministration.EmployeeDependantExceptions', 'flaticon-list-3', '/app/admin/employee-dependant-exceptions'),
+                ]
+            ),
+            new AppMenuItem(
+                'GovtRelationsManagement',
+                '',
+                'flaticon-map',
+                '',
+                [],
+                [
+                    new AppMenuItem('BusinessTypes', 'Pages.GovtRelationsManagement.BusinessTypes', 'flaticon-list-3', '/app/admin/business-types'),
+                    new AppMenuItem('GovtJobCategories', 'Pages.GovtRelationsManagement.GovtJobCategories', 'flaticon-list-3', '/app/admin/govt-job-categories'),
+                    new AppMenuItem('GovtJobTitles', 'Pages.GovtRelationsManagement.GovtJobTitles', 'flaticon-list-3', '/app/admin/govt-job-titles'),
+                    new AppMenuItem('Signatories', 'Pages.GovtRelationsManagement.Signatories', 'flaticon-list-3', '/app/admin/signatories'),
+                    new AppMenuItem('Sponsors', 'Pages.GovtRelationsManagement.Sponsors', 'flaticon-list-3', '/app/admin/sponsors'),
+                    new AppMenuItem('OrganizationDocuments', 'Pages.GovtRelationsManagement.OrganizationDocuments', 'flaticon-list-3', '/app/admin/organization-documents'),
+                ]
+            ),
+            new AppMenuItem(
+                'ProjectManagement',
+                '',
+                'flaticon-folder-1',
+                '',
+                [],
+                [
+                    new AppMenuItem('ProjectTypes', 'Pages.ProjectManagement.ProjectTypes', 'flaticon-list-3', '/app/admin/project-types'),
+                    new AppMenuItem('Projects', 'Pages.ProjectManagement.Projects', 'flaticon-list-3', '/app/admin/projects'),
+                    new AppMenuItem('ProjectWageTypes', 'Pages.ProjectManagement.ProjectWageTypes', 'flaticon-list-3', '/app/admin/project-wage-types'),
+                    new AppMenuItem('EmployeeProjects', 'Pages.ProjectManagement.EmployeeProjects', 'flaticon-list-3', '/app/admin/employee-projects'),
+                    new AppMenuItem('EmployeeProjectDetails', 'Pages.ProjectManagement.EmployeeProjectDetails', 'flaticon-list-3', '/app/admin/employee-project-details'),
+                    new AppMenuItem('ProjectRegisters', 'Pages.ProjectManagement.ProjectRegisters', 'flaticon-list-3', '/app/admin/project-registers'),
+                    new AppMenuItem('ProjectRegisterDetails', 'Pages.ProjectManagement.ProjectRegisterDetails', 'flaticon-list-3', '/app/admin/project-register-details'),
+                    new AppMenuItem('ProjectLogs', 'Pages.ProjectManagement.ProjectLogs', 'flaticon-list-3', '/app/admin/project-logs'),
+                ]
+            ),
+            new AppMenuItem(
+                'AccommodationManagement',
+                '',
+                'flaticon-home',
+                '',
+                [],
+                [
+                    new AppMenuItem('Locations', 'Pages.AccommodationManagement.Locations', 'flaticon-list-3', '/app/admin/locations'),
+                    new AppMenuItem('Buildings', 'Pages.AccommodationManagement.Buildings', 'flaticon-list-3', '/app/admin/buildings'),
+                    new AppMenuItem('BuildingContracts', 'Pages.AccommodationManagement.BuildingContracts', 'flaticon-list-3', '/app/admin/building-contracts'),
+                    new AppMenuItem('Floors', 'Pages.AccommodationManagement.Floors', 'flaticon-list-3', '/app/admin/floors'),
+                    new AppMenuItem('Flats', 'Pages.AccommodationManagement.Flats', 'flaticon-list-3', '/app/admin/flats'),
+                    new AppMenuItem('Rooms', 'Pages.AccommodationManagement.Rooms', 'flaticon-list-3', '/app/admin/rooms'),
+                    new AppMenuItem('Beds', 'Pages.AccommodationManagement.Beds', 'flaticon-list-3', '/app/admin/beds'),
+                    new AppMenuItem('AccommodationTypes', 'Pages.AccommodationManagement.AccommodationTypes', 'flaticon-list-3', '/app/admin/accommodation-types'),
+                    new AppMenuItem('AccommodationServiceTypes', 'Pages.AccommodationManagement.AccommodationServiceTypes', 'flaticon-list-3', '/app/admin/accommodation-service-types'),
+                    new AppMenuItem('EmployeeAccommodations', 'Pages.AccommodationManagement.EmployeeAccommodations', 'flaticon-list-3', '/app/admin/employee-accommodations'),
+                    new AppMenuItem('AccommodationServices', 'Pages.AccommodationManagement.AccommodationServices', 'flaticon-list-3', '/app/admin/accommodation-services'),
                 ]
             ),
             new AppMenuItem(

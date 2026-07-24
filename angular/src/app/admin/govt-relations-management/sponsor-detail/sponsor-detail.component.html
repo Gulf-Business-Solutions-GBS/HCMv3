@@ -1,0 +1,37 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Sponsors' | localize" [description]="'GovtRelationsManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (sponsor()) {
+                            <span>{{ sponsor().code }} - {{ sponsor().nameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (sponsorId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'SponsorJobTitles' | localize }}" [active]="true">
+                            <sponsor-job-titles [sponsorId]="sponsorId()" />
+                        </tab>
+                        <tab heading="{{ 'SponsorSignatories' | localize }}">
+                            <sponsor-signatories [sponsorId]="sponsorId()" />
+                        </tab>
+                        <tab heading="{{ 'SponsorGovtRepresentatives' | localize }}">
+                            <sponsor-govt-representatives [sponsorId]="sponsorId()" />
+                        </tab>
+                        <tab heading="{{ 'SponsorLicenseInfos' | localize }}">
+                            <sponsor-license-infos [sponsorId]="sponsorId()" />
+                        </tab>
+                        <tab heading="{{ 'SponsorBanks' | localize }}">
+                            <sponsor-banks [sponsorId]="sponsorId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

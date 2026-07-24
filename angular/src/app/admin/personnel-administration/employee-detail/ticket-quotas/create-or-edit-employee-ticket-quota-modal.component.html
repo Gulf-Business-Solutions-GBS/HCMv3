@@ -1,0 +1,155 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="EmployeeTicketQuota_TicketTypeId">{{ 'TicketTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeTicketQuota_TicketTypeId"
+                                    #ticketTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="TicketTypeId"
+                                    [ngModel]="record().ticketTypeId"
+                                    (ngModelChange)="updateField('ticketTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of ticketTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="ticketTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTicketQuota_EntitlementFrom">{{ 'EntitlementFrom' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_EntitlementFrom"
+                                    #entitlementFromInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EntitlementFrom"
+                                    [ngModel]="record().entitlementFrom?.toISODate()"
+                                    (ngModelChange)="updateDateField('entitlementFrom', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="entitlementFromInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTicketQuota_EntitlementTo">{{ 'EntitlementTo' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_EntitlementTo"
+                                    #entitlementToInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EntitlementTo"
+                                    [ngModel]="record().entitlementTo?.toISODate()"
+                                    (ngModelChange)="updateDateField('entitlementTo', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="entitlementToInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTicketQuota_DeductionFrom">{{ 'DeductionFrom' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_DeductionFrom"
+                                    #deductionFromInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="DeductionFrom"
+                                    [ngModel]="record().deductionFrom?.toISODate()"
+                                    (ngModelChange)="updateDateField('deductionFrom', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="deductionFromInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTicketQuota_DeductionTo">{{ 'DeductionTo' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_DeductionTo"
+                                    #deductionToInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="DeductionTo"
+                                    [ngModel]="record().deductionTo?.toISODate()"
+                                    (ngModelChange)="updateDateField('deductionTo', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="deductionToInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTicketQuota_QuotaAccrued">{{ 'QuotaAccrued' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_QuotaAccrued"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="QuotaAccrued"
+                                    [ngModel]="record().quotaAccrued"
+                                    (ngModelChange)="updateNumberField('quotaAccrued', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTicketQuota_QuotaUsed">{{ 'QuotaUsed' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_QuotaUsed"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="QuotaUsed"
+                                    [ngModel]="record().quotaUsed"
+                                    (ngModelChange)="updateNumberField('quotaUsed', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTicketQuota_QuotaAdjusted">{{ 'QuotaAdjusted' | localize }}</label>
+                                <input
+                                    id="EmployeeTicketQuota_QuotaAdjusted"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="QuotaAdjusted"
+                                    [ngModel]="record().quotaAdjusted"
+                                    (ngModelChange)="updateNumberField('quotaAdjusted', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

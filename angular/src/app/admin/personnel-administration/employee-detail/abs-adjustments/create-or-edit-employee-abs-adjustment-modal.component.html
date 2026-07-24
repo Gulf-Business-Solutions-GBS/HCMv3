@@ -1,0 +1,126 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeAbsAdjustment_AbsenceTypeId">{{ 'AbsenceTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeAbsAdjustment_AbsenceTypeId"
+                                    #absenceTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="AbsenceTypeId"
+                                    [ngModel]="record().absenceTypeId"
+                                    (ngModelChange)="updateField('absenceTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of absenceTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="absenceTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeAbsAdjustment_EffectiveDate">{{ 'EffectiveDate' | localize }}</label>
+                                <input
+                                    id="EmployeeAbsAdjustment_EffectiveDate"
+                                    #effectiveDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EffectiveDate"
+                                    [ngModel]="record().effectiveDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('effectiveDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="effectiveDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeAbsAdjustment_AdjustmentType">{{ 'AdjustmentType' | localize }}</label>
+                                <select
+                                    id="EmployeeAbsAdjustment_AdjustmentType"
+                                    class="form-select"
+                                    name="AdjustmentType"
+                                    [ngModel]="record().adjustmentType"
+                                    (ngModelChange)="updateField('adjustmentType', $event)">
+                                    @for (option of adjustmentTypes; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeAbsAdjustment_AdjustmentPaymentType">{{ 'AdjustmentPaymentType' | localize }}</label>
+                                <select
+                                    id="EmployeeAbsAdjustment_AdjustmentPaymentType"
+                                    class="form-select"
+                                    name="AdjustmentPaymentType"
+                                    [ngModel]="record().adjustmentPaymentType"
+                                    (ngModelChange)="updateField('adjustmentPaymentType', $event)">
+                                    @for (option of adjustmentPaymentTypes; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeAbsAdjustment_QuotaAdjusted">{{ 'QuotaAdjusted' | localize }}</label>
+                                <input
+                                    id="EmployeeAbsAdjustment_QuotaAdjusted"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="QuotaAdjusted"
+                                    [ngModel]="record().quotaAdjusted"
+                                    (ngModelChange)="updateNumberField('quotaAdjusted', $event)" />
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeAbsAdjustment_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeAbsAdjustment_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

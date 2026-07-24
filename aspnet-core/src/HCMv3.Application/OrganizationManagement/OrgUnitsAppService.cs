@@ -10,6 +10,7 @@ using Abp.Organizations;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.OrganizationManagement.Dto;
+using HCMv3.PayrollManagement;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,17 +30,20 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
     private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
     private readonly IRepository<OrgUnitProfile> _profileRepository;
     private readonly IRepository<OrganizationUnitType> _organizationUnitTypeRepository;
+    private readonly IRepository<PayrollArea> _payrollAreaRepository;
 
     public OrgUnitsAppService(
         OrganizationUnitManager organizationUnitManager,
         IRepository<OrganizationUnit, long> organizationUnitRepository,
         IRepository<OrgUnitProfile> profileRepository,
-        IRepository<OrganizationUnitType> organizationUnitTypeRepository)
+        IRepository<OrganizationUnitType> organizationUnitTypeRepository,
+        IRepository<PayrollArea> payrollAreaRepository)
     {
         _organizationUnitManager = organizationUnitManager;
         _organizationUnitRepository = organizationUnitRepository;
         _profileRepository = profileRepository;
         _organizationUnitTypeRepository = organizationUnitTypeRepository;
+        _payrollAreaRepository = payrollAreaRepository;
     }
 
     [HttpPost]
@@ -64,6 +68,7 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
             .ToListAsync();
 
         var organizationUnitTypes = await _organizationUnitTypeRepository.GetAllListAsync();
+        var payrollAreas = await _payrollAreaRepository.GetAllListAsync();
         var parentIds = items.Where(i => i.ou.ParentId.HasValue).Select(i => i.ou.ParentId.Value).Distinct().ToList();
         var parents = parentIds.Count > 0
             ? await _organizationUnitRepository.GetAll().Where(x => parentIds.Contains(x.Id)).ToListAsync()
@@ -71,7 +76,7 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
 
         return new PagedResultDto<OrgUnitDto>(
             totalCount,
-            items.Select(item => ToDto(item.ou, item.p, organizationUnitTypes, parents)).ToList());
+            items.Select(item => ToDto(item.ou, item.p, organizationUnitTypes, parents, payrollAreas)).ToList());
     }
 
     public async Task<GetOrgUnitForEditOutput> GetOrgUnitForEdit(EntityDto<long> input)
@@ -90,7 +95,8 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
                 ParentId = ou.ParentId,
                 OrganizationUnitTypeId = profile?.OrganizationUnitTypeId ?? 0,
                 Address = profile?.Address,
-                OrgGeoLocation = profile?.OrgGeoLocation
+                OrgGeoLocation = profile?.OrgGeoLocation,
+                PayrollAreaId = profile?.PayrollAreaId
             }
         };
     }
@@ -129,6 +135,7 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
             OrganizationUnitTypeId = input.OrganizationUnitTypeId,
             Address = input.Address,
             OrgGeoLocation = input.OrgGeoLocation,
+            PayrollAreaId = input.PayrollAreaId,
             TenantId = AbpSession.TenantId ?? 0
         };
         await _profileRepository.InsertAsync(profile);
@@ -170,6 +177,7 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
         profile.OrganizationUnitTypeId = input.OrganizationUnitTypeId;
         profile.Address = input.Address;
         profile.OrgGeoLocation = input.OrgGeoLocation;
+        profile.PayrollAreaId = input.PayrollAreaId;
     }
 
     [AbpAuthorize(AppPermissions.Pages_OrganizationManagement_OrgUnits_Delete)]
@@ -183,13 +191,17 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
         OrganizationUnit ou,
         OrgUnitProfile profile,
         System.Collections.Generic.List<OrganizationUnitType> organizationUnitTypes,
-        System.Collections.Generic.List<OrganizationUnit> parents)
+        System.Collections.Generic.List<OrganizationUnit> parents,
+        System.Collections.Generic.List<PayrollArea> payrollAreas)
     {
         var organizationUnitType = profile != null
             ? organizationUnitTypes.FirstOrDefault(t => t.Id == profile.OrganizationUnitTypeId)
             : null;
         var parent = ou.ParentId.HasValue
             ? parents.FirstOrDefault(p => p.Id == ou.ParentId.Value)
+            : null;
+        var payrollArea = profile?.PayrollAreaId != null
+            ? payrollAreas.FirstOrDefault(a => a.Id == profile.PayrollAreaId.Value)
             : null;
 
         return new OrgUnitDto
@@ -204,7 +216,9 @@ public class OrgUnitsAppService : HCMv3AppServiceBase, IOrgUnitsAppService
             OrganizationUnitTypeId = profile?.OrganizationUnitTypeId ?? 0,
             OrganizationUnitTypeName = organizationUnitType?.NameEn,
             Address = profile?.Address,
-            OrgGeoLocation = profile?.OrgGeoLocation
+            OrgGeoLocation = profile?.OrgGeoLocation,
+            PayrollAreaId = profile?.PayrollAreaId,
+            PayrollAreaName = payrollArea?.Name
         };
     }
 }

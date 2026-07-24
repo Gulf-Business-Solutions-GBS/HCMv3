@@ -1,0 +1,89 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeLoanExemption_EmployeeLoanId">{{ 'EmployeeLoanId' | localize }}</label>
+                                <select
+                                    id="EmployeeLoanExemption_EmployeeLoanId"
+                                    #employeeLoanIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeLoanId"
+                                    [ngModel]="record().employeeLoanId"
+                                    (ngModelChange)="updateField('employeeLoanId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (loan of employeeLoans(); track loan.id) {
+                                        <option [ngValue]="loan.id">
+                                            {{ loan.employeeCode }} - {{ loan.employeeFullNameEn }} - {{ loan.loanTypeName }} ({{ loan.startDate | luxonFormat: 'yyyy-MM-dd' }})
+                                        </option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeLoanIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeLoanExemption_ExemptionDate">{{ 'ExemptionDate' | localize }}</label>
+                                <input
+                                    id="EmployeeLoanExemption_ExemptionDate"
+                                    #exemptionDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="ExemptionDate"
+                                    [ngModel]="record().exemptionDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('exemptionDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="exemptionDateInput" />
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeLoanExemption_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeLoanExemption_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

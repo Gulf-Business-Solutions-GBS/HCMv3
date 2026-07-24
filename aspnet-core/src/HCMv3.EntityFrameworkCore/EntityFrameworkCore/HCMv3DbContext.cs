@@ -7,6 +7,7 @@ using Abp.OpenIddict.Tokens;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using HCMv3.AccommodationManagement;
 using HCMv3.Authorization.Delegation;
 using HCMv3.Authorization.Roles;
 using HCMv3.Authorization.Session;
@@ -16,12 +17,14 @@ using HCMv3.Editions;
 using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.GovtRelationsManagement;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.ProjectManagement;
 using HCMv3.Storage;
 using HCMv3.TimeManagement;
 
@@ -451,6 +454,156 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TicketAccrualSummary> TicketAccrualSummaries { get; set; }
 
+    public virtual DbSet<BusinessType> BusinessTypes { get; set; }
+
+    public virtual DbSet<GovtJobCategory> GovtJobCategories { get; set; }
+
+    public virtual DbSet<GovtJobTitle> GovtJobTitles { get; set; }
+
+    public virtual DbSet<Signatory> Signatories { get; set; }
+
+    public virtual DbSet<Sponsor> Sponsors { get; set; }
+
+    public virtual DbSet<SponsorJobTitle> SponsorJobTitles { get; set; }
+
+    public virtual DbSet<SponsorSignatory> SponsorSignatories { get; set; }
+
+    public virtual DbSet<SponsorGovtRepresentative> SponsorGovtRepresentatives { get; set; }
+
+    public virtual DbSet<SponsorLicenseInfo> SponsorLicenseInfos { get; set; }
+
+    public virtual DbSet<OrganizationDocument> OrganizationDocuments { get; set; }
+
+    public virtual DbSet<Location> Locations { get; set; }
+
+    public virtual DbSet<Building> Buildings { get; set; }
+
+    public virtual DbSet<BuildingContract> BuildingContracts { get; set; }
+
+    public virtual DbSet<Floor> Floors { get; set; }
+
+    public virtual DbSet<Flat> Flats { get; set; }
+
+    public virtual DbSet<Room> Rooms { get; set; }
+
+    public virtual DbSet<Bed> Beds { get; set; }
+
+    public virtual DbSet<AccommodationType> AccommodationTypes { get; set; }
+
+    public virtual DbSet<AccommodationServiceType> AccommodationServiceTypes { get; set; }
+
+    public virtual DbSet<EmployeeAccommodation> EmployeeAccommodations { get; set; }
+
+    public virtual DbSet<AccommodationServices> AccommodationServices { get; set; }
+
+    public virtual DbSet<ProjectType> ProjectTypes { get; set; }
+
+    public virtual DbSet<Project> Projects { get; set; }
+
+    public virtual DbSet<ProjectWageType> ProjectWageTypes { get; set; }
+
+    public virtual DbSet<EmployeeProject> EmployeeProjects { get; set; }
+
+    public virtual DbSet<EmployeeProjectDetail> EmployeeProjectDetails { get; set; }
+
+    public virtual DbSet<ProjectRegister> ProjectRegisters { get; set; }
+
+    public virtual DbSet<ProjectRegisterDetail> ProjectRegisterDetails { get; set; }
+
+    public virtual DbSet<ProjectLog> ProjectLogs { get; set; }
+
+    public virtual DbSet<EmployeeAbsence> EmployeeAbsences { get; set; }
+
+    public virtual DbSet<EmployeeAbsenceQuota> EmployeeAbsenceQuotas { get; set; }
+
+    public virtual DbSet<EmployeeAbsAdjustment> EmployeeAbsAdjustments { get; set; }
+
+    public virtual DbSet<EmployeeAbsQuotaForfeit> EmployeeAbsQuotaForfeits { get; set; }
+
+    public virtual DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
+
+    public virtual DbSet<EmployeeAttendanceQuota> EmployeeAttendanceQuotas { get; set; }
+
+    public virtual DbSet<EmployeeBasicPay> EmployeeBasicPays { get; set; }
+
+    public virtual DbSet<EmployeeBasicPayDetail> EmployeeBasicPayDetails { get; set; }
+
+    public virtual DbSet<EmployeeOnHold> EmployeeOnHolds { get; set; }
+
+    public virtual DbSet<EmployeeGratuity> EmployeeGratuities { get; set; }
+
+    public virtual DbSet<EmployeeGratuityQuota> EmployeeGratuityQuotas { get; set; }
+
+    public virtual DbSet<EmployeeLoan> EmployeeLoans { get; set; }
+
+    public virtual DbSet<EmployeeLoanExemption> EmployeeLoanExemptions { get; set; }
+
+    public virtual DbSet<EmployeeLoanRecovery> EmployeeLoanRecoveries { get; set; }
+
+    public virtual DbSet<LoanInstallment> LoanInstallments { get; set; }
+
+    public virtual DbSet<EmployeeFund> EmployeeFunds { get; set; }
+
+    public virtual DbSet<EmployeeFundDetail> EmployeeFundDetails { get; set; }
+
+    public virtual DbSet<EmployeeFundExemption> EmployeeFundExemptions { get; set; }
+
+    public virtual DbSet<EmployeeTicket> EmployeeTickets { get; set; }
+
+    public virtual DbSet<EmployeeTicketQuota> EmployeeTicketQuotas { get; set; }
+
+    public virtual DbSet<EmployeeTicketRoute> EmployeeTicketRoutes { get; set; }
+
+    public virtual DbSet<EmployeeTktAdjustment> EmployeeTktAdjustments { get; set; }
+
+    public virtual DbSet<EmployeeSocialSecurity> EmployeeSocialSecurities { get; set; }
+
+    public virtual DbSet<EmployeeSocialSecurityClaim> EmployeeSocialSecurityClaims { get; set; }
+
+    public virtual DbSet<EmployeeDependant> EmployeeDependants { get; set; }
+
+    public virtual DbSet<EmployeeDependantException> EmployeeDependantExceptions { get; set; }
+
+    public virtual DbSet<EmployeeSponsor> EmployeeSponsors { get; set; }
+
+    public virtual DbSet<EmployeeFnFPayment> EmployeeFnFPayments { get; set; }
+
+    public virtual DbSet<SponsorBank> SponsorBanks { get; set; }
+
+    public virtual DbSet<EmployeeBank> EmployeeBanks { get; set; }
+
+    public virtual DbSet<EmployeeAsset> EmployeeAssets { get; set; }
+
+    public virtual DbSet<EmployeeAssetInvoice> EmployeeAssetInvoices { get; set; }
+
+    public virtual DbSet<EmployeeDisciplinary> EmployeeDisciplinaries { get; set; }
+
+    public virtual DbSet<EmployeeGrievance> EmployeeGrievances { get; set; }
+
+    public virtual DbSet<EmployeeHealthReimburse> EmployeeHealthReimburses { get; set; }
+
+    public virtual DbSet<EmployeeOvertime> EmployeeOvertimes { get; set; }
+
+    public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
+
+    public virtual DbSet<EmployeeRecurringPayment> EmployeeRecurringPayments { get; set; }
+
+    public virtual DbSet<EmployeeRemuneration> EmployeeRemunerations { get; set; }
+
+    public virtual DbSet<EmployeeReward> EmployeeRewards { get; set; }
+
+    public virtual DbSet<EmployeeCostDistribution> EmployeeCostDistributions { get; set; }
+
+    public virtual DbSet<EmployeeAccountAssignment> EmployeeAccountAssignments { get; set; }
+
+    public virtual DbSet<EmployeeExtdWorkLocation> EmployeeExtdWorkLocations { get; set; }
+
+    public virtual DbSet<EmployeeBenefitException> EmployeeBenefitExceptions { get; set; }
+
+    public virtual DbSet<EmployeeNonPayrollTrans> EmployeeNonPayrollTrans { get; set; }
+
+    public virtual DbSet<EmployeeTask> EmployeeTasks { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -707,6 +860,51 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.ExceptWageType)
                 .WithMany()
                 .HasForeignKey(e => e.ExceptWageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SponsorGovtRepresentative>(b =>
+        {
+            // Employee is reachable via multiple cascade paths elsewhere in the graph (e.g. self-referencing
+            // Employee FKs), so a Cascade FK here triggers "multiple cascade paths" on Employees deletion.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeAccommodation>(b =>
+        {
+            // Location/Building/Floor/Flat/Room/Bed form a cascading hierarchy chain (Location->Building->
+            // Floor->Flat->Room->Bed), and this entity references all six levels directly, creating multiple
+            // cascade paths down to this table. Restrict all six - deleting a facility record shouldn't
+            // cascade-delete employee accommodation assignment history anyway.
+            b.HasOne(e => e.Location).WithMany().HasForeignKey(e => e.LocationId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Building).WithMany().HasForeignKey(e => e.BuildingId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Floor).WithMany().HasForeignKey(e => e.FloorId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Flat).WithMany().HasForeignKey(e => e.FlatId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Room).WithMany().HasForeignKey(e => e.RoomId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Bed).WithMany().HasForeignKey(e => e.BedId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeSponsor>(b =>
+        {
+            // Sponsor is a hub table with several other cascading children already (SponsorJobTitle,
+            // SponsorSignatory, SponsorLicenseInfo), so a second cascade path in via EmployeeSponsor.SponsorId
+            // (alongside the EmployeeId cascade from Employee) triggers the multiple-cascade-paths check.
+            b.HasOne(e => e.Sponsor)
+                .WithMany()
+                .HasForeignKey(e => e.SponsorId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SponsorBank>(b =>
+        {
+            // PaymentBankId is required (non-nullable) and shares the Banks table with the nullable
+            // EmployeeBankId FK, creating a multiple-cascade-paths risk on the required side.
+            b.HasOne(e => e.PaymentBank)
+                .WithMany()
+                .HasForeignKey(e => e.PaymentBankId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

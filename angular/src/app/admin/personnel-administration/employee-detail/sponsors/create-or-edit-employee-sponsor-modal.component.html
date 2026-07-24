@@ -1,0 +1,184 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_SponsorId">{{ 'SponsorId' | localize }}</label>
+                                <select
+                                    id="EmployeeSponsor_SponsorId"
+                                    #sponsorIdInput="ngModel"
+                                    class="form-select"
+                                    name="SponsorId"
+                                    [ngModel]="record().sponsorId"
+                                    (ngModelChange)="updateField('sponsorId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (sponsor of sponsors(); track sponsor.id) {
+                                        <option [ngValue]="sponsor.id">{{ sponsor.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="sponsorIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_GovtJobTitleId">{{ 'GovtJobTitleId' | localize }}</label>
+                                <select
+                                    id="EmployeeSponsor_GovtJobTitleId"
+                                    #govtJobTitleIdInput="ngModel"
+                                    class="form-select"
+                                    name="GovtJobTitleId"
+                                    [ngModel]="record().govtJobTitleId"
+                                    (ngModelChange)="updateField('govtJobTitleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (title of govtJobTitles(); track title.id) {
+                                        <option [ngValue]="title.id">{{ title.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="govtJobTitleIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="EmployeeSponsor_EmpSponsorRelation">{{ 'EmpSponsorRelation' | localize }}</label>
+                                <input
+                                    id="EmployeeSponsor_EmpSponsorRelation"
+                                    class="form-control"
+                                    type="text"
+                                    name="EmpSponsorRelation"
+                                    [ngModel]="record().empSponsorRelation"
+                                    (ngModelChange)="updateField('empSponsorRelation', $event)"
+                                    maxlength="256" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSponsor_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeSponsor_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeSponsor_ContractSalary">{{ 'ContractSalary' | localize }}</label>
+                                <input
+                                    id="EmployeeSponsor_ContractSalary"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="ContractSalary"
+                                    [ngModel]="record().contractSalary"
+                                    (ngModelChange)="updateNumberField('contractSalary', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_SalaryCurrencyId">{{ 'SalaryCurrencyId' | localize }}</label>
+                                <select
+                                    id="EmployeeSponsor_SalaryCurrencyId"
+                                    #salaryCurrencyIdInput="ngModel"
+                                    class="form-select"
+                                    name="SalaryCurrencyId"
+                                    [ngModel]="record().salaryCurrencyId"
+                                    (ngModelChange)="updateField('salaryCurrencyId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (currency of currencies(); track currency.id) {
+                                        <option [ngValue]="currency.id">{{ currency.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="salaryCurrencyIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeSponsor_ResidencyType">{{ 'ResidencyType' | localize }}</label>
+                                <select
+                                    id="EmployeeSponsor_ResidencyType"
+                                    class="form-select"
+                                    name="ResidencyType"
+                                    [ngModel]="record().residencyType"
+                                    (ngModelChange)="updateField('residencyType', $event)">
+                                    @for (option of residencyTypes; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeSponsor_WorkVisaTypeId">{{ 'WorkVisaTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeSponsor_WorkVisaTypeId"
+                                    #workVisaTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkVisaTypeId"
+                                    [ngModel]="record().workVisaTypeId"
+                                    (ngModelChange)="updateField('workVisaTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of workVisaTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workVisaTypeIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

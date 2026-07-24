@@ -1,0 +1,114 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeRemuneration_WageTypeId">{{ 'WageTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeRemuneration_WageTypeId"
+                                    class="form-select"
+                                    name="WageTypeId"
+                                    [ngModel]="record().wageTypeId"
+                                    (ngModelChange)="updateField('wageTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of wageTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRemuneration_PaymentDate">{{ 'PaymentDate' | localize }}</label>
+                                <input
+                                    id="EmployeeRemuneration_PaymentDate"
+                                    #paymentDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="PaymentDate"
+                                    [ngModel]="record().paymentDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('paymentDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="paymentDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRemuneration_PaymentNumber">{{ 'PaymentNumber' | localize }}</label>
+                                <input
+                                    id="EmployeeRemuneration_PaymentNumber"
+                                    #paymentNumberInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="PaymentNumber"
+                                    [ngModel]="record().paymentNumber"
+                                    (ngModelChange)="updateNumberField('paymentNumber', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="paymentNumberInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeRemuneration_PaymentUnit">{{ 'PaymentUnit' | localize }}</label>
+                                <select
+                                    id="EmployeeRemuneration_PaymentUnit"
+                                    class="form-select"
+                                    name="PaymentUnit"
+                                    [ngModel]="record().paymentUnit"
+                                    (ngModelChange)="updateField('paymentUnit', $event)"
+                                    required>
+                                    @for (unit of paymentUnits; track unit.value) {
+                                        <option [ngValue]="unit.value">{{ unit.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeRemuneration_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeRemuneration_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

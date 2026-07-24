@@ -30,4 +30,6 @@ public class CreateOrEditOrgUnitDto
     public string Address { get; set; }
 
     public string OrgGeoLocation { get; set; }
+
+    public int? PayrollAreaId { get; set; }
 }

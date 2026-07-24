@@ -1,0 +1,195 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'Edit' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNew' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_OrganizationUnitId">{{ 'OrganizationUnitId' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_OrganizationUnitId"
+                                    class="form-select"
+                                    name="OrganizationUnitId"
+                                    [ngModel]="record().organizationUnitId"
+                                    (ngModelChange)="updateField('organizationUnitId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (unit of organizationUnits(); track unit.id) {
+                                        <option [ngValue]="unit.id">{{ unit.displayName }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_WorkLocationId">{{ 'WorkLocationId' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_WorkLocationId"
+                                    class="form-select"
+                                    name="WorkLocationId"
+                                    [ngModel]="record().workLocationId"
+                                    (ngModelChange)="updateField('workLocationId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (location of workLocations(); track location.id) {
+                                        <option [ngValue]="location.id">{{ location.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeDisciplinary_DisciplinaryTypeId">{{ 'DisciplinaryTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_DisciplinaryTypeId"
+                                    #disciplinaryTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="DisciplinaryTypeId"
+                                    [ngModel]="record().disciplinaryTypeId"
+                                    (ngModelChange)="updateField('disciplinaryTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of disciplinaryTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="disciplinaryTypeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="EmployeeDisciplinary_DisciplinaryDate">{{ 'DisciplinaryDate' | localize }}</label>
+                                <input
+                                    id="EmployeeDisciplinary_DisciplinaryDate"
+                                    #disciplinaryDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="DisciplinaryDate"
+                                    [ngModel]="record().disciplinaryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('disciplinaryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="disciplinaryDateInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_DisciplinaryTime">{{ 'DisciplinaryTime' | localize }}</label>
+                                <input
+                                    id="EmployeeDisciplinary_DisciplinaryTime"
+                                    type="time"
+                                    step="1"
+                                    class="form-control"
+                                    name="DisciplinaryTime"
+                                    [ngModel]="getTimeValue('disciplinaryTime')"
+                                    (ngModelChange)="updateTimeField('disciplinaryTime', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_ReportedById">{{ 'ReportedById' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_ReportedById"
+                                    class="form-select"
+                                    name="ReportedById"
+                                    [ngModel]="record().reportedById"
+                                    (ngModelChange)="updateField('reportedById', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employee.fullNameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_Severity">{{ 'Severity' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_Severity"
+                                    class="form-select"
+                                    name="Severity"
+                                    [ngModel]="record().severity"
+                                    (ngModelChange)="updateField('severity', $event)">
+                                    @for (option of severities; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeDisciplinary_DisciplinaryDeductionTypeId">{{ 'DisciplinaryDeductionTypeId' | localize }}</label>
+                                <select
+                                    id="EmployeeDisciplinary_DisciplinaryDeductionTypeId"
+                                    class="form-select"
+                                    name="DisciplinaryDeductionTypeId"
+                                    [ngModel]="record().disciplinaryDeductionTypeId"
+                                    (ngModelChange)="updateField('disciplinaryDeductionTypeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (type of disciplinaryDeductionTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeeDisciplinary_WlSendToEmp"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="WlSendToEmp"
+                                        [ngModel]="record().wlSendToEmp"
+                                        (ngModelChange)="updateField('wlSendToEmp', $event)" />
+                                    <label class="form-check-label" for="EmployeeDisciplinary_WlSendToEmp">{{ 'WlSendToEmp' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="EmployeeDisciplinary_WlRecvFromEmp"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="WlRecvFromEmp"
+                                        [ngModel]="record().wlRecvFromEmp"
+                                        (ngModelChange)="updateField('wlRecvFromEmp', $event)" />
+                                    <label class="form-check-label" for="EmployeeDisciplinary_WlRecvFromEmp">{{ 'WlRecvFromEmp' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="EmployeeDisciplinary_Comments">{{ 'Comments' | localize }}</label>
+                            <textarea
+                                id="EmployeeDisciplinary_Comments"
+                                class="form-control"
+                                rows="3"
+                                name="Comments"
+                                [ngModel]="record().comments"
+                                (ngModelChange)="updateField('comments', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

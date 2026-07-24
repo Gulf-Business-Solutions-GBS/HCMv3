@@ -1,0 +1,144 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'EmployeeProjectDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'EmployeeProjectDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeProjectDetail_EmployeeProjectId">{{ 'EmployeeProject' | localize }}</label>
+                                <select
+                                    id="EmployeeProjectDetail_EmployeeProjectId"
+                                    #employeeProjectIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeProjectId"
+                                    [ngModel]="record().employeeProjectId"
+                                    (ngModelChange)="updateField('employeeProjectId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employeeProjects(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeProjectLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeProjectIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeProjectDetail_ProjectId">{{ 'Project' | localize }}</label>
+                                <select
+                                    id="EmployeeProjectDetail_ProjectId"
+                                    #projectIdInput="ngModel"
+                                    class="form-select"
+                                    name="ProjectId"
+                                    [ngModel]="record().projectId"
+                                    (ngModelChange)="updateField('projectId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of projects(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="projectIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeProjectDetail_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="EmployeeProjectDetail_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeProjectDetail_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="EmployeeProjectDetail_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmployeeProjectDetail_Percentage">{{ 'Percentage' | localize }}</label>
+                                <input
+                                    id="EmployeeProjectDetail_Percentage"
+                                    #percentageInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="100"
+                                    name="Percentage"
+                                    [ngModel]="record().percentage"
+                                    (ngModelChange)="updateField('percentage', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="percentageInput" />
+                            </div>
+                        </div>
+                        @if (record().id) {
+                            <hr />
+                            <div class="row align-items-center">
+                                <div class="col-md-4 mb-5">
+                                    <button
+                                        type="button"
+                                        class="btn btn-light-primary fw-bold"
+                                        [buttonBusy]="calculating()"
+                                        [busyText]="l('CalculatingWithThreeDot')"
+                                        (click)="calculateWorkDays()">
+                                        {{ 'CalculateWorkDays' | localize }}
+                                    </button>
+                                </div>
+                                @if (workDays() !== undefined) {
+                                    <div class="col-md-4 mb-5">
+                                        <strong>{{ 'WorkDays' | localize }}:</strong> {{ workDays() }}
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
