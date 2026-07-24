@@ -1,0 +1,105 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #paCycleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (paCycle().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PACycles' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PACycles' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PACycle_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="PACycle_Code"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="paCycle().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PACycle_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="PACycle_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="paCycle().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PACycle_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="PACycle_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="paCycle().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check">
+                                    <input
+                                        id="PACycle_IsDefault"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsDefault"
+                                        [ngModel]="paCycle().isDefault"
+                                        (ngModelChange)="updateField('isDefault', $event)" />
+                                    <label class="form-check-label" for="PACycle_IsDefault">{{ 'IsDefault' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!paCycleForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

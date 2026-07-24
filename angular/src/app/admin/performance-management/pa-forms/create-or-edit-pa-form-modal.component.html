@@ -1,0 +1,218 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #paFormForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (paForm().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PAForms' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PAForms' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PAForm_PAPeriodId">{{ 'PAPeriod' | localize }}</label>
+                                <select
+                                    id="PAForm_PAPeriodId"
+                                    #paPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="PAPeriodId"
+                                    [ngModel]="paForm().paPeriodId"
+                                    (ngModelChange)="updateField('paPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (period of paPeriods(); track period.id) {
+                                        <option [ngValue]="period.id">{{ period.name }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="paPeriodIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="PAForm_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="PAForm_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="paForm().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="PAForm_ModeratedScore">{{ 'ModeratedScore' | localize }}</label>
+                                <input
+                                    id="PAForm_ModeratedScore"
+                                    type="number"
+                                    class="form-control"
+                                    name="ModeratedScore"
+                                    [ngModel]="paForm().moderatedScore"
+                                    (ngModelChange)="updateField('moderatedScore', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_PlanSubmitByAppraiser" type="checkbox" class="form-check-input" name="PlanSubmitByAppraiser"
+                                        [ngModel]="paForm().planSubmitByAppraiser" (ngModelChange)="updateField('planSubmitByAppraiser', $event)" />
+                                    <label class="form-check-label" for="PAForm_PlanSubmitByAppraiser">{{ 'PlanSubmitByAppraiser' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_PlanSubmitByAppraisee" type="checkbox" class="form-check-input" name="PlanSubmitByAppraisee"
+                                        [ngModel]="paForm().planSubmitByAppraisee" (ngModelChange)="updateField('planSubmitByAppraisee', $event)" />
+                                    <label class="form-check-label" for="PAForm_PlanSubmitByAppraisee">{{ 'PlanSubmitByAppraisee' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_Quarter1SubmitByAppraiser" type="checkbox" class="form-check-input" name="Quarter1SubmitByAppraiser"
+                                        [ngModel]="paForm().quarter1SubmitByAppraiser" (ngModelChange)="updateField('quarter1SubmitByAppraiser', $event)" />
+                                    <label class="form-check-label" for="PAForm_Quarter1SubmitByAppraiser">{{ 'Quarter1SubmitByAppraiser' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_Quarter1SubmitByAppraisee" type="checkbox" class="form-check-input" name="Quarter1SubmitByAppraisee"
+                                        [ngModel]="paForm().quarter1SubmitByAppraisee" (ngModelChange)="updateField('quarter1SubmitByAppraisee', $event)" />
+                                    <label class="form-check-label" for="PAForm_Quarter1SubmitByAppraisee">{{ 'Quarter1SubmitByAppraisee' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_MRSubmitByAppraiser" type="checkbox" class="form-check-input" name="MRSubmitByAppraiser"
+                                        [ngModel]="paForm().mrSubmitByAppraiser" (ngModelChange)="updateField('mrSubmitByAppraiser', $event)" />
+                                    <label class="form-check-label" for="PAForm_MRSubmitByAppraiser">{{ 'MRSubmitByAppraiser' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_MRSubmitByAppraisee" type="checkbox" class="form-check-input" name="MRSubmitByAppraisee"
+                                        [ngModel]="paForm().mrSubmitByAppraisee" (ngModelChange)="updateField('mrSubmitByAppraisee', $event)" />
+                                    <label class="form-check-label" for="PAForm_MRSubmitByAppraisee">{{ 'MRSubmitByAppraisee' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_Quarter3SubmitByAppraiser" type="checkbox" class="form-check-input" name="Quarter3SubmitByAppraiser"
+                                        [ngModel]="paForm().quarter3SubmitByAppraiser" (ngModelChange)="updateField('quarter3SubmitByAppraiser', $event)" />
+                                    <label class="form-check-label" for="PAForm_Quarter3SubmitByAppraiser">{{ 'Quarter3SubmitByAppraiser' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_Quarter3SubmitByAppraisee" type="checkbox" class="form-check-input" name="Quarter3SubmitByAppraisee"
+                                        [ngModel]="paForm().quarter3SubmitByAppraisee" (ngModelChange)="updateField('quarter3SubmitByAppraisee', $event)" />
+                                    <label class="form-check-label" for="PAForm_Quarter3SubmitByAppraisee">{{ 'Quarter3SubmitByAppraisee' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_ERSubmitByAppraiser" type="checkbox" class="form-check-input" name="ERSubmitByAppraiser"
+                                        [ngModel]="paForm().erSubmitByAppraiser" (ngModelChange)="updateField('erSubmitByAppraiser', $event)" />
+                                    <label class="form-check-label" for="PAForm_ERSubmitByAppraiser">{{ 'ERSubmitByAppraiser' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_ERSubmitByAppraisee" type="checkbox" class="form-check-input" name="ERSubmitByAppraisee"
+                                        [ngModel]="paForm().erSubmitByAppraisee" (ngModelChange)="updateField('erSubmitByAppraisee', $event)" />
+                                    <label class="form-check-label" for="PAForm_ERSubmitByAppraisee">{{ 'ERSubmitByAppraisee' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_AppraiserSignedOff" type="checkbox" class="form-check-input" name="AppraiserSignedOff"
+                                        [ngModel]="paForm().appraiserSignedOff" (ngModelChange)="updateField('appraiserSignedOff', $event)" />
+                                    <label class="form-check-label" for="PAForm_AppraiserSignedOff">{{ 'AppraiserSignedOff' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input id="PAForm_AppraiseeSignedOff" type="checkbox" class="form-check-input" name="AppraiseeSignedOff"
+                                        [ngModel]="paForm().appraiseeSignedOff" (ngModelChange)="updateField('appraiseeSignedOff', $event)" />
+                                    <label class="form-check-label" for="PAForm_AppraiseeSignedOff">{{ 'AppraiseeSignedOff' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_AppraiseeStrength">{{ 'AppraiseeStrength' | localize }}</label>
+                                <textarea id="PAForm_AppraiseeStrength" class="form-control" name="AppraiseeStrength" rows="2"
+                                    [ngModel]="paForm().appraiseeStrength" (ngModelChange)="updateField('appraiseeStrength', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_AreasOfImprovement">{{ 'AreasOfImprovement' | localize }}</label>
+                                <textarea id="PAForm_AreasOfImprovement" class="form-control" name="AreasOfImprovement" rows="2"
+                                    [ngModel]="paForm().areasOfImprovement" (ngModelChange)="updateField('areasOfImprovement', $event)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_ReviewofPreviousGoals">{{ 'ReviewofPreviousGoals' | localize }}</label>
+                                <textarea id="PAForm_ReviewofPreviousGoals" class="form-control" name="ReviewofPreviousGoals" rows="2"
+                                    [ngModel]="paForm().reviewofPreviousGoals" (ngModelChange)="updateField('reviewofPreviousGoals', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_NewlySetGoals">{{ 'NewlySetGoals' | localize }}</label>
+                                <textarea id="PAForm_NewlySetGoals" class="form-control" name="NewlySetGoals" rows="2"
+                                    [ngModel]="paForm().newlySetGoals" (ngModelChange)="updateField('newlySetGoals', $event)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_OverallComments">{{ 'OverallComments' | localize }}</label>
+                                <textarea id="PAForm_OverallComments" class="form-control" name="OverallComments" rows="2"
+                                    [ngModel]="paForm().overallComments" (ngModelChange)="updateField('overallComments', $event)"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PAForm_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea id="PAForm_Comments" class="form-control" name="Comments" rows="2"
+                                    [ngModel]="paForm().comments" (ngModelChange)="updateField('comments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!paFormForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

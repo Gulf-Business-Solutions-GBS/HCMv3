@@ -1,0 +1,112 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'PAEmployeeReviewers' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAEmployeeReviewer_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="PAEmployeeReviewer_EmployeeId"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    required
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="PAEmployeeReviewer_PeerAddedById">{{ 'PeerAddedBy' | localize }}</label>
+                                <select
+                                    id="PAEmployeeReviewer_PeerAddedById"
+                                    class="form-select"
+                                    name="PeerAddedById"
+                                    [ngModel]="record().peerAddedById"
+                                    (ngModelChange)="updateField('peerAddedById', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input
+                                        id="PAEmployeeReviewer_IsPeer"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsPeer"
+                                        [ngModel]="record().isPeer"
+                                        (ngModelChange)="updateField('isPeer', $event)" />
+                                    <label class="form-check-label" for="PAEmployeeReviewer_IsPeer">{{ 'IsPeer' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="PAEmployeeReviewer_CustomTextField1">{{ 'CustomTextField1' | localize }}</label>
+                                <input
+                                    id="PAEmployeeReviewer_CustomTextField1"
+                                    type="text"
+                                    class="form-control"
+                                    name="CustomTextField1"
+                                    [ngModel]="record().customTextField1"
+                                    (ngModelChange)="updateField('customTextField1', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="PAEmployeeReviewer_CustomTextField2">{{ 'CustomTextField2' | localize }}</label>
+                                <input
+                                    id="PAEmployeeReviewer_CustomTextField2"
+                                    type="text"
+                                    class="form-control"
+                                    name="CustomTextField2"
+                                    [ngModel]="record().customTextField2"
+                                    (ngModelChange)="updateField('customTextField2', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="PAEmployeeReviewer_CustomTextField3">{{ 'CustomTextField3' | localize }}</label>
+                                <input
+                                    id="PAEmployeeReviewer_CustomTextField3"
+                                    type="text"
+                                    class="form-control"
+                                    name="CustomTextField3"
+                                    [ngModel]="record().customTextField3"
+                                    (ngModelChange)="updateField('customTextField3', $event)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

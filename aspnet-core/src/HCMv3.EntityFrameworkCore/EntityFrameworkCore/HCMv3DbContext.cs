@@ -23,10 +23,12 @@ using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement;
+using HCMv3.PerformanceManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.ProjectManagement;
 using HCMv3.Storage;
 using HCMv3.TimeManagement;
+using HCMv3.TravelManagement;
 
 namespace HCMv3.EntityFrameworkCore;
 
@@ -604,6 +606,78 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeTask> EmployeeTasks { get; set; }
 
+    public virtual DbSet<FormType> FormTypes { get; set; }
+
+    public virtual DbSet<KpiCategory> KpiCategories { get; set; }
+
+    public virtual DbSet<KpiInfo> KpiInfos { get; set; }
+
+    public virtual DbSet<KpiByJobTitle> KpiByJobTitles { get; set; }
+
+    public virtual DbSet<KpiByJobTitleDetail> KpiByJobTitleDetails { get; set; }
+
+    public virtual DbSet<KpiByOrgUnit> KpiByOrgUnits { get; set; }
+
+    public virtual DbSet<KpiByOrgUnitDetail> KpiByOrgUnitDetails { get; set; }
+
+    public virtual DbSet<PARating> PARatings { get; set; }
+
+    public virtual DbSet<PACycle> PACycles { get; set; }
+
+    public virtual DbSet<PAPeriod> PAPeriods { get; set; }
+
+    public virtual DbSet<PATimeline> PATimelines { get; set; }
+
+    public virtual DbSet<PATimelineException> PATimelineExceptions { get; set; }
+
+    public virtual DbSet<PAPeerNominee> PAPeerNominees { get; set; }
+
+    public virtual DbSet<PAForm> PAForms { get; set; }
+
+    public virtual DbSet<PAPlan> PAPlans { get; set; }
+
+    public virtual DbSet<PAQuarter1Review> PAQuarter1Reviews { get; set; }
+
+    public virtual DbSet<PAMidYearReview> PAMidYearReviews { get; set; }
+
+    public virtual DbSet<PAQuarter3Review> PAQuarter3Reviews { get; set; }
+
+    public virtual DbSet<PAAnnualYearReview> PAAnnualYearReviews { get; set; }
+
+    public virtual DbSet<PAGoal> PAGoals { get; set; }
+
+    public virtual DbSet<PAPeerReview> PAPeerReviews { get; set; }
+
+    public virtual DbSet<PAEmployee> PAEmployees { get; set; }
+
+    public virtual DbSet<PAEmployeeDetail> PAEmployeeDetails { get; set; }
+
+    public virtual DbSet<PAEmployeeReviewer> PAEmployeeReviewers { get; set; }
+
+    public virtual DbSet<PAEmployeeRating> PAEmployeeRatings { get; set; }
+
+    public virtual DbSet<ExpenseType> ExpenseTypes { get; set; }
+
+    public virtual DbSet<Hotel> Hotels { get; set; }
+
+    public virtual DbSet<TravelAirline> TravelAirlines { get; set; }
+
+    public virtual DbSet<TravelCancelReason> TravelCancelReasons { get; set; }
+
+    public virtual DbSet<TravelDestination> TravelDestinations { get; set; }
+
+    public virtual DbSet<TravelType> TravelTypes { get; set; }
+
+    public virtual DbSet<TravelPerDiem> TravelPerDiems { get; set; }
+
+    public virtual DbSet<Travel> Travels { get; set; }
+
+    public virtual DbSet<TravelDetail> TravelDetails { get; set; }
+
+    public virtual DbSet<TravelDetailCost> TravelDetailCosts { get; set; }
+
+    public virtual DbSet<TravelFeedback> TravelFeedbacks { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -905,6 +979,97 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.PaymentBank)
                 .WithMany()
                 .HasForeignKey(e => e.PaymentBankId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PAEmployeeReviewer>(b =>
+        {
+            // Two FKs into Employee (EmployeeId required, PeerAddedById nullable) - same multi-cascade-path
+            // pattern as WageTypeException/SponsorBank.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.PeerAddedBy)
+                .WithMany()
+                .HasForeignKey(e => e.PeerAddedById)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<TravelPerDiem>(b =>
+        {
+            // EmployeeSubGroup is reachable both directly (EmployeeSubGroupId) and transitively via
+            // EmployeeGroup->EmployeeSubGroup's own cascading FK - restrict the EmployeeSubGroup path.
+            b.HasOne(e => e.EmployeeSubGroup)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeSubGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Two required FKs to the same TravelDestinations table (FromDestinationId/ToDestinationId).
+            b.HasOne(e => e.FromDestination)
+                .WithMany()
+                .HasForeignKey(e => e.FromDestinationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ToDestination)
+                .WithMany()
+                .HasForeignKey(e => e.ToDestinationId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PAEmployeeRating>(b =>
+        {
+            // PAEmployeeRating is reachable from PAEmployee via 3 paths: direct PAEmployeeId, via
+            // PAEmployeeReviewerId->PAEmployeeReviewer->PAEmployeeId, and via
+            // PAEmployeeDetailId->PAEmployeeDetail->PAEmployeeId. Restrict the two indirect paths, keep
+            // PAEmployeeId as the sole cascade.
+            b.HasOne(e => e.PAEmployeeReviewer)
+                .WithMany()
+                .HasForeignKey(e => e.PAEmployeeReviewerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.PAEmployeeDetail)
+                .WithMany()
+                .HasForeignKey(e => e.PAEmployeeDetailId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PAPeerReview>(b =>
+        {
+            // PAPeerReviews is reachable both via PAFormId->PAForm->EmployeeId cascade and directly via
+            // PeerId (Employee) - restrict the Peer path.
+            b.HasOne(e => e.Peer)
+                .WithMany()
+                .HasForeignKey(e => e.PeerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<TravelDetail>(b =>
+        {
+            // Two required FKs to the same TravelDestinations table (DepartureId/ArrivalId).
+            b.HasOne(e => e.Departure)
+                .WithMany()
+                .HasForeignKey(e => e.DepartureId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Arrival)
+                .WithMany()
+                .HasForeignKey(e => e.ArrivalId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PAPeerNominee>(b =>
+        {
+            // Two required FKs into Employee (EmployeeId + PeerId).
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Peer)
+                .WithMany()
+                .HasForeignKey(e => e.PeerId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

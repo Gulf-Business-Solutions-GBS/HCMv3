@@ -1,0 +1,140 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TravelDetails' | localize" [description]="'TravelManagement' | localize">
+        <div role="actions">
+            @if ('Pages.TravelManagement.TravelDetails.Create' | permission) {
+                <button (click)="createTravelDetail()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTravelDetails($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '110rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TravelManagement.TravelDetails.Edit',
+                                                    'Pages.TravelManagement.TravelDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'Travel' | localize }} #
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'Departure' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'Arrival' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'DepartureDate' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'ArrivalDate' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'Hotel' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'TravelAirlines' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'NightStay' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'TotalNights' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'TotalAmount' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.TravelManagement.TravelDetails.Edit',
+                                                    'Pages.TravelManagement.TravelDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 130px">{{ record.travelId }}</td>
+                                    <td style="min-width: 160px">{{ record.departureNameEn }}</td>
+                                    <td style="min-width: 160px">{{ record.arrivalNameEn }}</td>
+                                    <td style="min-width: 130px">{{ record.departureDate | luxonFormat:'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 130px">{{ record.arrivalDate | luxonFormat:'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 160px">{{ record.hotelNameEn }}</td>
+                                    <td style="min-width: 160px">{{ record.travelAirlineNameEn }}</td>
+                                    <td style="min-width: 110px">
+                                        <i class="fa" [ngClass]="record.nightStay ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                    <td style="min-width: 130px">{{ record.totalNights }}</td>
+                                    <td style="min-width: 130px">{{ record.totalAmount }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTravelDetails($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditTravelDetailModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

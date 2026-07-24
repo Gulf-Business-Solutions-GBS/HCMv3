@@ -1,0 +1,95 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'PAPeerReviews' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAPeerReview_PeerId">{{ 'Peer' | localize }}</label>
+                                <select
+                                    id="PAPeerReview_PeerId"
+                                    class="form-select"
+                                    name="PeerId"
+                                    required
+                                    [ngModel]="record().peerId"
+                                    (ngModelChange)="updateField('peerId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="PAPeerReview_KpiInfoId">{{ 'KpiInfo' | localize }}</label>
+                                <select
+                                    id="PAPeerReview_KpiInfoId"
+                                    class="form-select"
+                                    name="KpiInfoId"
+                                    required
+                                    [ngModel]="record().kpiInfoId"
+                                    (ngModelChange)="updateField('kpiInfoId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (kpiInfo of kpiInfos(); track kpiInfo.id) {
+                                        <option [ngValue]="kpiInfo.id">{{ kpiInfo.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="PAPeerReview_RatingId">{{ 'Rating' | localize }}</label>
+                                <select
+                                    id="PAPeerReview_RatingId"
+                                    class="form-select"
+                                    name="RatingId"
+                                    [ngModel]="record().ratingId"
+                                    (ngModelChange)="updateField('ratingId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (rating of paRatings(); track rating.id) {
+                                        <option [ngValue]="rating.id">{{ rating.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="PAPeerReview_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="PAPeerReview_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

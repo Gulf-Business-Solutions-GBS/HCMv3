@@ -1357,6 +1357,63 @@ public class AppAuthorizationProvider : AuthorizationProvider
         projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Edit, L("EditItem"));
         projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Delete, L("DeleteItem"));
 
+        var travelManagement = pages.CreateChildPermission(AppPermissions.Pages_TravelManagement, L("TravelManagement"));
+
+        var expenseTypes = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_ExpenseTypes, L("ExpenseTypes"));
+        expenseTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_ExpenseTypes_Create, L("CreateNewItem"));
+        expenseTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_ExpenseTypes_Edit, L("EditItem"));
+        expenseTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_ExpenseTypes_Delete, L("DeleteItem"));
+
+        var hotels = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_Hotels, L("Hotels"));
+        hotels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Hotels_Create, L("CreateNewItem"));
+        hotels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Hotels_Edit, L("EditItem"));
+        hotels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Hotels_Delete, L("DeleteItem"));
+
+        var travelAirlines = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelAirlines, L("TravelAirlines"));
+        travelAirlines.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelAirlines_Create, L("CreateNewItem"));
+        travelAirlines.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelAirlines_Edit, L("EditItem"));
+        travelAirlines.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelAirlines_Delete, L("DeleteItem"));
+
+        var travelCancelReasons = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelCancelReasons, L("TravelCancelReasons"));
+        travelCancelReasons.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelCancelReasons_Create, L("CreateNewItem"));
+        travelCancelReasons.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelCancelReasons_Edit, L("EditItem"));
+        travelCancelReasons.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelCancelReasons_Delete, L("DeleteItem"));
+
+        var travelDestinations = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDestinations, L("TravelDestinations"));
+        travelDestinations.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDestinations_Create, L("CreateNewItem"));
+        travelDestinations.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDestinations_Edit, L("EditItem"));
+        travelDestinations.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDestinations_Delete, L("DeleteItem"));
+
+        var travelTypes = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelTypes, L("TravelTypes"));
+        travelTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelTypes_Create, L("CreateNewItem"));
+        travelTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelTypes_Edit, L("EditItem"));
+        travelTypes.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelTypes_Delete, L("DeleteItem"));
+
+        var travelPerDiems = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelPerDiems, L("TravelPerDiems"));
+        travelPerDiems.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelPerDiems_Create, L("CreateNewItem"));
+        travelPerDiems.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelPerDiems_Edit, L("EditItem"));
+        travelPerDiems.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelPerDiems_Delete, L("DeleteItem"));
+
+        var travels = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_Travels, L("Travels"));
+        travels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Travels_Create, L("CreateNewItem"));
+        travels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Travels_Edit, L("EditItem"));
+        travels.CreateChildPermission(AppPermissions.Pages_TravelManagement_Travels_Delete, L("DeleteItem"));
+
+        var travelDetails = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetails, L("TravelDetails"));
+        travelDetails.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetails_Create, L("CreateNewItem"));
+        travelDetails.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetails_Edit, L("EditItem"));
+        travelDetails.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetails_Delete, L("DeleteItem"));
+
+        var travelDetailCosts = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetailCosts, L("TravelDetailCosts"));
+        travelDetailCosts.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetailCosts_Create, L("CreateNewItem"));
+        travelDetailCosts.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetailCosts_Edit, L("EditItem"));
+        travelDetailCosts.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelDetailCosts_Delete, L("DeleteItem"));
+
+        var travelFeedbacks = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelFeedbacks, L("TravelFeedbacks"));
+        travelFeedbacks.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelFeedbacks_Create, L("CreateNewItem"));
+        travelFeedbacks.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelFeedbacks_Edit, L("EditItem"));
+        travelFeedbacks.CreateChildPermission(AppPermissions.Pages_TravelManagement_TravelFeedbacks_Delete, L("DeleteItem"));
+
         var govtRelationsManagement = pages.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement, L("GovtRelationsManagement"));
 
         var businessTypes = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_BusinessTypes, L("BusinessTypes"));
@@ -1470,6 +1527,73 @@ public class AppAuthorizationProvider : AuthorizationProvider
         accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Create, L("CreateNewItem"));
         accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Edit, L("EditItem"));
         accommodationServices.CreateChildPermission(AppPermissions.Pages_AccommodationManagement_AccommodationServices_Delete, L("DeleteItem"));
+
+        var performanceManagement = pages.CreateChildPermission(AppPermissions.Pages_PerformanceManagement, L("PerformanceManagement"));
+
+        var formTypes = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_FormTypes, L("FormTypes"));
+        formTypes.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_FormTypes_Create, L("CreateNewItem"));
+        formTypes.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_FormTypes_Edit, L("EditItem"));
+        formTypes.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_FormTypes_Delete, L("DeleteItem"));
+
+        var kpiCategories = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiCategories, L("KpiCategories"));
+        kpiCategories.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiCategories_Create, L("CreateNewItem"));
+        kpiCategories.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiCategories_Edit, L("EditItem"));
+        kpiCategories.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiCategories_Delete, L("DeleteItem"));
+
+        var kpiInfos = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiInfos, L("KpiInfos"));
+        kpiInfos.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiInfos_Create, L("CreateNewItem"));
+        kpiInfos.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiInfos_Edit, L("EditItem"));
+        kpiInfos.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiInfos_Delete, L("DeleteItem"));
+
+        var paRatings = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PARatings, L("PARatings"));
+        paRatings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PARatings_Create, L("CreateNewItem"));
+        paRatings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PARatings_Edit, L("EditItem"));
+        paRatings.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PARatings_Delete, L("DeleteItem"));
+
+        var paCycles = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PACycles, L("PACycles"));
+        paCycles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PACycles_Create, L("CreateNewItem"));
+        paCycles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PACycles_Edit, L("EditItem"));
+        paCycles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PACycles_Delete, L("DeleteItem"));
+
+        var paPeriods = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeriods, L("PAPeriods"));
+        paPeriods.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeriods_Create, L("CreateNewItem"));
+        paPeriods.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeriods_Edit, L("EditItem"));
+        paPeriods.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeriods_Delete, L("DeleteItem"));
+
+        var paTimelines = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelines, L("PATimelines"));
+        paTimelines.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelines_Create, L("CreateNewItem"));
+        paTimelines.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelines_Edit, L("EditItem"));
+        paTimelines.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelines_Delete, L("DeleteItem"));
+
+        var paTimelineExceptions = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelineExceptions, L("PATimelineExceptions"));
+        paTimelineExceptions.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelineExceptions_Create, L("CreateNewItem"));
+        paTimelineExceptions.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelineExceptions_Edit, L("EditItem"));
+        paTimelineExceptions.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PATimelineExceptions_Delete, L("DeleteItem"));
+
+        var paPeerNominees = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeerNominees, L("PAPeerNominees"));
+        paPeerNominees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeerNominees_Create, L("CreateNewItem"));
+        paPeerNominees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeerNominees_Edit, L("EditItem"));
+        paPeerNominees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAPeerNominees_Delete, L("DeleteItem"));
+
+        var kpiByJobTitles = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByJobTitles, L("KpiByJobTitles"));
+        kpiByJobTitles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByJobTitles_Create, L("CreateNewItem"));
+        kpiByJobTitles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByJobTitles_Edit, L("EditItem"));
+        kpiByJobTitles.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByJobTitles_Delete, L("DeleteItem"));
+
+        var kpiByOrgUnits = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByOrgUnits, L("KpiByOrgUnits"));
+        kpiByOrgUnits.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByOrgUnits_Create, L("CreateNewItem"));
+        kpiByOrgUnits.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByOrgUnits_Edit, L("EditItem"));
+        kpiByOrgUnits.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_KpiByOrgUnits_Delete, L("DeleteItem"));
+
+        var paForms = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAForms, L("PAForms"));
+        paForms.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAForms_Create, L("CreateNewItem"));
+        paForms.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAForms_Edit, L("EditItem"));
+        paForms.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAForms_Delete, L("DeleteItem"));
+
+        var paEmployees = performanceManagement.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees, L("PAEmployees"));
+        paEmployees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees_Create, L("CreateNewItem"));
+        paEmployees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees_Edit, L("EditItem"));
+        paEmployees.CreateChildPermission(AppPermissions.Pages_PerformanceManagement_PAEmployees_Delete, L("DeleteItem"));
 
         //TENANT-SPECIFIC PERMISSIONS
 

@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.PerformanceManagement.PAForms.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                [tableStyle]="{ 'min-width': '60rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PerformanceManagement.PAForms.Edit',
+                                        'Pages.PerformanceManagement.PAForms.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th style="min-width: 180px">{{ 'KpiInfo' | localize }}</th>
+                        <th style="min-width: 90px">{{ 'Weight' | localize }}</th>
+                        <th style="min-width: 150px">{{ 'Target' | localize }}</th>
+                        <th style="min-width: 150px">{{ 'AppraiseeRating' | localize }}</th>
+                        <th style="min-width: 130px">{{ 'Rating' | localize }}</th>
+                        <th style="min-width: 180px">{{ 'AppraiseeComments' | localize }}</th>
+                        <th style="min-width: 180px">{{ 'AppraiserComments' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.PerformanceManagement.PAForms.Edit',
+                                        'Pages.PerformanceManagement.PAForms.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.kpiInfoName }}</td>
+                        <td>{{ record.weight }}</td>
+                        <td>{{ record.target }}</td>
+                        <td>{{ record.appraiseeRatingId }}</td>
+                        <td>{{ record.ratingId }}</td>
+                        <td>{{ record.appraiseeComments }}</td>
+                        <td>{{ record.appraiserComments }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditPAQuarter3ReviewModal #createOrEditModal (modalSave)="reloadPage()" />

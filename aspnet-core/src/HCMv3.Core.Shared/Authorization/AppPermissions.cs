@@ -1265,6 +1265,63 @@ public static class AppPermissions
     public const string Pages_ProjectManagement_ProjectLogs_Edit = "Pages.ProjectManagement.ProjectLogs.Edit";
     public const string Pages_ProjectManagement_ProjectLogs_Delete = "Pages.ProjectManagement.ProjectLogs.Delete";
 
+    public const string Pages_TravelManagement = "Pages.TravelManagement";
+
+    public const string Pages_TravelManagement_ExpenseTypes = "Pages.TravelManagement.ExpenseTypes";
+    public const string Pages_TravelManagement_ExpenseTypes_Create = "Pages.TravelManagement.ExpenseTypes.Create";
+    public const string Pages_TravelManagement_ExpenseTypes_Edit = "Pages.TravelManagement.ExpenseTypes.Edit";
+    public const string Pages_TravelManagement_ExpenseTypes_Delete = "Pages.TravelManagement.ExpenseTypes.Delete";
+
+    public const string Pages_TravelManagement_Hotels = "Pages.TravelManagement.Hotels";
+    public const string Pages_TravelManagement_Hotels_Create = "Pages.TravelManagement.Hotels.Create";
+    public const string Pages_TravelManagement_Hotels_Edit = "Pages.TravelManagement.Hotels.Edit";
+    public const string Pages_TravelManagement_Hotels_Delete = "Pages.TravelManagement.Hotels.Delete";
+
+    public const string Pages_TravelManagement_TravelAirlines = "Pages.TravelManagement.TravelAirlines";
+    public const string Pages_TravelManagement_TravelAirlines_Create = "Pages.TravelManagement.TravelAirlines.Create";
+    public const string Pages_TravelManagement_TravelAirlines_Edit = "Pages.TravelManagement.TravelAirlines.Edit";
+    public const string Pages_TravelManagement_TravelAirlines_Delete = "Pages.TravelManagement.TravelAirlines.Delete";
+
+    public const string Pages_TravelManagement_TravelCancelReasons = "Pages.TravelManagement.TravelCancelReasons";
+    public const string Pages_TravelManagement_TravelCancelReasons_Create = "Pages.TravelManagement.TravelCancelReasons.Create";
+    public const string Pages_TravelManagement_TravelCancelReasons_Edit = "Pages.TravelManagement.TravelCancelReasons.Edit";
+    public const string Pages_TravelManagement_TravelCancelReasons_Delete = "Pages.TravelManagement.TravelCancelReasons.Delete";
+
+    public const string Pages_TravelManagement_TravelDestinations = "Pages.TravelManagement.TravelDestinations";
+    public const string Pages_TravelManagement_TravelDestinations_Create = "Pages.TravelManagement.TravelDestinations.Create";
+    public const string Pages_TravelManagement_TravelDestinations_Edit = "Pages.TravelManagement.TravelDestinations.Edit";
+    public const string Pages_TravelManagement_TravelDestinations_Delete = "Pages.TravelManagement.TravelDestinations.Delete";
+
+    public const string Pages_TravelManagement_TravelTypes = "Pages.TravelManagement.TravelTypes";
+    public const string Pages_TravelManagement_TravelTypes_Create = "Pages.TravelManagement.TravelTypes.Create";
+    public const string Pages_TravelManagement_TravelTypes_Edit = "Pages.TravelManagement.TravelTypes.Edit";
+    public const string Pages_TravelManagement_TravelTypes_Delete = "Pages.TravelManagement.TravelTypes.Delete";
+
+    public const string Pages_TravelManagement_TravelPerDiems = "Pages.TravelManagement.TravelPerDiems";
+    public const string Pages_TravelManagement_TravelPerDiems_Create = "Pages.TravelManagement.TravelPerDiems.Create";
+    public const string Pages_TravelManagement_TravelPerDiems_Edit = "Pages.TravelManagement.TravelPerDiems.Edit";
+    public const string Pages_TravelManagement_TravelPerDiems_Delete = "Pages.TravelManagement.TravelPerDiems.Delete";
+
+    public const string Pages_TravelManagement_Travels = "Pages.TravelManagement.Travels";
+    public const string Pages_TravelManagement_Travels_Create = "Pages.TravelManagement.Travels.Create";
+    public const string Pages_TravelManagement_Travels_Edit = "Pages.TravelManagement.Travels.Edit";
+    public const string Pages_TravelManagement_Travels_Delete = "Pages.TravelManagement.Travels.Delete";
+
+    public const string Pages_TravelManagement_TravelDetails = "Pages.TravelManagement.TravelDetails";
+    public const string Pages_TravelManagement_TravelDetails_Create = "Pages.TravelManagement.TravelDetails.Create";
+    public const string Pages_TravelManagement_TravelDetails_Edit = "Pages.TravelManagement.TravelDetails.Edit";
+    public const string Pages_TravelManagement_TravelDetails_Delete = "Pages.TravelManagement.TravelDetails.Delete";
+
+    public const string Pages_TravelManagement_TravelDetailCosts = "Pages.TravelManagement.TravelDetailCosts";
+    public const string Pages_TravelManagement_TravelDetailCosts_Create = "Pages.TravelManagement.TravelDetailCosts.Create";
+    public const string Pages_TravelManagement_TravelDetailCosts_Edit = "Pages.TravelManagement.TravelDetailCosts.Edit";
+    public const string Pages_TravelManagement_TravelDetailCosts_Delete = "Pages.TravelManagement.TravelDetailCosts.Delete";
+
+    public const string Pages_TravelManagement_TravelFeedbacks = "Pages.TravelManagement.TravelFeedbacks";
+    public const string Pages_TravelManagement_TravelFeedbacks_Create = "Pages.TravelManagement.TravelFeedbacks.Create";
+    public const string Pages_TravelManagement_TravelFeedbacks_Edit = "Pages.TravelManagement.TravelFeedbacks.Edit";
+    public const string Pages_TravelManagement_TravelFeedbacks_Delete = "Pages.TravelManagement.TravelFeedbacks.Delete";
+
     public const string Pages_PayrollManagement_AbsenceViolationActionLogs = "Pages.PayrollManagement.AbsenceViolationActionLogs";
     public const string Pages_PayrollManagement_AbsenceViolationActionLogs_Create = "Pages.PayrollManagement.AbsenceViolationActionLogs.Create";
     public const string Pages_PayrollManagement_AbsenceViolationActionLogs_Edit = "Pages.PayrollManagement.AbsenceViolationActionLogs.Edit";
@@ -1398,6 +1455,73 @@ public static class AppPermissions
     public const string Pages_AccommodationManagement_AccommodationServices_Create = "Pages.AccommodationManagement.AccommodationServices.Create";
     public const string Pages_AccommodationManagement_AccommodationServices_Edit = "Pages.AccommodationManagement.AccommodationServices.Edit";
     public const string Pages_AccommodationManagement_AccommodationServices_Delete = "Pages.AccommodationManagement.AccommodationServices.Delete";
+
+    public const string Pages_PerformanceManagement = "Pages.PerformanceManagement";
+
+    public const string Pages_PerformanceManagement_FormTypes = "Pages.PerformanceManagement.FormTypes";
+    public const string Pages_PerformanceManagement_FormTypes_Create = "Pages.PerformanceManagement.FormTypes.Create";
+    public const string Pages_PerformanceManagement_FormTypes_Edit = "Pages.PerformanceManagement.FormTypes.Edit";
+    public const string Pages_PerformanceManagement_FormTypes_Delete = "Pages.PerformanceManagement.FormTypes.Delete";
+
+    public const string Pages_PerformanceManagement_KpiCategories = "Pages.PerformanceManagement.KpiCategories";
+    public const string Pages_PerformanceManagement_KpiCategories_Create = "Pages.PerformanceManagement.KpiCategories.Create";
+    public const string Pages_PerformanceManagement_KpiCategories_Edit = "Pages.PerformanceManagement.KpiCategories.Edit";
+    public const string Pages_PerformanceManagement_KpiCategories_Delete = "Pages.PerformanceManagement.KpiCategories.Delete";
+
+    public const string Pages_PerformanceManagement_KpiInfos = "Pages.PerformanceManagement.KpiInfos";
+    public const string Pages_PerformanceManagement_KpiInfos_Create = "Pages.PerformanceManagement.KpiInfos.Create";
+    public const string Pages_PerformanceManagement_KpiInfos_Edit = "Pages.PerformanceManagement.KpiInfos.Edit";
+    public const string Pages_PerformanceManagement_KpiInfos_Delete = "Pages.PerformanceManagement.KpiInfos.Delete";
+
+    public const string Pages_PerformanceManagement_PARatings = "Pages.PerformanceManagement.PARatings";
+    public const string Pages_PerformanceManagement_PARatings_Create = "Pages.PerformanceManagement.PARatings.Create";
+    public const string Pages_PerformanceManagement_PARatings_Edit = "Pages.PerformanceManagement.PARatings.Edit";
+    public const string Pages_PerformanceManagement_PARatings_Delete = "Pages.PerformanceManagement.PARatings.Delete";
+
+    public const string Pages_PerformanceManagement_PACycles = "Pages.PerformanceManagement.PACycles";
+    public const string Pages_PerformanceManagement_PACycles_Create = "Pages.PerformanceManagement.PACycles.Create";
+    public const string Pages_PerformanceManagement_PACycles_Edit = "Pages.PerformanceManagement.PACycles.Edit";
+    public const string Pages_PerformanceManagement_PACycles_Delete = "Pages.PerformanceManagement.PACycles.Delete";
+
+    public const string Pages_PerformanceManagement_PAPeriods = "Pages.PerformanceManagement.PAPeriods";
+    public const string Pages_PerformanceManagement_PAPeriods_Create = "Pages.PerformanceManagement.PAPeriods.Create";
+    public const string Pages_PerformanceManagement_PAPeriods_Edit = "Pages.PerformanceManagement.PAPeriods.Edit";
+    public const string Pages_PerformanceManagement_PAPeriods_Delete = "Pages.PerformanceManagement.PAPeriods.Delete";
+
+    public const string Pages_PerformanceManagement_PATimelines = "Pages.PerformanceManagement.PATimelines";
+    public const string Pages_PerformanceManagement_PATimelines_Create = "Pages.PerformanceManagement.PATimelines.Create";
+    public const string Pages_PerformanceManagement_PATimelines_Edit = "Pages.PerformanceManagement.PATimelines.Edit";
+    public const string Pages_PerformanceManagement_PATimelines_Delete = "Pages.PerformanceManagement.PATimelines.Delete";
+
+    public const string Pages_PerformanceManagement_PATimelineExceptions = "Pages.PerformanceManagement.PATimelineExceptions";
+    public const string Pages_PerformanceManagement_PATimelineExceptions_Create = "Pages.PerformanceManagement.PATimelineExceptions.Create";
+    public const string Pages_PerformanceManagement_PATimelineExceptions_Edit = "Pages.PerformanceManagement.PATimelineExceptions.Edit";
+    public const string Pages_PerformanceManagement_PATimelineExceptions_Delete = "Pages.PerformanceManagement.PATimelineExceptions.Delete";
+
+    public const string Pages_PerformanceManagement_PAPeerNominees = "Pages.PerformanceManagement.PAPeerNominees";
+    public const string Pages_PerformanceManagement_PAPeerNominees_Create = "Pages.PerformanceManagement.PAPeerNominees.Create";
+    public const string Pages_PerformanceManagement_PAPeerNominees_Edit = "Pages.PerformanceManagement.PAPeerNominees.Edit";
+    public const string Pages_PerformanceManagement_PAPeerNominees_Delete = "Pages.PerformanceManagement.PAPeerNominees.Delete";
+
+    public const string Pages_PerformanceManagement_KpiByJobTitles = "Pages.PerformanceManagement.KpiByJobTitles";
+    public const string Pages_PerformanceManagement_KpiByJobTitles_Create = "Pages.PerformanceManagement.KpiByJobTitles.Create";
+    public const string Pages_PerformanceManagement_KpiByJobTitles_Edit = "Pages.PerformanceManagement.KpiByJobTitles.Edit";
+    public const string Pages_PerformanceManagement_KpiByJobTitles_Delete = "Pages.PerformanceManagement.KpiByJobTitles.Delete";
+
+    public const string Pages_PerformanceManagement_KpiByOrgUnits = "Pages.PerformanceManagement.KpiByOrgUnits";
+    public const string Pages_PerformanceManagement_KpiByOrgUnits_Create = "Pages.PerformanceManagement.KpiByOrgUnits.Create";
+    public const string Pages_PerformanceManagement_KpiByOrgUnits_Edit = "Pages.PerformanceManagement.KpiByOrgUnits.Edit";
+    public const string Pages_PerformanceManagement_KpiByOrgUnits_Delete = "Pages.PerformanceManagement.KpiByOrgUnits.Delete";
+
+    public const string Pages_PerformanceManagement_PAForms = "Pages.PerformanceManagement.PAForms";
+    public const string Pages_PerformanceManagement_PAForms_Create = "Pages.PerformanceManagement.PAForms.Create";
+    public const string Pages_PerformanceManagement_PAForms_Edit = "Pages.PerformanceManagement.PAForms.Edit";
+    public const string Pages_PerformanceManagement_PAForms_Delete = "Pages.PerformanceManagement.PAForms.Delete";
+
+    public const string Pages_PerformanceManagement_PAEmployees = "Pages.PerformanceManagement.PAEmployees";
+    public const string Pages_PerformanceManagement_PAEmployees_Create = "Pages.PerformanceManagement.PAEmployees.Create";
+    public const string Pages_PerformanceManagement_PAEmployees_Edit = "Pages.PerformanceManagement.PAEmployees.Edit";
+    public const string Pages_PerformanceManagement_PAEmployees_Delete = "Pages.PerformanceManagement.PAEmployees.Delete";
 
     //TENANT-SPECIFIC PERMISSIONS
 

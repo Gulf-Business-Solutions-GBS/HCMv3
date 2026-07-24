@@ -51,6 +51,11 @@ import {
     BusinessTypesServiceProxy,
     GovtJobCategoriesServiceProxy,
     ProjectTypesServiceProxy,
+    ExpenseTypesServiceProxy,
+    HotelsServiceProxy,
+    TravelAirlinesServiceProxy,
+    TravelCancelReasonsServiceProxy,
+    TravelDestinationsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -1384,6 +1389,195 @@ export const appRoutes: Routes = [
                                 (m) => m.ProjectLogsComponent
                             ),
                         data: { permission: 'Pages.ProjectManagement.ProjectLogs' },
+                    },
+                    simpleLookupRoute('expense-types', 'ExpenseTypes', 'ExpenseTypes', ExpenseTypesServiceProxy, 'TravelManagement'),
+                    simpleLookupRoute('hotels', 'Hotels', 'Hotels', HotelsServiceProxy, 'TravelManagement'),
+                    simpleLookupRoute('travel-airlines', 'TravelAirlines', 'TravelAirlines', TravelAirlinesServiceProxy, 'TravelManagement'),
+                    simpleLookupRoute('travel-cancel-reasons', 'TravelCancelReasons', 'TravelCancelReasons', TravelCancelReasonsServiceProxy, 'TravelManagement'),
+                    simpleLookupRoute('travel-destinations', 'TravelDestinations', 'TravelDestinations', TravelDestinationsServiceProxy, 'TravelManagement'),
+                    {
+                        path: 'travel-types',
+                        loadComponent: () =>
+                            import('./admin/travel-management/travel-types/travel-types.component').then(
+                                (m) => m.TravelTypesComponent
+                            ),
+                        data: { permission: 'Pages.TravelManagement.TravelTypes' },
+                    },
+                    {
+                        path: 'travel-per-diems',
+                        loadComponent: () =>
+                            import('./admin/travel-management/travel-per-diems/travel-per-diems.component').then(
+                                (m) => m.TravelPerDiemsComponent
+                            ),
+                        data: { permission: 'Pages.TravelManagement.TravelPerDiems' },
+                    },
+                    {
+                        path: 'travels',
+                        loadComponent: () =>
+                            import('./admin/travel-management/travels/travels.component').then(
+                                (m) => m.TravelsComponent
+                            ),
+                        data: { permission: 'Pages.TravelManagement.Travels' },
+                    },
+                    {
+                        path: 'travel-details',
+                        loadComponent: () =>
+                            import('./admin/travel-management/travel-details/travel-details.component').then(
+                                (m) => m.TravelDetailsComponent
+                            ),
+                        data: { permission: 'Pages.TravelManagement.TravelDetails' },
+                    },
+                    {
+                        path: 'travel-detail-costs',
+                        loadComponent: () =>
+                            import(
+                                './admin/travel-management/travel-detail-costs/travel-detail-costs.component'
+                            ).then((m) => m.TravelDetailCostsComponent),
+                        data: { permission: 'Pages.TravelManagement.TravelDetailCosts' },
+                    },
+                    {
+                        path: 'travel-feedbacks',
+                        loadComponent: () =>
+                            import('./admin/travel-management/travel-feedbacks/travel-feedbacks.component').then(
+                                (m) => m.TravelFeedbacksComponent
+                            ),
+                        data: { permission: 'Pages.TravelManagement.TravelFeedbacks' },
+                    },
+                    {
+                        path: 'form-types',
+                        loadComponent: () =>
+                            import('./admin/performance-management/form-types/form-types.component').then(
+                                (m) => m.FormTypesComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.FormTypes' },
+                    },
+                    {
+                        path: 'kpi-categories',
+                        loadComponent: () =>
+                            import('./admin/performance-management/kpi-categories/kpi-categories.component').then(
+                                (m) => m.KpiCategoriesComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.KpiCategories' },
+                    },
+                    {
+                        path: 'kpi-infos',
+                        loadComponent: () =>
+                            import('./admin/performance-management/kpi-infos/kpi-infos.component').then(
+                                (m) => m.KpiInfosComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.KpiInfos' },
+                    },
+                    {
+                        path: 'pa-ratings',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-ratings/pa-ratings.component').then(
+                                (m) => m.PARatingsComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PARatings' },
+                    },
+                    {
+                        path: 'pa-cycles',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-cycles/pa-cycles.component').then(
+                                (m) => m.PACyclesComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PACycles' },
+                    },
+                    {
+                        path: 'pa-periods',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-periods/pa-periods.component').then(
+                                (m) => m.PAPeriodsComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PAPeriods' },
+                    },
+                    {
+                        path: 'pa-timelines',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-timelines/pa-timelines.component').then(
+                                (m) => m.PATimelinesComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PATimelines' },
+                    },
+                    {
+                        path: 'pa-timeline-exceptions',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/pa-timeline-exceptions/pa-timeline-exceptions.component'
+                            ).then((m) => m.PATimelineExceptionsComponent),
+                        data: { permission: 'Pages.PerformanceManagement.PATimelineExceptions' },
+                    },
+                    {
+                        path: 'pa-peer-nominees',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/pa-peer-nominees/pa-peer-nominees.component'
+                            ).then((m) => m.PAPeerNomineesComponent),
+                        data: { permission: 'Pages.PerformanceManagement.PAPeerNominees' },
+                    },
+                    {
+                        path: 'kpi-by-job-titles',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/kpi-by-job-titles/kpi-by-job-titles.component'
+                            ).then((m) => m.KpiByJobTitlesComponent),
+                        data: { permission: 'Pages.PerformanceManagement.KpiByJobTitles' },
+                    },
+                    {
+                        path: 'kpi-by-job-title-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/kpi-by-job-title-details/kpi-by-job-title-details.component'
+                            ).then((m) => m.KpiByJobTitleDetailsComponent),
+                        data: { permission: 'Pages.PerformanceManagement.KpiByJobTitles' },
+                    },
+                    {
+                        path: 'kpi-by-org-units',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/kpi-by-org-units/kpi-by-org-units.component'
+                            ).then((m) => m.KpiByOrgUnitsComponent),
+                        data: { permission: 'Pages.PerformanceManagement.KpiByOrgUnits' },
+                    },
+                    {
+                        path: 'kpi-by-org-unit-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/kpi-by-org-unit-details/kpi-by-org-unit-details.component'
+                            ).then((m) => m.KpiByOrgUnitDetailsComponent),
+                        data: { permission: 'Pages.PerformanceManagement.KpiByOrgUnits' },
+                    },
+                    {
+                        path: 'pa-forms',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-forms/pa-forms.component').then(
+                                (m) => m.PAFormsComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PAForms' },
+                    },
+                    {
+                        path: 'pa-forms/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/pa-form-detail/pa-form-detail.component'
+                            ).then((m) => m.PAFormDetailComponent),
+                        data: { permission: 'Pages.PerformanceManagement.PAForms' },
+                    },
+                    {
+                        path: 'pa-employees',
+                        loadComponent: () =>
+                            import('./admin/performance-management/pa-employees/pa-employees.component').then(
+                                (m) => m.PAEmployeesComponent
+                            ),
+                        data: { permission: 'Pages.PerformanceManagement.PAEmployees' },
+                    },
+                    {
+                        path: 'pa-employees/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/pa-employee-detail/pa-employee-detail.component'
+                            ).then((m) => m.PAEmployeeDetailComponent),
+                        data: { permission: 'Pages.PerformanceManagement.PAEmployees' },
                     },
                     {
                         path: 'organization-units',
