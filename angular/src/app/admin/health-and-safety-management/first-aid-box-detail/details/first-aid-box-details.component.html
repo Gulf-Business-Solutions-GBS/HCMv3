@@ -1,0 +1,118 @@
+<div>
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            @if ('Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    {{ 'CreateNew' | localize }}
+                </button>
+            }
+        </div>
+    </div>
+
+    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+        <p-table
+            #dataTable
+            sortMode="multiple"
+            (onLazyLoad)="getRecords($event)"
+            [value]="primengTableHelper.records()"
+            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+            [paginator]="false"
+            [lazy]="true"
+            [scrollable]="true"
+            scrollDirection="horizontal"
+            [tableStyle]="{ 'min-width': '70rem' }"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template #header>
+                <tr>
+                    <th
+                        style="width: 130px"
+                        [hidden]="
+                            !(
+                                [
+                                    'Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Edit',
+                                    'Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Delete',
+                                ] | permissionAny
+                            )
+                        ">
+                        {{ 'Actions' | localize }}
+                    </th>
+                    <th style="min-width: 180px">
+                        {{ 'Medicine' | localize }}
+                    </th>
+                    <th style="min-width: 130px" pSortableColumn="expiryDate">
+                        {{ 'ExpiryDate' | localize }}
+                        <p-sortIcon field="expiryDate" />
+                    </th>
+                    <th style="min-width: 130px" pSortableColumn="allocationDate">
+                        {{ 'AllocationDate' | localize }}
+                        <p-sortIcon field="allocationDate" />
+                    </th>
+                    <th style="min-width: 150px">
+                        {{ 'AllocatedBy' | localize }}
+                    </th>
+                    <th style="min-width: 100px">
+                        {{ 'IsExpired' | localize }}
+                    </th>
+                    <th style="min-width: 100px">
+                        {{ 'IsReplaced' | localize }}
+                    </th>
+                    <th style="min-width: 200px">
+                        {{ 'Comments' | localize }}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-record="$implicit">
+                <tr>
+                    <td
+                        style="width: 130px"
+                        [hidden]="
+                            !(
+                                [
+                                    'Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Edit',
+                                    'Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Delete',
+                                ] | permissionAny
+                            )
+                        ">
+                        <button
+                            type="button"
+                            class="btn btn-primary btn-sm dropdown-toggle"
+                            (click)="showMenu($event, record, actionsMenu)">
+                            <i class="fa fa-cog"></i>
+                            {{ 'Actions' | localize }}
+                        </button>
+                    </td>
+                    <td style="min-width: 180px">{{ record.medicineNameEn }}</td>
+                    <td style="min-width: 130px">{{ record.expiryDate | luxonFormat: 'DD' }}</td>
+                    <td style="min-width: 130px">{{ record.allocationDate | luxonFormat: 'DD' }}</td>
+                    <td style="min-width: 150px">{{ record.allocatedByCode }}</td>
+                    <td style="min-width: 100px">
+                        <i class="fa" [ngClass]="record.isExpired ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                    </td>
+                    <td style="min-width: 100px">
+                        <i class="fa" [ngClass]="record.isReplaced ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                    </td>
+                    <td style="min-width: 200px">{{ record.comments }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (primengTableHelper.totalRecordsCount() == 0) {
+            <div class="primeng-no-data">
+                {{ 'NoData' | localize }}
+            </div>
+        }
+        <div class="primeng-paging-container">
+            <p-paginator
+                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                #paginator
+                (onPageChange)="getRecords($event)"
+                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                [showCurrentPageReport]="true"
+                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+        </div>
+    </div>
+
+    <createOrEditFirstAidBoxDetailModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

@@ -1,0 +1,128 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'GatePassPersons' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassPerson_PersonTypeId">{{ 'PersonType' | localize }}</label>
+                                <select
+                                    id="GatePassPerson_PersonTypeId"
+                                    #personTypeInput="ngModel"
+                                    class="form-select"
+                                    name="PersonTypeId"
+                                    [ngModel]="record().personTypeId"
+                                    (ngModelChange)="updateField('personTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of personTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="personTypeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassPerson_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="GatePassPerson_EmployeeId"
+                                    #employeeInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassPerson_PersonFullName">{{ 'PersonFullName' | localize }}</label>
+                                <input
+                                    id="GatePassPerson_PersonFullName"
+                                    #personFullNameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="PersonFullName"
+                                    [ngModel]="record().personFullName"
+                                    (ngModelChange)="updateField('personFullName', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="personFullNameInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="GatePassPerson_GatePassVendorId">{{ 'GatePassVendor' | localize }}</label>
+                                <select
+                                    id="GatePassPerson_GatePassVendorId"
+                                    #gatePassVendorInput="ngModel"
+                                    class="form-select"
+                                    name="GatePassVendorId"
+                                    [ngModel]="record().gatePassVendorId"
+                                    (ngModelChange)="updateField('gatePassVendorId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of gatePassVendors(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="gatePassVendorInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="GatePassPerson_PersonCivildID">{{ 'PersonCivildID' | localize }}</label>
+                                <input
+                                    id="GatePassPerson_PersonCivildID"
+                                    class="form-control"
+                                    type="text"
+                                    name="PersonCivildID"
+                                    [ngModel]="record().personCivildID"
+                                    (ngModelChange)="updateField('personCivildID', $event)"
+                                    maxlength="64" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="GatePassPerson_PersonPassportNumber">{{ 'PersonPassportNumber' | localize }}</label>
+                                <input
+                                    id="GatePassPerson_PersonPassportNumber"
+                                    class="form-control"
+                                    type="text"
+                                    name="PersonPassportNumber"
+                                    [ngModel]="record().personPassportNumber"
+                                    (ngModelChange)="updateField('personPassportNumber', $event)"
+                                    maxlength="64" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

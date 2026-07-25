@@ -119,6 +119,9 @@
                         <tab heading="{{ 'EmployeeLoans' | localize }}">
                             <employee-loans [employeeId]="employeeId()" />
                         </tab>
+                        <tab heading="{{ 'EmployeeInsurances' | localize }}">
+                            <employee-insurances [employeeId]="employeeId()" />
+                        </tab>
                         <tab heading="{{ 'EmployeeFunds' | localize }}">
                             <employee-funds [employeeId]="employeeId()" />
                         </tab>
@@ -193,6 +196,18 @@
                         </tab>
                         <tab heading="{{ 'EmployeeTasks' | localize }}">
                             <employee-tasks [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmpPerformanceHistories' | localize }}">
+                            <employee-performance-histories [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmpPotentialAssessments' | localize }}">
+                            <employee-potential-assessments [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmpTalentMatrixDatas' | localize }}">
+                            <employee-talent-matrix [employeeId]="employeeId()" />
+                        </tab>
+                        <tab heading="{{ 'EmployeeTalentFlags' | localize }}">
+                            <employee-talent-flags [employeeId]="employeeId()" />
                         </tab>
                     </tabset>
                 }

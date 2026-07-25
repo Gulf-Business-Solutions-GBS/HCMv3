@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'SiteAudits' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SiteAudit_AuditDate">{{ 'AuditDate' | localize }}</label>
+                                <input
+                                    id="SiteAudit_AuditDate"
+                                    #auditDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="AuditDate"
+                                    [ngModel]="record().auditDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('auditDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="auditDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SiteAudit_AuditTime">{{ 'AuditTime' | localize }}</label>
+                                <input
+                                    id="SiteAudit_AuditTime"
+                                    class="form-control"
+                                    type="time"
+                                    step="1"
+                                    name="AuditTime"
+                                    [ngModel]="getTimeValue('auditTime')"
+                                    (ngModelChange)="updateTimeField('auditTime', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="SiteAudit_ReassessmentDate">{{ 'ReassessmentDate' | localize }}</label>
+                                <input
+                                    id="SiteAudit_ReassessmentDate"
+                                    #reassessmentDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ReassessmentDate"
+                                    [ngModel]="record().reassessmentDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('reassessmentDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reassessmentDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SiteAudit_LocationId">{{ 'Location' | localize }}</label>
+                                <select
+                                    id="SiteAudit_LocationId"
+                                    #locationInput="ngModel"
+                                    class="form-select"
+                                    name="LocationId"
+                                    [ngModel]="record().locationId"
+                                    (ngModelChange)="updateField('locationId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of locations(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="locationInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SiteAudit_ConductedById">{{ 'ConductedBy' | localize }}</label>
+                                <select
+                                    id="SiteAudit_ConductedById"
+                                    #conductedByInput="ngModel"
+                                    class="form-select"
+                                    name="ConductedById"
+                                    [ngModel]="record().conductedById"
+                                    (ngModelChange)="updateField('conductedById', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.fullNameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="conductedByInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="SiteAudit_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="SiteAudit_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

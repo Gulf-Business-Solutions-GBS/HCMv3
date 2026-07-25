@@ -1,0 +1,122 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeePoolCars' | localize" [description]="'GatePassManagement' | localize">
+        <div role="actions">
+            @if ('Pages.GatePassManagement.EmployeePoolCars.Create' | permission) {
+                <button (click)="createEmployeePoolCar()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getEmployeePoolCars($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '100rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GatePassManagement.EmployeePoolCars.Edit',
+                                                    'Pages.GatePassManagement.EmployeePoolCars.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px">{{ 'DriverEmployee' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'PoolCar' | localize }}</th>
+                                    <th style="min-width: 130px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 130px">{{ 'StartTime' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'EndTime' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'IsReturned' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.GatePassManagement.EmployeePoolCars.Edit',
+                                                    'Pages.GatePassManagement.EmployeePoolCars.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.driverFullName }}" class="hide-overflown">{{ record.driverFullName }}</span>
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.poolCarPlateNumber }}</td>
+                                    <td style="min-width: 130px">{{ record.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 130px">{{ record.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 130px">{{ record.startTime | luxonFormat: 'HH:mm' }}</td>
+                                    <td style="min-width: 130px">{{ record.endTime | luxonFormat: 'HH:mm' }}</td>
+                                    <td style="min-width: 120px">
+                                        <i class="fa" [ngClass]="record.isReturned ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getEmployeePoolCars($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeePoolCarModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

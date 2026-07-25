@@ -227,6 +227,63 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'JobProfileManagement',
+                '',
+                'flaticon-suitcase',
+                '',
+                [],
+                [
+                    new AppMenuItem('JobFamilies', 'Pages.JobProfileManagement.JobFamilies', 'flaticon-list-3', '/app/admin/job-families'),
+                    new AppMenuItem('JobFunctions', 'Pages.JobProfileManagement.JobFunctions', 'flaticon-list-3', '/app/admin/job-functions'),
+                    new AppMenuItem('JobResponsibilities', 'Pages.JobProfileManagement.JobResponsibilities', 'flaticon-list-3', '/app/admin/job-responsibilities'),
+                    new AppMenuItem('EducationCertificates', 'Pages.JobProfileManagement.EducationCertificates', 'flaticon-list-3', '/app/admin/education-certificates'),
+                    new AppMenuItem('EducationDegrees', 'Pages.JobProfileManagement.EducationDegrees', 'flaticon-list-3', '/app/admin/education-degrees'),
+                    new AppMenuItem('InterviewQuestions', 'Pages.JobProfileManagement.InterviewQuestions', 'flaticon-list-3', '/app/admin/interview-questions'),
+                    new AppMenuItem('Skills', 'Pages.JobProfileManagement.Skills', 'flaticon-list-3', '/app/admin/skills'),
+                    new AppMenuItem('JobDescriptions', 'Pages.JobProfileManagement.JobDescriptions', 'flaticon-list-3', '/app/admin/job-descriptions'),
+                    new AppMenuItem('JobDescriptionAcknowledgements', 'Pages.JobProfileManagement.JobDescriptionAcknowledgements', 'flaticon-list-3', '/app/admin/job-description-acknowledgements'),
+                ]
+            ),
+            new AppMenuItem(
+                'GatePassManagement',
+                '',
+                'flaticon-security',
+                '',
+                [],
+                [
+                    new AppMenuItem('GatePassTypes', 'Pages.GatePassManagement.GatePassTypes', 'flaticon-list-3', '/app/admin/gate-pass-types'),
+                    new AppMenuItem('GatePassMovements', 'Pages.GatePassManagement.GatePassMovements', 'flaticon-list-3', '/app/admin/gate-pass-movements'),
+                    new AppMenuItem('GatePassStatuses', 'Pages.GatePassManagement.GatePassStatuses', 'flaticon-list-3', '/app/admin/gate-pass-statuses'),
+                    new AppMenuItem('PersonTypes', 'Pages.GatePassManagement.PersonTypes', 'flaticon-list-3', '/app/admin/person-types'),
+                    new AppMenuItem('VehicleTypes', 'Pages.GatePassManagement.VehicleTypes', 'flaticon-list-3', '/app/admin/vehicle-types'),
+                    new AppMenuItem('VehicleBrands', 'Pages.GatePassManagement.VehicleBrands', 'flaticon-list-3', '/app/admin/vehicle-brands'),
+                    new AppMenuItem('VehicleModels', 'Pages.GatePassManagement.VehicleModels', 'flaticon-list-3', '/app/admin/vehicle-models'),
+                    new AppMenuItem('GatePassVendors', 'Pages.GatePassManagement.GatePassVendors', 'flaticon-list-3', '/app/admin/gate-pass-vendors'),
+                    new AppMenuItem('GatePasses', 'Pages.GatePassManagement.GatePasses', 'flaticon-list-3', '/app/admin/gate-passes'),
+                    new AppMenuItem('PoolCars', 'Pages.GatePassManagement.PoolCars', 'flaticon-list-3', '/app/admin/pool-cars'),
+                    new AppMenuItem('EmployeePoolCars', 'Pages.GatePassManagement.EmployeePoolCars', 'flaticon-list-3', '/app/admin/employee-pool-cars'),
+                ]
+            ),
+            new AppMenuItem(
+                'SuccessionManagement',
+                '',
+                'flaticon-network',
+                '',
+                [],
+                [
+                    new AppMenuItem('ImpactOfLosses', 'Pages.SuccessionManagement.ImpactOfLosses', 'flaticon-list-3', '/app/admin/impact-of-losses'),
+                    new AppMenuItem('NineBoxRatings', 'Pages.SuccessionManagement.NineBoxRatings', 'flaticon-list-3', '/app/admin/nine-box-ratings'),
+                    new AppMenuItem('Rankings', 'Pages.SuccessionManagement.Rankings', 'flaticon-list-3', '/app/admin/rankings'),
+                    new AppMenuItem('Readinesses', 'Pages.SuccessionManagement.Readinesses', 'flaticon-list-3', '/app/admin/readinesses'),
+                    new AppMenuItem('ReasonForLeavings', 'Pages.SuccessionManagement.ReasonForLeavings', 'flaticon-list-3', '/app/admin/reason-for-leavings'),
+                    new AppMenuItem('RiskOfLosses', 'Pages.SuccessionManagement.RiskOfLosses', 'flaticon-list-3', '/app/admin/risk-of-losses'),
+                    new AppMenuItem('SuccessionRatings', 'Pages.SuccessionManagement.SuccessionRatings', 'flaticon-list-3', '/app/admin/succession-ratings'),
+                    new AppMenuItem('TalentPools', 'Pages.SuccessionManagement.TalentPools', 'flaticon-list-3', '/app/admin/talent-pools'),
+                    new AppMenuItem('NineBoxMappings', 'Pages.SuccessionManagement.NineBoxMappings', 'flaticon-list-3', '/app/admin/nine-box-mappings'),
+                    new AppMenuItem('SuccessorNominees', 'Pages.SuccessionManagement.SuccessorNominees', 'flaticon-list-3', '/app/admin/successor-nominees'),
+                ]
+            ),
+            new AppMenuItem(
                 'PersonnelAdministration',
                 '',
                 'flaticon-user',
@@ -336,6 +393,32 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'SurveyManagement',
+                '',
+                'flaticon-notepad',
+                '',
+                [],
+                [
+                    new AppMenuItem('Surveys', 'Pages.SurveyManagement.Surveys', 'flaticon-list-3', '/app/admin/surveys'),
+                    new AppMenuItem('SurveyDetails', 'Pages.SurveyManagement.SurveyDetails', 'flaticon-list-3', '/app/admin/survey-details'),
+                    new AppMenuItem('EmployeeSurveys', 'Pages.SurveyManagement.EmployeeSurveys', 'flaticon-list-3', '/app/admin/employee-surveys'),
+                    new AppMenuItem('EmployeeSurveyDetails', 'Pages.SurveyManagement.EmployeeSurveyDetails', 'flaticon-list-3', '/app/admin/employee-survey-details'),
+                ]
+            ),
+            new AppMenuItem(
+                'BenefitsManagement',
+                '',
+                'flaticon-medical',
+                '',
+                [],
+                [
+                    new AppMenuItem('InsurancePlans', 'Pages.BenefitsManagement.InsurancePlans', 'flaticon-list-3', '/app/admin/insurance-plans'),
+                    new AppMenuItem('InsuranceProviders', 'Pages.BenefitsManagement.InsuranceProviders', 'flaticon-list-3', '/app/admin/insurance-providers'),
+                    new AppMenuItem('EmployeeInsuranceDetails', 'Pages.BenefitsManagement.EmployeeInsuranceDetails', 'flaticon-list-3', '/app/admin/employee-insurance-details'),
+                    new AppMenuItem('CompanyInsuranceDetails', 'Pages.BenefitsManagement.CompanyInsuranceDetails', 'flaticon-list-3', '/app/admin/company-insurance-details'),
+                ]
+            ),
+            new AppMenuItem(
                 'TravelManagement',
                 '',
                 'flaticon-airplane',
@@ -406,6 +489,19 @@ export class AppNavigationService {
                     new AppMenuItem('Positions', 'Pages.ManpowerPlanningManagement.Positions', 'flaticon-list-3', '/app/admin/positions'),
                     new AppMenuItem('PositionRelationships', 'Pages.ManpowerPlanningManagement.PositionRelationships', 'flaticon-list-3', '/app/admin/position-relationships'),
                     new AppMenuItem('ManpowerPlannings', 'Pages.ManpowerPlanningManagement.ManpowerPlannings', 'flaticon-list-3', '/app/admin/manpower-plannings'),
+                ]
+            ),
+            new AppMenuItem(
+                'TrainingManagement',
+                '',
+                'flaticon-book',
+                '',
+                [],
+                [
+                    new AppMenuItem('TrainingCourses', 'Pages.TrainingManagement.TrainingCourses', 'flaticon-list-3', '/app/admin/training-courses'),
+                    new AppMenuItem('TrainingSchedules', 'Pages.TrainingManagement.TrainingSchedules', 'flaticon-list-3', '/app/admin/training-schedules'),
+                    new AppMenuItem('EmployeeTrainings', 'Pages.TrainingManagement.EmployeeTrainings', 'flaticon-list-3', '/app/admin/employee-trainings'),
+                    new AppMenuItem('TrainingAttendances', 'Pages.TrainingManagement.TrainingAttendances', 'flaticon-list-3', '/app/admin/training-attendances'),
                 ]
             ),
             new AppMenuItem(
@@ -538,6 +634,37 @@ export class AppNavigationService {
                 'Pages.DemoUiComponents',
                 'flaticon-shapes',
                 '/app/admin/demo-ui-components'
+            ),
+            new AppMenuItem(
+                'HealthAndSafetyManagement',
+                '',
+                'flaticon-safe-shield-protection',
+                '',
+                [],
+                [
+                    new AppMenuItem('ActionStatuses', 'Pages.HealthAndSafetyManagement.ActionStatuses', 'flaticon-list-3', '/app/admin/action-statuses'),
+                    new AppMenuItem('FirstAidMedicines', 'Pages.HealthAndSafetyManagement.FirstAidMedicines', 'flaticon-list-3', '/app/admin/first-aid-medicines'),
+                    new AppMenuItem('IncidentClaimStatuses', 'Pages.HealthAndSafetyManagement.IncidentClaimStatuses', 'flaticon-list-3', '/app/admin/incident-claim-statuses'),
+                    new AppMenuItem('IncidentNatures', 'Pages.HealthAndSafetyManagement.IncidentNatures', 'flaticon-list-3', '/app/admin/incident-natures'),
+                    new AppMenuItem('IncidentSeverities', 'Pages.HealthAndSafetyManagement.IncidentSeverities', 'flaticon-list-3', '/app/admin/incident-severities'),
+                    new AppMenuItem('IncidentStatuses', 'Pages.HealthAndSafetyManagement.IncidentStatuses', 'flaticon-list-3', '/app/admin/incident-statuses'),
+                    new AppMenuItem('IncidentTypes', 'Pages.HealthAndSafetyManagement.IncidentTypes', 'flaticon-list-3', '/app/admin/incident-types'),
+                    new AppMenuItem('InvestigationRootCauses', 'Pages.HealthAndSafetyManagement.InvestigationRootCauses', 'flaticon-list-3', '/app/admin/investigation-root-causes'),
+                    new AppMenuItem('RiskActions', 'Pages.HealthAndSafetyManagement.RiskActions', 'flaticon-list-3', '/app/admin/risk-actions'),
+                    new AppMenuItem('RiskImpacts', 'Pages.HealthAndSafetyManagement.RiskImpacts', 'flaticon-list-3', '/app/admin/risk-impacts'),
+                    new AppMenuItem('RiskPossibilities', 'Pages.HealthAndSafetyManagement.RiskPossibilities', 'flaticon-list-3', '/app/admin/risk-possibilities'),
+                    new AppMenuItem('RiskStatuses', 'Pages.HealthAndSafetyManagement.RiskStatuses', 'flaticon-list-3', '/app/admin/risk-statuses'),
+                    new AppMenuItem('RiskTypes', 'Pages.HealthAndSafetyManagement.RiskTypes', 'flaticon-list-3', '/app/admin/risk-types'),
+                    new AppMenuItem('SafetyAreaAssets', 'Pages.HealthAndSafetyManagement.SafetyAreaAssets', 'flaticon-list-3', '/app/admin/safety-area-assets'),
+                    new AppMenuItem('ActionRegisters', 'Pages.HealthAndSafetyManagement.ActionRegisters', 'flaticon-list-3', '/app/admin/action-registers'),
+                    new AppMenuItem('FirstAidBoxes', 'Pages.HealthAndSafetyManagement.FirstAidBoxes', 'flaticon-list-3', '/app/admin/first-aid-boxes'),
+                    new AppMenuItem('IncidentClaims', 'Pages.HealthAndSafetyManagement.IncidentClaims', 'flaticon-list-3', '/app/admin/incident-claims'),
+                    new AppMenuItem('IncidentInvestigations', 'Pages.HealthAndSafetyManagement.IncidentInvestigations', 'flaticon-list-3', '/app/admin/incident-investigations'),
+                    new AppMenuItem('IncidentRegisters', 'Pages.HealthAndSafetyManagement.IncidentRegisters', 'flaticon-list-3', '/app/admin/incident-registers'),
+                    new AppMenuItem('RiskRegisters', 'Pages.HealthAndSafetyManagement.RiskRegisters', 'flaticon-list-3', '/app/admin/risk-registers'),
+                    new AppMenuItem('SafetyChecklists', 'Pages.HealthAndSafetyManagement.SafetyChecklists', 'flaticon-list-3', '/app/admin/safety-checklists'),
+                    new AppMenuItem('SiteAudits', 'Pages.HealthAndSafetyManagement.SiteAudits', 'flaticon-list-3', '/app/admin/site-audits'),
+                ]
             ),
         ]);
     }

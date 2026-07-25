@@ -56,6 +56,44 @@ import {
     TravelAirlinesServiceProxy,
     TravelCancelReasonsServiceProxy,
     TravelDestinationsServiceProxy,
+    InsurancePlansServiceProxy,
+    InsuranceProvidersServiceProxy,
+    JobFamiliesServiceProxy,
+    JobFunctionsServiceProxy,
+    JobResponsibilitiesServiceProxy,
+    EducationCertificatesServiceProxy,
+    EducationDegreesServiceProxy,
+    InterviewQuestionsServiceProxy,
+    SkillsServiceProxy,
+    GatePassTypesServiceProxy,
+    GatePassMovementsServiceProxy,
+    GatePassStatusesServiceProxy,
+    PersonTypesServiceProxy,
+    VehicleTypesServiceProxy,
+    VehicleBrandsServiceProxy,
+    VehicleModelsServiceProxy,
+    ImpactOfLossesServiceProxy,
+    NineBoxRatingsServiceProxy,
+    RankingsServiceProxy,
+    ReadinessesServiceProxy,
+    ReasonForLeavingsServiceProxy,
+    RiskOfLossesServiceProxy,
+    SuccessionRatingsServiceProxy,
+    TalentPoolsServiceProxy,
+    ActionStatusesServiceProxy,
+    FirstAidMedicinesServiceProxy,
+    IncidentClaimStatusesServiceProxy,
+    IncidentNaturesServiceProxy,
+    IncidentSeveritiesServiceProxy,
+    IncidentStatusesServiceProxy,
+    IncidentTypesServiceProxy,
+    InvestigationRootCausesServiceProxy,
+    RiskActionsServiceProxy,
+    RiskImpactsServiceProxy,
+    RiskPossibilitiesServiceProxy,
+    RiskStatusesServiceProxy,
+    RiskTypesServiceProxy,
+    SafetyAreaAssetsServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 /** Builds a route entry for the shared SimpleLookupComponent (Code/NameEn/NameAr master data). */
@@ -1203,6 +1241,24 @@ export const appRoutes: Routes = [
                             ).then((m) => m.EmployeeDependantExceptionsComponent),
                         data: { permission: 'Pages.PersonnelAdministration.EmployeeDependantExceptions' },
                     },
+                    simpleLookupRoute('insurance-plans', 'InsurancePlans', 'InsurancePlans', InsurancePlansServiceProxy, 'BenefitsManagement'),
+                    simpleLookupRoute('insurance-providers', 'InsuranceProviders', 'InsuranceProviders', InsuranceProvidersServiceProxy, 'BenefitsManagement'),
+                    {
+                        path: 'employee-insurance-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/benefits-management/employee-insurance-details/employee-insurance-details.component'
+                            ).then((m) => m.EmployeeInsuranceDetailsComponent),
+                        data: { permission: 'Pages.BenefitsManagement.EmployeeInsuranceDetails' },
+                    },
+                    {
+                        path: 'company-insurance-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/benefits-management/company-insurance-details/company-insurance-details.component'
+                            ).then((m) => m.CompanyInsuranceDetailsComponent),
+                        data: { permission: 'Pages.BenefitsManagement.CompanyInsuranceDetails' },
+                    },
                     simpleLookupRoute('business-types', 'BusinessTypes', 'BusinessTypes', BusinessTypesServiceProxy, 'GovtRelationsManagement'),
                     simpleLookupRoute('govt-job-categories', 'GovtJobCategories', 'GovtJobCategories', GovtJobCategoriesServiceProxy, 'GovtRelationsManagement'),
                     {
@@ -1436,6 +1492,38 @@ export const appRoutes: Routes = [
                                 './admin/accommodation-management/accommodation-services/accommodation-services.component'
                             ).then((m) => m.AccommodationServicesComponent),
                         data: { permission: 'Pages.AccommodationManagement.AccommodationServices' },
+                    },
+                    {
+                        path: 'surveys',
+                        loadComponent: () =>
+                            import('./admin/survey-management/surveys/surveys.component').then(
+                                (m) => m.SurveysComponent
+                            ),
+                        data: { permission: 'Pages.SurveyManagement.Surveys' },
+                    },
+                    {
+                        path: 'survey-details',
+                        loadComponent: () =>
+                            import('./admin/survey-management/survey-details/survey-details.component').then(
+                                (m) => m.SurveyDetailsComponent
+                            ),
+                        data: { permission: 'Pages.SurveyManagement.SurveyDetails' },
+                    },
+                    {
+                        path: 'employee-surveys',
+                        loadComponent: () =>
+                            import('./admin/survey-management/employee-surveys/employee-surveys.component').then(
+                                (m) => m.EmployeeSurveysComponent
+                            ),
+                        data: { permission: 'Pages.SurveyManagement.EmployeeSurveys' },
+                    },
+                    {
+                        path: 'employee-survey-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/survey-management/employee-survey-details/employee-survey-details.component'
+                            ).then((m) => m.EmployeeSurveyDetailsComponent),
+                        data: { permission: 'Pages.SurveyManagement.EmployeeSurveyDetails' },
                     },
                     simpleLookupRoute('project-types', 'ProjectTypes', 'ProjectTypes', ProjectTypesServiceProxy, 'ProjectManagement'),
                     {
@@ -2078,6 +2166,234 @@ export const appRoutes: Routes = [
                                 './admin/manpower-planning-management/manpower-planning-detail/manpower-planning-detail.component'
                             ).then((m) => m.ManpowerPlanningDetailComponent),
                         data: { permission: 'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails' },
+                    },
+                    {
+                        path: 'training-courses',
+                        loadComponent: () =>
+                            import('./admin/training-management/training-courses/training-courses.component').then(
+                                (m) => m.TrainingCoursesComponent
+                            ),
+                        data: { permission: 'Pages.TrainingManagement.TrainingCourses' },
+                    },
+                    {
+                        path: 'training-schedules',
+                        loadComponent: () =>
+                            import('./admin/training-management/training-schedules/training-schedules.component').then(
+                                (m) => m.TrainingSchedulesComponent
+                            ),
+                        data: { permission: 'Pages.TrainingManagement.TrainingSchedules' },
+                    },
+                    {
+                        path: 'employee-trainings',
+                        loadComponent: () =>
+                            import('./admin/training-management/employee-trainings/employee-trainings.component').then(
+                                (m) => m.EmployeeTrainingsComponent
+                            ),
+                        data: { permission: 'Pages.TrainingManagement.EmployeeTrainings' },
+                    },
+                    {
+                        path: 'training-attendances',
+                        loadComponent: () =>
+                            import('./admin/training-management/training-attendances/training-attendances.component').then(
+                                (m) => m.TrainingAttendancesComponent
+                            ),
+                        data: { permission: 'Pages.TrainingManagement.TrainingAttendances' },
+                    },
+                    simpleLookupRoute('job-families', 'JobFamilies', 'JobFamilies', JobFamiliesServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('job-functions', 'JobFunctions', 'JobFunctions', JobFunctionsServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('job-responsibilities', 'JobResponsibilities', 'JobResponsibilities', JobResponsibilitiesServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('education-certificates', 'EducationCertificates', 'EducationCertificates', EducationCertificatesServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('education-degrees', 'EducationDegrees', 'EducationDegrees', EducationDegreesServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('interview-questions', 'InterviewQuestions', 'InterviewQuestions', InterviewQuestionsServiceProxy, 'JobProfileManagement'),
+                    simpleLookupRoute('skills', 'Skills', 'Skills', SkillsServiceProxy, 'JobProfileManagement'),
+                    {
+                        path: 'job-descriptions',
+                        loadComponent: () =>
+                            import('./admin/job-profile-management/job-descriptions/job-descriptions.component').then(
+                                (m) => m.JobDescriptionsComponent
+                            ),
+                        data: { permission: 'Pages.JobProfileManagement.JobDescriptions' },
+                    },
+                    {
+                        path: 'job-descriptions/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/job-profile-management/job-description-detail/job-description-detail.component'
+                            ).then((m) => m.JobDescriptionDetailComponent),
+                        data: { permission: 'Pages.JobProfileManagement.JobDescriptions' },
+                    },
+                    {
+                        path: 'job-description-acknowledgements',
+                        loadComponent: () =>
+                            import(
+                                './admin/job-profile-management/job-description-acknowledgements/job-description-acknowledgements.component'
+                            ).then((m) => m.JobDescriptionAcknowledgementsComponent),
+                        data: { permission: 'Pages.JobProfileManagement.JobDescriptionAcknowledgements' },
+                    },
+                    simpleLookupRoute('gate-pass-types', 'GatePassTypes', 'GatePassTypes', GatePassTypesServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('gate-pass-movements', 'GatePassMovements', 'GatePassMovements', GatePassMovementsServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('gate-pass-statuses', 'GatePassStatuses', 'GatePassStatuses', GatePassStatusesServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('person-types', 'PersonTypes', 'PersonTypes', PersonTypesServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('vehicle-types', 'VehicleTypes', 'VehicleTypes', VehicleTypesServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('vehicle-brands', 'VehicleBrands', 'VehicleBrands', VehicleBrandsServiceProxy, 'GatePassManagement'),
+                    simpleLookupRoute('vehicle-models', 'VehicleModels', 'VehicleModels', VehicleModelsServiceProxy, 'GatePassManagement'),
+                    {
+                        path: 'gate-pass-vendors',
+                        loadComponent: () =>
+                            import('./admin/gate-pass-management/gate-pass-vendors/gate-pass-vendors.component').then(
+                                (m) => m.GatePassVendorsComponent
+                            ),
+                        data: { permission: 'Pages.GatePassManagement.GatePassVendors' },
+                    },
+                    {
+                        path: 'gate-passes',
+                        loadComponent: () =>
+                            import('./admin/gate-pass-management/gate-passes/gate-passes.component').then(
+                                (m) => m.GatePassesComponent
+                            ),
+                        data: { permission: 'Pages.GatePassManagement.GatePasses' },
+                    },
+                    {
+                        path: 'gate-passes/:id',
+                        loadComponent: () =>
+                            import('./admin/gate-pass-management/gate-pass-detail/gate-pass-detail.component').then(
+                                (m) => m.GatePassDetailComponent
+                            ),
+                        data: { permission: 'Pages.GatePassManagement.GatePasses' },
+                    },
+                    {
+                        path: 'pool-cars',
+                        loadComponent: () =>
+                            import('./admin/gate-pass-management/pool-cars/pool-cars.component').then(
+                                (m) => m.PoolCarsComponent
+                            ),
+                        data: { permission: 'Pages.GatePassManagement.PoolCars' },
+                    },
+                    {
+                        path: 'employee-pool-cars',
+                        loadComponent: () =>
+                            import('./admin/gate-pass-management/employee-pool-cars/employee-pool-cars.component').then(
+                                (m) => m.EmployeePoolCarsComponent
+                            ),
+                        data: { permission: 'Pages.GatePassManagement.EmployeePoolCars' },
+                    },
+                    simpleLookupRoute('impact-of-losses', 'ImpactOfLosses', 'ImpactOfLosses', ImpactOfLossesServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('nine-box-ratings', 'NineBoxRatings', 'NineBoxRatings', NineBoxRatingsServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('rankings', 'Rankings', 'Rankings', RankingsServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('readinesses', 'Readinesses', 'Readinesses', ReadinessesServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('reason-for-leavings', 'ReasonForLeavings', 'ReasonForLeavings', ReasonForLeavingsServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('risk-of-losses', 'RiskOfLosses', 'RiskOfLosses', RiskOfLossesServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('succession-ratings', 'SuccessionRatings', 'SuccessionRatings', SuccessionRatingsServiceProxy, 'SuccessionManagement'),
+                    simpleLookupRoute('talent-pools', 'TalentPools', 'TalentPools', TalentPoolsServiceProxy, 'SuccessionManagement'),
+                    {
+                        path: 'nine-box-mappings',
+                        loadComponent: () =>
+                            import('./admin/succession-management/nine-box-mappings/nine-box-mappings.component').then(
+                                (m) => m.NineBoxMappingsComponent
+                            ),
+                        data: { permission: 'Pages.SuccessionManagement.NineBoxMappings' },
+                    },
+                    {
+                        path: 'successor-nominees',
+                        loadComponent: () =>
+                            import('./admin/succession-management/successor-nominees/successor-nominees.component').then(
+                                (m) => m.SuccessorNomineesComponent
+                            ),
+                        data: { permission: 'Pages.SuccessionManagement.SuccessorNominees' },
+                    },
+                    simpleLookupRoute('action-statuses', 'ActionStatuses', 'ActionStatuses', ActionStatusesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('first-aid-medicines', 'FirstAidMedicines', 'FirstAidMedicines', FirstAidMedicinesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('incident-claim-statuses', 'IncidentClaimStatuses', 'IncidentClaimStatuses', IncidentClaimStatusesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('incident-natures', 'IncidentNatures', 'IncidentNatures', IncidentNaturesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('incident-severities', 'IncidentSeverities', 'IncidentSeverities', IncidentSeveritiesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('incident-statuses', 'IncidentStatuses', 'IncidentStatuses', IncidentStatusesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('incident-types', 'IncidentTypes', 'IncidentTypes', IncidentTypesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('investigation-root-causes', 'InvestigationRootCauses', 'InvestigationRootCauses', InvestigationRootCausesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('risk-actions', 'RiskActions', 'RiskActions', RiskActionsServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('risk-impacts', 'RiskImpacts', 'RiskImpacts', RiskImpactsServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('risk-possibilities', 'RiskPossibilities', 'RiskPossibilities', RiskPossibilitiesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('risk-statuses', 'RiskStatuses', 'RiskStatuses', RiskStatusesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('risk-types', 'RiskTypes', 'RiskTypes', RiskTypesServiceProxy, 'HealthAndSafetyManagement'),
+                    simpleLookupRoute('safety-area-assets', 'SafetyAreaAssets', 'SafetyAreaAssets', SafetyAreaAssetsServiceProxy, 'HealthAndSafetyManagement'),
+                    {
+                        path: 'action-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/action-registers/action-registers.component'
+                            ).then((m) => m.ActionRegistersComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.ActionRegisters' },
+                    },
+                    {
+                        path: 'incident-claims',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/incident-claims/incident-claims.component'
+                            ).then((m) => m.IncidentClaimsComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.IncidentClaims' },
+                    },
+                    {
+                        path: 'incident-investigations',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/incident-investigations/incident-investigations.component'
+                            ).then((m) => m.IncidentInvestigationsComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.IncidentInvestigations' },
+                    },
+                    {
+                        path: 'incident-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/incident-registers/incident-registers.component'
+                            ).then((m) => m.IncidentRegistersComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.IncidentRegisters' },
+                    },
+                    {
+                        path: 'risk-registers',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/risk-registers/risk-registers.component'
+                            ).then((m) => m.RiskRegistersComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.RiskRegisters' },
+                    },
+                    {
+                        path: 'safety-checklists',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/safety-checklists/safety-checklists.component'
+                            ).then((m) => m.SafetyChecklistsComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.SafetyChecklists' },
+                    },
+                    {
+                        path: 'first-aid-boxes',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/first-aid-boxes/first-aid-boxes.component'
+                            ).then((m) => m.FirstAidBoxesComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.FirstAidBoxes' },
+                    },
+                    {
+                        path: 'first-aid-boxes/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/first-aid-box-detail/first-aid-box-detail.component'
+                            ).then((m) => m.FirstAidBoxDetailComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.FirstAidBoxes' },
+                    },
+                    {
+                        path: 'site-audits',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/site-audits/site-audits.component'
+                            ).then((m) => m.SiteAuditsComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.SiteAudits' },
+                    },
+                    {
+                        path: 'site-audits/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/health-and-safety-management/site-audit-detail/site-audit-detail.component'
+                            ).then((m) => m.SiteAuditDetailComponent),
+                        data: { permission: 'Pages.HealthAndSafetyManagement.SiteAudits' },
                     },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'hostDashboard' },

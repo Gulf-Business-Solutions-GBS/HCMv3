@@ -1,0 +1,138 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'FirstAidBoxDetails' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="FirstAidBoxDetail_MedicineId">{{ 'Medicine' | localize }}</label>
+                                <select
+                                    id="FirstAidBoxDetail_MedicineId"
+                                    #medicineInput="ngModel"
+                                    class="form-select"
+                                    name="MedicineId"
+                                    [ngModel]="record().medicineId"
+                                    (ngModelChange)="updateField('medicineId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of medicines(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="medicineInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="FirstAidBoxDetail_AllocatedById">{{ 'AllocatedBy' | localize }}</label>
+                                <select
+                                    id="FirstAidBoxDetail_AllocatedById"
+                                    #allocatedByInput="ngModel"
+                                    class="form-select"
+                                    name="AllocatedById"
+                                    [ngModel]="record().allocatedById"
+                                    (ngModelChange)="updateField('allocatedById', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.fullNameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="allocatedByInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="FirstAidBoxDetail_ExpiryDate">{{ 'ExpiryDate' | localize }}</label>
+                                <input
+                                    id="FirstAidBoxDetail_ExpiryDate"
+                                    #expiryDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ExpiryDate"
+                                    [ngModel]="record().expiryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('expiryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="expiryDateInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="FirstAidBoxDetail_AllocationDate">{{ 'AllocationDate' | localize }}</label>
+                                <input
+                                    id="FirstAidBoxDetail_AllocationDate"
+                                    #allocationDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="AllocationDate"
+                                    [ngModel]="record().allocationDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('allocationDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="allocationDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="FirstAidBoxDetail_IsExpired"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IsExpired"
+                                        [ngModel]="record().isExpired"
+                                        (ngModelChange)="updateField('isExpired', $event)" />
+                                    <label class="form-check-label" for="FirstAidBoxDetail_IsExpired">{{ 'IsExpired' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="FirstAidBoxDetail_IsReplaced"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IsReplaced"
+                                        [ngModel]="record().isReplaced"
+                                        (ngModelChange)="updateField('isReplaced', $event)" />
+                                    <label class="form-check-label" for="FirstAidBoxDetail_IsReplaced">{{ 'IsReplaced' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="FirstAidBoxDetail_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="FirstAidBoxDetail_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="3"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

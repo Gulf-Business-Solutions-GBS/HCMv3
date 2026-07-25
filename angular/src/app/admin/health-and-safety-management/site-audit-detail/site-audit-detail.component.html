@@ -1,0 +1,25 @@
+<div [@routerTransition]>
+    <sub-header [title]="'SiteAudits' | localize" [description]="'HealthAndSafetyManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (siteAudit()) {
+                            <span>{{ siteAudit().auditDate | luxonFormat: 'DD' }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (siteAuditId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'SiteAuditDetails' | localize }}" [active]="true">
+                            <site-audit-details [siteAuditId]="siteAuditId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

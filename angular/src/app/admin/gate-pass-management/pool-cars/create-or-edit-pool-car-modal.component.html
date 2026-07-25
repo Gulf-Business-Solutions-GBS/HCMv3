@@ -1,0 +1,119 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'PoolCars' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PoolCar_VehicleTypeId">{{ 'VehicleType' | localize }}</label>
+                                <select
+                                    id="PoolCar_VehicleTypeId"
+                                    #vehicleTypeInput="ngModel"
+                                    class="form-select"
+                                    name="VehicleTypeId"
+                                    [ngModel]="record().vehicleTypeId"
+                                    (ngModelChange)="updateField('vehicleTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of vehicleTypes(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="vehicleTypeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PoolCar_VehiclePlateNumber">{{ 'VehiclePlateNumber' | localize }}</label>
+                                <input
+                                    id="PoolCar_VehiclePlateNumber"
+                                    #vehiclePlateNumberInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="VehiclePlateNumber"
+                                    [ngModel]="record().vehiclePlateNumber"
+                                    (ngModelChange)="updateField('vehiclePlateNumber', $event)"
+                                    required
+                                    maxlength="64" />
+                                <validation-messages [formCtrl]="vehiclePlateNumberInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PoolCar_VehicleBrandId">{{ 'VehicleBrand' | localize }}</label>
+                                <select
+                                    id="PoolCar_VehicleBrandId"
+                                    #vehicleBrandInput="ngModel"
+                                    class="form-select"
+                                    name="VehicleBrandId"
+                                    [ngModel]="record().vehicleBrandId"
+                                    (ngModelChange)="updateField('vehicleBrandId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of vehicleBrands(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="vehicleBrandInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PoolCar_VehicleModelId">{{ 'VehicleModel' | localize }}</label>
+                                <select
+                                    id="PoolCar_VehicleModelId"
+                                    #vehicleModelInput="ngModel"
+                                    class="form-select"
+                                    name="VehicleModelId"
+                                    [ngModel]="record().vehicleModelId"
+                                    (ngModelChange)="updateField('vehicleModelId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of vehicleModels(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="vehicleModelInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PoolCar_VehicleDocExpiryDate">{{ 'VehicleDocExpiryDate' | localize }}</label>
+                                <input
+                                    id="PoolCar_VehicleDocExpiryDate"
+                                    #vehicleDocExpiryDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="VehicleDocExpiryDate"
+                                    [ngModel]="record().vehicleDocExpiryDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('vehicleDocExpiryDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="vehicleDocExpiryDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

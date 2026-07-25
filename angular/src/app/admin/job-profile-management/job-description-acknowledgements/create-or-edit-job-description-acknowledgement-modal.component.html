@@ -1,0 +1,128 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'JobDescriptionAcknowledgements' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'JobDescriptionAcknowledgements' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescriptionAcknowledgement_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="JobDescriptionAcknowledgement_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescriptionAcknowledgement_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                                <select
+                                    id="JobDescriptionAcknowledgement_JobTitleId"
+                                    #jobTitleIdInput="ngModel"
+                                    class="form-select"
+                                    name="JobTitleId"
+                                    [ngModel]="record().jobTitleId"
+                                    (ngModelChange)="updateField('jobTitleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (jobTitle of jobTitles(); track jobTitle.id) {
+                                        <option [ngValue]="jobTitle.id">{{ jobTitle.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="jobTitleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescriptionAcknowledgement_JobDescriptionId">{{ 'JobDescription' | localize }}</label>
+                                <select
+                                    id="JobDescriptionAcknowledgement_JobDescriptionId"
+                                    #jobDescriptionIdInput="ngModel"
+                                    class="form-select"
+                                    name="JobDescriptionId"
+                                    [ngModel]="record().jobDescriptionId"
+                                    (ngModelChange)="updateField('jobDescriptionId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (jobDescription of jobDescriptions(); track jobDescription.id) {
+                                        <option [ngValue]="jobDescription.id">{{ jobDescriptionLabel(jobDescription) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="jobDescriptionIdInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="JobDescriptionAcknowledgement_Version">{{ 'Version' | localize }}</label>
+                                <input
+                                    id="JobDescriptionAcknowledgement_Version"
+                                    type="text"
+                                    class="form-control"
+                                    name="Version"
+                                    maxlength="64"
+                                    [ngModel]="record().version"
+                                    (ngModelChange)="updateField('version', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="JobDescriptionAcknowledgement_Acknowledged"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Acknowledged"
+                                        [ngModel]="record().acknowledged"
+                                        (ngModelChange)="updateField('acknowledged', $event)" />
+                                    <label class="form-check-label" for="JobDescriptionAcknowledgement_Acknowledged">
+                                        {{ 'Acknowledged' | localize }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditItem' : 'CreateNewItem') | localize }}: {{ 'ActionRegisters' | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ActionRegister_ActionDate">{{ 'ActionDate' | localize }}</label>
+                                <input
+                                    id="ActionRegister_ActionDate"
+                                    #actionDateInput="ngModel"
+                                    class="form-control"
+                                    type="date"
+                                    name="ActionDate"
+                                    [ngModel]="record().actionDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('actionDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="actionDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ActionRegister_StatusId">{{ 'Status' | localize }}</label>
+                                <select
+                                    id="ActionRegister_StatusId"
+                                    class="form-select"
+                                    name="StatusId"
+                                    [ngModel]="record().statusId"
+                                    (ngModelChange)="updateField('statusId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of actionStatuses(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ActionRegister_IncidentId">{{ 'Incident' | localize }}</label>
+                                <select
+                                    id="ActionRegister_IncidentId"
+                                    #incidentInput="ngModel"
+                                    class="form-select"
+                                    name="IncidentId"
+                                    [ngModel]="record().incidentId"
+                                    (ngModelChange)="updateField('incidentId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of incidentRegisters(); track item.id) {
+                                        <option [ngValue]="item.id">#{{ item.id }} - {{ item.description }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="incidentInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ActionRegister_RiskId">{{ 'Risk' | localize }}</label>
+                                <select
+                                    id="ActionRegister_RiskId"
+                                    #riskInput="ngModel"
+                                    class="form-select"
+                                    name="RiskId"
+                                    [ngModel]="record().riskId"
+                                    (ngModelChange)="updateField('riskId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of riskRegisters(); track item.id) {
+                                        <option [ngValue]="item.id">#{{ item.id }} - {{ item.description }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="riskInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ActionRegister_AssignedToId">{{ 'AssignedTo' | localize }}</label>
+                                <select
+                                    id="ActionRegister_AssignedToId"
+                                    #assignedToInput="ngModel"
+                                    class="form-select"
+                                    name="AssignedToId"
+                                    [ngModel]="record().assignedToId"
+                                    (ngModelChange)="updateField('assignedToId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employees(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.code }} - {{ item.fullNameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="assignedToInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="ActionRegister_Description">{{ 'Description' | localize }}</label>
+                                <textarea
+                                    id="ActionRegister_Description"
+                                    class="form-control"
+                                    name="Description"
+                                    rows="3"
+                                    [ngModel]="record().description"
+                                    (ngModelChange)="updateField('description', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

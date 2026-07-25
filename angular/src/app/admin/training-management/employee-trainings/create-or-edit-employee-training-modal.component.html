@@ -1,0 +1,136 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'EmployeeTrainings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'EmployeeTrainings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTraining_EmployeeId">{{ 'EmployeeId' | localize }}</label>
+                                <select
+                                    id="EmployeeTraining_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTraining_TrainingCourseId">{{ 'TrainingCourseId' | localize }}</label>
+                                <select
+                                    id="EmployeeTraining_TrainingCourseId"
+                                    #trainingCourseIdInput="ngModel"
+                                    class="form-select"
+                                    name="TrainingCourseId"
+                                    [ngModel]="record().trainingCourseId"
+                                    (ngModelChange)="updateTrainingCourse($event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (course of trainingCourses(); track course.id) {
+                                        <option [ngValue]="course.id">{{ course.code }} - {{ course.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="trainingCourseIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="EmployeeTraining_TrainingScheduleId">{{ 'TrainingScheduleId' | localize }}</label>
+                                <select
+                                    id="EmployeeTraining_TrainingScheduleId"
+                                    #trainingScheduleIdInput="ngModel"
+                                    class="form-select"
+                                    name="TrainingScheduleId"
+                                    [ngModel]="record().trainingScheduleId"
+                                    (ngModelChange)="updateField('trainingScheduleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (schedule of trainingSchedules(); track schedule.id) {
+                                        <option [ngValue]="schedule.id">{{ schedule.code }} - {{ schedule.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="trainingScheduleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="EmployeeTraining_CompletionStatus">{{ 'CompletionStatus' | localize }}</label>
+                                <select
+                                    id="EmployeeTraining_CompletionStatus"
+                                    class="form-select"
+                                    name="CompletionStatus"
+                                    [ngModel]="record().completionStatus"
+                                    (ngModelChange)="updateField('completionStatus', $event)">
+                                    @for (option of completionStatuses; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmployeeTraining_Score">{{ 'Score' | localize }}</label>
+                                <input
+                                    id="EmployeeTraining_Score"
+                                    class="form-control"
+                                    type="number"
+                                    step="0.01"
+                                    name="Score"
+                                    [ngModel]="record().score"
+                                    (ngModelChange)="updateNumberField('score', $event)" />
+                            </div>
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label" for="EmployeeTraining_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="EmployeeTraining_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="2"
+                                    [ngModel]="record().comments"
+                                    (ngModelChange)="updateField('comments', $event)"
+                                    maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

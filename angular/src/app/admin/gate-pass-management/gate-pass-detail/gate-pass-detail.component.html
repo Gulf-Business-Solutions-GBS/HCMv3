@@ -1,0 +1,31 @@
+<div [@routerTransition]>
+    <sub-header [title]="'GatePasses' | localize" [description]="'GatePassManagement' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (gatePass()) {
+                            <span>{{ gatePass().gatePassNumber }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (gatePassId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'GatePassMaterials' | localize }}" [active]="true">
+                            <gate-pass-materials [gatePassId]="gatePassId()" />
+                        </tab>
+                        <tab heading="{{ 'GatePassPersons' | localize }}">
+                            <gate-pass-persons [gatePassId]="gatePassId()" />
+                        </tab>
+                        <tab heading="{{ 'GatePassVehicles' | localize }}">
+                            <gate-pass-vehicles [gatePassId]="gatePassId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

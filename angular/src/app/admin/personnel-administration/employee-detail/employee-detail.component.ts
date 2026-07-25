@@ -66,6 +66,11 @@ import { EmployeeExtdWorkLocationsComponent } from './extd-work-locations/employ
 import { EmployeeBenefitExceptionsComponent } from './benefit-exceptions/employee-benefit-exceptions.component';
 import { EmployeeNonPayrollTransComponent } from './non-payroll-trans/employee-non-payroll-trans.component';
 import { EmployeeTasksComponent } from './tasks/employee-tasks.component';
+import { EmployeeInsurancesComponent } from './insurances/employee-insurances.component';
+import { EmployeePerformanceHistoriesComponent } from './performance-histories/employee-performance-histories.component';
+import { EmployeePotentialAssessmentsComponent } from './potential-assessments/employee-potential-assessments.component';
+import { EmployeeTalentMatrixComponent } from './talent-matrix/employee-talent-matrix.component';
+import { EmployeeTalentFlagsComponent } from './talent-flags/employee-talent-flags.component';
 
 @Component({
     templateUrl: './employee-detail.component.html',
@@ -135,6 +140,11 @@ import { EmployeeTasksComponent } from './tasks/employee-tasks.component';
         EmployeeBenefitExceptionsComponent,
         EmployeeNonPayrollTransComponent,
         EmployeeTasksComponent,
+        EmployeeInsurancesComponent,
+        EmployeePerformanceHistoriesComponent,
+        EmployeePotentialAssessmentsComponent,
+        EmployeeTalentMatrixComponent,
+        EmployeeTalentFlagsComponent,
     ],
 })
 export class EmployeeDetailComponent extends AppComponentBase implements OnInit {

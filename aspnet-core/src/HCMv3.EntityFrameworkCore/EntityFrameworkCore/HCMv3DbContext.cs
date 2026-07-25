@@ -12,13 +12,17 @@ using HCMv3.Authorization.Delegation;
 using HCMv3.Authorization.Roles;
 using HCMv3.Authorization.Session;
 using HCMv3.Authorization.Users;
+using HCMv3.BenefitsManagement;
 using HCMv3.Chat;
 using HCMv3.CompetencyDevelopment;
 using HCMv3.Editions;
 using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
+using HCMv3.GatePassManagement;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.HealthAndSafetyManagement;
+using HCMv3.JobProfileManagement;
 using HCMv3.ManpowerPlanningManagement;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
@@ -31,7 +35,10 @@ using HCMv3.ProjectManagement;
 using HCMv3.Recruitment;
 using HCMv3.ReportManagement;
 using HCMv3.Storage;
+using HCMv3.SuccessionManagement;
+using HCMv3.SurveyManagement;
 using HCMv3.TimeManagement;
+using HCMv3.TrainingManagement;
 using HCMv3.TravelManagement;
 using HCMv3.Workflow;
 
@@ -793,6 +800,166 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<PositionRelationship> PositionRelationships { get; set; }
 
+    public virtual DbSet<InsurancePlan> InsurancePlans { get; set; }
+
+    public virtual DbSet<InsuranceProvider> InsuranceProviders { get; set; }
+
+    public virtual DbSet<EmployeeInsurance> EmployeeInsurances { get; set; }
+
+    public virtual DbSet<EmployeeInsuranceDetail> EmployeeInsuranceDetails { get; set; }
+
+    public virtual DbSet<CompanyInsuranceDetail> CompanyInsuranceDetails { get; set; }
+
+    public virtual DbSet<GatePassType> GatePassTypes { get; set; }
+
+    public virtual DbSet<GatePassMovement> GatePassMovements { get; set; }
+
+    public virtual DbSet<GatePassStatus> GatePassStatuses { get; set; }
+
+    public virtual DbSet<PersonType> PersonTypes { get; set; }
+
+    public virtual DbSet<VehicleType> VehicleTypes { get; set; }
+
+    public virtual DbSet<VehicleBrand> VehicleBrands { get; set; }
+
+    public virtual DbSet<VehicleModel> VehicleModels { get; set; }
+
+    public virtual DbSet<GatePassVendor> GatePassVendors { get; set; }
+
+    public virtual DbSet<GatePass> GatePasses { get; set; }
+
+    public virtual DbSet<GatePassMaterial> GatePassMaterials { get; set; }
+
+    public virtual DbSet<GatePassPerson> GatePassPersons { get; set; }
+
+    public virtual DbSet<GatePassVehicle> GatePassVehicles { get; set; }
+
+    public virtual DbSet<PoolCar> PoolCars { get; set; }
+
+    public virtual DbSet<EmployeePoolCar> EmployeePoolCars { get; set; }
+
+    public virtual DbSet<ActionStatus> ActionStatuses { get; set; }
+
+    public virtual DbSet<FirstAidMedicine> FirstAidMedicines { get; set; }
+
+    public virtual DbSet<IncidentClaimStatus> IncidentClaimStatuses { get; set; }
+
+    public virtual DbSet<IncidentNature> IncidentNatures { get; set; }
+
+    public virtual DbSet<IncidentSeverity> IncidentSeverities { get; set; }
+
+    public virtual DbSet<IncidentStatus> IncidentStatuses { get; set; }
+
+    public virtual DbSet<IncidentType> IncidentTypes { get; set; }
+
+    public virtual DbSet<InvestigationRootCause> InvestigationRootCauses { get; set; }
+
+    public virtual DbSet<RiskAction> RiskActions { get; set; }
+
+    public virtual DbSet<RiskImpact> RiskImpacts { get; set; }
+
+    public virtual DbSet<RiskPossibility> RiskPossibilities { get; set; }
+
+    public virtual DbSet<RiskStatus> RiskStatuses { get; set; }
+
+    public virtual DbSet<RiskType> RiskTypes { get; set; }
+
+    public virtual DbSet<SafetyAreaAsset> SafetyAreaAssets { get; set; }
+
+    public virtual DbSet<ActionRegister> ActionRegisters { get; set; }
+
+    public virtual DbSet<FirstAidBox> FirstAidBoxes { get; set; }
+
+    public virtual DbSet<FirstAidBoxDetail> FirstAidBoxDetails { get; set; }
+
+    public virtual DbSet<IncidentClaim> IncidentClaims { get; set; }
+
+    public virtual DbSet<IncidentInvestigation> IncidentInvestigations { get; set; }
+
+    public virtual DbSet<IncidentRegister> IncidentRegisters { get; set; }
+
+    public virtual DbSet<RiskRegister> RiskRegisters { get; set; }
+
+    public virtual DbSet<SafetyChecklist> SafetyChecklists { get; set; }
+
+    public virtual DbSet<SiteAudit> SiteAudits { get; set; }
+
+    public virtual DbSet<SiteAuditDetail> SiteAuditDetails { get; set; }
+
+    public virtual DbSet<JobFamily> JobFamilies { get; set; }
+
+    public virtual DbSet<JobFunction> JobFunctions { get; set; }
+
+    public virtual DbSet<JobResponsibility> JobResponsibilities { get; set; }
+
+    public virtual DbSet<EducationCertificate> EducationCertificates { get; set; }
+
+    public virtual DbSet<EducationDegree> EducationDegrees { get; set; }
+
+    public virtual DbSet<InterviewQuestion> InterviewQuestions { get; set; }
+
+    public virtual DbSet<Skill> Skills { get; set; }
+
+    public virtual DbSet<JobDescription> JobDescriptions { get; set; }
+
+    public virtual DbSet<JobDescriptionCertificate> JobDescriptionCertificates { get; set; }
+
+    public virtual DbSet<JobDescriptionDegree> JobDescriptionDegrees { get; set; }
+
+    public virtual DbSet<JobDescriptionInterviewQuestion> JobDescriptionInterviewQuestions { get; set; }
+
+    public virtual DbSet<JobDescriptionResponsibility> JobDescriptionResponsibilities { get; set; }
+
+    public virtual DbSet<JobDescriptionSkill> JobDescriptionSkills { get; set; }
+
+    public virtual DbSet<JobDescriptionCompetency> JobDescriptionCompetencies { get; set; }
+
+    public virtual DbSet<JobDescriptionAcknowledgement> JobDescriptionAcknowledgements { get; set; }
+
+    public virtual DbSet<ImpactOfLoss> ImpactOfLosses { get; set; }
+
+    public virtual DbSet<NineBoxRating> NineBoxRatings { get; set; }
+
+    public virtual DbSet<Ranking> Rankings { get; set; }
+
+    public virtual DbSet<Readiness> Readinesses { get; set; }
+
+    public virtual DbSet<ReasonForLeaving> ReasonForLeavings { get; set; }
+
+    public virtual DbSet<RiskOfLoss> RiskOfLosses { get; set; }
+
+    public virtual DbSet<SuccessionRating> SuccessionRatings { get; set; }
+
+    public virtual DbSet<TalentPool> TalentPools { get; set; }
+
+    public virtual DbSet<NineBoxMapping> NineBoxMappings { get; set; }
+
+    public virtual DbSet<EmpPerformanceHistory> EmpPerformanceHistories { get; set; }
+
+    public virtual DbSet<EmpPotentialAssessment> EmpPotentialAssessments { get; set; }
+
+    public virtual DbSet<EmpTalentMatrixData> EmpTalentMatrixData { get; set; }
+
+    public virtual DbSet<EmployeeTalentFlag> EmployeeTalentFlags { get; set; }
+
+    public virtual DbSet<SuccessorNominee> SuccessorNominees { get; set; }
+
+    public virtual DbSet<Survey> Surveys { get; set; }
+
+    public virtual DbSet<SurveyDetail> SurveyDetails { get; set; }
+
+    public virtual DbSet<EmployeeSurvey> EmployeeSurveys { get; set; }
+
+    public virtual DbSet<EmployeeSurveyDetail> EmployeeSurveyDetails { get; set; }
+
+    public virtual DbSet<TrainingCourse> TrainingCourses { get; set; }
+
+    public virtual DbSet<TrainingSchedule> TrainingSchedules { get; set; }
+
+    public virtual DbSet<EmployeeTraining> EmployeeTrainings { get; set; }
+
+    public virtual DbSet<TrainingAttendance> TrainingAttendances { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -1228,6 +1395,110 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeInsurance>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeePoolCar>(b =>
+        {
+            b.HasOne(e => e.Driver).WithMany().HasForeignKey(e => e.DriverEmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<GatePassPerson>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ActionRegister>(b =>
+        {
+            b.HasOne(e => e.AssignedTo).WithMany().HasForeignKey(e => e.AssignedToId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<FirstAidBox>(b =>
+        {
+            b.HasOne(e => e.ResponsiblePerson).WithMany().HasForeignKey(e => e.ResponsiblePersonId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<FirstAidBoxDetail>(b =>
+        {
+            b.HasOne(e => e.AllocatedBy).WithMany().HasForeignKey(e => e.AllocatedById).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<RiskRegister>(b =>
+        {
+            b.HasOne(e => e.ReportedBy).WithMany().HasForeignKey(e => e.ReportedById).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SiteAudit>(b =>
+        {
+            b.HasOne(e => e.ConductedBy).WithMany().HasForeignKey(e => e.ConductedById).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<JobDescriptionAcknowledgement>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            // JobTitle is reachable both directly (JobTitleId) and via JobDescriptionId->JobDescription->JobTitleId.
+            b.HasOne(e => e.JobTitle).WithMany().HasForeignKey(e => e.JobTitleId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmpPerformanceHistory>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmpPotentialAssessment>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmpTalentMatrixData>(b =>
+        {
+            // Employee FK, plus 4 FKs to the same NineBoxRating table.
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.PerformanceRating).WithMany().HasForeignKey(e => e.PerformanceRatingId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.PotentialRating).WithMany().HasForeignKey(e => e.PotentialRatingId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.OverallRating).WithMany().HasForeignKey(e => e.OverallRatingId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.CalibratedRating).WithMany().HasForeignKey(e => e.CalibratedRatingId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeTalentFlag>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SuccessorNominee>(b =>
+        {
+            // Two required FKs to Employee (Employee + Nominee).
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.Nominee).WithMany().HasForeignKey(e => e.NomineeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeSurvey>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeSurveyDetail>(b =>
+        {
+            // SurveyDetail is reachable both directly (QuestionId) and via
+            // EmployeeSurveyId->EmployeeSurvey->SurveyId->Survey->SurveyDetail.
+            b.HasOne(e => e.Question).WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeTraining>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            // TrainingCourse is reachable both directly (TrainingCourseId) and via
+            // TrainingScheduleId->TrainingSchedule->TrainingCourseId.
+            b.HasOne(e => e.TrainingCourse).WithMany().HasForeignKey(e => e.TrainingCourseId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<TrainingAttendance>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.ConfigureOpenIddict();

@@ -1,0 +1,125 @@
+<div [@routerTransition]>
+    <sub-header [title]="'IncidentClaims' | localize" [description]="'HealthAndSafetyManagement' | localize">
+        <div role="actions">
+            @if ('Pages.HealthAndSafetyManagement.IncidentClaims.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.HealthAndSafetyManagement.IncidentClaims.Edit',
+                                                    'Pages.HealthAndSafetyManagement.IncidentClaims.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="claimDate">
+                                        {{ 'ClaimDate' | localize }}
+                                        <p-sortIcon field="claimDate" />
+                                    </th>
+                                    <th style="min-width: 100px">
+                                        {{ 'Incident' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="amount">
+                                        {{ 'Amount' | localize }}
+                                        <p-sortIcon field="amount" />
+                                    </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'Currency' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="paymentDate">
+                                        {{ 'PaymentDate' | localize }}
+                                        <p-sortIcon field="paymentDate" />
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'ClaimStatus' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.HealthAndSafetyManagement.IncidentClaims.Edit',
+                                                    'Pages.HealthAndSafetyManagement.IncidentClaims.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 130px">{{ record.claimDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 100px">{{ record.incidentId }}</td>
+                                    <td style="min-width: 120px">{{ record.amount }}</td>
+                                    <td style="min-width: 120px">{{ record.currencyNameEn }}</td>
+                                    <td style="min-width: 130px">{{ record.paymentDate | luxonFormat: 'DD' }}</td>
+                                    <td style="min-width: 150px">{{ record.claimStatusNameEn }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditIncidentClaimModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

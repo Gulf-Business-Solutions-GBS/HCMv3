@@ -1,0 +1,144 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #jobDescriptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (jobDescription().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'JobDescription' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'JobDescription' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescription_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                                <select
+                                    id="JobDescription_JobTitleId"
+                                    #jobTitleIdInput="ngModel"
+                                    class="form-select"
+                                    name="JobTitleId"
+                                    [ngModel]="jobDescription().jobTitleId"
+                                    (ngModelChange)="updateField('jobTitleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (jobTitle of jobTitles(); track jobTitle.id) {
+                                        <option [ngValue]="jobTitle.id">{{ jobTitle.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="jobTitleIdInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="JobDescription_Version">{{ 'Version' | localize }}</label>
+                                <input
+                                    id="JobDescription_Version"
+                                    type="text"
+                                    class="form-control"
+                                    name="Version"
+                                    maxlength="64"
+                                    [ngModel]="jobDescription().version"
+                                    (ngModelChange)="updateField('version', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="JobDescription_VersionChangedOn">{{ 'VersionChangedOn' | localize }}</label>
+                                <input
+                                    id="JobDescription_VersionChangedOn"
+                                    type="date"
+                                    class="form-control"
+                                    name="VersionChangedOn"
+                                    [ngModel]="jobDescription().versionChangedOn?.toISODate()"
+                                    (ngModelChange)="updateVersionChangedOn($event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescription_ShortDescriptionEn">{{ 'ShortDescriptionEn' | localize }}</label>
+                                <input
+                                    id="JobDescription_ShortDescriptionEn"
+                                    #shortDescriptionEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="ShortDescriptionEn"
+                                    maxlength="256"
+                                    [ngModel]="jobDescription().shortDescriptionEn"
+                                    (ngModelChange)="updateField('shortDescriptionEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="shortDescriptionEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescription_ShortDescriptionAr">{{ 'ShortDescriptionAr' | localize }}</label>
+                                <input
+                                    id="JobDescription_ShortDescriptionAr"
+                                    #shortDescriptionArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="ShortDescriptionAr"
+                                    maxlength="256"
+                                    [ngModel]="jobDescription().shortDescriptionAr"
+                                    (ngModelChange)="updateField('shortDescriptionAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="shortDescriptionArInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescription_LongDescriptionEn">{{ 'LongDescriptionEn' | localize }}</label>
+                                <textarea
+                                    id="JobDescription_LongDescriptionEn"
+                                    #longDescriptionEnInput="ngModel"
+                                    class="form-control"
+                                    rows="4"
+                                    name="LongDescriptionEn"
+                                    [ngModel]="jobDescription().longDescriptionEn"
+                                    (ngModelChange)="updateField('longDescriptionEn', $event)"
+                                    required></textarea>
+                                <validation-messages [formCtrl]="longDescriptionEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="JobDescription_LongDescriptionAr">{{ 'LongDescriptionAr' | localize }}</label>
+                                <textarea
+                                    id="JobDescription_LongDescriptionAr"
+                                    #longDescriptionArInput="ngModel"
+                                    class="form-control"
+                                    rows="4"
+                                    name="LongDescriptionAr"
+                                    [ngModel]="jobDescription().longDescriptionAr"
+                                    (ngModelChange)="updateField('longDescriptionAr', $event)"
+                                    required></textarea>
+                                <validation-messages [formCtrl]="longDescriptionArInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!jobDescriptionForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
