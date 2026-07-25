@@ -1523,6 +1523,290 @@ public static class AppPermissions
     public const string Pages_PerformanceManagement_PAEmployees_Edit = "Pages.PerformanceManagement.PAEmployees.Edit";
     public const string Pages_PerformanceManagement_PAEmployees_Delete = "Pages.PerformanceManagement.PAEmployees.Delete";
 
+    public const string Pages_ManpowerPlanningManagement = "Pages.ManpowerPlanningManagement";
+
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningPeriods = "Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningPeriods_Create = "Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods.Create";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningPeriods_Edit = "Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods.Edit";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningPeriods_Delete = "Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods.Delete";
+
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings = "Pages.ManpowerPlanningManagement.ManpowerPlannings";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Create = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Create";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Edit = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Edit";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Delete = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Delete";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Approve = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Approve";
+
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails_Create = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Create";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails_Edit = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Edit";
+    public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails_Delete = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Delete";
+
+    public const string Pages_ManpowerPlanningManagement_Positions = "Pages.ManpowerPlanningManagement.Positions";
+    public const string Pages_ManpowerPlanningManagement_Positions_Create = "Pages.ManpowerPlanningManagement.Positions.Create";
+    public const string Pages_ManpowerPlanningManagement_Positions_Edit = "Pages.ManpowerPlanningManagement.Positions.Edit";
+    public const string Pages_ManpowerPlanningManagement_Positions_Delete = "Pages.ManpowerPlanningManagement.Positions.Delete";
+
+    public const string Pages_ManpowerPlanningManagement_PositionRelationships = "Pages.ManpowerPlanningManagement.PositionRelationships";
+    public const string Pages_ManpowerPlanningManagement_PositionRelationships_Create = "Pages.ManpowerPlanningManagement.PositionRelationships.Create";
+    public const string Pages_ManpowerPlanningManagement_PositionRelationships_Edit = "Pages.ManpowerPlanningManagement.PositionRelationships.Edit";
+    public const string Pages_ManpowerPlanningManagement_PositionRelationships_Delete = "Pages.ManpowerPlanningManagement.PositionRelationships.Delete";
+
+    public const string Pages_Workflow = "Pages.Workflow";
+
+    public const string Pages_Workflow_WorkflowRoles = "Pages.Workflow.WorkflowRoles";
+    public const string Pages_Workflow_WorkflowRoles_Create = "Pages.Workflow.WorkflowRoles.Create";
+    public const string Pages_Workflow_WorkflowRoles_Edit = "Pages.Workflow.WorkflowRoles.Edit";
+    public const string Pages_Workflow_WorkflowRoles_Delete = "Pages.Workflow.WorkflowRoles.Delete";
+
+    public const string Pages_Workflow_WorkflowGroups = "Pages.Workflow.WorkflowGroups";
+    public const string Pages_Workflow_WorkflowGroups_Create = "Pages.Workflow.WorkflowGroups.Create";
+    public const string Pages_Workflow_WorkflowGroups_Edit = "Pages.Workflow.WorkflowGroups.Edit";
+    public const string Pages_Workflow_WorkflowGroups_Delete = "Pages.Workflow.WorkflowGroups.Delete";
+
+    public const string Pages_Workflow_WorkflowGroupDetails = "Pages.Workflow.WorkflowGroupDetails";
+    public const string Pages_Workflow_WorkflowGroupDetails_Create = "Pages.Workflow.WorkflowGroupDetails.Create";
+    public const string Pages_Workflow_WorkflowGroupDetails_Edit = "Pages.Workflow.WorkflowGroupDetails.Edit";
+    public const string Pages_Workflow_WorkflowGroupDetails_Delete = "Pages.Workflow.WorkflowGroupDetails.Delete";
+
+    public const string Pages_Workflow_WorkflowGroupFieldAccesses = "Pages.Workflow.WorkflowGroupFieldAccesses";
+    public const string Pages_Workflow_WorkflowGroupFieldAccesses_Create = "Pages.Workflow.WorkflowGroupFieldAccesses.Create";
+    public const string Pages_Workflow_WorkflowGroupFieldAccesses_Edit = "Pages.Workflow.WorkflowGroupFieldAccesses.Edit";
+    public const string Pages_Workflow_WorkflowGroupFieldAccesses_Delete = "Pages.Workflow.WorkflowGroupFieldAccesses.Delete";
+
+    public const string Pages_Workflow_RequestMasters = "Pages.Workflow.RequestMasters";
+    public const string Pages_Workflow_RequestMasters_Create = "Pages.Workflow.RequestMasters.Create";
+    public const string Pages_Workflow_RequestMasters_Edit = "Pages.Workflow.RequestMasters.Edit";
+    public const string Pages_Workflow_RequestMasters_Delete = "Pages.Workflow.RequestMasters.Delete";
+
+    public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";
+    public const string Pages_Workflow_RequestDetails_Create = "Pages.Workflow.RequestDetails.Create";
+    public const string Pages_Workflow_RequestDetails_Edit = "Pages.Workflow.RequestDetails.Edit";
+    public const string Pages_Workflow_RequestDetails_Delete = "Pages.Workflow.RequestDetails.Delete";
+
+    public const string Pages_Workflow_RequestDetailParallels = "Pages.Workflow.RequestDetailParallels";
+    public const string Pages_Workflow_RequestDetailParallels_Create = "Pages.Workflow.RequestDetailParallels.Create";
+    public const string Pages_Workflow_RequestDetailParallels_Edit = "Pages.Workflow.RequestDetailParallels.Edit";
+    public const string Pages_Workflow_RequestDetailParallels_Delete = "Pages.Workflow.RequestDetailParallels.Delete";
+
+    public const string Pages_Workflow_WorkflowRequests = "Pages.Workflow.WorkflowRequests";
+    public const string Pages_Workflow_WorkflowRequests_Create = "Pages.Workflow.WorkflowRequests.Create";
+    public const string Pages_Workflow_WorkflowRequests_Edit = "Pages.Workflow.WorkflowRequests.Edit";
+    public const string Pages_Workflow_WorkflowRequests_Delete = "Pages.Workflow.WorkflowRequests.Delete";
+
+    public const string Pages_Workflow_RequestLogs = "Pages.Workflow.RequestLogs";
+    public const string Pages_Workflow_RequestLogs_Create = "Pages.Workflow.RequestLogs.Create";
+    public const string Pages_Workflow_RequestLogs_Delete = "Pages.Workflow.RequestLogs.Delete";
+
+    public const string Pages_Workflow_WorkFlowApprovers = "Pages.Workflow.WorkFlowApprovers";
+    public const string Pages_Workflow_WorkFlowApprovers_Create = "Pages.Workflow.WorkFlowApprovers.Create";
+    public const string Pages_Workflow_WorkFlowApprovers_Edit = "Pages.Workflow.WorkFlowApprovers.Edit";
+    public const string Pages_Workflow_WorkFlowApprovers_Delete = "Pages.Workflow.WorkFlowApprovers.Delete";
+
+    public const string Pages_Workflow_WorkflowRemarks = "Pages.Workflow.WorkflowRemarks";
+    public const string Pages_Workflow_WorkflowRemarks_Create = "Pages.Workflow.WorkflowRemarks.Create";
+    public const string Pages_Workflow_WorkflowRemarks_Edit = "Pages.Workflow.WorkflowRemarks.Edit";
+    public const string Pages_Workflow_WorkflowRemarks_Delete = "Pages.Workflow.WorkflowRemarks.Delete";
+
+    public const string Pages_Workflow_WFReadLogs = "Pages.Workflow.WFReadLogs";
+    public const string Pages_Workflow_WFReadLogs_Create = "Pages.Workflow.WFReadLogs.Create";
+    public const string Pages_Workflow_WFReadLogs_Delete = "Pages.Workflow.WFReadLogs.Delete";
+
+    public const string Pages_ReportManagement = "Pages.ReportManagement";
+
+    public const string Pages_ReportManagement_DomainTypes = "Pages.ReportManagement.DomainTypes";
+    public const string Pages_ReportManagement_DomainTypes_Create = "Pages.ReportManagement.DomainTypes.Create";
+    public const string Pages_ReportManagement_DomainTypes_Edit = "Pages.ReportManagement.DomainTypes.Edit";
+    public const string Pages_ReportManagement_DomainTypes_Delete = "Pages.ReportManagement.DomainTypes.Delete";
+
+    public const string Pages_ReportManagement_ReportTypes = "Pages.ReportManagement.ReportTypes";
+    public const string Pages_ReportManagement_ReportTypes_Create = "Pages.ReportManagement.ReportTypes.Create";
+    public const string Pages_ReportManagement_ReportTypes_Edit = "Pages.ReportManagement.ReportTypes.Edit";
+    public const string Pages_ReportManagement_ReportTypes_Delete = "Pages.ReportManagement.ReportTypes.Delete";
+
+    public const string Pages_ReportManagement_PrintReports = "Pages.ReportManagement.PrintReports";
+    public const string Pages_ReportManagement_PrintReports_Create = "Pages.ReportManagement.PrintReports.Create";
+    public const string Pages_ReportManagement_PrintReports_Edit = "Pages.ReportManagement.PrintReports.Edit";
+    public const string Pages_ReportManagement_PrintReports_Delete = "Pages.ReportManagement.PrintReports.Delete";
+
+    public const string Pages_ReportManagement_PrintReportPermissions = "Pages.ReportManagement.PrintReportPermissions";
+    public const string Pages_ReportManagement_PrintReportPermissions_Create = "Pages.ReportManagement.PrintReportPermissions.Create";
+    public const string Pages_ReportManagement_PrintReportPermissions_Edit = "Pages.ReportManagement.PrintReportPermissions.Edit";
+    public const string Pages_ReportManagement_PrintReportPermissions_Delete = "Pages.ReportManagement.PrintReportPermissions.Delete";
+
+    public const string Pages_ReportManagement_PrintReportPermissionDetails = "Pages.ReportManagement.PrintReportPermissionDetails";
+    public const string Pages_ReportManagement_PrintReportPermissionDetails_Create = "Pages.ReportManagement.PrintReportPermissionDetails.Create";
+    public const string Pages_ReportManagement_PrintReportPermissionDetails_Edit = "Pages.ReportManagement.PrintReportPermissionDetails.Edit";
+    public const string Pages_ReportManagement_PrintReportPermissionDetails_Delete = "Pages.ReportManagement.PrintReportPermissionDetails.Delete";
+
+    public const string Pages_ReportManagement_ReportMasters = "Pages.ReportManagement.ReportMasters";
+    public const string Pages_ReportManagement_ReportMasters_Create = "Pages.ReportManagement.ReportMasters.Create";
+    public const string Pages_ReportManagement_ReportMasters_Edit = "Pages.ReportManagement.ReportMasters.Edit";
+    public const string Pages_ReportManagement_ReportMasters_Delete = "Pages.ReportManagement.ReportMasters.Delete";
+
+    public const string Pages_ReportManagement_ReportDetails = "Pages.ReportManagement.ReportDetails";
+    public const string Pages_ReportManagement_ReportDetails_Create = "Pages.ReportManagement.ReportDetails.Create";
+    public const string Pages_ReportManagement_ReportDetails_Edit = "Pages.ReportManagement.ReportDetails.Edit";
+    public const string Pages_ReportManagement_ReportDetails_Delete = "Pages.ReportManagement.ReportDetails.Delete";
+
+    public const string Pages_ReportManagement_ReportSettings = "Pages.ReportManagement.ReportSettings";
+    public const string Pages_ReportManagement_ReportSettings_Create = "Pages.ReportManagement.ReportSettings.Create";
+    public const string Pages_ReportManagement_ReportSettings_Edit = "Pages.ReportManagement.ReportSettings.Edit";
+    public const string Pages_ReportManagement_ReportSettings_Delete = "Pages.ReportManagement.ReportSettings.Delete";
+
+    public const string Pages_ReportManagement_ReportSettingDetails = "Pages.ReportManagement.ReportSettingDetails";
+    public const string Pages_ReportManagement_ReportSettingDetails_Create = "Pages.ReportManagement.ReportSettingDetails.Create";
+    public const string Pages_ReportManagement_ReportSettingDetails_Edit = "Pages.ReportManagement.ReportSettingDetails.Edit";
+    public const string Pages_ReportManagement_ReportSettingDetails_Delete = "Pages.ReportManagement.ReportSettingDetails.Delete";
+
+    public const string Pages_ReportManagement_ReportInfos = "Pages.ReportManagement.ReportInfos";
+    public const string Pages_ReportManagement_ReportInfos_Create = "Pages.ReportManagement.ReportInfos.Create";
+    public const string Pages_ReportManagement_ReportInfos_Edit = "Pages.ReportManagement.ReportInfos.Edit";
+    public const string Pages_ReportManagement_ReportInfos_Delete = "Pages.ReportManagement.ReportInfos.Delete";
+
+    public const string Pages_ReportManagement_ReportInfoDetails = "Pages.ReportManagement.ReportInfoDetails";
+    public const string Pages_ReportManagement_ReportInfoDetails_Create = "Pages.ReportManagement.ReportInfoDetails.Create";
+    public const string Pages_ReportManagement_ReportInfoDetails_Edit = "Pages.ReportManagement.ReportInfoDetails.Edit";
+    public const string Pages_ReportManagement_ReportInfoDetails_Delete = "Pages.ReportManagement.ReportInfoDetails.Delete";
+
+    public const string Pages_CompetencyDevelopment = "Pages.CompetencyDevelopment";
+
+    public const string Pages_CompetencyDevelopment_CompetencyTypes = "Pages.CompetencyDevelopment.CompetencyTypes";
+    public const string Pages_CompetencyDevelopment_CompetencyTypes_Create = "Pages.CompetencyDevelopment.CompetencyTypes.Create";
+    public const string Pages_CompetencyDevelopment_CompetencyTypes_Edit = "Pages.CompetencyDevelopment.CompetencyTypes.Edit";
+    public const string Pages_CompetencyDevelopment_CompetencyTypes_Delete = "Pages.CompetencyDevelopment.CompetencyTypes.Delete";
+
+    public const string Pages_CompetencyDevelopment_Competencies = "Pages.CompetencyDevelopment.Competencies";
+    public const string Pages_CompetencyDevelopment_Competencies_Create = "Pages.CompetencyDevelopment.Competencies.Create";
+    public const string Pages_CompetencyDevelopment_Competencies_Edit = "Pages.CompetencyDevelopment.Competencies.Edit";
+    public const string Pages_CompetencyDevelopment_Competencies_Delete = "Pages.CompetencyDevelopment.Competencies.Delete";
+
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitles = "Pages.CompetencyDevelopment.CompetencyByJobTitles";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitles_Create = "Pages.CompetencyDevelopment.CompetencyByJobTitles.Create";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitles_Edit = "Pages.CompetencyDevelopment.CompetencyByJobTitles.Edit";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitles_Delete = "Pages.CompetencyDevelopment.CompetencyByJobTitles.Delete";
+
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitleDetails = "Pages.CompetencyDevelopment.CompetencyByJobTitleDetails";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitleDetails_Create = "Pages.CompetencyDevelopment.CompetencyByJobTitleDetails.Create";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitleDetails_Edit = "Pages.CompetencyDevelopment.CompetencyByJobTitleDetails.Edit";
+    public const string Pages_CompetencyDevelopment_CompetencyByJobTitleDetails_Delete = "Pages.CompetencyDevelopment.CompetencyByJobTitleDetails.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDPeriods = "Pages.CompetencyDevelopment.CDPeriods";
+    public const string Pages_CompetencyDevelopment_CDPeriods_Create = "Pages.CompetencyDevelopment.CDPeriods.Create";
+    public const string Pages_CompetencyDevelopment_CDPeriods_Edit = "Pages.CompetencyDevelopment.CDPeriods.Edit";
+    public const string Pages_CompetencyDevelopment_CDPeriods_Delete = "Pages.CompetencyDevelopment.CDPeriods.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDForms = "Pages.CompetencyDevelopment.CDForms";
+    public const string Pages_CompetencyDevelopment_CDForms_Create = "Pages.CompetencyDevelopment.CDForms.Create";
+    public const string Pages_CompetencyDevelopment_CDForms_Edit = "Pages.CompetencyDevelopment.CDForms.Edit";
+    public const string Pages_CompetencyDevelopment_CDForms_Delete = "Pages.CompetencyDevelopment.CDForms.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDPlans = "Pages.CompetencyDevelopment.CDPlans";
+    public const string Pages_CompetencyDevelopment_CDPlans_Create = "Pages.CompetencyDevelopment.CDPlans.Create";
+    public const string Pages_CompetencyDevelopment_CDPlans_Edit = "Pages.CompetencyDevelopment.CDPlans.Edit";
+    public const string Pages_CompetencyDevelopment_CDPlans_Delete = "Pages.CompetencyDevelopment.CDPlans.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDMidYearReviews = "Pages.CompetencyDevelopment.CDMidYearReviews";
+    public const string Pages_CompetencyDevelopment_CDMidYearReviews_Create = "Pages.CompetencyDevelopment.CDMidYearReviews.Create";
+    public const string Pages_CompetencyDevelopment_CDMidYearReviews_Edit = "Pages.CompetencyDevelopment.CDMidYearReviews.Edit";
+    public const string Pages_CompetencyDevelopment_CDMidYearReviews_Delete = "Pages.CompetencyDevelopment.CDMidYearReviews.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDAnnualYearReviews = "Pages.CompetencyDevelopment.CDAnnualYearReviews";
+    public const string Pages_CompetencyDevelopment_CDAnnualYearReviews_Create = "Pages.CompetencyDevelopment.CDAnnualYearReviews.Create";
+    public const string Pages_CompetencyDevelopment_CDAnnualYearReviews_Edit = "Pages.CompetencyDevelopment.CDAnnualYearReviews.Edit";
+    public const string Pages_CompetencyDevelopment_CDAnnualYearReviews_Delete = "Pages.CompetencyDevelopment.CDAnnualYearReviews.Delete";
+
+    public const string Pages_CompetencyDevelopment_CDRatings = "Pages.CompetencyDevelopment.CDRatings";
+    public const string Pages_CompetencyDevelopment_CDRatings_Create = "Pages.CompetencyDevelopment.CDRatings.Create";
+    public const string Pages_CompetencyDevelopment_CDRatings_Edit = "Pages.CompetencyDevelopment.CDRatings.Edit";
+    public const string Pages_CompetencyDevelopment_CDRatings_Delete = "Pages.CompetencyDevelopment.CDRatings.Delete";
+
+    public const string Pages_Recruitment = "Pages.Recruitment";
+
+    public const string Pages_Recruitment_Applicants = "Pages.Recruitment.Applicants";
+    public const string Pages_Recruitment_Applicants_Create = "Pages.Recruitment.Applicants.Create";
+    public const string Pages_Recruitment_Applicants_Edit = "Pages.Recruitment.Applicants.Edit";
+    public const string Pages_Recruitment_Applicants_Delete = "Pages.Recruitment.Applicants.Delete";
+
+    public const string Pages_Recruitment_ApplicantCVs = "Pages.Recruitment.ApplicantCVs";
+    public const string Pages_Recruitment_ApplicantCVs_Create = "Pages.Recruitment.ApplicantCVs.Create";
+    public const string Pages_Recruitment_ApplicantCVs_Edit = "Pages.Recruitment.ApplicantCVs.Edit";
+    public const string Pages_Recruitment_ApplicantCVs_Delete = "Pages.Recruitment.ApplicantCVs.Delete";
+
+    public const string Pages_Recruitment_CVQualifications = "Pages.Recruitment.CVQualifications";
+    public const string Pages_Recruitment_CVQualifications_Create = "Pages.Recruitment.CVQualifications.Create";
+    public const string Pages_Recruitment_CVQualifications_Edit = "Pages.Recruitment.CVQualifications.Edit";
+    public const string Pages_Recruitment_CVQualifications_Delete = "Pages.Recruitment.CVQualifications.Delete";
+
+    public const string Pages_Recruitment_CVWorkExps = "Pages.Recruitment.CVWorkExps";
+    public const string Pages_Recruitment_CVWorkExps_Create = "Pages.Recruitment.CVWorkExps.Create";
+    public const string Pages_Recruitment_CVWorkExps_Edit = "Pages.Recruitment.CVWorkExps.Edit";
+    public const string Pages_Recruitment_CVWorkExps_Delete = "Pages.Recruitment.CVWorkExps.Delete";
+
+    public const string Pages_Recruitment_CVSkills = "Pages.Recruitment.CVSkills";
+    public const string Pages_Recruitment_CVSkills_Create = "Pages.Recruitment.CVSkills.Create";
+    public const string Pages_Recruitment_CVSkills_Edit = "Pages.Recruitment.CVSkills.Edit";
+    public const string Pages_Recruitment_CVSkills_Delete = "Pages.Recruitment.CVSkills.Delete";
+
+    public const string Pages_Recruitment_CVLanguages = "Pages.Recruitment.CVLanguages";
+    public const string Pages_Recruitment_CVLanguages_Create = "Pages.Recruitment.CVLanguages.Create";
+    public const string Pages_Recruitment_CVLanguages_Edit = "Pages.Recruitment.CVLanguages.Edit";
+    public const string Pages_Recruitment_CVLanguages_Delete = "Pages.Recruitment.CVLanguages.Delete";
+
+    public const string Pages_Recruitment_Vacancies = "Pages.Recruitment.Vacancies";
+    public const string Pages_Recruitment_Vacancies_Create = "Pages.Recruitment.Vacancies.Create";
+    public const string Pages_Recruitment_Vacancies_Edit = "Pages.Recruitment.Vacancies.Edit";
+    public const string Pages_Recruitment_Vacancies_Delete = "Pages.Recruitment.Vacancies.Delete";
+
+    public const string Pages_Recruitment_ApplicationStatuses = "Pages.Recruitment.ApplicationStatuses";
+    public const string Pages_Recruitment_ApplicationStatuses_Create = "Pages.Recruitment.ApplicationStatuses.Create";
+    public const string Pages_Recruitment_ApplicationStatuses_Edit = "Pages.Recruitment.ApplicationStatuses.Edit";
+    public const string Pages_Recruitment_ApplicationStatuses_Delete = "Pages.Recruitment.ApplicationStatuses.Delete";
+
+    public const string Pages_Recruitment_InterviewDetails = "Pages.Recruitment.InterviewDetails";
+    public const string Pages_Recruitment_InterviewDetails_Create = "Pages.Recruitment.InterviewDetails.Create";
+    public const string Pages_Recruitment_InterviewDetails_Edit = "Pages.Recruitment.InterviewDetails.Edit";
+    public const string Pages_Recruitment_InterviewDetails_Delete = "Pages.Recruitment.InterviewDetails.Delete";
+
+    public const string Pages_Recruitment_OnbGroups = "Pages.Recruitment.OnbGroups";
+    public const string Pages_Recruitment_OnbGroups_Create = "Pages.Recruitment.OnbGroups.Create";
+    public const string Pages_Recruitment_OnbGroups_Edit = "Pages.Recruitment.OnbGroups.Edit";
+    public const string Pages_Recruitment_OnbGroups_Delete = "Pages.Recruitment.OnbGroups.Delete";
+
+    public const string Pages_Recruitment_OnbGroupDetails = "Pages.Recruitment.OnbGroupDetails";
+    public const string Pages_Recruitment_OnbGroupDetails_Create = "Pages.Recruitment.OnbGroupDetails.Create";
+    public const string Pages_Recruitment_OnbGroupDetails_Edit = "Pages.Recruitment.OnbGroupDetails.Edit";
+    public const string Pages_Recruitment_OnbGroupDetails_Delete = "Pages.Recruitment.OnbGroupDetails.Delete";
+
+    public const string Pages_Recruitment_OnbTasks = "Pages.Recruitment.OnbTasks";
+    public const string Pages_Recruitment_OnbTasks_Create = "Pages.Recruitment.OnbTasks.Create";
+    public const string Pages_Recruitment_OnbTasks_Edit = "Pages.Recruitment.OnbTasks.Edit";
+    public const string Pages_Recruitment_OnbTasks_Delete = "Pages.Recruitment.OnbTasks.Delete";
+
+    public const string Pages_Recruitment_OnbTemplates = "Pages.Recruitment.OnbTemplates";
+    public const string Pages_Recruitment_OnbTemplates_Create = "Pages.Recruitment.OnbTemplates.Create";
+    public const string Pages_Recruitment_OnbTemplates_Edit = "Pages.Recruitment.OnbTemplates.Edit";
+    public const string Pages_Recruitment_OnbTemplates_Delete = "Pages.Recruitment.OnbTemplates.Delete";
+
+    public const string Pages_Recruitment_OnbTemplateDetails = "Pages.Recruitment.OnbTemplateDetails";
+    public const string Pages_Recruitment_OnbTemplateDetails_Create = "Pages.Recruitment.OnbTemplateDetails.Create";
+    public const string Pages_Recruitment_OnbTemplateDetails_Edit = "Pages.Recruitment.OnbTemplateDetails.Edit";
+    public const string Pages_Recruitment_OnbTemplateDetails_Delete = "Pages.Recruitment.OnbTemplateDetails.Delete";
+
+    public const string Pages_Recruitment_OnbApplicantTasks = "Pages.Recruitment.OnbApplicantTasks";
+    public const string Pages_Recruitment_OnbApplicantTasks_Create = "Pages.Recruitment.OnbApplicantTasks.Create";
+    public const string Pages_Recruitment_OnbApplicantTasks_Edit = "Pages.Recruitment.OnbApplicantTasks.Edit";
+    public const string Pages_Recruitment_OnbApplicantTasks_Delete = "Pages.Recruitment.OnbApplicantTasks.Delete";
+
+    public const string Pages_Recruitment_OnbAppTaskComments = "Pages.Recruitment.OnbAppTaskComments";
+    public const string Pages_Recruitment_OnbAppTaskComments_Create = "Pages.Recruitment.OnbAppTaskComments.Create";
+    public const string Pages_Recruitment_OnbAppTaskComments_Edit = "Pages.Recruitment.OnbAppTaskComments.Edit";
+    public const string Pages_Recruitment_OnbAppTaskComments_Delete = "Pages.Recruitment.OnbAppTaskComments.Delete";
+
+    public const string Pages_Recruitment_OnbVideoLinks = "Pages.Recruitment.OnbVideoLinks";
+    public const string Pages_Recruitment_OnbVideoLinks_Create = "Pages.Recruitment.OnbVideoLinks.Create";
+    public const string Pages_Recruitment_OnbVideoLinks_Edit = "Pages.Recruitment.OnbVideoLinks.Edit";
+    public const string Pages_Recruitment_OnbVideoLinks_Delete = "Pages.Recruitment.OnbVideoLinks.Delete";
+
     //TENANT-SPECIFIC PERMISSIONS
 
     public const string Pages_Tenant_Dashboard = "Pages.Tenant.Dashboard";

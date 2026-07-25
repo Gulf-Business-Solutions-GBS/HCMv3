@@ -1,0 +1,96 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RequestDetailParallels' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RequestDetailParallels' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="RequestDetailParallel_RequestDetailId">{{ 'RequestDetails' | localize }}</label>
+                                <select
+                                    id="RequestDetailParallel_RequestDetailId"
+                                    #requestDetailIdInput="ngModel"
+                                    class="form-select"
+                                    name="RequestDetailId"
+                                    [ngModel]="record().requestDetailId"
+                                    (ngModelChange)="updateField('requestDetailId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (detail of requestDetails(); track detail.id) {
+                                        <option [ngValue]="detail.id">{{ requestDetailLabel(detail) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="requestDetailIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="RequestDetailParallel_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                                <select
+                                    id="RequestDetailParallel_JobTitleId"
+                                    class="form-select"
+                                    name="JobTitleId"
+                                    [ngModel]="record().jobTitleId"
+                                    (ngModelChange)="updateField('jobTitleId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (jobTitle of jobTitles(); track jobTitle.id) {
+                                        <option [ngValue]="jobTitle.id">{{ jobTitle.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestDetailParallel_WorkflowRoleId">{{ 'WorkflowRole' | localize }}</label>
+                                <select
+                                    id="RequestDetailParallel_WorkflowRoleId"
+                                    #workflowRoleIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkflowRoleId"
+                                    [ngModel]="record().workflowRoleId"
+                                    (ngModelChange)="updateField('workflowRoleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of workflowRoles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workflowRoleIdInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

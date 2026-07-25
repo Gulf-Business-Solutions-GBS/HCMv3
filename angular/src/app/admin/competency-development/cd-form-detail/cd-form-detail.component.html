@@ -1,0 +1,31 @@
+<div [@routerTransition]>
+    <sub-header [title]="'CDForms' | localize" [description]="'CompetencyDevelopment' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (cdForm()) {
+                            <span>{{ cdForm().moderatedScore }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (cdFormId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'CDPlans' | localize }}" [active]="true">
+                            <cd-plans [cdFormId]="cdFormId()" />
+                        </tab>
+                        <tab heading="{{ 'CDMidYearReviews' | localize }}">
+                            <cd-mid-year-reviews [cdFormId]="cdFormId()" />
+                        </tab>
+                        <tab heading="{{ 'CDAnnualYearReviews' | localize }}">
+                            <cd-annual-year-reviews [cdFormId]="cdFormId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

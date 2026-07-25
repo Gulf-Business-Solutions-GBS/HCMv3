@@ -1,0 +1,215 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ReportInfoDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ReportInfoDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ReportInfoDetail_ReportInfoId">{{ 'ReportInfo' | localize }}</label>
+                                <select
+                                    id="ReportInfoDetail_ReportInfoId"
+                                    #reportInfoIdInput="ngModel"
+                                    class="form-select"
+                                    name="ReportInfoId"
+                                    [ngModel]="record().reportInfoId"
+                                    (ngModelChange)="updateField('reportInfoId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of reportInfos(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.reportName }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="reportInfoIdInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_NodeId">{{ 'NodeId' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_NodeId"
+                                    class="form-control"
+                                    type="text"
+                                    name="NodeId"
+                                    [ngModel]="record().nodeId"
+                                    (ngModelChange)="updateField('nodeId', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_NodeAlias">{{ 'NodeAlias' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_NodeAlias"
+                                    class="form-control"
+                                    type="text"
+                                    name="NodeAlias"
+                                    [ngModel]="record().nodeAlias"
+                                    (ngModelChange)="updateField('nodeAlias', $event)"
+                                    maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_EntityName">{{ 'EntityName' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_EntityName"
+                                    class="form-control"
+                                    type="text"
+                                    name="EntityName"
+                                    [ngModel]="record().entityName"
+                                    (ngModelChange)="updateField('entityName', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_PropertyName">{{ 'PropertyName' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_PropertyName"
+                                    class="form-control"
+                                    type="text"
+                                    name="PropertyName"
+                                    [ngModel]="record().propertyName"
+                                    (ngModelChange)="updateField('propertyName', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_PropertyDisplayName">{{ 'PropertyDisplayName' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_PropertyDisplayName"
+                                    class="form-control"
+                                    type="text"
+                                    name="PropertyDisplayName"
+                                    [ngModel]="record().propertyDisplayName"
+                                    (ngModelChange)="updateField('propertyDisplayName', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_PropertyType">{{ 'PropertyType' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_PropertyType"
+                                    class="form-control"
+                                    type="text"
+                                    name="PropertyType"
+                                    [ngModel]="record().propertyType"
+                                    (ngModelChange)="updateField('propertyType', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_BaseType">{{ 'BaseType' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_BaseType"
+                                    class="form-control"
+                                    type="text"
+                                    name="BaseType"
+                                    [ngModel]="record().baseType"
+                                    (ngModelChange)="updateField('baseType', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_AssemblyName">{{ 'AssemblyName' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_AssemblyName"
+                                    class="form-control"
+                                    type="text"
+                                    name="AssemblyName"
+                                    [ngModel]="record().assemblyName"
+                                    (ngModelChange)="updateField('assemblyName', $event)"
+                                    maxlength="300" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_ParentEntity">{{ 'ParentEntity' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_ParentEntity"
+                                    class="form-control"
+                                    type="text"
+                                    name="ParentEntity"
+                                    [ngModel]="record().parentEntity"
+                                    (ngModelChange)="updateField('parentEntity', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_ParentAssembly">{{ 'ParentAssembly' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_ParentAssembly"
+                                    class="form-control"
+                                    type="text"
+                                    name="ParentAssembly"
+                                    [ngModel]="record().parentAssembly"
+                                    (ngModelChange)="updateField('parentAssembly', $event)"
+                                    maxlength="300" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="ReportInfoDetail_IsAssociate"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="IsAssociate"
+                                        [ngModel]="record().isAssociate"
+                                        (ngModelChange)="updateField('isAssociate', $event)" />
+                                    <label class="form-check-label" for="ReportInfoDetail_IsAssociate">{{ 'IsAssociate' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_AssociateEntity">{{ 'AssociateEntity' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_AssociateEntity"
+                                    class="form-control"
+                                    type="text"
+                                    name="AssociateEntity"
+                                    [ngModel]="record().associateEntity"
+                                    (ngModelChange)="updateField('associateEntity', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ReportInfoDetail_AssociateProperty">{{ 'AssociateProperty' | localize }}</label>
+                                <input
+                                    id="ReportInfoDetail_AssociateProperty"
+                                    class="form-control"
+                                    type="text"
+                                    name="AssociateProperty"
+                                    [ngModel]="record().associateProperty"
+                                    (ngModelChange)="updateField('associateProperty', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

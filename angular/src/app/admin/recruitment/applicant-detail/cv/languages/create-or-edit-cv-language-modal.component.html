@@ -1,0 +1,64 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditCVLanguage' : 'CreateNewCVLanguage') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="CVLanguage_LanguageInfoId">{{ 'LanguageInfo' | localize }}</label>
+                            <select
+                                id="CVLanguage_LanguageInfoId"
+                                class="form-select"
+                                name="LanguageInfoId"
+                                [ngModel]="record().languageInfoId"
+                                (ngModelChange)="updateField('languageInfoId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of languageInfos(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="CVLanguage_Proficiency">{{ 'Proficiency' | localize }}</label>
+                            <select
+                                id="CVLanguage_Proficiency"
+                                class="form-select"
+                                name="Proficiency"
+                                [ngModel]="record().proficiency"
+                                (ngModelChange)="updateField('proficiency', $event)">
+                                @for (item of proficiencyLevels; track item.value) {
+                                    <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

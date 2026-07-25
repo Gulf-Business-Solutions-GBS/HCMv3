@@ -1,0 +1,106 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ManpowerPlannings' | localize" [description]="'ManpowerPlanningManagement' | localize">
+        <div role="actions">
+            @if ('Pages.ManpowerPlanningManagement.ManpowerPlannings.Create' | permission) {
+                <button (click)="createManpowerPlanning()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getManpowerPlannings($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '100rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 130px">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'Employee' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'OrganizationUnit' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">
+                                        {{ 'Period' | localize }}
+                                    </th>
+                                    <th style="min-width: 130px">
+                                        {{ 'GrandTotalAmount' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px">
+                                        {{ 'Status' | localize }}
+                                    </th>
+                                    <th style="min-width: 220px">
+                                        {{ 'RequestComments' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr class="cursor-pointer" (click)="viewDetails(record)">
+                                    <td style="width: 130px" (click)="$event.stopPropagation()">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.employeeFullNameEn }}</td>
+                                    <td style="min-width: 200px">{{ record.organizationUnitDisplayName }}</td>
+                                    <td style="min-width: 150px">{{ record.periodName }}</td>
+                                    <td style="min-width: 130px">{{ record.grandTotalAmount }}</td>
+                                    <td style="min-width: 120px">
+                                        <span class="badge" [ngClass]="statusBadgeClass(record.status)">{{ statusLabel(record.status) }}</span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.requestComments }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getManpowerPlannings($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditManpowerPlanningModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

@@ -1,0 +1,350 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RequestDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RequestDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RequestDetail_RequestMasterId">{{ 'RequestMaster' | localize }}</label>
+                                <select
+                                    id="RequestDetail_RequestMasterId"
+                                    #requestMasterIdInput="ngModel"
+                                    class="form-select"
+                                    name="RequestMasterId"
+                                    [ngModel]="record().requestMasterId"
+                                    (ngModelChange)="updateField('requestMasterId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (requestMaster of requestMasters(); track requestMaster.id) {
+                                        <option [ngValue]="requestMaster.id">{{ requestMaster.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="requestMasterIdInput" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="RequestDetail_Step">{{ 'Step' | localize }}</label>
+                                <input
+                                    id="RequestDetail_Step"
+                                    #stepInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="Step"
+                                    [ngModel]="record().step"
+                                    (ngModelChange)="updateField('step', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="stepInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RequestDetail_WorkflowRoleId">{{ 'WorkflowRole' | localize }}</label>
+                                <select
+                                    id="RequestDetail_WorkflowRoleId"
+                                    class="form-select"
+                                    name="WorkflowRoleId"
+                                    [ngModel]="record().workflowRoleId"
+                                    (ngModelChange)="updateField('workflowRoleId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of workflowRoles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RequestDetail_ApprovalRequire">{{ 'ApprovalRequire' | localize }}</label>
+                                <select
+                                    id="RequestDetail_ApprovalRequire"
+                                    #approvalRequireInput="ngModel"
+                                    class="form-select"
+                                    name="ApprovalRequire"
+                                    [ngModel]="record().approvalRequire"
+                                    (ngModelChange)="updateField('approvalRequire', $event)"
+                                    required>
+                                    @for (item of approvalRequires; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="approvalRequireInput" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RequestDetail_WorkflowRoleGroup">{{ 'WorkflowRoleGroup' | localize }}</label>
+                                <select
+                                    id="RequestDetail_WorkflowRoleGroup"
+                                    #workflowRoleGroupInput="ngModel"
+                                    class="form-select"
+                                    name="WorkflowRoleGroup"
+                                    [ngModel]="record().workflowRoleGroup"
+                                    (ngModelChange)="updateField('workflowRoleGroup', $event)"
+                                    required>
+                                    @for (item of workflowRoleGroups; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workflowRoleGroupInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="RequestDetail_WorkflowRoleOrgId">{{ 'OrganizationUnit' | localize }}</label>
+                                <select
+                                    id="RequestDetail_WorkflowRoleOrgId"
+                                    class="form-select"
+                                    name="WorkflowRoleOrgId"
+                                    [ngModel]="record().workflowRoleOrgId"
+                                    (ngModelChange)="updateField('workflowRoleOrgId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
+                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="RequestDetail_Person">{{ 'Person' | localize }}</label>
+                                <select
+                                    id="RequestDetail_Person"
+                                    #personInput="ngModel"
+                                    class="form-select"
+                                    name="Person"
+                                    [ngModel]="record().person"
+                                    (ngModelChange)="updateField('person', $event)"
+                                    required>
+                                    @for (item of personScopes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="personInput" />
+                            </div>
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="RequestDetail_ApproverPerson">{{ 'ApproverPerson' | localize }}</label>
+                                <select
+                                    id="RequestDetail_ApproverPerson"
+                                    #approverPersonInput="ngModel"
+                                    class="form-select"
+                                    name="ApproverPerson"
+                                    [ngModel]="record().approverPerson"
+                                    (ngModelChange)="updateField('approverPerson', $event)"
+                                    required>
+                                    @for (item of approverPersonTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="approverPersonInput" />
+                            </div>
+                        </div>
+
+                        <hr />
+                        <h6>{{ 'Escalate' | localize }}</h6>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RequestDetail_EscalateAfterDays">{{ 'EscalateAfterDays' | localize }}</label>
+                                <input
+                                    id="RequestDetail_EscalateAfterDays"
+                                    #escalateAfterDaysInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="EscalateAfterDays"
+                                    [ngModel]="record().escalateAfterDays"
+                                    (ngModelChange)="updateField('escalateAfterDays', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="escalateAfterDaysInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RequestDetail_EscalateWorkflowRoleId">{{ 'EscalateWorkflowRole' | localize }}</label>
+                                <select
+                                    id="RequestDetail_EscalateWorkflowRoleId"
+                                    class="form-select"
+                                    name="EscalateWorkflowRoleId"
+                                    [ngModel]="record().escalateWorkflowRoleId"
+                                    (ngModelChange)="updateField('escalateWorkflowRoleId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (role of workflowRoles(); track role.id) {
+                                        <option [ngValue]="role.id">{{ role.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RequestDetail_EscalateWorkflowRoleGroup">{{ 'EscalateWorkflowRoleGroup' | localize }}</label>
+                                <select
+                                    id="RequestDetail_EscalateWorkflowRoleGroup"
+                                    #escalateWorkflowRoleGroupInput="ngModel"
+                                    class="form-select"
+                                    name="EscalateWorkflowRoleGroup"
+                                    [ngModel]="record().escalateWorkflowRoleGroup"
+                                    (ngModelChange)="updateField('escalateWorkflowRoleGroup', $event)"
+                                    required>
+                                    @for (item of workflowRoleGroups; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="escalateWorkflowRoleGroupInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="RequestDetail_EscalateWorkflowRoleOrgId">{{ 'EscalateWorkflowRoleOrg' | localize }}</label>
+                                <select
+                                    id="RequestDetail_EscalateWorkflowRoleOrgId"
+                                    class="form-select"
+                                    name="EscalateWorkflowRoleOrgId"
+                                    [ngModel]="record().escalateWorkflowRoleOrgId"
+                                    (ngModelChange)="updateField('escalateWorkflowRoleOrgId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (orgUnit of orgUnits(); track orgUnit.id) {
+                                        <option [ngValue]="orgUnit.id">{{ orgUnit.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2 mb-5">
+                                <label class="form-label required" for="RequestDetail_ReminderDays">{{ 'ReminderDays' | localize }}</label>
+                                <input
+                                    id="RequestDetail_ReminderDays"
+                                    #reminderDaysInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="ReminderDays"
+                                    [ngModel]="record().reminderDays"
+                                    (ngModelChange)="updateField('reminderDays', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reminderDaysInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_ShowPayment"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ShowPayment"
+                                        [ngModel]="record().showPayment"
+                                        (ngModelChange)="updateField('showPayment', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_ShowPayment">{{ 'ShowPayment' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_CanSendBack"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="CanSendBack"
+                                        [ngModel]="record().canSendBack"
+                                        (ngModelChange)="updateField('canSendBack', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_CanSendBack">{{ 'CanSendBack' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_CanReject"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="CanReject"
+                                        [ngModel]="record().canReject"
+                                        (ngModelChange)="updateField('canReject', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_CanReject">{{ 'CanReject' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_ShouldEscalate"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="ShouldEscalate"
+                                        [ngModel]="record().shouldEscalate"
+                                        (ngModelChange)="updateField('shouldEscalate', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_ShouldEscalate">{{ 'ShouldEscalate' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_EscalateNextLevel"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="EscalateNextLevel"
+                                        [ngModel]="record().escalateNextLevel"
+                                        (ngModelChange)="updateField('escalateNextLevel', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_EscalateNextLevel">{{ 'EscalateNextLevel' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_EnableReadLog"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="EnableReadLog"
+                                        [ngModel]="record().enableReadLog"
+                                        (ngModelChange)="updateField('enableReadLog', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_EnableReadLog">{{ 'EnableReadLog' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_IsCommentRequire"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsCommentRequire"
+                                        [ngModel]="record().isCommentRequire"
+                                        (ngModelChange)="updateField('isCommentRequire', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_IsCommentRequire">{{ 'IsCommentRequire' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestDetail_SignatoryStep"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="SignatoryStep"
+                                        [ngModel]="record().signatoryStep"
+                                        (ngModelChange)="updateField('signatoryStep', $event)" />
+                                    <label class="form-check-label" for="RequestDetail_SignatoryStep">{{ 'SignatoryStep' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

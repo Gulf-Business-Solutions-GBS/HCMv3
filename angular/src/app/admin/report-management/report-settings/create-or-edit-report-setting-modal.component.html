@@ -1,0 +1,117 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ReportSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ReportSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ReportSetting_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="ReportSetting_Code"
+                                    #codeInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Code"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    required
+                                    maxlength="50" />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ReportSetting_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="ReportSetting_NameEn"
+                                    #nameEnInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameEn"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="ReportSetting_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="ReportSetting_NameAr"
+                                    #nameArInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="NameAr"
+                                    dir="rtl"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ReportSetting_ReportId">{{ 'ReportId' | localize }}</label>
+                                <input
+                                    id="ReportSetting_ReportId"
+                                    #reportIdInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="ReportId"
+                                    [ngModel]="record().reportId"
+                                    (ngModelChange)="updateField('reportId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="reportIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ReportSetting_Level">{{ 'Level' | localize }}</label>
+                                <input
+                                    id="ReportSetting_Level"
+                                    #levelInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Level"
+                                    [ngModel]="record().level"
+                                    (ngModelChange)="updateField('level', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="levelInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

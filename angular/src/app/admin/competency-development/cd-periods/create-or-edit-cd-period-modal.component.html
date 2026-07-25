@@ -1,0 +1,78 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #cdPeriodForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (cdPeriod().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'CDPeriods' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'CDPeriods' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label required" for="CDPeriod_Name">{{ 'Name' | localize }}</label>
+                                <input
+                                    id="CDPeriod_Name"
+                                    #nameInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Name"
+                                    maxlength="256"
+                                    [ngModel]="cdPeriod().name"
+                                    (ngModelChange)="updateField('name', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="CDPeriod_Closed"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Closed"
+                                        [ngModel]="cdPeriod().closed"
+                                        (ngModelChange)="updateField('closed', $event)" />
+                                    <label class="form-check-label" for="CDPeriod_Closed">{{ 'Closed' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!cdPeriodForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-12 p-3">
+        @if ('Pages.Recruitment.CVQualifications.Create' | permission) {
+            <button (click)="createRecord()" class="btn btn-primary btn-sm float-end mb-3">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNew' | localize }}
+            </button>
+        }
+    </div>
+    <div class="col-12">
+        <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+            <p-table
+                #dataTable
+                sortMode="multiple"
+                (onLazyLoad)="getRecords($event)"
+                [value]="primengTableHelper.records()"
+                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                [paginator]="false"
+                [lazy]="true"
+                [scrollable]="true"
+                scrollDirection="horizontal"
+                [tableStyle]="{ 'min-width': '70rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th
+                            style="width: 130px"
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.Recruitment.CVQualifications.Edit',
+                                        'Pages.Recruitment.CVQualifications.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            {{ 'Actions' | localize }}
+                        </th>
+                        <th style="min-width: 180px">{{ 'Qualification' | localize }}</th>
+                        <th style="min-width: 160px">{{ 'University' | localize }}</th>
+                        <th style="min-width: 120px">{{ 'Percentage' | localize }}</th>
+                        <th style="min-width: 120px">{{ 'PassedYear' | localize }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-record="$implicit">
+                    <tr>
+                        <td
+                            [hidden]="
+                                !(
+                                    [
+                                        'Pages.Recruitment.CVQualifications.Edit',
+                                        'Pages.Recruitment.CVQualifications.Delete'
+                                    ] | permissionAny
+                                )
+                            ">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm dropdown-toggle"
+                                (click)="showMenu($event, record, actionsMenu)">
+                                <i class="fa fa-cog"></i>
+                                {{ 'Actions' | localize }}
+                            </button>
+                        </td>
+                        <td>{{ record.qualificationNameEn }}</td>
+                        <td>{{ record.university }}</td>
+                        <td>{{ record.percentage }}</td>
+                        <td>{{ record.passedYear }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            @if (primengTableHelper.totalRecordsCount() == 0) {
+                <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+            }
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="getRecords($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount()"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<createOrEditCvQualificationModal #createOrEditModal (modalSave)="reloadPage()" />

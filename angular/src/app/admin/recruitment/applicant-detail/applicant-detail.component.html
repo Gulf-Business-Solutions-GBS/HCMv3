@@ -1,0 +1,25 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Applicants' | localize" [description]="'Recruitment' | localize" />
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="fw-bolder text-gray-900">
+                        @if (applicant()) {
+                            <span>{{ applicant().code }} - {{ applicant().firstNameEn }} {{ applicant().lastNameEn }}</span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            <div class="card-body">
+                @if (applicantId()) {
+                    <tabset class="tab-container">
+                        <tab heading="{{ 'ApplicantCVs' | localize }}" [active]="true">
+                            <applicant-cv [applicantId]="applicantId()" />
+                        </tab>
+                    </tabset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

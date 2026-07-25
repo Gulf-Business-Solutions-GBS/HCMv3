@@ -1,0 +1,154 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditInterviewDetails' : 'CreateNewInterviewDetails') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label required" for="InterviewDetails_ApplicationStatusId">{{ 'ApplicationStatuses' | localize }}</label>
+                            <select
+                                id="InterviewDetails_ApplicationStatusId"
+                                #applicationStatusInput="ngModel"
+                                class="form-select"
+                                name="ApplicationStatusId"
+                                [ngModel]="record().applicationStatusId"
+                                (ngModelChange)="updateField('applicationStatusId', $event)"
+                                required>
+                                <option [ngValue]="undefined"></option>
+                                @for (item of applicationStatuses(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.applicantFullNameEn }} - {{ item.vacancyTitle }}</option>
+                                }
+                            </select>
+                            <validation-messages [formCtrl]="applicationStatusInput" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="InterviewDetails_InterviewDate">{{ 'InterviewDate' | localize }}</label>
+                                <input
+                                    id="InterviewDetails_InterviewDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="InterviewDate"
+                                    [ngModel]="record().interviewDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('interviewDate', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="InterviewDetails_InterviewTime">{{ 'InterviewTime' | localize }}</label>
+                                <input
+                                    id="InterviewDetails_InterviewTime"
+                                    type="time"
+                                    class="form-control"
+                                    name="InterviewTime"
+                                    [ngModel]="record().interviewTime?.toFormat('HH:mm')"
+                                    (ngModelChange)="updateTimeField('interviewTime', $event)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="InterviewDetails_Place">{{ 'Place' | localize }}</label>
+                            <input
+                                id="InterviewDetails_Place"
+                                type="text"
+                                class="form-control"
+                                name="Place"
+                                [ngModel]="record().place"
+                                (ngModelChange)="updateField('place', $event)"
+                                maxlength="200" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required" for="InterviewDetails_Interviewer1Id">{{ 'Interviewer1' | localize }}</label>
+                                <input
+                                    id="InterviewDetails_Interviewer1Id"
+                                    #interviewer1Input="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="Interviewer1Id"
+                                    [ngModel]="record().interviewer1Id"
+                                    (ngModelChange)="updateField('interviewer1Id', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="interviewer1Input" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="InterviewDetails_Interviewer2Id">{{ 'Interviewer2' | localize }}</label>
+                                <input
+                                    id="InterviewDetails_Interviewer2Id"
+                                    type="number"
+                                    class="form-control"
+                                    name="Interviewer2Id"
+                                    [ngModel]="record().interviewer2Id"
+                                    (ngModelChange)="updateField('interviewer2Id', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="InterviewDetails_Interviewer3Id">{{ 'Interviewer3' | localize }}</label>
+                                <input
+                                    id="InterviewDetails_Interviewer3Id"
+                                    type="number"
+                                    class="form-control"
+                                    name="Interviewer3Id"
+                                    [ngModel]="record().interviewer3Id"
+                                    (ngModelChange)="updateField('interviewer3Id', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="InterviewDetails_Comments1">{{ 'Comments1' | localize }}</label>
+                                <textarea
+                                    id="InterviewDetails_Comments1"
+                                    class="form-control"
+                                    name="Comments1"
+                                    rows="2"
+                                    [ngModel]="record().comments1"
+                                    (ngModelChange)="updateField('comments1', $event)"></textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="InterviewDetails_Comments2">{{ 'Comments2' | localize }}</label>
+                                <textarea
+                                    id="InterviewDetails_Comments2"
+                                    class="form-control"
+                                    name="Comments2"
+                                    rows="2"
+                                    [ngModel]="record().comments2"
+                                    (ngModelChange)="updateField('comments2', $event)"></textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="InterviewDetails_Comments3">{{ 'Comments3' | localize }}</label>
+                                <textarea
+                                    id="InterviewDetails_Comments3"
+                                    class="form-control"
+                                    name="Comments3"
+                                    rows="2"
+                                    [ngModel]="record().comments3"
+                                    (ngModelChange)="updateField('comments3', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

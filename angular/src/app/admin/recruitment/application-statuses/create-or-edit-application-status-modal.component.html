@@ -1,0 +1,88 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            {{ (record().id ? 'EditApplicationStatus' : 'CreateNewApplicationStatus') | localize }}
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="ApplicationStatus_VacancyId">{{ 'Vacancy' | localize }}</label>
+                            <select
+                                id="ApplicationStatus_VacancyId"
+                                class="form-select"
+                                name="VacancyId"
+                                [ngModel]="record().vacancyId"
+                                (ngModelChange)="updateField('vacancyId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of vacancies(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.vacancyTitle }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="ApplicationStatus_ApplicantCVId">{{ 'ApplicantCVs' | localize }}</label>
+                            <select
+                                id="ApplicationStatus_ApplicantCVId"
+                                class="form-select"
+                                name="ApplicantCVId"
+                                [ngModel]="record().applicantCVId"
+                                (ngModelChange)="updateField('applicantCVId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (item of applicantCVs(); track item.id) {
+                                    <option [ngValue]="item.id">{{ item.applicantFullNameEn }} - {{ item.cvName }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="ApplicationStatus_AppStatus">{{ 'AppStatus' | localize }}</label>
+                            <select
+                                id="ApplicationStatus_AppStatus"
+                                class="form-select"
+                                name="AppStatus"
+                                [ngModel]="record().appStatus"
+                                (ngModelChange)="updateField('appStatus', $event)">
+                                @for (item of appStatuses; track item.value) {
+                                    <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="ApplicationStatus_CoverLetter">{{ 'CoverLetter' | localize }}</label>
+                            <textarea
+                                id="ApplicationStatus_CoverLetter"
+                                class="form-control"
+                                name="CoverLetter"
+                                rows="3"
+                                [ngModel]="record().coverLetter"
+                                (ngModelChange)="updateField('coverLetter', $event)"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [buttonBusy]="saving()"
+                            [disabled]="!recordForm.form.valid || saving()">
+                            <i class="fa fa-save"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

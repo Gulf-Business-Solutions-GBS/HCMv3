@@ -1,0 +1,222 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ManpowerPlanningDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ManpowerPlanningDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ManpowerPlanningDetail_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                                <select
+                                    id="ManpowerPlanningDetail_JobTitleId"
+                                    #jobTitleIdInput="ngModel"
+                                    class="form-select"
+                                    name="JobTitleId"
+                                    [ngModel]="record().jobTitleId"
+                                    (ngModelChange)="updateField('jobTitleId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of jobTitles(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="jobTitleIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_HolderId">{{ 'Holder' | localize }}</label>
+                                <select
+                                    id="ManpowerPlanningDetail_HolderId"
+                                    class="form-select"
+                                    name="HolderId"
+                                    [ngModel]="record().holderId"
+                                    (ngModelChange)="updateField('holderId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-end mb-3">
+                            <button type="button" class="btn btn-light-primary btn-sm" (click)="fillRemainingMonthsFromJanuary()">
+                                <i class="fa fa-arrows-alt-h"></i>
+                                {{ 'FillRemainingMonthsFromJanuary' | localize }}
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_January">{{ 'January' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_January"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="January"
+                                    [ngModel]="record().january"
+                                    (ngModelChange)="updateField('january', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_February">{{ 'February' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_February"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="February"
+                                    [ngModel]="record().february"
+                                    (ngModelChange)="updateField('february', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_March">{{ 'March' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_March"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="March"
+                                    [ngModel]="record().march"
+                                    (ngModelChange)="updateField('march', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_April">{{ 'April' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_April"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="April"
+                                    [ngModel]="record().april"
+                                    (ngModelChange)="updateField('april', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_May">{{ 'May' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_May"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="May"
+                                    [ngModel]="record().may"
+                                    (ngModelChange)="updateField('may', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_June">{{ 'June' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_June"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="June"
+                                    [ngModel]="record().june"
+                                    (ngModelChange)="updateField('june', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_July">{{ 'July' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_July"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="July"
+                                    [ngModel]="record().july"
+                                    (ngModelChange)="updateField('july', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_August">{{ 'August' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_August"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="August"
+                                    [ngModel]="record().august"
+                                    (ngModelChange)="updateField('august', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_September">{{ 'September' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_September"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="September"
+                                    [ngModel]="record().september"
+                                    (ngModelChange)="updateField('september', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_October">{{ 'October' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_October"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="October"
+                                    [ngModel]="record().october"
+                                    (ngModelChange)="updateField('october', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_November">{{ 'November' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_November"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="November"
+                                    [ngModel]="record().november"
+                                    (ngModelChange)="updateField('november', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ManpowerPlanningDetail_December">{{ 'December' | localize }}</label>
+                                <input
+                                    id="ManpowerPlanningDetail_December"
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="December"
+                                    [ngModel]="record().december"
+                                    (ngModelChange)="updateField('december', $event)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

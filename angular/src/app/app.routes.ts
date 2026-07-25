@@ -1246,6 +1246,110 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.GovtRelationsManagement.Sponsors' },
                     },
                     {
+                        path: 'applicants',
+                        loadComponent: () =>
+                            import('./admin/recruitment/applicants/applicants.component').then(
+                                (m) => m.ApplicantsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.Applicants' },
+                    },
+                    {
+                        path: 'applicants/:id',
+                        loadComponent: () =>
+                            import('./admin/recruitment/applicant-detail/applicant-detail.component').then(
+                                (m) => m.ApplicantDetailComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.Applicants' },
+                    },
+                    {
+                        path: 'vacancies',
+                        loadComponent: () =>
+                            import('./admin/recruitment/vacancies/vacancies.component').then(
+                                (m) => m.VacanciesComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.Vacancies' },
+                    },
+                    {
+                        path: 'application-statuses',
+                        loadComponent: () =>
+                            import('./admin/recruitment/application-statuses/application-statuses.component').then(
+                                (m) => m.ApplicationStatusesComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.ApplicationStatuses' },
+                    },
+                    {
+                        path: 'interview-details',
+                        loadComponent: () =>
+                            import('./admin/recruitment/interview-details/interview-details.component').then(
+                                (m) => m.InterviewDetailsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.InterviewDetails' },
+                    },
+                    {
+                        path: 'onb-groups',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-groups/onb-groups.component').then(
+                                (m) => m.OnbGroupsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbGroups' },
+                    },
+                    {
+                        path: 'onb-group-details',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-group-details/onb-group-details.component').then(
+                                (m) => m.OnbGroupDetailsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbGroupDetails' },
+                    },
+                    {
+                        path: 'onb-tasks',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-tasks/onb-tasks.component').then(
+                                (m) => m.OnbTasksComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbTasks' },
+                    },
+                    {
+                        path: 'onb-templates',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-templates/onb-templates.component').then(
+                                (m) => m.OnbTemplatesComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbTemplates' },
+                    },
+                    {
+                        path: 'onb-template-details',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-template-details/onb-template-details.component').then(
+                                (m) => m.OnbTemplateDetailsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbTemplateDetails' },
+                    },
+                    {
+                        path: 'onb-applicant-tasks',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-applicant-tasks/onb-applicant-tasks.component').then(
+                                (m) => m.OnbApplicantTasksComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbApplicantTasks' },
+                    },
+                    {
+                        path: 'onb-app-task-comments',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-app-task-comments/onb-app-task-comments.component').then(
+                                (m) => m.OnbAppTaskCommentsComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbAppTaskComments' },
+                    },
+                    {
+                        path: 'onb-video-links',
+                        loadComponent: () =>
+                            import('./admin/recruitment/onb-video-links/onb-video-links.component').then(
+                                (m) => m.OnbVideoLinksComponent
+                            ),
+                        data: { permission: 'Pages.Recruitment.OnbVideoLinks' },
+                    },
+                    {
                         path: 'locations',
                         loadComponent: () =>
                             import('./admin/accommodation-management/locations/locations.component').then(
@@ -1444,6 +1548,94 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.TravelManagement.TravelFeedbacks' },
                     },
                     {
+                        path: 'workflow-roles',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-roles/workflow-roles.component').then(
+                                (m) => m.WorkflowRolesComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkflowRoles' },
+                    },
+                    {
+                        path: 'workflow-groups',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-groups/workflow-groups.component').then(
+                                (m) => m.WorkflowGroupsComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkflowGroups' },
+                    },
+                    {
+                        path: 'workflow-groups/:id',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-group-detail/workflow-group-detail.component').then(
+                                (m) => m.WorkflowGroupDetailComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkflowGroups' },
+                    },
+                    {
+                        path: 'request-masters',
+                        loadComponent: () =>
+                            import('./admin/workflow/request-masters/request-masters.component').then(
+                                (m) => m.RequestMastersComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.RequestMasters' },
+                    },
+                    {
+                        path: 'request-details',
+                        loadComponent: () =>
+                            import('./admin/workflow/request-details/request-details.component').then(
+                                (m) => m.RequestDetailsComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.RequestDetails' },
+                    },
+                    {
+                        path: 'request-detail-parallels',
+                        loadComponent: () =>
+                            import(
+                                './admin/workflow/request-detail-parallels/request-detail-parallels.component'
+                            ).then((m) => m.RequestDetailParallelsComponent),
+                        data: { permission: 'Pages.Workflow.RequestDetailParallels' },
+                    },
+                    {
+                        path: 'workflow-requests',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-requests/workflow-requests.component').then(
+                                (m) => m.WorkflowRequestsComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkflowRequests' },
+                    },
+                    {
+                        path: 'request-logs',
+                        loadComponent: () =>
+                            import('./admin/workflow/request-logs/request-logs.component').then(
+                                (m) => m.RequestLogsComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.RequestLogs' },
+                    },
+                    {
+                        path: 'work-flow-approvers',
+                        loadComponent: () =>
+                            import('./admin/workflow/work-flow-approvers/work-flow-approvers.component').then(
+                                (m) => m.WorkFlowApproversComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkFlowApprovers' },
+                    },
+                    {
+                        path: 'workflow-remarks',
+                        loadComponent: () =>
+                            import('./admin/workflow/workflow-remarks/workflow-remarks.component').then(
+                                (m) => m.WorkflowRemarksComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WorkflowRemarks' },
+                    },
+                    {
+                        path: 'wf-read-logs',
+                        loadComponent: () =>
+                            import('./admin/workflow/wf-read-logs/wf-read-logs.component').then(
+                                (m) => m.WFReadLogsComponent
+                            ),
+                        data: { permission: 'Pages.Workflow.WFReadLogs' },
+                    },
+                    {
                         path: 'form-types',
                         loadComponent: () =>
                             import('./admin/performance-management/form-types/form-types.component').then(
@@ -1580,6 +1772,158 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PerformanceManagement.PAEmployees' },
                     },
                     {
+                        path: 'competency-types',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/competency-types/competency-types.component'
+                            ).then((m) => m.CompetencyTypesComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CompetencyTypes' },
+                    },
+                    {
+                        path: 'competencies',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/competencies/competencies.component'
+                            ).then((m) => m.CompetenciesComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.Competencies' },
+                    },
+                    {
+                        path: 'competency-by-job-titles',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/competency-by-job-titles/competency-by-job-titles.component'
+                            ).then((m) => m.CompetencyByJobTitlesComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CompetencyByJobTitles' },
+                    },
+                    {
+                        path: 'competency-by-job-title-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/competency-by-job-title-details/competency-by-job-title-details.component'
+                            ).then((m) => m.CompetencyByJobTitleDetailsComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CompetencyByJobTitles' },
+                    },
+                    {
+                        path: 'cd-periods',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/cd-periods/cd-periods.component'
+                            ).then((m) => m.CDPeriodsComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CDPeriods' },
+                    },
+                    {
+                        path: 'cd-ratings',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/cd-ratings/cd-ratings.component'
+                            ).then((m) => m.CDRatingsComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CDRatings' },
+                    },
+                    {
+                        path: 'cd-forms',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/cd-forms/cd-forms.component'
+                            ).then((m) => m.CDFormsComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CDForms' },
+                    },
+                    {
+                        path: 'cd-forms/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/competency-development/cd-form-detail/cd-form-detail.component'
+                            ).then((m) => m.CDFormDetailComponent),
+                        data: { permission: 'Pages.CompetencyDevelopment.CDForms' },
+                    },
+                    {
+                        path: 'domain-types',
+                        loadComponent: () =>
+                            import('./admin/report-management/domain-types/domain-types.component').then(
+                                (m) => m.DomainTypesComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.DomainTypes' },
+                    },
+                    {
+                        path: 'report-types',
+                        loadComponent: () =>
+                            import('./admin/report-management/report-types/report-types.component').then(
+                                (m) => m.ReportTypesComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.ReportTypes' },
+                    },
+                    {
+                        path: 'print-reports',
+                        loadComponent: () =>
+                            import('./admin/report-management/print-reports/print-reports.component').then(
+                                (m) => m.PrintReportsComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.PrintReports' },
+                    },
+                    {
+                        path: 'print-report-permissions',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-management/print-report-permissions/print-report-permissions.component'
+                            ).then((m) => m.PrintReportPermissionsComponent),
+                        data: { permission: 'Pages.ReportManagement.PrintReportPermissions' },
+                    },
+                    {
+                        path: 'print-report-permission-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-management/print-report-permission-details/print-report-permission-details.component'
+                            ).then((m) => m.PrintReportPermissionDetailsComponent),
+                        data: { permission: 'Pages.ReportManagement.PrintReportPermissionDetails' },
+                    },
+                    {
+                        path: 'report-masters',
+                        loadComponent: () =>
+                            import('./admin/report-management/report-masters/report-masters.component').then(
+                                (m) => m.ReportMastersComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.ReportMasters' },
+                    },
+                    {
+                        path: 'report-details',
+                        loadComponent: () =>
+                            import('./admin/report-management/report-details/report-details.component').then(
+                                (m) => m.ReportDetailsComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.ReportDetails' },
+                    },
+                    {
+                        path: 'report-settings',
+                        loadComponent: () =>
+                            import('./admin/report-management/report-settings/report-settings.component').then(
+                                (m) => m.ReportSettingsComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.ReportSettings' },
+                    },
+                    {
+                        path: 'report-setting-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-management/report-setting-details/report-setting-details.component'
+                            ).then((m) => m.ReportSettingDetailsComponent),
+                        data: { permission: 'Pages.ReportManagement.ReportSettingDetails' },
+                    },
+                    {
+                        path: 'report-infos',
+                        loadComponent: () =>
+                            import('./admin/report-management/report-infos/report-infos.component').then(
+                                (m) => m.ReportInfosComponent
+                            ),
+                        data: { permission: 'Pages.ReportManagement.ReportInfos' },
+                    },
+                    {
+                        path: 'report-info-details',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-management/report-info-details/report-info-details.component'
+                            ).then((m) => m.ReportInfoDetailsComponent),
+                        data: { permission: 'Pages.ReportManagement.ReportInfoDetails' },
+                    },
+                    {
                         path: 'organization-units',
                         loadComponent: () =>
                             import('./admin/organization-units/organization-units.component').then(
@@ -1694,6 +2038,46 @@ export const appRoutes: Routes = [
                                 (m) => m.MassNotificationsComponent
                             ),
                         data: { permission: 'Pages.Administration.MassNotification' },
+                    },
+                    {
+                        path: 'manpower-planning-periods',
+                        loadComponent: () =>
+                            import(
+                                './admin/manpower-planning-management/manpower-planning-periods/manpower-planning-periods.component'
+                            ).then((m) => m.ManpowerPlanningPeriodsComponent),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods' },
+                    },
+                    {
+                        path: 'positions',
+                        loadComponent: () =>
+                            import('./admin/manpower-planning-management/positions/positions.component').then(
+                                (m) => m.PositionsComponent
+                            ),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.Positions' },
+                    },
+                    {
+                        path: 'position-relationships',
+                        loadComponent: () =>
+                            import(
+                                './admin/manpower-planning-management/position-relationships/position-relationships.component'
+                            ).then((m) => m.PositionRelationshipsComponent),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.PositionRelationships' },
+                    },
+                    {
+                        path: 'manpower-plannings',
+                        loadComponent: () =>
+                            import(
+                                './admin/manpower-planning-management/manpower-plannings/manpower-plannings.component'
+                            ).then((m) => m.ManpowerPlanningsComponent),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.ManpowerPlannings' },
+                    },
+                    {
+                        path: 'manpower-plannings/:id/details',
+                        loadComponent: () =>
+                            import(
+                                './admin/manpower-planning-management/manpower-planning-detail/manpower-planning-detail.component'
+                            ).then((m) => m.ManpowerPlanningDetailComponent),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.ManpowerPlanningDetails' },
                     },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'hostDashboard' },

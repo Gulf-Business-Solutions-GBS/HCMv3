@@ -1,0 +1,190 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ReportSettingDetails' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ReportSettingDetails' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ReportSettingDetail_ReportSettingId">{{ 'ReportSetting' | localize }}</label>
+                                <select
+                                    id="ReportSettingDetail_ReportSettingId"
+                                    #reportSettingIdInput="ngModel"
+                                    class="form-select"
+                                    name="ReportSettingId"
+                                    [ngModel]="record().reportSettingId"
+                                    (ngModelChange)="updateField('reportSettingId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of reportSettings(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="reportSettingIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="ReportSettingDetail_FieldName">{{ 'FieldName' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_FieldName"
+                                    #fieldNameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="FieldName"
+                                    [ngModel]="record().fieldName"
+                                    (ngModelChange)="updateField('fieldName', $event)"
+                                    required
+                                    maxlength="200" />
+                                <validation-messages [formCtrl]="fieldNameInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_CaptionEn">{{ 'CaptionEn' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_CaptionEn"
+                                    class="form-control"
+                                    type="text"
+                                    name="CaptionEn"
+                                    [ngModel]="record().captionEn"
+                                    (ngModelChange)="updateField('captionEn', $event)"
+                                    maxlength="200" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_CaptionAr">{{ 'CaptionAr' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_CaptionAr"
+                                    class="form-control"
+                                    type="text"
+                                    dir="rtl"
+                                    name="CaptionAr"
+                                    [ngModel]="record().captionAr"
+                                    (ngModelChange)="updateField('captionAr', $event)"
+                                    maxlength="200" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="ReportSettingDetail_Order">{{ 'Order' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_Order"
+                                    #orderInput="ngModel"
+                                    class="form-control"
+                                    type="number"
+                                    name="Order"
+                                    [ngModel]="record().order"
+                                    (ngModelChange)="updateField('order', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="orderInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_ColumnDataType">{{ 'ColumnDataType' | localize }}</label>
+                                <select
+                                    id="ReportSettingDetail_ColumnDataType"
+                                    class="form-select"
+                                    name="ColumnDataType"
+                                    [ngModel]="record().columnDataType"
+                                    (ngModelChange)="updateField('columnDataType', $event)">
+                                    @for (item of columnDataTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_Width">{{ 'Width' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_Width"
+                                    class="form-control"
+                                    type="number"
+                                    name="Width"
+                                    [ngModel]="record().width"
+                                    (ngModelChange)="updateField('width', $event)" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_DataHAlignment">{{ 'DataHAlignment' | localize }}</label>
+                                <select
+                                    id="ReportSettingDetail_DataHAlignment"
+                                    class="form-select"
+                                    name="DataHAlignment"
+                                    [ngModel]="record().dataHAlignment"
+                                    (ngModelChange)="updateField('dataHAlignment', $event)">
+                                    @for (item of alignments; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="ReportSettingDetail_DisplayFormat">{{ 'DisplayFormat' | localize }}</label>
+                                <input
+                                    id="ReportSettingDetail_DisplayFormat"
+                                    class="form-control"
+                                    type="text"
+                                    name="DisplayFormat"
+                                    [ngModel]="record().displayFormat"
+                                    (ngModelChange)="updateField('displayFormat', $event)"
+                                    maxlength="100" />
+                            </div>
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="ReportSettingDetail_VisibleInEn"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="VisibleInEn"
+                                        [ngModel]="record().visibleInEn"
+                                        (ngModelChange)="updateField('visibleInEn', $event)" />
+                                    <label class="form-check-label" for="ReportSettingDetail_VisibleInEn">{{ 'VisibleInEn' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-5 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input
+                                        id="ReportSettingDetail_VisibleInAr"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="VisibleInAr"
+                                        [ngModel]="record().visibleInAr"
+                                        (ngModelChange)="updateField('visibleInAr', $event)" />
+                                    <label class="form-check-label" for="ReportSettingDetail_VisibleInAr">{{ 'VisibleInAr' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

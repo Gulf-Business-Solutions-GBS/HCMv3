@@ -1,0 +1,130 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ReportInfoDetails' | localize" [description]="'ReportManagement' | localize">
+        <div role="actions">
+            @if ('Pages.ReportManagement.ReportInfoDetails.Create' | permission) {
+                <button (click)="createReportInfoDetail()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getReportInfoDetails($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '150rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ReportManagement.ReportInfoDetails.Edit',
+                                                    'Pages.ReportManagement.ReportInfoDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px">{{ 'ReportInfo' | localize }} #</th>
+                                    <th style="min-width: 120px">{{ 'NodeId' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'EntityName' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'NodeAlias' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'PropertyName' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'PropertyDisplayName' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'PropertyType' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'BaseType' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'AssemblyName' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'ParentEntity' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'ParentAssembly' | localize }}</th>
+                                    <th style="min-width: 110px">{{ 'IsAssociate' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'AssociateEntity' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'AssociateProperty' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.ReportManagement.ReportInfoDetails.Edit',
+                                                    'Pages.ReportManagement.ReportInfoDetails.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 150px">{{ record.reportInfoId }}</td>
+                                    <td style="min-width: 120px">{{ record.nodeId }}</td>
+                                    <td style="min-width: 150px">{{ record.entityName }}</td>
+                                    <td style="min-width: 120px">{{ record.nodeAlias }}</td>
+                                    <td style="min-width: 150px">{{ record.propertyName }}</td>
+                                    <td style="min-width: 170px">{{ record.propertyDisplayName }}</td>
+                                    <td style="min-width: 120px">{{ record.propertyType }}</td>
+                                    <td style="min-width: 120px">{{ record.baseType }}</td>
+                                    <td style="min-width: 150px">{{ record.assemblyName }}</td>
+                                    <td style="min-width: 150px">{{ record.parentEntity }}</td>
+                                    <td style="min-width: 150px">{{ record.parentAssembly }}</td>
+                                    <td style="min-width: 110px">
+                                        <span [class]="record.isAssociate ? 'badge badge-success' : 'badge badge-secondary'">
+                                            {{ (record.isAssociate ? 'Yes' : 'No') | localize }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 150px">{{ record.associateEntity }}</td>
+                                    <td style="min-width: 150px">{{ record.associateProperty }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getReportInfoDetails($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditReportInfoDetailModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

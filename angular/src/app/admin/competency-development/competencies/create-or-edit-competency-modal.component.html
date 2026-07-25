@@ -1,0 +1,134 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #competencyForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (competency().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'Competencies' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'Competencies' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Competency_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="Competency_Code"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="competency().code"
+                                    (ngModelChange)="updateField('code', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="Competency_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="Competency_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="competency().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="Competency_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="Competency_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="competency().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="Competency_CompetencyTypeId">{{ 'CompetencyType' | localize }}</label>
+                                <select
+                                    id="Competency_CompetencyTypeId"
+                                    #competencyTypeIdInput="ngModel"
+                                    class="form-select"
+                                    name="CompetencyTypeId"
+                                    [ngModel]="competency().competencyTypeId"
+                                    (ngModelChange)="updateField('competencyTypeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (competencyType of competencyTypes(); track competencyType.id) {
+                                        <option [ngValue]="competencyType.id">{{ competencyType.nameEn }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="competencyTypeIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <div class="form-check mt-8">
+                                    <input
+                                        id="Competency_Active"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="Active"
+                                        [ngModel]="competency().active"
+                                        (ngModelChange)="updateField('active', $event)" />
+                                    <label class="form-check-label" for="Competency_Active">{{ 'Active' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="Competency_Comments">{{ 'Comments' | localize }}</label>
+                                <textarea
+                                    id="Competency_Comments"
+                                    class="form-control"
+                                    name="Comments"
+                                    rows="2"
+                                    [ngModel]="competency().comments"
+                                    (ngModelChange)="updateField('comments', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!competencyForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

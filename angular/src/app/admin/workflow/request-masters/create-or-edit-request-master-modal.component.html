@@ -1,0 +1,174 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RequestMasters' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RequestMasters' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestMaster_Code">{{ 'Code' | localize }}</label>
+                                <input
+                                    id="RequestMaster_Code"
+                                    #codeInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="Code"
+                                    maxlength="64"
+                                    [ngModel]="record().code"
+                                    (ngModelChange)="updateField('code', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="codeInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestMaster_SecurityLevel">{{ 'SecurityLevel' | localize }}</label>
+                                <select
+                                    id="RequestMaster_SecurityLevel"
+                                    #securityLevelInput="ngModel"
+                                    class="form-select"
+                                    name="SecurityLevel"
+                                    [ngModel]="record().securityLevel"
+                                    (ngModelChange)="updateField('securityLevel', $event)"
+                                    required>
+                                    @for (item of securityLevels; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="securityLevelInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestMaster_NameEn">{{ 'NameEn' | localize }}</label>
+                                <input
+                                    id="RequestMaster_NameEn"
+                                    #nameEnInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameEn"
+                                    maxlength="256"
+                                    [ngModel]="record().nameEn"
+                                    (ngModelChange)="updateField('nameEn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameEnInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestMaster_NameAr">{{ 'NameAr' | localize }}</label>
+                                <input
+                                    id="RequestMaster_NameAr"
+                                    #nameArInput="ngModel"
+                                    type="text"
+                                    class="form-control"
+                                    name="NameAr"
+                                    maxlength="256"
+                                    [ngModel]="record().nameAr"
+                                    (ngModelChange)="updateField('nameAr', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="nameArInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="RequestMaster_DefaultApproverId">{{ 'DefaultApprover' | localize }}</label>
+                                <select
+                                    id="RequestMaster_DefaultApproverId"
+                                    class="form-select"
+                                    name="DefaultApproverId"
+                                    [ngModel]="record().defaultApproverId"
+                                    (ngModelChange)="updateField('defaultApproverId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RequestMaster_AutoCloseInDays">{{ 'AutoCloseInDays' | localize }}</label>
+                                <input
+                                    id="RequestMaster_AutoCloseInDays"
+                                    #autoCloseInDaysInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="AutoCloseInDays"
+                                    [ngModel]="record().autoCloseInDays"
+                                    (ngModelChange)="updateField('autoCloseInDays', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="autoCloseInDaysInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RequestMaster_DueInDays">{{ 'DueInDays' | localize }}</label>
+                                <input
+                                    id="RequestMaster_DueInDays"
+                                    #dueInDaysInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="DueInDays"
+                                    [ngModel]="record().dueInDays"
+                                    (ngModelChange)="updateField('dueInDays', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="dueInDaysInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestMaster_AutoClose"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="AutoClose"
+                                        [ngModel]="record().autoClose"
+                                        (ngModelChange)="updateField('autoClose', $event)" />
+                                    <label class="form-check-label" for="RequestMaster_AutoClose">{{ 'AutoClose' | localize }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="RequestMaster_IsCommentRequire"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsCommentRequire"
+                                        [ngModel]="record().isCommentRequire"
+                                        (ngModelChange)="updateField('isCommentRequire', $event)" />
+                                    <label class="form-check-label" for="RequestMaster_IsCommentRequire">{{ 'IsCommentRequire' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

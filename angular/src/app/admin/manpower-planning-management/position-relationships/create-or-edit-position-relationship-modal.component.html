@@ -1,0 +1,126 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PositionRelationships' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PositionRelationships' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PositionRelationship_PositionId">{{ 'Position' | localize }}</label>
+                                <select
+                                    id="PositionRelationship_PositionId"
+                                    #positionIdInput="ngModel"
+                                    class="form-select"
+                                    name="PositionId"
+                                    [ngModel]="record().positionId"
+                                    (ngModelChange)="updateField('positionId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of positions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ positionLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="positionIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PositionRelationship_RelationType">{{ 'RelationType' | localize }}</label>
+                                <select
+                                    id="PositionRelationship_RelationType"
+                                    #relationTypeInput="ngModel"
+                                    class="form-select"
+                                    name="RelationType"
+                                    [ngModel]="record().relationType"
+                                    (ngModelChange)="updateField('relationType', $event)"
+                                    required>
+                                    @for (item of relationTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.label | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="relationTypeInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label required" for="PositionRelationship_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="PositionRelationship_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PositionRelationship_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="PositionRelationship_StartDate"
+                                    #startDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="startDateInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PositionRelationship_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="PositionRelationship_EndDate"
+                                    #endDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="endDateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

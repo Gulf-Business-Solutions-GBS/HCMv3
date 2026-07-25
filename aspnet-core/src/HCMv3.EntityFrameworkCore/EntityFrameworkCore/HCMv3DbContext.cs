@@ -13,11 +13,13 @@ using HCMv3.Authorization.Roles;
 using HCMv3.Authorization.Session;
 using HCMv3.Authorization.Users;
 using HCMv3.Chat;
+using HCMv3.CompetencyDevelopment;
 using HCMv3.Editions;
 using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
+using HCMv3.ManpowerPlanningManagement;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
@@ -26,9 +28,12 @@ using HCMv3.PayrollManagement;
 using HCMv3.PerformanceManagement;
 using HCMv3.PersonnelAdministration;
 using HCMv3.ProjectManagement;
+using HCMv3.Recruitment;
+using HCMv3.ReportManagement;
 using HCMv3.Storage;
 using HCMv3.TimeManagement;
 using HCMv3.TravelManagement;
+using HCMv3.Workflow;
 
 namespace HCMv3.EntityFrameworkCore;
 
@@ -678,6 +683,116 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TravelFeedback> TravelFeedbacks { get; set; }
 
+    public virtual DbSet<WorkflowRole> WorkflowRoles { get; set; }
+
+    public virtual DbSet<WorkflowGroup> WorkflowGroups { get; set; }
+
+    public virtual DbSet<WorkflowGroupDetail> WorkflowGroupDetails { get; set; }
+
+    public virtual DbSet<WorkflowGroupFieldAccess> WorkflowGroupFieldAccesses { get; set; }
+
+    public virtual DbSet<RequestMaster> RequestMasters { get; set; }
+
+    public virtual DbSet<RequestDetail> RequestDetails { get; set; }
+
+    public virtual DbSet<RequestDetailParallel> RequestDetailParallels { get; set; }
+
+    public virtual DbSet<WorkflowRequest> WorkflowRequests { get; set; }
+
+    public virtual DbSet<RequestLog> RequestLogs { get; set; }
+
+    public virtual DbSet<WorkFlowApprover> WorkFlowApprovers { get; set; }
+
+    public virtual DbSet<WorkflowRemark> WorkflowRemarks { get; set; }
+
+    public virtual DbSet<WFReadLog> WFReadLogs { get; set; }
+
+    public virtual DbSet<Applicant> Applicants { get; set; }
+
+    public virtual DbSet<ApplicantCV> ApplicantCVs { get; set; }
+
+    public virtual DbSet<CVQualification> CVQualifications { get; set; }
+
+    public virtual DbSet<CVWorkExp> CVWorkExps { get; set; }
+
+    public virtual DbSet<CVSkill> CVSkills { get; set; }
+
+    public virtual DbSet<CVLanguage> CVLanguages { get; set; }
+
+    public virtual DbSet<Vacancy> Vacancies { get; set; }
+
+    public virtual DbSet<ApplicationStatus> ApplicationStatuses { get; set; }
+
+    public virtual DbSet<InterviewDetails> InterviewDetails { get; set; }
+
+    public virtual DbSet<OnbGroup> OnbGroups { get; set; }
+
+    public virtual DbSet<OnbGroupDetail> OnbGroupDetails { get; set; }
+
+    public virtual DbSet<OnbTask> OnbTasks { get; set; }
+
+    public virtual DbSet<OnbTemplate> OnbTemplates { get; set; }
+
+    public virtual DbSet<OnbTemplateDetails> OnbTemplateDetails { get; set; }
+
+    public virtual DbSet<OnbApplicantTasks> OnbApplicantTasks { get; set; }
+
+    public virtual DbSet<OnbAppTaskComments> OnbAppTaskComments { get; set; }
+
+    public virtual DbSet<OnbVideoLink> OnbVideoLinks { get; set; }
+
+    public virtual DbSet<DomainType> DomainTypes { get; set; }
+
+    public virtual DbSet<ReportType> ReportTypes { get; set; }
+
+    public virtual DbSet<PrintReport> PrintReports { get; set; }
+
+    public virtual DbSet<PrintReportPermission> PrintReportPermissions { get; set; }
+
+    public virtual DbSet<PrintReportPermissionDetail> PrintReportPermissionDetails { get; set; }
+
+    public virtual DbSet<ReportMaster> ReportMasters { get; set; }
+
+    public virtual DbSet<ReportDetail> ReportDetails { get; set; }
+
+    public virtual DbSet<ReportSetting> ReportSettings { get; set; }
+
+    public virtual DbSet<ReportSettingDetail> ReportSettingDetails { get; set; }
+
+    public virtual DbSet<ReportInfo> ReportInfos { get; set; }
+
+    public virtual DbSet<ReportInfoDetail> ReportInfoDetails { get; set; }
+
+    public virtual DbSet<CompetencyType> CompetencyTypes { get; set; }
+
+    public virtual DbSet<Competency> Competencies { get; set; }
+
+    public virtual DbSet<CompetencyByJobTitle> CompetencyByJobTitles { get; set; }
+
+    public virtual DbSet<CompetencyByJobTitleDetail> CompetencyByJobTitleDetails { get; set; }
+
+    public virtual DbSet<CDPeriod> CDPeriods { get; set; }
+
+    public virtual DbSet<CDForm> CDForms { get; set; }
+
+    public virtual DbSet<CDPlan> CDPlans { get; set; }
+
+    public virtual DbSet<CDMidYearReview> CDMidYearReviews { get; set; }
+
+    public virtual DbSet<CDAnnualYearReview> CDAnnualYearReviews { get; set; }
+
+    public virtual DbSet<CDRating> CDRatings { get; set; }
+
+    public virtual DbSet<ManpowerPlanningPeriod> ManpowerPlanningPeriods { get; set; }
+
+    public virtual DbSet<ManpowerPlanning> ManpowerPlannings { get; set; }
+
+    public virtual DbSet<ManpowerPlanningDetail> ManpowerPlanningDetails { get; set; }
+
+    public virtual DbSet<Position> Positions { get; set; }
+
+    public virtual DbSet<PositionRelationship> PositionRelationships { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -1070,6 +1185,48 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.Peer)
                 .WithMany()
                 .HasForeignKey(e => e.PeerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<CDForm>(b =>
+        {
+            // Required FK into the Employee hub table, which already has many other convergent cascade paths.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ManpowerPlanning>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PositionRelationship>(b =>
+        {
+            // Required FKs into both Position and Employee. Bind to Position's real PositionRelationships
+            // collection nav property explicitly - a bare .WithMany() here would create a second, unnamed
+            // shadow relationship (PositionId1) alongside the convention-paired one.
+            b.HasOne(e => e.Position)
+                .WithMany(p => p.PositionRelationships)
+                .HasForeignKey(e => e.PositionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PrintReportPermission>(b =>
+        {
+            // Required FK into ABP's built-in Role table.
+            b.HasOne(e => e.Role)
+                .WithMany()
+                .HasForeignKey(e => e.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

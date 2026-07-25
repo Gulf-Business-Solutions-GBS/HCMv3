@@ -1,0 +1,145 @@
+<div
+    appBsModal
+    #createModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ 'CreateNewItem' | localize }}: {{ 'RequestLogs' | localize }}</h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestLog_WorkflowRequestId">{{ 'WorkflowRequests' | localize }}</label>
+                                <select
+                                    id="RequestLog_WorkflowRequestId"
+                                    #workflowRequestIdInput="ngModel"
+                                    class="form-select"
+                                    name="WorkflowRequestId"
+                                    [ngModel]="record().workflowRequestId"
+                                    (ngModelChange)="updateField('workflowRequestId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (wr of workflowRequests(); track wr.id) {
+                                        <option [ngValue]="wr.id">{{ wr.requestNumber }} - {{ wr.requestType }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="workflowRequestIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="RequestLog_ActionById">{{ 'ActionBy' | localize }}</label>
+                                <select
+                                    id="RequestLog_ActionById"
+                                    class="form-select"
+                                    name="ActionById"
+                                    [ngModel]="record().actionById"
+                                    (ngModelChange)="updateField('actionById', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RequestLog_ActionType">{{ 'ActionType' | localize }}</label>
+                                <select
+                                    id="RequestLog_ActionType"
+                                    #actionTypeInput="ngModel"
+                                    class="form-select"
+                                    name="ActionType"
+                                    [ngModel]="record().actionType"
+                                    (ngModelChange)="updateField('actionType', $event)"
+                                    required>
+                                    @for (item of actionTypes; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="actionTypeInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RequestLog_WorkflowStep">{{ 'WorkflowStep' | localize }}</label>
+                                <input
+                                    id="RequestLog_WorkflowStep"
+                                    #workflowStepInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="WorkflowStep"
+                                    [ngModel]="record().workflowStep"
+                                    (ngModelChange)="updateField('workflowStep', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="workflowStepInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RequestLog_ActionDays">{{ 'ActionDays' | localize }}</label>
+                                <input
+                                    id="RequestLog_ActionDays"
+                                    #actionDaysInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="ActionDays"
+                                    [ngModel]="record().actionDays"
+                                    (ngModelChange)="updateField('actionDays', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="actionDaysInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RequestLog_Platform">{{ 'Platform' | localize }}</label>
+                                <select
+                                    id="RequestLog_Platform"
+                                    #platformInput="ngModel"
+                                    class="form-select"
+                                    name="Platform"
+                                    [ngModel]="record().platform"
+                                    (ngModelChange)="updateField('platform', $event)"
+                                    required>
+                                    @for (item of platforms; track item.value) {
+                                        <option [ngValue]="item.value">{{ item.key | localize }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="platformInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="RequestLog_RequestActionComment">{{ 'RequestActionComment' | localize }}</label>
+                                <textarea
+                                    id="RequestLog_RequestActionComment"
+                                    class="form-control"
+                                    name="RequestActionComment"
+                                    rows="3"
+                                    [ngModel]="record().requestActionComment"
+                                    (ngModelChange)="updateField('requestActionComment', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

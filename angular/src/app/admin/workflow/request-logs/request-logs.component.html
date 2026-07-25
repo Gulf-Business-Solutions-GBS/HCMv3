@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+    <sub-header [title]="'RequestLogs' | localize" [description]="'Workflow' | localize">
+        <div role="actions">
+            @if ('Pages.Workflow.RequestLogs.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 100px" [hidden]="!('Pages.Workflow.RequestLogs.Delete' | permission)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 100px">{{ 'WorkflowRequests' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'ActionBy' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'ActionType' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'WorkflowStep' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'ActionDays' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Platform' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'RequestActionComment' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'ActionDateTime' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 100px" [hidden]="!('Pages.Workflow.RequestLogs.Delete' | permission)">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 100px">{{ record.workflowRequestId }}</td>
+                                    <td style="min-width: 150px">{{ record.actionByNameEn }}</td>
+                                    <td style="min-width: 150px">{{ actionTypeLabel(record.actionType) }}</td>
+                                    <td style="min-width: 100px">{{ record.workflowStep }}</td>
+                                    <td style="min-width: 100px">{{ record.actionDays }}</td>
+                                    <td style="min-width: 120px">{{ platformLabel(record.platform) }}</td>
+                                    <td style="min-width: 200px">{{ record.requestActionComment }}</td>
+                                    <td style="min-width: 160px">{{ record.actionDateTime | luxonFormat: 'yyyy-MM-dd HH:mm' }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createRequestLogModal #createModal (modalSave)="reloadPage()" />
+</div>

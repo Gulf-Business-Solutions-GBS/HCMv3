@@ -1,0 +1,66 @@
+@if (record()) {
+    <form #cvForm="ngForm" (ngSubmit)="save()">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="ApplicantCV_JobTitleId">{{ 'JobTitle' | localize }}</label>
+                <select
+                    id="ApplicantCV_JobTitleId"
+                    class="form-select"
+                    name="JobTitleId"
+                    [ngModel]="record().jobTitleId"
+                    (ngModelChange)="updateField('jobTitleId', $event)">
+                    <option [ngValue]="undefined"></option>
+                    @for (item of jobTitles(); track item.id) {
+                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="ApplicantCV_CvName">{{ 'CvName' | localize }}</label>
+                <input
+                    id="ApplicantCV_CvName"
+                    type="text"
+                    class="form-control"
+                    name="CvName"
+                    [ngModel]="record().cvName"
+                    (ngModelChange)="updateField('cvName', $event)"
+                    maxlength="256" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="ApplicantCV_UploadDate">{{ 'UploadDate' | localize }}</label>
+                <input
+                    id="ApplicantCV_UploadDate"
+                    type="date"
+                    class="form-control"
+                    name="UploadDate"
+                    [ngModel]="record().uploadDate?.toISODate()"
+                    (ngModelChange)="updateDateField('uploadDate', $event)" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary" [buttonBusy]="saving()" [disabled]="saving()">
+                <i class="fa fa-save"></i>
+                {{ 'Save' | localize }}
+            </button>
+        </div>
+    </form>
+
+    @if (record().id) {
+        <tabset class="tab-container">
+            <tab heading="{{ 'CVQualifications' | localize }}" [active]="true">
+                <cv-qualifications [applicantCVId]="record().id" />
+            </tab>
+            <tab heading="{{ 'CVWorkExps' | localize }}">
+                <cv-work-exps [applicantCVId]="record().id" />
+            </tab>
+            <tab heading="{{ 'CVSkills' | localize }}">
+                <cv-skills [applicantCVId]="record().id" />
+            </tab>
+            <tab heading="{{ 'CVLanguages' | localize }}">
+                <cv-languages [applicantCVId]="record().id" />
+            </tab>
+        </tabset>
+    } @else {
+        <div class="alert alert-info">{{ 'SaveCvBeforeAddingDetails' | localize }}</div>
+    }
+}

@@ -259,6 +259,27 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'Recruitment',
+                '',
+                'flaticon-questions-circular-button',
+                '',
+                [],
+                [
+                    new AppMenuItem('Applicants', 'Pages.Recruitment.Applicants', 'flaticon-list-3', '/app/admin/applicants'),
+                    new AppMenuItem('Vacancies', 'Pages.Recruitment.Vacancies', 'flaticon-list-3', '/app/admin/vacancies'),
+                    new AppMenuItem('ApplicationStatuses', 'Pages.Recruitment.ApplicationStatuses', 'flaticon-list-3', '/app/admin/application-statuses'),
+                    new AppMenuItem('InterviewDetails', 'Pages.Recruitment.InterviewDetails', 'flaticon-list-3', '/app/admin/interview-details'),
+                    new AppMenuItem('OnbGroups', 'Pages.Recruitment.OnbGroups', 'flaticon-list-3', '/app/admin/onb-groups'),
+                    new AppMenuItem('OnbGroupDetails', 'Pages.Recruitment.OnbGroupDetails', 'flaticon-list-3', '/app/admin/onb-group-details'),
+                    new AppMenuItem('OnbTasks', 'Pages.Recruitment.OnbTasks', 'flaticon-list-3', '/app/admin/onb-tasks'),
+                    new AppMenuItem('OnbTemplates', 'Pages.Recruitment.OnbTemplates', 'flaticon-list-3', '/app/admin/onb-templates'),
+                    new AppMenuItem('OnbTemplateDetails', 'Pages.Recruitment.OnbTemplateDetails', 'flaticon-list-3', '/app/admin/onb-template-details'),
+                    new AppMenuItem('OnbApplicantTasks', 'Pages.Recruitment.OnbApplicantTasks', 'flaticon-list-3', '/app/admin/onb-applicant-tasks'),
+                    new AppMenuItem('OnbAppTaskComments', 'Pages.Recruitment.OnbAppTaskComments', 'flaticon-list-3', '/app/admin/onb-app-task-comments'),
+                    new AppMenuItem('OnbVideoLinks', 'Pages.Recruitment.OnbVideoLinks', 'flaticon-list-3', '/app/admin/onb-video-links'),
+                ]
+            ),
+            new AppMenuItem(
                 'ProjectManagement',
                 '',
                 'flaticon-folder-1',
@@ -273,6 +294,25 @@ export class AppNavigationService {
                     new AppMenuItem('ProjectRegisters', 'Pages.ProjectManagement.ProjectRegisters', 'flaticon-list-3', '/app/admin/project-registers'),
                     new AppMenuItem('ProjectRegisterDetails', 'Pages.ProjectManagement.ProjectRegisterDetails', 'flaticon-list-3', '/app/admin/project-register-details'),
                     new AppMenuItem('ProjectLogs', 'Pages.ProjectManagement.ProjectLogs', 'flaticon-list-3', '/app/admin/project-logs'),
+                ]
+            ),
+            new AppMenuItem(
+                'Workflow',
+                '',
+                'flaticon-refresh',
+                '',
+                [],
+                [
+                    new AppMenuItem('WorkflowRoles', 'Pages.Workflow.WorkflowRoles', 'flaticon-list-3', '/app/admin/workflow-roles'),
+                    new AppMenuItem('WorkflowGroups', 'Pages.Workflow.WorkflowGroups', 'flaticon-list-3', '/app/admin/workflow-groups'),
+                    new AppMenuItem('RequestMasters', 'Pages.Workflow.RequestMasters', 'flaticon-list-3', '/app/admin/request-masters'),
+                    new AppMenuItem('RequestDetails', 'Pages.Workflow.RequestDetails', 'flaticon-list-3', '/app/admin/request-details'),
+                    new AppMenuItem('RequestDetailParallels', 'Pages.Workflow.RequestDetailParallels', 'flaticon-list-3', '/app/admin/request-detail-parallels'),
+                    new AppMenuItem('WorkflowRequests', 'Pages.Workflow.WorkflowRequests', 'flaticon-list-3', '/app/admin/workflow-requests'),
+                    new AppMenuItem('RequestLogs', 'Pages.Workflow.RequestLogs', 'flaticon-list-3', '/app/admin/request-logs'),
+                    new AppMenuItem('WorkFlowApprovers', 'Pages.Workflow.WorkFlowApprovers', 'flaticon-list-3', '/app/admin/work-flow-approvers'),
+                    new AppMenuItem('WorkflowRemarks', 'Pages.Workflow.WorkflowRemarks', 'flaticon-list-3', '/app/admin/workflow-remarks'),
+                    new AppMenuItem('WFReadLogs', 'Pages.Workflow.WFReadLogs', 'flaticon-list-3', '/app/admin/wf-read-logs'),
                 ]
             ),
             new AppMenuItem(
@@ -337,6 +377,55 @@ export class AppNavigationService {
                     new AppMenuItem('KpiByOrgUnitDetails', 'Pages.PerformanceManagement.KpiByOrgUnits', 'flaticon-list-3', '/app/admin/kpi-by-org-unit-details'),
                     new AppMenuItem('PAForms', 'Pages.PerformanceManagement.PAForms', 'flaticon-list-3', '/app/admin/pa-forms'),
                     new AppMenuItem('PAEmployees', 'Pages.PerformanceManagement.PAEmployees', 'flaticon-list-3', '/app/admin/pa-employees'),
+                ]
+            ),
+            new AppMenuItem(
+                'CompetencyDevelopment',
+                '',
+                'flaticon-medal',
+                '',
+                [],
+                [
+                    new AppMenuItem('CompetencyTypes', 'Pages.CompetencyDevelopment.CompetencyTypes', 'flaticon-list-3', '/app/admin/competency-types'),
+                    new AppMenuItem('Competencies', 'Pages.CompetencyDevelopment.Competencies', 'flaticon-list-3', '/app/admin/competencies'),
+                    new AppMenuItem('CompetencyByJobTitles', 'Pages.CompetencyDevelopment.CompetencyByJobTitles', 'flaticon-list-3', '/app/admin/competency-by-job-titles'),
+                    new AppMenuItem('CompetencyByJobTitleDetails', 'Pages.CompetencyDevelopment.CompetencyByJobTitles', 'flaticon-list-3', '/app/admin/competency-by-job-title-details'),
+                    new AppMenuItem('CDPeriods', 'Pages.CompetencyDevelopment.CDPeriods', 'flaticon-list-3', '/app/admin/cd-periods'),
+                    new AppMenuItem('CDRatings', 'Pages.CompetencyDevelopment.CDRatings', 'flaticon-list-3', '/app/admin/cd-ratings'),
+                    new AppMenuItem('CDForms', 'Pages.CompetencyDevelopment.CDForms', 'flaticon-list-3', '/app/admin/cd-forms'),
+                ]
+            ),
+            new AppMenuItem(
+                'ManpowerPlanningManagement',
+                '',
+                'flaticon-map',
+                '',
+                [],
+                [
+                    new AppMenuItem('ManpowerPlanningPeriods', 'Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods', 'flaticon-list-3', '/app/admin/manpower-planning-periods'),
+                    new AppMenuItem('Positions', 'Pages.ManpowerPlanningManagement.Positions', 'flaticon-list-3', '/app/admin/positions'),
+                    new AppMenuItem('PositionRelationships', 'Pages.ManpowerPlanningManagement.PositionRelationships', 'flaticon-list-3', '/app/admin/position-relationships'),
+                    new AppMenuItem('ManpowerPlannings', 'Pages.ManpowerPlanningManagement.ManpowerPlannings', 'flaticon-list-3', '/app/admin/manpower-plannings'),
+                ]
+            ),
+            new AppMenuItem(
+                'ReportManagement',
+                '',
+                'flaticon-list-3',
+                '',
+                [],
+                [
+                    new AppMenuItem('DomainTypes', 'Pages.ReportManagement.DomainTypes', 'flaticon-list-3', '/app/admin/domain-types'),
+                    new AppMenuItem('ReportTypes', 'Pages.ReportManagement.ReportTypes', 'flaticon-list-3', '/app/admin/report-types'),
+                    new AppMenuItem('PrintReports', 'Pages.ReportManagement.PrintReports', 'flaticon-list-3', '/app/admin/print-reports'),
+                    new AppMenuItem('PrintReportPermissions', 'Pages.ReportManagement.PrintReportPermissions', 'flaticon-list-3', '/app/admin/print-report-permissions'),
+                    new AppMenuItem('PrintReportPermissionDetails', 'Pages.ReportManagement.PrintReportPermissionDetails', 'flaticon-list-3', '/app/admin/print-report-permission-details'),
+                    new AppMenuItem('ReportMasters', 'Pages.ReportManagement.ReportMasters', 'flaticon-list-3', '/app/admin/report-masters'),
+                    new AppMenuItem('ReportDetails', 'Pages.ReportManagement.ReportDetails', 'flaticon-list-3', '/app/admin/report-details'),
+                    new AppMenuItem('ReportSettings', 'Pages.ReportManagement.ReportSettings', 'flaticon-list-3', '/app/admin/report-settings'),
+                    new AppMenuItem('ReportSettingDetails', 'Pages.ReportManagement.ReportSettingDetails', 'flaticon-list-3', '/app/admin/report-setting-details'),
+                    new AppMenuItem('ReportInfos', 'Pages.ReportManagement.ReportInfos', 'flaticon-list-3', '/app/admin/report-infos'),
+                    new AppMenuItem('ReportInfoDetails', 'Pages.ReportManagement.ReportInfoDetails', 'flaticon-list-3', '/app/admin/report-info-details'),
                 ]
             ),
             new AppMenuItem(

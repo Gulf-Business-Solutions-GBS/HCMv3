@@ -1,0 +1,155 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Vacancies' | localize" [description]="'Recruitment' | localize">
+        <div role="actions">
+            @if ('Pages.Recruitment.Vacancies.Create' | permission) {
+                <button (click)="createVacancy()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text"
+                                    (keydown.enter)="getVacancies()" />
+                                <button class="btn btn-primary" (click)="getVacancies()">
+                                    <i class="flaticon-search-1" aria-label="Search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getVacancies($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.Recruitment.Vacancies.Edit',
+                                                    'Pages.Recruitment.Vacancies.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px">
+                                        {{ 'VacancyTitle' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'JobTitle' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">
+                                        {{ 'WorkLocation' | localize }}
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="requestionDate">
+                                        {{ 'RequestionDate' | localize }}
+                                        <p-sortIcon field="requestionDate" />
+                                    </th>
+                                    <th style="min-width: 140px">
+                                        {{ 'ClosingDate' | localize }}
+                                    </th>
+                                    <th style="min-width: 140px">
+                                        {{ 'VacancyStatus' | localize }}
+                                    </th>
+                                    <th style="min-width: 110px">
+                                        {{ 'TotalVacancy' | localize }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(
+                                                [
+                                                    'Pages.Recruitment.Vacancies.Edit',
+                                                    'Pages.Recruitment.Vacancies.Delete',
+                                                ] | permissionAny
+                                            )
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.vacancyTitle }}</td>
+                                    <td style="min-width: 160px">{{ record.jobTitleNameEn }}</td>
+                                    <td style="min-width: 160px">{{ record.workLocationNameEn }}</td>
+                                    <td style="min-width: 140px">{{ record.requestionDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 140px">{{ record.closingDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 140px">{{ record.vacancyStatus }}</td>
+                                    <td style="min-width: 110px">{{ record.totalVacancy }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getVacancies($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditVacancyModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>
