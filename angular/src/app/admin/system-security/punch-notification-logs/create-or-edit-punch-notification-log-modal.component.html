@@ -1,0 +1,108 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PunchNotificationLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PunchNotificationLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PunchNotificationLog_EmployeeDutyPeriodId">{{ 'EmployeeDutyPeriod' | localize }}</label>
+                                <select
+                                    id="PunchNotificationLog_EmployeeDutyPeriodId"
+                                    #employeeDutyPeriodIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeDutyPeriodId"
+                                    [ngModel]="record().employeeDutyPeriodId"
+                                    (ngModelChange)="updateField('employeeDutyPeriodId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of employeeDutyPeriods(); track item.id) {
+                                        <option [ngValue]="item.id">{{ employeeDutyPeriodLabel(item) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeDutyPeriodIdInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PunchNotificationLog_EmailNotificationLogId">{{ 'EmailNotificationLog' | localize }}</label>
+                                <select
+                                    id="PunchNotificationLog_EmailNotificationLogId"
+                                    class="form-select"
+                                    name="EmailNotificationLogId"
+                                    [ngModel]="record().emailNotificationLogId"
+                                    (ngModelChange)="updateField('emailNotificationLogId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of emailNotificationLogs(); track item.id) {
+                                        <option [ngValue]="item.id">{{ emailNotificationLogLabel(item) }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="PunchNotificationLog_Type">{{ 'Type' | localize }}</label>
+                                <input
+                                    id="PunchNotificationLog_Type"
+                                    class="form-control"
+                                    type="text"
+                                    name="Type"
+                                    [ngModel]="record().type"
+                                    (ngModelChange)="updateField('type', $event)" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="PunchNotificationLog_Date">{{ 'Date' | localize }}</label>
+                                <input
+                                    id="PunchNotificationLog_Date"
+                                    #dateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="Date"
+                                    [ngModel]="record().date?.toISODate()"
+                                    (ngModelChange)="updateDateField('date', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="dateInput" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

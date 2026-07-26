@@ -1178,6 +1178,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.Employees' },
                     },
                     {
+                        path: 'report-preview',
+                        loadComponent: () =>
+                            import('./admin/reports/report-preview/report-preview.component').then(
+                                (m) => m.ReportPreviewComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Preview' },
+                    },
+                    {
                         path: 'employees/:id',
                         loadComponent: () =>
                             import(
@@ -2198,6 +2206,230 @@ export const appRoutes: Routes = [
                                 (m) => m.TrainingAttendancesComponent
                             ),
                         data: { permission: 'Pages.TrainingManagement.TrainingAttendances' },
+                    },
+                    {
+                        path: 'manage-appraisal-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-appraisal-settings/manage-appraisal-settings.component').then(
+                                (m) => m.ManageAppraisalSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.AppraisalSettings' },
+                    },
+                    {
+                        path: 'manage-document-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-document-settings/manage-document-settings.component').then(
+                                (m) => m.ManageDocumentSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.DocumentSettings' },
+                    },
+                    {
+                        path: 'manage-fi-posting-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-fi-posting-settings/manage-fi-posting-settings.component').then(
+                                (m) => m.ManageFIPostingSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.FIPostingSettings' },
+                    },
+                    {
+                        path: 'manage-general-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-general-settings/manage-general-settings.component').then(
+                                (m) => m.ManageGeneralSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.GeneralSettings' },
+                    },
+                    {
+                        path: 'manage-notification-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-notification-settings/manage-notification-settings.component').then(
+                                (m) => m.ManageNotificationSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.NotificationSettings' },
+                    },
+                    {
+                        path: 'manage-org-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-org-settings/manage-org-settings.component').then(
+                                (m) => m.ManageOrgSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.OrgSettings' },
+                    },
+                    {
+                        path: 'manage-payroll-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-payroll-settings/manage-payroll-settings.component').then(
+                                (m) => m.ManagePayrollSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.PayrollSettings' },
+                    },
+                    {
+                        path: 'manage-personnel-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-personnel-settings/manage-personnel-settings.component').then(
+                                (m) => m.ManagePersonnelSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.PersonnelSettings' },
+                    },
+                    {
+                        path: 'manage-project-costing-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-project-costing-settings/manage-project-costing-settings.component').then(
+                                (m) => m.ManageProjectCostingSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.ProjectCostingSettings' },
+                    },
+                    {
+                        path: 'manage-report-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-report-settings/manage-report-settings.component').then(
+                                (m) => m.ManageReportSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.ReportSettings' },
+                    },
+                    {
+                        path: 'manage-security-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-security-settings/manage-security-settings.component').then(
+                                (m) => m.ManageSecuritySettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.SecuritySettings' },
+                    },
+                    {
+                        path: 'manage-self-service-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-self-service-settings/manage-self-service-settings.component').then(
+                                (m) => m.ManageSelfServiceSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.SelfServiceSettings' },
+                    },
+                    {
+                        path: 'manage-time-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-time-settings/manage-time-settings.component').then(
+                                (m) => m.ManageTimeSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.TimeSettings' },
+                    },
+                    {
+                        path: 'manage-workflow-settings',
+                        loadComponent: () =>
+                            import('./admin/system-settings/manage-workflow-settings/manage-workflow-settings.component').then(
+                                (m) => m.ManageWorkflowSettingsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.WorkflowSettings' },
+                    },
+                    {
+                        path: 'payroll-drivers',
+                        loadComponent: () =>
+                            import('./admin/system-settings/payroll-drivers/payroll-drivers.component').then(
+                                (m) => m.PayrollDriversComponent
+                            ),
+                        data: { permission: 'Pages.SystemSettings.PayrollDrivers' },
+                    },
+                    {
+                        path: 'sys-user-org-unit-datas',
+                        loadComponent: () =>
+                            import('./admin/system-security/sys-user-org-unit-datas/sys-user-org-unit-datas.component').then(
+                                (m) => m.SysUserOrgUnitDatasComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.SysUserOrgUnitData' },
+                    },
+                    {
+                        path: 'email-templates',
+                        loadComponent: () =>
+                            import('./admin/system-security/email-templates/email-templates.component').then(
+                                (m) => m.EmailTemplatesComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.EmailTemplates' },
+                    },
+                    {
+                        path: 'email-tokens',
+                        loadComponent: () =>
+                            import('./admin/system-security/email-tokens/email-tokens.component').then(
+                                (m) => m.EmailTokensComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.EmailTokens' },
+                    },
+                    {
+                        path: 'payslip-configs',
+                        loadComponent: () =>
+                            import('./admin/system-security/payslip-configs/payslip-configs.component').then(
+                                (m) => m.PayslipConfigsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.PayslipConfigs' },
+                    },
+                    {
+                        path: 'notification-masters',
+                        loadComponent: () =>
+                            import('./admin/system-security/notification-masters/notification-masters.component').then(
+                                (m) => m.NotificationMastersComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.NotificationMasters' },
+                    },
+                    {
+                        path: 'system-notifications',
+                        loadComponent: () =>
+                            import('./admin/system-security/system-notifications/system-notifications.component').then(
+                                (m) => m.SystemNotificationsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.SystemNotifications' },
+                    },
+                    {
+                        path: 'sys-objects',
+                        loadComponent: () =>
+                            import('./admin/system-security/sys-objects/sys-objects.component').then(
+                                (m) => m.SysObjectsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.SysObjects' },
+                    },
+                    {
+                        path: 'retro-reason-logs',
+                        loadComponent: () =>
+                            import('./admin/system-security/retro-reason-logs/retro-reason-logs.component').then(
+                                (m) => m.RetroReasonLogsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.RetroReasonLogs' },
+                    },
+                    {
+                        path: 'punch-notification-logs',
+                        loadComponent: () =>
+                            import('./admin/system-security/punch-notification-logs/punch-notification-logs.component').then(
+                                (m) => m.PunchNotificationLogsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.PunchNotificationLogs' },
+                    },
+                    {
+                        path: 'bulk-upload-logs',
+                        loadComponent: () =>
+                            import('./admin/system-security/bulk-upload-logs/bulk-upload-logs.component').then(
+                                (m) => m.BulkUploadLogsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.BulkUploadLogs' },
+                    },
+                    {
+                        path: 'execution-logs',
+                        loadComponent: () =>
+                            import('./admin/system-security/execution-logs/execution-logs.component').then(
+                                (m) => m.ExecutionLogsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.ExecutionLogs' },
+                    },
+                    {
+                        path: 'email-notification-logs',
+                        loadComponent: () =>
+                            import('./admin/system-security/email-notification-logs/email-notification-logs.component').then(
+                                (m) => m.EmailNotificationLogsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.EmailNotificationLogs' },
+                    },
+                    {
+                        path: 'sys-tenant-configs',
+                        loadComponent: () =>
+                            import('./admin/system-security/sys-tenant-configs/sys-tenant-configs.component').then(
+                                (m) => m.SysTenantConfigsComponent
+                            ),
+                        data: { permission: 'Pages.SystemSecurity.SysTenantConfigs' },
                     },
                     simpleLookupRoute('job-families', 'JobFamilies', 'JobFamilies', JobFamiliesServiceProxy, 'JobProfileManagement'),
                     simpleLookupRoute('job-functions', 'JobFunctions', 'JobFunctions', JobFunctionsServiceProxy, 'JobProfileManagement'),

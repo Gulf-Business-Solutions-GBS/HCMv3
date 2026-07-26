@@ -1,4 +1,5 @@
 using HCMv3.GeneralMasterInfo;
+using HCMv3.SystemSettings;
 using HCMv3.TimeManagement;
 using Microsoft.EntityFrameworkCore;
 
@@ -64,6 +65,9 @@ public class TimeManagementTestDbContext : DbContext
     public DbSet<SimulationTimeRegister> SimulationTimeRegisters { get; set; }
     public DbSet<SimulationTimeRegisterDetail> SimulationTimeRegisterDetails { get; set; }
     public DbSet<TimeTransfer> TimeTransfers { get; set; }
+
+    // TimeDataService_Tests (Wave 5)
+    public DbSet<ManageTimeSettings> ManageTimeSettings { get; set; }
 
     public TimeManagementTestDbContext(DbContextOptions<TimeManagementTestDbContext> options) : base(options)
     {

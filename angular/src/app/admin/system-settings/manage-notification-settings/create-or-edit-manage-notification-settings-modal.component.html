@@ -1,0 +1,74 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'NotificationSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'NotificationSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'NotificationSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="NotificationSettings_DisableNotificationWindow"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="DisableNotificationWindow"
+                                            [ngModel]="record().disableNotificationWindow"
+                                            (ngModelChange)="updateField('disableNotificationWindow', $event)" />
+                                        <label class="form-check-label" for="NotificationSettings_DisableNotificationWindow">{{ 'DisableNotificationWindow' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="NotificationSettings_AdvancePaymentReminderDateType">{{ 'AdvancePaymentReminderDateType' | localize }}</label>
+                                    <select
+                                        id="NotificationSettings_AdvancePaymentReminderDateType"
+                                        class="form-select"
+                                        name="AdvancePaymentReminderDateType"
+                                        [ngModel]="record().advancePaymentReminderDateType"
+                                        (ngModelChange)="updateField('advancePaymentReminderDateType', $event)">
+                                        @for (option of reminderDateTypes; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

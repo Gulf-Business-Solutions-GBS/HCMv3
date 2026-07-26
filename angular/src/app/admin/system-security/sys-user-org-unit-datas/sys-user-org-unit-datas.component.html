@@ -1,0 +1,123 @@
+<div [@routerTransition]>
+    <sub-header [title]="'SysUserOrgUnitDatas' | localize" [description]="'SystemSecurity' | localize">
+        <div role="actions">
+            @if ('Pages.SystemSecurity.SysUserOrgUnitData.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.SystemSecurity.SysUserOrgUnitData.Edit', 'Pages.SystemSecurity.SysUserOrgUnitData.Delete'] | permissionAny)
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="employeeFullName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeFullName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="roleDisplayName">
+                                        {{ 'Role' | localize }}
+                                        <p-sortIcon field="roleDisplayName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="orgLevelNameEn">
+                                        {{ 'OrgLevel' | localize }}
+                                        <p-sortIcon field="orgLevelNameEn" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="organizationUnitDisplayName">
+                                        {{ 'OrgUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitDisplayName" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="showUnlocked">
+                                        {{ 'ShowUnlocked' | localize }}
+                                        <p-sortIcon field="showUnlocked" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.SystemSecurity.SysUserOrgUnitData.Edit', 'Pages.SystemSecurity.SysUserOrgUnitData.Delete'] | permissionAny)
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.employeeFullName }}" class="hide-overflown">{{ record.employeeFullName }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.roleDisplayName }}" class="hide-overflown">{{ record.roleDisplayName }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.orgLevelNameEn }}" class="hide-overflown">{{ record.orgLevelNameEn }}</span>
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.organizationUnitDisplayName }}" class="hide-overflown">{{ record.organizationUnitDisplayName }}</span>
+                                    </td>
+                                    <td style="min-width: 130px">
+                                        <i class="fa" [class.fa-check]="record.showUnlocked" [class.text-success]="record.showUnlocked" [class.fa-times]="!record.showUnlocked" [class.text-muted]="!record.showUnlocked"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditSysUserOrgUnitDataModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

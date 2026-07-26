@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SysTenantConfigs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SysTenantConfigs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SysTenantConfig_Key">{{ 'Key' | localize }}</label>
+                                <input
+                                    id="SysTenantConfig_Key"
+                                    #keyInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Key"
+                                    [ngModel]="record().key"
+                                    (ngModelChange)="updateField('key', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="keyInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SysTenantConfig_ConfigCategory">{{ 'ConfigCategory' | localize }}</label>
+                                <select
+                                    id="SysTenantConfig_ConfigCategory"
+                                    class="form-select"
+                                    name="ConfigCategory"
+                                    [ngModel]="record().configCategory"
+                                    (ngModelChange)="updateField('configCategory', $event)">
+                                    @for (option of categories; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SysTenantConfig_StartDate">{{ 'StartDate' | localize }}</label>
+                                <input
+                                    id="SysTenantConfig_StartDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="StartDate"
+                                    [ngModel]="record().startDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('startDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SysTenantConfig_EndDate">{{ 'EndDate' | localize }}</label>
+                                <input
+                                    id="SysTenantConfig_EndDate"
+                                    type="date"
+                                    class="form-control"
+                                    name="EndDate"
+                                    [ngModel]="record().endDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('endDate', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="SysTenantConfig_KeyValue">{{ 'KeyValue' | localize }}</label>
+                                <input
+                                    id="SysTenantConfig_KeyValue"
+                                    class="form-control"
+                                    type="text"
+                                    name="KeyValue"
+                                    [ngModel]="record().keyValue"
+                                    (ngModelChange)="updateField('keyValue', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="SysTenantConfig_ConfigDescription">{{ 'ConfigDescription' | localize }}</label>
+                                <textarea
+                                    id="SysTenantConfig_ConfigDescription"
+                                    class="form-control"
+                                    rows="4"
+                                    name="ConfigDescription"
+                                    [ngModel]="record().configDescription"
+                                    (ngModelChange)="updateField('configDescription', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

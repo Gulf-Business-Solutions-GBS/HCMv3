@@ -1,0 +1,98 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'PersonnelSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'PersonnelSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'PersonnelSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PersonnelSettings_ProbationDaysCalculation">{{ 'ProbationDaysCalculation' | localize }}</label>
+                                    <select
+                                        id="PersonnelSettings_ProbationDaysCalculation"
+                                        class="form-select"
+                                        name="ProbationDaysCalculation"
+                                        [ngModel]="record().probationDaysCalculation"
+                                        (ngModelChange)="updateField('probationDaysCalculation', $event)">
+                                        @for (option of probationDaysCalculationOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="PersonnelSettings_MaxPhotoSize">{{ 'MaxPhotoSize' | localize }}</label>
+                                    <input
+                                        id="PersonnelSettings_MaxPhotoSize"
+                                        type="number"
+                                        class="form-control"
+                                        name="MaxPhotoSize"
+                                        [ngModel]="record().maxPhotoSize"
+                                        (ngModelChange)="updateNumberField('maxPhotoSize', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="PersonnelSettings_EnableSponsorGovtJobTitleQuota"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableSponsorGovtJobTitleQuota"
+                                            [ngModel]="record().enableSponsorGovtJobTitleQuota"
+                                            (ngModelChange)="updateField('enableSponsorGovtJobTitleQuota', $event)" />
+                                        <label class="form-check-label" for="PersonnelSettings_EnableSponsorGovtJobTitleQuota">{{ 'EnableSponsorGovtJobTitleQuota' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="PersonnelSettings_AutoWageAssignOnHire"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="AutoWageAssignOnHire"
+                                            [ngModel]="record().autoWageAssignOnHire"
+                                            (ngModelChange)="updateField('autoWageAssignOnHire', $event)" />
+                                        <label class="form-check-label" for="PersonnelSettings_AutoWageAssignOnHire">{{ 'AutoWageAssignOnHire' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

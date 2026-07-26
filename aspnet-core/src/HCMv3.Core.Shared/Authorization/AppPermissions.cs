@@ -626,6 +626,11 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeeTasks_Edit = "Pages.PersonnelAdministration.EmployeeTasks.Edit";
     public const string Pages_PersonnelAdministration_EmployeeTasks_Delete = "Pages.PersonnelAdministration.EmployeeTasks.Delete";
 
+    public const string Pages_PersonnelAdministration_News = "Pages.PersonnelAdministration.News";
+    public const string Pages_PersonnelAdministration_News_Create = "Pages.PersonnelAdministration.News.Create";
+    public const string Pages_PersonnelAdministration_News_Edit = "Pages.PersonnelAdministration.News.Edit";
+    public const string Pages_PersonnelAdministration_News_Delete = "Pages.PersonnelAdministration.News.Delete";
+
     public const string Pages_Administration_Roles = "Pages.Administration.Roles";
     public const string Pages_Administration_Roles_Create = "Pages.Administration.Roles.Create";
     public const string Pages_Administration_Roles_Edit = "Pages.Administration.Roles.Edit";
@@ -1630,6 +1635,11 @@ public static class AppPermissions
     public const string Pages_Workflow_WorkflowRoles_Edit = "Pages.Workflow.WorkflowRoles.Edit";
     public const string Pages_Workflow_WorkflowRoles_Delete = "Pages.Workflow.WorkflowRoles.Delete";
 
+    public const string Pages_Workflow_EmployeeWorkflowRoles = "Pages.Workflow.EmployeeWorkflowRoles";
+    public const string Pages_Workflow_EmployeeWorkflowRoles_Create = "Pages.Workflow.EmployeeWorkflowRoles.Create";
+    public const string Pages_Workflow_EmployeeWorkflowRoles_Edit = "Pages.Workflow.EmployeeWorkflowRoles.Edit";
+    public const string Pages_Workflow_EmployeeWorkflowRoles_Delete = "Pages.Workflow.EmployeeWorkflowRoles.Delete";
+
     public const string Pages_Workflow_WorkflowGroups = "Pages.Workflow.WorkflowGroups";
     public const string Pages_Workflow_WorkflowGroups_Create = "Pages.Workflow.WorkflowGroups.Create";
     public const string Pages_Workflow_WorkflowGroups_Edit = "Pages.Workflow.WorkflowGroups.Edit";
@@ -1664,6 +1674,11 @@ public static class AppPermissions
     public const string Pages_Workflow_WorkflowRequests_Create = "Pages.Workflow.WorkflowRequests.Create";
     public const string Pages_Workflow_WorkflowRequests_Edit = "Pages.Workflow.WorkflowRequests.Edit";
     public const string Pages_Workflow_WorkflowRequests_Delete = "Pages.Workflow.WorkflowRequests.Delete";
+    public const string Pages_Workflow_WorkflowRequests_Submit = "Pages.Workflow.WorkflowRequests.Submit";
+    public const string Pages_Workflow_WorkflowRequests_Approve = "Pages.Workflow.WorkflowRequests.Approve";
+    public const string Pages_Workflow_WorkflowRequests_Reject = "Pages.Workflow.WorkflowRequests.Reject";
+    public const string Pages_Workflow_WorkflowRequests_SendBack = "Pages.Workflow.WorkflowRequests.SendBack";
+    public const string Pages_Workflow_WorkflowRequests_Reassign = "Pages.Workflow.WorkflowRequests.Reassign";
 
     public const string Pages_Workflow_RequestLogs = "Pages.Workflow.RequestLogs";
     public const string Pages_Workflow_RequestLogs_Create = "Pages.Workflow.RequestLogs.Create";
@@ -2244,5 +2259,164 @@ public static class AppPermissions
     public const string Pages_JobProfileManagement_JobDescriptionAcknowledgements_Create = "Pages.JobProfileManagement.JobDescriptionAcknowledgements.Create";
     public const string Pages_JobProfileManagement_JobDescriptionAcknowledgements_Edit = "Pages.JobProfileManagement.JobDescriptionAcknowledgements.Edit";
     public const string Pages_JobProfileManagement_JobDescriptionAcknowledgements_Delete = "Pages.JobProfileManagement.JobDescriptionAcknowledgements.Delete";
-}
 
+    public const string Pages_SystemSettings = "Pages.SystemSettings";
+
+    public const string Pages_SystemSettings_AppraisalSettings = "Pages.SystemSettings.AppraisalSettings";
+    public const string Pages_SystemSettings_AppraisalSettings_Create = "Pages.SystemSettings.AppraisalSettings.Create";
+    public const string Pages_SystemSettings_AppraisalSettings_Edit = "Pages.SystemSettings.AppraisalSettings.Edit";
+    public const string Pages_SystemSettings_AppraisalSettings_Delete = "Pages.SystemSettings.AppraisalSettings.Delete";
+
+    public const string Pages_SystemSettings_DocumentSettings = "Pages.SystemSettings.DocumentSettings";
+    public const string Pages_SystemSettings_DocumentSettings_Create = "Pages.SystemSettings.DocumentSettings.Create";
+    public const string Pages_SystemSettings_DocumentSettings_Edit = "Pages.SystemSettings.DocumentSettings.Edit";
+    public const string Pages_SystemSettings_DocumentSettings_Delete = "Pages.SystemSettings.DocumentSettings.Delete";
+
+    public const string Pages_SystemSettings_FIPostingSettings = "Pages.SystemSettings.FIPostingSettings";
+    public const string Pages_SystemSettings_FIPostingSettings_Create = "Pages.SystemSettings.FIPostingSettings.Create";
+    public const string Pages_SystemSettings_FIPostingSettings_Edit = "Pages.SystemSettings.FIPostingSettings.Edit";
+    public const string Pages_SystemSettings_FIPostingSettings_Delete = "Pages.SystemSettings.FIPostingSettings.Delete";
+
+    public const string Pages_SystemSettings_GeneralSettings = "Pages.SystemSettings.GeneralSettings";
+    public const string Pages_SystemSettings_GeneralSettings_Create = "Pages.SystemSettings.GeneralSettings.Create";
+    public const string Pages_SystemSettings_GeneralSettings_Edit = "Pages.SystemSettings.GeneralSettings.Edit";
+    public const string Pages_SystemSettings_GeneralSettings_Delete = "Pages.SystemSettings.GeneralSettings.Delete";
+
+    public const string Pages_SystemSettings_NotificationSettings = "Pages.SystemSettings.NotificationSettings";
+    public const string Pages_SystemSettings_NotificationSettings_Create = "Pages.SystemSettings.NotificationSettings.Create";
+    public const string Pages_SystemSettings_NotificationSettings_Edit = "Pages.SystemSettings.NotificationSettings.Edit";
+    public const string Pages_SystemSettings_NotificationSettings_Delete = "Pages.SystemSettings.NotificationSettings.Delete";
+
+    public const string Pages_SystemSettings_OrgSettings = "Pages.SystemSettings.OrgSettings";
+    public const string Pages_SystemSettings_OrgSettings_Create = "Pages.SystemSettings.OrgSettings.Create";
+    public const string Pages_SystemSettings_OrgSettings_Edit = "Pages.SystemSettings.OrgSettings.Edit";
+    public const string Pages_SystemSettings_OrgSettings_Delete = "Pages.SystemSettings.OrgSettings.Delete";
+
+    public const string Pages_SystemSettings_PayrollSettings = "Pages.SystemSettings.PayrollSettings";
+    public const string Pages_SystemSettings_PayrollSettings_Create = "Pages.SystemSettings.PayrollSettings.Create";
+    public const string Pages_SystemSettings_PayrollSettings_Edit = "Pages.SystemSettings.PayrollSettings.Edit";
+    public const string Pages_SystemSettings_PayrollSettings_Delete = "Pages.SystemSettings.PayrollSettings.Delete";
+
+    public const string Pages_SystemSettings_PersonnelSettings = "Pages.SystemSettings.PersonnelSettings";
+    public const string Pages_SystemSettings_PersonnelSettings_Create = "Pages.SystemSettings.PersonnelSettings.Create";
+    public const string Pages_SystemSettings_PersonnelSettings_Edit = "Pages.SystemSettings.PersonnelSettings.Edit";
+    public const string Pages_SystemSettings_PersonnelSettings_Delete = "Pages.SystemSettings.PersonnelSettings.Delete";
+
+    public const string Pages_SystemSettings_ProjectCostingSettings = "Pages.SystemSettings.ProjectCostingSettings";
+    public const string Pages_SystemSettings_ProjectCostingSettings_Create = "Pages.SystemSettings.ProjectCostingSettings.Create";
+    public const string Pages_SystemSettings_ProjectCostingSettings_Edit = "Pages.SystemSettings.ProjectCostingSettings.Edit";
+    public const string Pages_SystemSettings_ProjectCostingSettings_Delete = "Pages.SystemSettings.ProjectCostingSettings.Delete";
+
+    public const string Pages_SystemSettings_ReportSettings = "Pages.SystemSettings.ReportSettings";
+    public const string Pages_SystemSettings_ReportSettings_Create = "Pages.SystemSettings.ReportSettings.Create";
+    public const string Pages_SystemSettings_ReportSettings_Edit = "Pages.SystemSettings.ReportSettings.Edit";
+    public const string Pages_SystemSettings_ReportSettings_Delete = "Pages.SystemSettings.ReportSettings.Delete";
+
+    public const string Pages_SystemSettings_SecuritySettings = "Pages.SystemSettings.SecuritySettings";
+    public const string Pages_SystemSettings_SecuritySettings_Create = "Pages.SystemSettings.SecuritySettings.Create";
+    public const string Pages_SystemSettings_SecuritySettings_Edit = "Pages.SystemSettings.SecuritySettings.Edit";
+    public const string Pages_SystemSettings_SecuritySettings_Delete = "Pages.SystemSettings.SecuritySettings.Delete";
+
+    public const string Pages_SystemSettings_SelfServiceSettings = "Pages.SystemSettings.SelfServiceSettings";
+    public const string Pages_SystemSettings_SelfServiceSettings_Create = "Pages.SystemSettings.SelfServiceSettings.Create";
+    public const string Pages_SystemSettings_SelfServiceSettings_Edit = "Pages.SystemSettings.SelfServiceSettings.Edit";
+    public const string Pages_SystemSettings_SelfServiceSettings_Delete = "Pages.SystemSettings.SelfServiceSettings.Delete";
+
+    public const string Pages_SystemSettings_TimeSettings = "Pages.SystemSettings.TimeSettings";
+    public const string Pages_SystemSettings_TimeSettings_Create = "Pages.SystemSettings.TimeSettings.Create";
+    public const string Pages_SystemSettings_TimeSettings_Edit = "Pages.SystemSettings.TimeSettings.Edit";
+    public const string Pages_SystemSettings_TimeSettings_Delete = "Pages.SystemSettings.TimeSettings.Delete";
+
+    public const string Pages_SystemSettings_WorkflowSettings = "Pages.SystemSettings.WorkflowSettings";
+    public const string Pages_SystemSettings_WorkflowSettings_Create = "Pages.SystemSettings.WorkflowSettings.Create";
+    public const string Pages_SystemSettings_WorkflowSettings_Edit = "Pages.SystemSettings.WorkflowSettings.Edit";
+    public const string Pages_SystemSettings_WorkflowSettings_Delete = "Pages.SystemSettings.WorkflowSettings.Delete";
+
+    public const string Pages_SystemSettings_PayrollDrivers = "Pages.SystemSettings.PayrollDrivers";
+    public const string Pages_SystemSettings_PayrollDrivers_Create = "Pages.SystemSettings.PayrollDrivers.Create";
+    public const string Pages_SystemSettings_PayrollDrivers_Edit = "Pages.SystemSettings.PayrollDrivers.Edit";
+    public const string Pages_SystemSettings_PayrollDrivers_Delete = "Pages.SystemSettings.PayrollDrivers.Delete";
+
+    public const string Pages_SystemSecurity_SysUserOrgUnitData = "Pages.SystemSecurity.SysUserOrgUnitData";
+    public const string Pages_SystemSecurity_SysUserOrgUnitData_Create = "Pages.SystemSecurity.SysUserOrgUnitData.Create";
+    public const string Pages_SystemSecurity_SysUserOrgUnitData_Edit = "Pages.SystemSecurity.SysUserOrgUnitData.Edit";
+    public const string Pages_SystemSecurity_SysUserOrgUnitData_Delete = "Pages.SystemSecurity.SysUserOrgUnitData.Delete";
+
+    public const string Pages_SystemSecurity_EmailTemplates = "Pages.SystemSecurity.EmailTemplates";
+    public const string Pages_SystemSecurity_EmailTemplates_Create = "Pages.SystemSecurity.EmailTemplates.Create";
+    public const string Pages_SystemSecurity_EmailTemplates_Edit = "Pages.SystemSecurity.EmailTemplates.Edit";
+    public const string Pages_SystemSecurity_EmailTemplates_Delete = "Pages.SystemSecurity.EmailTemplates.Delete";
+
+    public const string Pages_SystemSecurity_EmailTokens = "Pages.SystemSecurity.EmailTokens";
+    public const string Pages_SystemSecurity_EmailTokens_Create = "Pages.SystemSecurity.EmailTokens.Create";
+    public const string Pages_SystemSecurity_EmailTokens_Edit = "Pages.SystemSecurity.EmailTokens.Edit";
+    public const string Pages_SystemSecurity_EmailTokens_Delete = "Pages.SystemSecurity.EmailTokens.Delete";
+
+    public const string Pages_SystemSecurity_PayslipConfigs = "Pages.SystemSecurity.PayslipConfigs";
+    public const string Pages_SystemSecurity_PayslipConfigs_Create = "Pages.SystemSecurity.PayslipConfigs.Create";
+    public const string Pages_SystemSecurity_PayslipConfigs_Edit = "Pages.SystemSecurity.PayslipConfigs.Edit";
+    public const string Pages_SystemSecurity_PayslipConfigs_Delete = "Pages.SystemSecurity.PayslipConfigs.Delete";
+
+    public const string Pages_SystemSecurity_NotificationMasters = "Pages.SystemSecurity.NotificationMasters";
+    public const string Pages_SystemSecurity_NotificationMasters_Create = "Pages.SystemSecurity.NotificationMasters.Create";
+    public const string Pages_SystemSecurity_NotificationMasters_Edit = "Pages.SystemSecurity.NotificationMasters.Edit";
+    public const string Pages_SystemSecurity_NotificationMasters_Delete = "Pages.SystemSecurity.NotificationMasters.Delete";
+
+    public const string Pages_SystemSecurity_SystemNotifications = "Pages.SystemSecurity.SystemNotifications";
+    public const string Pages_SystemSecurity_SystemNotifications_Create = "Pages.SystemSecurity.SystemNotifications.Create";
+    public const string Pages_SystemSecurity_SystemNotifications_Edit = "Pages.SystemSecurity.SystemNotifications.Edit";
+    public const string Pages_SystemSecurity_SystemNotifications_Delete = "Pages.SystemSecurity.SystemNotifications.Delete";
+
+    public const string Pages_SystemSecurity_SysObjects = "Pages.SystemSecurity.SysObjects";
+    public const string Pages_SystemSecurity_SysObjects_Create = "Pages.SystemSecurity.SysObjects.Create";
+    public const string Pages_SystemSecurity_SysObjects_Edit = "Pages.SystemSecurity.SysObjects.Edit";
+    public const string Pages_SystemSecurity_SysObjects_Delete = "Pages.SystemSecurity.SysObjects.Delete";
+
+    public const string Pages_SystemSecurity_RetroReasonLogs = "Pages.SystemSecurity.RetroReasonLogs";
+    public const string Pages_SystemSecurity_RetroReasonLogs_Create = "Pages.SystemSecurity.RetroReasonLogs.Create";
+    public const string Pages_SystemSecurity_RetroReasonLogs_Edit = "Pages.SystemSecurity.RetroReasonLogs.Edit";
+    public const string Pages_SystemSecurity_RetroReasonLogs_Delete = "Pages.SystemSecurity.RetroReasonLogs.Delete";
+
+    public const string Pages_SystemSecurity_PunchNotificationLogs = "Pages.SystemSecurity.PunchNotificationLogs";
+    public const string Pages_SystemSecurity_PunchNotificationLogs_Create = "Pages.SystemSecurity.PunchNotificationLogs.Create";
+    public const string Pages_SystemSecurity_PunchNotificationLogs_Edit = "Pages.SystemSecurity.PunchNotificationLogs.Edit";
+    public const string Pages_SystemSecurity_PunchNotificationLogs_Delete = "Pages.SystemSecurity.PunchNotificationLogs.Delete";
+
+    public const string Pages_SystemSecurity_TaskEvents = "Pages.SystemSecurity.TaskEvents";
+    public const string Pages_SystemSecurity_TaskEvents_Create = "Pages.SystemSecurity.TaskEvents.Create";
+    public const string Pages_SystemSecurity_TaskEvents_Edit = "Pages.SystemSecurity.TaskEvents.Edit";
+    public const string Pages_SystemSecurity_TaskEvents_Delete = "Pages.SystemSecurity.TaskEvents.Delete";
+
+    public const string Pages_SystemSecurity_EmployeesNotifications = "Pages.SystemSecurity.EmployeesNotifications";
+    public const string Pages_SystemSecurity_EmployeesNotifications_Create = "Pages.SystemSecurity.EmployeesNotifications.Create";
+    public const string Pages_SystemSecurity_EmployeesNotifications_Edit = "Pages.SystemSecurity.EmployeesNotifications.Edit";
+    public const string Pages_SystemSecurity_EmployeesNotifications_Delete = "Pages.SystemSecurity.EmployeesNotifications.Delete";
+
+    public const string Pages_SystemSecurity_EmployeesNotificationLogs = "Pages.SystemSecurity.EmployeesNotificationLogs";
+    public const string Pages_SystemSecurity_EmployeesNotificationLogs_Create = "Pages.SystemSecurity.EmployeesNotificationLogs.Create";
+    public const string Pages_SystemSecurity_EmployeesNotificationLogs_Edit = "Pages.SystemSecurity.EmployeesNotificationLogs.Edit";
+    public const string Pages_SystemSecurity_EmployeesNotificationLogs_Delete = "Pages.SystemSecurity.EmployeesNotificationLogs.Delete";
+
+    public const string Pages_SystemSecurity_BulkUploadLogs = "Pages.SystemSecurity.BulkUploadLogs";
+    public const string Pages_SystemSecurity_BulkUploadLogs_Create = "Pages.SystemSecurity.BulkUploadLogs.Create";
+    public const string Pages_SystemSecurity_BulkUploadLogs_Edit = "Pages.SystemSecurity.BulkUploadLogs.Edit";
+    public const string Pages_SystemSecurity_BulkUploadLogs_Delete = "Pages.SystemSecurity.BulkUploadLogs.Delete";
+
+    public const string Pages_SystemSecurity_ExecutionLogs = "Pages.SystemSecurity.ExecutionLogs";
+    public const string Pages_SystemSecurity_ExecutionLogs_Create = "Pages.SystemSecurity.ExecutionLogs.Create";
+    public const string Pages_SystemSecurity_ExecutionLogs_Edit = "Pages.SystemSecurity.ExecutionLogs.Edit";
+    public const string Pages_SystemSecurity_ExecutionLogs_Delete = "Pages.SystemSecurity.ExecutionLogs.Delete";
+
+    public const string Pages_SystemSecurity_EmailNotificationLogs = "Pages.SystemSecurity.EmailNotificationLogs";
+    public const string Pages_SystemSecurity_EmailNotificationLogs_Create = "Pages.SystemSecurity.EmailNotificationLogs.Create";
+    public const string Pages_SystemSecurity_EmailNotificationLogs_Edit = "Pages.SystemSecurity.EmailNotificationLogs.Edit";
+    public const string Pages_SystemSecurity_EmailNotificationLogs_Delete = "Pages.SystemSecurity.EmailNotificationLogs.Delete";
+
+    public const string Pages_SystemSecurity_SysTenantConfigs = "Pages.SystemSecurity.SysTenantConfigs";
+    public const string Pages_SystemSecurity_SysTenantConfigs_Create = "Pages.SystemSecurity.SysTenantConfigs.Create";
+    public const string Pages_SystemSecurity_SysTenantConfigs_Edit = "Pages.SystemSecurity.SysTenantConfigs.Edit";
+    public const string Pages_SystemSecurity_SysTenantConfigs_Delete = "Pages.SystemSecurity.SysTenantConfigs.Delete";
+
+    public const string Pages_Reports_Preview = "Pages.Reports.Preview";
+
+}

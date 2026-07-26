@@ -13,8 +13,8 @@ namespace HCMv3.TimeManagement;
 /// validation are ported in <c>EmployeeDutyPeriodsAppService</c>, following the same pattern already
 /// established by <c>EmployeeOrgAssignmentsAppService</c> (PersonnelAdministration Wave B).
 ///
-/// DEFERRED (not ported): the legacy <c>StartPoint</c> field and the commented-out <c>Weekoff</c>
-/// calculated property it fed (dead code in the legacy source); the delete-guard that blocked deletion
+/// DEFERRED (not ported): the commented-out <c>Weekoff</c>
+/// calculated property (dead code in the legacy source); the delete-guard that blocked deletion
 /// when a <c>SalaryRegister</c>/<c>TimeRegister</c> exists in the record's date window
 /// (<c>SalaryRegister</c> doesn't exist in this port; the <c>TimeRegister</c> cross-check is deferred as
 /// not worth the coupling this wave); the static <c>GetDuty(session, dayDate, empOid, throwException)</c>
@@ -41,4 +41,15 @@ public class EmployeeDutyPeriod : FullAuditedEntity, IMustHaveTenant
     public virtual DateTime StartDate { get; set; }
 
     public virtual DateTime EndDate { get; set; }
+
+    /// <summary>
+    /// Which day-position (1-based) in the assigned <see cref="DutyPeriod"/>'s multi-week duty rotation
+    /// (see <see cref="DutyPeriodDetail"/> Week/Day1Duty..Day7Duty) the employee's roster starts on, anchored
+    /// at <see cref="StartDate"/>. Used by <c>RosterService.GetRosterDutyAsync</c> to resolve the day's
+    /// <see cref="Duty"/> via the rotation formula, exactly as legacy's
+    /// <c>HCM10.Module.BusinessObjects.TimeManagement.EmployeeDutyPeriod.StartPoint</c>. A value of 0 (or
+    /// less) means no rotation is configured for this assignment, and the classic day-of-week FK on
+    /// <see cref="DutyPeriod"/> (Sunday..SaturdayDuty) is used instead.
+    /// </summary>
+    public virtual int StartPoint { get; set; }
 }

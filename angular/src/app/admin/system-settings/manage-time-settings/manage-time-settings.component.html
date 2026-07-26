@@ -1,0 +1,100 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TimeSettings' | localize" [description]="'SystemSettings' | localize">
+        <div role="actions">
+            @if ('Pages.SystemSettings.TimeSettings.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '110rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.SystemSettings.TimeSettings.Edit', 'Pages.SystemSettings.TimeSettings.Delete'] | permissionAny)">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 170px">{{ 'EarliestEvaluationDate' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'FutureEvaluationInDays' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'EnableRosterDuty' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'EnableTimeAttendanceIntegration' | localize }}</th>
+                                    <th style="min-width: 190px">{{ 'EnableOvertimeInTimeEngine' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'ForfeitRule' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'RosterPlannerFrequency' | localize }}</th>
+                                    <th style="min-width: 190px">{{ 'EnableTimeRegisterApproval' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'EnableGeoFence' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="!(['Pages.SystemSettings.TimeSettings.Edit', 'Pages.SystemSettings.TimeSettings.Delete'] | permissionAny)">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 170px">{{ record.earliestEvaluationDate | luxonFormat:'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 170px">{{ record.futureEvaluationInDays }}</td>
+                                    <td style="min-width: 150px"><i class="fa" [ngClass]="record.enableRosterDuty ? 'fa-check text-success' : 'fa-times text-muted'"></i></td>
+                                    <td style="min-width: 200px"><i class="fa" [ngClass]="record.enableTimeAttendanceIntegration ? 'fa-check text-success' : 'fa-times text-muted'"></i></td>
+                                    <td style="min-width: 190px"><i class="fa" [ngClass]="record.enableOvertimeInTimeEngine ? 'fa-check text-success' : 'fa-times text-muted'"></i></td>
+                                    <td style="min-width: 130px">{{ forfeitRuleLabels[record.forfeitRule] | localize }}</td>
+                                    <td style="min-width: 180px">{{ rosterPlannerFrequencyLabels[record.rosterPlannerFrequency] | localize }}</td>
+                                    <td style="min-width: 190px"><i class="fa" [ngClass]="record.enableTimeRegisterApproval ? 'fa-check text-success' : 'fa-times text-muted'"></i></td>
+                                    <td style="min-width: 140px"><i class="fa" [ngClass]="record.enableGeoFence ? 'fa-check text-success' : 'fa-times text-muted'"></i></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditManageTimeSettingsModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

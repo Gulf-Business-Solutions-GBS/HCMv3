@@ -1,0 +1,134 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'EmailNotificationLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'EmailNotificationLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmailNotificationLog_Date">{{ 'Date' | localize }}</label>
+                                <input
+                                    id="EmailNotificationLog_Date"
+                                    type="datetime-local"
+                                    class="form-control"
+                                    name="Date"
+                                    [ngModel]="toDateTimeLocal(record().date)"
+                                    (ngModelChange)="updateDateTimeField('date', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="EmailNotificationLog_Email">{{ 'Email' | localize }}</label>
+                                <input
+                                    id="EmailNotificationLog_Email"
+                                    #emailInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Email"
+                                    [ngModel]="record().email"
+                                    (ngModelChange)="updateField('email', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="emailInput" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="EmailNotificationLog_Source">{{ 'Source' | localize }}</label>
+                                <input
+                                    id="EmailNotificationLog_Source"
+                                    class="form-control"
+                                    type="text"
+                                    name="Source"
+                                    [ngModel]="record().source"
+                                    (ngModelChange)="updateField('source', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label" for="EmailNotificationLog_Subject">{{ 'Subject' | localize }}</label>
+                                <input
+                                    id="EmailNotificationLog_Subject"
+                                    class="form-control"
+                                    type="text"
+                                    name="Subject"
+                                    [ngModel]="record().subject"
+                                    (ngModelChange)="updateField('subject', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex align-items-end">
+                                <div class="form-check form-switch">
+                                    <input
+                                        id="EmailNotificationLog_IsSuccessful"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="IsSuccessful"
+                                        [ngModel]="record().isSuccessful"
+                                        (ngModelChange)="updateField('isSuccessful', $event)" />
+                                    <label class="form-check-label" for="EmailNotificationLog_IsSuccessful">{{ 'IsSuccessful' | localize }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="EmailNotificationLog_Body">{{ 'Body' | localize }}</label>
+                                <textarea
+                                    id="EmailNotificationLog_Body"
+                                    class="form-control"
+                                    rows="5"
+                                    name="Body"
+                                    [ngModel]="record().body"
+                                    (ngModelChange)="updateField('body', $event)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="EmailNotificationLog_Exception">{{ 'Exception' | localize }}</label>
+                                <textarea
+                                    id="EmailNotificationLog_Exception"
+                                    class="form-control"
+                                    rows="5"
+                                    name="Exception"
+                                    [ngModel]="record().exception"
+                                    (ngModelChange)="updateField('exception', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

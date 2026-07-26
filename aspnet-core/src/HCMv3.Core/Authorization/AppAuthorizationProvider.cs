@@ -701,6 +701,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Edit, L("EditItem"));
         employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Delete, L("DeleteItem"));
 
+        var news = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News, L("News"));
+        news.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News_Create, L("CreateNewItem"));
+        news.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News_Edit, L("EditItem"));
+        news.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News_Delete, L("DeleteItem"));
+
         var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 
         var roles = administration.CreateChildPermission(AppPermissions.Pages_Administration_Roles, L("Roles"));
@@ -1774,6 +1779,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         workflowRoles.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRoles_Edit, L("EditItem"));
         workflowRoles.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRoles_Delete, L("DeleteItem"));
 
+        var employeeWorkflowRoles = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_EmployeeWorkflowRoles, L("EmployeeWorkflowRoles"));
+        employeeWorkflowRoles.CreateChildPermission(AppPermissions.Pages_Workflow_EmployeeWorkflowRoles_Create, L("CreateNewItem"));
+        employeeWorkflowRoles.CreateChildPermission(AppPermissions.Pages_Workflow_EmployeeWorkflowRoles_Edit, L("EditItem"));
+        employeeWorkflowRoles.CreateChildPermission(AppPermissions.Pages_Workflow_EmployeeWorkflowRoles_Delete, L("DeleteItem"));
+
         var workflowGroups = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowGroups, L("WorkflowGroups"));
         workflowGroups.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowGroups_Create, L("CreateNewItem"));
         workflowGroups.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowGroups_Edit, L("EditItem"));
@@ -1808,6 +1818,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Create, L("CreateNewItem"));
         workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Edit, L("EditItem"));
         workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Delete, L("DeleteItem"));
+        workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Submit, L("SubmittingWorkflowRequest"));
+        workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Approve, L("ApprovingWorkflowRequest"));
+        workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Reject, L("RejectingWorkflowRequest"));
+        workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_SendBack, L("SendingBackWorkflowRequest"));
+        workflowRequests.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowRequests_Reassign, L("ReassigningWorkflowRequest"));
 
         var requestLogs = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RequestLogs, L("RequestLogs"));
         requestLogs.CreateChildPermission(AppPermissions.Pages_Workflow_RequestLogs_Create, L("CreateNewItem"));
@@ -2319,6 +2334,167 @@ public class AppAuthorizationProvider : AuthorizationProvider
         jobDescriptionAcknowledgements.CreateChildPermission(AppPermissions.Pages_JobProfileManagement_JobDescriptionAcknowledgements_Create, L("CreateNewItem"));
         jobDescriptionAcknowledgements.CreateChildPermission(AppPermissions.Pages_JobProfileManagement_JobDescriptionAcknowledgements_Edit, L("EditItem"));
         jobDescriptionAcknowledgements.CreateChildPermission(AppPermissions.Pages_JobProfileManagement_JobDescriptionAcknowledgements_Delete, L("DeleteItem"));
+
+        var systemSettings = pages.CreateChildPermission(AppPermissions.Pages_SystemSettings, L("SystemSettings"));
+
+        var appraisalSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_AppraisalSettings, L("AppraisalSettings"));
+        appraisalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_AppraisalSettings_Create, L("CreateNewItem"));
+        appraisalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_AppraisalSettings_Edit, L("EditItem"));
+        appraisalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_AppraisalSettings_Delete, L("DeleteItem"));
+
+        var documentSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_DocumentSettings, L("DocumentSettings"));
+        documentSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_DocumentSettings_Create, L("CreateNewItem"));
+        documentSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_DocumentSettings_Edit, L("EditItem"));
+        documentSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_DocumentSettings_Delete, L("DeleteItem"));
+
+        var fiPostingSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_FIPostingSettings, L("FIPostingSettings"));
+        fiPostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_FIPostingSettings_Create, L("CreateNewItem"));
+        fiPostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_FIPostingSettings_Edit, L("EditItem"));
+        fiPostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_FIPostingSettings_Delete, L("DeleteItem"));
+
+        var generalSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_GeneralSettings, L("GeneralSettings"));
+        generalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_GeneralSettings_Create, L("CreateNewItem"));
+        generalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_GeneralSettings_Edit, L("EditItem"));
+        generalSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_GeneralSettings_Delete, L("DeleteItem"));
+
+        var notificationSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_NotificationSettings, L("NotificationSettings"));
+        notificationSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_NotificationSettings_Create, L("CreateNewItem"));
+        notificationSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_NotificationSettings_Edit, L("EditItem"));
+        notificationSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_NotificationSettings_Delete, L("DeleteItem"));
+
+        var orgSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_OrgSettings, L("OrgSettings"));
+        orgSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_OrgSettings_Create, L("CreateNewItem"));
+        orgSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_OrgSettings_Edit, L("EditItem"));
+        orgSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_OrgSettings_Delete, L("DeleteItem"));
+
+        var payrollSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollSettings, L("PayrollSettings"));
+        payrollSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollSettings_Create, L("CreateNewItem"));
+        payrollSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollSettings_Edit, L("EditItem"));
+        payrollSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollSettings_Delete, L("DeleteItem"));
+
+        var personnelSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PersonnelSettings, L("PersonnelSettings"));
+        personnelSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PersonnelSettings_Create, L("CreateNewItem"));
+        personnelSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PersonnelSettings_Edit, L("EditItem"));
+        personnelSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PersonnelSettings_Delete, L("DeleteItem"));
+
+        var projectCostingSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ProjectCostingSettings, L("ProjectCostingSettings"));
+        projectCostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ProjectCostingSettings_Create, L("CreateNewItem"));
+        projectCostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ProjectCostingSettings_Edit, L("EditItem"));
+        projectCostingSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ProjectCostingSettings_Delete, L("DeleteItem"));
+
+        var systemReportSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ReportSettings, L("ReportSettings"));
+        systemReportSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ReportSettings_Create, L("CreateNewItem"));
+        systemReportSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ReportSettings_Edit, L("EditItem"));
+        systemReportSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_ReportSettings_Delete, L("DeleteItem"));
+
+        var securitySettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SecuritySettings, L("SecuritySettings"));
+        securitySettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SecuritySettings_Create, L("CreateNewItem"));
+        securitySettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SecuritySettings_Edit, L("EditItem"));
+        securitySettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SecuritySettings_Delete, L("DeleteItem"));
+
+        var selfServiceSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SelfServiceSettings, L("SelfServiceSettings"));
+        selfServiceSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SelfServiceSettings_Create, L("CreateNewItem"));
+        selfServiceSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SelfServiceSettings_Edit, L("EditItem"));
+        selfServiceSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_SelfServiceSettings_Delete, L("DeleteItem"));
+
+        var timeSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_TimeSettings, L("TimeSettings"));
+        timeSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_TimeSettings_Create, L("CreateNewItem"));
+        timeSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_TimeSettings_Edit, L("EditItem"));
+        timeSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_TimeSettings_Delete, L("DeleteItem"));
+
+        var workflowSettings = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_WorkflowSettings, L("WorkflowSettings"));
+        workflowSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_WorkflowSettings_Create, L("CreateNewItem"));
+        workflowSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_WorkflowSettings_Edit, L("EditItem"));
+        workflowSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_WorkflowSettings_Delete, L("DeleteItem"));
+
+        var payrollDrivers = systemSettings.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollDrivers, L("PayrollDrivers"));
+        payrollDrivers.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollDrivers_Create, L("CreateNewItem"));
+        payrollDrivers.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollDrivers_Edit, L("EditItem"));
+        payrollDrivers.CreateChildPermission(AppPermissions.Pages_SystemSettings_PayrollDrivers_Delete, L("DeleteItem"));
+
+        var sysUserOrgUnitData = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysUserOrgUnitData, L("SysUserOrgUnitData"));
+        sysUserOrgUnitData.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysUserOrgUnitData_Create, L("CreateNewItem"));
+        sysUserOrgUnitData.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysUserOrgUnitData_Edit, L("EditItem"));
+        sysUserOrgUnitData.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysUserOrgUnitData_Delete, L("DeleteItem"));
+
+        var emailTemplates = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTemplates, L("EmailTemplates"));
+        emailTemplates.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTemplates_Create, L("CreateNewItem"));
+        emailTemplates.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTemplates_Edit, L("EditItem"));
+        emailTemplates.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTemplates_Delete, L("DeleteItem"));
+
+        var emailTokens = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTokens, L("EmailTokens"));
+        emailTokens.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTokens_Create, L("CreateNewItem"));
+        emailTokens.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTokens_Edit, L("EditItem"));
+        emailTokens.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailTokens_Delete, L("DeleteItem"));
+
+        var payslipConfigs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PayslipConfigs, L("PayslipConfigs"));
+        payslipConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PayslipConfigs_Create, L("CreateNewItem"));
+        payslipConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PayslipConfigs_Edit, L("EditItem"));
+        payslipConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PayslipConfigs_Delete, L("DeleteItem"));
+
+        var notificationMasters = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_NotificationMasters, L("NotificationMasters"));
+        notificationMasters.CreateChildPermission(AppPermissions.Pages_SystemSecurity_NotificationMasters_Create, L("CreateNewItem"));
+        notificationMasters.CreateChildPermission(AppPermissions.Pages_SystemSecurity_NotificationMasters_Edit, L("EditItem"));
+        notificationMasters.CreateChildPermission(AppPermissions.Pages_SystemSecurity_NotificationMasters_Delete, L("DeleteItem"));
+
+        var systemNotifications = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SystemNotifications, L("SystemNotifications"));
+        systemNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SystemNotifications_Create, L("CreateNewItem"));
+        systemNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SystemNotifications_Edit, L("EditItem"));
+        systemNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SystemNotifications_Delete, L("DeleteItem"));
+
+        var sysObjects = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysObjects, L("SysObjects"));
+        sysObjects.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysObjects_Create, L("CreateNewItem"));
+        sysObjects.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysObjects_Edit, L("EditItem"));
+        sysObjects.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysObjects_Delete, L("DeleteItem"));
+
+        var retroReasonLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_RetroReasonLogs, L("RetroReasonLogs"));
+        retroReasonLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_RetroReasonLogs_Create, L("CreateNewItem"));
+        retroReasonLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_RetroReasonLogs_Edit, L("EditItem"));
+        retroReasonLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_RetroReasonLogs_Delete, L("DeleteItem"));
+
+        var punchNotificationLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PunchNotificationLogs, L("PunchNotificationLogs"));
+        punchNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PunchNotificationLogs_Create, L("CreateNewItem"));
+        punchNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PunchNotificationLogs_Edit, L("EditItem"));
+        punchNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_PunchNotificationLogs_Delete, L("DeleteItem"));
+
+        var taskEvents = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_TaskEvents, L("TaskEvents"));
+        taskEvents.CreateChildPermission(AppPermissions.Pages_SystemSecurity_TaskEvents_Create, L("CreateNewItem"));
+        taskEvents.CreateChildPermission(AppPermissions.Pages_SystemSecurity_TaskEvents_Edit, L("EditItem"));
+        taskEvents.CreateChildPermission(AppPermissions.Pages_SystemSecurity_TaskEvents_Delete, L("DeleteItem"));
+
+        var employeesNotifications = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotifications, L("EmployeesNotifications"));
+        employeesNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotifications_Create, L("CreateNewItem"));
+        employeesNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotifications_Edit, L("EditItem"));
+        employeesNotifications.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotifications_Delete, L("DeleteItem"));
+
+        var employeesNotificationLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotificationLogs, L("EmployeesNotificationLogs"));
+        employeesNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotificationLogs_Create, L("CreateNewItem"));
+        employeesNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotificationLogs_Edit, L("EditItem"));
+        employeesNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmployeesNotificationLogs_Delete, L("DeleteItem"));
+
+        var bulkUploadLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_BulkUploadLogs, L("BulkUploadLogs"));
+        bulkUploadLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_BulkUploadLogs_Create, L("CreateNewItem"));
+        bulkUploadLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_BulkUploadLogs_Edit, L("EditItem"));
+        bulkUploadLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_BulkUploadLogs_Delete, L("DeleteItem"));
+
+        var executionLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_ExecutionLogs, L("ExecutionLogs"));
+        executionLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_ExecutionLogs_Create, L("CreateNewItem"));
+        executionLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_ExecutionLogs_Edit, L("EditItem"));
+        executionLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_ExecutionLogs_Delete, L("DeleteItem"));
+
+        var emailNotificationLogs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailNotificationLogs, L("EmailNotificationLogs"));
+        emailNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailNotificationLogs_Create, L("CreateNewItem"));
+        emailNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailNotificationLogs_Edit, L("EditItem"));
+        emailNotificationLogs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_EmailNotificationLogs_Delete, L("DeleteItem"));
+
+        var sysTenantConfigs = pages.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs, L("SysTenantConfigs"));
+        sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Create, L("CreateNewItem"));
+        sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Edit, L("EditItem"));
+        sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Delete, L("DeleteItem"));
+
+        //REPORTS (FastReport pilot)
+        pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
+
     }
 
     private static ILocalizableString L(string name)

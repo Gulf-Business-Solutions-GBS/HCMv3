@@ -1,0 +1,132 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'RetroReasonLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'RetroReasonLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="RetroReasonLog_EmployeeId">{{ 'Employee' | localize }}</label>
+                                <select
+                                    id="RetroReasonLog_EmployeeId"
+                                    #employeeIdInput="ngModel"
+                                    class="form-select"
+                                    name="EmployeeId"
+                                    [ngModel]="record().employeeId"
+                                    (ngModelChange)="updateField('employeeId', $event)"
+                                    required>
+                                    <option [ngValue]="undefined"></option>
+                                    @for (employee of employees(); track employee.id) {
+                                        <option [ngValue]="employee.id">{{ employeeLabel(employee) }}</option>
+                                    }
+                                </select>
+                                <validation-messages [formCtrl]="employeeIdInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RetroReasonLog_ChangedOn">{{ 'ChangedOn' | localize }}</label>
+                                <input
+                                    id="RetroReasonLog_ChangedOn"
+                                    #changedOnInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="ChangedOn"
+                                    [ngModel]="record().changedOn?.toISODate()"
+                                    (ngModelChange)="updateDateField('changedOn', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="changedOnInput" />
+                            </div>
+                            <div class="col-md-3 mb-5">
+                                <label class="form-label required" for="RetroReasonLog_RetroDate">{{ 'RetroDate' | localize }}</label>
+                                <input
+                                    id="RetroReasonLog_RetroDate"
+                                    #retroDateInput="ngModel"
+                                    type="date"
+                                    class="form-control"
+                                    name="RetroDate"
+                                    [ngModel]="record().retroDate?.toISODate()"
+                                    (ngModelChange)="updateDateField('retroDate', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="retroDateInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 mb-5">
+                                <label class="form-label" for="RetroReasonLog_EntityObjectName">{{ 'EntityObjectName' | localize }}</label>
+                                <input
+                                    id="RetroReasonLog_EntityObjectName"
+                                    class="form-control"
+                                    type="text"
+                                    name="EntityObjectName"
+                                    [ngModel]="record().entityObjectName"
+                                    (ngModelChange)="updateField('entityObjectName', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label required" for="RetroReasonLog_EntityObjectId">{{ 'EntityObjectId' | localize }}</label>
+                                <input
+                                    id="RetroReasonLog_EntityObjectId"
+                                    #entityObjectIdInput="ngModel"
+                                    type="number"
+                                    class="form-control"
+                                    name="EntityObjectId"
+                                    [ngModel]="record().entityObjectId"
+                                    (ngModelChange)="updateField('entityObjectId', $event)"
+                                    required />
+                                <validation-messages [formCtrl]="entityObjectIdInput" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="RetroReasonLog_RetroReason">{{ 'RetroReason' | localize }}</label>
+                                <textarea
+                                    id="RetroReasonLog_RetroReason"
+                                    class="form-control"
+                                    rows="4"
+                                    name="RetroReason"
+                                    [ngModel]="record().retroReason"
+                                    (ngModelChange)="updateField('retroReason', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

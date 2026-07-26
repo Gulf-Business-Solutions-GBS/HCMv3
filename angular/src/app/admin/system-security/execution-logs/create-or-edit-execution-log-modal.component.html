@@ -1,0 +1,179 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'ExecutionLogs' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'ExecutionLogs' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_UserName">{{ 'UserName' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_UserName"
+                                    class="form-control"
+                                    type="text"
+                                    name="UserName"
+                                    [ngModel]="record().userName"
+                                    (ngModelChange)="updateField('userName', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_ActionDateTime">{{ 'ActionDateTime' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_ActionDateTime"
+                                    type="datetime-local"
+                                    class="form-control"
+                                    name="ActionDateTime"
+                                    [ngModel]="toDateTimeLocal(record().actionDateTime)"
+                                    (ngModelChange)="updateDateTimeField('actionDateTime', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_Action">{{ 'Action' | localize }}</label>
+                                <select
+                                    id="ExecutionLog_Action"
+                                    class="form-select"
+                                    name="Action"
+                                    [ngModel]="record().action"
+                                    (ngModelChange)="updateField('action', $event)">
+                                    @for (option of actions; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_Module">{{ 'Module' | localize }}</label>
+                                <select
+                                    id="ExecutionLog_Module"
+                                    class="form-select"
+                                    name="Module"
+                                    [ngModel]="record().module"
+                                    (ngModelChange)="updateField('module', $event)">
+                                    @for (option of modules; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_ScreenName">{{ 'ScreenName' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_ScreenName"
+                                    class="form-control"
+                                    type="text"
+                                    name="ScreenName"
+                                    [ngModel]="record().screenName"
+                                    (ngModelChange)="updateField('screenName', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_ScreenCaption">{{ 'ScreenCaption' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_ScreenCaption"
+                                    class="form-control"
+                                    type="text"
+                                    name="ScreenCaption"
+                                    [ngModel]="record().screenCaption"
+                                    (ngModelChange)="updateField('screenCaption', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_ExecutionStatus">{{ 'ExecutionStatus' | localize }}</label>
+                                <select
+                                    id="ExecutionLog_ExecutionStatus"
+                                    class="form-select"
+                                    name="ExecutionStatus"
+                                    [ngModel]="record().executionStatus"
+                                    (ngModelChange)="updateField('executionStatus', $event)">
+                                    @for (option of statuses; track option.value) {
+                                        <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_TotalRecords">{{ 'TotalRecords' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_TotalRecords"
+                                    type="number"
+                                    class="form-control"
+                                    name="TotalRecords"
+                                    [ngModel]="record().totalRecords"
+                                    (ngModelChange)="updateNumberField('totalRecords', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_Successfull">{{ 'Successfull' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_Successfull"
+                                    type="number"
+                                    class="form-control"
+                                    name="Successfull"
+                                    [ngModel]="record().successfull"
+                                    (ngModelChange)="updateNumberField('successfull', $event)" />
+                            </div>
+                            <div class="col-md-4 mb-5">
+                                <label class="form-label" for="ExecutionLog_Failed">{{ 'Failed' | localize }}</label>
+                                <input
+                                    id="ExecutionLog_Failed"
+                                    type="number"
+                                    class="form-control"
+                                    name="Failed"
+                                    [ngModel]="record().failed"
+                                    (ngModelChange)="updateNumberField('failed', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-5">
+                                <label class="form-label" for="ExecutionLog_Parameters">{{ 'Parameters' | localize }}</label>
+                                <textarea
+                                    id="ExecutionLog_Parameters"
+                                    class="form-control"
+                                    rows="4"
+                                    name="Parameters"
+                                    [ngModel]="record().parameters"
+                                    (ngModelChange)="updateField('parameters', $event)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -6,8 +6,11 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow.Dto;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,10 +26,68 @@ namespace HCMv3.Workflow;
 public class WorkflowRequestsAppService : HCMv3AppServiceBase, IWorkflowRequestsAppService
 {
     private readonly IRepository<WorkflowRequest> _repository;
+    private readonly IWorkflowApprovalService _workflowApprovalService;
+    private readonly IEmployeeSessionService _employeeSessionService;
 
-    public WorkflowRequestsAppService(IRepository<WorkflowRequest> repository)
+    public WorkflowRequestsAppService(
+        IRepository<WorkflowRequest> repository,
+        IWorkflowApprovalService workflowApprovalService,
+        IEmployeeSessionService employeeSessionService)
     {
         _repository = repository;
+        _workflowApprovalService = workflowApprovalService;
+        _employeeSessionService = employeeSessionService;
+    }
+
+    /// <summary>
+    /// Resolves the calling ABP user to their <see cref="PersonnelAdministration.Employee"/> row, throwing a
+    /// user-friendly error if there is none (mirrors legacy's own "User does not exist"/loggedInEmployee-null
+    /// guards repeated at the top of every <c>RequestProcessApproval</c> action handler).
+    /// </summary>
+    private async Task<int> GetActingEmployeeIdAsync()
+    {
+        var employee = await _employeeSessionService.GetCurrentEmployeeAsync();
+        if (employee == null)
+        {
+            throw new UserFriendlyException(L("EmployeeNotFound"));
+        }
+
+        return employee.Id;
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowRequests_Submit)]
+    public async Task SubmitWorkflowRequest(EntityDto input)
+    {
+        var actingEmployeeId = await GetActingEmployeeIdAsync();
+        await _workflowApprovalService.SubmitAsync(input.Id, actingEmployeeId);
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowRequests_Approve)]
+    public async Task ApproveWorkflowRequest(ApproveWorkflowRequestDto input)
+    {
+        var actingEmployeeId = await GetActingEmployeeIdAsync();
+        await _workflowApprovalService.ApproveAsync(input.RequestId, actingEmployeeId, input.Remark);
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowRequests_Reject)]
+    public async Task RejectWorkflowRequest(RejectWorkflowRequestDto input)
+    {
+        var actingEmployeeId = await GetActingEmployeeIdAsync();
+        await _workflowApprovalService.RejectAsync(input.RequestId, actingEmployeeId, input.Remark);
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowRequests_SendBack)]
+    public async Task SendBackWorkflowRequest(SendBackWorkflowRequestDto input)
+    {
+        var actingEmployeeId = await GetActingEmployeeIdAsync();
+        await _workflowApprovalService.SendBackAsync(input.RequestId, actingEmployeeId, input.Remark);
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_Workflow_WorkflowRequests_Reassign)]
+    public async Task ReassignWorkflowRequest(ReassignWorkflowRequestDto input)
+    {
+        var actingEmployeeId = await GetActingEmployeeIdAsync();
+        await _workflowApprovalService.ReassignAsync(input.RequestId, actingEmployeeId, input.NewApproverEmployeeId, input.Remark);
     }
 
     [HttpPost]

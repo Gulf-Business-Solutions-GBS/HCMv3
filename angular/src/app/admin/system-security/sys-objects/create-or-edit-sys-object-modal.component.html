@@ -1,0 +1,118 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SysObjects' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SysObjects' | localize }}</span>
+                            }
+                        </h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            (click)="close()"
+                            [attr.aria-label]="l('Close')"
+                            [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label required" for="SysObject_Name">{{ 'Name' | localize }}</label>
+                                <input
+                                    id="SysObject_Name"
+                                    #nameInput="ngModel"
+                                    class="form-control"
+                                    type="text"
+                                    name="Name"
+                                    [ngModel]="record().name"
+                                    (ngModelChange)="updateField('name', $event)"
+                                    required
+                                    maxlength="256" />
+                                <validation-messages [formCtrl]="nameInput" />
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <label class="form-label" for="SysObject_FullName">{{ 'FullName' | localize }}</label>
+                                <input
+                                    id="SysObject_FullName"
+                                    class="form-control"
+                                    type="text"
+                                    name="FullName"
+                                    [ngModel]="record().fullName"
+                                    (ngModelChange)="updateField('fullName', $event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-5 form-check form-switch mt-8">
+                                <input
+                                    id="SysObject_IsPayrollSensitive"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsPayrollSensitive"
+                                    [ngModel]="record().isPayrollSensitive"
+                                    (ngModelChange)="updateField('isPayrollSensitive', $event)" />
+                                <label class="form-check-label" for="SysObject_IsPayrollSensitive">{{ 'IsPayrollSensitive' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check form-switch mt-8">
+                                <input
+                                    id="SysObject_RespectPermission"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="RespectPermission"
+                                    [ngModel]="record().respectPermission"
+                                    (ngModelChange)="updateField('respectPermission', $event)" />
+                                <label class="form-check-label" for="SysObject_RespectPermission">{{ 'RespectPermission' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check form-switch mt-8">
+                                <input
+                                    id="SysObject_MustRetroRun"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="MustRetroRun"
+                                    [ngModel]="record().mustRetroRun"
+                                    (ngModelChange)="updateField('mustRetroRun', $event)" />
+                                <label class="form-check-label" for="SysObject_MustRetroRun">{{ 'MustRetroRun' | localize }}</label>
+                            </div>
+                            <div class="col-md-3 mb-5 form-check form-switch mt-8">
+                                <input
+                                    id="SysObject_IsTimeSensitive"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="IsTimeSensitive"
+                                    [ngModel]="record().isTimeSensitive"
+                                    (ngModelChange)="updateField('isTimeSensitive', $event)" />
+                                <label class="form-check-label" for="SysObject_IsTimeSensitive">{{ 'IsTimeSensitive' | localize }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

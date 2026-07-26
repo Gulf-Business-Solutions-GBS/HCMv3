@@ -17,16 +17,20 @@
     <EmbeddedResource Include="Localization\HCMv3\*.xml;Net\Emailing\EmailTemplates\default.html" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.3" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.0" />
     <PackageReference Include="Azure.Identity" Version="1.18.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.3" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="4.1.0" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="PayPalHttp" Version="1.0.1" />
     <PackageReference Include="PayPalCheckoutSdk" Version="1.0.4" />
     <PackageReference Include="QRCoder" Version="1.7.0" />
     <PackageReference Include="Stripe.net" Version="50.4.1" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.0" />
     <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
     <PackageReference Include="Abp.AspNetZeroCore" Version="5.1.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.2" />

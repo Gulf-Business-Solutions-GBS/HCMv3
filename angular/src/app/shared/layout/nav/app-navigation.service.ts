@@ -19,6 +19,7 @@ export class AppNavigationService {
                 '/app/admin/hostDashboard'
             ),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
+            new AppMenuItem('ReportPreview', 'Pages.Reports.Preview', 'flaticon-file-2', '/app/admin/report-preview'),
             new AppMenuItem(
                 'Saas',
                 '',
@@ -502,6 +503,52 @@ export class AppNavigationService {
                     new AppMenuItem('TrainingSchedules', 'Pages.TrainingManagement.TrainingSchedules', 'flaticon-list-3', '/app/admin/training-schedules'),
                     new AppMenuItem('EmployeeTrainings', 'Pages.TrainingManagement.EmployeeTrainings', 'flaticon-list-3', '/app/admin/employee-trainings'),
                     new AppMenuItem('TrainingAttendances', 'Pages.TrainingManagement.TrainingAttendances', 'flaticon-list-3', '/app/admin/training-attendances'),
+                ]
+            ),
+            new AppMenuItem(
+                'SystemSettings',
+                '',
+                'flaticon-settings',
+                '',
+                [],
+                [
+                    new AppMenuItem('AppraisalSettings', 'Pages.SystemSettings.AppraisalSettings', 'flaticon-list-3', '/app/admin/manage-appraisal-settings'),
+                    new AppMenuItem('DocumentSettings', 'Pages.SystemSettings.DocumentSettings', 'flaticon-list-3', '/app/admin/manage-document-settings'),
+                    new AppMenuItem('FIPostingSettings', 'Pages.SystemSettings.FIPostingSettings', 'flaticon-list-3', '/app/admin/manage-fi-posting-settings'),
+                    new AppMenuItem('GeneralSettings', 'Pages.SystemSettings.GeneralSettings', 'flaticon-list-3', '/app/admin/manage-general-settings'),
+                    new AppMenuItem('NotificationSettings', 'Pages.SystemSettings.NotificationSettings', 'flaticon-list-3', '/app/admin/manage-notification-settings'),
+                    new AppMenuItem('OrgSettings', 'Pages.SystemSettings.OrgSettings', 'flaticon-list-3', '/app/admin/manage-org-settings'),
+                    new AppMenuItem('PayrollSettings', 'Pages.SystemSettings.PayrollSettings', 'flaticon-list-3', '/app/admin/manage-payroll-settings'),
+                    new AppMenuItem('PersonnelSettings', 'Pages.SystemSettings.PersonnelSettings', 'flaticon-list-3', '/app/admin/manage-personnel-settings'),
+                    new AppMenuItem('ProjectCostingSettings', 'Pages.SystemSettings.ProjectCostingSettings', 'flaticon-list-3', '/app/admin/manage-project-costing-settings'),
+                    new AppMenuItem('ReportSettings', 'Pages.SystemSettings.ReportSettings', 'flaticon-list-3', '/app/admin/manage-report-settings'),
+                    new AppMenuItem('SecuritySettings', 'Pages.SystemSettings.SecuritySettings', 'flaticon-list-3', '/app/admin/manage-security-settings'),
+                    new AppMenuItem('SelfServiceSettings', 'Pages.SystemSettings.SelfServiceSettings', 'flaticon-list-3', '/app/admin/manage-self-service-settings'),
+                    new AppMenuItem('TimeSettings', 'Pages.SystemSettings.TimeSettings', 'flaticon-list-3', '/app/admin/manage-time-settings'),
+                    new AppMenuItem('WorkflowSettings', 'Pages.SystemSettings.WorkflowSettings', 'flaticon-list-3', '/app/admin/manage-workflow-settings'),
+                    new AppMenuItem('PayrollDrivers', 'Pages.SystemSettings.PayrollDrivers', 'flaticon-list-3', '/app/admin/payroll-drivers'),
+                ]
+            ),
+            new AppMenuItem(
+                'SystemSecurity',
+                '',
+                'flaticon-lock',
+                '',
+                [],
+                [
+                    new AppMenuItem('SysUserOrgUnitDatas', 'Pages.SystemSecurity.SysUserOrgUnitData', 'flaticon-list-3', '/app/admin/sys-user-org-unit-datas'),
+                    new AppMenuItem('EmailTemplates', 'Pages.SystemSecurity.EmailTemplates', 'flaticon-list-3', '/app/admin/email-templates'),
+                    new AppMenuItem('EmailTokens', 'Pages.SystemSecurity.EmailTokens', 'flaticon-list-3', '/app/admin/email-tokens'),
+                    new AppMenuItem('PayslipConfigs', 'Pages.SystemSecurity.PayslipConfigs', 'flaticon-list-3', '/app/admin/payslip-configs'),
+                    new AppMenuItem('NotificationMasters', 'Pages.SystemSecurity.NotificationMasters', 'flaticon-list-3', '/app/admin/notification-masters'),
+                    new AppMenuItem('SystemNotifications', 'Pages.SystemSecurity.SystemNotifications', 'flaticon-list-3', '/app/admin/system-notifications'),
+                    new AppMenuItem('SysObjects', 'Pages.SystemSecurity.SysObjects', 'flaticon-list-3', '/app/admin/sys-objects'),
+                    new AppMenuItem('RetroReasonLogs', 'Pages.SystemSecurity.RetroReasonLogs', 'flaticon-list-3', '/app/admin/retro-reason-logs'),
+                    new AppMenuItem('PunchNotificationLogs', 'Pages.SystemSecurity.PunchNotificationLogs', 'flaticon-list-3', '/app/admin/punch-notification-logs'),
+                    new AppMenuItem('BulkUploadLogs', 'Pages.SystemSecurity.BulkUploadLogs', 'flaticon-list-3', '/app/admin/bulk-upload-logs'),
+                    new AppMenuItem('ExecutionLogs', 'Pages.SystemSecurity.ExecutionLogs', 'flaticon-list-3', '/app/admin/execution-logs'),
+                    new AppMenuItem('EmailNotificationLogs', 'Pages.SystemSecurity.EmailNotificationLogs', 'flaticon-list-3', '/app/admin/email-notification-logs'),
+                    new AppMenuItem('SysTenantConfigs', 'Pages.SystemSecurity.SysTenantConfigs', 'flaticon-list-3', '/app/admin/sys-tenant-configs'),
                 ]
             ),
             new AppMenuItem(

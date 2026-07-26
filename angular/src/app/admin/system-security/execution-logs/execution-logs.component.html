@@ -1,0 +1,144 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ExecutionLogs' | localize" [description]="'SystemSecurity' | localize">
+        <div role="actions">
+            @if ('Pages.SystemSecurity.ExecutionLogs.Create' | permission) {
+                <button (click)="createRecord()" class="btn btn-primary float-end">
+                    <i class="fa fa-plus btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'CreateNew' | localize }}
+                    </span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <p-tieredMenu #actionsMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '80rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.SystemSecurity.ExecutionLogs.Edit', 'Pages.SystemSecurity.ExecutionLogs.Delete'] | permissionAny)
+                                        ">
+                                        {{ 'Actions' | localize }}
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="userName">
+                                        {{ 'UserName' | localize }}
+                                        <p-sortIcon field="userName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="actionDateTime">
+                                        {{ 'ActionDateTime' | localize }}
+                                        <p-sortIcon field="actionDateTime" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="action">
+                                        {{ 'Action' | localize }}
+                                        <p-sortIcon field="action" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="module">
+                                        {{ 'Module' | localize }}
+                                        <p-sortIcon field="module" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="screenName">
+                                        {{ 'ScreenName' | localize }}
+                                        <p-sortIcon field="screenName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="screenCaption">
+                                        {{ 'ScreenCaption' | localize }}
+                                        <p-sortIcon field="screenCaption" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="executionStatus">
+                                        {{ 'ExecutionStatus' | localize }}
+                                        <p-sortIcon field="executionStatus" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="totalRecords">
+                                        {{ 'TotalRecords' | localize }}
+                                        <p-sortIcon field="totalRecords" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="successfull">
+                                        {{ 'Successfull' | localize }}
+                                        <p-sortIcon field="successfull" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="failed">
+                                        {{ 'Failed' | localize }}
+                                        <p-sortIcon field="failed" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !(['Pages.SystemSecurity.ExecutionLogs.Edit', 'Pages.SystemSecurity.ExecutionLogs.Delete'] | permissionAny)
+                                        ">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            (click)="showMenu($event, record, actionsMenu)">
+                                            <i class="fa fa-cog"></i>
+                                            {{ 'Actions' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.userName }}" class="hide-overflown">{{ record.userName }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">{{ record.actionDateTime | luxonFormat: 'yyyy-MM-dd HH:mm' }}</td>
+                                    <td style="min-width: 110px">{{ actionNames[record.action] | localize }}</td>
+                                    <td style="min-width: 140px">{{ moduleNames[record.module] | localize }}</td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.screenName }}" class="hide-overflown">{{ record.screenName }}</span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span pTooltip="{{ record.screenCaption }}" class="hide-overflown">{{ record.screenCaption }}</span>
+                                    </td>
+                                    <td style="min-width: 140px">{{ statusNames[record.executionStatus] | localize }}</td>
+                                    <td style="min-width: 120px">{{ record.totalRecords }}</td>
+                                    <td style="min-width: 110px">{{ record.successfull }}</td>
+                                    <td style="min-width: 100px">{{ record.failed }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditExecutionLogModal #createOrEditModal (modalSave)="reloadPage()" />
+</div>

@@ -37,6 +37,8 @@ using HCMv3.ReportManagement;
 using HCMv3.Storage;
 using HCMv3.SuccessionManagement;
 using HCMv3.SurveyManagement;
+using HCMv3.SystemSecurity;
+using HCMv3.SystemSettings;
 using HCMv3.TimeManagement;
 using HCMv3.TrainingManagement;
 using HCMv3.TravelManagement;
@@ -960,6 +962,72 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TrainingAttendance> TrainingAttendances { get; set; }
 
+    public virtual DbSet<SysUserOrgUnitData> SysUserOrgUnitDatas { get; set; }
+
+    public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+
+    public virtual DbSet<EmailToken> EmailTokens { get; set; }
+
+    public virtual DbSet<PayslipConfig> PayslipConfigs { get; set; }
+
+    public virtual DbSet<NotificationMaster> NotificationMasters { get; set; }
+
+    public virtual DbSet<SystemNotification> SystemNotifications { get; set; }
+
+    public virtual DbSet<SysObject> SysObjects { get; set; }
+
+    public virtual DbSet<RetroReasonLog> RetroReasonLogs { get; set; }
+
+    public virtual DbSet<PunchNotificationLog> PunchNotificationLogs { get; set; }
+
+    public virtual DbSet<BulkUploadLog> BulkUploadLogs { get; set; }
+
+    public virtual DbSet<ExecutionLog> ExecutionLogs { get; set; }
+
+    public virtual DbSet<EmailNotificationLog> EmailNotificationLogs { get; set; }
+
+    public virtual DbSet<SysTenantConfig> SysTenantConfigs { get; set; }
+
+    public virtual DbSet<ManageAppraisalSettings> ManageAppraisalSettingses { get; set; }
+
+    public virtual DbSet<ManageDocumentSettings> ManageDocumentSettingses { get; set; }
+
+    public virtual DbSet<ManageFIPostingSettings> ManageFIPostingSettingses { get; set; }
+
+    public virtual DbSet<ManageGeneralSettings> ManageGeneralSettingses { get; set; }
+
+    public virtual DbSet<ManageNotificationSettings> ManageNotificationSettingses { get; set; }
+
+    public virtual DbSet<ManageOrgSettings> ManageOrgSettingses { get; set; }
+
+    public virtual DbSet<ManagePayrollSettings> ManagePayrollSettingses { get; set; }
+
+    public virtual DbSet<ManagePersonnelSettings> ManagePersonnelSettingses { get; set; }
+
+    public virtual DbSet<ManageProjectCostingSettings> ManageProjectCostingSettingses { get; set; }
+
+    public virtual DbSet<ManageReportSettings> ManageReportSettingses { get; set; }
+
+    public virtual DbSet<ManageSecuritySettings> ManageSecuritySettingses { get; set; }
+
+    public virtual DbSet<ManageSelfServiceSettings> ManageSelfServiceSettingses { get; set; }
+
+    public virtual DbSet<ManageTimeSettings> ManageTimeSettingses { get; set; }
+
+    public virtual DbSet<ManageWorkflowSettings> ManageWorkflowSettingses { get; set; }
+
+    public virtual DbSet<PayrollDriver> PayrollDrivers { get; set; }
+
+    public virtual DbSet<News> News { get; set; }
+
+    public virtual DbSet<TaskEvent> TaskEvents { get; set; }
+
+    public virtual DbSet<EmployeesNotification> EmployeesNotifications { get; set; }
+
+    public virtual DbSet<EmployeesNotificationLog> EmployeesNotificationLogs { get; set; }
+
+    public virtual DbSet<EmployeeWorkflowRole> EmployeeWorkflowRoles { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -1497,6 +1565,37 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         });
 
         modelBuilder.Entity<TrainingAttendance>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<BulkUploadLog>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<RetroReasonLog>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SysUserOrgUnitData>(b =>
+        {
+            b.HasOne(e => e.Role).WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(e => e.OrganizationUnit).WithMany().HasForeignKey(e => e.OrganizationUnitId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PunchNotificationLog>(b =>
+        {
+            b.HasOne(e => e.EmployeeDutyPeriod).WithMany().HasForeignKey(e => e.EmployeeDutyPeriodId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeesNotification>(b =>
+        {
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeWorkflowRole>(b =>
         {
             b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
         });

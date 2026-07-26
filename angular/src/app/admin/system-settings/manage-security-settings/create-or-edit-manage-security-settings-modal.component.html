@@ -1,0 +1,154 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'SecuritySettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'SecuritySettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'SecuritySettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableRowLevelSecurity"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableRowLevelSecurity"
+                                            [ngModel]="record().enableRowLevelSecurity"
+                                            (ngModelChange)="updateField('enableRowLevelSecurity', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableRowLevelSecurity">{{ 'EnableRowLevelSecurity' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableReportExportPwd"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableReportExportPwd"
+                                            [ngModel]="record().enableReportExportPwd"
+                                            (ngModelChange)="updateField('enableReportExportPwd', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableReportExportPwd">{{ 'EnableReportExportPwd' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>{{ 'AuditLogEngines' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInTimeEngine"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInTimeEngine"
+                                            [ngModel]="record().enableAuditLogInTimeEngine"
+                                            (ngModelChange)="updateField('enableAuditLogInTimeEngine', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInTimeEngine">{{ 'EnableAuditLogInTimeEngine' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInPayrollEngine"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInPayrollEngine"
+                                            [ngModel]="record().enableAuditLogInPayrollEngine"
+                                            (ngModelChange)="updateField('enableAuditLogInPayrollEngine', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInPayrollEngine">{{ 'EnableAuditLogInPayrollEngine' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInProjectCostEngine"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInProjectCostEngine"
+                                            [ngModel]="record().enableAuditLogInProjectCostEngine"
+                                            (ngModelChange)="updateField('enableAuditLogInProjectCostEngine', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInProjectCostEngine">{{ 'EnableAuditLogInProjectCostEngine' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInCostEngine"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInCostEngine"
+                                            [ngModel]="record().enableAuditLogInCostEngine"
+                                            (ngModelChange)="updateField('enableAuditLogInCostEngine', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInCostEngine">{{ 'EnableAuditLogInCostEngine' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInGridReport"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInGridReport"
+                                            [ngModel]="record().enableAuditLogInGridReport"
+                                            (ngModelChange)="updateField('enableAuditLogInGridReport', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInGridReport">{{ 'EnableAuditLogInGridReport' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="SecuritySettings_EnableAuditLogInPrintReport"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableAuditLogInPrintReport"
+                                            [ngModel]="record().enableAuditLogInPrintReport"
+                                            (ngModelChange)="updateField('enableAuditLogInPrintReport', $event)" />
+                                        <label class="form-check-label" for="SecuritySettings_EnableAuditLogInPrintReport">{{ 'EnableAuditLogInPrintReport' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

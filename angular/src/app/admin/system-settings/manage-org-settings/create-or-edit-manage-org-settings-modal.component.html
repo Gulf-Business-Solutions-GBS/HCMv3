@@ -1,0 +1,99 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'OrgSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'OrgSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'OrgSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="OrgSettings_EnablePostingGroup"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePostingGroup"
+                                            [ngModel]="record().enablePostingGroup"
+                                            (ngModelChange)="updateField('enablePostingGroup', $event)" />
+                                        <label class="form-check-label" for="OrgSettings_EnablePostingGroup">{{ 'EnablePostingGroup' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="OrgSettings_EnableBudgetingGroup"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableBudgetingGroup"
+                                            [ngModel]="record().enableBudgetingGroup"
+                                            (ngModelChange)="updateField('enableBudgetingGroup', $event)" />
+                                        <label class="form-check-label" for="OrgSettings_EnableBudgetingGroup">{{ 'EnableBudgetingGroup' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="OrgSettings_EnablePosition"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePosition"
+                                            [ngModel]="record().enablePosition"
+                                            (ngModelChange)="updateField('enablePosition', $event)" />
+                                        <label class="form-check-label" for="OrgSettings_EnablePosition">{{ 'EnablePosition' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="OrgSettings_EnableOrgChart3Levels"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableOrgChart3Levels"
+                                            [ngModel]="record().enableOrgChart3Levels"
+                                            (ngModelChange)="updateField('enableOrgChart3Levels', $event)" />
+                                        <label class="form-check-label" for="OrgSettings_EnableOrgChart3Levels">{{ 'EnableOrgChart3Levels' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

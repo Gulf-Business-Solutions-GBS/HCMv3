@@ -1,0 +1,123 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'AppraisalSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'AppraisalSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>{{ 'AppraisalSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="AppraisalSettings_AppraisalCycle">{{ 'AppraisalCycle' | localize }}</label>
+                                    <select
+                                        id="AppraisalSettings_AppraisalCycle"
+                                        class="form-select"
+                                        name="AppraisalCycle"
+                                        [ngModel]="record().appraisalCycle"
+                                        (ngModelChange)="updateField('appraisalCycle', $event)">
+                                        @for (option of appraisalCycles; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="AppraisalSettings_MarksOn">{{ 'MarksOn' | localize }}</label>
+                                    <select
+                                        id="AppraisalSettings_MarksOn"
+                                        class="form-select"
+                                        name="MarksOn"
+                                        [ngModel]="record().marksOn"
+                                        (ngModelChange)="updateField('marksOn', $event)">
+                                        @for (option of marksOnOptions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="AppraisalSettings_EnablePAPeerReview"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnablePAPeerReview"
+                                            [ngModel]="record().enablePAPeerReview"
+                                            (ngModelChange)="updateField('enablePAPeerReview', $event)" />
+                                        <label class="form-check-label" for="AppraisalSettings_EnablePAPeerReview">{{ 'EnablePAPeerReview' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="AppraisalSettings_EnableMarksInPAReview"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableMarksInPAReview"
+                                            [ngModel]="record().enableMarksInPAReview"
+                                            (ngModelChange)="updateField('enableMarksInPAReview', $event)" />
+                                        <label class="form-check-label" for="AppraisalSettings_EnableMarksInPAReview">{{ 'EnableMarksInPAReview' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="AppraisalSettings_SetPeerMinLimit">{{ 'SetPeerMinLimit' | localize }}</label>
+                                    <input
+                                        id="AppraisalSettings_SetPeerMinLimit"
+                                        type="number"
+                                        class="form-control"
+                                        name="SetPeerMinLimit"
+                                        [ngModel]="record().setPeerMinLimit"
+                                        (ngModelChange)="updateNumberField('setPeerMinLimit', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="AppraisalSettings_SetPeerMaxLimit">{{ 'SetPeerMaxLimit' | localize }}</label>
+                                    <input
+                                        id="AppraisalSettings_SetPeerMaxLimit"
+                                        type="number"
+                                        class="form-control"
+                                        name="SetPeerMaxLimit"
+                                        [ngModel]="record().setPeerMaxLimit"
+                                        (ngModelChange)="updateNumberField('setPeerMaxLimit', $event)" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    EntityDto,
     GetAllWorkflowRequestsInput,
     RequestStatus,
     WorkflowRequestDto,
@@ -14,6 +15,7 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditWorkflowRequestModalComponent } from './create-or-edit-workflow-request-modal.component';
+import { WorkflowRequestRemarkModalComponent, WorkflowRequestActionType } from './workflow-request-remark-modal.component';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -31,6 +33,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         PaginatorModule,
         TieredMenu,
         CreateOrEditWorkflowRequestModalComponent,
+        WorkflowRequestRemarkModalComponent,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
@@ -40,6 +43,7 @@ export class WorkflowRequestsComponent extends AppComponentBase implements OnIni
     private _service = inject(WorkflowRequestsServiceProxy);
 
     readonly createOrEditModal = viewChild<CreateOrEditWorkflowRequestModalComponent>('createOrEditModal');
+    readonly actionModal = viewChild<WorkflowRequestRemarkModalComponent>('actionModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -105,6 +109,48 @@ export class WorkflowRequestsComponent extends AppComponentBase implements OnIni
             });
         }
 
+        if (record.requestStatus === RequestStatus.Draft && this.permission.isGranted('Pages.Workflow.WorkflowRequests.Submit')) {
+            items.push({
+                label: this.l('Submit'),
+                icon: 'pi pi-send',
+                command: () => this.submitRecord(record),
+            });
+        }
+
+        if (record.requestStatus === RequestStatus.Open) {
+            if (this.permission.isGranted('Pages.Workflow.WorkflowRequests.Approve')) {
+                items.push({
+                    label: this.l('Approve'),
+                    icon: 'pi pi-check',
+                    command: () => this.actionModal().show(record.id, 'Approve'),
+                });
+            }
+
+            if (this.permission.isGranted('Pages.Workflow.WorkflowRequests.Reject')) {
+                items.push({
+                    label: this.l('Reject'),
+                    icon: 'pi pi-times',
+                    command: () => this.actionModal().show(record.id, 'Reject'),
+                });
+            }
+
+            if (this.permission.isGranted('Pages.Workflow.WorkflowRequests.SendBack')) {
+                items.push({
+                    label: this.l('SendBack'),
+                    icon: 'pi pi-reply',
+                    command: () => this.actionModal().show(record.id, 'SendBack'),
+                });
+            }
+
+            if (this.permission.isGranted('Pages.Workflow.WorkflowRequests.Reassign')) {
+                items.push({
+                    label: this.l('Reassign'),
+                    icon: 'pi pi-user-edit',
+                    command: () => this.actionModal().show(record.id, 'Reassign'),
+                });
+            }
+        }
+
         if (this.permission.isGranted('Pages.Workflow.WorkflowRequests.Delete')) {
             items.push({
                 label: this.l('Delete'),
@@ -114,6 +160,13 @@ export class WorkflowRequestsComponent extends AppComponentBase implements OnIni
         }
 
         return items;
+    }
+
+    submitRecord(record: WorkflowRequestDto): void {
+        this._service.submitWorkflowRequest(new EntityDto({ id: record.id })).subscribe(() => {
+            this.reloadPage();
+            this.notify.success(this.l('SavedSuccessfully'));
+        });
     }
 
     deleteRecord(record: WorkflowRequestDto): void {

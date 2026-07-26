@@ -1,0 +1,176 @@
+<div
+    appBsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving() }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <form #recordForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @if (record().id) {
+                                <span>{{ 'EditItem' | localize }}: {{ 'GeneralSettings' | localize }}</span>
+                            } @else {
+                                <span>{{ 'CreateNewItem' | localize }}: {{ 'GeneralSettings' | localize }}</span>
+                            }
+                        </h4>
+                        <button type="button" class="btn-close" (click)="close()" [disabled]="saving()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset class="mb-5">
+                            <legend>{{ 'GeneralSettings' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_DateEditMask">{{ 'DateEditMask' | localize }}</label>
+                                    <input
+                                        id="GeneralSettings_DateEditMask"
+                                        type="text"
+                                        class="form-control"
+                                        name="DateEditMask"
+                                        maxlength="64"
+                                        [ngModel]="record().dateEditMask"
+                                        (ngModelChange)="updateField('dateEditMask', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_DateDisplayFormat">{{ 'DateDisplayFormat' | localize }}</label>
+                                    <input
+                                        id="GeneralSettings_DateDisplayFormat"
+                                        type="text"
+                                        class="form-control"
+                                        name="DateDisplayFormat"
+                                        maxlength="64"
+                                        [ngModel]="record().dateDisplayFormat"
+                                        (ngModelChange)="updateField('dateDisplayFormat', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_TimeEditMask">{{ 'TimeEditMask' | localize }}</label>
+                                    <input
+                                        id="GeneralSettings_TimeEditMask"
+                                        type="text"
+                                        class="form-control"
+                                        name="TimeEditMask"
+                                        maxlength="64"
+                                        [ngModel]="record().timeEditMask"
+                                        (ngModelChange)="updateField('timeEditMask', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_TimeDisplayFormat">{{ 'TimeDisplayFormat' | localize }}</label>
+                                    <input
+                                        id="GeneralSettings_TimeDisplayFormat"
+                                        type="text"
+                                        class="form-control"
+                                        name="TimeDisplayFormat"
+                                        maxlength="64"
+                                        [ngModel]="record().timeDisplayFormat"
+                                        (ngModelChange)="updateField('timeDisplayFormat', $event)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_StartupDashboard">{{ 'StartupDashboard' | localize }}</label>
+                                    <input
+                                        id="GeneralSettings_StartupDashboard"
+                                        type="text"
+                                        class="form-control"
+                                        name="StartupDashboard"
+                                        maxlength="256"
+                                        [ngModel]="record().startupDashboard"
+                                        (ngModelChange)="updateField('startupDashboard', $event)" />
+                                </div>
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label" for="GeneralSettings_AutoFilterColumnCondition">{{ 'AutoFilterColumnCondition' | localize }}</label>
+                                    <select
+                                        id="GeneralSettings_AutoFilterColumnCondition"
+                                        class="form-select"
+                                        name="AutoFilterColumnCondition"
+                                        [ngModel]="record().autoFilterColumnCondition"
+                                        (ngModelChange)="updateField('autoFilterColumnCondition', $event)">
+                                        @for (option of autoFilterConditions; track option.value) {
+                                            <option [ngValue]="option.value">{{ option.name | localize }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>{{ 'Options' | localize }}</legend>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="GeneralSettings_DisableAutoEmpcode"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="DisableAutoEmpcode"
+                                            [ngModel]="record().disableAutoEmpcode"
+                                            (ngModelChange)="updateField('disableAutoEmpcode', $event)" />
+                                        <label class="form-check-label" for="GeneralSettings_DisableAutoEmpcode">{{ 'DisableAutoEmpcode' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="GeneralSettings_NoticePeriodDaysExcludingSubmissionDate"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="NoticePeriodDaysExcludingSubmissionDate"
+                                            [ngModel]="record().noticePeriodDaysExcludingSubmissionDate"
+                                            (ngModelChange)="updateField('noticePeriodDaysExcludingSubmissionDate', $event)" />
+                                        <label class="form-check-label" for="GeneralSettings_NoticePeriodDaysExcludingSubmissionDate">{{ 'NoticePeriodDaysExcludingSubmissionDate' | localize }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="GeneralSettings_EnableGridDataAccessModeServer"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="EnableGridDataAccessModeServer"
+                                            [ngModel]="record().enableGridDataAccessModeServer"
+                                            (ngModelChange)="updateField('enableGridDataAccessModeServer', $event)" />
+                                        <label class="form-check-label" for="GeneralSettings_EnableGridDataAccessModeServer">{{ 'EnableGridDataAccessModeServer' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-5 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            id="GeneralSettings_StartHangfire"
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="StartHangfire"
+                                            [ngModel]="record().startHangfire"
+                                            (ngModelChange)="updateField('startHangfire', $event)" />
+                                        <label class="form-check-label" for="GeneralSettings_StartHangfire">{{ 'StartHangfire' | localize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving()" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!recordForm.form.valid"
+                            [buttonBusy]="saving()"
+                            [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

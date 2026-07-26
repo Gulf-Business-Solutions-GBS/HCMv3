@@ -80,6 +80,11 @@ public class Startup
 
         services.AddSignalR();
 
+        // Enables IHttpClientFactory (used by HCMv3.TimeManagement.Services.TimeAttendanceIntegrationService
+        // to call the vendor time-attendance device API) throughout the app, per the standard
+        // ASP.NET Core pattern (never `new HttpClient()` directly).
+        services.AddHttpClient();
+
         //Configure CORS for angular2 UI
         services.AddCors(options =>
         {

@@ -29,11 +29,13 @@ public class WorkflowTestDbContext : DbContext
     public DbSet<WorkFlowApprover> WorkFlowApprovers { get; set; }
     public DbSet<WorkflowRemark> WorkflowRemarks { get; set; }
     public DbSet<WFReadLog> WFReadLogs { get; set; }
+    public DbSet<EmployeeWorkflowRole> EmployeeWorkflowRoles { get; set; }
 
     public DbSet<HCMv3.OrganizationManagement.OrganizationUnitType> OrganizationUnitTypes { get; set; }
     public DbSet<HCMv3.OrganizationManagement.JobTitle> JobTitles { get; set; }
 
     public DbSet<HCMv3.PersonnelAdministration.Employee> Employees { get; set; }
+    public DbSet<HCMv3.PersonnelAdministration.EmployeeManager> EmployeeManagers { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.Nationality> Nationalities { get; set; }
 
     public WorkflowTestDbContext(DbContextOptions<WorkflowTestDbContext> options) : base(options)

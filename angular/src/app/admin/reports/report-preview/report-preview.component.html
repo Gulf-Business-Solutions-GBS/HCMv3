@@ -1,0 +1,48 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ReportPreview' | localize" [description]="'ReportPreview' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="mb-5">
+                        <label class="form-label required" for="ReportPreview_EmployeeId">{{ 'Employee' | localize }}</label>
+                        <select
+                            id="ReportPreview_EmployeeId"
+                            class="form-select"
+                            name="EmployeeId"
+                            [ngModel]="selectedEmployeeId()"
+                            (ngModelChange)="selectedEmployeeId.set($event)">
+                            <option [ngValue]="undefined">{{ 'SelectEmployee' | localize }}</option>
+                            @for (item of employees(); track item.id) {
+                                <option [ngValue]="item.id">{{ item.fullNameEn }} ({{ item.code }})</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!selectedEmployeeId()"
+                            [busyIf]="generatingSalaryCertificate()"
+                            (click)="previewSalaryCertificate()">
+                            <i class="fa fa-file-pdf"></i>
+                            <span>{{ 'PreviewSalaryCertificate' | localize }}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!selectedEmployeeId()"
+                            [busyIf]="generatingPayslip()"
+                            (click)="previewPayslip()">
+                            <i class="fa fa-file-pdf"></i>
+                            <span>{{ 'PreviewPayslip' | localize }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
