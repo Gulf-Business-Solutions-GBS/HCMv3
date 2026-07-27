@@ -3953,6 +3953,9 @@
     <text name="EXPORT">Export</text>
     <text name="PRINT">Print</text>
     <text name="TimeEngine">Time Engine</text>
+    <text name="RunTimeEngine">Run Time Engine</text>
+    <text name="TimeEngineEndDateRequired">No End Date defined for Time Calculation. Please select an End Date.</text>
+    <text name="TimeEngineStartDateAfterEndDate">Start Date cannot be later than End Date.</text>
     <text name="PayrollEngine">Payroll Engine</text>
     <text name="GridReport">Grid Report</text>
     <text name="CostEngine">Cost Engine</text>

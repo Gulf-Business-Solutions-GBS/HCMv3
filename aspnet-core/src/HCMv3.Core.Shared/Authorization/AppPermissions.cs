@@ -886,6 +886,11 @@ public static class AppPermissions
     public const string Pages_TimeManagement_TimeTransfers_Edit = "Pages.TimeManagement.TimeTransfers.Edit";
     public const string Pages_TimeManagement_TimeTransfers_Delete = "Pages.TimeManagement.TimeTransfers.Delete";
 
+    // Wave T4 (Time Engine execution). Legacy gated this behind the uscTimeEngine screen's own screen
+    // permission; there is no CRUD here -- the only action is "run".
+    public const string Pages_TimeManagement_TimeEngine = "Pages.TimeManagement.TimeEngine";
+    public const string Pages_TimeManagement_TimeEngine_Run = "Pages.TimeManagement.TimeEngine.Run";
+
     public const string Pages_PayrollManagement = "Pages.PayrollManagement";
 
     public const string Pages_PayrollManagement_AXBatches = "Pages.PayrollManagement.AXBatches";

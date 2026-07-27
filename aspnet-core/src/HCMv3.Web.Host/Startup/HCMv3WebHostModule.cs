@@ -22,6 +22,7 @@ using HCMv3.Configuration;
 using HCMv3.EntityFrameworkCore;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Subscription;
+using HCMv3.TimeManagement;
 using HCMv3.Web.Startup.ExternalLoginInfoProviders;
 
 namespace HCMv3.Web.Startup;
@@ -78,6 +79,11 @@ public class HCMv3WebHostModule : AbpModule
         }
 
         workManager.Add(IocManager.Resolve<PasswordExpirationBackgroundWorker>());
+
+        // Wave T4: the nightly unattended Time Engine run. Registered unconditionally -- the worker itself
+        // is a no-op per tenant unless that tenant's ManageTimeSettings.EnableTimeEngineAutorun is on, which
+        // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
+        workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
 
         ConfigureExternalAuthProviders();
     }

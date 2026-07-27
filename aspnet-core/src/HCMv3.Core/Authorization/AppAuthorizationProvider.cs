@@ -958,6 +958,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         timeTransfers.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeTransfers_Edit, L("EditItem"));
         timeTransfers.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeTransfers_Delete, L("DeleteItem"));
 
+        var timeEngine = timeManagement.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeEngine, L("TimeEngine"));
+        timeEngine.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeEngine_Run, L("RunTimeEngine"));
+
         var payrollManagement = pages.CreateChildPermission(AppPermissions.Pages_PayrollManagement, L("PayrollManagement"));
 
         var axBatches = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_AXBatches, L("AXBatches"));

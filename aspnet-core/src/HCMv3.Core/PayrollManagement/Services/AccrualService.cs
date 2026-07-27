@@ -8,6 +8,7 @@ using Abp.Domain.Uow;
 using Abp.Linq.Extensions;
 using HCMv3.Common;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement;
@@ -39,13 +40,15 @@ namespace HCMv3.PayrollManagement.Services;
 /// full, faithful port of that legacy static class), constructor-injected here. See the
 /// <c>CalculateMissingDayWeeklyOffsAsync</c> method below.</description></item>
 /// <item><description><b>EmployeeAbsence.ActualLeaveDays / GetHoulyLeaveDay</b>: these two legacy static
-/// helpers (holiday/rest-day-aware partial-day leave calculators) live deep inside the never-fully-ported
-/// <c>EmployeeAbsence</c> calculation engine (a ~3000-line legacy file well outside this port's scope) and
-/// are not available here. Everywhere they were used for an "overlap" adjustment inside the forfeit-day-loop
-/// methods, this port uses a documented simplification (full calendar day counted, no
-/// holiday/rest-day/hourly-fraction exclusion) -- see the specific <c>// NOTE:</c> comments at each call
-/// site below. This only affects the precision of month-boundary-overlapping leave forfeiture, not the
-/// overall algorithm shape.</description></item>
+/// helpers (holiday/rest-day-aware partial-day leave calculators) live deep inside the legacy
+/// <c>EmployeeAbsence</c> calculation engine (a ~4000-line legacy file, ported separately as its own "Group
+/// F" unit of work). This service now calls the faithfully-ported
+/// <see cref="IEmployeeAbsenceCalculationService.ActualLeaveDaysAsync"/>/
+/// <see cref="IEmployeeAbsenceCalculationService.GetHoulyLeaveDayAsync"/> directly wherever legacy used them
+/// for the "overlap" adjustment inside the forfeit-day-loop methods -- see the call sites in
+/// <c>CalculateOpeningBalanceAsync</c>/<c>CalculateClosingBalanceAndForfeitAsync</c> below. No more
+/// approximation: full calendar-day counting and the AbsenceHours/8 hourly-fraction guess have both been
+/// replaced with the real calculation.</description></item>
 /// <item><description><b>SysCreator/SysCreatedOn/SysModifier/SysModifiedOn</b>: legacy manually stamped these
 /// on every mutation. This port's entities inherit ABP's own <c>FullAuditedEntity</c> auditing
 /// (CreatorUserId/CreationTime/LastModifierUserId/LastModificationTime), applied automatically by the ABP
@@ -96,6 +99,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
     private readonly IRepository<PayrollControlRecord> _payrollControlRecordRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
     private readonly IRosterService _rosterService;
+    private readonly IEmployeeAbsenceCalculationService _employeeAbsenceCalculationService;
 
     public AccrualService(
         IRepository<Employee> employeeRepository,
@@ -124,7 +128,8 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         IRepository<EmployeeSubstituteDuty> employeeSubstituteDutyRepository,
         IRepository<PayrollControlRecord> payrollControlRecordRepository,
         ISysSettingsAccessor sysSettingsAccessor,
-        IRosterService rosterService)
+        IRosterService rosterService,
+        IEmployeeAbsenceCalculationService employeeAbsenceCalculationService)
     {
         _employeeRepository = employeeRepository;
         _employeeContractRepository = employeeContractRepository;
@@ -153,6 +158,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         _payrollControlRecordRepository = payrollControlRecordRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
         _rosterService = rosterService;
+        _employeeAbsenceCalculationService = employeeAbsenceCalculationService;
     }
 
     // NOTE: HCMv3.Core has no reference to EntityFrameworkCore (per architecture rules), so the usual
@@ -946,10 +952,10 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         double openingBalance = 0;
         if (prevMonthStartDate < prevMonthEndDate)
         {
-            openingBalance = CalculateOpeningBalance(employeeId, annualLeaveType, prevMonthStartDate, prevMonthEndDate, excludeEmployeeAbsenceId: null);
+            openingBalance = await CalculateOpeningBalanceAsync(employeeId, annualLeaveType, prevMonthStartDate, prevMonthEndDate, excludeEmployeeAbsenceId: null);
         }
 
-        var (totalForfeitDays, _) = CalculateClosingBalanceAndForfeit(employeeId, annualLeaveType.Id, monthStartDate, monthEndDate, openingBalance, maxLimit, excludeEmployeeAbsenceId: null);
+        var (totalForfeitDays, _) = await CalculateClosingBalanceAndForfeitAsync(employeeId, annualLeaveType.Id, monthStartDate, monthEndDate, openingBalance, maxLimit, excludeEmployeeAbsenceId: null);
 
         await ApplyForfeitAsync(employeeId, annualLeaveType.Id, monthEndDate, MonthlyForfeitComment, totalForfeitDays, empAbsenceQuota, result);
 
@@ -1015,10 +1021,10 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
 
             if (!isOpeningCalculated && prevMonthStartDate < prevMonthEndDate)
             {
-                openingBalance = CalculateOpeningBalance(employeeId, annualLeaveType, prevMonthStartDate, prevMonthEndDate, prevEmployeeAbsenceId);
+                openingBalance = await CalculateOpeningBalanceAsync(employeeId, annualLeaveType, prevMonthStartDate, prevMonthEndDate, prevEmployeeAbsenceId);
             }
 
-            var (monthForfeitDays, closingBalance) = CalculateClosingBalanceAndForfeit(employeeId, annualLeaveType.Id, monthStartDate, monthEndDate, openingBalance, maxLimit, prevEmployeeAbsenceId);
+            var (monthForfeitDays, closingBalance) = await CalculateClosingBalanceAndForfeitAsync(employeeId, annualLeaveType.Id, monthStartDate, monthEndDate, openingBalance, maxLimit, prevEmployeeAbsenceId);
 
             var empAbsenceQuota = _employeeAbsenceQuotaRepository.GetAll()
                 .Where(r => r.EmployeeId == employeeId && r.AbsenceTypeId == annualLeaveType.Id
@@ -1044,7 +1050,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
     /// [prevMonthStartDate, prevMonthEndDate]), identical logic in legacy's <c>CalculateMonthlyForfeit</c> and
     /// <c>CalculateForfeitForLeave</c>.
     /// </summary>
-    private double CalculateOpeningBalance(int employeeId, AbsenceType annualLeaveType, DateTime prevMonthStartDate, DateTime prevMonthEndDate, int? excludeEmployeeAbsenceId)
+    private async Task<double> CalculateOpeningBalanceAsync(int employeeId, AbsenceType annualLeaveType, DateTime prevMonthStartDate, DateTime prevMonthEndDate, int? excludeEmployeeAbsenceId)
     {
         var openingAccrual = _timeRegisterRepository.GetAll()
             .Where(r => r.EmployeeId == employeeId && r.DayDate >= prevMonthStartDate && r.DayDate <= prevMonthEndDate)
@@ -1072,11 +1078,14 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
 
         if (overlapStart.HasValue && overlapStart.Value != default)
         {
-            // NOTE: legacy computes the exact overlap-day count via EmployeeAbsence.ActualLeaveDays (holiday
-            // /rest-day aware). That helper lives in the never-fully-ported EmployeeAbsence calculation
-            // engine (out of scope here) -- simplified to count the full overlap window as used quota days
-            // (no holiday/rest-day exclusion). Documented simplification, see class remarks.
-            var leaveOverlapDays = (prevMonthEndDate - overlapStart.Value).TotalDays + 1;
+            // Legacy computes the exact overlap-day count via EmployeeAbsence.ActualLeaveDays (holiday/
+            // rest-day aware): calendar days in the overlap window, minus the holiday/weekend/rest-day
+            // exclusions the AbsenceType doesn't include. Now wired to the real, faithfully-ported
+            // IEmployeeAbsenceCalculationService.ActualLeaveDaysAsync (see that service's class remarks) --
+            // no longer a full-calendar-day approximation.
+            var totalOverlapWindowDays = (prevMonthEndDate - overlapStart.Value).TotalDays + 1;
+            var excludedOverlapDays = (double)await _employeeAbsenceCalculationService.ActualLeaveDaysAsync(employeeId, overlapStart.Value, prevMonthEndDate, annualLeaveType.Id);
+            var leaveOverlapDays = totalOverlapWindowDays - excludedOverlapDays;
             openingUsed += leaveOverlapDays;
         }
 
@@ -1101,7 +1110,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
     /// <c>CalculateMonthlyForfeit</c> and <c>CalculateForfeitForLeave</c> (the latter additionally
     /// considers the in-flight <see cref="EmployeeAbsence"/> excluded by <paramref name="excludeEmployeeAbsenceId"/>).
     /// </summary>
-    private (double TotalForfeitDays, double ClosingBalance) CalculateClosingBalanceAndForfeit(int employeeId, int annualLeaveTypeId, DateTime monthStartDate, DateTime monthEndDate, double openingBalance, double maxLimit, int? excludeEmployeeAbsenceId)
+    private async Task<(double TotalForfeitDays, double ClosingBalance)> CalculateClosingBalanceAndForfeitAsync(int employeeId, int annualLeaveTypeId, DateTime monthStartDate, DateTime monthEndDate, double openingBalance, double maxLimit, int? excludeEmployeeAbsenceId)
     {
         var timeRegisterRows = _timeRegisterRepository.GetAll()
             .Where(r => r.EmployeeId == employeeId && r.DayDate >= monthStartDate && r.DayDate <= monthEndDate)
@@ -1147,16 +1156,17 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
                 {
                     if (abs.AbsenceHours == 0)
                     {
-                        // NOTE: legacy computes `1 - ActualLeaveDays(...)` here (holiday/rest-day exclusion via
-                        // the never-ported EmployeeAbsence calculation engine). Simplified to a full day.
-                        dayUsed = 1;
+                        // Legacy computes `1 - ActualLeaveDays(...)` here (holiday/rest-day exclusion). Now
+                        // wired to the real IEmployeeAbsenceCalculationService.ActualLeaveDaysAsync.
+                        var excludedDays = (double)await _employeeAbsenceCalculationService.ActualLeaveDaysAsync(employeeId, day, day, annualLeaveTypeId);
+                        dayUsed = 1 - excludedDays;
                     }
                     else
                     {
-                        // NOTE: legacy computes the hourly-leave day-fraction via the never-ported
-                        // EmployeeAbsence.GetHoulyLeaveDay helper. Approximated here as AbsenceHours / 8 (an
-                        // 8-hour standard working day), clamped to [0, 1] -- a documented simplification.
-                        dayUsed = Math.Clamp(abs.AbsenceHours / 8.0, 0, 1);
+                        // Legacy computes the hourly-leave day-fraction via EmployeeAbsence.GetHoulyLeaveDay.
+                        // Now wired to the real IEmployeeAbsenceCalculationService.GetHoulyLeaveDayAsync (no
+                        // longer an AbsenceHours/8 approximation).
+                        dayUsed = await _employeeAbsenceCalculationService.GetHoulyLeaveDayAsync(employeeId, day, abs.AbsenceHours);
                     }
                 }
                 else
