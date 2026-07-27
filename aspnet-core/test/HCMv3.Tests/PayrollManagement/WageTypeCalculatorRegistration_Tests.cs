@@ -72,7 +72,13 @@ public class WageTypeCalculatorRegistration_Tests : AppTestBase
         var resolver = LocalIocManager.Resolve<IWageTypeCalculatorResolver>();
 
         resolver.ShouldNotBeNull();
-        resolver.Resolve("9000").ShouldBeNull(); // no rules registered until waves P4-P6
+
+        // Wave P6 landed NetPayWageTypeCalculator, so 9000 now resolves. (Before P4-P6 this asserted null.)
+        resolver.Resolve("9000").ShouldNotBeNull();
+        resolver.Resolve("9000").WageCode.ShouldBe("9000");
+
+        // A code no wave claims still resolves to null -- that is a normal, expected outcome.
+        resolver.Resolve("__no_such_wage_code__").ShouldBeNull();
     }
 
     [Fact]
