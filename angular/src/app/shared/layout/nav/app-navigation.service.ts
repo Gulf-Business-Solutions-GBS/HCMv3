@@ -173,6 +173,7 @@ export class AppNavigationService {
                 '',
                 [],
                 [
+                    new AppMenuItem('PayrollEngine', 'Pages.PayrollManagement.PayrollEngine', 'flaticon-settings', '/app/admin/payroll-engine'),
                     new AppMenuItem('AttendanceTypes', 'Pages.PayrollManagement.AttendanceTypes', 'flaticon-list-3', '/app/admin/attendance-types'),
                     new AppMenuItem('AccountTypes', 'Pages.PayrollManagement.AccountTypes', 'flaticon-list-3', '/app/admin/account-types'),
                     new AppMenuItem('AccountInfos', 'Pages.PayrollManagement.AccountInfos', 'flaticon-list-3', '/app/admin/account-infos'),
@@ -196,6 +197,7 @@ export class AppNavigationService {
                     new AppMenuItem('PayrollAreas', 'Pages.PayrollManagement.PayrollAreas', 'flaticon-list-3', '/app/admin/payroll-areas'),
                     new AppMenuItem('CostingFile', 'Pages.PayrollManagement.CostingFile', 'flaticon-line-graph', '/app/admin/costing-file'),
                     new AppMenuItem('PostJv', 'Pages.PayrollManagement.PostJv', 'flaticon-piggy-bank', '/app/admin/post-jv'),
+                    new AppMenuItem('BankFile', 'Pages.PayrollManagement.BankFiles', 'flaticon-piggy-bank', '/app/admin/bank-file'),
                     new AppMenuItem('PayrollCalendars', 'Pages.PayrollManagement.PayrollCalendars', 'flaticon-list-3', '/app/admin/payroll-calendars'),
                     new AppMenuItem('PayrollPeriods', 'Pages.PayrollManagement.PayrollPeriods', 'flaticon-list-3', '/app/admin/payroll-periods'),
                     new AppMenuItem('PayrollControlRecords', 'Pages.PayrollManagement.PayrollControlRecords', 'flaticon-list-3', '/app/admin/payroll-control-records'),

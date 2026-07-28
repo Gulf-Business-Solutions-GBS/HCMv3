@@ -720,6 +720,14 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.TimeManagement.TimeEngine' },
                     },
+                    {
+                        path: 'payroll-engine',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/payroll-engine/payroll-engine.component').then(
+                                (m) => m.PayrollEngineComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.PayrollEngine' },
+                    },
                     simpleLookupRoute('account-types', 'AccountTypes', 'AccountTypes', AccountTypesServiceProxy, 'PayrollManagement'),
                     simpleLookupRoute('payroll-reason-types', 'PayrollReasonTypes', 'PayrollReasonTypes', PayrollReasonTypesServiceProxy, 'PayrollManagement'),
                     simpleLookupRoute('ticket-classes', 'TicketClasses', 'TicketClasses', TicketClassesServiceProxy, 'PayrollManagement'),
@@ -876,6 +884,13 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/payroll-management/post-jv/post-jv.component').then((m) => m.PostJvComponent),
                         data: { permission: 'Pages.PayrollManagement.PostJv' },
+                    },
+                    {
+                        // NOTE: this screen lives under admin/payroll/ (not admin/payroll-management/).
+                        path: 'bank-file',
+                        loadComponent: () =>
+                            import('./admin/payroll/bank-file/bank-file.component').then((m) => m.BankFileComponent),
+                        data: { permission: 'Pages.PayrollManagement.BankFiles' },
                     },
                     {
                         path: 'payroll-calendars',

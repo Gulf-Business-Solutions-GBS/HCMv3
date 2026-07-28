@@ -333,9 +333,24 @@ public partial class TimeEngineService
                 .ToList();
         }
 
-        int? subGroupId = input.EmployeeSubGroupIds != null && input.EmployeeSubGroupIds.ContainsKey(employeeId)
-            ? input.EmployeeSubGroupIds[employeeId]
-            : (int?)null;
+        var orgAssignments = _employeeOrgAssignmentRepository.GetAll()
+            .Where(r => r.EmployeeId == employeeId).ToList();
+
+        // Legacy read EmployeeOrgAssignment.EmployeeSubGroup date-effectively; that FK now exists, so the
+        // engine resolves the sub-group ITSELF instead of demanding it from the caller (see
+        // TimeEngineRunInput.EmployeeSubGroupIds, now obsolete). The caller-supplied map is honoured only as an
+        // explicit override for the legacy console entry point, and only when the FK has nothing to say.
+        int? subGroupId = orgAssignments
+            .Where(r => r.StartDate <= timeEndDate && r.EndDate >= timeStartDate && r.EmployeeSubGroupId != null)
+            .OrderByDescending(r => r.StartDate)
+            .Select(r => r.EmployeeSubGroupId)
+            .FirstOrDefault();
+
+        if (subGroupId == null && input.EmployeeSubGroupIds != null &&
+            input.EmployeeSubGroupIds.ContainsKey(employeeId))
+        {
+            subGroupId = input.EmployeeSubGroupIds[employeeId];
+        }
 
         return new TimeEngineEmployeeContext
         {
@@ -351,8 +366,7 @@ public partial class TimeEngineService
             TimeRegisters = _timeRegisterRepository.GetAll()
                 .Where(r => r.EmployeeId == employeeId && r.DayDate >= timeStartDate && r.DayDate <= timeEndDate)
                 .ToList(),
-            OrgAssignments = _employeeOrgAssignmentRepository.GetAll()
-                .Where(r => r.EmployeeId == employeeId).ToList(),
+            OrgAssignments = orgAssignments,
             DutyPeriods = _employeeDutyPeriodRepository.GetAll()
                 .Where(r => r.EmployeeId == employeeId).ToList(),
             TimePolicies = timePolicies,

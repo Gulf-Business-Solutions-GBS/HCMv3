@@ -17,12 +17,16 @@ namespace HCMv3.PayrollManagement.Services;
 /// <para><b>Why this seam exists.</b> The legacy engine reads
 /// <c>EmployeeOrgAssignment.PayrollArea</c> directly, in two hot paths: the employee-selection queries
 /// (legacy <c>HCM10.PayrollEngine/Program.cs</c> lines 432-448, 472-474, 483-485, 498-500) and the
-/// per-employee <c>empPayrollArea</c> lookup that feeds the control-record guard (line 832). This port's
-/// <see cref="EmployeeOrgAssignment"/> has NO <c>PayrollArea</c> FK -- it was explicitly deferred in Wave B
-/// (see that entity's class remarks: "DEFERRED ... Position/EmployeeGroup/EmployeeSubGroup/PayrollArea/
-/// WorkflowGroup fields"). Isolating the substitute lookup behind this interface means that when
-/// <c>EmployeeOrgAssignment.PayrollAreaId</c> is eventually added, ONE implementation changes rather than
-/// the engine and every consumer.</para>
+/// per-employee <c>empPayrollArea</c> lookup that feeds the control-record guard (line 832). That FK was
+/// deferred in Wave B and this resolver reached PayrollArea through <c>OrgUnitProfile</c> instead. The seam
+/// paid off exactly as intended: <c>EmployeeOrgAssignment.PayrollAreaId</c> now exists (nullable, migration
+/// <c>20260728103447_Added_EmployeeOrgAssignment_Group_SubGroup_PayrollArea_FKs</c>) and only this ONE
+/// implementation changed.</para>
+///
+/// <para><b>Resolution order (both paths live).</b> The assignment's own <c>PayrollAreaId</c> wins when set
+/// -- that is the legacy-faithful read. The <c>OrgUnitProfile</c> chain below is the FALLBACK and must NOT be
+/// deleted: the column is nullable and every row created before the migration has <c>null</c> in it. The
+/// deltas listed further down apply to the fallback path only.</para>
 ///
 /// <para><b>The substitute lookup is not invented here.</b> <see cref="EmployeeOrgAssignment"/> carries
 /// <c>OrganizationUnitId</c>, and <see cref="OrgUnitProfile"/> (the 1:1 HR companion row of an
@@ -83,6 +87,22 @@ public class EmployeePayrollAreaResolver : HCMv3DomainServiceBase, IEmployeePayr
 
     public Task<PayrollArea> GetEmployeePayrollAreaAsync(int employeeId, DateTime asOnDate)
     {
+        // PREFERRED (legacy-faithful): the assignment's own PayrollAreaId, now that the FK exists.
+        var directPayrollAreaId = _employeeOrgAssignmentRepository.GetAll()
+            .Where(a => a.EmployeeId == employeeId
+                        && a.StartDate <= asOnDate
+                        && a.EndDate >= asOnDate
+                        && a.PayrollAreaId != null)
+            .Select(a => a.PayrollAreaId)
+            .FirstOrDefault();
+
+        if (directPayrollAreaId != null)
+        {
+            return Task.FromResult(
+                _payrollAreaRepository.GetAll().FirstOrDefault(a => a.Id == directPayrollAreaId.Value));
+        }
+
+        // FALLBACK (retained, load-bearing): rows created before the FK migration have PayrollAreaId == null.
         var organizationUnitId = _employeeOrgAssignmentRepository.GetAll()
             .Where(a => a.EmployeeId == employeeId
                         && a.StartDate <= asOnDate
@@ -111,26 +131,44 @@ public class EmployeePayrollAreaResolver : HCMv3DomainServiceBase, IEmployeePayr
 
     public Task<List<int>> GetEmployeeIdsInPayrollAreaAsync(string payrollAreaName, DateTime asOnDate)
     {
+        var payrollAreaIds = _payrollAreaRepository.GetAll()
+            .Where(a => a.Name == payrollAreaName)
+            .Select(a => a.Id)
+            .ToList();
+
+        var employeeIds = new List<int>();
+
+        // PREFERRED (legacy-faithful): the assignment's own PayrollAreaId.
+        if (payrollAreaIds.Any())
+        {
+            employeeIds.AddRange(_employeeOrgAssignmentRepository.GetAll()
+                .Where(a => a.StartDate <= asOnDate
+                            && a.EndDate >= asOnDate
+                            && a.PayrollAreaId != null
+                            && payrollAreaIds.Contains(a.PayrollAreaId.Value))
+                .Select(a => a.EmployeeId)
+                .ToList());
+        }
+
+        // FALLBACK (retained, load-bearing): assignments predating the FK migration carry a null
+        // PayrollAreaId and are still reachable only through their organisation unit's profile.
         var organizationUnitIds = _orgUnitProfileRepository.GetAll()
             .Where(p => p.PayrollAreaId != null && p.PayrollArea.Name == payrollAreaName)
             .Select(p => p.OrganizationUnitId)
             .ToList();
 
-        if (!organizationUnitIds.Any())
+        if (organizationUnitIds.Any())
         {
-            return Task.FromResult(new List<int>());
+            employeeIds.AddRange(_employeeOrgAssignmentRepository.GetAll()
+                .Where(a => a.StartDate <= asOnDate
+                            && a.EndDate >= asOnDate
+                            && a.PayrollAreaId == null
+                            && a.OrganizationUnitId != null
+                            && organizationUnitIds.Contains(a.OrganizationUnitId.Value))
+                .Select(a => a.EmployeeId)
+                .ToList());
         }
 
-        var employeeIds = _employeeOrgAssignmentRepository.GetAll()
-            .Where(a => a.StartDate <= asOnDate
-                        && a.EndDate >= asOnDate
-                        && a.OrganizationUnitId != null
-                        && organizationUnitIds.Contains(a.OrganizationUnitId.Value))
-            .Select(a => a.EmployeeId)
-            .Distinct()
-            .OrderBy(id => id)
-            .ToList();
-
-        return Task.FromResult(employeeIds);
+        return Task.FromResult(employeeIds.Distinct().OrderBy(id => id).ToList());
     }
 }

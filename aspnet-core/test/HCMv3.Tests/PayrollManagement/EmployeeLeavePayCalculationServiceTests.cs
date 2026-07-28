@@ -136,7 +136,27 @@ public class EmployeeLeavePayCalculationServiceTests
             _store,
             Substitute.For<IPayrollDayCountService>(),
             Substitute.For<IAccrualService>(),
-            Substitute.For<IRosterService>());
+            Substitute.For<IRosterService>(),
+            SubGroupResolver());
+    }
+
+    /// <summary>
+    /// Stands in for legacy's <c>emp.OrgAssignment</c> sub-group lookup, now backed by
+    /// <c>EmployeeOrgAssignment.EmployeeSubGroupId</c>.
+    ///
+    /// <para>The only place the service consults the sub-group is the unpaid-sick-leave deduction rule, which
+    /// then reads <c>EmployeeSubGroupAbsence</c> -- and <see cref="Build"/> always hands that repository an
+    /// EMPTY list, so the rule short-circuits and returns <c>leaveDays</c> unchanged either way. A resolver
+    /// returning <c>null</c> therefore reproduces exactly what these tests asserted before the FK landed
+    /// (legacy's own <c>empSubGroup == null</c> arm). No expected amount in this file changes.</para>
+    /// </summary>
+    private static IEmployeeSubGroupResolver SubGroupResolver(int? employeeSubGroupId = null)
+    {
+        var resolver = Substitute.For<IEmployeeSubGroupResolver>();
+        resolver.GetEmployeeSubGroupIdAsync(default, default)
+            .ReturnsForAnyArgs(Task.FromResult(employeeSubGroupId));
+
+        return resolver;
     }
 
     private static WageType Wage(

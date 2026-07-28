@@ -73,6 +73,25 @@ public class ProvisionWageTypeCalculators_Tests
         };
     }
 
+    /// <summary>
+    /// Stands in for legacy's <c>emp.OrgAssignment</c> sub-group lookup, now backed by
+    /// <c>EmployeeOrgAssignment.EmployeeSubGroupId</c>.
+    ///
+    /// <para>The provision rules do not branch on the resolved id -- they pass it straight through to
+    /// <see cref="IIndemnityCalculationService"/>, which is substituted here. Every assertion in this file
+    /// pins that argument as <c>null</c> (the value these tests were written against, and still the value for
+    /// an employee whose assignment carries no sub-group), so the default of <c>null</c> keeps every expected
+    /// amount in this file EXACTLY as it was. No money assertion changes.</para>
+    /// </summary>
+    private static IEmployeeSubGroupResolver SubGroupResolver(int? employeeSubGroupId = null)
+    {
+        var resolver = Substitute.For<IEmployeeSubGroupResolver>();
+        resolver.GetEmployeeSubGroupIdAsync(default, default)
+            .ReturnsForAnyArgs(Task.FromResult(employeeSubGroupId));
+
+        return resolver;
+    }
+
     #endregion
 
     #region << 1010 Indemnity Pay (legacy 174-185) >>
@@ -87,7 +106,7 @@ public class ProvisionWageTypeCalculators_Tests
         var wageType = Wage(10, "1010");
         var context = Context(wageType);
 
-        await new IndemnityPayWageTypeCalculator(service).CalculateAsync(context);
+        await new IndemnityPayWageTypeCalculator(service, SubGroupResolver()).CalculateAsync(context);
 
         await service.Received(1).GetIndemnityPayAsync(
             7, RegisterId, 10, context.PayDate, PayrollRunType.Regular, null, null, null);
@@ -102,7 +121,7 @@ public class ProvisionWageTypeCalculators_Tests
         var context = Context(Wage(10, "1010"));
         context.OnHold = new PayrollOnHoldFlags { IndemnityPay = true };
 
-        await new IndemnityPayWageTypeCalculator(service).CalculateAsync(context);
+        await new IndemnityPayWageTypeCalculator(service, SubGroupResolver()).CalculateAsync(context);
 
         await service.DidNotReceiveWithAnyArgs().GetIndemnityPayAsync(default, default, default, default, default, default, default, default);
     }
@@ -115,7 +134,7 @@ public class ProvisionWageTypeCalculators_Tests
 
         var context = Context(Wage(10, "1010"), PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave);
 
-        await new IndemnityPayWageTypeCalculator(service).CalculateAsync(context);
+        await new IndemnityPayWageTypeCalculator(service, SubGroupResolver()).CalculateAsync(context);
 
         await service.DidNotReceiveWithAnyArgs().GetIndemnityPayAsync(default, default, default, default, default, default, default, default);
     }
@@ -129,7 +148,7 @@ public class ProvisionWageTypeCalculators_Tests
 
         var context = Context(Wage(10, "1010"), PayrollRunType.OffCycle, PayrollOffCycleReasons.EndOfService);
 
-        await new IndemnityPayWageTypeCalculator(service).CalculateAsync(context);
+        await new IndemnityPayWageTypeCalculator(service, SubGroupResolver()).CalculateAsync(context);
 
         await service.ReceivedWithAnyArgs(1).GetIndemnityPayAsync(default, default, default, default, default, default, default, default);
     }
@@ -149,7 +168,7 @@ public class ProvisionWageTypeCalculators_Tests
         var wageType = Wage(30, "3000");
         var context = Context(wageType);
 
-        await new IndemnityProvisionWageTypeCalculator(service, store).CalculateAsync(context);
+        await new IndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver()).CalculateAsync(context);
 
         var line = store.Lines.Single();
         line.WageTypeId.ShouldBe(30);
@@ -172,7 +191,7 @@ public class ProvisionWageTypeCalculators_Tests
         service.GetIndemnityProvisionAsync(default, default, default, default, default, default, default)
             .ReturnsForAnyArgs(Task.FromResult(new IndemnityProvisionResult { Rate = 1500, Number = 2.5, Amount = 0 }));
 
-        await new IndemnityProvisionWageTypeCalculator(service, store)
+        await new IndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver())
             .CalculateAsync(Context(Wage(30, "3000")));
 
         store.Lines.ShouldBeEmpty();
@@ -194,7 +213,7 @@ public class ProvisionWageTypeCalculators_Tests
 
         var context = Context(Wage(30, "3000", includeInAdvancePay), PayrollRunType.OffCycle, reason);
 
-        await new IndemnityProvisionWageTypeCalculator(service, store).CalculateAsync(context);
+        await new IndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver()).CalculateAsync(context);
 
         if (shouldRun)
         {
@@ -219,7 +238,7 @@ public class ProvisionWageTypeCalculators_Tests
         service.GetTotalIndemnityProvisionAsync(default, default, default, default, default, default, default)
             .ReturnsForAnyArgs(Task.FromResult(new IndemnityProvisionResult { Rate = 1500, Number = 40, Amount = 2307.69 }));
 
-        await new TotalIndemnityProvisionWageTypeCalculator(service, store)
+        await new TotalIndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver())
             .CalculateAsync(Context(Wage(33, "3003")));
 
         store.Lines.Single().Amount.ShouldBe(2307.69);
@@ -251,7 +270,7 @@ public class ProvisionWageTypeCalculators_Tests
         context.Settings.IncludeSalaryIncProvDiffInSalReg = true;
         context.Settings.IncludeSalaryIncProvDiffInSalRegEffDt = new DateTime(2020, 1, 1);
 
-        await new TotalIndemnityProvisionWageTypeCalculator(service, store).CalculateAsync(context);
+        await new TotalIndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver()).CalculateAsync(context);
 
         await service.Received(1).GetIndemnityProvisionDayWiseEntryAsync(7, RegisterId, context.PayDate);
 
@@ -272,7 +291,7 @@ public class ProvisionWageTypeCalculators_Tests
         context.Settings.IncludeSalaryIncProvDiffInSalReg = true;
         context.Settings.IncludeSalaryIncProvDiffInSalRegEffDt = context.PayDate;
 
-        await new TotalIndemnityProvisionWageTypeCalculator(service, store).CalculateAsync(context);
+        await new TotalIndemnityProvisionWageTypeCalculator(service, store, SubGroupResolver()).CalculateAsync(context);
 
         await service.DidNotReceiveWithAnyArgs().GetIndemnityProvisionDayWiseEntryAsync(default, default, default);
     }

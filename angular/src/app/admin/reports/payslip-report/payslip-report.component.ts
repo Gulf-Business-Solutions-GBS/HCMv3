@@ -40,10 +40,10 @@ export class PayslipReportComponent extends AppComponentBase {
 
     readonly month = signal<number>(new Date().getMonth() === 0 ? 12 : new Date().getMonth());
     readonly year = signal<number>(new Date().getMonth() === 0 ? new Date().getFullYear() - 1 : new Date().getFullYear());
-    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType._0);
-    readonly language = signal<PayslipReportLanguage>(PayslipReportLanguage._0);
+    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
+    readonly language = signal<PayslipReportLanguage>(PayslipReportLanguage.English);
     // Legacy default on the bulk screen was "Active" (the SQL hard-coded a status comparison).
-    readonly employeeStatus = signal<EmployeeStatus | undefined>(EmployeeStatus._1);
+    readonly employeeStatus = signal<EmployeeStatus | undefined>(EmployeeStatus.Active);
 
     readonly recipients = signal<PayslipRecipientDto[]>([]);
     readonly loading = signal<boolean>(false);

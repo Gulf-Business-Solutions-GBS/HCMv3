@@ -51,7 +51,7 @@ export class CostingFileComponent extends AppComponentBase implements OnInit {
     readonly employeeCode = signal<string>('');
     readonly payInDate = signal<Date | undefined>(undefined);
     readonly postingDate = signal<Date | undefined>(undefined);
-    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType._0);
+    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
 
     readonly lines = signal<JournalVoucherLineDto[]>([]);
     readonly totalDebit = signal<number>(0);
@@ -63,8 +63,8 @@ export class CostingFileComponent extends AppComponentBase implements OnInit {
 
     /** Regular / OffCycle, mirroring legacy BindPayrollRunType (uscCostingFile.ascx.cs line 1532). */
     readonly runTypeOptions = [
-        { label: 'Regular', value: PayrollRunType._0 },
-        { label: 'OffCycle', value: PayrollRunType._1 },
+        { label: 'Regular', value: PayrollRunType.Regular },
+        { label: 'OffCycle', value: PayrollRunType.OffCycle },
     ];
 
     /** Legacy blocks the run when the payroll area has no FICompany or FIBank (lines 1656-1666). */

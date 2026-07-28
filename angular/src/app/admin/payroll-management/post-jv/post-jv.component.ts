@@ -47,7 +47,7 @@ export class PostJvComponent extends AppComponentBase implements OnInit {
     readonly employeeCode = signal<string>('');
     readonly payInDate = signal<Date | undefined>(undefined);
     readonly postingDate = signal<Date | undefined>(undefined);
-    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType._0);
+    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
 
     readonly lines = signal<JournalVoucherLineDto[]>([]);
     readonly totalDebit = signal<number>(0);
@@ -59,8 +59,8 @@ export class PostJvComponent extends AppComponentBase implements OnInit {
     readonly busy = signal<boolean>(false);
 
     readonly runTypeOptions = [
-        { label: 'Regular', value: PayrollRunType._0 },
-        { label: 'OffCycle', value: PayrollRunType._1 },
+        { label: 'Regular', value: PayrollRunType.Regular },
+        { label: 'OffCycle', value: PayrollRunType.OffCycle },
     ];
 
     readonly selectedAreaIsFiConfigured = computed(() => {

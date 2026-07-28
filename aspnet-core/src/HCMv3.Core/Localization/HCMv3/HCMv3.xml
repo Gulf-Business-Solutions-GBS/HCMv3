@@ -3984,6 +3984,10 @@
     <text name="PayrollEnginePayrollAreaRequired">Payroll Area is required to run the Payroll Engine.</text>
     <text name="PayrollEngineRunQueued">Payroll Engine run has been queued. Progress appears in the run history below.</text>
     <text name="PayrollEngineRunHistory">Payroll Engine Run History</text>
+    <text name="PayrollEngineEmployeeCodesRequired">Employee code can not be blank for an off cycle run.</text>
+    <text name="OffCycleReason">Off Cycle Reason</text>
+    <text name="AdvanceLeave">Advance Leave</text>
+    <text name="LeaveEncashment">Leave Encashment</text>
     <text name="GridReport">Grid Report</text>
     <text name="CostEngine">Cost Engine</text>
     <text name="ProjectEngine">Project Engine</text>

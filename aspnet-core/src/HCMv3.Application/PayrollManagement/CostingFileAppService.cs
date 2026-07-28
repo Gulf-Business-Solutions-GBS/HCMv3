@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,6 +98,9 @@ public class CostingFileAppService : HCMv3AppServiceBase, ICostingFileAppService
         return CostingMapper.ToDto(result);
     }
 
+    // [HttpPost] required: ABP maps Get* to HTTP GET, so NSwag would flatten CostingRunInputDto into
+    // query-string params and never generate the DTO class, breaking the Angular client.
+    [HttpPost]
     public async Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input)
     {
         ValidateInput(input);

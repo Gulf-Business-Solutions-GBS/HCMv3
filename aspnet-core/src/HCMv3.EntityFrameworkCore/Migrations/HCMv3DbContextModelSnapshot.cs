@@ -20908,7 +20908,13 @@ namespace HCMv3.Migrations
                     b.Property<int?>("EmployeeActionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EmployeeGroupId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeSubGroupId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -20928,6 +20934,9 @@ namespace HCMv3.Migrations
 
                     b.Property<long?>("OrganizationUnitId")
                         .HasColumnType("bigint");
+
+                    b.Property<int?>("PayrollAreaId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("PostingGroupId")
                         .HasColumnType("int");
@@ -20949,11 +20958,17 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("EmployeeActionId");
 
+                    b.HasIndex("EmployeeGroupId");
+
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("EmployeeSubGroupId");
 
                     b.HasIndex("JobTitleId");
 
                     b.HasIndex("OrganizationUnitId");
+
+                    b.HasIndex("PayrollAreaId");
 
                     b.HasIndex("PostingGroupId");
 
@@ -36202,11 +36217,21 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeActionId");
 
+                    b.HasOne("HCMv3.PayrollManagement.EmployeeGroup", "EmployeeGroup")
+                        .WithMany()
+                        .HasForeignKey("EmployeeGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("HCMv3.PayrollManagement.EmployeeSubGroup", "EmployeeSubGroup")
+                        .WithMany()
+                        .HasForeignKey("EmployeeSubGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.OrganizationManagement.JobTitle", "JobTitle")
                         .WithMany()
@@ -36215,6 +36240,11 @@ namespace HCMv3.Migrations
                     b.HasOne("Abp.Organizations.OrganizationUnit", "OrganizationUnit")
                         .WithMany()
                         .HasForeignKey("OrganizationUnitId");
+
+                    b.HasOne("HCMv3.PayrollManagement.PayrollArea", "PayrollArea")
+                        .WithMany()
+                        .HasForeignKey("PayrollAreaId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.GeneralMasterInfo.PostingGroup", "PostingGroup")
                         .WithMany()
@@ -36232,9 +36262,15 @@ namespace HCMv3.Migrations
 
                     b.Navigation("EmployeeAction");
 
+                    b.Navigation("EmployeeGroup");
+
+                    b.Navigation("EmployeeSubGroup");
+
                     b.Navigation("JobTitle");
 
                     b.Navigation("OrganizationUnit");
+
+                    b.Navigation("PayrollArea");
 
                     b.Navigation("PostingGroup");
 

@@ -119,6 +119,10 @@ public class ReportsAppService : HCMv3AppServiceBase, IReportsAppService
     /// (<c>srptPaySlipEarningEn</c> / <c>srptPaySlipDeductionEn</c>).
     /// </summary>
     [AbpAuthorize(AppPermissions.Pages_Reports_Preview)]
+    // [HttpPost] is required: ABP maps Get* to HTTP GET by default, so NSwag flattens PayslipInput into
+    // individual query-string parameters and never generates the DTO class at all -- which breaks the
+    // Angular client, since it calls getPayslipPdf(new PayslipInput({...})).
+    [HttpPost]
     public async Task<ReportPdfOutput> GetPayslipPdf(PayslipInput input)
     {
         var data = await BuildPayslipDataAsync(

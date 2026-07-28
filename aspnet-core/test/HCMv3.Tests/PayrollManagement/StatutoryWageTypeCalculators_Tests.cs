@@ -834,16 +834,64 @@ public class StatutoryWageTypeCalculators_Tests
         await repo.DidNotReceiveWithAnyArgs().InsertOrUpdateAsync(null);
     }
 
+    /// <summary>
+    /// This test used to assert a documented <c>NotImplementedException</c> gap: <see cref="EmployeeOrgAssignment"/>
+    /// carried no <c>EmployeeSubGroupId</c> FK, so the four wave-P6 rules that need the employee's sub-group had
+    /// nothing to read. The FK now exists (migration
+    /// <c>20260728103447_Added_EmployeeOrgAssignment_Group_SubGroup_PayrollArea_FKs</c>), so the assertion is
+    /// inverted: the resolver must reproduce legacy's
+    /// <c>empOrgAssignmentList.Where(r =&gt; r.StartDate &lt;= payDate &amp;&amp; r.EndDate &gt;= payDate)</c> lookup.
+    /// </summary>
     [Fact]
-    public void EmployeeSubGroupResolver_Should_Throw_A_Documented_NotImplemented_Gap()
+    public async Task EmployeeSubGroupResolver_Should_Return_The_SubGroup_Of_The_Assignment_Covering_The_Date()
     {
-        // The gap is intentional and loud -- see IEmployeeSubGroupResolver's remarks.
-        var resolver = new EmployeeSubGroupResolver();
+        var resolver = new EmployeeSubGroupResolver(Repo(
+            new EmployeeOrgAssignment
+            {
+                Id = 1, TenantId = 1, EmployeeId = EmployeeId,
+                StartDate = new DateTime(2024, 1, 1), EndDate = new DateTime(2025, 1, 31),
+                EmployeeSubGroupId = 11
+            },
+            new EmployeeOrgAssignment
+            {
+                Id = 2, TenantId = 1, EmployeeId = EmployeeId,
+                StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2030, 12, 31),
+                EmployeeSubGroupId = 22
+            },
+            new EmployeeOrgAssignment
+            {
+                Id = 3, TenantId = 1, EmployeeId = EmployeeId + 1,
+                StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2030, 12, 31),
+                EmployeeSubGroupId = 33
+            }));
 
-        var ex = Should.Throw<NotImplementedException>(
-            () => resolver.GetEmployeeSubGroupIdAsync(EmployeeId, new DateTime(2025, 3, 31)));
+        (await resolver.GetEmployeeSubGroupIdAsync(EmployeeId, new DateTime(2025, 3, 31))).ShouldBe(22);
+        (await resolver.GetEmployeeSubGroupIdAsync(EmployeeId, new DateTime(2024, 6, 30))).ShouldBe(11);
+    }
 
-        ex.Message.ShouldContain("EmployeeOrgAssignment");
+    /// <summary>
+    /// The FK is nullable (rows written before the migration have no value) and no assignment may cover the
+    /// date at all. Both are legitimately <c>null</c>; callers keep legacy's "EmployeeSubGroup Not found." throw.
+    /// </summary>
+    [Fact]
+    public async Task EmployeeSubGroupResolver_Should_Return_Null_When_Nothing_Covers_The_Date_Or_The_Fk_Is_Unset()
+    {
+        var resolver = new EmployeeSubGroupResolver(Repo(
+            new EmployeeOrgAssignment
+            {
+                Id = 1, TenantId = 1, EmployeeId = EmployeeId,
+                StartDate = new DateTime(2024, 1, 1), EndDate = new DateTime(2024, 12, 31),
+                EmployeeSubGroupId = 11
+            },
+            new EmployeeOrgAssignment
+            {
+                Id = 2, TenantId = 1, EmployeeId = EmployeeId,
+                StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2030, 12, 31),
+                EmployeeSubGroupId = null // pre-migration row
+            }));
+
+        (await resolver.GetEmployeeSubGroupIdAsync(EmployeeId, new DateTime(2025, 3, 31))).ShouldBeNull();
+        (await resolver.GetEmployeeSubGroupIdAsync(EmployeeId, new DateTime(2000, 1, 1))).ShouldBeNull();
     }
 
     #endregion

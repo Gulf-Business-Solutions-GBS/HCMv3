@@ -14954,40 +14954,26 @@ export class CostingFileServiceProxy {
     }
 
     /**
-     * @param employeeCode (optional) 
+     * @param body (optional) 
      * @return OK
      */
-    getJournalVoucherLines(payrollAreaName: string | null, payInDate: DateTime, postingDate: DateTime, payrollRunType: PayrollRunType, employeeCode?: string | null | undefined): Observable<JournalVoucherPreviewDto> {
-        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetJournalVoucherLines?";
-        if (payrollAreaName === undefined)
-            throw new globalThis.Error("The parameter 'payrollAreaName' must be defined.");
-        else if(payrollAreaName !== null)
-            url_ += "PayrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
-        if (payInDate === undefined || payInDate === null)
-            throw new globalThis.Error("The parameter 'payInDate' must be defined and cannot be null.");
-        else
-            url_ += "PayInDate=" + encodeURIComponent(payInDate ? "" + payInDate.toString() : "") + "&";
-        if (postingDate === undefined || postingDate === null)
-            throw new globalThis.Error("The parameter 'postingDate' must be defined and cannot be null.");
-        else
-            url_ += "PostingDate=" + encodeURIComponent(postingDate ? "" + postingDate.toString() : "") + "&";
-        if (payrollRunType === undefined || payrollRunType === null)
-            throw new globalThis.Error("The parameter 'payrollRunType' must be defined and cannot be null.");
-        else
-            url_ += "PayrollRunType=" + encodeURIComponent("" + payrollRunType) + "&";
-        if (employeeCode !== undefined && employeeCode !== null)
-            url_ += "EmployeeCode=" + encodeURIComponent("" + employeeCode) + "&";
+    getJournalVoucherLines(body?: CostingRunInputDto | undefined): Observable<JournalVoucherPreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/CostingFile/GetJournalVoucherLines";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetJournalVoucherLines(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -86436,40 +86422,26 @@ export class PostJvServiceProxy {
     }
 
     /**
-     * @param employeeCode (optional) 
+     * @param body (optional) 
      * @return OK
      */
-    getJournalVoucherLines(payrollAreaName: string | null, payInDate: DateTime, postingDate: DateTime, payrollRunType: PayrollRunType, employeeCode?: string | null | undefined): Observable<JournalVoucherPreviewDto> {
-        let url_ = this.baseUrl + "/api/services/app/PostJv/GetJournalVoucherLines?";
-        if (payrollAreaName === undefined)
-            throw new globalThis.Error("The parameter 'payrollAreaName' must be defined.");
-        else if(payrollAreaName !== null)
-            url_ += "PayrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
-        if (payInDate === undefined || payInDate === null)
-            throw new globalThis.Error("The parameter 'payInDate' must be defined and cannot be null.");
-        else
-            url_ += "PayInDate=" + encodeURIComponent(payInDate ? "" + payInDate.toString() : "") + "&";
-        if (postingDate === undefined || postingDate === null)
-            throw new globalThis.Error("The parameter 'postingDate' must be defined and cannot be null.");
-        else
-            url_ += "PostingDate=" + encodeURIComponent(postingDate ? "" + postingDate.toString() : "") + "&";
-        if (payrollRunType === undefined || payrollRunType === null)
-            throw new globalThis.Error("The parameter 'payrollRunType' must be defined and cannot be null.");
-        else
-            url_ += "PayrollRunType=" + encodeURIComponent("" + payrollRunType) + "&";
-        if (employeeCode !== undefined && employeeCode !== null)
-            url_ += "EmployeeCode=" + encodeURIComponent("" + employeeCode) + "&";
+    getJournalVoucherLines(body?: CostingRunInputDto | undefined): Observable<JournalVoucherPreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/PostJv/GetJournalVoucherLines";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetJournalVoucherLines(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -92481,52 +92453,26 @@ export class ReportsServiceProxy {
     }
 
     /**
-     * @param employeeId (optional) 
-     * @param month (optional) 
-     * @param year (optional) 
-     * @param employeeStatus (optional) 
-     * @param payrollAreaId (optional) 
+     * @param body (optional) 
      * @return OK
      */
-    getPayslipPdf(payrollRunType: PayrollRunType, language: PayslipReportLanguage, employeeId?: number | undefined, month?: number | undefined, year?: number | undefined, employeeStatus?: EmployeeStatus | undefined, payrollAreaId?: number | null | undefined): Observable<ReportPdfOutput> {
-        let url_ = this.baseUrl + "/api/services/app/Reports/GetPayslipPdf?";
-        if (payrollRunType === undefined || payrollRunType === null)
-            throw new globalThis.Error("The parameter 'payrollRunType' must be defined and cannot be null.");
-        else
-            url_ += "PayrollRunType=" + encodeURIComponent("" + payrollRunType) + "&";
-        if (language === undefined || language === null)
-            throw new globalThis.Error("The parameter 'language' must be defined and cannot be null.");
-        else
-            url_ += "Language=" + encodeURIComponent("" + language) + "&";
-        if (employeeId === null)
-            throw new globalThis.Error("The parameter 'employeeId' cannot be null.");
-        else if (employeeId !== undefined)
-            url_ += "EmployeeId=" + encodeURIComponent("" + employeeId) + "&";
-        if (month === null)
-            throw new globalThis.Error("The parameter 'month' cannot be null.");
-        else if (month !== undefined)
-            url_ += "Month=" + encodeURIComponent("" + month) + "&";
-        if (year === null)
-            throw new globalThis.Error("The parameter 'year' cannot be null.");
-        else if (year !== undefined)
-            url_ += "Year=" + encodeURIComponent("" + year) + "&";
-        if (employeeStatus === null)
-            throw new globalThis.Error("The parameter 'employeeStatus' cannot be null.");
-        else if (employeeStatus !== undefined)
-            url_ += "EmployeeStatus=" + encodeURIComponent("" + employeeStatus) + "&";
-        if (payrollAreaId !== undefined && payrollAreaId !== null)
-            url_ += "PayrollAreaId=" + encodeURIComponent("" + payrollAreaId) + "&";
+    getPayslipPdf(body?: PayslipInput | undefined): Observable<ReportPdfOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Reports/GetPayslipPdf";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetPayslipPdf(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -232012,6 +231958,66 @@ export interface IPayslipConfigDto {
     id: number;
     emailTemplateId: number;
     emailTemplateNameEn: string | undefined;
+}
+
+export class PayslipInput implements IPayslipInput {
+    employeeId!: number;
+    month!: number;
+    year!: number;
+    payrollRunType!: PayrollRunType;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaId!: number | undefined;
+    language!: PayslipReportLanguage;
+
+    constructor(data?: IPayslipInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.language = _data["language"];
+        }
+    }
+
+    static fromJS(data: any): PayslipInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayslipInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["language"] = this.language;
+        return data;
+    }
+}
+
+export interface IPayslipInput {
+    employeeId: number;
+    month: number;
+    year: number;
+    payrollRunType: PayrollRunType;
+    employeeStatus: EmployeeStatus;
+    payrollAreaId: number | undefined;
+    language: PayslipReportLanguage;
 }
 
 export class PayslipRecipientDto implements IPayslipRecipientDto {

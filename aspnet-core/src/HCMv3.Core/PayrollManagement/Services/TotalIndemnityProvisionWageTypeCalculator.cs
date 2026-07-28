@@ -35,13 +35,16 @@ public class TotalIndemnityProvisionWageTypeCalculator : HCMv3DomainServiceBase,
 {
     private readonly IIndemnityCalculationService _indemnityCalculationService;
     private readonly IPayrollRegisterStore _registerStore;
+    private readonly IEmployeeSubGroupResolver _employeeSubGroupResolver;
 
     public TotalIndemnityProvisionWageTypeCalculator(
         IIndemnityCalculationService indemnityCalculationService,
-        IPayrollRegisterStore registerStore)
+        IPayrollRegisterStore registerStore,
+        IEmployeeSubGroupResolver employeeSubGroupResolver)
     {
         _indemnityCalculationService = indemnityCalculationService;
         _registerStore = registerStore;
+        _employeeSubGroupResolver = employeeSubGroupResolver;
     }
 
     /// <inheritdoc/>
@@ -59,13 +62,16 @@ public class TotalIndemnityProvisionWageTypeCalculator : HCMv3DomainServiceBase,
         // Legacy lines 228-236.
         var line = await ProvisionRegisterLineHelper.GetOrCreateLineAsync(_registerStore, context);
 
+        var employeeSubGroupId = await _employeeSubGroupResolver
+            .GetEmployeeSubGroupIdAsync(context.EmployeeId, context.PayDate);
+
         var result = await _indemnityCalculationService.GetTotalIndemnityProvisionAsync(
             context.EmployeeId,
             line.Id,
             context.PayDate,
             context.PayrollRunType,
             context.OffCycleReason,
-            employeeSubGroupId: null,
+            employeeSubGroupId,
             indemnitySlabs: null);
 
         // Legacy lines 245-250: zero means delete. Runs BEFORE the day-wise tail, as in legacy.

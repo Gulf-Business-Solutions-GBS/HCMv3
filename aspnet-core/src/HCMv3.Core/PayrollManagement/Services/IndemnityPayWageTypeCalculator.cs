@@ -24,13 +24,14 @@ namespace HCMv3.PayrollManagement.Services;
 /// (legacy line 177) rather than the generic <c>IsOnHold</c> earnings/deductions gate. That per-hold test is
 /// this rule's business (see <see cref="WageTypeCalculatorResolver"/> remarks), so it is applied here.</para>
 ///
-/// <para><b>Known port gap (whole-wave, not specific to this rule):</b> legacy derived the employee's
-/// <c>EmployeeSubGroup</c> from <c>emp.OrgAssignment</c>; this port's <c>EmployeeOrgAssignment</c> carries no
-/// <c>EmployeeSubGroupId</c> FK yet (deferred in Wave B, see that entity's remarks) and
-/// <see cref="PayrollCalculationContext"/> carries no sub-group either, so <c>null</c> is passed. Effect:
-/// the <c>EmployeeSubGroupGratuity</c> change-year slab lookup inside
+/// <para><b>Gap closed (whole-wave, not specific to this rule):</b> legacy derived the employee's
+/// <c>EmployeeSubGroup</c> from <c>emp.OrgAssignment</c>. That FK now exists, so the sub-group is resolved
+/// date-effectively via <see cref="IEmployeeSubGroupResolver"/> and passed through instead of the previous
+/// hard-coded <c>null</c>. <see cref="IIndemnityCalculationService"/>'s signature still takes it as an
+/// explicit <c>int?</c> parameter (unchanged, by design), so a pre-migration row with a null FK keeps the old
+/// behaviour: the <c>EmployeeSubGroupGratuity</c> change-year slab lookup inside
 /// <see cref="IIndemnityCalculationService.GetIndemnityBasisDaysAsync"/> falls back to the wage type's
-/// <c>FixedDays</c>. Identical to the gap already documented on <see cref="IAccrualService"/>.</para>
+/// <c>FixedDays</c>.</para>
 ///
 /// <para><b>Known port gap -- indemnity slab cache.</b> Legacy kept the slab table in the run-level static
 /// <c>Program.IndemnitySlabList</c>, lazily built on the first End-Of-Service bifurcation and reused for the
@@ -41,10 +42,14 @@ namespace HCMv3.PayrollManagement.Services;
 public class IndemnityPayWageTypeCalculator : HCMv3DomainServiceBase, IWageTypeCalculator, ITransientDependency
 {
     private readonly IIndemnityCalculationService _indemnityCalculationService;
+    private readonly IEmployeeSubGroupResolver _employeeSubGroupResolver;
 
-    public IndemnityPayWageTypeCalculator(IIndemnityCalculationService indemnityCalculationService)
+    public IndemnityPayWageTypeCalculator(
+        IIndemnityCalculationService indemnityCalculationService,
+        IEmployeeSubGroupResolver employeeSubGroupResolver)
     {
         _indemnityCalculationService = indemnityCalculationService;
+        _employeeSubGroupResolver = employeeSubGroupResolver;
     }
 
     /// <inheritdoc/>
@@ -65,6 +70,9 @@ public class IndemnityPayWageTypeCalculator : HCMv3DomainServiceBase, IWageTypeC
             return;
         }
 
+        var employeeSubGroupId = await _employeeSubGroupResolver
+            .GetEmployeeSubGroupIdAsync(context.EmployeeId, context.PayDate);
+
         await _indemnityCalculationService.GetIndemnityPayAsync(
             context.EmployeeId,
             context.Register.RegisterId,
@@ -72,7 +80,7 @@ public class IndemnityPayWageTypeCalculator : HCMv3DomainServiceBase, IWageTypeC
             context.PayDate,
             context.PayrollRunType,
             context.OffCycleReason,
-            employeeSubGroupId: null,
+            employeeSubGroupId,
             indemnitySlabs: null);
     }
 }

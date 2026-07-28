@@ -41,9 +41,10 @@ namespace HCMv3.PayrollManagement.Services;
 /// <item><description><b><c>Program.AdvancePaymentDed</c> (wage code 2005) is NOT ported and THROWS</b> --
 /// identical gap and reason as <see cref="EmployeeBasicPayCalculationService"/>; see
 /// <see cref="AdvancePaymentDedAsync"/>.</description></item>
-/// <item><description><b><c>GetActualSickLeaveDays</c> is fully ported but its employee-&gt;sub-group lookup
-/// cannot resolve</b> -- see <see cref="ResolveEmployeeSubGroupId"/>. It degrades onto legacy's own
-/// <c>empSubGroup == null</c> no-op arm rather than guessing.</description></item>
+/// <item><description><b><c>GetActualSickLeaveDays</c>' employee-&gt;sub-group lookup now resolves</b> via
+/// <see cref="IEmployeeSubGroupResolver"/> off <c>EmployeeOrgAssignment.EmployeeSubGroupId</c> -- see
+/// <see cref="ResolveEmployeeSubGroupIdAsync"/>. It still degrades onto legacy's own
+/// <c>empSubGroup == null</c> no-op arm when the (nullable) FK is unset on pre-migration rows.</description></item>
 /// <item><description><b>No rounding.</b> Legacy's leave-pay body contains no <c>Math.Round</c>; rounding is
 /// applied once later by <c>Program.SetRoundoff</c> (<see cref="IPayrollRoundingService"/>). The one
 /// exception is inside <c>AdvancePaymentDed</c>, which is not ported.</description></item>
@@ -76,6 +77,7 @@ public class EmployeeLeavePayCalculationService : HCMv3DomainServiceBase, IEmplo
     private readonly IPayrollDayCountService _dayCountService;
     private readonly IAccrualService _accrualService;
     private readonly TimeManagement.Services.IRosterService _rosterService;
+    private readonly IEmployeeSubGroupResolver _employeeSubGroupResolver;
 
     public EmployeeLeavePayCalculationService(
         IRepository<AbsenceType> absenceTypeRepository,
@@ -90,8 +92,10 @@ public class EmployeeLeavePayCalculationService : HCMv3DomainServiceBase, IEmplo
         IPayrollRegisterStore registerStore,
         IPayrollDayCountService dayCountService,
         IAccrualService accrualService,
-        TimeManagement.Services.IRosterService rosterService)
+        TimeManagement.Services.IRosterService rosterService,
+        IEmployeeSubGroupResolver employeeSubGroupResolver)
     {
+        _employeeSubGroupResolver = employeeSubGroupResolver;
         _absenceTypeRepository = absenceTypeRepository;
         _wageTypeRepository = wageTypeRepository;
         _wageTypeLeaveRepository = wageTypeLeaveRepository;
@@ -833,7 +837,7 @@ public class EmployeeLeavePayCalculationService : HCMv3DomainServiceBase, IEmplo
                 return retLeaveDays;
             }
 
-            var employeeSubGroupId = ResolveEmployeeSubGroupId(context, payDate);
+            var employeeSubGroupId = await ResolveEmployeeSubGroupIdAsync(context, payDate);
             if (employeeSubGroupId == null)
             {
                 // Legacy's own "empSubGroup == null" arm (line 897): returns leaveDays unchanged.
@@ -915,29 +919,21 @@ public class EmployeeLeavePayCalculationService : HCMv3DomainServiceBase, IEmplo
     /// .Select(r =&gt; r.EmployeeSubGroup).FirstOrDefault()</c> (legacy
     /// <c>EmployeeLeavePayService.cs</c> lines 895-896).
     ///
-    /// <para><b>GAP -- always returns <c>null</c>.</b> This port's <see cref="EmployeeOrgAssignment"/> has NO
-    /// <c>EmployeeSubGroupId</c> FK: it was deferred in Wave B (see that entity's class remarks, "DEFERRED ...
-    /// <c>EmployeeGroup</c>/<c>EmployeeSubGroup</c>/<c>PayrollArea</c>"). The same gap is already documented
-    /// on <see cref="IAccrualService"/>, <see cref="IIndemnityCalculationService"/> and
-    /// <c>TimeEngineRunInput.EmployeeSubGroupIds</c>, all of which resolved it by making the sub-group a
-    /// CALLER-SUPPLIED parameter. <see cref="PayrollCalculationContext"/> carries no such member and is frozen
-    /// for this wave.</para>
+    /// <para><b>GAP CLOSED.</b> This used to return <c>null</c> unconditionally, because
+    /// <see cref="EmployeeOrgAssignment"/> had no <c>EmployeeSubGroupId</c> FK -- which meant the whole
+    /// sick-leave-unpaid (2003) slab correction silently degraded onto legacy's own
+    /// <c>if (empSubGroup != null)</c> false arm (legacy line 897) and never applied. The FK now exists
+    /// (migration <c>20260728103447_Added_EmployeeOrgAssignment_Group_SubGroup_PayrollArea_FKs</c>) and the
+    /// date-bounded lookup is delegated to <see cref="IEmployeeSubGroupResolver"/>, which performs exactly the
+    /// legacy query.</para>
     ///
-    /// <para>Returning <c>null</c> is not a fabricated behaviour: it lands exactly on legacy's own
-    /// <c>if (empSubGroup != null)</c> guard (legacy line 897), whose false arm returns the day count
-    /// uncorrected. <b>Effect while the gap is open: the sick-leave-unpaid slab correction never applies</b>,
-    /// so 2003-family leave is valued at raw evaluated days.</para>
-    ///
-    /// <para><b>To close it:</b> add <c>EmployeeSubGroupId</c> to
-    /// <see cref="PayrollCalculationContext"/> (engine-resolved, per employee) or to
-    /// <see cref="EmployeeOrgAssignment"/> (+ migration), then replace this method's body with the
-    /// date-bounded lookup. Reported, not made.</para>
+    /// <para><c>null</c> is still reachable -- the FK is nullable and rows predating the migration carry no
+    /// value -- and still lands on legacy's uncorrected-day-count arm. That degradation is legacy behaviour,
+    /// not a port gap.</para>
     /// </summary>
-    private static int? ResolveEmployeeSubGroupId(PayrollCalculationContext context, DateTime payDate)
+    private Task<int?> ResolveEmployeeSubGroupIdAsync(PayrollCalculationContext context, DateTime payDate)
     {
-        _ = context;
-        _ = payDate;
-        return null;
+        return _employeeSubGroupResolver.GetEmployeeSubGroupIdAsync(context.EmployeeId, payDate);
     }
 
     #endregion

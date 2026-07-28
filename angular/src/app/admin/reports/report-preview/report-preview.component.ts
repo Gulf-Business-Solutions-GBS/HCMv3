@@ -45,8 +45,8 @@ export class ReportPreviewComponent extends AppComponentBase implements OnInit {
     // DateTime.Now.AddMonths(-1)).
     readonly month = signal<number>(new Date().getMonth() === 0 ? 12 : new Date().getMonth());
     readonly year = signal<number>(new Date().getMonth() === 0 ? new Date().getFullYear() - 1 : new Date().getFullYear());
-    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType._0);
-    readonly language = signal<PayslipReportLanguage>(PayslipReportLanguage._0);
+    readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
+    readonly language = signal<PayslipReportLanguage>(PayslipReportLanguage.English);
 
     // Legacy filled the year combo from distinct PayrollCalendar.PayrollYear values. There is no
     // payroll-calendar lookup endpoint on this screen's service surface, so a rolling window is used

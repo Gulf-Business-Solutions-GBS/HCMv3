@@ -7,9 +7,15 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
-import { BankFileApiService } from './bank-file-api.service';
-import { BankFileFormatDto, BankFileLookupsOutput, BankFileOutput } from './bank-file.types';
+import {
+    BankFileFormatDto,
+    BankFileLookupsOutput,
+    BankFileOutput,
+    BankFilesServiceProxy,
+    GenerateBankFileInput,
+} from '@shared/service-proxies/service-proxies';
 
 /**
  * Bank salary-transfer file generation.
@@ -23,9 +29,6 @@ import { BankFileFormatDto, BankFileLookupsOutput, BankFileOutput } from './bank
  * contain zero non-blank, non-comment lines). Both declare the SAME 28 format codes and contain the SAME
  * 28 live format branches -- including CBK-T6, CBK-T7, BUR-G2 and BURBD-G1. So this ONE screen covers both.
  *
- * !!! AWAITING SERVICE PROXIES !!!  The backend is complete but `service-proxies.ts` was deliberately NOT
- * regenerated (concurrent agents). This component talks to the app service through the temporary
- * `BankFileApiService` shim; see that file for the post-NSwag switch-over checklist.
  */
 @Component({
     templateUrl: './bank-file.component.html',
@@ -33,7 +36,7 @@ import { BankFileFormatDto, BankFileLookupsOutput, BankFileOutput } from './bank
     imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, TableModule, CheckboxModule],
 })
 export class BankFileComponent extends AppComponentBase implements OnInit {
-    private _api = inject(BankFileApiService);
+    private _bankFileService = inject(BankFilesServiceProxy);
 
     readonly loading = signal<boolean>(false);
     readonly generating = signal<boolean>(false);
@@ -68,7 +71,7 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
     /** Formats belonging to the currently selected payment bank -- purely informational. */
     readonly formatsForSelectedBank = computed<BankFileFormatDto[]>(() => {
         const all = this.lookups()?.formats ?? [];
-        const bank = this.lookups()?.paymentBanks.find((b) => b.id === this.paymentBankId());
+        const bank = this.lookups()?.paymentBanks?.find((b) => b.id === this.paymentBankId());
         if (!bank) {
             return [];
         }
@@ -90,8 +93,8 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
 
     loadLookups(): void {
         this.loading.set(true);
-        this._api
-            .get<BankFileLookupsOutput>('GetBankFileLookups')
+        this._bankFileService
+            .getBankFileLookups()
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe((result) => this.lookups.set(result));
     }
@@ -102,23 +105,27 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
             return;
         }
 
+        // Built by assignment rather than through the constructor's `IGenerateBankFileInput` literal: that
+        // interface marks `paymentType` as required, while the server DTO has it as `PaymentType?` where null
+        // means "any payment type" -- which is what this screen always wants (legacy left cmbPaymentType blank).
+        const input = new GenerateBankFileInput();
+        input.payrollAreaId = this.payrollAreaId();
+        input.sponsorId = this.sponsorId();
+        input.sponsorBankId = this.sponsorBankId();
+        input.mosalId = this.mosalId();
+        input.employeeCodes = this.employeeCodes();
+        input.employeeBankId = this.employeeBankId();
+        input.paymentBankId = this.paymentBankId()!;
+        input.payrollRunType = this.payrollRunType();
+        input.year = this.year();
+        input.month = this.month();
+        input.startDate = DateTime.fromJSDate(this.startDate());
+        input.endDate = DateTime.fromJSDate(this.endDate());
+        input.splitBankFiles = this.splitBankFiles();
+
         this.generating.set(true);
-        this._api
-            .post<BankFileOutput>('GenerateBankFile', {
-                payrollAreaId: this.payrollAreaId(),
-                sponsorId: this.sponsorId(),
-                sponsorBankId: this.sponsorBankId(),
-                mosalId: this.mosalId(),
-                employeeCodes: this.employeeCodes(),
-                employeeBankId: this.employeeBankId(),
-                paymentBankId: this.paymentBankId(),
-                payrollRunType: this.payrollRunType(),
-                year: this.year(),
-                month: this.month(),
-                startDate: this.startDate(),
-                endDate: this.endDate(),
-                splitBankFiles: this.splitBankFiles(),
-            })
+        this._bankFileService
+            .generateBankFile(input)
             .pipe(finalize(() => this.generating.set(false)))
             .subscribe((result) => {
                 this.lastResult.set(result);
@@ -129,6 +136,10 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
 
     /** The backend returns the file inline as base64 (same pattern as the PDF reports). */
     private download(result: BankFileOutput): void {
+        if (!result.base64Content) {
+            return;
+        }
+
         const binary = atob(result.base64Content);
         const bytes = new Uint8Array(binary.length);
         for (let i = 0; i < binary.length; i++) {
@@ -138,7 +149,7 @@ export class BankFileComponent extends AppComponentBase implements OnInit {
         const url = URL.createObjectURL(new Blob([bytes], { type: result.contentType }));
         const link = document.createElement('a');
         link.href = url;
-        link.download = result.fileName;
+        link.download = result.fileName ?? 'bank-file';
         link.click();
         URL.revokeObjectURL(url);
     }

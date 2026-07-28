@@ -1146,6 +1146,28 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<EmployeeOrgAssignment>(b =>
+        {
+            // Three optional FKs into PayrollManagement hub tables, added after Wave B originally
+            // deferred them. Restrict rather than the default Cascade: EmployeeOrgAssignment already
+            // cascades from Employee, so a second cascade path from any of these hubs is exactly the
+            // "multiple cascade paths" error SQL Server rejects at migration time.
+            b.HasOne(e => e.EmployeeGroup)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.EmployeeSubGroup)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeSubGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.PayrollArea)
+                .WithMany()
+                .HasForeignKey(e => e.PayrollAreaId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<OrgUnitProfile>(b =>
         {
             b.HasIndex(e => e.OrganizationUnitId).IsUnique();

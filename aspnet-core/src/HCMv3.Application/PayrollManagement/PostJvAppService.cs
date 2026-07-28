@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,6 +141,9 @@ public class PostJvAppService : HCMv3AppServiceBase, IPostJvAppService
         return response;
     }
 
+    // [HttpPost] required: ABP maps Get* to HTTP GET, so NSwag would flatten CostingRunInputDto into
+    // query-string params and never generate the DTO class, breaking the Angular client.
+    [HttpPost]
     public Task<JournalVoucherPreviewDto> GetJournalVoucherLines(CostingRunInputDto input)
     {
         return _costingFileAppService.GetJournalVoucherLines(input);

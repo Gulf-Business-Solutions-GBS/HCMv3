@@ -4,6 +4,7 @@ using Abp.Domain.Entities.Auditing;
 using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
+using HCMv3.PayrollManagement;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -16,12 +17,22 @@ namespace HCMv3.PersonnelAdministration;
 /// hierarchical <see cref="OrganizationUnit"/> tree (parent chain via <c>OrganizationUnit.ParentId</c>)
 /// -- one FK replaces all 7 legacy levels.
 ///
-/// DEFERRED (not ported, see Wave B scope notes): <c>Position</c>/<c>EmployeeGroup</c>/
-/// <c>EmployeeSubGroup</c>/<c>PayrollArea</c>/<c>WorkflowGroup</c> fields (ManpowerPlanning/
-/// PayrollManagement/Workflow modules not ported); <c>AddBasicSalary</c>/<c>AddLocationInWageAccount</c>
-/// side effects; Position-vacancy-tracking (<c>UpdatedPositionRelation</c> family); the legacy
-/// "Check OrganizationUnitType" validation (not applicable -- collapsed to one FK); the "system
-/// generated flag to stop EarliestMasterDataChange" block (references unported Payroll fields).
+/// NO LONGER DEFERRED: <see cref="EmployeeGroupId"/>, <see cref="EmployeeSubGroupId"/> and
+/// <see cref="PayrollAreaId"/> were deferred in Wave B because PayrollManagement was not yet ported.
+/// It is now, and their absence had become a live defect rather than a gap: the Time Engine screen
+/// failed for every employee with "Employee Sub Group not found for Employee", the sick-leave-unpaid
+/// (2003) slab correction never applied, and wage codes 23/27/29/35 threw at runtime. Several services
+/// had grown caller-supplied-parameter workarounds for exactly this (<c>IAccrualService</c>,
+/// <c>IIndemnityCalculationService</c>, <c>TimeEngineRunInput.EmployeeSubGroupIds</c>) and
+/// <c>IEmployeePayrollAreaResolver</c> existed solely to reach PayrollArea via
+/// <c>OrgUnitProfile</c>. All three are nullable so existing rows migrate cleanly; resolve them
+/// date-effectively as of the assignment, exactly as legacy did.
+///
+/// STILL DEFERRED (see Wave B scope notes): <c>Position</c>/<c>WorkflowGroup</c> fields;
+/// <c>AddBasicSalary</c>/<c>AddLocationInWageAccount</c> side effects; Position-vacancy-tracking
+/// (<c>UpdatedPositionRelation</c> family); the legacy "Check OrganizationUnitType" validation
+/// (not applicable -- collapsed to one FK); the "system generated flag to stop
+/// EarliestMasterDataChange" block.
 ///
 /// The EndDate auto-chaining (legacy <c>SetEndDate</c>), no-duplicate-StartDate validation, and
 /// <c>PrefillFromPrevious</c> are ported in <c>EmployeeOrgAssignmentsAppService</c>.
@@ -73,4 +84,25 @@ public class EmployeeOrgAssignment : FullAuditedEntity, IMustHaveTenant
     public virtual int? EmployeeActionId { get; set; }
 
     public virtual EmployeeAction EmployeeAction { get; set; }
+
+    /// <summary>Legacy <c>EmployeeOrgAssignment.EmployeeGroup</c>. Nullable: existing rows predate this column.</summary>
+    public virtual int? EmployeeGroupId { get; set; }
+
+    public virtual EmployeeGroup EmployeeGroup { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.EmployeeSubGroup</c>. Drives leave/ticket/gratuity slab selection,
+    /// so a null here degrades those calculations rather than failing loudly -- resolve it date-effectively.
+    /// </summary>
+    public virtual int? EmployeeSubGroupId { get; set; }
+
+    public virtual EmployeeSubGroup EmployeeSubGroup { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.PayrollArea</c>. <c>IEmployeePayrollAreaResolver</c> reaches this
+    /// via <c>OrgUnitProfile</c> as a workaround; prefer this FK when set and fall back to that chain.
+    /// </summary>
+    public virtual int? PayrollAreaId { get; set; }
+
+    public virtual PayrollArea PayrollArea { get; set; }
 }

@@ -39,13 +39,16 @@ public class IndemnityProvisionWageTypeCalculator : HCMv3DomainServiceBase, IWag
 {
     private readonly IIndemnityCalculationService _indemnityCalculationService;
     private readonly IPayrollRegisterStore _registerStore;
+    private readonly IEmployeeSubGroupResolver _employeeSubGroupResolver;
 
     public IndemnityProvisionWageTypeCalculator(
         IIndemnityCalculationService indemnityCalculationService,
-        IPayrollRegisterStore registerStore)
+        IPayrollRegisterStore registerStore,
+        IEmployeeSubGroupResolver employeeSubGroupResolver)
     {
         _indemnityCalculationService = indemnityCalculationService;
         _registerStore = registerStore;
+        _employeeSubGroupResolver = employeeSubGroupResolver;
     }
 
     /// <inheritdoc/>
@@ -63,13 +66,16 @@ public class IndemnityProvisionWageTypeCalculator : HCMv3DomainServiceBase, IWag
         // Legacy line 194-202: find the line for the CURRENT wage type, create it when absent.
         var line = await ProvisionRegisterLineHelper.GetOrCreateLineAsync(_registerStore, context);
 
+        var employeeSubGroupId = await _employeeSubGroupResolver
+            .GetEmployeeSubGroupIdAsync(context.EmployeeId, context.PayDate);
+
         var result = await _indemnityCalculationService.GetIndemnityProvisionAsync(
             context.EmployeeId,
             line.Id,
             context.PayDate,
             context.PayrollRunType,
             context.OffCycleReason,
-            employeeSubGroupId: null,
+            employeeSubGroupId,
             indemnitySlabs: null);
 
         // Legacy lines 211-216: zero means delete.
