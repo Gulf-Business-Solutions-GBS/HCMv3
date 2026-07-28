@@ -1,0 +1,207 @@
+<div [@routerTransition]>
+    <sub-header [title]="'RosterScheduleViewer' | localize" [description]="'TimeManagement' | localize"> </sub-header>
+
+    <div [class]="containerClass">
+        <!-- Pane 1 + 2: duty period selector and its assigned employees (legacy dgvxRosterDutyPeriod + dgvxEmployee) -->
+        <div class="card card-custom mb-4">
+            <div class="card-body">
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label" for="dutyPeriodSelect">{{ 'DutyPeriod' | localize }}</label>
+                        <p-select
+                            inputId="dutyPeriodSelect"
+                            styleClass="w-100"
+                            [options]="dutyPeriods()"
+                            optionLabel="nameEn"
+                            optionValue="id"
+                            [showClear]="true"
+                            [filter]="true"
+                            filterBy="nameEn,code"
+                            [(ngModel)]="selectedDutyPeriodId"
+                            (onChange)="onDutyPeriodChange()"
+                            [placeholder]="'SelectADutyPeriodToViewEmployees' | localize" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="asOfDate">{{ 'AsOfDate' | localize }}</label>
+                        <p-datepicker
+                            inputId="asOfDate"
+                            styleClass="w-100"
+                            dateFormat="yy-mm-dd"
+                            [(ngModel)]="asOfDate"
+                            (onSelect)="reloadEmployees()" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="employeeFilter">{{ 'Filter' | localize }}</label>
+                        <input
+                            id="employeeFilter"
+                            type="text"
+                            pInputText
+                            class="w-100"
+                            [(ngModel)]="filter"
+                            (keyup.enter)="reloadEmployees()" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary w-100" (click)="reloadEmployees()">
+                            <i class="fa fa-search btn-md-icon"></i>
+                            <span class="d-none d-md-inline-block">{{ 'Search' | localize }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getEmployees($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 60px"></th>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="fullNameEn">
+                                        {{ 'Name' | localize }}
+                                        <p-sortIcon field="fullNameEn" />
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'Department' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'Location' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'AssignmentSource' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'RosterGroupName' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 60px">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            [checked]="isEmployeeSelected(record)"
+                                            (change)="toggleEmployee(record)" />
+                                    </td>
+                                    <td style="min-width: 120px">{{ record.code }}</td>
+                                    <td style="min-width: 200px">
+                                        <span pTooltip="{{ record.name }}" class="hide-overflown">{{ record.name }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.department }}" class="hide-overflown">{{
+                                            record.department
+                                        }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">
+                                        <span pTooltip="{{ record.location }}" class="hide-overflown">{{
+                                            record.location
+                                        }}</span>
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.assignmentSource }}</td>
+                                    <td style="min-width: 160px">{{ record.rosterGroupName }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getEmployees($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+
+        <!-- Pane 3: resolved employee x day duty matrix (legacy ASPxScheduler1 / BindSchedular) -->
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label" for="scheduleStart">{{ 'StartDate' | localize }}</label>
+                        <p-datepicker
+                            inputId="scheduleStart"
+                            styleClass="w-100"
+                            dateFormat="yy-mm-dd"
+                            [(ngModel)]="scheduleStartDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="scheduleEnd">{{ 'EndDate' | localize }}</label>
+                        <p-datepicker
+                            inputId="scheduleEnd"
+                            styleClass="w-100"
+                            dateFormat="yy-mm-dd"
+                            [(ngModel)]="scheduleEndDate" />
+                    </div>
+                    <div class="col-md-6">
+                        <button
+                            type="button"
+                            class="btn btn-primary me-2"
+                            [disabled]="!hasSelection()"
+                            (click)="showSchedule()">
+                            <i class="fa fa-calendar btn-md-icon"></i>
+                            <span class="d-none d-md-inline-block">{{ 'ShowSchedule' | localize }}</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary me-2" (click)="selectAllOnPage()">
+                            {{ 'SelectAll' | localize }}
+                        </button>
+                        <button type="button" class="btn btn-secondary" (click)="clearSelection()">
+                            {{ 'Clear' | localize }}
+                        </button>
+                    </div>
+                </div>
+
+                <div [busyIf]="scheduleLoading()">
+                    @if (!hasSelection()) {
+                        <div class="primeng-no-data">{{ 'SelectEmployeesToViewSchedule' | localize }}</div>
+                    } @else if (scheduleLoaded() && scheduleRows().length === 0) {
+                        <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                    } @else if (scheduleLoaded()) {
+                        <div class="roster-matrix-scroll">
+                            <table class="roster-matrix">
+                                <thead>
+                                    <tr>
+                                        <th class="roster-resource">{{ 'Employees' | localize }}</th>
+                                        @for (column of scheduleColumns(); track column.toMillis()) {
+                                            <th pTooltip="{{ columnTooltip(column) }}">{{ columnLabel(column) }}</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (row of scheduleRows(); track row.resource.id) {
+                                        <tr>
+                                            <td class="roster-resource">{{ row.resource.code }} - {{ row.resource.name }}</td>
+                                            @for (cell of row.cells; track $index) {
+                                                <td [ngClass]="cellClass(cell)" pTooltip="{{ cellTooltip(cell) }}">
+                                                    {{ cellLabel(cell) }}
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

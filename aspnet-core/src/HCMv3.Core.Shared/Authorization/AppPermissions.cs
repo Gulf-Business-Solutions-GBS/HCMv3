@@ -799,6 +799,12 @@ public static class AppPermissions
     public const string Pages_TimeManagement_RosterDailyDuties_Edit = "Pages.TimeManagement.RosterDailyDuties.Edit";
     public const string Pages_TimeManagement_RosterDailyDuties_Delete = "Pages.TimeManagement.RosterDailyDuties.Delete";
 
+    /// <summary>
+    /// Read-only roster schedule viewer (ported legacy uscRosterDutySchedule screen). View-only, so there is
+    /// deliberately no Create/Edit/Delete child permission.
+    /// </summary>
+    public const string Pages_TimeManagement_RosterScheduleViewer = "Pages.TimeManagement.RosterScheduleViewer";
+
     // Wave 3 (employee-assignment records)
     public const string Pages_TimeManagement_EmployeeDutyPeriods = "Pages.TimeManagement.EmployeeDutyPeriods";
     public const string Pages_TimeManagement_EmployeeDutyPeriods_Create = "Pages.TimeManagement.EmployeeDutyPeriods.Create";
@@ -892,6 +898,17 @@ public static class AppPermissions
     public const string Pages_TimeManagement_TimeEngine_Run = "Pages.TimeManagement.TimeEngine.Run";
 
     public const string Pages_PayrollManagement = "Pages.PayrollManagement";
+
+    // Cost allocation file screen (legacy uscCostingFile.ascx). Run = execute the cost engine,
+    // Export = download the costing spreadsheet, View = read-only preview/validate.
+    public const string Pages_PayrollManagement_CostingFile = "Pages.PayrollManagement.CostingFile";
+    public const string Pages_PayrollManagement_CostingFile_Run = "Pages.PayrollManagement.CostingFile.Run";
+    public const string Pages_PayrollManagement_CostingFile_Export = "Pages.PayrollManagement.CostingFile.Export";
+
+    // Journal voucher posting screen (legacy uscPostJV.ascx). Post is separated from View because
+    // posting writes irreversibly to the external finance system.
+    public const string Pages_PayrollManagement_PostJv = "Pages.PayrollManagement.PostJv";
+    public const string Pages_PayrollManagement_PostJv_Post = "Pages.PayrollManagement.PostJv.Post";
 
     public const string Pages_PayrollManagement_AXBatches = "Pages.PayrollManagement.AXBatches";
     public const string Pages_PayrollManagement_AXBatches_Create = "Pages.PayrollManagement.AXBatches.Create";
@@ -1083,6 +1100,11 @@ public static class AppPermissions
     public const string Pages_PayrollManagement_WageTypeExceptions_Edit = "Pages.PayrollManagement.WageTypeExceptions.Edit";
     public const string Pages_PayrollManagement_WageTypeExceptions_Delete = "Pages.PayrollManagement.WageTypeExceptions.Delete";
 
+    // Wave P1b (Payroll Engine execution). Legacy gated this behind the uscPayrollEngine screen's own screen
+    // permission; there is no CRUD here -- the only action is "run".
+    public const string Pages_PayrollManagement_PayrollEngine = "Pages.PayrollManagement.PayrollEngine";
+    public const string Pages_PayrollManagement_PayrollEngine_Run = "Pages.PayrollManagement.PayrollEngine.Run";
+
     public const string Pages_PayrollManagement_WageTypeLeaves = "Pages.PayrollManagement.WageTypeLeaves";
     public const string Pages_PayrollManagement_WageTypeLeaves_Create = "Pages.PayrollManagement.WageTypeLeaves.Create";
     public const string Pages_PayrollManagement_WageTypeLeaves_Edit = "Pages.PayrollManagement.WageTypeLeaves.Edit";
@@ -1197,6 +1219,9 @@ public static class AppPermissions
     public const string Pages_PayrollManagement_CostRegisterDetails_Create = "Pages.PayrollManagement.CostRegisterDetails.Create";
     public const string Pages_PayrollManagement_CostRegisterDetails_Edit = "Pages.PayrollManagement.CostRegisterDetails.Edit";
     public const string Pages_PayrollManagement_CostRegisterDetails_Delete = "Pages.PayrollManagement.CostRegisterDetails.Delete";
+
+    public const string Pages_PayrollManagement_BankFiles = "Pages.PayrollManagement.BankFiles";
+    public const string Pages_PayrollManagement_BankFiles_Generate = "Pages.PayrollManagement.BankFiles.Generate";
 
     public const string Pages_PayrollManagement_SalaryRegisters = "Pages.PayrollManagement.SalaryRegisters";
     public const string Pages_PayrollManagement_SalaryRegisters_Create = "Pages.PayrollManagement.SalaryRegisters.Create";
@@ -2423,5 +2448,11 @@ public static class AppPermissions
     public const string Pages_SystemSecurity_SysTenantConfigs_Delete = "Pages.SystemSecurity.SysTenantConfigs.Delete";
 
     public const string Pages_Reports_Preview = "Pages.Reports.Preview";
+
+    /// <summary>
+    /// Bulk payslip mailing (legacy uscRptPaySlip). Separated from the on-screen preview because it mails
+    /// money documents to every employee in a payroll period.
+    /// </summary>
+    public const string Pages_Reports_Payslip_Email = "Pages.Reports.Payslip.Email";
 
 }

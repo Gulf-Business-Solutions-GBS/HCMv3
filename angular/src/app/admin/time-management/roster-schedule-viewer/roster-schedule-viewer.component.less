@@ -1,0 +1,52 @@
+.roster-matrix-scroll {
+    overflow-x: auto;
+}
+
+table.roster-matrix {
+    border-collapse: collapse;
+    font-size: 0.85rem;
+
+    th,
+    td {
+        border: 1px solid var(--bs-border-color, #e4e6ef);
+        padding: 0.25rem 0.4rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    th.roster-resource,
+    td.roster-resource {
+        text-align: start;
+        position: sticky;
+        inset-inline-start: 0;
+        background: var(--bs-body-bg, #fff);
+        z-index: 1;
+        min-width: 200px;
+    }
+}
+
+.roster-cell {
+    min-width: 44px;
+}
+
+.roster-cell-empty {
+    color: #b5b5c3;
+}
+
+.roster-cell-off {
+    background-color: #fff4de;
+}
+
+.roster-cell-night {
+    background-color: #e1e9ff;
+}
+
+.roster-cell-half {
+    font-style: italic;
+}
+
+.roster-cell-error {
+    background-color: #ffe2e5;
+    color: #f64e60;
+    font-weight: 600;
+}

@@ -20,6 +20,7 @@ export class AppNavigationService {
             ),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('ReportPreview', 'Pages.Reports.Preview', 'flaticon-file-2', '/app/admin/report-preview'),
+            new AppMenuItem('PayslipReport', 'Pages.Reports.Payslip.Email', 'flaticon-envelope', '/app/admin/payslip-report'),
             new AppMenuItem(
                 'Saas',
                 '',
@@ -149,6 +150,7 @@ export class AppNavigationService {
                     new AppMenuItem('RosterGroupDetails', 'Pages.TimeManagement.RosterGroupDetails', 'flaticon-list-3', '/app/admin/roster-group-details'),
                     new AppMenuItem('RosterGroupSchedules', 'Pages.TimeManagement.RosterGroupSchedules', 'flaticon-list-3', '/app/admin/roster-group-schedules'),
                     new AppMenuItem('RosterDailyDuties', 'Pages.TimeManagement.RosterDailyDuties', 'flaticon-list-3', '/app/admin/roster-daily-duties'),
+                    new AppMenuItem('RosterScheduleViewer', 'Pages.TimeManagement.RosterScheduleViewer', 'flaticon-calendar-3', '/app/admin/roster-schedule-viewer'),
                     new AppMenuItem('WorkLocationDutyPeriods', 'Pages.TimeManagement.WorkLocationDutyPeriods', 'flaticon-list-3', '/app/admin/work-location-duty-periods'),
                     new AppMenuItem('TimeEvents', 'Pages.TimeManagement.TimeEvents', 'flaticon-list-3', '/app/admin/time-events'),
                     new AppMenuItem('TimeAttAPIs', 'Pages.TimeManagement.TimeAttAPIs', 'flaticon-list-3', '/app/admin/time-att-apis'),
@@ -161,6 +163,7 @@ export class AppNavigationService {
                     new AppMenuItem('SimulationTimeRegisters', 'Pages.TimeManagement.SimulationTimeRegisters', 'flaticon-list-3', '/app/admin/simulation-time-registers'),
                     new AppMenuItem('SimulationTimeRegisterDetails', 'Pages.TimeManagement.SimulationTimeRegisterDetails', 'flaticon-list-3', '/app/admin/simulation-time-register-details'),
                     new AppMenuItem('TimeTransfers', 'Pages.TimeManagement.TimeTransfers', 'flaticon-list-3', '/app/admin/time-transfers'),
+                    new AppMenuItem('TimeEngine', 'Pages.TimeManagement.TimeEngine', 'flaticon-settings', '/app/admin/time-engine'),
                 ]
             ),
             new AppMenuItem(
@@ -191,6 +194,8 @@ export class AppNavigationService {
                     new AppMenuItem('EmployeeGroups', 'Pages.PayrollManagement.EmployeeGroups', 'flaticon-list-3', '/app/admin/employee-groups'),
                     new AppMenuItem('EmployeeSubGroups', 'Pages.PayrollManagement.EmployeeSubGroups', 'flaticon-list-3', '/app/admin/employee-sub-groups'),
                     new AppMenuItem('PayrollAreas', 'Pages.PayrollManagement.PayrollAreas', 'flaticon-list-3', '/app/admin/payroll-areas'),
+                    new AppMenuItem('CostingFile', 'Pages.PayrollManagement.CostingFile', 'flaticon-line-graph', '/app/admin/costing-file'),
+                    new AppMenuItem('PostJv', 'Pages.PayrollManagement.PostJv', 'flaticon-piggy-bank', '/app/admin/post-jv'),
                     new AppMenuItem('PayrollCalendars', 'Pages.PayrollManagement.PayrollCalendars', 'flaticon-list-3', '/app/admin/payroll-calendars'),
                     new AppMenuItem('PayrollPeriods', 'Pages.PayrollManagement.PayrollPeriods', 'flaticon-list-3', '/app/admin/payroll-periods'),
                     new AppMenuItem('PayrollControlRecords', 'Pages.PayrollManagement.PayrollControlRecords', 'flaticon-list-3', '/app/admin/payroll-control-records'),

@@ -1,0 +1,153 @@
+<sub-header [title]="'BankFiles' | localize" [description]="'BankFileGenerate' | localize"></sub-header>
+
+<div [class]="containerClass">
+    <div class="card">
+        <div class="card-body" [busyIf]="loading() || generating()">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="paymentBank">{{ 'BankFilePaymentBank' | localize }} *</label>
+                    <select id="paymentBank" class="form-select" [ngModel]="paymentBankId()" (ngModelChange)="paymentBankId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (bank of lookups()?.paymentBanks ?? []; track bank.id) {
+                            <option [ngValue]="bank.id">{{ bank.code }} - {{ bank.displayText }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="payrollArea">{{ 'PayrollArea' | localize }}</label>
+                    <select id="payrollArea" class="form-select" [ngModel]="payrollAreaId()" (ngModelChange)="payrollAreaId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (area of lookups()?.payrollAreas ?? []; track area.id) {
+                            <option [ngValue]="area.id">{{ area.displayText }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="payrollRunType">{{ 'PayrollRunType' | localize }} *</label>
+                    <select id="payrollRunType" class="form-select" [ngModel]="payrollRunType()" (ngModelChange)="payrollRunType.set($event)">
+                        <option value="R">Regular</option>
+                        <option value="O">Off Cycle</option>
+                        <option value="A">Regular + Off Cycle</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="sponsor">{{ 'Sponsor' | localize }}</label>
+                    <select id="sponsor" class="form-select" [ngModel]="sponsorId()" (ngModelChange)="sponsorId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (sponsor of lookups()?.sponsors ?? []; track sponsor.id) {
+                            <option [ngValue]="sponsor.id">{{ sponsor.displayText }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="sponsorBank">{{ 'BankFileSponsorBank' | localize }}</label>
+                    <select id="sponsorBank" class="form-select" [ngModel]="sponsorBankId()" (ngModelChange)="sponsorBankId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (sb of lookups()?.sponsorBanks ?? []; track sb.id) {
+                            <option [ngValue]="sb.id">{{ sb.displayText }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="employeeBank">{{ 'BankFileEmployeeBank' | localize }}</label>
+                    <select id="employeeBank" class="form-select" [ngModel]="employeeBankId()" (ngModelChange)="employeeBankId.set($event)">
+                        <option [ngValue]="undefined">-</option>
+                        @for (bank of lookups()?.employeeBanks ?? []; track bank.id) {
+                            <option [ngValue]="bank.id">{{ bank.code }} - {{ bank.displayText }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label" for="year">{{ 'Year' | localize }}</label>
+                    <select id="year" class="form-select" [ngModel]="year()" (ngModelChange)="year.set($event)">
+                        @for (y of years; track y) {
+                            <option [ngValue]="y">{{ y }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label" for="month">{{ 'Month' | localize }}</label>
+                    <select id="month" class="form-select" [ngModel]="month()" (ngModelChange)="month.set($event)">
+                        @for (m of months; track m) {
+                            <option [ngValue]="m">{{ m }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label" for="mosalId">{{ 'MOSALID' | localize }}</label>
+                    <input id="mosalId" type="number" class="form-control" [ngModel]="mosalId()" (ngModelChange)="mosalId.set($event)" />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label" for="employeeCodes">{{ 'BankFileEmployeeCodes' | localize }}</label>
+                    <input id="employeeCodes" type="text" class="form-control" [ngModel]="employeeCodes()" (ngModelChange)="employeeCodes.set($event)" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <p-checkbox
+                        inputId="splitBankFiles"
+                        [binary]="true"
+                        [ngModel]="splitBankFiles()"
+                        (ngModelChange)="splitBankFiles.set($event)"
+                    ></p-checkbox>
+                    <label class="form-label ms-2" for="splitBankFiles">{{ 'BankFileSplitPerBank' | localize }}</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary" [disabled]="!canGenerate() || generating()" (click)="generate()">
+                        {{ 'BankFileGenerate' | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (formatsForSelectedBank().length > 0) {
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>{{ 'BankFileFormat' | localize }}</h5>
+                <p-table [value]="formatsForSelectedBank()" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Code' | localize }}</th>
+                            <th>{{ 'BankFileFormatType' | localize }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-format>
+                        <tr>
+                            <td>{{ format.code }}</td>
+                            <td>{{ format.isTextFormat ? 'Text' : 'Grid' }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    }
+
+    @if (lastResult(); as result) {
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>{{ 'BankFileGeneratedSuccessfully' | localize }}</h5>
+                <div>{{ result.fileName }}</div>
+                <div>{{ 'BankFileFormat' | localize }}: {{ result.formatCode }}</div>
+                <div>{{ 'Total' | localize }}: {{ result.recordCount }} / {{ result.totalAmount }}</div>
+            </div>
+        </div>
+    }
+</div>

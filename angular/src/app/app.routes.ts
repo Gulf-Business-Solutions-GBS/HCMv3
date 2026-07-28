@@ -601,6 +601,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.TimeManagement.RosterGroupSchedules' },
                     },
                     {
+                        path: 'roster-schedule-viewer',
+                        loadComponent: () =>
+                            import(
+                                './admin/time-management/roster-schedule-viewer/roster-schedule-viewer.component'
+                            ).then((m) => m.RosterScheduleViewerComponent),
+                        data: { permission: 'Pages.TimeManagement.RosterScheduleViewer' },
+                    },
+                    {
                         path: 'roster-daily-duties',
                         loadComponent: () =>
                             import('./admin/time-management/roster-daily-duties/roster-daily-duties.component').then(
@@ -703,6 +711,14 @@ export const appRoutes: Routes = [
                                 (m) => m.TimeTransfersComponent
                             ),
                         data: { permission: 'Pages.TimeManagement.TimeTransfers' },
+                    },
+                    {
+                        path: 'time-engine',
+                        loadComponent: () =>
+                            import('./admin/time-management/time-engine/time-engine.component').then(
+                                (m) => m.TimeEngineComponent
+                            ),
+                        data: { permission: 'Pages.TimeManagement.TimeEngine' },
                     },
                     simpleLookupRoute('account-types', 'AccountTypes', 'AccountTypes', AccountTypesServiceProxy, 'PayrollManagement'),
                     simpleLookupRoute('payroll-reason-types', 'PayrollReasonTypes', 'PayrollReasonTypes', PayrollReasonTypesServiceProxy, 'PayrollManagement'),
@@ -846,6 +862,20 @@ export const appRoutes: Routes = [
                                 (m) => m.PayrollAreasComponent
                             ),
                         data: { permission: 'Pages.PayrollManagement.PayrollAreas' },
+                    },
+                    {
+                        path: 'costing-file',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/costing-file/costing-file.component').then(
+                                (m) => m.CostingFileComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.CostingFile' },
+                    },
+                    {
+                        path: 'post-jv',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/post-jv/post-jv.component').then((m) => m.PostJvComponent),
+                        data: { permission: 'Pages.PayrollManagement.PostJv' },
                     },
                     {
                         path: 'payroll-calendars',
@@ -1184,6 +1214,14 @@ export const appRoutes: Routes = [
                                 (m) => m.ReportPreviewComponent
                             ),
                         data: { permission: 'Pages.Reports.Preview' },
+                    },
+                    {
+                        path: 'payslip-report',
+                        loadComponent: () =>
+                            import('./admin/reports/payslip-report/payslip-report.component').then(
+                                (m) => m.PayslipReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Payslip.Email' },
                     },
                     {
                         path: 'employees/:id',

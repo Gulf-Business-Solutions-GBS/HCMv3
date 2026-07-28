@@ -20,6 +20,59 @@
                         </select>
                     </div>
 
+                    <div class="row mb-5">
+                        <div class="col-md-3">
+                            <label class="form-label required" for="ReportPreview_Month">{{ 'Month' | localize }}</label>
+                            <select
+                                id="ReportPreview_Month"
+                                class="form-select"
+                                name="Month"
+                                [ngModel]="month()"
+                                (ngModelChange)="month.set($event)">
+                                @for (m of months; track m) {
+                                    <option [ngValue]="m">{{ m }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required" for="ReportPreview_Year">{{ 'Year' | localize }}</label>
+                            <select
+                                id="ReportPreview_Year"
+                                class="form-select"
+                                name="Year"
+                                [ngModel]="year()"
+                                (ngModelChange)="year.set($event)">
+                                @for (y of years; track y) {
+                                    <option [ngValue]="y">{{ y }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="ReportPreview_RunType">{{ 'PayrollRunType' | localize }}</label>
+                            <select
+                                id="ReportPreview_RunType"
+                                class="form-select"
+                                name="PayrollRunType"
+                                [ngModel]="payrollRunType()"
+                                (ngModelChange)="payrollRunType.set($event)">
+                                <option [ngValue]="0">Regular</option>
+                                <option [ngValue]="1">OffCycle</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="ReportPreview_Language">{{ 'PayslipLanguage' | localize }}</label>
+                            <select
+                                id="ReportPreview_Language"
+                                class="form-select"
+                                name="PayslipLanguage"
+                                [ngModel]="language()"
+                                (ngModelChange)="language.set($event)">
+                                <option [ngValue]="0">English</option>
+                                <option [ngValue]="1">Arabic</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="d-flex gap-3">
                         <button
                             type="button"

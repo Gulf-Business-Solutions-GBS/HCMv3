@@ -170,6 +170,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.TimeEventsServiceProxy,
     ApiServiceProxies.TimeAttAPIsServiceProxy,
     ApiServiceProxies.TimeLogsServiceProxy,
+    ApiServiceProxies.TimeEngineServiceProxy,
     ApiServiceProxies.TimeRegistersServiceProxy,
     ApiServiceProxies.MonthlyTimeRegistersServiceProxy,
     ApiServiceProxies.MonthlyTimeRegisterDetailsServiceProxy,

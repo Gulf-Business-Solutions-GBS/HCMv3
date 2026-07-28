@@ -871,6 +871,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         rosterDailyDuties.CreateChildPermission(AppPermissions.Pages_TimeManagement_RosterDailyDuties_Edit, L("EditItem"));
         rosterDailyDuties.CreateChildPermission(AppPermissions.Pages_TimeManagement_RosterDailyDuties_Delete, L("DeleteItem"));
 
+        // Read-only viewer: no Create/Edit/Delete children by design.
+        timeManagement.CreateChildPermission(AppPermissions.Pages_TimeManagement_RosterScheduleViewer, L("RosterScheduleViewer"));
+
         // Wave 3 (employee-assignment records)
         var employeeDutyPeriods = timeManagement.CreateChildPermission(AppPermissions.Pages_TimeManagement_EmployeeDutyPeriods, L("EmployeeDutyPeriods"));
         employeeDutyPeriods.CreateChildPermission(AppPermissions.Pages_TimeManagement_EmployeeDutyPeriods_Create, L("CreateNewItem"));
@@ -962,6 +965,13 @@ public class AppAuthorizationProvider : AuthorizationProvider
         timeEngine.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeEngine_Run, L("RunTimeEngine"));
 
         var payrollManagement = pages.CreateChildPermission(AppPermissions.Pages_PayrollManagement, L("PayrollManagement"));
+
+        var costingFile = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostingFile, L("CostingFile"));
+        costingFile.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostingFile_Run, L("RunCostEngine"));
+        costingFile.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostingFile_Export, L("ExportCostingFile"));
+
+        var postJv = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PostJv, L("PostJv"));
+        postJv.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PostJv_Post, L("PostJournalVoucher"));
 
         var axBatches = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_AXBatches, L("AXBatches"));
         axBatches.CreateChildPermission(AppPermissions.Pages_PayrollManagement_AXBatches_Create, L("CreateNewItem"));
@@ -1153,6 +1163,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         wageTypeExceptions.CreateChildPermission(AppPermissions.Pages_PayrollManagement_WageTypeExceptions_Edit, L("EditItem"));
         wageTypeExceptions.CreateChildPermission(AppPermissions.Pages_PayrollManagement_WageTypeExceptions_Delete, L("DeleteItem"));
 
+        var payrollEngine = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollEngine, L("PayrollEngine"));
+        payrollEngine.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run, L("RunPayrollEngine"));
+
         var wageTypeLeaves = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_WageTypeLeaves, L("WageTypeLeaves"));
         wageTypeLeaves.CreateChildPermission(AppPermissions.Pages_PayrollManagement_WageTypeLeaves_Create, L("CreateNewItem"));
         wageTypeLeaves.CreateChildPermission(AppPermissions.Pages_PayrollManagement_WageTypeLeaves_Edit, L("EditItem"));
@@ -1267,6 +1280,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         costRegisterDetails.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostRegisterDetails_Create, L("CreateNewItem"));
         costRegisterDetails.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostRegisterDetails_Edit, L("EditItem"));
         costRegisterDetails.CreateChildPermission(AppPermissions.Pages_PayrollManagement_CostRegisterDetails_Delete, L("DeleteItem"));
+
+        var payrollBankFiles = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_BankFiles, L("BankFiles"));
+        payrollBankFiles.CreateChildPermission(AppPermissions.Pages_PayrollManagement_BankFiles_Generate, L("GeneratingBankFile"));
 
         var salaryRegisters = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_SalaryRegisters, L("SalaryRegisters"));
         salaryRegisters.CreateChildPermission(AppPermissions.Pages_PayrollManagement_SalaryRegisters_Create, L("CreateNewItem"));
@@ -2496,7 +2512,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Delete, L("DeleteItem"));
 
         //REPORTS (FastReport pilot)
-        pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
+        var reportPreview = pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
+        reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
 
     }
 

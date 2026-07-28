@@ -1,0 +1,236 @@
+<div [@routerTransition]>
+    <sub-header [title]="'CostingFile' | localize" [description]="'PayrollManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom" [busyIf]="busy()">
+            <div class="card-body">
+                <!-- Parameter block: legacy uscCostingFile.ascx filter panel -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <p-select
+                            [options]="payrollAreas()"
+                            optionLabel="name"
+                            optionValue="name"
+                            [ngModel]="selectedPayrollAreaName()"
+                            (ngModelChange)="selectedPayrollAreaName.set($event)"
+                            [filter]="true"
+                            filterBy="name"
+                            [showClear]="true"
+                            styleClass="w-100"
+                            placeholder="{{ 'PayrollArea' | localize }}" />
+                        @if (selectedPayrollAreaName() && !selectedAreaIsFiConfigured()) {
+                            <small class="text-danger">
+                                {{ 'PayrollFICompanyNull' | localize }} / {{ 'PayrollFIBankNull' | localize }}
+                            </small>
+                        }
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayrollRunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            optionLabel="label"
+                            optionValue="value"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayInDate' | localize }}</label>
+                        <p-datepicker
+                            [ngModel]="payInDate()"
+                            (ngModelChange)="payInDate.set($event)"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PostingDate' | localize }}</label>
+                        <p-datepicker
+                            [ngModel]="postingDate()"
+                            (ngModelChange)="postingDate.set($event)"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'EmployeeCode' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            [ngModel]="employeeCode()"
+                            (ngModelChange)="employeeCode.set($event)"
+                            placeholder="E100,E101" />
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12 d-flex flex-wrap gap-2">
+                        @if ('Pages.PayrollManagement.CostingFile.Run' | permission) {
+                            <button type="button" class="btn btn-primary" [disabled]="!canSubmit()" (click)="generateCostingFile()">
+                                <i class="fa fa-cogs btn-md-icon"></i>
+                                <span>{{ 'GenerateCostingFile' | localize }}</span>
+                            </button>
+                        }
+
+                        <button type="button" class="btn btn-secondary" [disabled]="!canSubmit()" (click)="previewJournalVoucher()">
+                            <i class="fa fa-table btn-md-icon"></i>
+                            <span>{{ 'JournalVoucher' | localize }}</span>
+                        </button>
+
+                        <button type="button" class="btn btn-secondary" [disabled]="!canSubmit()" (click)="validateJournalVoucher()">
+                            <i class="fa fa-check btn-md-icon"></i>
+                            <span>{{ 'ValidateJV' | localize }}</span>
+                        </button>
+
+                        @if ('Pages.PayrollManagement.CostingFile.Export' | permission) {
+                            <button type="button" class="btn btn-success" [disabled]="!canSubmit()" (click)="exportCostingFile()">
+                                <i class="fa fa-file-excel btn-md-icon"></i>
+                                <span>{{ 'ExportCostingFile' | localize }}</span>
+                            </button>
+                        }
+
+                        @if ('Pages.PayrollManagement.CostingFile.Run' | permission) {
+                            <button type="button" class="btn btn-warning" (click)="requestStop()">
+                                <i class="fa fa-stop btn-md-icon"></i>
+                                <span>{{ 'StopProcess' | localize }}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-light" (click)="clearStatus()">
+                                <i class="fa fa-eraser btn-md-icon"></i>
+                                <span>{{ 'ClearStatus' | localize }}</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <!-- Run summary: legacy's Successful/Failed/All counters -->
+                @if (runResult(); as result) {
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="alert alert-success mb-0">
+                                {{ 'SuccessfulRecords' | localize }}: <strong>{{ result.successCount }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-danger mb-0">
+                                {{ 'FailedRecords' | localize }}: <strong>{{ result.failedCount }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-info mb-0">
+                                {{ 'AllRecords' | localize }}: <strong>{{ result.totalEmployees }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (result.entries?.length) {
+                        <p-table [value]="result.entries" [scrollable]="true" scrollHeight="240px" styleClass="mb-4">
+                            <ng-template #header>
+                                <tr>
+                                    <th>{{ 'EmployeeCode' | localize }}</th>
+                                    <th>{{ 'Status' | localize }}</th>
+                                    <th>{{ 'Message' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-entry>
+                                <tr>
+                                    <td>{{ entry.employeeCode }}</td>
+                                    <td>
+                                        @if (entry.status === 0) {
+                                            <span class="badge bg-success">{{ 'SuccessfulRecords' | localize }}</span>
+                                        } @else {
+                                            <span class="badge bg-danger">{{ 'FailedRecords' | localize }}</span>
+                                        }
+                                    </td>
+                                    <td>{{ entry.message }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    }
+                }
+
+                <!-- JV preview -->
+                @if (lines().length) {
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="alert alert-light mb-0">
+                                {{ 'TotalDebit' | localize }}: <strong>{{ totalDebit() }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-light mb-0">
+                                {{ 'TotalCredit' | localize }}: <strong>{{ totalCredit() }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            @if (isBalanced()) {
+                                <div class="alert alert-success mb-0">{{ 'JVValidatedSuccessfully' | localize }}</div>
+                            } @else {
+                                <div class="alert alert-danger mb-0">{{ 'DebitCreditNotMatched' | localize }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="primeng-datatable-container">
+                        <p-table
+                            [value]="lines()"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            scrollHeight="500px"
+                            [tableStyle]="{ 'min-width': '80rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 90px">{{ 'JournalBatchNumber' | localize }}</th>
+                                    <th style="width: 70px">#</th>
+                                    <th style="width: 110px">{{ 'EmployeeCode' | localize }}</th>
+                                    <th style="width: 120px">{{ 'Company' | localize }}</th>
+                                    <th style="width: 120px">{{ 'AccountType' | localize }}</th>
+                                    <th style="width: 130px">{{ 'MainAccount' | localize }}</th>
+                                    <th style="width: 200px">{{ 'Description' | localize }}</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 2</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 3</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 4</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 5</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 6</th>
+                                    <th style="width: 110px">{{ 'CostElement' | localize }} 7</th>
+                                    <th style="width: 90px">{{ 'Currency' | localize }}</th>
+                                    <th style="width: 110px">{{ 'Debit' | localize }}</th>
+                                    <th style="width: 110px">{{ 'Credit' | localize }}</th>
+                                    <th style="width: 130px">{{ 'OffsetAccount' | localize }}</th>
+                                    <th style="width: 110px">{{ 'BillingType' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-line>
+                                <tr [class.table-warning]="line.isMerged">
+                                    <td>{{ line.journalBatchNumber }}</td>
+                                    <td>{{ line.lineNumber }}</td>
+                                    <td>{{ line.empCode }}</td>
+                                    <td>{{ line.companyAccounts }}</td>
+                                    <td>{{ line.lineNumberAccountType }}</td>
+                                    <td [pTooltip]="line.ledgerDimensionMainAccountName">{{ line.ledgerDimensionMainAccount }}</td>
+                                    <td>{{ line.description }}</td>
+                                    <td>{{ line.ledgerDimensionLocation }}</td>
+                                    <td>{{ line.ledgerDimensionBrand }}</td>
+                                    <td>{{ line.ledgerDimensionDepartment }}</td>
+                                    <td>{{ line.ledgerDimensionEmployees }}</td>
+                                    <td>{{ line.defaultDimensionEmployees }}</td>
+                                    <td>{{ line.defaultDimensionLocation }}</td>
+                                    <td>{{ line.currency }}</td>
+                                    <td class="text-end">{{ line.debit }}</td>
+                                    <td class="text-end">{{ line.credit }}</td>
+                                    <td>{{ line.offsetLedgerDimensionMainAccount }}</td>
+                                    <td>{{ line.billingType }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TimeEngine' | localize" [description]="'TimeManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label" for="TimeEngine_EmployeeCodes">{{ 'EmployeeCode' | localize }}</label>
+                        <input
+                            id="TimeEngine_EmployeeCodes"
+                            type="text"
+                            class="form-control"
+                            name="EmployeeCodes"
+                            maxlength="4000"
+                            [ngModel]="employeeCodes()"
+                            (ngModelChange)="employeeCodes.set($event)" />
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label" for="TimeEngine_StartDate">{{ 'StartDate' | localize }}</label>
+                        <input
+                            id="TimeEngine_StartDate"
+                            type="date"
+                            class="form-control"
+                            name="StartDate"
+                            [ngModel]="startDate()"
+                            (ngModelChange)="startDate.set($event)" />
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label required" for="TimeEngine_EndDate">{{ 'EndDate' | localize }}</label>
+                        <input
+                            id="TimeEngine_EndDate"
+                            type="date"
+                            class="form-control"
+                            name="EndDate"
+                            [ngModel]="endDate()"
+                            (ngModelChange)="endDate.set($event)" />
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label" for="TimeEngine_PayrollArea">{{ 'PayrollAreaId' | localize }}</label>
+                        <select
+                            id="TimeEngine_PayrollArea"
+                            class="form-select"
+                            name="PayrollAreaName"
+                            [ngModel]="payrollAreaName()"
+                            (ngModelChange)="payrollAreaName.set($event)">
+                            <option [ngValue]="''">{{ 'All' | localize }}</option>
+                            @for (item of payrollAreas(); track item.id) {
+                                <option [ngValue]="item.name">{{ item.name }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    @if ('Pages.TimeManagement.TimeEngine.Run' | permission) {
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!endDate() || running()"
+                            [busyIf]="running()"
+                            (click)="runTimeEngine()">
+                            <i class="fa fa-play"></i>
+                            <span>{{ 'RunTimeEngine' | localize }}</span>
+                        </button>
+                    }
+
+                    <button type="button" class="btn btn-secondary fw-bold" (click)="reloadPage()">
+                        <i class="fa fa-sync"></i>
+                        <span>{{ 'Refresh' | localize }}</span>
+                    </button>
+                </div>
+
+                @if (latestLog(); as log) {
+                    <div class="row mt-5">
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'ExecutionStatus' | localize }}</label>
+                            <div class="fw-bold">{{ statusText(log.executionStatus) }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'TotalRecords' | localize }}</label>
+                            <div class="fw-bold">{{ log.totalRecords }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Successfull' | localize }}</label>
+                            <div class="fw-bold text-success">{{ log.successfull }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Failed' | localize }}</label>
+                            <div class="fw-bold text-danger">{{ log.failed }}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-custom mt-5">
+            <div class="card-body">
+                <h5 class="mb-5">{{ 'TimeEngineRunHistory' | localize }}</h5>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getExecutionLogs($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 170px" pSortableColumn="actionDateTime">
+                                        {{ 'ActionDateTime' | localize }}
+                                        <p-sortIcon field="actionDateTime" />
+                                    </th>
+                                    <th style="min-width: 150px">{{ 'UserName' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'ExecutionStatus' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'TotalRecords' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Successfull' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Failed' | localize }}</th>
+                                    <th style="min-width: 250px">{{ 'Parameters' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 170px">
+                                        {{ record.actionDateTime | luxonFormat: 'yyyy-MM-dd HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 150px">{{ record.userName }}</td>
+                                    <td style="min-width: 130px">{{ statusText(record.executionStatus) }}</td>
+                                    <td style="min-width: 120px">{{ record.totalRecords }}</td>
+                                    <td style="min-width: 120px">{{ record.successfull }}</td>
+                                    <td style="min-width: 120px">{{ record.failed }}</td>
+                                    <td style="min-width: 250px">{{ record.parameters }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getExecutionLogs($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
