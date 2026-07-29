@@ -1,0 +1,86 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'PerformanceAppraisalDashboard' | localize"
+        [description]="'PerformanceManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="PADashboard_Period">{{ 'PAPeriod' | localize }}</label>
+                        <select
+                            id="PADashboard_Period"
+                            class="form-select"
+                            name="PAPeriodId"
+                            [ngModel]="selectedPeriodId()"
+                            (ngModelChange)="selectedPeriodId.set($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (period of periods(); track period.id) {
+                                <option [ngValue]="period.id">{{ period.name }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-5">
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!selectedPeriodId() || loading()"
+                            [busyIf]="loading()"
+                            (click)="show()">
+                            <i class="fa fa-chart-bar"></i>
+                            <span>{{ 'Show' | localize }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (dashboard(); as d) {
+            <div class="card card-custom mt-5" [busyIf]="loading()">
+                <div class="card-body">
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ 'NoOfAppraisalForms' | localize }}</label>
+                            <div class="fw-bold">{{ d.employeeCount }}</div>
+                        </div>
+                    </div>
+
+                    @for (stage of stages(d); track stage.stage) {
+                        <div class="mb-5">
+                            <label class="form-label fw-bold">{{ stage.stage }}</label>
+
+                            <div class="progress" style="height: 22px">
+                                <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    [style.width.%]="percent(stage.completed, d.employeeCount)">
+                                    {{ stage.completed }}
+                                </div>
+                                <div
+                                    class="progress-bar bg-warning"
+                                    role="progressbar"
+                                    [style.width.%]="percent(stage.pendingByAppraiser, d.employeeCount)">
+                                    {{ stage.pendingByAppraiser }}
+                                </div>
+                                <div
+                                    class="progress-bar bg-danger"
+                                    role="progressbar"
+                                    [style.width.%]="percent(stage.pendingByAppraisee, d.employeeCount)">
+                                    {{ stage.pendingByAppraisee }}
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-5 mt-2 small">
+                                <span><i class="fa fa-square text-success"></i> {{ 'Completed' | localize }}: {{ stage.completed }}</span>
+                                <span><i class="fa fa-square text-warning"></i> {{ 'PendingByAppraiser' | localize }}: {{ stage.pendingByAppraiser }}</span>
+                                <span><i class="fa fa-square text-danger"></i> {{ 'PendingByAppraisee' | localize }}: {{ stage.pendingByAppraisee }}</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

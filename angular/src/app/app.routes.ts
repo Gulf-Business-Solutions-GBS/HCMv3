@@ -880,6 +880,17 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.CostingFile' },
                     },
                     {
+                        // Bulk Import / Export. Ported from legacy
+                        // HCM10.Web/UserControls/ImportExport/ (uscBulkImportExport + uscBulkImport +
+                        // uscImportTimesheet; uscImportExport is dead code and has no screen here).
+                        path: 'bulk-import-export',
+                        loadComponent: () =>
+                            import('./admin/import-export/bulk-import-export/bulk-import-export.component').then(
+                                (m) => m.BulkImportExportComponent
+                            ),
+                        data: { permission: 'Pages.ImportExport.BulkImportExport' },
+                    },
+                    {
                         path: 'post-jv',
                         loadComponent: () =>
                             import('./admin/payroll-management/post-jv/post-jv.component').then((m) => m.PostJvComponent),
@@ -1579,6 +1590,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.SurveyManagement.EmployeeSurveys' },
                     },
                     {
+                        path: 'take-survey',
+                        loadComponent: () =>
+                            import('./admin/survey-management/take-survey/take-survey.component').then(
+                                (m) => m.TakeSurveyComponent
+                            ),
+                        data: { permission: 'Pages.SurveyManagement.EmployeeSurveys' },
+                    },
+                    {
                         path: 'employee-survey-details',
                         loadComponent: () =>
                             import(
@@ -1642,6 +1661,14 @@ export const appRoutes: Routes = [
                                 (m) => m.ProjectLogsComponent
                             ),
                         data: { permission: 'Pages.ProjectManagement.ProjectLogs' },
+                    },
+                    {
+                        path: 'project-cost-engine',
+                        loadComponent: () =>
+                            import(
+                                './admin/project-management/project-cost-engine/project-cost-engine.component'
+                            ).then((m) => m.ProjectCostEngineComponent),
+                        data: { permission: 'Pages.ProjectManagement.ProjectCostEngine' },
                     },
                     simpleLookupRoute('expense-types', 'ExpenseTypes', 'ExpenseTypes', ExpenseTypesServiceProxy, 'TravelManagement'),
                     simpleLookupRoute('hotels', 'Hotels', 'Hotels', HotelsServiceProxy, 'TravelManagement'),
@@ -1895,6 +1922,22 @@ export const appRoutes: Routes = [
                                 (m) => m.PAFormsComponent
                             ),
                         data: { permission: 'Pages.PerformanceManagement.PAForms' },
+                    },
+                    {
+                        path: 'performance-appraisal-dashboard',
+                        loadComponent: () =>
+                            import(
+                                './admin/performance-management/performance-appraisal-dashboard/performance-appraisal-dashboard.component'
+                            ).then((m) => m.PerformanceAppraisalDashboardComponent),
+                        data: { permission: 'Pages.PerformanceManagement.PAForms' },
+                    },
+                    {
+                        path: 'copy-workflow-setup',
+                        loadComponent: () =>
+                            import(
+                                './admin/administration/copy-workflow-setup/copy-workflow-setup.component'
+                            ).then((m) => m.CopyWorkflowSetupComponent),
+                        data: { permission: 'Pages.Administration.Tools.CopyWorkflowSetup' },
                     },
                     {
                         path: 'pa-forms/:id',

@@ -139,6 +139,26 @@ public interface ITimeAttendanceIntegrationService : IDomainService
     Task<int> ImportTransactionsAsync();
 
     /// <summary>
+    /// Upload-driven twin of <see cref="ImportTransactionsAsync"/>, ported from legacy
+    /// <c>HCM10.Web.UserControls.ImportExport.uscImportTimesheet.btnupload_Click</c>.
+    ///
+    /// <para><b>Investigation note.</b> That control's row loop is the SAME algorithm over the SAME fixed
+    /// column layout as legacy <c>TimeAttendanceIntegrationService.ImportTransactions()</c> -- identical
+    /// DevExpress column indices ([2]=PIN, [3]=TransType text, [5]=TransDate, [6]=TransTime,
+    /// [7]=RecordSource), identical <c>"IN"</c>-&gt;code-"1" mapping, identical
+    /// already-imported-<c>RecordSource</c> and (Employee, TransType, TransDate, TransTime) duplicate
+    /// skips, identical <c>TransSource.System</c>. It is therefore NOT ported as a second importer; only
+    /// the differences are: (a) the workbook arrives as an upload instead of being found on disk, and
+    /// (b) per-row failures are reported instead of swallowed.</para>
+    ///
+    /// <para><b>NOT PORTED:</b> the control's <c>.xls</c>/<c>.xlsx</c> extension gate (ClosedXML rejects
+    /// anything it cannot open anyway, and legacy silently did nothing for other extensions) and its
+    /// dead <c>CheckNoOfRecordsCount</c> 500-row limit, which is defined but never called
+    /// (<c>uscImportTimesheet.ascx.cs</c> line 160 is commented out).</para>
+    /// </summary>
+    Task<TimesheetImportResult> ImportTransactionsFromUploadAsync(byte[] fileContent);
+
+    /// <summary>
     /// Ported from legacy <c>ImportTransactionFromMySql()</c>: pulls "IN"/"OUT" punches recorded after the
     /// latest already-imported punch of each type (defaulting to <c>ManageTimeSettings.EarliestEvaluationDate</c>
     /// when none exist yet) from an external vendor MySQL <c>attendance</c> table, and inserts a corresponding

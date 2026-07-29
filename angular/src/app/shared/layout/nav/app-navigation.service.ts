@@ -197,6 +197,10 @@ export class AppNavigationService {
                     new AppMenuItem('PayrollAreas', 'Pages.PayrollManagement.PayrollAreas', 'flaticon-list-3', '/app/admin/payroll-areas'),
                     new AppMenuItem('CostingFile', 'Pages.PayrollManagement.CostingFile', 'flaticon-line-graph', '/app/admin/costing-file'),
                     new AppMenuItem('PostJv', 'Pages.PayrollManagement.PostJv', 'flaticon-piggy-bank', '/app/admin/post-jv'),
+                    // Legacy HCM10.Web/UserControls/ImportExport/ -- the screen is cross-module (it can
+                    // import ANY entity), but it is placed here so it sits next to the other operator
+                    // "run something" screens rather than needing a new top-level group.
+                    new AppMenuItem('BulkImportExport', 'Pages.ImportExport.BulkImportExport', 'flaticon-download', '/app/admin/bulk-import-export'),
                     new AppMenuItem('BankFile', 'Pages.PayrollManagement.BankFiles', 'flaticon-piggy-bank', '/app/admin/bank-file'),
                     new AppMenuItem('PayrollCalendars', 'Pages.PayrollManagement.PayrollCalendars', 'flaticon-list-3', '/app/admin/payroll-calendars'),
                     new AppMenuItem('PayrollPeriods', 'Pages.PayrollManagement.PayrollPeriods', 'flaticon-list-3', '/app/admin/payroll-periods'),
@@ -359,6 +363,7 @@ export class AppNavigationService {
                     new AppMenuItem('ProjectRegisters', 'Pages.ProjectManagement.ProjectRegisters', 'flaticon-list-3', '/app/admin/project-registers'),
                     new AppMenuItem('ProjectRegisterDetails', 'Pages.ProjectManagement.ProjectRegisterDetails', 'flaticon-list-3', '/app/admin/project-register-details'),
                     new AppMenuItem('ProjectLogs', 'Pages.ProjectManagement.ProjectLogs', 'flaticon-list-3', '/app/admin/project-logs'),
+                    new AppMenuItem('ProjectCostEngine', 'Pages.ProjectManagement.ProjectCostEngine', 'flaticon-settings', '/app/admin/project-cost-engine'),
                 ]
             ),
             new AppMenuItem(
@@ -411,6 +416,7 @@ export class AppNavigationService {
                     new AppMenuItem('SurveyDetails', 'Pages.SurveyManagement.SurveyDetails', 'flaticon-list-3', '/app/admin/survey-details'),
                     new AppMenuItem('EmployeeSurveys', 'Pages.SurveyManagement.EmployeeSurveys', 'flaticon-list-3', '/app/admin/employee-surveys'),
                     new AppMenuItem('EmployeeSurveyDetails', 'Pages.SurveyManagement.EmployeeSurveyDetails', 'flaticon-list-3', '/app/admin/employee-survey-details'),
+                    new AppMenuItem('TakeSurvey', 'Pages.SurveyManagement.EmployeeSurveys', 'flaticon-edit', '/app/admin/take-survey'),
                 ]
             ),
             new AppMenuItem(
@@ -467,6 +473,7 @@ export class AppNavigationService {
                     new AppMenuItem('KpiByOrgUnits', 'Pages.PerformanceManagement.KpiByOrgUnits', 'flaticon-list-3', '/app/admin/kpi-by-org-units'),
                     new AppMenuItem('KpiByOrgUnitDetails', 'Pages.PerformanceManagement.KpiByOrgUnits', 'flaticon-list-3', '/app/admin/kpi-by-org-unit-details'),
                     new AppMenuItem('PAForms', 'Pages.PerformanceManagement.PAForms', 'flaticon-list-3', '/app/admin/pa-forms'),
+                    new AppMenuItem('PerformanceAppraisalDashboard', 'Pages.PerformanceManagement.PAForms', 'flaticon-analytics', '/app/admin/performance-appraisal-dashboard'),
                     new AppMenuItem('PAEmployees', 'Pages.PerformanceManagement.PAEmployees', 'flaticon-list-3', '/app/admin/pa-employees'),
                 ]
             ),
@@ -605,6 +612,12 @@ export class AppNavigationService {
                         'Pages.Administration.AuditLogs',
                         'flaticon-folder-1',
                         '/app/admin/auditLogs'
+                    ),
+                    new AppMenuItem(
+                        'CopyWorkflowSetup',
+                        'Pages.Administration.Tools.CopyWorkflowSetup',
+                        'flaticon-interface-9',
+                        '/app/admin/copy-workflow-setup'
                     ),
                     new AppMenuItem(
                         'Maintenance',

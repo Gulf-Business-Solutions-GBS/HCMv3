@@ -1,0 +1,113 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TakeSurvey' | localize" [description]="'SurveyManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-5">
+                        <label class="form-label required" for="TakeSurvey_Survey">{{ 'Survey' | localize }}</label>
+                        <select
+                            id="TakeSurvey_Survey"
+                            class="form-select"
+                            name="SurveyId"
+                            [ngModel]="selectedSurveyId()"
+                            (ngModelChange)="selectedSurveyId.set($event); loadQuestionnaire()">
+                            <option [ngValue]="undefined">{{ 'SelectSurvey' | localize }}</option>
+                            @for (survey of surveys(); track survey.id) {
+                                <option [ngValue]="survey.id">{{ survey.nameEn }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if (questionnaire(); as q) {
+                        <div class="col-md-6 mb-5">
+                            <label class="form-label">{{ 'Employee' | localize }}</label>
+                            <div class="fw-bold mt-2">{{ q.employeeCodeWithName }}</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (questionnaire(); as q) {
+            <div class="card card-custom mt-5" [busyIf]="loading()">
+                <div class="card-body">
+                    @if (q.alreadySubmitted) {
+                        <div class="alert alert-info">{{ 'EmployeeSurveySubmitted' | localize }}</div>
+                    }
+
+                    @if (q.questions.length === 0) {
+                        <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                    }
+
+                    @for (question of q.questions; track question.surveyDetailId) {
+                        <div class="mb-6">
+                            <label class="form-label fw-bold">{{ question.no }}. {{ question.question }}</label>
+
+                            @switch (question.questionType) {
+                                @case (QuestionType.TextBox) {
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        [name]="'answer_' + question.surveyDetailId"
+                                        maxlength="4000"
+                                        [ngModel]="textAnswer(question)"
+                                        (ngModelChange)="setTextAnswer(question, $event)" />
+                                }
+                                @case (QuestionType.RadioList) {
+                                    @for (option of options(question); track option) {
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                [id]="'q' + question.surveyDetailId + '_' + option"
+                                                [name]="'answer_' + question.surveyDetailId"
+                                                [value]="option"
+                                                [checked]="isOptionSelected(question, option)"
+                                                (change)="setTextAnswer(question, option)" />
+                                            <label
+                                                class="form-check-label"
+                                                [for]="'q' + question.surveyDetailId + '_' + option"
+                                                >{{ option }}</label
+                                            >
+                                        </div>
+                                    }
+                                }
+                                @case (QuestionType.CheckboxList) {
+                                    @for (option of options(question); track option) {
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                [id]="'q' + question.surveyDetailId + '_' + option"
+                                                [checked]="isOptionSelected(question, option)"
+                                                (change)="toggleOption(question, option, $any($event.target).checked)" />
+                                            <label
+                                                class="form-check-label"
+                                                [for]="'q' + question.surveyDetailId + '_' + option"
+                                                >{{ option }}</label
+                                            >
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+
+                    @if (q.questions.length > 0) {
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="saving()"
+                            [busyIf]="saving()"
+                            (click)="submit()">
+                            <i class="fa fa-save"></i>
+                            <span>{{ 'Save' | localize }}</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

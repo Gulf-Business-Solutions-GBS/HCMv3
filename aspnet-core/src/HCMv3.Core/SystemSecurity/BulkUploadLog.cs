@@ -19,7 +19,14 @@ public class BulkUploadLog : FullAuditedEntity, IMustHaveTenant
 
     public virtual DateTime RunTimeStamp { get; set; }
 
-    public virtual int EmployeeId { get; set; }
+    /// <summary>
+    /// CORRECTED BY THE IMPORT/EXPORT WAVE: this was ported as a non-nullable <c>int</c>, but legacy's
+    /// <c>BulkUploadLog.Employee</c> is a plain nullable XPO reference and the generic bulk import/export
+    /// screen (<c>uscBulkImportExport.SaveLog</c>, which passes <c>Employee emp = null</c>) writes every one
+    /// of its per-row log entries with no employee at all. A non-nullable FK made that impossible.
+    /// <b>Requires an EF migration</b> (column becomes nullable).
+    /// </summary>
+    public virtual int? EmployeeId { get; set; }
 
     public virtual Employee Employee { get; set; }
 

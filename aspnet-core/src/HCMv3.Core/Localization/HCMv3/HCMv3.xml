@@ -3985,6 +3985,46 @@
     <text name="PayrollEngineRunQueued">Payroll Engine run has been queued. Progress appears in the run history below.</text>
     <text name="PayrollEngineRunHistory">Payroll Engine Run History</text>
     <text name="PayrollEngineEmployeeCodesRequired">Employee code can not be blank for an off cycle run.</text>
+    <text name="ProjectCostEngine">Project Cost Engine</text>
+    <text name="RunProjectCostEngine">Run Project Cost Engine</text>
+    <text name="StopProjectCostEngine">Stop Project Cost Engine</text>
+    <text name="ProjectCostEnginePayInDateRequired">No Pay Date defined for Project Costing. Please select a Pay Date.</text>
+    <text name="ProjectCostEnginePayrollAreaRequired">Payroll Area is required to run the Project Cost Engine.</text>
+    <text name="ProjectCostEnginePayrollAreaOrEmployeeCodeRequired">No Payroll Area or Employee Code entered.</text>
+    <text name="ProjectCostEngineOffCyclePaymentDateRequired">No Offcycle Payment Date selected for Offcycle Payroll.</text>
+    <text name="ProjectCostEngineRunQueued">Project Cost Engine run has been queued. Progress appears in the run history below.</text>
+    <text name="ProjectCostEngineRunHistory">Project Cost Engine Run History</text>
+    <text name="ProjectCostEngineStopped">Project Cost Engine stopped successfully.</text>
+    <text name="ProjectCostEngineStatusCleared">Project Cost Engine status cleared.</text>
+    <text name="EmployeesProcessed">Employees Processed</text>
+    <text name="ProcessSpeedPerMinute">Process Speed (per minute)</text>
+    <text name="EstimatedTimeToComplete">Estimated Time To Complete</text>
+    <text name="SurveyNotFound">Survey not found.</text>
+    <text name="CurrentUserIsNotLinkedToAnEmployee">The current user is not linked to an employee record.</text>
+    <text name="SurveyQuestionDoesNotBelongToSurvey">One of the submitted answers does not belong to the selected survey.</text>
+    <text name="EmployeeSurveySubmitted">Survey submitted successfully.</text>
+    <text name="NoSurveyDataFoundToSave">No Survey data found to save.</text>
+    <text name="TakeSurvey">Take Survey</text>
+    <text name="Survey">Survey</text>
+    <text name="Completed">Completed</text>
+    <text name="SelectSurvey">Select Survey</text>
+    <text name="PAPeriodNotFound">Appraisal period not found.</text>
+    <text name="PerformanceAppraisalDashboard">Performance Appraisal Dashboard</text>
+    <text name="PendingByAppraiser">Pending by Appraiser</text>
+    <text name="PendingByAppraisee">Pending by Appraisee</text>
+    <text name="NoOfAppraisalForms">No of Appraisal Forms</text>
+    <text name="CopyWorkflowSetup">Copy Workflow Setup</text>
+    <text name="CopyingWorkflowSetup">Copying workflow setup</text>
+    <text name="CopyWorkflowSetupRequestCodeRequired">Request Code can not left blank</text>
+    <text name="CopyWorkflowSetupRequestNameRequired">Request Name can not left blank</text>
+    <text name="CopyWorkflowSetupSourceRequestRequired">Select Source Workflow Request.</text>
+    <text name="CopyWorkflowSetupRequestCodeAlreadyExists">Request code is already exist.</text>
+    <text name="CopyWorkflowSetupSourceRequestMasterNotFound">Selected request doesn't contain request master.</text>
+    <text name="CopyWorkflowSetupSourceRequestHasNoDetail">Selected request doesn't contain request detail.</text>
+    <text name="CopyWorkflowSetupSucceeded">Request setup successfully created.</text>
+    <text name="SourceWorkflowRequest">Source Workflow Request</text>
+    <text name="NewRequestCode">New Request Code</text>
+    <text name="NewRequestName">New Request Name</text>
     <text name="OffCycleReason">Off Cycle Reason</text>
     <text name="AdvanceLeave">Advance Leave</text>
     <text name="LeaveEncashment">Leave Encashment</text>
@@ -4084,5 +4124,77 @@
     <text name="StopProcess">Stop Process</text>
     <text name="CostingFileRunCompleted">Cost engine completed: {0} succeeded, {1} failed out of {2}.</text>
     <text name="CostingFileRunAborted">Cost engine was stopped before completing.</text>
+
+    <!-- ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration).
+         NOTE: "PayrollAreaNotFound" and "IncorrectPayrollPeriod" are deliberately NOT declared here.
+         They already exist above and a second declaration makes ABP throw AbpException at startup. -->
+    <text name="AdministrationTools">Administration Tools</text>
+    <text name="GeneratingPayrollCalendar">Generating payroll calendar</text>
+    <text name="DeletingSalaryRegisters">Deleting salary registers</text>
+    <text name="UnlockingSalaryRegisters">Unlocking salary registers</text>
+    <text name="FixingForfeitQuota">Fixing forfeit quota</text>
+    <text name="FixingPayrollProvisions">Fixing payroll provisions</text>
+    <text name="RecalculatingProbationEndDates">Recalculating probation end dates</text>
+    <text name="ResyncingTimeAttendanceData">Re-syncing time attendance data</text>
+    <text name="TransferringPendingApprovals">Transferring pending approvals</text>
+    <text name="BulkResettingPasswords">Bulk resetting passwords</text>
+
+    <text name="EndDateCannotBeBeforeStartDate">End date cannot be before start date.</text>
+    <text name="PayrollControlRecordNotFoundForPayrollArea">No payroll control record exists for the selected payroll area. Create one before generating the payroll calendar.</text>
+    <text name="PayrollAreaAndEmployeeCodeBothCannotBeBlank">Payroll area and employee codes cannot both be blank.</text>
+    <text name="CannotMaintainSalaryRegisterLaterRegisterExists">Cannot continue. Employee {0} has a {1} salary register for {2}, which is later than the selected period.</text>
+    <text name="TimeSettingsNotConfigured">Time settings have not been configured yet.</text>
+    <text name="PersonnelSettingsNotConfigured">Personnel settings have not been configured yet.</text>
+    <text name="ForfeitRuleIsNotMonthlyNothingToDo">The forfeit rule is not set to Monthly, so there is nothing to recalculate.</text>
+    <text name="AnnualLeaveAbsenceTypeNotFound">The annual leave absence type (code 1) was not found.</text>
+    <text name="ProbationRecalculationSupportsCalendarDaysOnly">Probation end dates can only be recalculated when the probation days calculation is set to Calendar Days. The Working Days calculation is not available.</text>
+    <text name="AccessControlConnectionStringIsRequired">The access control database connection string is required.</text>
+
+    <text name="TransferFromAndToManagerMustDiffer">The manager transferring from and the manager transferring to must be different.</text>
+    <text name="TransferFromManagerNotFound">The manager to transfer approvals from was not found.</text>
+    <text name="TransferToManagerNotFound">The manager to transfer approvals to was not found.</text>
+    <text name="TransferToManagerHasNoEmail">The receiving manager has no email address, so no notification could be sent.</text>
+
+    <text name="NoUsersSelected">No users were selected.</text>
+    <text name="RandomPasswordNotificationTemplateNotConfigured">The "Random Password Notification" email template is missing or has no body, so no passwords were reset.</text>
+    <text name="BulkPasswordUserNotFound">{0}: no user account found for login "{1}".</text>
+    <text name="BulkPasswordAdminUserSkipped">{0}: skipped, the account holds an administrative role.</text>
+    <text name="BulkPasswordResetAndEmailed">{0}: password reset, email sent to {1}.</text>
+    <text name="BulkPasswordResetButEmailFailed">{0}: password reset, but the email could not be sent.</text>
+    <!-- Import/Export wave: legacy HCM10.Web/UserControls/ImportExport/uscBulkImportExport + uscBulkImport + uscImportTimesheet -->
+    <text name="ImportExport">Import / Export</text>
+    <text name="BulkImportExport">Bulk Import / Export</text>
+    <text name="ProfilePhotoImport">Profile Photo Import</text>
+    <text name="TimesheetImport">Timesheet Import</text>
+    <text name="RunningBulkImport">Running a bulk import</text>
+    <text name="RunningBulkExport">Downloading a template or data</text>
+    <text name="RunningProfilePhotoImport">Running a profile photo import</text>
+    <text name="RunningTimesheetImport">Running a timesheet import</text>
+    <text name="DownloadTemplate">Download template</text>
+    <text name="DownloadData">Download data</text>
+    <text name="ValidateData">Validate data</text>
+    <text name="UploadData">Upload data</text>
+    <text name="ImportType">Import type</text>
+    <text name="Incremental">Incremental</text>
+    <text name="Purge">Purge</text>
+    <text name="ShowDetails">Show details</text>
+    <text name="SuccessfullRecords">Successful records</text>
+    <text name="RunDateAndTime">Run date &amp; time</text>
+    <text name="RecordsProcessed">Records processed</text>
+    <text name="RecordProcessSpeed">Record process speed</text>
+    <text name="PurgeWarning">Purge deletes every existing {0} row before importing. Are you sure?</text>
+    <text name="BulkImportEntityNotSelected">Entity not selected.</text>
+    <text name="BulkImportEntityNotFound">Entity '{0}' was not found or cannot be imported.</text>
+    <text name="BulkImportFileNotSelected">File not selected.</text>
+    <text name="BulkImportColumnNotFound">Column Name : {0} not found in {1}.</text>
+    <text name="BulkImportRowError">Excel RowNo : {0} - {1}</text>
+    <text name="BulkImportReferenceNotFound">{0} : '{1}' Not exists.</text>
+    <text name="BulkImportValueNotValid">{0} is not valid.</text>
+    <text name="BulkImportWorkbookHasNoSheet">The uploaded workbook contains no worksheet.</text>
+    <text name="BulkImportWorkbookUnreadable">The uploaded workbook could not be read: {0}</text>
+    <text name="BulkImportStopRequested">Stop requested by the operator.</text>
+    <text name="BulkImportQueued">{0} import has been queued.</text>
+    <text name="BulkImportUnsupportedImage">'{0}' is not a supported image file (.jpg, .jpeg, .png, .gif).</text>
+    <text name="TimesheetImported">{0} punches imported, {1} skipped, {2} failed.</text>
   </texts>
 </localizationDictionary>

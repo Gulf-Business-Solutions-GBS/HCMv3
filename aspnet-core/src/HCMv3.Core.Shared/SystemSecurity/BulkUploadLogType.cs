@@ -7,5 +7,13 @@ namespace HCMv3.SystemSecurity;
 /// </summary>
 public enum BulkUploadLogType
 {
+    /// <summary>
+    /// Rows written by the generic bulk import/export engine (legacy
+    /// <c>uscBulkImportExport</c>). Legacy's <c>LogType</c> enum had no member for this: that control simply
+    /// never assigned <c>LogType</c>, so its rows persisted the CLR default <c>0</c>. This member names that
+    /// value rather than inventing a new one, so existing data keeps its meaning.
+    /// </summary>
+    BulkDataImport = 0,
+
     ProfilePhoto = 1
 }

@@ -96,6 +96,20 @@ public class PayrollManagementTestDbContext : DbContext
     public DbSet<TicketAccrualSummary> TicketAccrualSummaries { get; set; }
 
     public DbSet<HCMv3.PersonnelAdministration.Employee> Employees { get; set; }
+
+    /// <summary>
+    /// Added for HCMv3.Tests.Administration.PayrollAdminToolsAppService_Tests (ported legacy
+    /// uscPayrollConfigPanel "Fix Forfeit Quota"), which needs to seed annual-leave quota rows.
+    /// Not reachable from any other DbSet declared here, so it needs an explicit entry.
+    /// </summary>
+    public DbSet<HCMv3.PersonnelAdministration.EmployeeAbsenceQuota> EmployeeAbsenceQuotas { get; set; }
+
+    /// <summary>
+    /// Added for HCMv3.Tests.Administration.PayrollAdminToolsAppService_Tests: the ported
+    /// uscPayrollConfigPanel tools filter employees by their effective payroll area / sub-group via
+    /// EmployeeOrgAssignment.
+    /// </summary>
+    public DbSet<HCMv3.PersonnelAdministration.EmployeeOrgAssignment> EmployeeOrgAssignments { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.Nationality> Nationalities { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.BenefitType> BenefitTypes { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.DependantType> DependantTypes { get; set; }

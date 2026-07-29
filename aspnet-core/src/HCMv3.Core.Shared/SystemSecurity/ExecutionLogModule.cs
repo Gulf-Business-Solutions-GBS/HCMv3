@@ -13,5 +13,13 @@ public enum ExecutionLogModule
     GridReport = 3,
     PrintReport = 4,
     CostEngine = 5,
-    ProjectEngine = 6
+    ProjectEngine = 6,
+
+    /// <summary>
+    /// ADDED BY THIS PORT (no legacy member). The legacy bulk import/export screen
+    /// (<c>uscBulkImportExport</c>) wrote no <c>ExecutionLog</c> row at all -- it recomputed its counters
+    /// from <c>BulkUploadLog</c> on every UI timer tick. This port follows the established HCMv3 convention
+    /// of one <c>ExecutionLog</c> summary row per engine run, which needs a module value.
+    /// </summary>
+    BulkImportExport = 7
 }

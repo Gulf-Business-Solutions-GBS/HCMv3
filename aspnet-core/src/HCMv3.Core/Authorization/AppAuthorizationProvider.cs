@@ -1381,6 +1381,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Edit, L("EditItem"));
         projectLogs.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectLogs_Delete, L("DeleteItem"));
 
+        var projectCostEngine = projectManagement.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectCostEngine, L("ProjectCostEngine"));
+        projectCostEngine.CreateChildPermission(AppPermissions.Pages_ProjectManagement_ProjectCostEngine_Run, L("RunProjectCostEngine"));
+
         var travelManagement = pages.CreateChildPermission(AppPermissions.Pages_TravelManagement, L("TravelManagement"));
 
         var expenseTypes = travelManagement.CreateChildPermission(AppPermissions.Pages_TravelManagement_ExpenseTypes, L("ExpenseTypes"));
@@ -2515,6 +2518,29 @@ public class AppAuthorizationProvider : AuthorizationProvider
         var reportPreview = pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
         reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
 
+        //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration)
+        var administrationTools = pages.CreateChildPermission(AppPermissions.Pages_Administration_Tools, L("AdministrationTools"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_GeneratePayrollCalendar, L("GeneratingPayrollCalendar"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_DeleteSalaryRegister, L("DeletingSalaryRegisters"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_UnlockSalaryRegister, L("UnlockingSalaryRegisters"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_FixForfeitQuota, L("FixingForfeitQuota"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_FixPayrollProvisions, L("FixingPayrollProvisions"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_RecalculateProbation, L("RecalculatingProbationEndDates"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TimeAttendanceResync, L("ResyncingTimeAttendanceData"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_TransferApprovals, L("TransferringPendingApprovals"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_BulkPasswordReset, L("BulkResettingPasswords"));
+        administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_CopyWorkflowSetup, L("CopyingWorkflowSetup"));
+
+        // Legacy HCM10.Web/UserControls/ImportExport/. See AppPermissions for why Import and Export are
+        // separate children.
+        var importExport = pages.CreateChildPermission(AppPermissions.Pages_ImportExport, L("ImportExport"));
+
+        var bulkImportExport = importExport.CreateChildPermission(AppPermissions.Pages_ImportExport_BulkImportExport, L("BulkImportExport"));
+        bulkImportExport.CreateChildPermission(AppPermissions.Pages_ImportExport_BulkImportExport_Import, L("RunningBulkImport"));
+        bulkImportExport.CreateChildPermission(AppPermissions.Pages_ImportExport_BulkImportExport_Export, L("RunningBulkExport"));
+
+        importExport.CreateChildPermission(AppPermissions.Pages_ImportExport_ProfilePhotoImport, L("RunningProfilePhotoImport"));
+        importExport.CreateChildPermission(AppPermissions.Pages_ImportExport_TimesheetImport, L("RunningTimesheetImport"));
     }
 
     private static ILocalizableString L(string name)

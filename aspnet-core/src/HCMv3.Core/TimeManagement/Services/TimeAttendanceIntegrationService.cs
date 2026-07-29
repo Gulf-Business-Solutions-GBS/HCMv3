@@ -800,12 +800,50 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
             return 0;
         }
 
-        var transTypeList = _transTypeRepository.GetAllList();
         var insertedCount = 0;
 
         foreach (var file in new DirectoryInfo(filePath).GetFiles("*.xls*"))
         {
             using var workbook = new XLWorkbook(file.FullName);
+            var result = await ImportTransactionsFromWorkbookAsync(workbook, collectErrors: false);
+            insertedCount += result.Inserted;
+        }
+
+        return insertedCount;
+    }
+
+    /// <inheritdoc/>
+    public async Task<TimesheetImportResult> ImportTransactionsFromUploadAsync(byte[] fileContent)
+    {
+        if (fileContent == null || fileContent.Length == 0)
+        {
+            throw new ArgumentException("No file content supplied.", nameof(fileContent));
+        }
+
+        using var stream = new MemoryStream(fileContent);
+        using var workbook = new XLWorkbook(stream);
+        return await ImportTransactionsFromWorkbookAsync(workbook, collectErrors: true);
+    }
+
+    /// <summary>
+    /// The single row loop shared by the folder-scanning <see cref="ImportTransactionsAsync"/> (legacy
+    /// <c>TimeAttendanceIntegrationService.ImportTransactions</c>) and the upload-driven
+    /// <see cref="ImportTransactionsFromUploadAsync"/> (legacy
+    /// <c>uscImportTimesheet.btnupload_Click</c>). Those two legacy code paths are the same algorithm over
+    /// the same fixed column layout; only where the workbook comes from differs.
+    ///
+    /// <para><paramref name="collectErrors"/> selects between the two legacy error policies:
+    /// <c>ImportTransactions</c> swallowed every per-row failure silently, while
+    /// <c>uscImportTimesheet</c> accumulated them into an <c>errorLog</c> string and threw at the end.
+    /// Rather than throwing (which would discard the rows that DID import), the upload path returns the
+    /// messages on <see cref="TimesheetImportResult.Errors"/> for the caller to display.</para>
+    /// </summary>
+    private async Task<TimesheetImportResult> ImportTransactionsFromWorkbookAsync(XLWorkbook workbook, bool collectErrors)
+    {
+        var transTypeList = _transTypeRepository.GetAllList();
+        var result = new TimesheetImportResult();
+
+        {
             var worksheet = workbook.Worksheets.Contains("Sheet1") ? workbook.Worksheet("Sheet1") : workbook.Worksheets.First();
 
             var lastRowUsed = worksheet.LastRowUsed()?.RowNumber() ?? 0;
@@ -843,12 +881,23 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
 
                     if (employee == null || transType == null)
                     {
+                        if (collectErrors && employee == null)
+                        {
+                            // Legacy uscImportTimesheet message, verbatim.
+                            result.Errors.Add(string.Format(
+                                CultureInfo.InvariantCulture,
+                                "Employee with AccessID (PIN) : '{0}' not exists.",
+                                pin));
+                        }
+
+                        result.Skipped++;
                         continue;
                     }
 
                     var alreadyImported = _timeEventRepository.GetAll().Any(e => e.RecordSource == recordSource);
                     if (alreadyImported)
                     {
+                        result.Skipped++;
                         continue;
                     }
 
@@ -859,6 +908,7 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
                             && e.TransTypeId == transType.Id);
                     if (duplicate)
                     {
+                        result.Skipped++;
                         continue;
                     }
 
@@ -877,16 +927,23 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
                     };
 
                     await _timeEventRepository.InsertAsync(timeEvent);
-                    insertedCount++;
+                    result.Inserted++;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Matches legacy's per-row try/catch-and-continue for malformed rows.
+                    // Matches legacy's per-row try/catch-and-continue for malformed rows. The folder-scanning
+                    // path swallows the message (legacy ImportTransactions did); the upload path keeps it
+                    // (legacy uscImportTimesheet appended ex.Message to its errorLog).
+                    result.Failed++;
+                    if (collectErrors)
+                    {
+                        result.Errors.Add(string.Format(CultureInfo.InvariantCulture, "Row {0}: {1}", excelRow, ex.Message));
+                    }
                 }
             }
         }
 
-        return insertedCount;
+        return result;
     }
 
     public async Task<int> ImportTransactionFromMySqlAsync(string mySqlConnectionString)

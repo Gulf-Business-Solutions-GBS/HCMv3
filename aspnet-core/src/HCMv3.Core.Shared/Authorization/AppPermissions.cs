@@ -1300,6 +1300,11 @@ public static class AppPermissions
     public const string Pages_ProjectManagement_ProjectLogs_Edit = "Pages.ProjectManagement.ProjectLogs.Edit";
     public const string Pages_ProjectManagement_ProjectLogs_Delete = "Pages.ProjectManagement.ProjectLogs.Delete";
 
+    // Project Cost Engine execution. Legacy gated this behind the uscProjectCosting screen's own screen
+    // permission; here it is a first-class permission pair (view status / run).
+    public const string Pages_ProjectManagement_ProjectCostEngine = "Pages.ProjectManagement.ProjectCostEngine";
+    public const string Pages_ProjectManagement_ProjectCostEngine_Run = "Pages.ProjectManagement.ProjectCostEngine.Run";
+
     public const string Pages_TravelManagement = "Pages.TravelManagement";
 
     public const string Pages_TravelManagement_ExpenseTypes = "Pages.TravelManagement.ExpenseTypes";
@@ -2454,5 +2459,84 @@ public static class AppPermissions
     /// money documents to every employee in a payroll period.
     /// </summary>
     public const string Pages_Reports_Payslip_Email = "Pages.Reports.Payslip.Email";
+
+    //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration/*.ascx.cs)
+    //
+    //These are DESTRUCTIVE / BULK maintenance utilities, not settings screens. Legacy gated them by a
+    //hardcoded username check ("SuperAdmin"/"Admin"); this port replaces that with real permissions.
+
+    /// <summary>Root for the ported legacy Administration utility panels.</summary>
+    public const string Pages_Administration_Tools = "Pages.Administration.Tools";
+
+    /// <summary>
+    /// Legacy uscPayrollConfigPanel "Generate Payroll Calendar" panel.
+    /// </summary>
+    public const string Pages_Administration_Tools_GeneratePayrollCalendar = "Pages.Administration.Tools.GeneratePayrollCalendar";
+
+    /// <summary>
+    /// Legacy uscPayrollConfigPanel "Delete Salary Register" panel. DESTRUCTIVE: permanently removes
+    /// calculated payroll results.
+    /// </summary>
+    public const string Pages_Administration_Tools_DeleteSalaryRegister = "Pages.Administration.Tools.DeleteSalaryRegister";
+
+    /// <summary>
+    /// Legacy uscPayrollConfigPanel "Unlock Salary Register" panel. Clears the payroll lock that
+    /// normally prevents recalculation of a closed period.
+    /// </summary>
+    public const string Pages_Administration_Tools_UnlockSalaryRegister = "Pages.Administration.Tools.UnlockSalaryRegister";
+
+    /// <summary>
+    /// Legacy uscPayrollConfigPanel "Fix Forfeit Quota" panel.
+    /// </summary>
+    public const string Pages_Administration_Tools_FixForfeitQuota = "Pages.Administration.Tools.FixForfeitQuota";
+
+    /// <summary>
+    /// Legacy uscPayrollConfigPanel "Fix Annual Leave Provision" / "Fix Indemnity Provision" /
+    /// "Fix Total Leave Days" / "Fix Absent Unpaid Days" retro-recalculation panels.
+    /// </summary>
+    public const string Pages_Administration_Tools_FixPayrollProvisions = "Pages.Administration.Tools.FixPayrollProvisions";
+
+    /// <summary>
+    /// Legacy uscSystemConfigPanel "Recalculate ProbationDays" panel.
+    /// </summary>
+    public const string Pages_Administration_Tools_RecalculateProbation = "Pages.Administration.Tools.RecalculateProbation";
+
+    /// <summary>
+    /// Legacy uscSystemConfigPanel "Fetch Time Attendance Missing Data" / "Sync Time Attendance Missing
+    /// API Data" panels.
+    /// </summary>
+    public const string Pages_Administration_Tools_TimeAttendanceResync = "Pages.Administration.Tools.TimeAttendanceResync";
+
+    /// <summary>
+    /// Legacy uscWorkFlowConfigPanel "Transfer Leaves" panel: bulk-reassigns every open, not-yet-approved
+    /// workflow approval from one manager to another.
+    /// </summary>
+    public const string Pages_Administration_Tools_TransferApprovals = "Pages.Administration.Tools.TransferApprovals";
+
+    /// <summary>
+    /// Legacy uscRandomPassword grid + uscChangePassword "reset by role" panels, and the legacy
+    /// uscSystemConfigPanel "Create Users with Default Roles" panel.
+    ///
+    /// SECURITY-SENSITIVE: every endpoint behind this permission mints new credentials for OTHER users and
+    /// e-mails them in plaintext. It is deliberately a standalone permission (NOT implied by
+    /// Pages_Administration_Users) so it can be granted to nobody by default.
+    /// </summary>
+    public const string Pages_Administration_Tools_BulkPasswordReset = "Pages.Administration.Tools.BulkPasswordReset";
+
+    // Legacy uscCopyWorkflowSetup.ascx.cs -- clone a RequestMaster + its RequestDetail steps.
+    public const string Pages_Administration_Tools_CopyWorkflowSetup = "Pages.Administration.Tools.CopyWorkflowSetup";
+
+    // Legacy HCM10.Web/UserControls/ImportExport/. Legacy gated these behind the screens' own screen
+    // permissions.
+    //
+    // SECURITY-SENSITIVE: the bulk import engine writes rows into ANY table in the system by reflection and
+    // its Purge mode deletes every existing row of the selected entity first. Import and Export are split so
+    // "let them pull a data extract" does not also mean "let them overwrite the system of record".
+    public const string Pages_ImportExport = "Pages.ImportExport";
+    public const string Pages_ImportExport_BulkImportExport = "Pages.ImportExport.BulkImportExport";
+    public const string Pages_ImportExport_BulkImportExport_Import = "Pages.ImportExport.BulkImportExport.Import";
+    public const string Pages_ImportExport_BulkImportExport_Export = "Pages.ImportExport.BulkImportExport.Export";
+    public const string Pages_ImportExport_ProfilePhotoImport = "Pages.ImportExport.ProfilePhotoImport";
+    public const string Pages_ImportExport_TimesheetImport = "Pages.ImportExport.TimesheetImport";
 
 }

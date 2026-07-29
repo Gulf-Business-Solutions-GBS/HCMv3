@@ -1,0 +1,332 @@
+<div [@routerTransition]>
+    <sub-header [title]="'BulkImportExport' | localize" [description]="'ImportExport' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom" [busyIf]="busy()">
+            <div class="card-body">
+                <!-- Tabs: one per legacy control. uscImportExport.ascx.cs is dead code and has no tab. -->
+                <ul class="nav nav-tabs mb-4">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            [class.active]="activeTab() === 'bulk'"
+                            href="javascript:;"
+                            (click)="activeTab.set('bulk')"
+                            >{{ 'BulkImportExport' | localize }}</a
+                        >
+                    </li>
+                    @if ('Pages.ImportExport.ProfilePhotoImport' | permission) {
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                [class.active]="activeTab() === 'photos'"
+                                href="javascript:;"
+                                (click)="activeTab.set('photos')"
+                                >{{ 'ProfilePhotoImport' | localize }}</a
+                            >
+                        </li>
+                    }
+                    @if ('Pages.ImportExport.TimesheetImport' | permission) {
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                [class.active]="activeTab() === 'timesheet'"
+                                href="javascript:;"
+                                (click)="activeTab.set('timesheet')"
+                                >{{ 'TimesheetImport' | localize }}</a
+                            >
+                        </li>
+                    }
+                </ul>
+
+                <!-- =============================================================================
+                     BULK IMPORT / EXPORT (legacy uscBulkImportExport)
+                     ============================================================================= -->
+                @if (activeTab() === 'bulk') {
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Actions' | localize }}</label>
+                            <p-select
+                                [options]="actionOptions"
+                                optionLabel="label"
+                                optionValue="value"
+                                [ngModel]="action()"
+                                (ngModelChange)="action.set($event)"
+                                styleClass="w-100" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ 'Entity' | localize }}</label>
+                            <p-select
+                                [options]="entities()"
+                                optionLabel="name"
+                                optionValue="fullName"
+                                [ngModel]="selectedEntityFullName()"
+                                (ngModelChange)="selectedEntityFullName.set($event)"
+                                [filter]="true"
+                                filterBy="name,area"
+                                group="false"
+                                [showClear]="true"
+                                styleClass="w-100"
+                                placeholder="{{ 'Entity' | localize }}" />
+                            @if (selectedEntity()) {
+                                <small class="text-muted">{{ selectedEntity().area }}</small>
+                            }
+                        </div>
+
+                        @if (showImportType()) {
+                            <div class="col-md-2">
+                                <label class="form-label">{{ 'ImportType' | localize }}</label>
+                                <p-select
+                                    [options]="importTypeOptions"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    [ngModel]="importType()"
+                                    (ngModelChange)="importType.set($event)"
+                                    styleClass="w-100" />
+                            </div>
+                        }
+
+                        @if (isImportAction()) {
+                            <div class="col-md-3">
+                                <label class="form-label">{{ 'SelectFile' | localize }}</label>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    accept=".xlsx"
+                                    (change)="onFileSelected($event)" />
+                                @if (selectedFileName()) {
+                                    <small class="text-muted">{{ selectedFileName() }}</small>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            @if (isImportAction()) {
+                                <button
+                                    type="button"
+                                    class="btn btn-primary me-2"
+                                    [disabled]="!canRunImport()"
+                                    (click)="run()">
+                                    {{ (action() === 'validate' ? 'ValidateData' : 'UploadData') | localize }}
+                                </button>
+                                <button type="button" class="btn btn-secondary me-2" (click)="stop()">
+                                    {{ 'StopProcess' | localize }}
+                                </button>
+                            } @else {
+                                <button
+                                    type="button"
+                                    class="btn btn-primary me-2"
+                                    [disabled]="!canDownload()"
+                                    (click)="run()">
+                                    {{ (action() === 'template' ? 'DownloadTemplate' : 'DownloadData') | localize }}
+                                </button>
+                            }
+                            <button type="button" class="btn btn-light me-2" (click)="clearStatus()">
+                                {{ 'ClearStatus' | localize }}
+                            </button>
+                            <button type="button" class="btn btn-light" (click)="refreshStatus()">
+                                {{ 'Refresh' | localize }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Column preview: legacy had no equivalent, but an operator otherwise has to
+                         download a template just to see what the columns are. -->
+                    @if (selectedEntity()) {
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <small class="text-muted">
+                                    @for (column of selectedEntity().columns; track column) {
+                                        <span class="badge bg-light text-dark me-1">{{ column }}</span>
+                                    }
+                                </small>
+                            </div>
+                        </div>
+                    }
+                }
+
+                <!-- =============================================================================
+                     PROFILE PHOTO IMPORT (legacy uscBulkImport)
+                     ============================================================================= -->
+                @if (activeTab() === 'photos') {
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ 'SelectFile' | localize }}</label>
+                            <input
+                                type="file"
+                                class="form-control"
+                                accept=".jpg,.jpeg,.png,.gif"
+                                multiple
+                                (change)="onPhotoFilesSelected($event)" />
+                            <small class="text-muted">
+                                <!-- Legacy matched {EmployeeCode}.jpg files found in a server folder. -->
+                                {{ photoFiles().length }}
+                            </small>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button
+                                type="button"
+                                class="btn btn-primary me-2"
+                                [disabled]="busy() || photoFiles().length === 0"
+                                (click)="startPhotoImport()">
+                                {{ 'UploadData' | localize }}
+                            </button>
+                            <button type="button" class="btn btn-secondary me-2" (click)="stop()">
+                                {{ 'StopProcess' | localize }}
+                            </button>
+                            <button type="button" class="btn btn-light" (click)="clearStatus()">
+                                {{ 'ClearStatus' | localize }}
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <!-- =============================================================================
+                     TIMESHEET IMPORT (legacy uscImportTimesheet)
+                     ============================================================================= -->
+                @if (activeTab() === 'timesheet') {
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ 'SelectFile' | localize }}</label>
+                            <input
+                                type="file"
+                                class="form-control"
+                                accept=".xlsx"
+                                (change)="onTimesheetFileSelected($event)" />
+                            @if (timesheetFileName()) {
+                                <small class="text-muted">{{ timesheetFileName() }}</small>
+                            }
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="busy() || !timesheetFileName()"
+                                (click)="importTimesheet()">
+                                {{ 'UploadData' | localize }}
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (timesheetErrors().length > 0) {
+                        <div class="alert alert-warning">
+                            <ul class="mb-0">
+                                @for (error of timesheetErrors(); track error) {
+                                    <li>{{ error }}</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+
+                <!-- =============================================================================
+                     STATUS PANEL (legacy CalculateProcessStatus + the three summary boxes)
+                     Shared by the bulk and profile-photo tabs, as legacy's two screens each had
+                     their own copy of the same panel.
+                     ============================================================================= -->
+                @if (activeTab() !== 'timesheet') {
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="card bg-light-success">
+                                <div class="card-body py-3">
+                                    <div class="fw-bold">{{ 'SuccessfullRecords' | localize }}</div>
+                                    <div class="fs-3">{{ status()?.summarySuccess ?? 0 }}</div>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-light-success"
+                                        (click)="showDetails(0)">
+                                        {{ 'ShowDetails' | localize }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light-danger">
+                                <div class="card-body py-3">
+                                    <div class="fw-bold">{{ 'FailedRecords' | localize }}</div>
+                                    <div class="fs-3">{{ status()?.summaryFailed ?? 0 }}</div>
+                                    <button type="button" class="btn btn-sm btn-light-danger" (click)="showDetails(1)">
+                                        {{ 'ShowDetails' | localize }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light-primary">
+                                <div class="card-body py-3">
+                                    <div class="fw-bold">{{ 'AllRecords' | localize }}</div>
+                                    <div class="fs-3">{{ status()?.summaryAll ?? 0 }}</div>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-light-primary"
+                                        (click)="showDetails(undefined)">
+                                        {{ 'ShowDetails' | localize }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (status(); as s) {
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <span class="text-muted">{{ 'RecordsProcessed' | localize }} :</span>
+                                <strong>{{ s.processedRecords }} / {{ s.totalRecords }}</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="text-muted">{{ 'RecordProcessSpeed' | localize }} :</span>
+                                <strong>{{ s.speedPerMinute }} / Min</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="text-muted">{{ 'EstimatedTimeToComplete' | localize }} :</span>
+                                <strong>{{ s.remainingMinutes }}</strong>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Per-row log grid: legacy grid_Payroll (RecordNo / Run Date & Time / Message). -->
+                    <p-table
+                        [value]="logEntries()"
+                        [lazy]="true"
+                        (onLazyLoad)="loadLogEntries($event)"
+                        [paginator]="true"
+                        [rows]="20"
+                        [totalRecords]="logTotalCount()"
+                        [loading]="logLoading()"
+                        [rowsPerPageOptions]="[20, 50, 100]"
+                        styleClass="p-datatable-sm">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 100px" pSortableColumn="RecordNo">{{ 'RecordNo' | localize }}</th>
+                                <th style="width: 180px" pSortableColumn="RunTimeStamp">
+                                    {{ 'RunDateAndTime' | localize }}
+                                </th>
+                                <th style="width: 90px">{{ 'Status' | localize }}</th>
+                                <th>{{ 'Message' | localize }}</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-entry>
+                            <tr>
+                                <td>{{ entry.recordNo }}</td>
+                                <td>{{ entry.runTimeStamp | luxonFormat: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                                <td>
+                                    <!-- Legacy stored a raw int (0 = success, 1 = failure) and rendered no
+                                         badge at all; the two grids were simply pre-filtered. -->
+                                    @if (entry.status === 0) {
+                                        <span class="badge bg-success">{{ 'Success' | localize }}</span>
+                                    } @else {
+                                        <span class="badge bg-danger">{{ 'Failed' | localize }}</span>
+                                    }
+                                </td>
+                                <td [pTooltip]="entry.message">{{ entry.message }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

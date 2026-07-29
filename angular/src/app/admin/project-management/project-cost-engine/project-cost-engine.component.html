@@ -1,0 +1,249 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'ProjectCostEngine' | localize"
+        [description]="'ProjectManagement' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label required" for="ProjectCostEngine_PayrollArea">{{
+                            'PayrollAreaId' | localize
+                        }}</label>
+                        <select
+                            id="ProjectCostEngine_PayrollArea"
+                            class="form-select"
+                            name="PayrollAreaName"
+                            [ngModel]="payrollAreaName()"
+                            (ngModelChange)="payrollAreaName.set($event)">
+                            <option [ngValue]="''"></option>
+                            @for (item of payrollAreas(); track item.id) {
+                                <option [ngValue]="item.name">{{ item.name }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label required" for="ProjectCostEngine_RunType">{{
+                            'PayrollRunType' | localize
+                        }}</label>
+                        <select
+                            id="ProjectCostEngine_RunType"
+                            class="form-select"
+                            name="PayrollRunType"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="onPayrollRunTypeChange($event)">
+                            <option [ngValue]="PayrollRunType.Regular">{{ 'Regular' | localize }}</option>
+                            <option [ngValue]="PayrollRunType.OffCycle">{{ 'OffCycle' | localize }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label" for="ProjectCostEngine_EmployeeCodes">{{
+                            'EmployeeCode' | localize
+                        }}</label>
+                        <input
+                            id="ProjectCostEngine_EmployeeCodes"
+                            type="text"
+                            class="form-control"
+                            name="EmployeeCodes"
+                            maxlength="2000"
+                            [ngModel]="employeeCodes()"
+                            (ngModelChange)="employeeCodes.set($event)" />
+                    </div>
+
+                    <div class="col-md-3 mb-5">
+                        <label class="form-label required" for="ProjectCostEngine_PayInDate">{{
+                            'EndDate' | localize
+                        }}</label>
+                        <input
+                            id="ProjectCostEngine_PayInDate"
+                            type="date"
+                            class="form-control"
+                            name="PayInDate"
+                            [ngModel]="payInDate()"
+                            (ngModelChange)="payInDate.set($event)" />
+                    </div>
+                </div>
+
+                @if (isOffCycle()) {
+                    <div class="row">
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label" for="ProjectCostEngine_OffCycleReason">{{
+                                'OffCycleReason' | localize
+                            }}</label>
+                            <select
+                                id="ProjectCostEngine_OffCycleReason"
+                                class="form-select"
+                                name="OffCycleReason"
+                                [ngModel]="offCycleReason()"
+                                (ngModelChange)="offCycleReason.set($event)">
+                                <option [ngValue]="''"></option>
+                                @for (reason of offCycleReasons; track reason.value) {
+                                    <option [ngValue]="reason.value">{{ reason.localizationKey | localize }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-5">
+                            <label class="form-label required" for="ProjectCostEngine_OffCyclePaymentDate">{{
+                                'OffCyclePaymentDate' | localize
+                            }}</label>
+                            <input
+                                id="ProjectCostEngine_OffCyclePaymentDate"
+                                type="date"
+                                class="form-control"
+                                name="OffCyclePaymentDate"
+                                [ngModel]="offCyclePaymentDate()"
+                                (ngModelChange)="offCyclePaymentDate.set($event)" />
+                        </div>
+                    </div>
+                }
+
+                <div class="d-flex gap-3">
+                    @if ('Pages.ProjectManagement.ProjectCostEngine.Run' | permission) {
+                        <button
+                            type="button"
+                            class="btn btn-primary fw-bold"
+                            [disabled]="!payInDate() || !payrollAreaName() || running()"
+                            [busyIf]="running()"
+                            (click)="runProjectCostEngine()">
+                            <i class="fa fa-play"></i>
+                            <span>{{ 'RunProjectCostEngine' | localize }}</span>
+                        </button>
+
+                        <button type="button" class="btn btn-danger fw-bold" (click)="stopProjectCostEngine()">
+                            <i class="fa fa-stop"></i>
+                            <span>{{ 'StopProjectCostEngine' | localize }}</span>
+                        </button>
+
+                        <button type="button" class="btn btn-warning fw-bold" (click)="clearStatus()">
+                            <i class="fa fa-eraser"></i>
+                            <span>{{ 'Clear' | localize }}</span>
+                        </button>
+                    }
+
+                    <button type="button" class="btn btn-secondary fw-bold" (click)="refreshStatus(); reloadPage()">
+                        <i class="fa fa-sync"></i>
+                        <span>{{ 'Refresh' | localize }}</span>
+                    </button>
+                </div>
+
+                @if (status(); as s) {
+                    <div class="row mt-5">
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'TotalRecords' | localize }}</label>
+                            <div class="fw-bold">{{ s.totalRecords }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Successfull' | localize }}</label>
+                            <div class="fw-bold text-success">{{ s.successRecords }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'Failed' | localize }}</label>
+                            <div class="fw-bold text-danger">{{ s.failedRecords }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'EmployeesProcessed' | localize }}</label>
+                            <div class="fw-bold">{{ s.totalEmployeesProcessed }} / {{ s.noOfEmployee }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'ProcessSpeedPerMinute' | localize }}</label>
+                            <div class="fw-bold">{{ s.speedPerMinute }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ 'EstimatedTimeToComplete' | localize }}</label>
+                            <div class="fw-bold">{{ s.remainingMinutes }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ 'Employee' | localize }}</label>
+                            <div class="fw-bold">{{ s.currentEmployee }}</div>
+                        </div>
+                    </div>
+
+                    @if (s.stopRequested) {
+                        <div class="alert alert-warning mt-3 mb-0">
+                            {{ 'ProjectCostEngineStopped' | localize }}
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="card card-custom mt-5">
+            <div class="card-body">
+                <h5 class="mb-5">{{ 'ProjectCostEngineRunHistory' | localize }}</h5>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getProjectLogs($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '50rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 200px">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 150px" pSortableColumn="runTimeStamp">
+                                        {{ 'RunTimeStamp' | localize }}
+                                        <p-sortIcon field="runTimeStamp" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="status">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="status" />
+                                    </th>
+                                    <th style="min-width: 130px" pSortableColumn="inPeriod">
+                                        {{ 'InPeriod' | localize }}
+                                        <p-sortIcon field="inPeriod" />
+                                    </th>
+                                    <th style="min-width: 320px">{{ 'Message' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 200px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 150px">
+                                        {{ record.runTimeStamp | luxonFormat: 'yyyy-MM-dd HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 120px">{{ statusText(record.status) }}</td>
+                                    <td style="min-width: 130px">{{ record.inPeriod | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                    <td style="min-width: 320px">{{ record.message }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getProjectLogs($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

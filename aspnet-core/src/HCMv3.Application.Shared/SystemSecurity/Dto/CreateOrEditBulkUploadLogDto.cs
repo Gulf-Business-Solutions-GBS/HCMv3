@@ -15,8 +15,7 @@ public class CreateOrEditBulkUploadLogDto
     [Required]
     public DateTime RunTimeStamp { get; set; }
 
-    [Required]
-    public int EmployeeId { get; set; }
+    public int? EmployeeId { get; set; }
 
     public int Status { get; set; }
 
