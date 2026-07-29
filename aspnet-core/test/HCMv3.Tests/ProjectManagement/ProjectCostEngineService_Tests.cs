@@ -231,6 +231,92 @@ public class ProjectCostEngineService_Tests
 
     #endregion
 
+    #region << Overtime costing (legacy lines 727-729, 808-819) -- wave P8 >>
+
+    /// <summary>
+    /// Legacy lines 808-818: a wage type reachable from an <c>OvertimeType</c> is costed as
+    /// <c>ApprovedOvertimeHours * OvertimeType.OvertimeRate</c> for Number and
+    /// <c>that * SalaryRegisterDetail.Rate</c> for Amount -- NOT pro-rated by working days.
+    ///
+    /// <para>Until wave P8 restored <c>OvertimeType.WageTypeId</c> the overtime set was always empty and this
+    /// branch could never be taken, so the wage type fell through to the Earning/Deduction working-day
+    /// pro-ration and the costed money differed from legacy. 6 approved hours * rate 1.5 = 9 Number;
+    /// 9 * SalaryRegisterDetail.Rate 4 = 36 Amount.</para>
+    /// </summary>
+    [Fact]
+    public async Task Should_Cost_Overtime_WageType_By_Approved_Hours_Times_OvertimeRate()
+    {
+        var harness = new Harness();
+        harness.AddOvertimeWageType(overtimeRate: 1.5, approvedHours: 6, registerRate: 4);
+        // Working days are present to prove the overtime branch WINS over day pro-ration.
+        harness.AddTimeRegisterWorkingDays(10);
+
+        var service = harness.Build();
+
+        await service.RunAsync(RegularInput());
+
+        var overtimeDetail = harness.ProjectRegisterDetails
+            .Single(d => d.WageTypeId == Harness.OvertimeWageTypeId);
+
+        overtimeDetail.Number.ShouldBe(9);
+        overtimeDetail.Amount.ShouldBe(36);
+    }
+
+    /// <summary>
+    /// The overtime branch must only claim wage types actually mapped by an <c>OvertimeType</c>. An
+    /// OvertimeType with a NULL WageTypeId contributes nothing (legacy guards with
+    /// <c>Where(r =&gt; r.WageType != null)</c>).
+    /// </summary>
+    [Fact]
+    public async Task Should_Ignore_OvertimeType_With_No_WageType()
+    {
+        var harness = new Harness();
+        harness.OvertimeTypes.Add(new OvertimeType
+        {
+            Id = 90, TenantId = TenantId, Code = "OT", NameEn = "OT", NameAr = "OT",
+            OvertimeRate = 2, WageTypeId = null
+        });
+        harness.AddTimeRegisterWorkingDays(10);
+
+        var service = harness.Build();
+
+        await service.RunAsync(RegularInput());
+
+        // Basic pay still pro-rated normally -- the null-mapped OvertimeType claimed nothing.
+        harness.ProjectRegisterDetails.Count.ShouldBe(1);
+        harness.ProjectRegisterDetails[0].WageTypeId.ShouldBe(Harness.BasicWageTypeId);
+        harness.ProjectRegisterDetails[0].Amount.ShouldBe(100);
+    }
+
+    #endregion
+
+    #region << Whole-run failure ProjectLog row (legacy lines 280-293) -- wave P8 >>
+
+    /// <summary>
+    /// Legacy's outer catch writes an EMPLOYEE-LESS ProjectLog row for a whole-run failure. This could not
+    /// be persisted until wave P8 made <c>ProjectLog.EmployeeId</c> nullable.
+    ///
+    /// <para>DEVIATION asserted here on purpose: legacy SWALLOWED the exception, this port re-throws after
+    /// logging (the background job is the caller's only failure channel).</para>
+    /// </summary>
+    [Fact]
+    public async Task Should_Log_An_EmployeeLess_ProjectLog_Row_When_The_Whole_Run_Fails()
+    {
+        var harness = new Harness();
+        harness.PayrollControlRecords.Clear();
+        var service = harness.Build();
+
+        var ex = await Assert.ThrowsAsync<UserFriendlyException>(() => service.RunAsync(RegularInput()));
+        ex.Message.ShouldContain("Payroll Control Record not found");
+
+        harness.ProjectLogs.Count.ShouldBe(1);
+        harness.ProjectLogs[0].EmployeeId.ShouldBeNull();
+        harness.ProjectLogs[0].Status.ShouldBe(1);
+        harness.ProjectLogs[0].Message.ShouldContain("Payroll Control Record not found");
+    }
+
+    #endregion
+
     #region << Percentage costing (legacy lines 1237-1272) >>
 
     /// <summary>
@@ -391,6 +477,9 @@ public class ProjectCostEngineService_Tests
         public readonly List<EmployeePayrollStatus> EmployeePayrollStatuses = new List<EmployeePayrollStatus>();
         public readonly List<EmployeeAbsence> EmployeeAbsences = new List<EmployeeAbsence>();
         public readonly List<EmployeeOvertime> EmployeeOvertimes = new List<EmployeeOvertime>();
+
+        /// <summary>Wave P8: OvertimeType now carries the legacy WageType FK, so the real resolver is used.</summary>
+        public readonly List<OvertimeType> OvertimeTypes = new List<OvertimeType>();
         public readonly List<SalaryRegister> SalaryRegisters = new List<SalaryRegister>();
         public readonly List<SalaryRegisterDetail> SalaryRegisterDetails = new List<SalaryRegisterDetail>();
         public readonly List<WageType> WageTypes = new List<WageType>();
@@ -527,6 +616,66 @@ public class ProjectCostEngineService_Tests
             });
         }
 
+        public const int OvertimeWageTypeId = 20;
+
+        /// <summary>
+        /// Adds an overtime wage type to the project, its register line, and the OvertimeType that maps it
+        /// (via the wave-P8 <c>WageTypeId</c> FK) plus one EmployeeOvertime row inside the project window.
+        /// </summary>
+        public void AddOvertimeWageType(double overtimeRate, double approvedHours, double registerRate)
+        {
+            WageTypes.Add(new WageType
+            {
+                Id = OvertimeWageTypeId,
+                TenantId = TenantId,
+                Code = "1500",
+                NameEn = "Overtime",
+                NameAr = "Overtime",
+                BillingType = BillingType.Earning,
+                PayrollOrder = 2
+            });
+
+            SalaryRegisterDetails.Add(new SalaryRegisterDetail
+            {
+                Id = 2,
+                TenantId = TenantId,
+                SalaryRegisterId = 1,
+                WageTypeId = OvertimeWageTypeId,
+                Number = 5,
+                Amount = 50,
+                Rate = registerRate
+            });
+
+            ProjectWageTypes.Add(new ProjectWageType
+            {
+                Id = 2,
+                TenantId = TenantId,
+                ProjectId = ProjectId,
+                WageTypeId = OvertimeWageTypeId
+            });
+
+            OvertimeTypes.Add(new OvertimeType
+            {
+                Id = 91,
+                TenantId = TenantId,
+                Code = "OT1",
+                NameEn = "OT1",
+                NameAr = "OT1",
+                OvertimeRate = overtimeRate,
+                WageTypeId = OvertimeWageTypeId
+            });
+
+            EmployeeOvertimes.Add(new EmployeeOvertime
+            {
+                Id = 1,
+                TenantId = TenantId,
+                EmployeeId = EmployeeId,
+                EffectiveDate = new DateTime(2024, 1, 15),
+                OvertimeTypeId = 91,
+                ApprovedOvertimeHours = approvedHours
+            });
+        }
+
         public void AddTimeRegisterWorkingDays(int days)
         {
             for (var i = 0; i < days; i++)
@@ -576,7 +725,7 @@ public class ProjectCostEngineService_Tests
                 ProjectCostEngineFakes.RepoOver(ProjectWageTypes),
                 sysSettings,
                 rounding,
-                new NullProjectCostOvertimeWageTypeResolver());
+                new ProjectCostOvertimeWageTypeResolver(ProjectCostEngineFakes.RepoOver(OvertimeTypes)));
 
             service.UnitOfWorkManager = ProjectCostEngineFakes.UnitOfWorkManager();
 

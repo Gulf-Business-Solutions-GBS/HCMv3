@@ -29,4 +29,12 @@ public class SalaryRegisterDetail : FullAuditedEntity, IMustHaveTenant
     public virtual double Number { get; set; }
 
     public virtual double Amount { get; set; }
+
+    /// <summary>
+    /// Legacy <c>salaryRegisterDetail.IsSystemGenerated = true</c> (legacy <c>Program.SetRoundoff</c> and the
+    /// register writers). BUSINESS data -- "engine-written line" vs "manually entered line" -- NOT audit
+    /// metadata that <c>FullAuditedEntity</c> covers. Surfaced on the engine's transport model
+    /// <c>PayrollRegisterLine.IsSystemGenerated</c>.
+    /// </summary>
+    public virtual bool IsSystemGenerated { get; set; }
 }

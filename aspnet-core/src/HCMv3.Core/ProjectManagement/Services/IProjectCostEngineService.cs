@@ -36,11 +36,11 @@ namespace HCMv3.ProjectManagement.Services;
 /// <c>CurrentCompany.PayrollArea.Currency.DecimalCount</c> lookup + default) is applied to
 /// <c>Number</c> and <c>Amount</c> in memory, at the same point in the flow (after the period's register
 /// is committed, legacy line 575). Legacy swallowed every exception here; so does this port.</description></item>
-/// <item><description><b>Legacy's run-level failure <c>ProjectLog</c> row is NOT written</b> (legacy
-/// 280-293). It sets no <c>Employee</c>, but this port's <c>ProjectLog.EmployeeId</c> is a NON-NULLABLE
-/// <c>int</c> (unlike <c>PayrollLog.EmployeeId</c>, which is <c>int?</c>). Rather than invent an employee
-/// id or change an entity owned by an earlier wave, a whole-run failure is thrown so the background job
-/// records it. <b>Reported gap.</b></description></item>
+/// <item><description><b>Legacy's run-level failure <c>ProjectLog</c> row IS written</b> (legacy 280-293)
+/// since wave P8 made <c>ProjectLog.EmployeeId</c> nullable, matching the sibling <c>PayrollLog</c>. One
+/// deviation remains: legacy SWALLOWED the exception after logging; this port logs the row and then
+/// RE-THROWS, so the background job / app service still see the failure. The log write itself is
+/// swallowed so it can never mask the original error.</description></item>
 /// <item><description><b>No EF Core in <c>HCMv3.Core</c></b> -- every query is synchronous LINQ over
 /// <c>IRepository&lt;T&gt;.GetAll()</c>; async signatures kept for interface consistency.</description></item>
 /// <item><description><b><c>ProjectCostingMethod.ActualHours</c> does nothing</b> -- legacy's branch

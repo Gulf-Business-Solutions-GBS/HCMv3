@@ -66,6 +66,7 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
     private readonly IPayrollDayCountService _dayCountService;
     private readonly ITimeDataService _timeDataService;
     private readonly IRosterService _rosterService;
+    private readonly IPayrollAdvancePaymentService _advancePaymentService;
 
     public EmployeeBasicPayCalculationService(
         IRepository<EmployeeBasicPay> employeeBasicPayRepository,
@@ -77,7 +78,8 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
         IPayrollRegisterStore registerStore,
         IPayrollDayCountService dayCountService,
         ITimeDataService timeDataService,
-        IRosterService rosterService)
+        IRosterService rosterService,
+        IPayrollAdvancePaymentService advancePaymentService)
     {
         _employeeBasicPayRepository = employeeBasicPayRepository;
         _employeeBasicPayDetailRepository = employeeBasicPayDetailRepository;
@@ -89,6 +91,7 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
         _dayCountService = dayCountService;
         _timeDataService = timeDataService;
         _rosterService = rosterService;
+        _advancePaymentService = advancePaymentService;
     }
 
     #region << Legacy Program.cs lines 1918-1932 (wtBasicPayWageList) >>
@@ -1186,28 +1189,20 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
     }
 
     /// <summary>
-    /// <b>NOT PORTED -- THROWS.</b> Legacy <c>Program.AdvancePaymentDed</c> (legacy <c>Program.cs</c> line
-    /// 2940) creates/updates an <c>EmployeePayment</c> row for wage code
-    /// <see cref="PayrollEngineWageCodes.AdvancePaymentDeduction"/> ("2005"), keyed by
+    /// Legacy <c>Program.AdvancePaymentDed</c> (legacy <c>Program.cs</c> line 2940): upserts the employee's
+    /// wage-code-<see cref="PayrollEngineWageCodes.AdvancePaymentDeduction"/> ("2005")
+    /// <see cref="EmployeePayment"/> row, keyed by
     /// <c>(Employee, PaymentDate, OffCyclePaymentDate, WageType)</c>.
     ///
-    /// <para><b>Blocking gap:</b> this port's <see cref="EmployeePayment"/> entity deliberately DROPPED the
-    /// <c>OffCyclePaymentDate</c> field (see that entity's XML remarks: "the internal-only
-    /// <c>OffCyclePaymentDate</c> field (hidden from every legacy view) are dropped") and has no
-    /// <c>IsSystemGenerated</c> flag. Without <c>OffCyclePaymentDate</c> the legacy upsert key cannot be
-    /// reproduced: matching on <c>(Employee, PaymentDate, 2005)</c> alone would MERGE recovery rows belonging
-    /// to different off-cycle payment runs and silently over-deduct. Rather than guess, this throws.</para>
-    ///
-    /// <para><b>Required to close it:</b> add <c>DateTime OffCyclePaymentDate</c> and
-    /// <c>bool IsSystemGenerated</c> to <c>HCMv3.Core/PersonnelAdministration/EmployeePayment.cs</c> plus a
-    /// migration -- reported, not made, per this wave's rules. Legacy also rounds with
-    /// <c>Math.Round(existing + amount, decimalInSalaryRegister)</c> (legacy line 3061).</para>
-    ///
-    /// <para>The two arms legacy exits early on ARE reproduced, so no path that legacy treated as a no-op
-    /// throws: <c>amount == 0</c> (legacy line 2942) and off-cycle End-Of-Service (legacy lines
-    /// 2944-2947).</para>
+    /// <para>WAVE P8: previously threw, because this port's <see cref="EmployeePayment"/> had dropped
+    /// <c>OffCyclePaymentDate</c> and matching without it merges recovery rows across off-cycle runs and
+    /// over-deducts. That column (and <c>IsSystemGenerated</c>) is now on the entity, so this simply
+    /// delegates to the single shared implementation in <see cref="IPayrollAdvancePaymentService"/> --
+    /// the same one the ~12 wage-type calculators use -- instead of duplicating it. Legacy's two early
+    /// exits (<c>amount == 0</c>, off-cycle End-Of-Service) live there and are kept here too so the
+    /// behaviour is unchanged for the paths legacy no-ops on.</para>
     /// </summary>
-    private static Task AdvancePaymentDedAsync(PayrollCalculationContext context, DateTime paymentDate, double amount)
+    private Task AdvancePaymentDedAsync(PayrollCalculationContext context, DateTime paymentDate, double amount)
     {
         // Legacy line 2942.
         if (amount == 0)
@@ -1221,13 +1216,15 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
             return Task.CompletedTask;
         }
 
-        throw new NotImplementedException(
-            "Program.AdvancePaymentDed (HCM10.PayrollEngine/Program.cs line 2940) is not ported: "
-            + "HCMv3's EmployeePayment entity dropped the OffCyclePaymentDate field that forms part of the "
-            + "legacy upsert key for wage code 2005, so the advance-recovery row cannot be written without "
-            + "risking a merge across off-cycle payment runs. Add EmployeePayment.OffCyclePaymentDate + "
-            + "IsSystemGenerated (Core + migration) and implement the upsert. "
-            + $"(employeeId={context.EmployeeId}, paymentDate={paymentDate:dd/MM/yyyy}, amount={amount})");
+        return _advancePaymentService.AdvancePaymentDedAsync(
+            context.EmployeeId,
+            paymentDate,
+            context.OffCyclePaymentDate,
+            amount,
+            context.PayrollRunType,
+            context.OffCycleReason,
+            context.AdvancePayComment,
+            context.Settings);
     }
 
     #endregion

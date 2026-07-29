@@ -295,6 +295,13 @@ public class PayrollRegisterLine
     public double Number { get; set; }
 
     public double Amount { get; set; }
+
+    /// <summary>
+    /// Legacy <c>salaryRegisterDetail.IsSystemGenerated</c>. Every line the engine writes is system
+    /// generated, so <see cref="IPayrollRegisterStore.SaveLineAsync"/> stamps it <c>true</c> on save;
+    /// reads surface whatever is stored.
+    /// </summary>
+    public bool IsSystemGenerated { get; set; }
 }
 
 /// <summary>

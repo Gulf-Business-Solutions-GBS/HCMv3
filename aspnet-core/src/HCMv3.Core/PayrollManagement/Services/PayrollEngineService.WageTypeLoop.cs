@@ -213,24 +213,26 @@ public partial class PayrollEngineService
             categories.LeavePay.Add(id);
         }
 
-        // Legacy line 1932:
+        // Legacy line 1932 -- ACTIVE since wave P8 restored GeneralMasterInfo.OvertimeType.WageTypeId:
         //     wtOverTimeWageList = EmployeeOvertime.Where(r => r.Employee.Oid == emp.Oid
         //                                                   && r.EffectiveDate >= payStartDate
         //                                                   && r.EffectiveDate <= offCycleEndDate
         //                                                   && r.OvertimeType != null)
         //                                          .Select(r => r.OvertimeType.WageType.Oid).ToList();
-        //
-        // BLOCKED, NOT APPROXIMATED: this port's GeneralMasterInfo.OvertimeType deliberately dropped the
-        // legacy WageType FK ("The legacy WageType FK is not ported (Payroll module out of scope)" -- see
-        // that entity's class remarks). There is no substitute source for an overtime wage type, and
-        // inventing one (e.g. matching by code) would be a fabricated business rule.
-        //
-        // CONSEQUENCE: categories.Overtime is always empty, so the overtime dispatch arm at legacy line 2565
-        // is never taken. That is currently INVISIBLE because IEmployeeOvertimePayCalculationService is not
-        // ported either -- but it will stay invisible after that service ships unless the FK is added first.
-        // TO CLOSE: add `int? WageTypeId`/`WageType` to GeneralMasterInfo.OvertimeType (+ migration) and
-        // restore the query above verbatim.
-        _ = _employeeOvertimeRepository;
+        // Legacy's `r.OvertimeType != null` guard becomes `r.OvertimeType.WageTypeId != null` here: this
+        // port's EmployeeOvertime.OvertimeTypeId is a required FK, so the OvertimeType is always present,
+        // and the value that can be absent is its (nullable) WageTypeId.
+        foreach (var id in _employeeOvertimeRepository.GetAll()
+                     .Where(r => r.EmployeeId == employee.Id
+                                 && r.EffectiveDate >= payStartDate
+                                 && r.EffectiveDate <= offCycleEndDate
+                                 && r.OvertimeType != null
+                                 && r.OvertimeType.WageTypeId != null)
+                     .Select(r => r.OvertimeType.WageTypeId.Value)
+                     .ToList())
+        {
+            categories.Overtime.Add(id);
+        }
 
         // Legacy line 1936.
         foreach (var id in _employeeAttendanceRepository.GetAll()

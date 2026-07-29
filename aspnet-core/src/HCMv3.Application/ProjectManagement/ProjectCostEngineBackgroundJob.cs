@@ -16,10 +16,10 @@ namespace HCMv3.ProjectManagement;
 /// web process, holding a static <c>LongOperationStatus</c> string that the page polled.</para>
 ///
 /// <para><b>Deviation:</b> legacy's outer <c>catch</c> (lines 278-294) wrote an EMPLOYEE-LESS failed
-/// <c>ProjectLog</c> row and swallowed the exception. This port's <c>ProjectLog.EmployeeId</c> is a
-/// non-nullable <c>int</c>, so a whole-run failure is allowed to surface here instead and ABP's background
-/// job manager records it. Per-employee failures still get their own <c>ProjectLog</c> rows inside the
-/// engine, exactly as legacy. <b>Reported gap.</b></para>
+/// <c>ProjectLog</c> row and swallowed the exception. Since wave P8 (<c>ProjectLog.EmployeeId</c> is
+/// <c>int?</c>) <c>ProjectCostEngineService</c> DOES write that row -- but it still re-throws afterwards,
+/// so a whole-run failure also surfaces here and ABP's background job manager records it. Per-employee
+/// failures get their own <c>ProjectLog</c> rows inside the engine, exactly as legacy.</para>
 /// </summary>
 public class ProjectCostEngineBackgroundJob : AsyncBackgroundJob<ProjectCostEngineJobArgs>, ITransientDependency
 {

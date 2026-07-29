@@ -30,23 +30,21 @@ public interface IPayrollAdvancePaymentService : IDomainService
     /// <c>Math.Round(existing + amount, PayrollEngineSettings.DecimalInSalaryRegister)</c> -- legacy line
     /// 2982 uses <c>Program.decimalInSalaryRegister</c>.</para>
     ///
-    /// <para><b>PORT DEVIATION (schema).</b> Legacy matches the existing row on
-    /// <c>Employee + PaymentDate + OffCyclePaymentDate + WageType.Code == "2005"</c>. This port's
-    /// <c>EmployeePayment</c> entity DROPPED <c>OffCyclePaymentDate</c> deliberately (see that entity's XML
-    /// remarks: "the internal-only OffCyclePaymentDate field (hidden from every legacy view) [is] dropped"),
-    /// so the match is on <c>Employee + PaymentDate + 2005</c> only. Within a single off-cycle run this is
-    /// equivalent, because <c>offCyclePaymentDate</c> is constant for the run; it differs only if two
-    /// off-cycle runs with different payment dates target the same <c>paymentDate</c> month, where legacy
-    /// would keep two rows and this port merges them into one. Restoring exact parity requires adding
-    /// <c>OffCyclePaymentDate</c> back to the entity plus a migration -- reported, not done.</para>
+    /// <para>The existing row is matched on legacy's FULL key
+    /// <c>Employee + PaymentDate + OffCyclePaymentDate + WageType.Code == "2005"</c> (wave P8 restored
+    /// <c>EmployeePayment.OffCyclePaymentDate</c>). Matching without <c>OffCyclePaymentDate</c> merges
+    /// recovery rows across different off-cycle runs and over-deducts -- do not "simplify" it back.
+    /// <paramref name="offCyclePaymentDate"/> is <c>default(DateTime)</c> on a regular run (legacy's own
+    /// sentinel) and is normalised to <c>null</c> in the column.</para>
     ///
-    /// <para><b>PORT DEVIATION (auditing).</b> Legacy's <c>SysCreator</c>/<c>SysModifier</c>/
-    /// <c>IsSystemGenerated</c> stamping is dropped: ABP's <c>FullAuditedEntity</c> covers auditing and this
-    /// port's <c>EmployeePayment</c> carries no <c>IsSystemGenerated</c> column.</para>
+    /// <para>Legacy's <c>SysCreator</c>/<c>SysModifier</c> stamping is superseded by ABP's
+    /// <c>FullAuditedEntity</c>, but <c>IsSystemGenerated</c> (legacy line 2983) is BUSINESS data and is
+    /// stamped <c>true</c>, exactly as legacy does.</para>
     /// </summary>
     Task AdvancePaymentDedAsync(
         int employeeId,
         DateTime paymentDate,
+        DateTime offCyclePaymentDate,
         double amount,
         PayrollRunType payrollRunType,
         string offCycleReason,

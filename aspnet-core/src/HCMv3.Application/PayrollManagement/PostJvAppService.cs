@@ -129,15 +129,22 @@ public class PostJvAppService : HCMv3AppServiceBase, IPostJvAppService
         response.Success = response.JournalBatchNumbers.Any();
         response.Message = string.Join(Environment.NewLine, messages);
 
-        // ENTITY GAP -- run-level ProjectLog row is NOT written.
-        // Legacy logs the post-JV outcome as an EMPLOYEE-LESS ProjectLog row (uscCostingFile.ascx.cs
-        // lines 861-868: `pl1.Employee` is never assigned, so it stays null). This port's
-        // HCMv3.ProjectManagement.ProjectLog declares `public virtual int EmployeeId` -- a NON-NULLABLE FK
-        // -- so no such row can be persisted. Making `ProjectLog.EmployeeId` nullable (`int?`) is the
-        // required entity/DbContext/migration change; it is reported rather than made, per this wave's
-        // constraints. Until then the outcome is returned to the caller in
-        // <see cref="PostJvResultDto.Message"/> only, and the ExecutionLog written by the costing-file
-        // screen remains the durable audit record.
+        // Legacy lines 860-869: the post-JV outcome is persisted as an EMPLOYEE-LESS ProjectLog row
+        // (`pl1.Employee` is never assigned, so it stays null; Status is 0 even when nothing was posted,
+        // because legacy only reaches this point without an exception). Wave P8 made
+        // ProjectLog.EmployeeId nullable, so this row is now written instead of only being returned in
+        // PostJvResultDto.Message.
+        await _projectLogRepository.InsertAsync(new ProjectLog
+        {
+            TenantId = AbpSession.GetTenantId(),
+            EmployeeId = null,
+            InPeriod = input.PayInDate,
+            Message = response.Message,
+            Status = 0,
+            RunTimeStamp = Clock.Now,
+            NoOfEmployee = 0
+        });
+
         return response;
     }
 

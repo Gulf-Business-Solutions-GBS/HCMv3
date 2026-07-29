@@ -256,9 +256,8 @@ public class CostingFileAppService : HCMv3AppServiceBase, ICostingFileAppService
     public async Task RequestStop()
     {
         // Legacy stop button (uscCostingFile.ascx.cs lines 2287-2293) sets StopFlag on the FIRST EXISTING
-        // ProjectLog row -- it does NOT insert a marker row. Reproduced exactly, and it is also the only
-        // option here: this port's ProjectLog.EmployeeId is a non-nullable FK, so an employee-less marker
-        // row could not be inserted at all (see the entity gap reported for this wave).
+        // ProjectLog row -- it does NOT insert a marker row. Reproduced exactly (an employee-less marker
+        // row would now be insertable, but inserting one is NOT what legacy does).
         // The engine loop polls for ANY row with StopFlag set (legacy line 469), so flagging one suffices.
         var first = _projectLogRepository.GetAll().OrderBy(l => l.Id).FirstOrDefault();
         if (first == null)
@@ -361,19 +360,13 @@ public class CostingFileAppService : HCMv3AppServiceBase, ICostingFileAppService
 
         foreach (var entry in result.Entries)
         {
-            // ProjectLog.EmployeeId is a NON-NULLABLE FK in this port, whereas legacy wrote employee-less
-            // rows (e.g. uscCostingFile.ascx.cs line 1366 `pl1.Employee = null`). Every cost-engine entry
-            // does carry an employee, so nothing is lost here -- but the guard is explicit rather than
-            // coercing a missing id to 0, which would fail the FK at runtime.
-            if (entry.EmployeeId == null)
-            {
-                continue;
-            }
-
+            // Employee-less entries are now persisted verbatim (legacy uscCostingFile.ascx.cs line 1366
+            // `pl1.Employee = null`): wave P8 made ProjectLog.EmployeeId nullable. Previously they were
+            // silently dropped.
             await _projectLogRepository.InsertAsync(new ProjectLog
             {
                 TenantId = tenantId,
-                EmployeeId = entry.EmployeeId.Value,
+                EmployeeId = entry.EmployeeId,
                 InPeriod = payInDate,
                 Message = entry.Message,
                 Status = entry.Status,

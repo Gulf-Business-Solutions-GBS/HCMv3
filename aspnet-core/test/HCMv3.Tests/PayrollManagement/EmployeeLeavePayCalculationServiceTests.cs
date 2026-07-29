@@ -114,6 +114,31 @@ public class EmployeeLeavePayCalculationServiceTests
         }
     }
 
+    /// <summary>
+    /// Records wage-code-2005 postings. Wave P8: the 2005 path used to throw
+    /// <c>NotImplementedException</c> here; it now delegates to <see cref="IPayrollAdvancePaymentService"/>,
+    /// so the tests assert what is forwarded (including <c>offCyclePaymentDate</c>, the part of legacy's
+    /// upsert key whose absence caused the over-deduction risk).
+    /// </summary>
+    private sealed class RecordingAdvancePaymentService : IPayrollAdvancePaymentService
+    {
+        public List<(int EmployeeId, DateTime PaymentDate, DateTime OffCyclePaymentDate, double Amount)> Postings { get; }
+            = new List<(int, DateTime, DateTime, double)>();
+
+        public Task AdvancePaymentDedAsync(int employeeId, DateTime paymentDate, DateTime offCyclePaymentDate,
+            double amount, PayrollRunType payrollRunType, string offCycleReason, string advancePayComment,
+            PayrollEngineSettings settings)
+        {
+            Postings.Add((employeeId, paymentDate, offCyclePaymentDate, amount));
+            return Task.CompletedTask;
+        }
+
+        public List<DateTime> GetRecoveryPeriods(DateTime payStartDate, DateTime payEndDate)
+            => new List<DateTime>();
+    }
+
+    private readonly RecordingAdvancePaymentService AdvancePaymentService = new RecordingAdvancePaymentService();
+
     private readonly PayrollRegisterStoreFake _store = new PayrollRegisterStoreFake();
 
     private EmployeeLeavePayCalculationService Build(
@@ -137,7 +162,8 @@ public class EmployeeLeavePayCalculationServiceTests
             Substitute.For<IPayrollDayCountService>(),
             Substitute.For<IAccrualService>(),
             Substitute.For<IRosterService>(),
-            SubGroupResolver());
+            SubGroupResolver(),
+            AdvancePaymentService);
     }
 
     /// <summary>

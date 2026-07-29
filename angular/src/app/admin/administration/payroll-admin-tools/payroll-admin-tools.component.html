@@ -1,0 +1,321 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayrollAdminTools' | localize" [description]="'AdministrationToolsDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (errorMessage()) {
+            <div class="alert alert-danger">{{ errorMessage() }}</div>
+        }
+
+        @if (result(); as r) {
+            <div class="alert alert-success">
+                <h5 class="mb-2">{{ resultTitle() }}</h5>
+                <div>{{ 'AdminToolResultSummary' | localize: r.affectedCount : r.skippedCount }}</div>
+                @if (r.messages && r.messages.length > 0) {
+                    <ul class="mt-2 mb-0">
+                        @for (msg of r.messages; track $index) {
+                            <li>{{ msg }}</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+
+        <!-- Generate payroll calendar (legacy uscPayrollConfigPanel line 98) -->
+        @if ('Pages.Administration.Tools.GeneratePayrollCalendar' | permission) {
+            <div class="card card-custom mb-5">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'GeneratePayrollCalendar' | localize }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label required" for="Calendar_PayrollArea">{{ 'PayrollArea' | localize }}</label>
+                            <select
+                                id="Calendar_PayrollArea"
+                                class="form-select"
+                                name="CalendarPayrollAreaId"
+                                [ngModel]="calendarPayrollAreaId()"
+                                (ngModelChange)="calendarPayrollAreaId.set($event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (area of payrollAreas(); track area.id) {
+                                    <option [ngValue]="area.id">{{ area.code }} - {{ area.name }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label required" for="Calendar_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="Calendar_StartDate"
+                                type="date"
+                                class="form-control"
+                                name="CalendarStartDate"
+                                [ngModel]="calendarStartDate()"
+                                (ngModelChange)="calendarStartDate.set($event)" />
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label required" for="Calendar_EndDate">{{ 'EndDate' | localize }}</label>
+                            <input
+                                id="Calendar_EndDate"
+                                type="date"
+                                class="form-control"
+                                name="CalendarEndDate"
+                                [ngModel]="calendarEndDate()"
+                                (ngModelChange)="calendarEndDate.set($event)" />
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'calendar'"
+                        (click)="generateCalendar()">
+                        <i class="fa fa-calendar-plus"></i>
+                        <span>{{ 'GeneratePayrollCalendar' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Delete salary registers (legacy line 1253) -->
+        @if ('Pages.Administration.Tools.DeleteSalaryRegister' | permission) {
+            <div class="card card-custom mb-5 border border-danger">
+                <div class="card-header">
+                    <h3 class="card-title text-danger">
+                        <i class="fa fa-exclamation-triangle text-danger me-2"></i>
+                        {{ 'DeleteSalaryRegisters' | localize }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 mb-5">
+                            <label class="form-label required" for="Delete_Month">{{ 'Month' | localize }}</label>
+                            <input
+                                id="Delete_Month"
+                                type="number"
+                                min="1"
+                                max="12"
+                                class="form-control"
+                                name="DeleteMonth"
+                                [ngModel]="deleteMonth()"
+                                (ngModelChange)="deleteMonth.set($event)" />
+                        </div>
+                        <div class="col-md-2 mb-5">
+                            <label class="form-label required" for="Delete_Year">{{ 'Year' | localize }}</label>
+                            <input
+                                id="Delete_Year"
+                                type="number"
+                                min="1900"
+                                max="2999"
+                                class="form-control"
+                                name="DeleteYear"
+                                [ngModel]="deleteYear()"
+                                (ngModelChange)="deleteYear.set($event)" />
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Delete_PayrollArea">{{ 'PayrollArea' | localize }}</label>
+                            <select
+                                id="Delete_PayrollArea"
+                                class="form-select"
+                                name="DeletePayrollAreaId"
+                                [ngModel]="deletePayrollAreaId()"
+                                (ngModelChange)="deletePayrollAreaId.set($event)">
+                                <option [ngValue]="undefined">{{ 'ScopeAllPayrollAreas' | localize }}</option>
+                                @for (area of payrollAreas(); track area.id) {
+                                    <option [ngValue]="area.id">{{ area.code }} - {{ area.name }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Delete_RunType">{{ 'PayrollRunType' | localize }}</label>
+                            <select
+                                id="Delete_RunType"
+                                class="form-select"
+                                name="DeleteRunType"
+                                [ngModel]="deleteRunType()"
+                                (ngModelChange)="deleteRunType.set($event)">
+                                @for (rt of runTypes; track rt) {
+                                    <option [ngValue]="rt">{{ runTypeName(rt) }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-5">
+                            <label class="form-label" for="Delete_EmployeeCodes">{{ 'EmployeeCodes' | localize }}</label>
+                            <input
+                                id="Delete_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="DeleteEmployeeCodes"
+                                [ngModel]="deleteEmployeeCodes()"
+                                (ngModelChange)="deleteEmployeeCodes.set($event)" />
+                            <span class="form-text">{{ 'EmployeeCodesHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-danger fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'delete'"
+                        (click)="deleteSalaryRegisters()">
+                        <i class="fa fa-trash"></i>
+                        <span>{{ 'DeleteSalaryRegisters' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Unlock salary registers (legacy line 1397) -->
+        @if ('Pages.Administration.Tools.UnlockSalaryRegister' | permission) {
+            <div class="card card-custom mb-5 border border-warning">
+                <div class="card-header">
+                    <h3 class="card-title text-warning">
+                        <i class="fa fa-unlock text-warning me-2"></i>
+                        {{ 'UnlockSalaryRegisters' | localize }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 mb-5">
+                            <label class="form-label required" for="Unlock_Month">{{ 'Month' | localize }}</label>
+                            <input
+                                id="Unlock_Month"
+                                type="number"
+                                min="1"
+                                max="12"
+                                class="form-control"
+                                name="UnlockMonth"
+                                [ngModel]="unlockMonth()"
+                                (ngModelChange)="unlockMonth.set($event)" />
+                        </div>
+                        <div class="col-md-2 mb-5">
+                            <label class="form-label required" for="Unlock_Year">{{ 'Year' | localize }}</label>
+                            <input
+                                id="Unlock_Year"
+                                type="number"
+                                min="1900"
+                                max="2999"
+                                class="form-control"
+                                name="UnlockYear"
+                                [ngModel]="unlockYear()"
+                                (ngModelChange)="unlockYear.set($event)" />
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Unlock_PayrollArea">{{ 'PayrollArea' | localize }}</label>
+                            <select
+                                id="Unlock_PayrollArea"
+                                class="form-select"
+                                name="UnlockPayrollAreaId"
+                                [ngModel]="unlockPayrollAreaId()"
+                                (ngModelChange)="unlockPayrollAreaId.set($event)">
+                                <option [ngValue]="undefined">{{ 'ScopeAllPayrollAreas' | localize }}</option>
+                                @for (area of payrollAreas(); track area.id) {
+                                    <option [ngValue]="area.id">{{ area.code }} - {{ area.name }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Unlock_RunType">{{ 'PayrollRunType' | localize }}</label>
+                            <select
+                                id="Unlock_RunType"
+                                class="form-select"
+                                name="UnlockRunType"
+                                [ngModel]="unlockRunType()"
+                                (ngModelChange)="unlockRunType.set($event)">
+                                @for (rt of runTypes; track rt) {
+                                    <option [ngValue]="rt">{{ runTypeName(rt) }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-5">
+                            <label class="form-label" for="Unlock_EmployeeCodes">{{ 'EmployeeCodes' | localize }}</label>
+                            <input
+                                id="Unlock_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="UnlockEmployeeCodes"
+                                [ngModel]="unlockEmployeeCodes()"
+                                (ngModelChange)="unlockEmployeeCodes.set($event)" />
+                            <span class="form-text">{{ 'EmployeeCodesHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-warning fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'unlock'"
+                        (click)="unlockSalaryRegisters()">
+                        <i class="fa fa-unlock"></i>
+                        <span>{{ 'UnlockSalaryRegisters' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Fix forfeit quota (legacy line 1171) -->
+        @if ('Pages.Administration.Tools.FixForfeitQuota' | permission) {
+            <div class="card card-custom mb-5">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'FixForfeitQuota' | localize }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Forfeit_StartDate">{{ 'StartDate' | localize }}</label>
+                            <input
+                                id="Forfeit_StartDate"
+                                type="date"
+                                class="form-control"
+                                name="ForfeitStartDate"
+                                [ngModel]="forfeitStartDate()"
+                                (ngModelChange)="forfeitStartDate.set($event)" />
+                        </div>
+                        <div class="col-md-8 mb-5">
+                            <label class="form-label" for="Forfeit_EmployeeCodes">{{ 'EmployeeCodes' | localize }}</label>
+                            <input
+                                id="Forfeit_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="ForfeitEmployeeCodes"
+                                [ngModel]="forfeitEmployeeCodes()"
+                                (ngModelChange)="forfeitEmployeeCodes.set($event)" />
+                            <span class="form-text">{{ 'EmployeeCodesHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'forfeit'"
+                        (click)="fixForfeitQuota()">
+                        <i class="fa fa-wrench"></i>
+                        <span>{{ 'FixForfeitQuota' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!--
+            Fix annual leave provision: the backend method exists but deliberately throws
+            NotImplementedException, so the button is rendered permanently disabled and never called.
+        -->
+        @if ('Pages.Administration.Tools.FixPayrollProvisions' | permission) {
+            <div class="card card-custom mb-5">
+                <div class="card-header">
+                    <h3 class="card-title text-muted">{{ 'FixAnnualLeaveProvision' | localize }}</h3>
+                </div>
+                <div class="card-body">
+                    <span [pTooltip]="'FixAnnualLeaveProvisionNotAvailable' | localize" tooltipPosition="top">
+                        <button type="button" class="btn btn-secondary fw-bold" disabled>
+                            <i class="fa fa-ban"></i>
+                            <span>{{ 'FixAnnualLeaveProvision' | localize }}</span>
+                        </button>
+                    </span>
+                    <div class="form-text mt-2">{{ 'FixAnnualLeaveProvisionNotAvailable' | localize }}</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

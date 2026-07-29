@@ -66,6 +66,15 @@ public interface IPayrollEngineService : IDomainService
 ///
 /// <para><b>Category gate applied by the engine, not here:</b> legacy wraps the call in
 /// <c>if (!onHold_AllEarnings)</c> (legacy line 2567).</para>
+///
+/// <para><b>WAVE P8 -- THIS ARM IS NOW REACHABLE.</b> Until wave P8 the overtime category set was always
+/// empty (<c>OvertimeType</c> had no <c>WageType</c> FK), so this Null* default could never fire. The FK
+/// is restored and the legacy line-1932 query is active, so any employee with an <c>EmployeeOvertime</c>
+/// row in the period whose <c>OvertimeType</c> maps to a wage type will now hit the
+/// <c>NotImplementedException</c> below and be recorded as a FAILED employee in the run (isolated, the run
+/// continues). That is the intended loud gap -- it replaces silently under-paying that employee -- but it
+/// is a visible behaviour change for tenants that use overtime wage types. Porting
+/// <c>EmployeeOvertimePayService.Main</c> is the remaining work.</para>
 /// </summary>
 public interface IEmployeeOvertimePayCalculationService : IDomainService
 {

@@ -192,9 +192,10 @@ public class ProjectCostEngineAppService : HCMv3AppServiceBase, IProjectCostEngi
             .Select(r => new { r.EmployeeId })
             .FirstOrDefault();
 
-        if (latest != null)
+        // EmployeeId is nullable since wave P8 (run-level rows carry none) -- skip those, they name no employee.
+        if (latest?.EmployeeId != null)
         {
-            var employee = await _employeeRepository.FirstOrDefaultAsync(latest.EmployeeId);
+            var employee = await _employeeRepository.FirstOrDefaultAsync(latest.EmployeeId.Value);
             if (employee != null)
             {
                 status.CurrentEmployee = employee.Code + " - " + employee.FullNameEn;

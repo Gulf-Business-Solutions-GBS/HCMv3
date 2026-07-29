@@ -27,7 +27,13 @@ public class ProjectLog : FullAuditedEntity, IMustHaveTenant
 
     public virtual DateTime RunTimeStamp { get; set; }
 
-    public virtual int EmployeeId { get; set; }
+    /// <summary>
+    /// NULLABLE, deliberately: legacy writes EMPLOYEE-LESS ProjectLog rows for the whole-run outer-catch
+    /// failure (<c>uscProjectCosting.ascx.cs</c> lines 280-293) and for the post-JV run summary
+    /// (<c>uscCostingFile.ascx.cs</c> lines 861-868, where <c>pl1.Employee</c> is never assigned). This
+    /// matches the sibling <c>PayrollManagement.PayrollLog.EmployeeId</c>, which was already <c>int?</c>.
+    /// </summary>
+    public virtual int? EmployeeId { get; set; }
 
     public virtual Employee Employee { get; set; }
 

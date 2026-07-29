@@ -1940,6 +1940,38 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Tools.CopyWorkflowSetup' },
                     },
                     {
+                        path: 'payroll-admin-tools',
+                        loadComponent: () =>
+                            import(
+                                './admin/administration/payroll-admin-tools/payroll-admin-tools.component'
+                            ).then((m) => m.PayrollAdminToolsComponent),
+                        data: { permission: 'Pages.Administration.Tools' },
+                    },
+                    {
+                        path: 'system-admin-tools',
+                        loadComponent: () =>
+                            import(
+                                './admin/administration/system-admin-tools/system-admin-tools.component'
+                            ).then((m) => m.SystemAdminToolsComponent),
+                        data: { permission: 'Pages.Administration.Tools' },
+                    },
+                    {
+                        path: 'transfer-approvals',
+                        loadComponent: () =>
+                            import('./admin/administration/transfer-approvals/transfer-approvals.component').then(
+                                (m) => m.TransferApprovalsComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Tools.TransferApprovals' },
+                    },
+                    {
+                        path: 'bulk-password-reset',
+                        loadComponent: () =>
+                            import('./admin/administration/bulk-password-reset/bulk-password-reset.component').then(
+                                (m) => m.BulkPasswordResetComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Tools.BulkPasswordReset' },
+                    },
+                    {
                         path: 'pa-forms/:id',
                         loadComponent: () =>
                             import(

@@ -6806,7 +6806,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WageTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WageTypeId");
 
                     b.ToTable("OvertimeTypes");
                 });
@@ -14719,6 +14724,9 @@ namespace HCMv3.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSystemGenerated")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
@@ -21079,11 +21087,17 @@ namespace HCMv3.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSystemGenerated")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("OffCyclePaymentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -22574,7 +22588,7 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("InPeriod")
@@ -32854,6 +32868,16 @@ namespace HCMv3.Migrations
                     b.Navigation("NotificationConfig");
                 });
 
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.OvertimeType", b =>
+                {
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "WageType")
+                        .WithMany()
+                        .HasForeignKey("WageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("WageType");
+                });
+
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.OvertimeTypeDetail", b =>
                 {
                     b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
@@ -36716,8 +36740,7 @@ namespace HCMv3.Migrations
                     b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Employee");
                 });

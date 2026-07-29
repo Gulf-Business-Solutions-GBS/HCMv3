@@ -119,6 +119,30 @@ public partial class ProjectCostEngineService : HCMv3DomainServiceBase, IProject
             throw new ArgumentNullException(nameof(input));
         }
 
+        try
+        {
+            return await RunCoreAsync(input);
+        }
+        catch (Exception ex)
+        {
+            // ==========================================================================================
+            // WHOLE-RUN FAILURE LOG -- legacy lines 278-293. Legacy catches everything the pre-flight
+            // block can throw and records it as an EMPLOYEE-LESS ProjectLog row (`pl.Employee` is never
+            // assigned; NoOfEmployee is left at its default). Wave P8 made ProjectLog.EmployeeId nullable
+            // so this row can finally be written.
+            //
+            // DELIBERATE DEVIATION: legacy SWALLOWED the exception after logging. This port RE-THROWS,
+            // because the ABP background job (ProjectCostEngineBackgroundJob) and the app service are the
+            // caller's only failure channel and several shipped tests assert that pre-flight problems
+            // surface as UserFriendlyException. Logging is additive; the throw contract is unchanged.
+            // ==========================================================================================
+            await AddRunFailureProjectLogAsync(input.PayInDate, ex);
+            throw;
+        }
+    }
+
+    private async Task<ProjectCostEngineRunResult> RunCoreAsync(ProjectCostEngineRunInput input)
+    {
         var payInDate = input.PayInDate;
 
         // Legacy lines 219-220.
@@ -653,7 +677,12 @@ public partial class ProjectCostEngineService : HCMv3DomainServiceBase, IProject
         }
     }
 
-    private async Task AddProjectLogAsync(int employeeId, DateTime inPeriod, string message, int status, int employeeCount)
+    /// <summary>
+    /// <paramref name="employeeId"/> is nullable so legacy's EMPLOYEE-LESS run-level failure row (legacy
+    /// <c>uscProjectCosting.ascx.cs</c> lines 280-293, where <c>pl.Employee</c> is never assigned) can be
+    /// written -- see <see cref="ProjectLog.EmployeeId"/>.
+    /// </summary>
+    private async Task AddProjectLogAsync(int? employeeId, DateTime inPeriod, string message, int status, int employeeCount)
     {
         await _projectLogRepository.InsertAsync(new ProjectLog
         {
@@ -664,6 +693,23 @@ public partial class ProjectCostEngineService : HCMv3DomainServiceBase, IProject
             RunTimeStamp = Clock.Now,
             NoOfEmployee = employeeCount
         });
+    }
+
+    /// <summary>
+    /// Legacy lines 280-292: the run-level failure row. No Employee, no NoOfEmployee, Status 1.
+    /// Legacy does NOT truncate this one (unlike the per-employee row at lines 607-608) -- preserved.
+    /// Its own failure must never mask the original exception, so it is swallowed.
+    /// </summary>
+    private async Task AddRunFailureProjectLogAsync(DateTime payInDate, Exception ex)
+    {
+        try
+        {
+            await AddProjectLogAsync(null, payInDate, ex.Message, 1, 0);
+        }
+        catch (Exception)
+        {
+            // Never let the log write replace the real error.
+        }
     }
 
     /// <summary>Legacy truncates the logged message to 1000 characters (lines 607-608). Preserved.</summary>

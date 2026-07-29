@@ -36,6 +36,7 @@ public class OvertimeTypesAppService : HCMv3AppServiceBase, IOvertimeTypesAppSer
         input.Normalize();
 
         var query = _repository.GetAll()
+            .Include(t => t.WageType)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), t =>
                 t.Code.Contains(input.Filter) ||
                 t.NameEn.Contains(input.Filter) ||
@@ -84,6 +85,7 @@ public class OvertimeTypesAppService : HCMv3AppServiceBase, IOvertimeTypesAppSer
             NameEn = input.NameEn,
             NameAr = input.NameAr,
             OvertimeRate = input.OvertimeRate,
+            WageTypeId = input.WageTypeId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -102,6 +104,7 @@ public class OvertimeTypesAppService : HCMv3AppServiceBase, IOvertimeTypesAppSer
         entity.NameEn = input.NameEn;
         entity.NameAr = input.NameAr;
         entity.OvertimeRate = input.OvertimeRate;
+        entity.WageTypeId = input.WageTypeId;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateUniquenessAsync(entity);
@@ -161,7 +164,10 @@ public class OvertimeTypesAppService : HCMv3AppServiceBase, IOvertimeTypesAppSer
             Code = entity.Code,
             NameEn = entity.NameEn,
             NameAr = entity.NameAr,
-            OvertimeRate = entity.OvertimeRate
+            OvertimeRate = entity.OvertimeRate,
+            WageTypeId = entity.WageTypeId,
+            WageTypeCode = entity.WageType != null ? entity.WageType.Code : null,
+            WageTypeNameEn = entity.WageType != null ? entity.WageType.NameEn : null
         };
     }
 
@@ -173,7 +179,8 @@ public class OvertimeTypesAppService : HCMv3AppServiceBase, IOvertimeTypesAppSer
             Code = entity.Code,
             NameEn = entity.NameEn,
             NameAr = entity.NameAr,
-            OvertimeRate = entity.OvertimeRate
+            OvertimeRate = entity.OvertimeRate,
+            WageTypeId = entity.WageTypeId
         };
     }
 }

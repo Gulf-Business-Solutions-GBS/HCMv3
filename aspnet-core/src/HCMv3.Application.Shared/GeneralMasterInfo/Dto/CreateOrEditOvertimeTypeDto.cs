@@ -24,4 +24,10 @@ public class CreateOrEditOvertimeTypeDto
     public string NameAr { get; set; }
 
     public double OvertimeRate { get; set; }
+
+    /// <summary>
+    /// Legacy <c>OvertimeType.WageType</c> FK (restored wave P8). Optional -- legacy's own queries all
+    /// guard with <c>Where(r =&gt; r.WageType != null)</c>.
+    /// </summary>
+    public int? WageTypeId { get; set; }
 }

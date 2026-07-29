@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Dependency;
+using Abp.Domain.Repositories;
 using Abp.Domain.Services;
+using HCMv3.GeneralMasterInfo;
 
 namespace HCMv3.ProjectManagement.Services;
 
 /// <summary>
-/// ============================ REPORTED GAP -- READ THIS ============================
 /// Legacy <c>uscProjectCosting.RunProjectCalculation</c> (lines 727-729 and 809-818) needs the mapping
 /// <c>OvertimeType -&gt; WageType</c> twice:
 /// <list type="number">
@@ -17,28 +19,18 @@ namespace HCMv3.ProjectManagement.Services;
 /// type.</description></item>
 /// </list>
 ///
-/// <para>This port's <see cref="HCMv3.GeneralMasterInfo.OvertimeType"/> <b>deliberately did not port the
-/// legacy <c>WageType</c> FK</b> ("the legacy <c>WageType</c> FK is not ported (Payroll module out of
-/// scope)" -- see that entity's XML doc). Without it the mapping cannot be reconstructed from any other
-/// ported field.</para>
-///
-/// <para><b>Consequence, stated plainly:</b> with the default <see cref="NullProjectCostOvertimeWageTypeResolver"/>
-/// the overtime set is EMPTY, so a project wage type that legacy would have costed by overtime hours falls
-/// through to legacy's Earning/Deduction working-day pro-ration branch instead. For a tenant that maps wage
-/// types to overtime types, the costed amount WILL differ from legacy. The engine is left runnable rather
-/// than made to throw for every employee, because throwing would make the whole screen unusable for the
-/// (majority) tenants with no overtime wage types; <see cref="ProjectCostEngineService"/> logs a warning
-/// naming this file once per run.</para>
-///
-/// <para><b>To close the gap:</b> add the <c>WageTypeId</c> FK back to
-/// <see cref="HCMv3.GeneralMasterInfo.OvertimeType"/> (entity + DbSet + migration) and register an
-/// implementation of this interface. ABP will inject it into <see cref="ProjectCostEngineService"/>
-/// automatically and the legacy branch becomes live with no other change.</para>
-/// ==================================================================================
+/// <para><b>GAP CLOSED (wave P8).</b> <see cref="HCMv3.GeneralMasterInfo.OvertimeType"/> now carries the
+/// legacy <c>WageTypeId</c> FK again, and <see cref="ProjectCostOvertimeWageTypeResolver"/> implements this
+/// interface against it. The costing branch at legacy lines 809-818 is live. The interface is retained
+/// (rather than inlining the queries) so <see cref="ProjectCostEngineService"/> stays testable without a
+/// GeneralMasterInfo repository.</para>
 /// </summary>
 public interface IProjectCostOvertimeWageTypeResolver : IDomainService
 {
-    /// <summary><c>false</c> for the null implementation; used only to emit the once-per-run warning.</summary>
+    /// <summary>
+    /// <c>true</c> for the real implementation. Kept because <see cref="ProjectCostEngineService"/> still
+    /// warns once per run if some future test double returns <c>false</c>.
+    /// </summary>
     bool IsAvailable { get; }
 
     /// <summary>Legacy line 727-729: ids of every WageType referenced by an OvertimeType.</summary>
@@ -60,20 +52,54 @@ public class ProjectCostOvertimeTypeInfo
 }
 
 /// <summary>
-/// Default no-op resolver. See <see cref="IProjectCostOvertimeWageTypeResolver"/> for why this returns an
-/// empty set rather than throwing.
+/// The real resolver (wave P8), reading <c>OvertimeType.WageTypeId</c>.
+///
+/// <para><c>HCMv3.Core</c> has no EF Core reference, so both queries are plain synchronous LINQ over
+/// <c>IRepository&lt;T&gt;.GetAll()</c>; the async signatures are kept for interface consistency, exactly
+/// like <c>AccrualService</c> and <c>PayrollRegisterStore</c>.</para>
 /// </summary>
-public class NullProjectCostOvertimeWageTypeResolver : IProjectCostOvertimeWageTypeResolver, ISingletonDependency
+public class ProjectCostOvertimeWageTypeResolver : IProjectCostOvertimeWageTypeResolver, ITransientDependency
 {
-    public bool IsAvailable => false;
+    private readonly IRepository<OvertimeType> _overtimeTypeRepository;
 
-    public Task<List<int>> GetOvertimeWageTypeIdsAsync()
+    public ProjectCostOvertimeWageTypeResolver(IRepository<OvertimeType> overtimeTypeRepository)
     {
-        return Task.FromResult(new List<int>());
+        _overtimeTypeRepository = overtimeTypeRepository;
     }
 
+    public bool IsAvailable => true;
+
+    /// <summary>
+    /// Legacy lines 727-729:
+    /// <c>GetObjectsQuery&lt;OvertimeType&gt;().Where(r =&gt; r.WageType != null).Select(r =&gt; r.WageType.Oid)</c>.
+    /// </summary>
+    public Task<List<int>> GetOvertimeWageTypeIdsAsync()
+    {
+        var ids = _overtimeTypeRepository.GetAll()
+            .Where(r => r.WageTypeId != null)
+            .Select(r => r.WageTypeId.Value)
+            .ToList();
+
+        return Task.FromResult(ids);
+    }
+
+    /// <summary>
+    /// Legacy line 812:
+    /// <c>GetObjectsQuery&lt;OvertimeType&gt;().Where(r =&gt; r.WageType == projWageType.WageType)
+    /// .Select(r =&gt; new { r.Oid, r.OvertimeRate }).FirstOrDefault()</c>. Legacy takes the FIRST match when
+    /// several OvertimeTypes share a wage type -- preserved, NOT "improved" into a sum or an error.
+    /// </summary>
     public Task<ProjectCostOvertimeTypeInfo> GetOvertimeTypeForWageTypeAsync(int wageTypeId)
     {
-        return Task.FromResult<ProjectCostOvertimeTypeInfo>(null);
+        var info = _overtimeTypeRepository.GetAll()
+            .Where(r => r.WageTypeId == wageTypeId)
+            .Select(r => new ProjectCostOvertimeTypeInfo
+            {
+                OvertimeTypeId = r.Id,
+                OvertimeRate = r.OvertimeRate
+            })
+            .FirstOrDefault();
+
+        return Task.FromResult(info);
     }
 }

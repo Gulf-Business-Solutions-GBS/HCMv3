@@ -620,6 +620,30 @@ export class AppNavigationService {
                         '/app/admin/copy-workflow-setup'
                     ),
                     new AppMenuItem(
+                        'PayrollAdminTools',
+                        'Pages.Administration.Tools',
+                        'flaticon-refresh',
+                        '/app/admin/payroll-admin-tools'
+                    ),
+                    new AppMenuItem(
+                        'SystemAdminTools',
+                        'Pages.Administration.Tools',
+                        'flaticon-settings',
+                        '/app/admin/system-admin-tools'
+                    ),
+                    new AppMenuItem(
+                        'TransferApprovals',
+                        'Pages.Administration.Tools.TransferApprovals',
+                        'flaticon-share',
+                        '/app/admin/transfer-approvals'
+                    ),
+                    new AppMenuItem(
+                        'BulkPasswordReset',
+                        'Pages.Administration.Tools.BulkPasswordReset',
+                        'flaticon-lock',
+                        '/app/admin/bulk-password-reset'
+                    ),
+                    new AppMenuItem(
                         'Maintenance',
                         'Pages.Administration.Host.Maintenance',
                         'flaticon-lock',

@@ -12,7 +12,8 @@ public class ProjectLogDto : EntityDto<int>
 
     public DateTime RunTimeStamp { get; set; }
 
-    public int EmployeeId { get; set; }
+    /// <summary>Null for run-level rows (whole-run failure / post-JV run summary).</summary>
+    public int? EmployeeId { get; set; }
 
     public string EmployeeName { get; set; }
 

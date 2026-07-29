@@ -18,8 +18,11 @@ namespace HCMv3.PersonnelAdministration;
 ///
 /// DELIBERATE SIMPLIFICATION: the legacy <c>ExpectedAmount</c>/<c>GetExpectedAmount</c> computed-amount
 /// logic depends on <c>EmployeeBasicPayDetail</c>/payroll-settings wage-rate calculation -- NOT ported on
-/// the entity itself. The legacy <c>DocAttachment</c> FK and the internal-only <c>OffCyclePaymentDate</c>
-/// field (hidden from every legacy view) are dropped.
+/// the entity itself. The legacy <c>DocAttachment</c> FK is dropped.
+///
+/// WAVE P8: <see cref="OffCyclePaymentDate"/> and <see cref="IsSystemGenerated"/> were originally dropped as
+/// "internal-only"; they are NOT -- they carry the payroll engine's advance-payment (wage code 2005) upsert
+/// key and its engine-written marker. Both restored.
 /// </summary>
 public class EmployeePayment : FullAuditedEntity, IMustHaveTenant
 {
@@ -50,4 +53,21 @@ public class EmployeePayment : FullAuditedEntity, IMustHaveTenant
     public virtual int? CostCenterId { get; set; }
 
     public virtual CostCenter CostCenter { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeePayment.OffCyclePaymentDate</c>. RESTORED (wave P8): it is part of legacy's
+    /// advance-payment upsert key <c>(Employee, PaymentDate, OffCyclePaymentDate, WageType)</c> in
+    /// <c>Program.AdvancePaymentDed</c> (legacy <c>Program.cs</c> line 2940). Matching without it merges
+    /// recovery rows belonging to different off-cycle runs and over-deducts. Nullable here (legacy used
+    /// <c>default(DateTime)</c> for "regular run"); <see cref="PayrollManagement.Services.IPayrollAdvancePaymentService"/>
+    /// normalises <c>default(DateTime)</c> to <c>null</c> so both regular and off-cycle runs key consistently.
+    /// </summary>
+    public virtual DateTime? OffCyclePaymentDate { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeePayment.IsSystemGenerated</c> (set to <c>true</c> at legacy line 2983). BUSINESS
+    /// data -- "written by the payroll engine" vs "keyed in by a user" -- not audit metadata that
+    /// <c>FullAuditedEntity</c> already covers.
+    /// </summary>
+    public virtual bool IsSystemGenerated { get; set; }
 }

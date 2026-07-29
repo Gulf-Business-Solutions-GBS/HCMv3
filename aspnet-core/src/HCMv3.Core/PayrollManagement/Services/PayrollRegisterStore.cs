@@ -112,10 +112,15 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
         existing.Number = line.Number;
         existing.Amount = line.Amount;
 
+        // Legacy stamps every engine-written register line (e.g. Program.SetRoundoff:
+        // `rec.IsSystemGenerated = true; rec.Save();`). This store is only ever reached from the engine.
+        existing.IsSystemGenerated = true;
+
         var saved = await _salaryRegisterDetailRepository.InsertOrUpdateAndGetIdAsync(existing);
 
         line.Id = saved;
         line.WageTypeId = wageTypeId;
+        line.IsSystemGenerated = true;
         return line;
     }
 
@@ -198,7 +203,8 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
                    WageCode = wageType.Code,
                    Rate = detail.Rate,
                    Number = detail.Number,
-                   Amount = detail.Amount
+                   Amount = detail.Amount,
+                   IsSystemGenerated = detail.IsSystemGenerated
                };
     }
 

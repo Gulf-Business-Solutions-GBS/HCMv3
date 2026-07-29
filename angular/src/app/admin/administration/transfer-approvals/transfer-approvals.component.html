@@ -1,0 +1,93 @@
+<div [@routerTransition]>
+    <sub-header [title]="'TransferApprovals' | localize" [description]="'AdministrationToolsDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (errorMessage()) {
+            <div class="alert alert-danger">{{ errorMessage() }}</div>
+        }
+
+        @if (result(); as r) {
+            <div class="alert alert-success">
+                <h5 class="mb-2">{{ 'TransferApprovals' | localize }}</h5>
+                <div>{{ 'AdminToolResultSummary' | localize: r.affectedCount : r.skippedCount }}</div>
+                @if (r.messages && r.messages.length > 0) {
+                    <ul class="mt-2 mb-0">
+                        @for (msg of r.messages; track $index) {
+                            <li>{{ msg }}</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+
+        <div class="card card-custom border border-warning">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="Transfer_From">{{ 'TransferFromManager' | localize }}</label>
+                        <select
+                            id="Transfer_From"
+                            class="form-select"
+                            name="FromApproverEmployeeId"
+                            [ngModel]="fromApproverEmployeeId()"
+                            (ngModelChange)="fromApproverEmployeeId.set($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (emp of employees(); track emp.id) {
+                                <option [ngValue]="emp.id">{{ emp.code }} - {{ emp.fullNameEn }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label required" for="Transfer_To">{{ 'TransferToManager' | localize }}</label>
+                        <select
+                            id="Transfer_To"
+                            class="form-select"
+                            name="ToApproverEmployeeId"
+                            [ngModel]="toApproverEmployeeId()"
+                            (ngModelChange)="toApproverEmployeeId.set($event)">
+                            <option [ngValue]="undefined"></option>
+                            @for (emp of employees(); track emp.id) {
+                                <option [ngValue]="emp.id">{{ emp.code }} - {{ emp.fullNameEn }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-5">
+                        <label class="form-label" for="Transfer_Requester">{{ 'RequestingEmployee' | localize }}</label>
+                        <select
+                            id="Transfer_Requester"
+                            class="form-select"
+                            name="RequestingEmployeeId"
+                            [ngModel]="requestingEmployeeId()"
+                            (ngModelChange)="requestingEmployeeId.set($event)">
+                            <option [ngValue]="undefined">{{ 'AllEmployees' | localize }}</option>
+                            @for (emp of employees(); track emp.id) {
+                                <option [ngValue]="emp.id">{{ emp.code }} - {{ emp.fullNameEn }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    @if ('Pages.Administration.Tools.TransferApprovals' | permission) {
+                        <button
+                            type="button"
+                            class="btn btn-warning fw-bold"
+                            [disabled]="saving()"
+                            [busyIf]="saving()"
+                            (click)="transfer()">
+                            <i class="fa fa-exchange-alt"></i>
+                            <span>{{ 'TransferApprovals' | localize }}</span>
+                        </button>
+                    }
+
+                    <button type="button" class="btn btn-secondary fw-bold" (click)="clear()">
+                        <i class="fa fa-eraser"></i>
+                        <span>{{ 'Clear' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+<div [@routerTransition]>
+    <sub-header [title]="'SystemAdminTools' | localize" [description]="'AdministrationToolsDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (errorMessage()) {
+            <div class="alert alert-danger">{{ errorMessage() }}</div>
+        }
+
+        @if (result(); as r) {
+            <div class="alert alert-success">
+                <h5 class="mb-2">{{ resultTitle() }}</h5>
+                <div>{{ 'AdminToolResultSummary' | localize: r.affectedCount : r.skippedCount }}</div>
+                @if (r.messages && r.messages.length > 0) {
+                    <ul class="mt-2 mb-0">
+                        @for (msg of r.messages; track $index) {
+                            <li>{{ msg }}</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+
+        <!-- Recalculate probation end dates (legacy uscSystemConfigPanel line 795) -->
+        @if ('Pages.Administration.Tools.RecalculateProbation' | permission) {
+            <div class="card card-custom mb-5 border border-danger">
+                <div class="card-header">
+                    <h3 class="card-title text-danger">
+                        <i class="fa fa-exclamation-triangle text-danger me-2"></i>
+                        {{ 'RecalculateProbationEndDates' | localize }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p>{{ 'ConfirmRecalculateProbationEndDates' | localize }}</p>
+                    <p class="form-text">{{ 'ProbationRecalculationSupportsCalendarDaysOnly' | localize }}</p>
+                    <button
+                        type="button"
+                        class="btn btn-danger fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'probation'"
+                        (click)="recalculateProbationEndDates()">
+                        <i class="fa fa-calculator"></i>
+                        <span>{{ 'RecalculateProbationEndDates' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Fetch missing time attendance data (legacy line 844) -->
+        @if ('Pages.Administration.Tools.TimeAttendanceResync' | permission) {
+            <div class="card card-custom mb-5">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'FetchMissingTimeAttendanceData' | localize }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Fetch_FromDate">{{ 'FromDate' | localize }}</label>
+                            <input
+                                id="Fetch_FromDate"
+                                type="date"
+                                class="form-control"
+                                name="FetchFromDate"
+                                [ngModel]="fetchFromDate()"
+                                (ngModelChange)="fetchFromDate.set($event)" />
+                        </div>
+                        <div class="col-md-8 mb-5">
+                            <label class="form-label" for="Fetch_EmployeeCodes">{{ 'EmployeeCodes' | localize }}</label>
+                            <input
+                                id="Fetch_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="FetchEmployeeCodes"
+                                [ngModel]="fetchEmployeeCodes()"
+                                (ngModelChange)="fetchEmployeeCodes.set($event)" />
+                            <span class="form-text">{{ 'EmployeeCodesHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-5">
+                            <label class="form-label required" for="Fetch_ConnectionString">
+                                {{ 'AccessControlConnectionString' | localize }}
+                            </label>
+                            <input
+                                id="Fetch_ConnectionString"
+                                type="text"
+                                class="form-control"
+                                name="FetchConnectionString"
+                                autocomplete="off"
+                                [ngModel]="fetchConnectionString()"
+                                (ngModelChange)="fetchConnectionString.set($event)" />
+                            <span class="form-text">{{ 'AccessControlConnectionStringHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'fetch'"
+                        (click)="fetchMissingData()">
+                        <i class="fa fa-download"></i>
+                        <span>{{ 'FetchMissingTimeAttendanceData' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Sync missing time attendance API data (legacy line 899) -->
+        @if ('Pages.Administration.Tools.TimeAttendanceResync' | permission) {
+            <div class="card card-custom mb-5">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'SyncMissingTimeAttendanceApiData' | localize }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label" for="Sync_FromDate">{{ 'FromDate' | localize }}</label>
+                            <input
+                                id="Sync_FromDate"
+                                type="date"
+                                class="form-control"
+                                name="SyncFromDate"
+                                [ngModel]="syncFromDate()"
+                                (ngModelChange)="syncFromDate.set($event)" />
+                        </div>
+                        <div class="col-md-8 mb-5">
+                            <label class="form-label" for="Sync_EmployeeCodes">{{ 'EmployeeCodes' | localize }}</label>
+                            <input
+                                id="Sync_EmployeeCodes"
+                                type="text"
+                                class="form-control"
+                                name="SyncEmployeeCodes"
+                                [ngModel]="syncEmployeeCodes()"
+                                (ngModelChange)="syncEmployeeCodes.set($event)" />
+                            <span class="form-text">{{ 'EmployeeCodesHint' | localize }}</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [disabled]="running() !== ''"
+                        [busyIf]="running() === 'sync'"
+                        (click)="syncMissingApiData()">
+                        <i class="fa fa-sync"></i>
+                        <span>{{ 'SyncMissingTimeAttendanceApiData' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -40,6 +40,7 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     public async Task AdvancePaymentDedAsync(
         int employeeId,
         DateTime paymentDate,
+        DateTime offCyclePaymentDate,
         double amount,
         PayrollRunType payrollRunType,
         string offCycleReason,
@@ -60,12 +61,18 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
 
         var decimals = settings?.DecimalInSalaryRegister ?? 6;
 
-        // See IPayrollAdvancePaymentService remarks: legacy also matches OffCyclePaymentDate, a column this
-        // port's EmployeePayment deliberately dropped.
+        // Legacy's sentinel for "regular run" is default(DateTime); stored as NULL here.
+        DateTime? offCycleKey = offCyclePaymentDate == default(DateTime)
+            ? (DateTime?)null
+            : offCyclePaymentDate;
+
+        // Legacy lines 2948-2953 -- the FULL four-part upsert key. OffCyclePaymentDate is part of it:
+        // dropping it merges recovery rows across different off-cycle runs and over-deducts.
         var existing = (from payment in _employeePaymentRepository.GetAll()
                         join wageType in _wageTypeRepository.GetAll() on payment.WageTypeId equals wageType.Id
                         where payment.EmployeeId == employeeId
                               && payment.PaymentDate == paymentDate
+                              && payment.OffCyclePaymentDate == offCycleKey
                               && wageType.Code == PayrollEngineWageCodes.AdvancePaymentDeduction
                         select payment).FirstOrDefault();
 
@@ -104,6 +111,7 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
                 TenantId = tenantId,
                 EmployeeId = employeeId,
                 PaymentDate = paymentDate,
+                OffCyclePaymentDate = offCycleKey,
                 WageTypeId = wageType2005.Id,
                 CurrencyId = currency.Id,
                 UnitType = UnitType.Amount,
@@ -114,6 +122,9 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
 
         // Legacy line 2982.
         existing.Amount = Math.Round(existing.Amount + amount, decimals);
+
+        // Legacy line 2983.
+        existing.IsSystemGenerated = true;
 
         await _employeePaymentRepository.InsertOrUpdateAsync(existing);
     }

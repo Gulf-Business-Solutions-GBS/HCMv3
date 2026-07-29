@@ -111,13 +111,17 @@ public class StatutoryWageTypeCalculators_Tests
     {
         public List<(DateTime PaymentDate, double Amount)> Postings { get; } = new List<(DateTime, double)>();
 
-        public Task AdvancePaymentDedAsync(int employeeId, DateTime paymentDate, double amount,
-            PayrollRunType payrollRunType, string offCycleReason, string advancePayComment,
+        /// <summary>Wave P8 added <c>offCyclePaymentDate</c> to the upsert key; recorded so it can be asserted.</summary>
+        public List<DateTime> OffCyclePaymentDates { get; } = new List<DateTime>();
+
+        public Task AdvancePaymentDedAsync(int employeeId, DateTime paymentDate, DateTime offCyclePaymentDate,
+            double amount, PayrollRunType payrollRunType, string offCycleReason, string advancePayComment,
             PayrollEngineSettings settings)
         {
             if (amount != 0)
             {
                 Postings.Add((paymentDate, amount));
+                OffCyclePaymentDates.Add(offCyclePaymentDate);
             }
 
             return Task.CompletedTask;
@@ -828,10 +832,128 @@ public class StatutoryWageTypeCalculators_Tests
         var service = new PayrollAdvancePaymentService(
             repo, Repo<WageType>(), Repo<Employee>(), Substitute.For<ICurrencyService>());
 
-        await service.AdvancePaymentDedAsync(EmployeeId, new DateTime(2025, 3, 1), 100,
+        await service.AdvancePaymentDedAsync(EmployeeId, new DateTime(2025, 3, 1), new DateTime(2025, 3, 20), 100,
             PayrollRunType.OffCycle, PayrollOffCycleReasons.EndOfService, string.Empty, new PayrollEngineSettings());
 
         await repo.DidNotReceiveWithAnyArgs().InsertOrUpdateAsync(null);
+    }
+
+    /// <summary>
+    /// A repository fake that actually PERSISTS: <c>GetAll()</c> projects the LIVE list and
+    /// <c>InsertOrUpdateAsync</c> appends new rows to it. The shared <c>PayrollEngineFakes.Repo</c> copies the
+    /// list and no-ops writes, which cannot express "did the upsert create a second row or merge into the
+    /// first?" -- the exact question these tests exist to answer.
+    /// </summary>
+    private static Abp.Domain.Repositories.IRepository<EmployeePayment> LivePaymentRepo(List<EmployeePayment> payments)
+    {
+        var repository = Substitute.For<Abp.Domain.Repositories.IRepository<EmployeePayment>>();
+
+        repository.GetAll().Returns(_ => payments.AsQueryable());
+        repository.GetAllIncluding(Arg.Any<System.Linq.Expressions.Expression<Func<EmployeePayment, object>>[]>())
+            .Returns(_ => payments.AsQueryable());
+
+        repository.InsertOrUpdateAsync(Arg.Any<EmployeePayment>()).Returns(callInfo =>
+        {
+            var entity = callInfo.Arg<EmployeePayment>();
+            if (!payments.Contains(entity))
+            {
+                entity.Id = payments.Count + 1;
+                payments.Add(entity);
+            }
+
+            return Task.FromResult(entity);
+        });
+
+        return repository;
+    }
+
+    /// <summary>
+    /// Builds a <see cref="PayrollAdvancePaymentService"/> over the given wage-code-2005 payment rows.
+    /// </summary>
+    private static PayrollAdvancePaymentService BuildAdvanceService(List<EmployeePayment> payments)
+    {
+        var currencyService = Substitute.For<ICurrencyService>();
+        currencyService.GetEmployeeCurrencyAsync(Arg.Any<int>())
+            .Returns(Task.FromResult(new Currency { Id = 1, TenantId = 1, Code = "KWD", NameEn = "KWD", NameAr = "KWD" }));
+
+        return new PayrollAdvancePaymentService(
+            LivePaymentRepo(payments),
+            Repo(new WageType
+            {
+                Id = 2005, TenantId = 1, Code = PayrollEngineWageCodes.AdvancePaymentDeduction,
+                NameEn = "Advance Payment Ded", Status = true
+            }),
+            Repo(new Employee { Id = EmployeeId, TenantId = 1, Code = "E1" }),
+            currencyService);
+    }
+
+    /// <summary>
+    /// WAVE P8 -- THE REASON <c>EmployeePayment.OffCyclePaymentDate</c> WAS RESTORED.
+    ///
+    /// <para>Legacy's upsert key is <c>(Employee, PaymentDate, OffCyclePaymentDate, WageType)</c> (legacy
+    /// <c>Program.cs</c> lines 2948-2953). Two off-cycle runs with DIFFERENT payment dates that both recover
+    /// against the same <c>paymentDate</c> month must produce TWO rows. Matching without
+    /// <c>OffCyclePaymentDate</c> merged them into one and over-deducted -- real money.</para>
+    /// </summary>
+    [Fact]
+    public async Task AdvancePaymentDed_Should_Keep_Separate_Rows_Per_OffCyclePaymentDate()
+    {
+        var payments = new List<EmployeePayment>();
+        var service = BuildAdvanceService(payments);
+        var paymentDate = new DateTime(2025, 3, 1);
+        var settings = new PayrollEngineSettings { DecimalInSalaryRegister = 3 };
+
+        await service.AdvancePaymentDedAsync(EmployeeId, paymentDate, new DateTime(2025, 3, 10), 100,
+            PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave, "c", settings);
+        await service.AdvancePaymentDedAsync(EmployeeId, paymentDate, new DateTime(2025, 3, 20), 100,
+            PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave, "c", settings);
+
+        payments.Count.ShouldBe(2);
+        payments.Select(p => p.OffCyclePaymentDate).ShouldBe(
+            new DateTime?[] { new DateTime(2025, 3, 10), new DateTime(2025, 3, 20) });
+        payments.ShouldAllBe(p => p.Amount == 100);
+    }
+
+    /// <summary>
+    /// The same off-cycle payment date DOES accumulate onto the existing row, rounded exactly as legacy
+    /// (<c>Math.Round(existing + amount, decimalInSalaryRegister)</c>, legacy line 2982). 100.0005 + 0.0005
+    /// at 3 digits is 100.001 (banker's rounding applies to the SUM, not the operands).
+    /// </summary>
+    [Fact]
+    public async Task AdvancePaymentDed_Should_Accumulate_On_The_Same_Key_With_Legacy_Rounding()
+    {
+        var payments = new List<EmployeePayment>();
+        var service = BuildAdvanceService(payments);
+        var paymentDate = new DateTime(2025, 3, 1);
+        var offCycleDate = new DateTime(2025, 3, 10);
+        var settings = new PayrollEngineSettings { DecimalInSalaryRegister = 3 };
+
+        await service.AdvancePaymentDedAsync(EmployeeId, paymentDate, offCycleDate, 100.0004,
+            PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave, "c", settings);
+        await service.AdvancePaymentDedAsync(EmployeeId, paymentDate, offCycleDate, 0.0003,
+            PayrollRunType.OffCycle, PayrollOffCycleReasons.AdvanceLeave, "c", settings);
+
+        payments.Count.ShouldBe(1);
+        payments[0].Amount.ShouldBe(Math.Round(Math.Round(100.0004, 3) + 0.0003, 3));
+        payments[0].IsSystemGenerated.ShouldBeTrue();
+    }
+
+    /// <summary>
+    /// A REGULAR run has no off-cycle payment date; legacy's sentinel is <c>default(DateTime)</c>, stored
+    /// as NULL here so the key stays consistent across both run types.
+    /// </summary>
+    [Fact]
+    public async Task AdvancePaymentDed_Should_Store_Null_OffCyclePaymentDate_On_A_Regular_Run()
+    {
+        var payments = new List<EmployeePayment>();
+        var service = BuildAdvanceService(payments);
+
+        await service.AdvancePaymentDedAsync(EmployeeId, new DateTime(2025, 3, 1), default(DateTime), 50,
+            PayrollRunType.Regular, null, "c", new PayrollEngineSettings { DecimalInSalaryRegister = 3 });
+
+        payments.Count.ShouldBe(1);
+        payments[0].OffCyclePaymentDate.ShouldBeNull();
+        payments[0].IsSystemGenerated.ShouldBeTrue();
     }
 
     /// <summary>

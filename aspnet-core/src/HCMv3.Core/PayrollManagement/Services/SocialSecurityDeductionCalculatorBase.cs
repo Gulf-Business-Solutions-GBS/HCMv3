@@ -160,7 +160,7 @@ public abstract class SocialSecurityDeductionCalculatorBase : HCMv3DomainService
                     : (-1) * innerSocialSecurityDed;
 
                 await _advancePaymentService.AdvancePaymentDedAsync(
-                    context.EmployeeId, rec, advAmount, context.PayrollRunType,
+                    context.EmployeeId, rec, context.OffCyclePaymentDate, advAmount, context.PayrollRunType,
                     context.OffCycleReason, context.AdvancePayComment, context.Settings);
             }
 

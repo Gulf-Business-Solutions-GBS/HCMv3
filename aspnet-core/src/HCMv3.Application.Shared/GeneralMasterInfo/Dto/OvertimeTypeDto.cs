@@ -14,4 +14,14 @@ public class OvertimeTypeDto : EntityDto<int>
     public string NameAr { get; set; }
 
     public double OvertimeRate { get; set; }
+
+    /// <summary>
+    /// Legacy <c>OvertimeType.WageType</c> FK (restored wave P8). Both the Project Cost Engine and the
+    /// Payroll Engine identify overtime wage types through it, so it must be settable from this master.
+    /// </summary>
+    public int? WageTypeId { get; set; }
+
+    public string WageTypeCode { get; set; }
+
+    public string WageTypeNameEn { get; set; }
 }

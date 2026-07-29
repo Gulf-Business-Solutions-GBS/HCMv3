@@ -66,6 +66,7 @@ public class SocialSecurityAllowanceWageTypeCalculator : HCMv3DomainServiceBase,
             await _advancePaymentService.AdvancePaymentDedAsync(
                 context.EmployeeId,
                 PayrollRunGates.MonthStart(context.PayDate),
+                context.OffCyclePaymentDate,
                 amount,
                 context.PayrollRunType,
                 context.OffCycleReason,

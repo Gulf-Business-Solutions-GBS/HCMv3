@@ -1622,6 +1622,22 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
         });
 
+        // ---------------------------------------------------------------------------------------------
+        // Wave P8 entity-gap closures. Every FK below points into a hub table (Employee / WageType) that
+        // already has convergent cascade paths, so all of them are Restrict.
+        // ---------------------------------------------------------------------------------------------
+
+        modelBuilder.Entity<ProjectLog>(b =>
+        {
+            // EmployeeId became int? so legacy's employee-less run-level rows can be persisted.
+            b.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<OvertimeType>(b =>
+        {
+            b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.ConfigureOpenIddict();
     }
 }

@@ -83,8 +83,9 @@ public class AverageCommissionWageTypeCalculator : HCMv3DomainServiceBase, IWage
         if (PayrollRunGates.ShouldPostAdvancePaymentDed(context))
         {
             await _advancePaymentService.AdvancePaymentDedAsync(
-                context.EmployeeId, PayrollRunGates.MonthStart(context.PayDate), (-1) * amount,
-                context.PayrollRunType, context.OffCycleReason, context.AdvancePayComment, context.Settings);
+                context.EmployeeId, PayrollRunGates.MonthStart(context.PayDate), context.OffCyclePaymentDate,
+                (-1) * amount, context.PayrollRunType, context.OffCycleReason, context.AdvancePayComment,
+                context.Settings);
         }
     }
 

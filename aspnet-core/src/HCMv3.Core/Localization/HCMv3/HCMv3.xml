@@ -4161,6 +4161,57 @@
     <text name="BulkPasswordAdminUserSkipped">{0}: skipped, the account holds an administrative role.</text>
     <text name="BulkPasswordResetAndEmailed">{0}: password reset, email sent to {1}.</text>
     <text name="BulkPasswordResetButEmailFailed">{0}: password reset, but the email could not be sent.</text>
+
+    <!-- ADMINISTRATION TOOLS - Angular screen labels.
+         The block above holds the server-side messages; these are the UI captions/confirmations.
+         Existing keys (StartDate, EndDate, Month, Year, PayrollArea, PayrollRunType, Regular, OffCycle,
+         Employee, UserName, Email, Code, EmployeeName, Clear, Refresh, NoData, NoUsersSelected,
+         AreYouSure) are reused and deliberately NOT redeclared here. -->
+    <text name="PayrollAdminTools">Payroll Admin Tools</text>
+    <text name="SystemAdminTools">System Admin Tools</text>
+    <text name="TransferApprovals">Transfer Approvals</text>
+    <text name="BulkPasswordReset">Bulk Password Reset</text>
+    <text name="AdministrationToolsDescription">Destructive maintenance utilities. Read the confirmation carefully before running any of them.</text>
+
+    <text name="GeneratePayrollCalendar">Generate Payroll Calendar</text>
+    <text name="DeleteSalaryRegisters">Delete Salary Registers</text>
+    <text name="UnlockSalaryRegisters">Unlock Salary Registers</text>
+    <text name="FixForfeitQuota">Fix Forfeit Quota</text>
+    <text name="FixAnnualLeaveProvision">Fix Annual Leave Provision</text>
+    <text name="FixAnnualLeaveProvisionNotAvailable">Not available. The legacy annual-leave provision fix depends on ~900 lines of legacy static context priming that has no faithful equivalent in this system, so it has not been ported.</text>
+    <text name="RecalculateProbationEndDates">Recalculate Probation End Dates</text>
+    <text name="FetchMissingTimeAttendanceData">Fetch Missing Time Attendance Data</text>
+    <text name="SyncMissingTimeAttendanceApiData">Sync Missing Time Attendance API Data</text>
+    <text name="ResetAndEmailPasswords">Reset and Email Passwords</text>
+    <text name="LoadCandidates">Load Candidates</text>
+
+    <text name="EmployeeCodes">Employee Codes</text>
+    <text name="EmployeeCodesHint">Comma separated. Leave blank to include every active employee.</text>
+    <text name="FromDate">From Date</text>
+    <text name="AccessControlConnectionString">Access Control Database Connection String</text>
+    <text name="AccessControlConnectionStringHint">Not stored by this application. It is used only for this single run.</text>
+    <text name="TransferFromManager">Transfer approvals FROM</text>
+    <text name="TransferToManager">Transfer approvals TO</text>
+    <text name="RequestingEmployee">Requesting Employee</text>
+    <text name="AllEmployees">All employees</text>
+    <text name="ScopeAllActiveEmployees">ALL active employees</text>
+    <text name="ScopeSelectedEmployeeCodes">{0} employee code(s): {1}</text>
+    <text name="ScopeAllPayrollAreas">ALL payroll areas</text>
+    <text name="SelectedUsersCount">{0} user(s) selected</text>
+    <text name="EarliestEvaluationDateDefault">the configured earliest evaluation date</text>
+
+    <text name="ConfirmGeneratePayrollCalendar">This will CREATE payroll calendar rows for payroll area "{0}" for every payroll month from {1} to {2}. Months that already have a calendar row are left untouched. Continue?</text>
+    <text name="ConfirmDeleteSalaryRegisters">This PERMANENTLY DELETES salary registers and all of their detail rows.&#10;&#10;Period: {0}/{1}&#10;Run type: {2}&#10;Payroll area: {3}&#10;Scope: {4}&#10;&#10;Deleted salary registers cannot be recovered. The operation is aborted if any matched employee already has a later salary register. Continue?</text>
+    <text name="ConfirmUnlockSalaryRegisters">This UNLOCKS salary registers, making already-finalised payroll rows editable again.&#10;&#10;Period: {0}/{1}&#10;Run type: {2}&#10;Payroll area: {3}&#10;Scope: {4}&#10;&#10;Continue?</text>
+    <text name="ConfirmFixForfeitQuota">This RECALCULATES and OVERWRITES annual-leave forfeit quota balances from {0} onwards.&#10;&#10;Scope: {1}&#10;&#10;Existing forfeit balances for those employees are replaced. Continue?</text>
+    <text name="ConfirmRecalculateProbationEndDates">This RECALCULATES and OVERWRITES the probation end date of EVERY active employee. Existing probation end dates are replaced and cannot be restored. Continue?</text>
+    <text name="ConfirmFetchMissingTimeAttendanceData">This REWRITES transfer flags in the external access-control database so missing punches are re-transferred from {0} until now.&#10;&#10;Scope: {1}&#10;&#10;Continue?</text>
+    <text name="ConfirmSyncMissingTimeAttendanceApiData">This RE-PULLS punches from the time-attendance vendor API from {0} until now and writes them into this system.&#10;&#10;Scope: {1}&#10;&#10;Continue?</text>
+    <text name="ConfirmTransferPendingApprovals">This REASSIGNS every open, not-yet-approved workflow approval from "{0}" to "{1}".&#10;&#10;Requests included: {2}&#10;&#10;The original approver will no longer see those items. Continue?</text>
+    <text name="ConfirmBulkResetPasswords">This RESETS the password of {0} user account(s) and e-mails the new password to each employee in plain text. The old passwords cannot be recovered and the affected users will be locked out until they read the e-mail.&#10;&#10;Accounts to reset:&#10;{1}&#10;&#10;Continue?</text>
+
+    <text name="AdminToolResultSummary">Completed. {0} row(s) affected, {1} row(s) skipped.</text>
+    <text name="BulkResetPasswordsResultSummary">Completed. {0} password(s) reset, {1} e-mail(s) sent.</text>
     <!-- Import/Export wave: legacy HCM10.Web/UserControls/ImportExport/uscBulkImportExport + uscBulkImport + uscImportTimesheet -->
     <text name="ImportExport">Import / Export</text>
     <text name="BulkImportExport">Bulk Import / Export</text>

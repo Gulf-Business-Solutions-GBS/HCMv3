@@ -62,8 +62,8 @@ public class EmployeeInsurancePayWageTypeCalculator : HCMv3DomainServiceBase, IW
         if (PayrollRunGates.ShouldPostAdvancePaymentDed(context))
         {
             await _advancePaymentService.AdvancePaymentDedAsync(
-                context.EmployeeId, payStartDate, amount, context.PayrollRunType,
-                context.OffCycleReason, context.AdvancePayComment, context.Settings);
+                context.EmployeeId, payStartDate, context.OffCyclePaymentDate, amount,
+                context.PayrollRunType, context.OffCycleReason, context.AdvancePayComment, context.Settings);
         }
     }
 }

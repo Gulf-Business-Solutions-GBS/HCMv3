@@ -117,6 +117,7 @@ public abstract class InsuranceRecoveryDeductionCalculatorBase : HCMv3DomainServ
             await _advancePaymentService.AdvancePaymentDedAsync(
                 context.EmployeeId,
                 PayrollRunGates.MonthStart(context.PayDate),
+                context.OffCyclePaymentDate,
                 (-1) * amount,
                 context.PayrollRunType,
                 context.OffCycleReason,

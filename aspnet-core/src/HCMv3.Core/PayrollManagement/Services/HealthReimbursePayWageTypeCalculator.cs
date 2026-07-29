@@ -66,8 +66,8 @@ public class HealthReimbursePayWageTypeCalculator : HCMv3DomainServiceBase, IWag
         if (PayrollRunGates.ShouldPostAdvancePaymentDed(context))
         {
             await _advancePaymentService.AdvancePaymentDedAsync(
-                context.EmployeeId, payStartDate, (-1) * amount, context.PayrollRunType,
-                context.OffCycleReason, context.AdvancePayComment, context.Settings);
+                context.EmployeeId, payStartDate, context.OffCyclePaymentDate, (-1) * amount,
+                context.PayrollRunType, context.OffCycleReason, context.AdvancePayComment, context.Settings);
         }
     }
 }
