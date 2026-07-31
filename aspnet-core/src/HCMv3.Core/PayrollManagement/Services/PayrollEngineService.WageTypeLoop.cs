@@ -546,31 +546,23 @@ public partial class PayrollEngineService
     }
 
     /// <summary>
-    /// <b>NOT PORTED -- deliberate, reported gap.</b> Legacy's "All TimeTypes Balance Cumulation" region
-    /// (<c>Program.cs</c> lines 1956-2518) makes ~50 <c>CalculateTimeType</c> calls that write the
-    /// <c>Number</c> of wage codes 4000-4031 and their 5000-5031 arrear twins BEFORE the main wage-type loop
-    /// runs, because most downstream wage rules read those numbers back off the register.
+    /// <b>PORTED.</b> Legacy's "All TimeTypes Balance Cumulation" region (<c>Program.cs</c> lines 1956-2518):
+    /// the 63 <c>CalculateTimeType</c> calls that write the <c>Number</c> of wage codes 4000-4031 and their
+    /// 5000-5031 arrear twins BEFORE the main wage-type loop runs, because most downstream wage rules read
+    /// those numbers back off the register.
     ///
-    /// <para>Only NINE of those ~50 day counts exist in this port
-    /// (<see cref="IPayrollDayCountService"/>); the rest (<c>GetAnnualLeavePaidDays</c>,
-    /// <c>GetLieuPaidDays</c>, <c>GetInactiveDays</c>, <c>GetIndemnityDays</c>,
-    /// <c>GetEmployeeTicketAccrual</c>, <c>GetArrear</c>, <c>UpdateEmployeeIndemnityQuota</c>, ...) have no
-    /// port at all. Writing the available subset would produce a register that LOOKS complete while silently
-    /// under-reporting ~41 day counts -- exactly the "plausible-looking guess" this port forbids.</para>
+    /// <para>The whole region lives in <see cref="ITimeTypeCumulationService"/>, which carries the per-code
+    /// reconciliation table (which codes delegate to <see cref="IPayrollDayCountService"/> /
+    /// <see cref="IAccrualService"/> / <see cref="IIndemnityCalculationService"/>, which are new, and which
+    /// eight are commented out in legacy and therefore deliberately absent).</para>
     ///
-    /// <para><b>It is a no-op rather than a throw</b> because, unlike the four missing category services, this
-    /// block is not reached by a per-employee routing decision: it runs for EVERY employee, so throwing would
-    /// fail 100% of runs and make the rest of the orchestration untestable.</para>
-    ///
-    /// <para><b>Also note</b> the wage-code annotations in <see cref="IPayrollDayCountService"/>'s XML docs do
-    /// not all match legacy's actual <c>CalculateTimeType</c> call sites (e.g. it labels
-    /// <c>GetSickLeavePaidDaysAsync</c> as 4003, but legacy line 2051 writes Sick Leave Paid Days to
-    /// <b>4002</b> and line 2071 writes Sick Leave UNPAID to <b>4003</b>). Whoever ports this region must
-    /// take the codes from the legacy call sites, not from those doc comments.</para>
+    /// <para>Kept as a one-line wrapper rather than inlining the call so the legacy line reference and the
+    /// "runs for EVERY employee, before the PayrollOrder loop" contract stay documented at the call
+    /// site.</para>
     /// </summary>
     private Task RunTimeTypeCumulationAsync(PayrollCalculationContext context)
     {
-        return Task.CompletedTask;
+        return _timeTypeCumulationService.RunAsync(context);
     }
 
     #endregion

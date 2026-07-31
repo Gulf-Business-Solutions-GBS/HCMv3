@@ -9,8 +9,15 @@ namespace HCMv3.PayrollManagement.Services;
 /// <summary>
 /// Payroll "day counting" layer: the set of <c>Get*Days</c> calculators the legacy payroll engine ran once per
 /// employee per salary register to produce the <b>TimeType</b> wage-type <c>Number</c> values (4014 Present
-/// Days, 4011 Active Days, 4001/4002 Absent Days, 4007 Public Holiday Days, 4008 Weekly Off Days, 4009 Rest
-/// Days, 4003 Sick Leave Paid, 4005 Sick Leave Unpaid, 4015 Paid Days).
+/// Days, 4011 Active Days, 4029 Absent Days, 4007 Public Holiday Days, 4008 Weekly Off Days, 4009 Rest
+/// Days, 4002 Sick Leave Paid, 4003 Sick Leave Unpaid, 4015 Paid Days).
+///
+/// <para><b>WAGE-CODE LABELS CORRECTED.</b> Three of the annotations below previously disagreed with legacy's
+/// actual <c>CalculateTimeType</c> call sites and have been fixed against the legacy source: sick leave PAID
+/// is 4002 (legacy line 2051) not 4003; sick leave UNPAID is 4003 (line 2071) not 4005;
+/// <see cref="GetAbsentDaysAsync"/> is 4029 (line 2032, which also passes it the literal wage code "4029")
+/// not "4001/4002" -- <b>4001 is a different legacy function entirely</b> (<c>GetAbsentUnpaidDays</c>, line
+/// 4406). See <see cref="ITimeTypeCumulationService"/> for the full per-code table.</para>
 ///
 /// <para>Ported from the legacy console project <c>HCM10.PayrollEngine/Program.cs</c>, region
 /// <c>&lt;&lt; Time Types Balances Calculation &gt;&gt;</c>. The legacy <c>Main()</c>/<c>args[]</c>/XAF
@@ -149,7 +156,10 @@ public interface IPayrollDayCountService : IDomainService
     /// <c>ApprovedAbsentDay</c> when <c>ManageTimeSettings.EnableTimeRegisterApproval</c> is on) over the pay
     /// window, excluding days that already carry an unpaid-leave day (legacy comment: "If both UnpaidLeaveDay
     /// and AbsentDay for same day, then count only Absent because UnpaidLeaveDay already counted for that
-    /// day"). Produces wage-type <b>4001/4002 "Absent (Unpaid) Days"</b>.
+    /// day"). Produces wage-type <b>4029 "Absent Days"</b> (legacy call site line 2032). It is NOT 4001:
+/// <b>4001 "Absent Unpaid Days" is legacy <c>GetAbsentUnpaidDays</c> (line 4406)</b>, a different function
+/// that additionally sums unpaid-leave days, unapproved-absence leave days and unpaid-leave quota
+/// adjustments -- ported as <c>TimeTypeCumulationService.GetAbsentUnpaidDaysAsync</c>.
     ///
     /// <para><b>Standalone.</b> <see cref="IEmployeeAbsenceCalculationService"/>.<c>ActualLeaveDaysAsync</c>
     /// answers a different question -- "how many chargeable leave days does this <i>leave request</i> span,
@@ -275,7 +285,8 @@ public interface IPayrollDayCountService : IDomainService
 
     /// <summary>
     /// Ported from legacy <c>Program.GetSickLeavePaidDays</c> (line 5227). Sums
-    /// <see cref="HCMv3.TimeManagement.TimeRegister.SickLeavePaidDay"/>. Produces wage-type <b>4003</b>.
+    /// <see cref="HCMv3.TimeManagement.TimeRegister.SickLeavePaidDay"/>. Produces wage-type <b>4002</b>
+    /// (legacy call site line 2051 -- this doc previously said 4003, which is the UNPAID one).
     ///
     /// <para><b>Standalone -- deliberately NOT delegated to
     /// <see cref="IEmployeeAbsenceCalculationService.ActualLeaveDaysAsync"/>.</b> That is the only other
@@ -306,7 +317,8 @@ public interface IPayrollDayCountService : IDomainService
     /// <summary>
     /// Ported from legacy <c>Program.GetSickLeaveUnpaidDays</c> (line 5254). Identical in shape to
     /// <see cref="GetSickLeavePaidDaysAsync"/> but sums
-    /// <see cref="HCMv3.TimeManagement.TimeRegister.SickLeaveUnpaidDay"/>. Produces wage-type <b>4005</b>.
+    /// <see cref="HCMv3.TimeManagement.TimeRegister.SickLeaveUnpaidDay"/>. Produces wage-type <b>4003</b>
+    /// (legacy call site line 2071 -- this doc previously said 4005, which is Indemnity Paid Days).
     /// <b>Standalone</b>, for the same reasons.
     /// </summary>
     Task<double> GetSickLeaveUnpaidDaysAsync(
@@ -318,8 +330,9 @@ public interface IPayrollDayCountService : IDomainService
     /// <summary>
     /// Ported from legacy <c>Program.GetPaidDays</c> (line 5282). Produces wage-type <b>4015 "Paid Days"</b>
     /// as the sum of three already-calculated <see cref="SalaryRegisterDetail"/> <c>Number</c> values on the
-    /// SAME salary register: <b>4014</b> (Present Days) + <b>4002</b> (Paid Leave Days) + <b>4000</b> (Public
-    /// Holiday / first time type). It touches no TimeRegister data at all.
+    /// SAME salary register: <b>4014</b> (Present Days) + <b>4002</b> (Sick Leave PAID Days) + <b>4000</b>
+    /// (Annual Leave Paid Days). It touches no TimeRegister data at all. (The arithmetic was always right;
+    /// only the two labels were wrong -- corrected against legacy lines 5288-5290.)
     ///
     /// <para><b>Standalone by definition</b> -- it is a roll-up of this run's own output rows, so it MUST be
     /// invoked only after the 4014/4002/4000 details have been written for

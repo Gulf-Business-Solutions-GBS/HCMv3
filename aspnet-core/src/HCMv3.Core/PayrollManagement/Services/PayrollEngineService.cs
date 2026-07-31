@@ -30,20 +30,20 @@ namespace HCMv3.PayrollManagement.Services;
 /// ABP auditing via <c>FullAuditedEntity</c> is always on.
 /// <see cref="PayrollEngineSettings.EnableAuditLogInPayrollEngine"/> is carried but unused -- same decision as
 /// <c>TimeEngineService</c>.</description></item>
-/// <item><description><b><c>SysCreator</c>/<c>SysModifier</c>/<c>IsSystemGenerated</c> NOT ported</b> --
-/// superseded by ABP's audit columns; no ported entity carries <c>IsSystemGenerated</c>.</description></item>
+/// <item><description><b><c>SysCreator</c>/<c>SysModifier</c> NOT ported</b> -- superseded by ABP's audit
+/// columns. <c>IsSystemGenerated</c> IS ported: the column was added to <c>SalaryRegisterDetail</c> by
+/// migration <c>20260729111551</c> and <see cref="IPayrollRegisterStore.SaveLineAsync"/> stamps it on every
+/// engine write.</description></item>
 /// <item><description><b>The nested TIME ENGINE AUTORUN call is NOT made</b> (legacy 555-753 calls
 /// <c>HCM10.TimeEngine.Program.Main</c> per employee, truncating <c>TimeLog</c> first). Chaining one engine
 /// into another is an application/background-job orchestration concern in this port, not a domain-service
 /// one, and <c>TRUNCATE TABLE</c> has no place in a domain service.
 /// <see cref="PayrollEngineSettings.EnableTimeEngineAutorun"/> IS honoured everywhere it selects a
 /// GATE or a QUERY (control-record arm, employee selection). <b>Reported gap.</b></description></item>
-/// <item><description><b>The TIME-TYPE cumulation pre-pass is NOT ported</b> (legacy 1956-2518: ~50
-/// <c>CalculateTimeType</c> calls for wage codes 4000-4031/5000-5031). Only 9 of those ~50 day counts exist
-/// in this port (<see cref="IPayrollDayCountService"/>); the other ~41 (<c>GetAnnualLeavePaidDays</c>,
-/// <c>GetLieuPaidDays</c>, <c>GetIndemnityDays</c>, <c>GetEmployeeTicketAccrual</c>, <c>GetArrear</c>, ...)
-/// have no port. Emitting a partial set would silently under-report day counts that every downstream wage
-/// rule reads. <b>Blocked, not approximated -- see <see cref="RunTimeTypeCumulationAsync"/>.</b></description></item>
+/// <item><description><b>The TIME-TYPE cumulation pre-pass IS ported</b> (legacy 1956-2518: 63
+/// <c>CalculateTimeType</c> calls for wage codes 4000-4031/5000-5031) -- see
+/// <see cref="ITimeTypeCumulationService"/> for the per-code reconciliation table and the eight
+/// commented-out-in-legacy blocks that are deliberately absent.</description></item>
 /// <item><description><b>The 2005/2011 advance-recovery CLEARING blocks are NOT ported</b> (legacy
 /// 1619-1653, 1787-1851). Their predicate keys off <c>EmployeePayment.OffCyclePaymentDate</c>, a field this
 /// port's <see cref="EmployeePayment"/> deliberately dropped (already documented at
@@ -94,6 +94,7 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     private readonly IEmployeeBasicPayCalculationService _basicPayService;
     private readonly IEmployeeLeavePayCalculationService _leavePayService;
     private readonly IPayrollRegisterStore _registerStore;
+    private readonly ITimeTypeCumulationService _timeTypeCumulationService;
 
     // ---------------------------------------------------------------------------------------------------
     // OPTIONAL property injection for the four NOT-YET-PORTED category services.
@@ -140,7 +141,8 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         IWageTypeCalculatorResolver wageTypeCalculatorResolver,
         IEmployeeBasicPayCalculationService basicPayService,
         IEmployeeLeavePayCalculationService leavePayService,
-        IPayrollRegisterStore registerStore)
+        IPayrollRegisterStore registerStore,
+        ITimeTypeCumulationService timeTypeCumulationService)
     {
         _employeeRepository = employeeRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
@@ -172,6 +174,7 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         _basicPayService = basicPayService;
         _leavePayService = leavePayService;
         _registerStore = registerStore;
+        _timeTypeCumulationService = timeTypeCumulationService;
 
         ArrearService = NullPayrollCategoryService.Instance;
         PaymentService = NullPayrollCategoryService.Instance;

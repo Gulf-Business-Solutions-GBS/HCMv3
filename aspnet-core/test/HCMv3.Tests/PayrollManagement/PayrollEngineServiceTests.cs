@@ -573,7 +573,11 @@ public class PayrollEngineServiceTests
                 calculatorResolver,
                 BasicPayService,
                 LeavePayService,
-                new FakePayrollRegisterStore());
+                new FakePayrollRegisterStore(),
+                // Wave: the time-type cumulation pre-pass is now a real collaborator. These engine tests
+                // assert orchestration (employee selection, register creation, wage-type dispatch), not day
+                // counts, so it is stubbed out. TimeTypeCumulationServiceTests covers the pre-pass itself.
+                Substitute.For<ITimeTypeCumulationService>());
         }
     }
 
