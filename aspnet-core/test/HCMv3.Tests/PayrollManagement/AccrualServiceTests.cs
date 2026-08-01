@@ -503,4 +503,169 @@ public class AccrualServiceTests : AppTestBase
     }
 
     #endregion
+
+    #region GetTotalIndemnityTable
+
+    /// <summary>
+    /// REGRESSION (defect: NullReferenceException in GetTotalIndemnityTableAsync). The TimeTransfer list is
+    /// materialised with .ToList() and GetTotalUnpaidLeaveDays then dereferences r.TransferType.Code in
+    /// memory. Lazy-loading proxies are NOT enabled, so without an eager load of TransferType this throws for
+    /// ANY employee with at least one TimeTransfer row. The previous suite seeded no TimeTransfer rows at all,
+    /// which is why it was never caught -- so this test's whole point is to seed one.
+    /// </summary>
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Deduct_OpeningBalance_TimeTransfer_Without_Throwing()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "IndemG", NameAr = "ج1" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = group.Id, NameEn = "IndemSG", NameAr = "ف1" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = AbpSession.TenantId ?? 1, NameEn = "Fixed", NameAr = "ثابت" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // THE SEED THAT WAS MISSING: an unpaid-opening-balance transfer (TimeTransferType.Code == "5").
+            var transferType = new TimeTransferType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = "5",
+                NameEn = "Opening Balance",
+                NameAr = "رصيد افتتاحي"
+            };
+            context.Set<TimeTransferType>().Add(transferType);
+            context.SaveChanges();
+
+            context.Set<TimeTransfer>().Add(new TimeTransfer
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                TransferTypeId = transferType.Id,
+                TransferDate = new DateTime(2024, 2, 15),
+                TransferCount = 3
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        // No WageType 4001/4029 with IncludeInIndemnity is seeded, so the ONLY unpaid contribution is the
+        // 3-day transfer -- proving TransferType.Code was actually read rather than throwing.
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1; // 182
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(3);
+        slabs[0].TotalDays.ShouldBe(totalCalendarDays - 3);
+        slabs[0].StartDate.ShouldBe(contractStart);
+    }
+
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Ignore_TimeTransfers_Of_Other_Types()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = AbpSession.TenantId ?? 1, NameEn = "IndemG2", NameAr = "ج2" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = AbpSession.TenantId ?? 1, EmployeeGroupId = group.Id, NameEn = "IndemSG2", NameAr = "ف2" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = AbpSession.TenantId ?? 1, NameEn = "Fixed2", NameAr = "ثابت2" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // Code "2" (sick-leave transfer), NOT the "5" the indemnity unpaid-days rule looks for. Its
+            // TransferType still has to be readable, otherwise the code throws before it can filter it out.
+            var transferType = new TimeTransferType
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                Code = "2",
+                NameEn = "Sick Transfer",
+                NameAr = "تحويل مرضي"
+            };
+            context.Set<TimeTransferType>().Add(transferType);
+            context.SaveChanges();
+
+            context.Set<TimeTransfer>().Add(new TimeTransfer
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                EmployeeId = employeeId,
+                TransferTypeId = transferType.Id,
+                TransferDate = new DateTime(2024, 2, 15),
+                TransferCount = 7
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        var totalCalendarDays = payDate.Subtract(contractStart).TotalDays + 1;
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(0);
+        slabs[0].TotalDays.ShouldBe(totalCalendarDays);
+    }
+
+    #endregion
 }

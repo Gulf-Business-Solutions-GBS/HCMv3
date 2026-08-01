@@ -299,8 +299,22 @@ public static class ColumnMapper
             "tinyint" or "smallint" or "int" or "bigint" => "0",
             "decimal" or "numeric" or "money" or "smallmoney" or "float" or "real" => "0",
             "nvarchar" or "nchar" or "varchar" or "char" or "text" or "ntext" => "N''",
-            "date" or "datetime" or "datetime2" or "smalldatetime" => "'1900-01-01'",
-            "datetimeoffset" => "'1900-01-01T00:00:00+00:00'",
+
+            // Must be C#'s default(DateTime) == 0001-01-01, NOT a "looks empty" date like 1900-01-01.
+            // Legacy stores NULL for "never happened" on columns the port made NOT NULL, and every payroll/time
+            // engine guard tests `!= default(DateTime)`. A 1900-01-01 sentinel is a real date to those guards, so
+            // it does not read as absent: EmployeePayrollStatus.EarliestMasterDataChange fails the run outright
+            // ("EarliestRetroAccountingDate set to '16-12-1996'"), and DoNoAccountAfter is worse -- it silently
+            // skips every period and reports the employee as SUCCESSFUL with no register written.
+            "date" or "datetime2" => "'0001-01-01'",
+            "datetimeoffset" => "'0001-01-01T00:00:00+00:00'",
+
+            // datetime/smalldatetime cannot represent year 1 (their floor is 1753-01-01 and 1900-01-01
+            // respectively), so default(DateTime) is unrepresentable and the guards above cannot be satisfied.
+            // No such target column exists today -- every date column in HCMv3 is datetime2 -- so this branch is
+            // unreachable; it is kept correct-as-possible rather than silently wrong if that ever changes.
+            "datetime" or "smalldatetime" => "'1900-01-01'",
+
             "time" => "'00:00:00'",
             "uniqueidentifier" => "'00000000-0000-0000-0000-000000000000'",
             "varbinary" or "binary" or "image" => "0x",

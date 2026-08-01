@@ -37,7 +37,15 @@ public class SalaryRegister : FullAuditedEntity, IMustHaveTenant
 
     public virtual PayrollResultType PayrollResultType { get; set; }
 
-    public virtual int PayrollReasonTypeId { get; set; }
+    /// <summary>
+    /// NULLABLE, matching legacy. The legacy XPO reference <c>SalaryRegister.PayrollReasonType</c> is an
+    /// optional association and is NULL on the vast majority of production rows (62,400 of 64,999): a REGULAR
+    /// payroll run never assigns a reason -- only off-cycle runs resolve one from
+    /// <c>PayrollOffCycleReasons</c>. Porting this as a NOT NULL FK made it impossible to persist a regular
+    /// register at all (<c>FK_SalaryRegisters_PayrollReasonTypes_PayrollReasonTypeId</c> violation on
+    /// SaveChanges).
+    /// </summary>
+    public virtual int? PayrollReasonTypeId { get; set; }
 
     public virtual PayrollReasonType PayrollReasonType { get; set; }
 

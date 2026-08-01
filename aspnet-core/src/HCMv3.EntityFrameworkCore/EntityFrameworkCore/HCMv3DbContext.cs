@@ -1040,6 +1040,22 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
 
+        // Careers portal (wave R2): the Applicant <-> ABP User link that replaced the legacy plaintext
+        // Applicant.UserName / Applicant.Password columns.
+        //
+        // Filtered unique index rather than a plain one: UserId is null for every applicant a recruiter
+        // created by hand, and there may be many of those, but a given ABP user must map to at most one
+        // applicant within a tenant. Without this, a retried registration or a race between two concurrent
+        // registrations could leave one login pointing at two profiles. IsDeleted is part of the filter
+        // because Applicant is soft-deleted -- a deleted applicant's row lingers and would otherwise block
+        // the same user from ever getting a fresh profile.
+        modelBuilder.Entity<Applicant>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.UserId })
+                .IsUnique()
+                .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
+        });
+
         modelBuilder.Entity<SubscribableEdition>(b =>
         {
             b.Property(e => e.MonthlyPrice).HasPrecision(18, 2);

@@ -339,6 +339,133 @@ public class TimeTypeCumulationServiceTests
 
     #endregion
 
+    #region << 4021 Annual Leave Opening Balance -- June-2024 production parity (defect 4) >>
+
+    // These four tests pin the fix for the June-2024 HRMS_RCF-vs-HCMv3 parity gap on wage type 4021.
+    //
+    // MECHANISM (legacy Program.cs 3160-3179): when neither the previous month's own register nor a later
+    // retro register for that ForPeriod exists, GetAnnualLeaveOpeningBalance recomputes from history as
+    //     totalAccrual - (totalUsed + totalAdjusted + totalForfeit)
+    // where totalAdjusted (line 3170) is the sum of EmployeeAbsAdjustment.QuotaAdjusted rows matching
+    //     AbsenceType.Oid == AnnualLeaveOid || AbsenceType.QuotaType == QuotaType.AnnualLeave
+    // and AnnualLeaveOid is resolved at legacy line 2710 as the AbsenceType whose Code is the string "1".
+    //
+    // THE BUG: this port read PayrollEngineSettings.AnnualLeaveAbsenceTypeId, which is declared and read but
+    // NEVER ASSIGNED in production code, so it was permanently 0. The first arm therefore never matched, and
+    // because the production annual-leave AbsenceType rows carry QuotaType.None the second arm never matched
+    // either -- totalAdjusted collapsed to 0 and every opening balance came out too HIGH by exactly the
+    // employee's outstanding adjustment total.
+
+    [Fact]
+    public async Task GetAnnualLeaveOpeningBalance_Should_Subtract_Annual_Leave_Quota_Adjustments_When_Recomputed_From_History()
+    {
+        // Employee code 2362, June-2024 (HRMS_RCF register 55919/57209/58433 all agree on 4021 = 14.045997).
+        // History to 2024-05-31: accrual 139.045997, used 113, one 12.000-day adjustment (2022-01-25).
+        // Before the fix this returned 26.045997 -- exactly +12.000.
+        var harness = new Harness();
+        harness.SeedOpeningBalanceHistory(totalAccrual: 139.045997, totalUsed: 113);
+        harness.AddAnnualLeaveAdjustment(new DateTime(2022, 1, 25), 12);
+
+        var openingBalance = await harness.OpeningBalanceAsync(harness.Context());
+
+        openingBalance.ShouldBe(14.045997, 0.000001);
+    }
+
+    [Fact]
+    public async Task GetAnnualLeaveOpeningBalance_Should_Subtract_Every_Annual_Leave_Adjustment_Up_To_The_Previous_Month_End()
+    {
+        // Employee code 3400, June-2024 (HRMS_RCF: 4021 = 13.914995). History to 2024-05-31: accrual
+        // 118.914995, used 45, TWO 30.000-day adjustments (2021-11-01 and 2024-01-20). Before the fix this
+        // returned 73.914995 -- exactly +60.000.
+        var harness = new Harness();
+        harness.SeedOpeningBalanceHistory(totalAccrual: 118.914995, totalUsed: 45);
+        harness.AddAnnualLeaveAdjustment(new DateTime(2021, 11, 1), 30);
+        harness.AddAnnualLeaveAdjustment(new DateTime(2024, 1, 20), 30);
+
+        var openingBalance = await harness.OpeningBalanceAsync(harness.Context());
+
+        openingBalance.ShouldBe(13.914995, 0.000001);
+    }
+
+    [Fact]
+    public async Task GetAnnualLeaveOpeningBalance_Should_Resolve_The_AnnualLeave_AbsenceType_By_Code_When_The_Settings_Snapshot_Is_Unpopulated()
+    {
+        // The regression guard proper: Settings.AnnualLeaveAbsenceTypeId is 0 (its production value) AND the
+        // AbsenceType carries QuotaType.None, so BOTH arms of legacy's OR fail unless the id is resolved from
+        // AbsenceType.Code == "1".
+        var harness = new Harness();
+        harness.SeedOpeningBalanceHistory(totalAccrual: 100, totalUsed: 0);
+        harness.AddAnnualLeaveAdjustment(new DateTime(2024, 1, 20), 30);
+
+        var context = harness.Context();
+        context.Settings.AnnualLeaveAbsenceTypeId.ShouldBe(0);
+        context.Settings.AnnualLeaveAbsenceTypeId = 0;
+
+        (await harness.OpeningBalanceAsync(context)).ShouldBe(70, 0.000001);
+    }
+
+    [Fact]
+    public async Task GetAnnualLeaveOpeningBalance_Should_Ignore_Adjustments_For_Other_AbsenceTypes()
+    {
+        // The fix must not over-reach: an unpaid-leave (code "2", QuotaType.None) adjustment is not an
+        // annual-leave adjustment and legacy's predicate excludes it.
+        var harness = new Harness();
+        harness.SeedOpeningBalanceHistory(totalAccrual: 100, totalUsed: 0);
+        harness.AbsAdjustments.Add(new EmployeeAbsAdjustment
+        {
+            Id = 900,
+            TenantId = TenantId,
+            EmployeeId = EmployeeId,
+            AbsenceTypeId = 42,
+            AbsenceType = harness.AbsenceTypes.Single(a => a.Id == 42),
+            EffectiveDate = new DateTime(2024, 1, 20),
+            QuotaAdjusted = 30
+        });
+
+        (await harness.OpeningBalanceAsync(harness.Context())).ShouldBe(100, 0.000001);
+    }
+
+    #endregion
+
+    #region << 4023 Total Active Days -- scope pin (defect 2) >>
+
+    [Fact]
+    public async Task GetTotalActiveDays_Should_Be_This_Months_ActiveDays_Only_When_There_Is_No_Previous_Register()
+    {
+        // Legacy GetTotalActiveDays (Program.cs 4923-4951) is a REGISTER ROLL-UP, not a from-scratch history
+        // walk: prevRegister.4023 + prevRegister.5023 + thisRegister.4011 + thisRegister.5011. With no
+        // previous register it is simply this month's 4011.
+        //
+        // This is why the June-2024 parity run showed 30 against legacy's 1187: HRMS_RCF has an unbroken
+        // chain of registers back to 2021-04, HCMv3 has exactly one. 1187 is precisely the number of days
+        // from 2021-04-01 to 2024-06-30 inclusive, i.e. the accumulated monthly 4011 values. It is NOT a
+        // scope defect in this method.
+        var harness = new Harness();
+        var context = harness.Context();
+        harness.SetLine(context.Register.RegisterId, "4011", number: 30);
+
+        (await harness.TotalActiveDaysAsync(context)).ShouldBe(30);
+    }
+
+    [Fact]
+    public async Task GetTotalActiveDays_Should_Accumulate_The_Previous_Registers_Total()
+    {
+        // The same method, given the chain HRMS_RCF has, does produce the running cumulative counter.
+        var harness = new Harness();
+        var context = harness.Context();
+
+        var prev = harness.Register(2, new DateTime(2026, 2, 28));
+        harness.SalaryRegisters.Add(prev);
+        context.PreviousSalaryRegisters = new List<SalaryRegister> { prev };
+        harness.SetLine(2, "4011", number: 28);
+        harness.Store.LinesByRegister(2).Add(new PayrollRegisterLine { Id = 291, WageCode = "4023", WageTypeId = 291, Number = 1157 });
+        harness.SetLine(context.Register.RegisterId, "4011", number: 30);
+
+        (await harness.TotalActiveDaysAsync(context)).ShouldBe(1187);
+    }
+
+    #endregion
+
     #region << Harness >>
 
     private static TimeRegister TimeReg(
@@ -379,6 +506,21 @@ public class TimeTypeCumulationServiceTests
 
         public List<TimeRegister> TimeRegisters { get; } = new List<TimeRegister>();
 
+        /// <summary>
+        /// Mirrors production: the annual-leave <c>AbsenceType</c> is identified by <c>Code == "1"</c> and
+        /// carries <c>QuotaType.None</c> -- so a rule that relies on the <c>QuotaType.AnnualLeave</c> arm
+        /// alone matches nothing.
+        /// </summary>
+        public List<AbsenceType> AbsenceTypes { get; } = new List<AbsenceType>
+        {
+            new AbsenceType { Id = 41, TenantId = TenantId, Code = "1", NameEn = "Annual Paid Leave", QuotaType = QuotaType.None },
+            new AbsenceType { Id = 42, TenantId = TenantId, Code = "2", NameEn = "Unpaid Leave", QuotaType = QuotaType.None }
+        };
+
+        public List<EmployeeAbsAdjustment> AbsAdjustments { get; } = new List<EmployeeAbsAdjustment>();
+
+        public List<EmployeeAbsQuotaForfeit> AbsQuotaForfeits { get; } = new List<EmployeeAbsQuotaForfeit>();
+
         public FakeRegisterAwareStore Store { get; } = new FakeRegisterAwareStore();
 
         private TestableService _service;
@@ -397,13 +539,13 @@ public class TimeTypeCumulationServiceTests
                 PayrollEngineFakes.Repo(WageTypes),
                 PayrollEngineFakes.Repo(SalaryRegisters),
                 PayrollEngineFakes.Repo(new List<TimeTransfer>()),
-                PayrollEngineFakes.Repo(new List<EmployeeAbsAdjustment>()),
-                PayrollEngineFakes.Repo(new List<EmployeeAbsQuotaForfeit>()),
+                PayrollEngineFakes.Repo(AbsAdjustments),
+                PayrollEngineFakes.Repo(AbsQuotaForfeits),
                 PayrollEngineFakes.Repo(new List<EmployeeAbsence>()),
                 PayrollEngineFakes.Repo(new List<EmployeeGratuity>()),
                 PayrollEngineFakes.Repo(new List<EmployeeSeparation>()),
                 PayrollEngineFakes.Repo(new List<EmployeeContract>()),
-                PayrollEngineFakes.Repo(new List<AbsenceType>()),
+                PayrollEngineFakes.Repo(AbsenceTypes),
                 Store,
                 Substitute.For<IPayrollDayCountService>(),
                 Substitute.For<IAccrualService>(),
@@ -423,6 +565,45 @@ public class TimeTypeCumulationServiceTests
                 InPeriod = inPeriod ?? forPeriod,
                 PayrollRunType = PayrollRunType.Regular
             };
+        }
+
+        /// <summary>
+        /// Seeds the two TimeRegister aggregates legacy's from-scratch opening-balance fallback reads
+        /// (lines 3162-3168): the lifetime <c>AnnualLeaveAccrualPerDay</c> total and the lifetime
+        /// <c>AnnualLeaveDay + LeaveAdjDay</c> total, both up to the previous month end. Carried on a single
+        /// dated row apiece -- the fallback only ever sums them.
+        /// </summary>
+        public void SeedOpeningBalanceHistory(double totalAccrual, double totalUsed)
+        {
+            TimeRegisters.Add(new TimeRegister
+            {
+                TenantId = TenantId,
+                EmployeeId = EmployeeId,
+                DayDate = new DateTime(2026, 2, 27),
+                AnnualLeaveAccrualPerDay = totalAccrual
+            });
+
+            TimeRegisters.Add(new TimeRegister
+            {
+                TenantId = TenantId,
+                EmployeeId = EmployeeId,
+                DayDate = new DateTime(2026, 2, 28),
+                AnnualLeaveDay = totalUsed
+            });
+        }
+
+        public void AddAnnualLeaveAdjustment(DateTime effectiveDate, double quotaAdjusted)
+        {
+            AbsAdjustments.Add(new EmployeeAbsAdjustment
+            {
+                Id = AbsAdjustments.Count + 1,
+                TenantId = TenantId,
+                EmployeeId = EmployeeId,
+                AbsenceTypeId = 41,
+                AbsenceType = AbsenceTypes.Single(a => a.Id == 41),
+                EffectiveDate = effectiveDate,
+                QuotaAdjusted = quotaAdjusted
+            });
         }
 
         public void SetLine(int registerId, string wageCode, double number = 0, double amount = 0)
@@ -473,6 +654,12 @@ public class TimeTypeCumulationServiceTests
 
         public List<SalaryRegisterDayCount> DaysList(PayrollCalculationContext context, DateTime start, DateTime end, SalaryRegisterDayType dayType)
             => Service.DaysList(context, start, end, dayType);
+
+        public Task<double> OpeningBalanceAsync(PayrollCalculationContext context)
+            => Service.OpeningBalanceAsync(context);
+
+        public Task<double> TotalActiveDaysAsync(PayrollCalculationContext context)
+            => Service.TotalActiveDaysAsync(context);
     }
 
     /// <summary>
@@ -512,6 +699,12 @@ public class TimeTypeCumulationServiceTests
 
         public List<SalaryRegisterDayCount> DaysList(PayrollCalculationContext context, DateTime start, DateTime end, SalaryRegisterDayType dayType)
             => GetSalaryRegisterDaysList(context, start, end, dayType);
+
+        public Task<double> OpeningBalanceAsync(PayrollCalculationContext context)
+            => GetAnnualLeaveOpeningBalanceAsync(context);
+
+        public Task<double> TotalActiveDaysAsync(PayrollCalculationContext context)
+            => GetTotalActiveDaysAsync(context);
     }
 
     /// <summary>

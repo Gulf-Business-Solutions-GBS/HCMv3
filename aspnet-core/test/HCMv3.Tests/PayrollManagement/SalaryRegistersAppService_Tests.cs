@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PayrollManagement;
@@ -130,6 +131,41 @@ public class SalaryRegistersAppService_Tests : PayrollManagementAppServiceTestBa
 
         var result = await service.GetAll(new GetAllSalaryRegistersInput { EmployeeId = employeeId });
         result.Items[0].Locked.ShouldBeFalse();
+    }
+
+    /// <summary>
+    /// REGRESSION (defect: SalaryRegister.PayrollReasonTypeId was ported as a NOT NULL FK). Legacy leaves it
+    /// NULL on 62,400 of 64,999 production registers because a REGULAR run never resolves a reason -- only an
+    /// off-cycle run does. With the non-nullable port, the engine could not persist a regular register at all:
+    /// SaveChanges failed on FK_SalaryRegisters_PayrollReasonTypes_PayrollReasonTypeId (Id 0 does not exist).
+    /// The test DbContext is SQLite with FK enforcement on, so this insert genuinely exercises the constraint.
+    /// </summary>
+    [Fact]
+    public async Task Should_Persist_Regular_Register_With_No_PayrollReasonType()
+    {
+        var employeeId = CreateEmployee();
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditSalaryRegisterDto
+        {
+            EmployeeId = employeeId,
+            ForPeriod = new DateTime(2026, 1, 1),
+            InPeriod = new DateTime(2026, 1, 1),
+            PayrollRunType = PayrollRunType.Regular,
+            PayrollResultType = PayrollResultType.Current,
+            PayrollReasonTypeId = null,
+            Locked = false
+        });
+
+        var result = await service.GetAll(new GetAllSalaryRegistersInput { EmployeeId = employeeId });
+
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].PayrollReasonTypeId.ShouldBeNull();
+        result.Items[0].PayrollReasonTypeName.ShouldBeNull();
+
+        // And the row really is on disk with a NULL FK -- no '(none)' sentinel row is required.
+        var persisted = Context.SalaryRegisters.Single(r => r.EmployeeId == employeeId);
+        persisted.PayrollReasonTypeId.ShouldBeNull();
     }
 
     [Fact]

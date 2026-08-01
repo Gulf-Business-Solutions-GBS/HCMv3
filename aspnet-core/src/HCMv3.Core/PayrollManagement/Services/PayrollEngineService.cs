@@ -97,10 +97,18 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     private readonly ITimeTypeCumulationService _timeTypeCumulationService;
 
     // ---------------------------------------------------------------------------------------------------
-    // OPTIONAL property injection for the four NOT-YET-PORTED category services.
-    // ABP/Castle sets these automatically the moment an implementation is registered; until then the Null*
-    // default throws a precise NotImplementedException naming the legacy dispatch line. See
-    // IPayrollEngineService.cs for the rationale.
+    // The four category services. These were OPTIONAL property injections defaulting to a throwing Null*
+    // stub while they were unported; as of wave P9 all four exist, so they are REQUIRED constructor
+    // dependencies instead.
+    //
+    // The distinction is not cosmetic. Property injection is silent when it does not happen: the container
+    // resolves PayrollEngineService perfectly happily, the constructor's Null* default survives, and the
+    // engine then aborts mid-run at the first arrear wage type -- which is exactly how a validation run
+    // against production data died at wage code 7000 for all five employees, with everything downstream of
+    // PayrollOrder 20020 (allowances, deductions, provisions, Net Pay) never evaluated. As a constructor
+    // dependency an unregistered implementation fails loudly at resolution, before any money is computed.
+    //
+    // Setters are retained so tests can substitute a fake, but nothing defaults to a stub any more.
     // ---------------------------------------------------------------------------------------------------
 
     public IPayrollArrearCalculationService ArrearService { get; set; }
@@ -142,7 +150,11 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         IEmployeeBasicPayCalculationService basicPayService,
         IEmployeeLeavePayCalculationService leavePayService,
         IPayrollRegisterStore registerStore,
-        ITimeTypeCumulationService timeTypeCumulationService)
+        ITimeTypeCumulationService timeTypeCumulationService,
+        IPayrollArrearCalculationService arrearService,
+        IEmployeePaymentCalculationService paymentService,
+        IEmployeeOvertimePayCalculationService overtimePayService,
+        IEmployeeAttendancePayCalculationService attendancePayService)
     {
         _employeeRepository = employeeRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
@@ -176,10 +188,10 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         _registerStore = registerStore;
         _timeTypeCumulationService = timeTypeCumulationService;
 
-        ArrearService = NullPayrollCategoryService.Instance;
-        PaymentService = NullPayrollCategoryService.Instance;
-        OvertimePayService = NullPayrollCategoryService.Instance;
-        AttendancePayService = NullPayrollCategoryService.Instance;
+        ArrearService = arrearService ?? throw new ArgumentNullException(nameof(arrearService));
+        PaymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+        OvertimePayService = overtimePayService ?? throw new ArgumentNullException(nameof(overtimePayService));
+        AttendancePayService = attendancePayService ?? throw new ArgumentNullException(nameof(attendancePayService));
     }
 
     #region << Run (legacy Program.Main, lines 154-379) >>
@@ -530,30 +542,13 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
 
     #endregion
 
-    /// <summary>
-    /// Null object for the four not-yet-ported category services. Throws a precise
-    /// <see cref="NotImplementedException"/> naming the legacy dispatch line, which the per-employee
-    /// isolation <c>catch</c> in <see cref="CreateSalaryRegisterAsync"/> turns into a failed
-    /// <see cref="PayrollLog"/> row for that employee while the run continues.
-    /// </summary>
-    private sealed class NullPayrollCategoryService :
-        IPayrollArrearCalculationService,
-        IEmployeePaymentCalculationService,
-        IEmployeeOvertimePayCalculationService,
-        IEmployeeAttendancePayCalculationService
-    {
-        public static readonly NullPayrollCategoryService Instance = new NullPayrollCategoryService();
-
-        public Task CalculateAsync(PayrollCalculationContext context)
-        {
-            throw new NotImplementedException(
-                "Payroll category service not ported. Wage type '"
-                + context?.WageType?.Code + " : " + context?.WageType?.NameEn
-                + "' routed to one of PayrollArrearService (legacy HCM10.PayrollEngine/Program.cs line 2534), "
-                + "EmployeePaymentService (line 2549), EmployeeOvertimePayService (line 2569) or "
-                + "EmployeeAttendancePayService (line 2585) -- none of which is ported yet. "
-                + "Implement the matching I*CalculationService in HCMv3.Core/PayrollManagement/Services and "
-                + "ABP will inject it into PayrollEngineService automatically.");
-        }
-    }
+    // NullPayrollCategoryService (the throwing constructor-time fallback for the four category services) was
+    // removed in wave P9 when all four were ported and promoted to REQUIRED constructor dependencies.
+    //
+    // It had been retained as a "detector" for conventional-registration drift, on the reasoning that a
+    // missing registration would leave the stub in place and fail loudly per employee. Constructor injection
+    // supersedes that role and is strictly stronger: an unregistered implementation now fails at container
+    // RESOLUTION, before a single employee is processed, rather than part-way through a run after some
+    // registers have already been written. PayrollCategoryServiceRegistration_Tests still guards the
+    // registration itself.
 }

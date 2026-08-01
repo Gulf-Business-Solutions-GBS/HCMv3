@@ -24,8 +24,10 @@ public class CreateOrEditSalaryRegisterDto
 
     public PayrollResultType PayrollResultType { get; set; }
 
-    [Required]
-    public int PayrollReasonTypeId { get; set; }
+    /// <summary>
+    /// Optional: a REGULAR run has no reason. See <see cref="SalaryRegister.PayrollReasonTypeId"/>.
+    /// </summary>
+    public int? PayrollReasonTypeId { get; set; }
 
     public DateTime OffCyclePaymentDate { get; set; }
 

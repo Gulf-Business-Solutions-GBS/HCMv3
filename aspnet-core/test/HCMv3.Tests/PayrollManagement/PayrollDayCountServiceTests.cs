@@ -885,6 +885,45 @@ public class PayrollDayCountServiceTests : AppTestBase
                 offCycleReason: string.Empty));
     }
 
+    [Fact]
+    public async Task GetWeeklyOffDaysAsync_Should_Ignore_The_Duty_When_BillingMethod_Is_FixedDaysPerMonth_Even_Though_The_Two_Branches_Disagree()
+    {
+        // June-2024 production parity, employee code 2362 (HRMS_RCF salary registers 55919 / 57209 / 58433
+        // all post 4008 = 3). That employee had FOUR days whose Duty.IsWeeklyOff is true (7, 14, 21, 28 June)
+        // but only THREE with a non-zero WeeklyOff column -- the 28th was consumed by annual leave, so the
+        // time engine wrote WeeklyOff = 0 on it.
+        //
+        // Wage type 4008 carries BillingMethod = FixedDaysPerMonth (= 1) in both databases, so legacy takes
+        // the "other BillingMethod" branch at Program.cs:5168 and SUMS the WeeklyOff column. Taking the
+        // WorkingDaysPerMonth branch at 5109 instead would count the duty and return 4. This is the only
+        // arrangement in which the two branches disagree, so it is the one worth pinning.
+        var employeeId = CreateEmployee(new DateTime(2020, 1, 1));
+        CreateWageType("4008", BillingMethod.FixedDaysPerMonth);
+
+        var (workingDutyId, weeklyOffDutyId) = CreateDuties();
+
+        AddTimeRegisters(new[]
+        {
+            new TimeRegister { EmployeeId = employeeId, DayDate = new DateTime(2024, 6, 7), WeeklyOff = 1, DutyId = weeklyOffDutyId },
+            new TimeRegister { EmployeeId = employeeId, DayDate = new DateTime(2024, 6, 14), WeeklyOff = 1, DutyId = weeklyOffDutyId },
+            new TimeRegister { EmployeeId = employeeId, DayDate = new DateTime(2024, 6, 21), WeeklyOff = 1, DutyId = weeklyOffDutyId },
+
+            // The discriminating row: weekly-off duty, but the day was paid as annual leave.
+            new TimeRegister { EmployeeId = employeeId, DayDate = new DateTime(2024, 6, 28), WeeklyOff = 0, AnnualLeaveDay = 1, DutyId = weeklyOffDutyId },
+
+            new TimeRegister { EmployeeId = employeeId, DayDate = new DateTime(2024, 6, 27), WeeklyOff = 0, DutyId = workingDutyId }
+        });
+
+        var days = await _dayCountService.GetWeeklyOffDaysAsync(
+            employeeId,
+            new DateTime(2024, 6, 30),
+            PayrollRunType.Regular,
+            NoOffCycleEnd,
+            offCycleReason: string.Empty);
+
+        days.ShouldBe(3);
+    }
+
     private (int WorkingDutyId, int WeeklyOffDutyId) CreateDuties()
     {
         return UsingDbContext(context =>

@@ -76,6 +76,9 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
     private readonly IRepository<EmployeeContract> _employeeContractRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
 
+    /// <summary>Legacy line 2710: the <c>AbsenceType</c> whose <c>Code</c> is the literal string "1".</summary>
+    private const string AbsenceTypeCodeAnnualLeave = "1";
+
     private readonly IPayrollRegisterStore _registerStore;
     private readonly IPayrollDayCountService _dayCountService;
     private readonly IAccrualService _accrualService;
@@ -740,7 +743,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
 
         if (context.PayrollRunType == PayrollRunType.OffCycle)
         {
-            var annualLeaveTypeId = context.Settings.AnnualLeaveAbsenceTypeId;
+            var annualLeaveTypeId = ResolveAnnualLeaveAbsenceTypeId(context);
 
             var absences = _employeeAbsenceRepository.GetAll()
                 .Where(r => r.EmployeeId == context.EmployeeId
@@ -818,7 +821,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
             ? context.OffCycleEndDate
             : context.PayDate;
 
-        var annualLeaveTypeId = context.Settings.AnnualLeaveAbsenceTypeId;
+        var annualLeaveTypeId = ResolveAnnualLeaveAbsenceTypeId(context);
 
         return _employeeAbsAdjustmentRepository.GetAll()
             .Where(r => r.EmployeeId == context.EmployeeId
@@ -842,7 +845,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
             ? context.OffCycleEndDate
             : context.PayDate;
 
-        var annualLeaveTypeId = context.Settings.AnnualLeaveAbsenceTypeId;
+        var annualLeaveTypeId = ResolveAnnualLeaveAbsenceTypeId(context);
 
         return _employeeAbsQuotaForfeitRepository.GetAll()
             .Where(r => r.EmployeeId == context.EmployeeId
@@ -864,7 +867,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
     /// previous month end AND whose run type matches this run" list, so both lookups here run over
     /// <see cref="PayrollCalculationContext.PreviousSalaryRegisters"/>.</para>
     /// </summary>
-    private async Task<double> GetAnnualLeaveOpeningBalanceAsync(PayrollCalculationContext context)
+    protected virtual async Task<double> GetAnnualLeaveOpeningBalanceAsync(PayrollCalculationContext context)
     {
         double daysCount = 0;
 
@@ -895,7 +898,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
         }
 
         // Legacy lines 3160-3179: no register at all -- recompute from history.
-        var annualLeaveTypeId = context.Settings.AnnualLeaveAbsenceTypeId;
+        var annualLeaveTypeId = ResolveAnnualLeaveAbsenceTypeId(context);
 
         var totalAccrual = context.TimeRegisterQuery
             .Where(r => r.EmployeeId == context.EmployeeId && r.DayDate <= prevMonthEndDate)
@@ -1285,7 +1288,7 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
     /// Legacy <c>Program.GetTotalActiveDays</c> (lines 4923-4951). Wage code <b>4023</b>: previous month's
     /// register's <c>4023 + 5023</c>, plus this register's <c>4011 + 5011</c>. Touches no TimeRegister data.
     /// </summary>
-    private async Task<double> GetTotalActiveDaysAsync(PayrollCalculationContext context)
+    protected virtual async Task<double> GetTotalActiveDaysAsync(PayrollCalculationContext context)
     {
         double daysCount = 0;
 
@@ -1698,6 +1701,36 @@ public class TimeTypeCumulationService : HCMv3DomainServiceBase, ITimeTypeCumula
         var daysInMonth = DateTime.DaysInMonth(payDate.Year, payDate.Month);
         var day = cutoffDay > daysInMonth ? daysInMonth : cutoffDay;
         return new DateTime(payDate.Year, payDate.Month, day, 0, 0, 0);
+    }
+
+    /// <summary>
+    /// Legacy <c>Program.AnnualLeaveOid</c> (resolved at legacy line 2710 as
+    /// <c>AbsenceTypeList.Where(r =&gt; r.Code == "1")</c>).
+    ///
+    /// <para><b>Why this is not simply <see cref="PayrollEngineSettings.AnnualLeaveAbsenceTypeId"/>.</b> That
+    /// property is declared and read but is <b>never assigned anywhere in production code</b> --
+    /// <c>PayrollEngineService.LoadSettingsAsync</c> populates every other flag on the snapshot and silently
+    /// omits this one -- so it is permanently <c>0</c>. Reading it alone made the first arm of legacy's
+    /// <c>AbsenceType.Oid == AnnualLeaveOid || AbsenceType.QuotaType == QuotaType.AnnualLeave</c> test never
+    /// match, and because the production <c>AbsenceType</c> rows for annual leave carry
+    /// <c>QuotaType.None</c>, the second arm never matched either. The observable effect was that
+    /// <see cref="GetAnnualLeaveOpeningBalanceAsync"/>'s from-scratch fallback silently dropped
+    /// <c>totalAdjusted</c> entirely (June-2024 parity run: employee 2362 came out +12.000 days and 3400
+    /// +60.000 days, exactly their outstanding <c>EmployeeAbsAdjustment.QuotaAdjusted</c> totals), and
+    /// 4030/4031 could never see an annual-leave row.</para>
+    ///
+    /// <para>The snapshot value is still preferred when the engine has populated it, with the same
+    /// <c>Code == "1"</c> lookup as the fallback -- the identical shape
+    /// <c>AnnualLeaveProvisionService.ResolveAnnualLeaveAbsenceTypeId</c> already uses.</para>
+    /// </summary>
+    private int ResolveAnnualLeaveAbsenceTypeId(PayrollCalculationContext context)
+    {
+        if (context.Settings != null && context.Settings.AnnualLeaveAbsenceTypeId != 0)
+        {
+            return context.Settings.AnnualLeaveAbsenceTypeId;
+        }
+
+        return GetAbsenceTypeIdByCode(AbsenceTypeCodeAnnualLeave) ?? 0;
     }
 
     /// <summary>

@@ -106,6 +106,16 @@ public static class MigrationPlan
         Lookup("EmployeeSubGroupTickets", "EmployeeSubGroupTicket");
         Lookup("PayrollControlRecords", "PayrollControlRecord");
 
+        // PayrollCalendar defines the period boundaries every payroll run is validated against. Omitting it does
+        // not degrade gracefully -- PayrollEngineService aborts the whole run with "Payroll Calender does not
+        // have record for Payroll month you are running", so a migrated customer cannot run payroll at all until
+        // this lands. It was missed originally because the plan's FK closure was seeded from the TIME engine's
+        // repository injections, and nothing in the time engine reads it.
+        // Must follow PayrollAreas: PayrollCalendars.PayrollAreaId is NOT NULL and resolves through the id map.
+        // Legacy's Company and Locked columns have no target counterpart and are dropped (period locking lives
+        // on PayrollControlRecord.PeriodLocked in HCMv3).
+        Lookup("PayrollCalendars", "PayrollCalendar");
+
         // ---------- LEVEL 2/3: the employees themselves ---------------------------------------------
         plan.Add(new TableSpec
         {

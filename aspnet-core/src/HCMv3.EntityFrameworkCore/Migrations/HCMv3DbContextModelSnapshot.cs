@@ -14623,7 +14623,7 @@ namespace HCMv3.Migrations
                     b.Property<DateTime>("OffCyclePaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PayrollReasonTypeId")
+                    b.Property<int?>("PayrollReasonTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("PayrollResultType")
@@ -22954,10 +22954,6 @@ namespace HCMv3.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Password")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("PermanentAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -23002,9 +22998,8 @@ namespace HCMv3.Migrations
                     b.Property<int?>("TitleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -23021,6 +23016,10 @@ namespace HCMv3.Migrations
                     b.HasIndex("ReligionId");
 
                     b.HasIndex("TitleId");
+
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
 
                     b.ToTable("Applicants");
                 });
@@ -34388,9 +34387,7 @@ namespace HCMv3.Migrations
 
                     b.HasOne("HCMv3.PayrollManagement.PayrollReasonType", "PayrollReasonType")
                         .WithMany()
-                        .HasForeignKey("PayrollReasonTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PayrollReasonTypeId");
 
                     b.Navigation("Employee");
 

@@ -1351,7 +1351,12 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
 
         var empContractList = _employeeContractRepository.GetAll().Where(r => r.EmployeeId == employeeId).ToList();
         var empGratuityList = _employeeGratuityRepository.GetAll().Where(r => r.EmployeeId == employeeId).ToList();
-        var empTimeTransferList = _timeTransferRepository.GetAll().Where(r => r.EmployeeId == employeeId).ToList();
+        // GetAllIncluding (ABP's IRepository API -- NOT Microsoft.EntityFrameworkCore's .Include(), which is
+        // unavailable in HCMv3.Core) is required here: this list is materialised eagerly and
+        // GetTotalUnpaidLeaveDays below dereferences r.TransferType.Code in memory. Lazy-loading proxies are
+        // not enabled, so without the eager load TransferType is null and every employee with even one
+        // TimeTransfer row throws NullReferenceException.
+        var empTimeTransferList = _timeTransferRepository.GetAllIncluding(r => r.TransferType).Where(r => r.EmployeeId == employeeId).ToList();
         var empTimeRegister = _timeRegisterRepository.GetAll().Where(r => r.EmployeeId == employeeId);
         var empAbsAdjustmentList = _employeeAbsAdjustmentRepository.GetAll()
             .Where(r => r.EmployeeId == employeeId && r.AdjustmentType != AdjustmentType.NoImpactOnQuota)
@@ -1454,7 +1459,11 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         double totalAbsCount = 0;
 
         var openingFromTransfer = empTimeTransferList
-            .Where(r => r.TransferType.Code == "5" && r.TransferDate >= startDate && r.TransferDate <= endDate)
+            // TransferType is eagerly loaded by the caller (GetAllIncluding). The null-conditional additionally
+            // guards the soft-deleted-lookup case: ABP's IsDeleted filter propagates into the include, so a
+            // soft-deleted TimeTransferType leaves the navigation null. Skipping such a row matches the
+            // SQL-translated sibling query in GetBalanceQuotaAsync, whose join drops it too.
+            .Where(r => r.TransferType?.Code == "5" && r.TransferDate >= startDate && r.TransferDate <= endDate)
             .Sum(r => r.TransferCount);
         totalAbsCount += openingFromTransfer;
 

@@ -17,7 +17,7 @@ namespace HCMv3.PayrollManagement.Services;
 /// <see cref="IWageTypeCalculator"/> implementations reached through
 /// <see cref="IWageTypeCalculatorResolver"/>, or the category services
 /// (<see cref="IEmployeeBasicPayCalculationService"/>, <see cref="IEmployeeLeavePayCalculationService"/>,
-/// and the four not-yet-ported ones in this file).</para>
+/// and the four declared at the bottom of this file, all ported in wave P9).</para>
 ///
 /// <para><b>Category dispatch stays here, deliberately.</b> A single-string
 /// <see cref="IWageTypeCalculator.WageCode"/> cannot express legacy's routing: legacy builds
@@ -46,35 +46,33 @@ public interface IPayrollEngineService : IDomainService
 }
 
 // -------------------------------------------------------------------------------------------------------
-// INJECTION POINTS for the four category services that are NOT ported yet (tracked separately).
+// INJECTION POINTS for the four category services. WAVE P9: ALL FOUR ARE NOW PORTED.
 //
-// These four interfaces exist so that wiring the real implementations later is mechanical: implement the
-// interface as an ITransientDependency domain service in this same namespace and ABP's conventional
-// registration will satisfy PayrollEngineService's OPTIONAL PROPERTY injection automatically -- no change
-// to PayrollEngineService is required.
+// These four interfaces exist so that wiring the implementations was mechanical: each is implemented as an
+// ITransientDependency domain service in this same namespace and ABP's conventional registration satisfies
+// PayrollEngineService's OPTIONAL PROPERTY injection automatically -- no change to PayrollEngineService was
+// required.
 //
-// Until then PayrollEngineService keeps a Null* default that THROWS NotImplementedException naming the exact
-// legacy line. That is deliberate: a loud, per-employee, isolated failure beats silently under-paying an
-// employee who has overtime/attendance/payment/arrear wage types configured. Employees with none of those
-// wage types are unaffected, because the dispatch arm is never reached for them.
+// PayrollEngineService still keeps a Null* default that THROWS NotImplementedException naming the exact
+// legacy line. It is no longer a "not ported" marker; it is the DETECTOR for Castle conventional
+// registration silently failing to match an implementation to its interface. A loud, per-employee, isolated
+// failure beats silently under-paying an employee who has overtime/attendance/payment/arrear wage types.
 // -------------------------------------------------------------------------------------------------------
 
 /// <summary>
-/// NOT PORTED. Legacy <c>HCM10.PayrollEngine/EmployeeOvertimePayService.Main</c>, dispatched at legacy
+/// Legacy <c>HCM10.PayrollEngine/EmployeeOvertimePayService.Main</c>, dispatched at legacy
 /// <c>Program.cs</c> line 2569 for wage types in <c>wtOverTimeWageList</c>
 /// (<c>EmployeeOvertime.OvertimeType.WageType</c>, rebuilt per employee at legacy line 1932).
+///
+/// <para><b>PORTED in wave P9</b> -- see <see cref="EmployeeOvertimePayCalculationService"/> for the rule
+/// and its preserved legacy quirks.</para>
 ///
 /// <para><b>Category gate applied by the engine, not here:</b> legacy wraps the call in
 /// <c>if (!onHold_AllEarnings)</c> (legacy line 2567).</para>
 ///
-/// <para><b>WAVE P8 -- THIS ARM IS NOW REACHABLE.</b> Until wave P8 the overtime category set was always
-/// empty (<c>OvertimeType</c> had no <c>WageType</c> FK), so this Null* default could never fire. The FK
-/// is restored and the legacy line-1932 query is active, so any employee with an <c>EmployeeOvertime</c>
-/// row in the period whose <c>OvertimeType</c> maps to a wage type will now hit the
-/// <c>NotImplementedException</c> below and be recorded as a FAILED employee in the run (isolated, the run
-/// continues). That is the intended loud gap -- it replaces silently under-paying that employee -- but it
-/// is a visible behaviour change for tenants that use overtime wage types. Porting
-/// <c>EmployeeOvertimePayService.Main</c> is the remaining work.</para>
+/// <para><b>WAVE P8 made this arm reachable.</b> Until then the overtime category set was always empty
+/// (<c>OvertimeType</c> had no <c>WageType</c> FK). The FK is restored and the legacy line-1932 query is
+/// active, so employees with overtime now genuinely exercise this rule.</para>
 /// </summary>
 public interface IEmployeeOvertimePayCalculationService : IDomainService
 {
@@ -82,9 +80,11 @@ public interface IEmployeeOvertimePayCalculationService : IDomainService
 }
 
 /// <summary>
-/// NOT PORTED. Legacy <c>HCM10.PayrollEngine/EmployeeAttendancePayService.Main</c>, dispatched at legacy
+/// Legacy <c>HCM10.PayrollEngine/EmployeeAttendancePayService.Main</c>, dispatched at legacy
 /// <c>Program.cs</c> line 2585 for wage types in <c>wtAttendanceWageList</c>
 /// (<c>EmployeeAttendance.AttendanceType.WageType</c>, rebuilt per employee at legacy line 1936).
+///
+/// <para><b>PORTED in wave P9</b> -- see <see cref="EmployeeAttendancePayCalculationService"/>.</para>
 ///
 /// <para>Legacy applies NO extra on-hold gate on this arm.</para>
 /// </summary>
@@ -94,9 +94,11 @@ public interface IEmployeeAttendancePayCalculationService : IDomainService
 }
 
 /// <summary>
-/// NOT PORTED. Legacy <c>HCM10.PayrollEngine/EmployeePaymentService.Main</c>, dispatched at legacy
+/// Legacy <c>HCM10.PayrollEngine/EmployeePaymentService.Main</c>, dispatched at legacy
 /// <c>Program.cs</c> line 2549 for wage types in <c>wtPaymentWageList</c> OR <c>wtRecPaymentWageList</c>
 /// (rebuilt per employee at legacy lines 1939-1942).
+///
+/// <para><b>PORTED in wave P9</b> -- see <see cref="EmployeePaymentCalculationService"/>.</para>
 ///
 /// <para><b>Category gate applied by the engine, not here.</b> Legacy line 2547 is an earning/deduction
 /// PAIR test, and it is NOT the same as the resolver's generic <c>IsOnHold</c>:
@@ -110,10 +112,15 @@ public interface IEmployeePaymentCalculationService : IDomainService
 }
 
 /// <summary>
-/// NOT PORTED. Legacy <c>HCM10.PayrollEngine/PayrollArrearService.Main</c>, dispatched at legacy
+/// Legacy <c>HCM10.PayrollEngine/PayrollArrearService.Main</c>, dispatched at legacy
 /// <c>Program.cs</c> line 2534. This is the FIRST arm of legacy's else-if chain and it keys off
 /// <c>WageType.IncludeInArrearPay</c> (legacy line 2532) -- i.e. an arrear wage type never reaches any other
 /// category, whatever else it looks like. Legacy applies no on-hold gate on this arm.
+///
+/// <para><b>PORTED in wave P9</b> -- see <see cref="PayrollArrearCalculationService"/>. Because this arm is
+/// evaluated for EVERY active non-TimeType wage type of EVERY employee (the flag is a wage-type property, not
+/// employee data), leaving it unported aborted every employee at the first arrear wage code in
+/// <c>PayrollOrder</c> sequence -- typically <c>7000 Basic Salary Arrear</c>, PayrollOrder 20020.</para>
 /// </summary>
 public interface IPayrollArrearCalculationService : IDomainService
 {

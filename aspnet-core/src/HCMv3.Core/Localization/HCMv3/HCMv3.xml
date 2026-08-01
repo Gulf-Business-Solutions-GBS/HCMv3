@@ -4247,5 +4247,13 @@
     <text name="BulkImportQueued">{0} import has been queued.</text>
     <text name="BulkImportUnsupportedImage">'{0}' is not a supported image file (.jpg, .jpeg, .png, .gif).</text>
     <text name="TimesheetImported">{0} punches imported, {1} skipped, {2} failed.</text>
+    <text name="CareersTenantNotResolved">This careers portal address is not recognized.</text>
+    <text name="CareersVacancyNotFound">This job opening is no longer available.</text>
+    <text name="CareersRegistrationIsDisabled">Candidate registration is not currently open on this careers portal.</text>
+    <text name="CareersApplicantProfileNotFound">No candidate profile is linked to this account.</text>
+    <text name="CareersCvNotFound">This CV could not be found.</text>
+    <text name="CareersDuplicateCvName">You already have a CV with this title.</text>
+    <text name="CareersAlreadyAppliedToThisVacancy">You have already applied to this job opening.</text>
+    <text name="CareersCvCannotBeDeletedAfterApplying">This CV cannot be deleted because an application using it has already progressed.</text>
   </texts>
 </localizationDictionary>

@@ -20,7 +20,7 @@ public class SalaryRegisterDto : EntityDto<int>
 
     public PayrollResultType PayrollResultType { get; set; }
 
-    public int PayrollReasonTypeId { get; set; }
+    public int? PayrollReasonTypeId { get; set; }
 
     public string PayrollReasonTypeName { get; set; }
 

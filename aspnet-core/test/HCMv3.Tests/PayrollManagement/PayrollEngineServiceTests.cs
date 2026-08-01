@@ -329,22 +329,36 @@ public class PayrollEngineServiceTests
 
     #endregion
 
-    #region << Not-ported category services fail loudly, per employee >>
+    #region << A throwing category service fails only that employee >>
 
+    /// <summary>
+    /// Wave P9 rewrote this test. It previously asserted the SCAFFOLDING behaviour of the unported era --
+    /// that reaching a category service produced a "not ported" message -- which stopped being meaningful the
+    /// moment all four were implemented.
+    ///
+    /// <para>The invariant underneath it is still worth protecting, and is arguably more important now: an
+    /// exception raised inside a category service must fail ONLY the employee being processed, leaving the
+    /// run to continue for everyone else. A regression here would turn one employee's bad data into a whole
+    /// payroll run's failure. So the assertion is re-pointed at that isolation guarantee, driven by an
+    /// arrear service that is configured to throw.</para>
+    /// </summary>
     [Fact]
-    public async Task RunAsync_Should_Fail_Only_That_Employee_When_An_Unported_Category_Service_Is_Reached()
+    public async Task RunAsync_Should_Fail_Only_That_Employee_When_A_Category_Service_Throws()
     {
         var harness = new Harness();
         var arrearWageType = WageType("5000", "Basic Pay Arrear", 100, BillingType.Earning);
         arrearWageType.IncludeInArrearPay = true;
         harness.WageTypes.Add(arrearWageType);
 
+        harness.ArrearService
+            .CalculateAsync(Arg.Any<PayrollCalculationContext>())
+            .Returns(_ => Task.FromException(new InvalidOperationException("arrear boom")));
+
         var result = await harness.Build().RunAsync(harness.RegularInput());
 
         var employeeResult = result.EmployeeResults.Single();
         employeeResult.Succeeded.ShouldBeFalse();
-        employeeResult.Message.ShouldContain("PayrollArrearService");
-        employeeResult.Message.ShouldContain("not ported");
+        employeeResult.Message.ShouldContain("arrear boom");
     }
 
     #endregion
@@ -432,6 +446,14 @@ public class PayrollEngineServiceTests
 
         public readonly IEmployeeBasicPayCalculationService BasicPayService = Substitute.For<IEmployeeBasicPayCalculationService>();
         public readonly IEmployeeLeavePayCalculationService LeavePayService = Substitute.For<IEmployeeLeavePayCalculationService>();
+
+        // Wave P9: the four category services are REQUIRED constructor dependencies (previously optional
+        // property injections defaulting to a throwing stub). Held as fields so individual tests can drive
+        // them -- see RunAsync_Should_Fail_Only_That_Employee_When_A_Category_Service_Throws.
+        // PaymentService is declared just above; it predates this wave.
+        public readonly IPayrollArrearCalculationService ArrearService = Substitute.For<IPayrollArrearCalculationService>();
+        public readonly IEmployeeOvertimePayCalculationService OvertimePayService = Substitute.For<IEmployeeOvertimePayCalculationService>();
+        public readonly IEmployeeAttendancePayCalculationService AttendancePayService = Substitute.For<IEmployeeAttendancePayCalculationService>();
         public readonly IEmployeePaymentCalculationService PaymentService = Substitute.For<IEmployeePaymentCalculationService>();
 
         public Harness()
@@ -577,7 +599,15 @@ public class PayrollEngineServiceTests
                 // Wave: the time-type cumulation pre-pass is now a real collaborator. These engine tests
                 // assert orchestration (employee selection, register creation, wage-type dispatch), not day
                 // counts, so it is stubbed out. TimeTypeCumulationServiceTests covers the pre-pass itself.
-                Substitute.For<ITimeTypeCumulationService>());
+                Substitute.For<ITimeTypeCumulationService>(),
+                // Wave P9: the four category services became REQUIRED constructor dependencies (they were
+                // optional property injections defaulting to a throwing stub). These tests assert
+                // orchestration, not category-pay arithmetic, so they are substituted; each service has its
+                // own dedicated test class.
+                ArrearService,
+                PaymentService,
+                OvertimePayService,
+                AttendancePayService);
         }
     }
 
