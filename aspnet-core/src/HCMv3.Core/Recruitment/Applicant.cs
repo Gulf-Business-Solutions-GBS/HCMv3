@@ -23,11 +23,25 @@ public class Applicant : FullAuditedEntity, IMustHaveTenant
     public virtual int? TitleId { get; set; }
     public virtual Title Title { get; set; }
 
-    [StringLength(256)]
-    public virtual string UserName { get; set; }
-
-    [StringLength(256)]
-    public virtual string Password { get; set; }
+    /// <summary>
+    /// Id of the ABP <c>User</c> (<c>AbpUsers.Id</c>) this applicant signs in as, or <c>null</c> for an
+    /// applicant that was created by a recruiter and has never registered on the careers portal.
+    ///
+    /// This REPLACES the legacy <c>UserName</c>/<c>Password</c> columns, which stored the careers-portal
+    /// credentials in plaintext and were compared with <c>a.UserName == x &amp;&amp; a.Password == y</c>
+    /// (<c>HCM10.Recruiting/Controllers/AccountController.cs:105-106,168-169</c>) and mailed back to the
+    /// candidate in cleartext on "forgot password" (<c>AccountController.cs:445</c>) and on first apply
+    /// (<c>VacancyController.cs:685,779</c>). Candidate identity is now an ordinary ABP user in the
+    /// <c>Candidate</c> role, so hashing, lockout, password policy, email confirmation and reset codes are
+    /// all ASP.NET Zero's.
+    ///
+    /// Deliberately NOT an EF navigation property / FK constraint to <c>AbpUsers</c>: <c>Applicant</c> is
+    /// soft-deleted (<see cref="FullAuditedEntity"/>) and <c>User</c> is too, so a real FK would add a
+    /// delete-order coupling between the recruitment module and ABP identity for no integrity gain that the
+    /// unique index below does not already provide. Uniqueness is enforced per tenant in
+    /// <c>HCMv3DbContext.OnModelCreating</c>.
+    /// </summary>
+    public virtual long? UserId { get; set; }
 
     [Required]
     [StringLength(SimpleLookupConsts.MaxNameLength)]

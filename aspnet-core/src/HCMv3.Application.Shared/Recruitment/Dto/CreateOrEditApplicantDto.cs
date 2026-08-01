@@ -16,11 +16,9 @@ public class CreateOrEditApplicantDto
 
     public int? TitleId { get; set; }
 
-    [StringLength(256)]
-    public string UserName { get; set; }
-
-    [StringLength(256)]
-    public string Password { get; set; }
+    // UserName/Password are GONE from this DTO on purpose. Careers-portal credentials are ABP user
+    // credentials now (Applicant.UserId -> AbpUsers.Id); a recruiter editing an applicant record must never
+    // be able to set, read or overwrite them. See Applicant.UserId.
 
     [Required]
     [StringLength(SimpleLookupConsts.MaxNameLength)]

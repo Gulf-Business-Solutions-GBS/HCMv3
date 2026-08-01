@@ -158,6 +158,10 @@ public class AppSettingProvider : SettingProvider
                 new SettingDefinition(AppSettings.UserManagement.AllowSelfRegistration,
                     GetFromAppSettings(AppSettings.UserManagement.AllowSelfRegistration, "true"),
                     scopes: SettingScopes.Tenant, clientVisibilityProvider: _visibleSettingClientVisibilityProvider),
+                // Careers-portal candidate self-registration. Default "false" -- opt-in, not opt-out.
+                new SettingDefinition(AppSettings.Careers.AllowCandidateSelfRegistration,
+                    GetFromAppSettings(AppSettings.Careers.AllowCandidateSelfRegistration, "false"),
+                    scopes: SettingScopes.Tenant, clientVisibilityProvider: _visibleSettingClientVisibilityProvider),
                 new SettingDefinition(AppSettings.UserManagement.IsNewRegisteredUserActiveByDefault,
                     GetFromAppSettings(AppSettings.UserManagement.IsNewRegisteredUserActiveByDefault, "false"),
                     scopes: SettingScopes.Tenant),

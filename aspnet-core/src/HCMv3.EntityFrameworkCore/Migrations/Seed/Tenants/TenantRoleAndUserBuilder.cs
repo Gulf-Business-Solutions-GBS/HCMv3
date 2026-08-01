@@ -52,6 +52,18 @@ public class TenantRoleAndUserBuilder
             _context.SaveChanges();
         }
 
+        //Candidate role (careers portal). Intentionally NOT IsDefault: careers candidates must not inherit
+        //whatever the tenant admin has granted to the default "User" role. It is seeded with zero
+        //permissions; a candidate token therefore authorizes nothing beyond the anonymous careers surface
+        //and the endpoints that only require authentication (e.g. own profile).
+
+        var candidateRole = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Candidate);
+        if (candidateRole == null)
+        {
+            _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Candidate, StaticRoleNames.Tenants.Candidate) { IsStatic = true, IsDefault = false });
+            _context.SaveChanges();
+        }
+
         //admin user
 
         var adminUser = _context.Users.IgnoreQueryFilters().FirstOrDefault(u => u.TenantId == _tenantId && u.UserName == AbpUserBase.AdminUserName);

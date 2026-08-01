@@ -174,8 +174,8 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
     {
         entity.Code = input.Code;
         entity.TitleId = input.TitleId;
-        entity.UserName = input.UserName;
-        entity.Password = input.Password;
+        // entity.UserId is deliberately NOT mapped from this DTO: the applicant<->ABP user link is owned by
+        // the careers registration flow (CareersAccountAppService), never by the recruiter-facing editor.
         entity.FirstNameEn = input.FirstNameEn;
         entity.FirstNameAr = input.FirstNameAr;
         entity.SecondNameEn = input.SecondNameEn;
@@ -276,7 +276,6 @@ public class ApplicantsAppService : HCMv3AppServiceBase, IApplicantsAppService
             Id = entity.Id,
             Code = entity.Code,
             TitleId = entity.TitleId,
-            UserName = entity.UserName,
             FirstNameEn = entity.FirstNameEn,
             FirstNameAr = entity.FirstNameAr,
             SecondNameEn = entity.SecondNameEn,

@@ -12,6 +12,22 @@ public static class AppSettings
         public const string BillingAddress = "App.HostManagement.BillingAddress";
     }
 
+    public static class Careers
+    {
+        /// <summary>
+        /// Per-tenant master switch for anonymous candidate self-registration on the careers portal.
+        /// Defaults to <c>false</c>: a tenant that has not deliberately opted in cannot have users created
+        /// on it by unauthenticated internet traffic.
+        ///
+        /// This is an ADDITIONAL gate, ANDed with ABP's own
+        /// <c>App.UserManagement.AllowSelfRegistration</c> (enforced inside
+        /// <c>UserRegistrationManager.CheckSelfRegistrationIsEnabled</c>). It exists so that turning the
+        /// careers portal on does not require reasoning about the main app's registration page, and so that
+        /// turning careers registration off is one setting rather than a code change.
+        /// </summary>
+        public const string AllowCandidateSelfRegistration = "App.Careers.AllowCandidateSelfRegistration";
+    }
+
     public static class DashboardCustomization
     {
         public const string Configuration = "App.DashboardCustomization.Configuration";

@@ -30,6 +30,15 @@ public static class AppRoleConfig
                 StaticRoleNames.Tenants.User,
                 MultiTenancySides.Tenant)
             );
+
+        // Careers-portal candidates. grantAllPermissionsByDefault is left false -- a candidate role must
+        // start with zero permissions. Registered here (rather than only in TenantRoleAndUserBuilder) so
+        // TenantManager.CreateStaticRoles creates it for every NEW tenant too.
+        roleManagementConfig.StaticRoles.Add(
+            new StaticRoleDefinition(
+                StaticRoleNames.Tenants.Candidate,
+                MultiTenancySides.Tenant)
+            );
     }
 }
 

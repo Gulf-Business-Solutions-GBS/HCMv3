@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using HCMv3.Auditing;
 using HCMv3.Authorization.Users.Password;
+using HCMv3.Careers;
 using HCMv3.Configuration;
 using HCMv3.EntityFrameworkCore;
 using HCMv3.MultiTenancy;
@@ -47,6 +48,16 @@ public class HCMv3WebHostModule : AbpModule
         Configuration.Modules.AbpWebCommon().MultiTenancy.DomainFormat =
             _appConfiguration["App:ServerRootAddress"] ?? "https://localhost:44301/";
         Configuration.Modules.AspNetZero().LicenseCode = _appConfiguration["AbpZeroLicenseCode"];
+
+        // Careers portal (wave R2). Lets ABP resolve the ambient tenant from a careers subdomain so that
+        // candidates authenticate against their own tenant through the STOCK TokenAuthController rather
+        // than through a second, careers-specific login implementation. Inserted FIRST so a careers host
+        // wins over the header/cookie contributors, which an anonymous careers client does not set anyway.
+        //
+        // Inert until App:CareersDomainFormat is configured (it is not, by instruction): with the key unset
+        // the contributor returns null for every request and resolution behaves exactly as it does today.
+        // See CareersTenantResolveContributor for the full blast-radius note.
+        Configuration.MultiTenancy.Resolvers.Insert(0, typeof(CareersTenantResolveContributor));
     }
 
     public override void Initialize()
