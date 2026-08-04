@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Timing;
+using HCMv3.EngineRuns;
+using HCMv3.EngineRuns.Services;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration;
@@ -148,6 +150,25 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     private readonly ITimeRegisterFieldCalculator _fieldCalculator;
     private readonly IPunchResolutionStrategyResolver _punchStrategyResolver;
 
+    /// <summary>
+    /// Live progress publisher. OPTIONAL property injection (Windsor fills it when the implementation is
+    /// registered), defaulting to a no-op -- see <see cref="NullEngineRunProgressWriter"/> for why this is
+    /// not a constructor dependency.
+    ///
+    /// <para>Every call on it commits in its OWN unit of work. That is essential and not incidental: this
+    /// whole service runs inside one <c>[UnitOfWork]</c> that completes only when the last employee is done,
+    /// so anything written through the engine's own repositories -- <c>TimeLog</c> rows included -- stays
+    /// invisible to other connections until the run ends.</para>
+    /// </summary>
+    public IEngineRunProgressWriter ProgressWriter { get; set; } = NullEngineRunProgressWriter.Instance;
+
+    /// <summary>
+    /// Run id of the run currently executing on this instance, so helpers deep in the day loop can
+    /// heartbeat without threading it through every signature. Instance state is safe -- ABP domain services
+    /// are transient, so one instance serves one run.
+    /// </summary>
+    private long _currentEngineRunId;
+
     public TimeEngineService(
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
@@ -257,6 +278,18 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
             throw new ArgumentException("No End Date defined for Time Calculation or Check Date format.");
         }
 
+        // Opened FIRST, before any of the (slow) settings/master-data loading, so the screen shows "Running"
+        // the moment the job starts rather than minutes later. It is written on its own connection, so it is
+        // visible immediately -- unlike the ExecutionLog row created a few lines below.
+        var engineRunId = await ProgressWriter.BeginRunAsync(new EngineRunStartInfo
+        {
+            EngineType = EngineType.TimeEngine,
+            StartedByUserName = input.CurrentUserName,
+            Parameters = BuildExecutionLogParameters(input)
+        });
+
+        _currentEngineRunId = engineRunId;
+
         var settings = await LoadSettingsAsync();
         var masterData = LoadMasterData(settings);
 
@@ -277,34 +310,110 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         var employeeCount = employees.Count;
         var aborted = false;
 
+        await ProgressWriter.SetTotalEmployeesAsync(engineRunId, employeeCount);
+
+        var sequenceNo = 0;
+
         foreach (var employee in employees)
         {
-            // Legacy "Check TE Stopped Or Not": a TimeLog row with StopFlag aborts the whole run.
+            // Legacy "Check TE Stopped Or Not": a TimeLog row with StopFlag aborts the whole run. Preserved.
             if (_timeLogRepository.GetAll().Any(x => x.StopFlag))
             {
                 aborted = true;
                 break;
             }
 
+            // The API-initiated Stop. Read through the progress writer's OWN connection: the legacy check
+            // above cannot see a StopFlag set after this run's transaction opened, and writing that flag
+            // from outside would contend with the locks this transaction holds on TimeLog.
+            if (await ProgressWriter.IsStopRequestedAsync(engineRunId))
+            {
+                aborted = true;
+                break;
+            }
+
+            sequenceNo = sequenceNo + 1;
+
+            // Measured, not estimated: the ETA is only as honest as this stopwatch.
+            var employeeStartedAt = Clock.Now;
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
             try
             {
                 var processed = await ProcessEmployeeAsync(
                     input, employee, runStartDate, runEndDate, settings, masterData, cursor, employeeCount);
 
+                stopwatch.Stop();
+
                 if (!processed)
                 {
-                    // Legacy "NoofEmp = NoofEmp - 1; continue;" -- employee skipped, not counted.
+                    // Legacy "NoofEmp = NoofEmp - 1; continue;" -- employee skipped, not counted. It gets no
+                    // grid row (it was never processed) but must shrink the remaining count or the ETA would
+                    // never reach zero.
                     employeeCount = employeeCount - 1;
+                    await ProgressWriter.RecordSkippedEmployeeAsync(engineRunId);
+                    continue;
                 }
+
+                await RecordEmployeeProgressAsync(
+                    engineRunId, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
             }
             catch (Exception ex)
             {
+                stopwatch.Stop();
+
                 // Legacy per-employee catch: log and carry on, never rethrow.
                 await AddTimeLogAsync(employee.Id, runStartDate, ex.Message, 1, employeeCount);
+
+                await RecordEmployeeProgressAsync(
+                    engineRunId, sequenceNo, employee, false, ex.Message, employeeStartedAt, stopwatch);
             }
         }
 
-        return await FinalizeExecutionLogAsync(executionLogId, aborted);
+        var result = await FinalizeExecutionLogAsync(executionLogId, aborted);
+
+        await ProgressWriter.CompleteRunAsync(
+            engineRunId,
+            ResolveEngineRunStatus(result.Aborted, result.Failed),
+            executionLogId,
+            null);
+
+        return result;
+    }
+
+    /// <summary>Maps the run's outcome onto the operator-facing <see cref="EngineRunStatus"/>.</summary>
+    private static EngineRunStatus ResolveEngineRunStatus(bool aborted, int failedCount)
+    {
+        if (aborted)
+        {
+            return EngineRunStatus.Aborted;
+        }
+
+        return failedCount > 0 ? EngineRunStatus.CompletedWithErrors : EngineRunStatus.Completed;
+    }
+
+    private async Task RecordEmployeeProgressAsync(
+        long engineRunId,
+        int sequenceNo,
+        Employee employee,
+        bool succeeded,
+        string message,
+        DateTime startedAt,
+        System.Diagnostics.Stopwatch stopwatch)
+    {
+        await ProgressWriter.RecordEmployeeAsync(new EngineRunEmployeeProgress
+        {
+            EngineRunId = engineRunId,
+            SequenceNo = sequenceNo,
+            EmployeeId = employee.Id,
+            EmployeeCode = employee.Code,
+            EmployeeName = employee.FullNameEn,
+            Succeeded = succeeded,
+            Message = message,
+            StartedAt = startedAt,
+            CompletedAt = Clock.Now,
+            ElapsedMilliseconds = (int)Math.Min(stopwatch.ElapsedMilliseconds, int.MaxValue)
+        });
     }
 
     #endregion
@@ -434,7 +543,31 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
 
     private async Task<int> AddExecutionLogAsync(TimeEngineRunInput input)
     {
-        // Legacy parameter string: "Payroll Area : x | Start Date : dd/MM/yyyy | End Date : dd/MM/yyyy | Employee Code : y"
+        var log = new ExecutionLog
+        {
+            UserName = input.CurrentUserName,
+            ActionDateTime = Clock.Now,
+            Action = ExecutionLogAction.RUN,
+            Module = ExecutionLogModule.TimeEngine,
+            ScreenName = TimeEngineScreenName,
+            Parameters = BuildExecutionLogParameters(input),
+            ExecutionStatus = ExecutionLogStatus.INPRECESS,
+            TotalRecords = 0,
+            Successfull = 0,
+            Failed = 0
+        };
+
+        return await _executionLogRepository.InsertAndGetIdAsync(log);
+    }
+
+    /// <summary>
+    /// Legacy parameter string: "Payroll Area : x | Start Date : dd/MM/yyyy | End Date : dd/MM/yyyy |
+    /// Employee Code : y". Extracted so the live progress row can carry the identical text as the
+    /// <c>ExecutionLog</c> row -- the operator screen shows one, reports show the other, and they must
+    /// agree.
+    /// </summary>
+    private static string BuildExecutionLogParameters(TimeEngineRunInput input)
+    {
         var parts = new List<string>();
 
         if (!string.IsNullOrEmpty(input.PayrollAreaName))
@@ -450,21 +583,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
             parts.Add("Employee Code : " + input.EmployeeCodes);
         }
 
-        var log = new ExecutionLog
-        {
-            UserName = input.CurrentUserName,
-            ActionDateTime = Clock.Now,
-            Action = ExecutionLogAction.RUN,
-            Module = ExecutionLogModule.TimeEngine,
-            ScreenName = TimeEngineScreenName,
-            Parameters = string.Join(" | ", parts),
-            ExecutionStatus = ExecutionLogStatus.INPRECESS,
-            TotalRecords = 0,
-            Successfull = 0,
-            Failed = 0
-        };
-
-        return await _executionLogRepository.InsertAndGetIdAsync(log);
+        return string.Join(" | ", parts);
     }
 
     /// <summary>

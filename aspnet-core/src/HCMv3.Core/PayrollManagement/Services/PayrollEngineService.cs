@@ -7,6 +7,8 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Timing;
 using Abp.UI;
+using HCMv3.EngineRuns;
+using HCMv3.EngineRuns.Services;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings.Services;
@@ -118,6 +120,15 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     public IEmployeeOvertimePayCalculationService OvertimePayService { get; set; }
 
     public IEmployeeAttendancePayCalculationService AttendancePayService { get; set; }
+
+    /// <summary>
+    /// Live progress publisher. OPTIONAL property injection defaulting to a no-op -- see
+    /// <see cref="NullEngineRunProgressWriter"/> for why this is not a constructor dependency.
+    ///
+    /// <para>Every call on it commits in its OWN unit of work, which is the only reason progress is visible
+    /// while this service's single <c>[UnitOfWork]</c> is still open.</para>
+    /// </summary>
+    public IEngineRunProgressWriter ProgressWriter { get; set; } = NullEngineRunProgressWriter.Instance;
 
     public PayrollEngineService(
         IRepository<Employee> employeeRepository,
@@ -268,9 +279,19 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         DateTime payInDate,
         PayrollEngineSettings settings)
     {
+        // Opened on its own committed transaction so the operator screen sees "Running" immediately. The
+        // ExecutionLog row created on the next line cannot serve this purpose: it is written inside this
+        // run's outer unit of work and stays invisible to every other connection until the run ends.
+        var engineRunId = await ProgressWriter.BeginRunAsync(new EngineRunStartInfo
+        {
+            EngineType = EngineType.PayrollEngine,
+            Parameters = BuildExecutionLogParameters(input, payInDate)
+        });
+
         var executionLogId = await AddExecutionLogAsync(input, payInDate);
 
         var result = new PayrollEngineRunResult { PayInDate = payInDate };
+        string runFailureMessage = null;
 
         try
         {
@@ -282,10 +303,23 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
 
             var employeeCount = employees.Count;
 
+            await ProgressWriter.SetTotalEmployeesAsync(engineRunId, employeeCount);
+
+            var sequenceNo = 0;
+
             foreach (var employee in employees)
             {
-                // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the whole run.
+                // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the whole run. Preserved.
                 if (_payrollLogRepository.GetAll().Any(x => x.StopFlag))
+                {
+                    result.Aborted = true;
+                    break;
+                }
+
+                // The API-initiated Stop, read on the progress writer's own connection. The legacy check
+                // above cannot see a flag set after this run's transaction opened, and setting that flag
+                // from outside would contend with the locks this transaction holds on PayrollLog.
+                if (await ProgressWriter.IsStopRequestedAsync(engineRunId))
                 {
                     result.Aborted = true;
                     break;
@@ -297,10 +331,18 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
                     EmployeeCode = employee.Code
                 };
 
+                sequenceNo = sequenceNo + 1;
+
+                // Measured, not estimated: the ETA is only as honest as this stopwatch.
+                var employeeStartedAt = Clock.Now;
+                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
                 try
                 {
                     SkipWithoutDecrement = false;
                     var processed = await ProcessEmployeeAsync(input, employee, payInDate, settings, employeeResult);
+
+                    stopwatch.Stop();
 
                     if (!processed)
                     {
@@ -312,6 +354,9 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
                             employeeCount = employeeCount - 1;
                         }
 
+                        // No grid row -- the employee was never processed -- but the remaining count must
+                        // shrink or the ETA would never reach zero.
+                        await ProgressWriter.RecordSkippedEmployeeAsync(engineRunId);
                         continue;
                     }
 
@@ -319,9 +364,14 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
                     employeeResult.Succeeded = true;
                     employeeResult.Message = "Successfull";
                     await AddPayrollLogAsync(employee.Id, payInDate, "Successfull", 0, employeeCount);
+
+                    await RecordEmployeeProgressAsync(
+                        engineRunId, sequenceNo, employee, true, "Successfull", employeeStartedAt, stopwatch);
                 }
                 catch (Exception ex)
                 {
+                    stopwatch.Stop();
+
                     // ==============================================================================
                     // PER-EMPLOYEE ERROR ISOLATION -- legacy lines 1438-1460.
                     // One bad employee (including one bad wage type inside one bad employee, wrapped by
@@ -333,18 +383,79 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
                     employeeResult.Succeeded = false;
                     employeeResult.Message = message;
                     await AddPayrollLogAsync(employee.Id, payInDate, message, 1, employeeCount);
+
+                    await RecordEmployeeProgressAsync(
+                        engineRunId, sequenceNo, employee, false, message, employeeStartedAt, stopwatch);
                 }
 
                 result.EmployeeResults.Add(employeeResult);
             }
         }
+        catch (Exception ex)
+        {
+            // Run-level failure (employee selection, control-record resolution) as opposed to the
+            // per-employee isolation above. Recorded so the screen shows WHY the run stopped instead of a
+            // run that silently freezes at 40%, then rethrown -- swallowing it here would change behaviour.
+            runFailureMessage = TruncateMessage(ex.Message);
+            throw;
+        }
         finally
         {
             // Legacy lines 1563-1595: the execution log is finalised even when the run blew up.
             await FinalizeExecutionLogAsync(executionLogId, result.Aborted);
+
+            // In the finally too, and for the same reason: a run that dies without closing its progress row
+            // would sit on the screen as "Running" until the heartbeat ages it out.
+            await ProgressWriter.CompleteRunAsync(
+                engineRunId,
+                ResolveEngineRunStatus(runFailureMessage, result),
+                executionLogId,
+                runFailureMessage);
         }
 
         return result;
+    }
+
+    /// <summary>Maps the run's outcome onto the operator-facing <see cref="EngineRunStatus"/>.</summary>
+    private static EngineRunStatus ResolveEngineRunStatus(string runFailureMessage, PayrollEngineRunResult result)
+    {
+        if (runFailureMessage != null)
+        {
+            return EngineRunStatus.Failed;
+        }
+
+        if (result.Aborted)
+        {
+            return EngineRunStatus.Aborted;
+        }
+
+        return result.EmployeeResults.Any(r => !r.Succeeded)
+            ? EngineRunStatus.CompletedWithErrors
+            : EngineRunStatus.Completed;
+    }
+
+    private async Task RecordEmployeeProgressAsync(
+        long engineRunId,
+        int sequenceNo,
+        Employee employee,
+        bool succeeded,
+        string message,
+        DateTime startedAt,
+        System.Diagnostics.Stopwatch stopwatch)
+    {
+        await ProgressWriter.RecordEmployeeAsync(new EngineRunEmployeeProgress
+        {
+            EngineRunId = engineRunId,
+            SequenceNo = sequenceNo,
+            EmployeeId = employee.Id,
+            EmployeeCode = employee.Code,
+            EmployeeName = employee.FullNameEn,
+            Succeeded = succeeded,
+            Message = message,
+            StartedAt = startedAt,
+            CompletedAt = Clock.Now,
+            ElapsedMilliseconds = (int)Math.Min(stopwatch.ElapsedMilliseconds, int.MaxValue)
+        });
     }
 
     #endregion
@@ -432,6 +543,30 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     /// </summary>
     private async Task<int> AddExecutionLogAsync(PayrollEngineRunInput input, DateTime payInDate)
     {
+        var log = new ExecutionLog
+        {
+            ActionDateTime = Clock.Now,
+            Action = ExecutionLogAction.RUN,
+            Module = ExecutionLogModule.PayrollEngine,
+            ScreenName = PayrollEngineScreenName,
+            Parameters = BuildExecutionLogParameters(input, payInDate),
+            ExecutionStatus = ExecutionLogStatus.INPRECESS,
+            TotalRecords = 0,
+            Successfull = 0,
+            Failed = 0
+        };
+
+        // InsertAndGetIdAsync, never InsertAsync: the id is read back immediately by
+        // FinalizeExecutionLogAsync and ABP only assigns it on flush.
+        return await _executionLogRepository.InsertAndGetIdAsync(log);
+    }
+
+    /// <summary>
+    /// The exact pipe-separated parameter string legacy builds (lines 385-416). Extracted so the live
+    /// progress row can carry text identical to the <c>ExecutionLog</c> row.
+    /// </summary>
+    private static string BuildExecutionLogParameters(PayrollEngineRunInput input, DateTime payInDate)
+    {
         var parts = new List<string>();
 
         if (!string.IsNullOrEmpty(input.PayrollAreaName))
@@ -457,22 +592,7 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
             parts.Add("Employee Code : " + input.EmployeeCodes);
         }
 
-        var log = new ExecutionLog
-        {
-            ActionDateTime = Clock.Now,
-            Action = ExecutionLogAction.RUN,
-            Module = ExecutionLogModule.PayrollEngine,
-            ScreenName = PayrollEngineScreenName,
-            Parameters = string.Join(" | ", parts),
-            ExecutionStatus = ExecutionLogStatus.INPRECESS,
-            TotalRecords = 0,
-            Successfull = 0,
-            Failed = 0
-        };
-
-        // InsertAndGetIdAsync, never InsertAsync: the id is read back immediately by
-        // FinalizeExecutionLogAsync and ABP only assigns it on flush.
-        return await _executionLogRepository.InsertAndGetIdAsync(log);
+        return string.Join(" | ", parts);
     }
 
     /// <summary>

@@ -1,10 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.BackgroundJobs;
 using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.EngineRuns;
+using HCMv3.EngineRuns.Dto;
 using HCMv3.PayrollManagement.Dto;
 using HCMv3.PayrollManagement.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +26,14 @@ namespace HCMv3.PayrollManagement;
 public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppService
 {
     private readonly IBackgroundJobManager _backgroundJobManager;
+    private readonly EngineRunProgressReader _progressReader;
 
-    public PayrollEngineAppService(IBackgroundJobManager backgroundJobManager)
+    public PayrollEngineAppService(
+        IBackgroundJobManager backgroundJobManager,
+        EngineRunProgressReader progressReader)
     {
         _backgroundJobManager = backgroundJobManager;
+        _progressReader = progressReader;
     }
 
     /// <summary>
@@ -79,5 +86,54 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
             });
 
         return new RunPayrollEngineOutput { Queued = true };
+    }
+
+    /// <summary>
+    /// Live status poll. Parameterless on purpose so it stays an HTTP GET, matching
+    /// <c>GetProjectCostEngineStatus</c>; the repo's <c>[HttpPost]</c> rule applies to <c>Get*</c> methods
+    /// with a custom input DTO, which this is not.
+    ///
+    /// <para>Gated on the VIEW permission, not Run.</para>
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine)]
+    public async Task<EngineRunStatusDto> GetPayrollEngineStatus()
+    {
+        return await _progressReader.GetStatusAsync(EngineType.PayrollEngine);
+    }
+
+    /// <summary>
+    /// Per-employee grid. <c>[HttpPost]</c> is mandatory: <see cref="GetEngineRunEmployeesInput"/> is a
+    /// custom input DTO and would otherwise be flattened into query-string parameters by NSwag and never
+    /// generated into the client proxies.
+    /// </summary>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine)]
+    public async Task<PagedResultDto<EngineRunEmployeeDto>> GetPayrollEngineRunEmployees(GetEngineRunEmployeesInput input)
+    {
+        return await _progressReader.GetEmployeesAsync(EngineType.PayrollEngine, input);
+    }
+
+    /// <summary>
+    /// Legacy's Stop button. Sets a flag the engine re-reads between employees on its own connection, so the
+    /// current employee completes and the run then stops cleanly.
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
+    public async Task StopPayrollEngine()
+    {
+        await _progressReader.RequestStopAsync(EngineType.PayrollEngine);
+    }
+
+    /// <summary>Legacy's Clear Status button.</summary>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
+    public async Task ClearPayrollEngineProgress()
+    {
+        await _progressReader.ClearAsync(EngineType.PayrollEngine);
+    }
+
+    /// <inheritdoc/>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
+    public async Task<int> AbandonStalePayrollEngineRuns()
+    {
+        return await _progressReader.AbandonStaleRunsAsync(EngineType.PayrollEngine);
     }
 }

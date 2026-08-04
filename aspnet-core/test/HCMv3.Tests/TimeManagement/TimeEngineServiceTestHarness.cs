@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using HCMv3.PayrollManagement.Services;
+using HCMv3.SystemSettings;
+using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement.Services;
 using NSubstitute;
 
@@ -46,8 +48,21 @@ public sealed class TimeEngineServiceTestHarness
     /// <c>default</c> dates, which makes <c>AutoAirTicketPayAsync</c> skip every ticket type.</summary>
     public IAccrualService AccrualService { get; } = Substitute.For<IAccrualService>();
 
+    /// <summary>
+    /// Exposed (and pre-stubbed with empty settings) because a bare NSubstitute double returns <c>null</c>
+    /// from every <c>Get*SettingsAsync</c>, and <c>LoadSettingsAsync</c> dereferences four of them
+    /// immediately -- so any test that drives a whole <c>CreateTimeRegisterAsync</c> run would fail with a
+    /// <see cref="NullReferenceException"/> before reaching what it is actually testing.
+    /// </summary>
+    public ISysSettingsAccessor SysSettingsAccessor { get; } = Substitute.For<ISysSettingsAccessor>();
+
     public TimeEngineServiceTestHarness()
     {
+        SysSettingsAccessor.GetTimeSettingsAsync().Returns(new ManageTimeSettings());
+        SysSettingsAccessor.GetPayrollSettingsAsync().Returns(new ManagePayrollSettings());
+        SysSettingsAccessor.GetPersonnelSettingsAsync().Returns(new ManagePersonnelSettings());
+        SysSettingsAccessor.GetSecuritySettingsAsync().Returns(new ManageSecuritySettings());
+
         var constructor = typeof(TimeEngineService).GetConstructors().Single();
         var arguments = constructor.GetParameters().Select(p => Resolve(p.ParameterType)).ToArray();
         Service = (TimeEngineService)constructor.Invoke(arguments);
@@ -101,6 +116,11 @@ public sealed class TimeEngineServiceTestHarness
         if (parameterType == typeof(IAccrualService))
         {
             return AccrualService;
+        }
+
+        if (parameterType == typeof(ISysSettingsAccessor))
+        {
+            return SysSettingsAccessor;
         }
 
         if (parameterType.IsGenericType

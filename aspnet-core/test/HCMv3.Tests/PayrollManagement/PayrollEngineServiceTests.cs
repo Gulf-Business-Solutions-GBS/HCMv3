@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
+using HCMv3.EngineRuns;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Services;
@@ -13,6 +14,7 @@ using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement;
+using HCMv3.Tests.EngineRuns;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -240,6 +242,96 @@ public class PayrollEngineServiceTests
         result.Aborted.ShouldBeTrue();
         result.EmployeeResults.ShouldBeEmpty();
         harness.ExecutionLogs.Single().ExecutionStatus.ShouldBe(ExecutionLogStatus.ABORTED);
+    }
+
+    #endregion
+
+    #region << Live progress reporting >>
+
+    /// <summary>
+    /// The engine must publish a row for EVERY employee it processes -- succeeded and failed alike, with the
+    /// failure message and a MEASURED duration -- which is exactly what the operator grid displays.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Publish_Live_Progress_For_Every_Employee_Succeeded_And_Failed()
+    {
+        var harness = new Harness();
+        harness.AddSecondEmployee();
+        harness.WageTypes.Add(WageType("9000", "Net Pay", 900, BillingType.Deduction));
+        harness.CalculatedWageCodes.Add("9000");
+        harness.ThrowForEmployeeId = Harness.EmployeeId;
+
+        var progress = new RecordingEngineRunProgressWriter();
+        var engine = harness.Build();
+        engine.ProgressWriter = progress;
+
+        await engine.RunAsync(harness.RegularInput());
+
+        var started = progress.StartedRuns.ShouldHaveSingleItem();
+        started.EngineType.ShouldBe(EngineType.PayrollEngine);
+        started.Parameters.ShouldContain("Payroll Area : " + PayrollAreaName,
+            customMessage: "The progress row must carry the same parameter string as the ExecutionLog row.");
+
+        progress.TotalsPublished.ShouldHaveSingleItem().ShouldBe(2);
+
+        progress.Employees.Count.ShouldBe(2);
+
+        var failed = progress.Employees.Single(e => e.EmployeeId == Harness.EmployeeId);
+        failed.Succeeded.ShouldBeFalse();
+        failed.Message.ShouldContain("Error in calculating WageType '9000 : Net Pay'");
+        failed.SequenceNo.ShouldBe(1);
+
+        var succeeded = progress.Employees.Single(e => e.EmployeeId == Harness.SecondEmployeeId);
+        succeeded.Succeeded.ShouldBeTrue();
+        succeeded.Message.ShouldBe("Successfull");
+        succeeded.EmployeeCode.ShouldBe("E2");
+        succeeded.SequenceNo.ShouldBe(2);
+
+        // Measured, not assumed: the ETA is derived from these numbers, so they must be real.
+        progress.Employees.ShouldAllBe(e => e.ElapsedMilliseconds >= 0);
+        progress.Employees.ShouldAllBe(e => e.CompletedAt >= e.StartedAt);
+
+        progress.Completed.ShouldBeTrue("A run that never closes its progress row sits on the screen forever.");
+        progress.CompletedStatus.ShouldBe(EngineRunStatus.CompletedWithErrors);
+        progress.CompletedExecutionLogId.ShouldBe(harness.ExecutionLogs.Single().Id);
+        progress.CompletedFailureMessage.ShouldBeNull("A per-employee failure is not a run-level failure.");
+    }
+
+    [Fact]
+    public async Task RunAsync_Should_Close_Progress_As_Completed_When_Every_Employee_Succeeds()
+    {
+        var harness = new Harness();
+        harness.AddSecondEmployee();
+
+        var progress = new RecordingEngineRunProgressWriter();
+        var engine = harness.Build();
+        engine.ProgressWriter = progress;
+
+        await engine.RunAsync(harness.RegularInput());
+
+        progress.CompletedStatus.ShouldBe(EngineRunStatus.Completed);
+    }
+
+    /// <summary>
+    /// A Stop pressed after the run's transaction opened must actually stop it. The legacy
+    /// <c>PayrollLog.StopFlag</c> check cannot see such a request, which is the whole reason the stop flag
+    /// moved onto the independently-committed progress row.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Abort_When_A_Stop_Is_Requested_Through_The_Progress_Row()
+    {
+        var harness = new Harness();
+        harness.AddSecondEmployee();
+
+        var progress = new RecordingEngineRunProgressWriter { StopRequested = true };
+        var engine = harness.Build();
+        engine.ProgressWriter = progress;
+
+        var result = await engine.RunAsync(harness.RegularInput());
+
+        result.Aborted.ShouldBeTrue();
+        result.EmployeeResults.ShouldBeEmpty();
+        progress.CompletedStatus.ShouldBe(EngineRunStatus.Aborted);
     }
 
     #endregion

@@ -174,6 +174,12 @@ public partial class TimeEngineService
         var dayDate = timeStartDate;
         while (dayDate <= timeEndDate)
         {
+            // One employee over a long window can take many minutes. Without a heartbeat from INSIDE the day
+            // loop, a slow-but-healthy employee would age past EngineRunConsts.StaleHeartbeatSeconds and the
+            // screen would declare a perfectly live run dead. Throttled to once every
+            // EngineRunConsts.HeartbeatIntervalSeconds by the writer, so this is cheap to call per day.
+            await ProgressWriter.HeartbeatAsync(_currentEngineRunId);
+
             try
             {
                 await CalculateDayAsync(dayDate, context, settings, masterData, employeeCount);

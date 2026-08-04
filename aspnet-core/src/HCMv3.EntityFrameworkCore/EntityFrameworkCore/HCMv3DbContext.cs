@@ -16,6 +16,7 @@ using HCMv3.BenefitsManagement;
 using HCMv3.Chat;
 using HCMv3.CompetencyDevelopment;
 using HCMv3.Editions;
+using HCMv3.EngineRuns;
 using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
 using HCMv3.GatePassManagement;
@@ -527,6 +528,17 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     public virtual DbSet<ProjectRegisterDetail> ProjectRegisterDetails { get; set; }
 
     public virtual DbSet<ProjectLog> ProjectLogs { get; set; }
+
+    /// <summary>
+    /// Live engine-run progress. Written ONLY through
+    /// <c>HCMv3.EngineRuns.Services.IEngineRunProgressWriter</c>, which commits on its own connection so a
+    /// reader can observe progress while the engine's outer transaction is still open. Nothing inside an
+    /// engine's main transaction may touch these two tables -- see <c>EngineRun</c> remarks.
+    /// </summary>
+    public virtual DbSet<EngineRun> EngineRuns { get; set; }
+
+    /// <inheritdoc cref="EngineRuns"/>
+    public virtual DbSet<EngineRunEmployee> EngineRunEmployees { get; set; }
 
     public virtual DbSet<EmployeeAbsence> EmployeeAbsences { get; set; }
 
@@ -1652,6 +1664,25 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         modelBuilder.Entity<OvertimeType>(b =>
         {
             b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ---------------------------------------------------------------------------------------------
+        // Live engine-run progress. Deliberately relationship-free: these rows are written on a short-lived
+        // independent connection while the engine's own (hour-long) transaction is open, so an FK to
+        // Employee or ExecutionLog would either block on, or fail against, uncommitted parent rows.
+        // EmployeeId/ExecutionLogId are therefore plain columns.
+        // ---------------------------------------------------------------------------------------------
+
+        modelBuilder.Entity<EngineRun>(b =>
+        {
+            // The status screen's only query: newest run for one engine within one tenant.
+            b.HasIndex(e => new { e.TenantId, e.EngineType, e.Id });
+        });
+
+        modelBuilder.Entity<EngineRunEmployee>(b =>
+        {
+            // The grid's only query: one run's rows in processing order.
+            b.HasIndex(e => new { e.EngineRunId, e.SequenceNo });
         });
 
         modelBuilder.ConfigureOpenIddict();
