@@ -1,0 +1,276 @@
+<div class="container page">
+    <careers-candidate-nav />
+
+    <div class="section-title">
+        <h1>{{ title() }}</h1>
+        <a class="btn btn--ghost" routerLink="/my/cvs">{{ 'Cancel' | localize }}</a>
+    </div>
+
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else {
+        <form #cvForm="ngForm" (ngSubmit)="save(cvForm)" novalidate>
+            <section class="card">
+                <div class="field">
+                    <label class="field__label" for="cvName">{{ 'CareersCvName' | localize }}</label>
+                    <input
+                        id="cvName"
+                        name="cvName"
+                        class="input"
+                        required
+                        maxlength="256"
+                        [ngModel]="cvName()"
+                        (ngModelChange)="cvName.set($event)"
+                    />
+                </div>
+            </section>
+
+            <!-- ------------------------------------------------------ qualifications -- -->
+            <section class="card">
+                <div class="section-title">
+                    <h2>{{ 'Qualifications' | localize }}</h2>
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="addQualification()">
+                        {{ 'CareersAddQualification' | localize }}
+                    </button>
+                </div>
+
+                <p class="field__hint">{{ 'CareersQualificationLookupUnavailable' | localize }}</p>
+
+                @for (row of qualifications(); track $index) {
+                    <div class="row-editor">
+                        <div class="grid-3">
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'qualUniversity' + $index">
+                                    {{ 'University' | localize }}
+                                </label>
+                                <input
+                                    [id]="'qualUniversity' + $index"
+                                    [name]="'qualUniversity' + $index"
+                                    class="input"
+                                    maxlength="256"
+                                    [ngModel]="row.university"
+                                    (ngModelChange)="patchQualification($index, { university: $event })"
+                                />
+                            </div>
+
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'qualPercentage' + $index">
+                                    {{ 'Percentage' | localize }}
+                                </label>
+                                <input
+                                    [id]="'qualPercentage' + $index"
+                                    [name]="'qualPercentage' + $index"
+                                    type="number"
+                                    class="input"
+                                    min="0"
+                                    max="100"
+                                    [ngModel]="row.percentage"
+                                    (ngModelChange)="patchQualification($index, { percentage: +$event || 0 })"
+                                />
+                            </div>
+
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'qualYear' + $index">
+                                    {{ 'PassedYear' | localize }}
+                                </label>
+                                <input
+                                    [id]="'qualYear' + $index"
+                                    [name]="'qualYear' + $index"
+                                    type="number"
+                                    class="input"
+                                    min="0"
+                                    max="9999"
+                                    [ngModel]="row.passedYear"
+                                    (ngModelChange)="patchQualification($index, { passedYear: +$event || 0 })"
+                                />
+                            </div>
+                        </div>
+
+                        @if (row.qualificationName) {
+                            <p class="small muted">{{ 'Qualification' | localize }}: {{ row.qualificationName }}</p>
+                        }
+
+                        <button type="button" class="btn btn--danger btn--sm" (click)="removeQualification($index)">
+                            {{ 'CareersRemove' | localize }}
+                        </button>
+                    </div>
+                }
+            </section>
+
+            <!-- ----------------------------------------------------- work experience -- -->
+            <section class="card">
+                <div class="section-title">
+                    <h2>{{ 'WorkExperience' | localize }}</h2>
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="addExperience()">
+                        {{ 'CareersAddWorkExperience' | localize }}
+                    </button>
+                </div>
+
+                @for (row of experiences(); track $index) {
+                    <div class="row-editor">
+                        <div class="grid-2">
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'expCompany' + $index">
+                                    {{ 'Company' | localize }}
+                                </label>
+                                <input
+                                    [id]="'expCompany' + $index"
+                                    [name]="'expCompany' + $index"
+                                    class="input"
+                                    maxlength="256"
+                                    [ngModel]="row.company"
+                                    (ngModelChange)="patchExperience($index, { company: $event })"
+                                />
+                            </div>
+
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'expPosition' + $index">
+                                    {{ 'Position' | localize }}
+                                </label>
+                                <input
+                                    [id]="'expPosition' + $index"
+                                    [name]="'expPosition' + $index"
+                                    class="input"
+                                    maxlength="256"
+                                    [ngModel]="row.position"
+                                    (ngModelChange)="patchExperience($index, { position: $event })"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'expStart' + $index">
+                                    {{ 'StartDate' | localize }}
+                                </label>
+                                <input
+                                    [id]="'expStart' + $index"
+                                    [name]="'expStart' + $index"
+                                    type="date"
+                                    class="input"
+                                    [ngModel]="row.startDate"
+                                    (ngModelChange)="patchExperience($index, { startDate: $event })"
+                                />
+                            </div>
+
+                            <div class="field">
+                                <label class="field__label" [attr.for]="'expEnd' + $index">
+                                    {{ 'EndDate' | localize }}
+                                </label>
+                                <input
+                                    [id]="'expEnd' + $index"
+                                    [name]="'expEnd' + $index"
+                                    type="date"
+                                    class="input"
+                                    [ngModel]="row.endDate"
+                                    (ngModelChange)="patchExperience($index, { endDate: $event })"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" [attr.for]="'expResp' + $index">
+                                {{ 'Responsibilities' | localize }}
+                            </label>
+                            <textarea
+                                [id]="'expResp' + $index"
+                                [name]="'expResp' + $index"
+                                class="textarea"
+                                maxlength="4000"
+                                [ngModel]="row.responsibilities"
+                                (ngModelChange)="patchExperience($index, { responsibilities: $event })"
+                            ></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn--danger btn--sm" (click)="removeExperience($index)">
+                            {{ 'CareersRemove' | localize }}
+                        </button>
+                    </div>
+                }
+            </section>
+
+            <!-- ---------------------------------------------------------------- skills -- -->
+            <section class="card">
+                <div class="section-title">
+                    <h2>{{ 'Skills' | localize }}</h2>
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="addSkill()">
+                        {{ 'CareersAddSkill' | localize }}
+                    </button>
+                </div>
+
+                @for (row of skills(); track $index) {
+                    <div class="row-editor row-editor--inline">
+                        <div class="field">
+                            <label class="field__label" [attr.for]="'skillName' + $index">
+                                {{ 'Skill' | localize }}
+                            </label>
+                            <input
+                                [id]="'skillName' + $index"
+                                [name]="'skillName' + $index"
+                                class="input"
+                                maxlength="256"
+                                [ngModel]="row.skill"
+                                (ngModelChange)="patchSkill($index, { skill: $event })"
+                            />
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" [attr.for]="'skillProficiency' + $index">
+                                {{ 'Proficiency' | localize }}
+                            </label>
+                            <select
+                                [id]="'skillProficiency' + $index"
+                                [name]="'skillProficiency' + $index"
+                                class="select"
+                                [ngModel]="row.proficiency"
+                                (ngModelChange)="patchSkill($index, { proficiency: +$event })"
+                            >
+                                @for (option of proficiencyOptions; track option) {
+                                    <option [value]="option">{{ proficiencyLabels[option] | localize }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="button" class="btn btn--danger btn--sm" (click)="removeSkill($index)">
+                            {{ 'CareersRemove' | localize }}
+                        </button>
+                    </div>
+                }
+            </section>
+
+            <!-- ------------------------------------------------------------- languages -- -->
+            <section class="card">
+                <h2>{{ 'Languages' | localize }}</h2>
+
+                <!-- Read-only: see the `languages` signal in cv-edit.component.ts for why a language cannot
+                     be added from the portal. Existing rows are still posted back on save. -->
+                <p class="field__hint">{{ 'CareersLanguagesLookupUnavailable' | localize }}</p>
+
+                @if (languages().length) {
+                    <ul class="taglist">
+                        @for (row of languages(); track $index) {
+                            <li class="chip">
+                                {{ row.languageName || ('CareersNotSpecified' | localize) }}
+                                &middot;
+                                {{ proficiencyLabels[row.proficiency] | localize }}
+                            </li>
+                        }
+                    </ul>
+                }
+            </section>
+
+            <div class="form-actions">
+                <a class="btn btn--secondary" routerLink="/my/cvs">{{ 'Cancel' | localize }}</a>
+                <button type="submit" class="btn btn--primary btn--lg" [disabled]="cvForm.invalid || saving()">
+                    @if (saving()) {
+                        <span class="spinner"></span>
+                    }
+                    {{ 'Save' | localize }}
+                </button>
+            </div>
+        </form>
+    }
+</div>

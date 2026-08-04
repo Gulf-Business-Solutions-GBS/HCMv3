@@ -470,34 +470,19 @@
                             </div>
                         </div>
 
-                        @if (!record().id) {
-                            <h6>{{ 'UserAccount' | localize }}</h6>
-                            <hr />
-                            <div class="row">
-                                <div class="col-md-6 mb-5">
-                                    <label class="form-label" for="Applicant_UserName">{{ 'UserName' | localize }}</label>
-                                    <input
-                                        id="Applicant_UserName"
-                                        class="form-control"
-                                        type="text"
-                                        name="UserName"
-                                        [ngModel]="record().userName"
-                                        (ngModelChange)="updateField('userName', $event)"
-                                        maxlength="100" />
-                                </div>
-                                <div class="col-md-6 mb-5">
-                                    <label class="form-label" for="Applicant_Password">{{ 'Password' | localize }}</label>
-                                    <input
-                                        id="Applicant_Password"
-                                        class="form-control"
-                                        type="password"
-                                        name="Password"
-                                        [ngModel]="record().password"
-                                        (ngModelChange)="updateField('password', $event)"
-                                        maxlength="100" />
-                                </div>
-                            </div>
-                        }
+                        <!--
+                            The UserName / Password block that stood here was removed in wave R2.
+
+                            Applicant.UserName and Applicant.Password were plaintext credential columns
+                            inherited from the legacy system; candidates are now real ABP users linked via
+                            Applicant.UserId, and both columns are dropped from the entity, the DTO and the
+                            database. Leaving the inputs would bind to properties that no longer exist, and --
+                            worse than a build break -- would keep asking a recruiter to type a candidate's
+                            password in clear text into a field that persists nowhere.
+
+                            Candidates set their own password by registering on the careers portal; a
+                            recruiter-created applicant simply has no login until they do.
+                        -->
                     </div>
                     <div class="modal-footer">
                         <button

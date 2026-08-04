@@ -1,0 +1,63 @@
+<careers-auth-shell [heading]="title" [subheading]="subtitle">
+    <form #loginForm="ngForm" (ngSubmit)="submit(loginForm)" novalidate>
+        <div class="field">
+            <label class="field__label" for="loginEmail">{{ 'EmailAddress' | localize }}</label>
+            <input
+                id="loginEmail"
+                name="loginEmail"
+                type="email"
+                class="input"
+                autocomplete="username"
+                required
+                [ngModel]="emailAddress()"
+                (ngModelChange)="emailAddress.set($event)"
+            />
+        </div>
+
+        <div class="field">
+            <label class="field__label" for="loginPassword">{{ 'Password' | localize }}</label>
+            <input
+                id="loginPassword"
+                name="loginPassword"
+                type="password"
+                class="input"
+                autocomplete="current-password"
+                required
+                [ngModel]="password()"
+                (ngModelChange)="password.set($event)"
+            />
+        </div>
+
+        <div class="field-row">
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    name="rememberMe"
+                    [ngModel]="rememberMe()"
+                    (ngModelChange)="rememberMe.set($event)"
+                />
+                <span>{{ 'RememberMe' | localize }}</span>
+            </label>
+
+            <a routerLink="/account/forgot-password" class="small">{{ 'ForgotPassword' | localize }}</a>
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn--primary btn--lg btn--block"
+            [disabled]="loginForm.invalid || submitting()"
+        >
+            @if (submitting()) {
+                <span class="spinner"></span>
+            }
+            {{ 'CareersSignIn' | localize }}
+        </button>
+    </form>
+
+    <hr class="divider" />
+
+    <p class="text-center small muted">
+        {{ 'CareersDontHaveAccount' | localize }}
+        <a routerLink="/account/register">{{ 'CareersRegister' | localize }}</a>
+    </p>
+</careers-auth-shell>

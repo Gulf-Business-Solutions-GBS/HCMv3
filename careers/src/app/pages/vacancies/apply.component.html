@@ -1,0 +1,76 @@
+<div class="container page apply">
+    @if (loading()) {
+        <div class="loading-block">
+            <span class="spinner"></span>
+            <span>{{ 'CareersLoading' | localize }}</span>
+        </div>
+    } @else if (submitted()) {
+        <div class="card empty">
+            <p class="empty__title">{{ 'CareersApplicationSubmitted' | localize }}</p>
+            <div class="apply__done-actions">
+                <a class="btn btn--primary" routerLink="/my/applications">
+                    {{ 'CareersMyApplications' | localize }}
+                </a>
+                <a class="btn btn--secondary" routerLink="/">{{ 'CareersJobOpenings' | localize }}</a>
+            </div>
+        </div>
+    } @else if (vacancy(); as job) {
+        <a class="backlink" [routerLink]="['/jobs', job.id]">&larr; {{ job.vacancyTitle }}</a>
+
+        <h1>{{ title() }}</h1>
+
+        <div class="card">
+            <div class="field">
+                <label class="field__label" for="applyCv">{{ 'CareersSelectCv' | localize }}</label>
+                <select
+                    id="applyCv"
+                    name="applyCv"
+                    class="select"
+                    [ngModel]="selectedCvId()"
+                    (ngModelChange)="selectedCvId.set($event)"
+                >
+                    <!-- Empty value = server creates a placeholder CV, matching legacy quick-apply. -->
+                    <option value="">{{ 'CareersUseNewPlaceholderCv' | localize }}</option>
+                    @for (cv of cvs(); track cv.id) {
+                        <option [value]="cv.id">{{ cv.cvName }}</option>
+                    }
+                </select>
+
+                @if (!cvs().length) {
+                    <span class="field__hint">
+                        {{ 'CareersNoCvs' | localize }}
+                        <a routerLink="/my/cvs/new">{{ 'CareersCreateCv' | localize }}</a>
+                    </span>
+                }
+            </div>
+
+            <div class="field">
+                <label class="field__label" for="coverLetter">{{ 'CoverLetter' | localize }}</label>
+                <textarea
+                    id="coverLetter"
+                    name="coverLetter"
+                    class="textarea"
+                    maxlength="4000"
+                    [ngModel]="coverLetter()"
+                    (ngModelChange)="coverLetter.set($event)"
+                ></textarea>
+                <span class="field__hint">{{ 'CareersCoverLetterHint' | localize }}</span>
+            </div>
+
+            <div class="apply__actions">
+                <a class="btn btn--secondary" [routerLink]="['/jobs', job.id]">{{ 'Cancel' | localize }}</a>
+                <button type="button" class="btn btn--primary btn--lg" [disabled]="submitting()" (click)="submit()">
+                    @if (submitting()) {
+                        <span class="spinner"></span>
+                    }
+                    {{ 'CareersSubmitApplication' | localize }}
+                </button>
+            </div>
+        </div>
+    } @else {
+        <div class="card empty">
+            <p class="empty__title">{{ 'CareersVacancyNotFound' | localize }}</p>
+            <a class="btn btn--primary" routerLink="/">{{ 'CareersBackToJobs' | localize }}</a>
+        </div>
+    }
+</div>

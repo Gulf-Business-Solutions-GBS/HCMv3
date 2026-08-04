@@ -1,0 +1,152 @@
+<careers-auth-shell [heading]="title" [subheading]="subtitle">
+    @if (!registrationEnabled()) {
+        <div class="alert alert--warning">{{ 'CareersRegistrationClosed' | localize }}</div>
+        <a class="btn btn--secondary btn--block" routerLink="/">{{ 'CareersBackToJobs' | localize }}</a>
+    } @else if (succeeded()) {
+        <div class="alert alert--success">
+            {{ (canLoginNow() ? 'CareersAccountCreatedCanLogin' : 'CareersAccountCreatedConfirmEmail') | localize }}
+        </div>
+
+        @if (canLoginNow()) {
+            <a class="btn btn--primary btn--block" routerLink="/account/login">
+                {{ 'CareersSignIn' | localize }}
+            </a>
+        } @else {
+            <a class="btn btn--secondary btn--block" routerLink="/">{{ 'CareersBackToJobs' | localize }}</a>
+        }
+    } @else {
+        <form #registerForm="ngForm" (ngSubmit)="submit(registerForm)" novalidate>
+            <div class="field">
+                <label class="field__label" for="regEmail">{{ 'EmailAddress' | localize }}</label>
+                <input
+                    id="regEmail"
+                    name="regEmail"
+                    type="email"
+                    class="input"
+                    autocomplete="username"
+                    required
+                    email
+                    [ngModel]="emailAddress()"
+                    (ngModelChange)="emailAddress.set($event)"
+                />
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label class="field__label" for="regFirstNameEn">{{ 'FirstNameEn' | localize }}</label>
+                    <input
+                        id="regFirstNameEn"
+                        name="regFirstNameEn"
+                        type="text"
+                        class="input"
+                        required
+                        maxlength="256"
+                        [ngModel]="firstNameEn()"
+                        (ngModelChange)="firstNameEn.set($event)"
+                    />
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="regLastNameEn">{{ 'LastNameEn' | localize }}</label>
+                    <input
+                        id="regLastNameEn"
+                        name="regLastNameEn"
+                        type="text"
+                        class="input"
+                        required
+                        maxlength="256"
+                        [ngModel]="lastNameEn()"
+                        (ngModelChange)="lastNameEn.set($event)"
+                    />
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label class="field__label" for="regFirstNameAr">{{ 'FirstNameAr' | localize }}</label>
+                    <input
+                        id="regFirstNameAr"
+                        name="regFirstNameAr"
+                        type="text"
+                        class="input"
+                        dir="rtl"
+                        required
+                        maxlength="256"
+                        [ngModel]="firstNameAr()"
+                        (ngModelChange)="firstNameAr.set($event)"
+                    />
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="regLastNameAr">{{ 'LastNameAr' | localize }}</label>
+                    <input
+                        id="regLastNameAr"
+                        name="regLastNameAr"
+                        type="text"
+                        class="input"
+                        dir="rtl"
+                        required
+                        maxlength="256"
+                        [ngModel]="lastNameAr()"
+                        (ngModelChange)="lastNameAr.set($event)"
+                    />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="field__label" for="regPassword">{{ 'Password' | localize }}</label>
+                <input
+                    id="regPassword"
+                    name="regPassword"
+                    type="password"
+                    class="input"
+                    autocomplete="new-password"
+                    required
+                    maxlength="128"
+                    [ngModel]="password()"
+                    (ngModelChange)="password.set($event)"
+                />
+                <!-- No complexity rules are asserted here on purpose: the tenant's ASP.NET Identity password
+                     policy is the single source of truth and reports precisely what failed. -->
+            </div>
+
+            <div class="field">
+                <label class="field__label" for="regConfirmPassword">
+                    {{ 'CareersConfirmPassword' | localize }}
+                </label>
+                <input
+                    id="regConfirmPassword"
+                    name="regConfirmPassword"
+                    type="password"
+                    class="input"
+                    autocomplete="new-password"
+                    required
+                    maxlength="128"
+                    [ngModel]="confirmPassword()"
+                    (ngModelChange)="confirmPassword.set($event)"
+                />
+                @if (!passwordsMatch()) {
+                    <span class="field__error">{{ 'CareersPasswordsDoNotMatch' | localize }}</span>
+                }
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn--primary btn--lg btn--block"
+                [disabled]="registerForm.invalid || !passwordsMatch() || submitting()"
+            >
+                @if (submitting()) {
+                    <span class="spinner"></span>
+                }
+                {{ 'CareersRegister' | localize }}
+            </button>
+        </form>
+
+        <hr class="divider" />
+
+        <p class="text-center small muted">
+            {{ 'CareersAlreadyHaveAccount' | localize }}
+            <a routerLink="/account/login">{{ 'CareersSignIn' | localize }}</a>
+        </p>
+    }
+</careers-auth-shell>
