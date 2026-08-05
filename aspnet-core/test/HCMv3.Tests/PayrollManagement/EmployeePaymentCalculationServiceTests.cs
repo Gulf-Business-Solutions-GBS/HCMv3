@@ -629,6 +629,59 @@ public class EmployeePaymentCalculationServiceTests
         harness.Store.Lines.ShouldBeEmpty();
     }
 
+    /// <summary>
+    /// Wave P9 legacy-data regression -- <b>wage code 2028 "Accommodation Rent", employee 3400, June 2024:
+    /// 20.00</b>.
+    ///
+    /// <para>The name is a red herring: 2028 has NOTHING to do with the accommodation module. The string
+    /// <c>"2028"</c> appears nowhere in <c>HCM10.PayrollEngine</c> and no accommodation table carries a
+    /// WageType column. It is one ordinary <see cref="EmployeeRecurringPayment"/> row
+    /// (legacy OID 33: Amount 20.0, StartDate 2017-05-01, EndDate 9999-12-31, PayInterval NULL) that this
+    /// service's <c>PayInterval.Monthly</c> branch sums straight in (legacy
+    /// <c>HCM10.PayrollEngine/EmployeePaymentService.cs</c> lines 231-233).</para>
+    ///
+    /// <para><b>PayInterval NULL means Monthly, and that is legacy's own reading, not a migration guess.</b>
+    /// Legacy's column is nullable but its XPO property is a NON-nullable <c>PayInterval</c> enum
+    /// (<c>HCM10.Module/BusinessObjects/PersonnelAdministration/EmployeeRecurringPayment.cs</c> lines 69-75;
+    /// enum in <c>EmployeeBasicPay.cs</c> lines 23-30, <c>Monthly = 0</c>), so XPO materialises NULL as
+    /// <c>Monthly</c> -- which is exactly why legacy's own Monthly predicate matches the row.</para>
+    ///
+    /// <para>The port needed NO engine change for this; the gap was purely that
+    /// <c>EmployeeRecurringPayments</c> was missing from <c>MigrationPlan</c>, so the table was empty.</para>
+    /// </summary>
+    [Fact]
+    public async Task Employee_3400_June_2024_Should_Pay_Accommodation_Rent_2028_Of_20()
+    {
+        var harness = new Harness();
+
+        var accommodationRent = new WageType
+        {
+            Id = WageTypeId,
+            Code = "2028",
+            NameEn = "Accommodation Rent",
+            BillingType = BillingType.Earning,
+            BillingMethod = BillingMethod.FixedDaysPerMonth,
+            FixedDays = 30
+        };
+        harness.WageTypes.Add(accommodationRent);
+
+        harness.RecurringPayments.Add(new EmployeeRecurringPayment
+        {
+            Id = 1,
+            EmployeeId = EmployeeId,
+            WageTypeId = WageTypeId,
+            // The migrated value of legacy's NULL -- see the summary.
+            PayInterval = PayInterval.Monthly,
+            StartDate = new DateTime(2017, 5, 1),
+            EndDate = new DateTime(9999, 12, 31),
+            Amount = 20.0
+        });
+
+        await harness.Build().CalculateAsync(Context(accommodationRent));
+
+        harness.Store.Lines.Single(l => l.WageTypeId == WageTypeId).Amount.ShouldBe(20.00);
+    }
+
     /// <summary>Legacy line 41: a payment for a different wage type must not be picked up.</summary>
     [Fact]
     public async Task Should_Ignore_Payments_For_Another_Wage_Type()

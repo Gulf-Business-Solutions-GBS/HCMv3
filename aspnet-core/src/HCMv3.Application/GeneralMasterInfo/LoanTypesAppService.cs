@@ -16,9 +16,9 @@ namespace HCMv3.GeneralMasterInfo;
 
 /// <summary>
 /// Application service for the LoanType master (ported from legacy XAF LoanType).
-/// Mirrors <c>CitiesAppService</c>. The legacy <c>WageType</c>/<c>LoanDedWageType</c> fields are not
-/// ported (Payroll module out of scope); the aggregated <c>LoanTypeDetail</c> collection is ported
-/// separately as its own entity (<see cref="LoanTypeDetail"/>).
+/// Mirrors <c>CitiesAppService</c>. The aggregated <c>LoanTypeDetail</c> collection is ported separately as
+/// its own entity (<see cref="LoanTypeDetail"/>). Wave P9 restored the legacy <c>WageType</c> FK, which the
+/// Payroll Engine dispatches wage code 2001 "Loan Recovery Deduction" through.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_LoanTypes)]
 public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
@@ -36,6 +36,7 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
         input.Normalize();
 
         var query = _repository.GetAll()
+            .Include(t => t.WageType)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), t =>
                 t.Code.Contains(input.Filter) ||
                 t.NameEn.Contains(input.Filter) ||
@@ -90,6 +91,7 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
             MaxInstallments = input.MaxInstallments,
             EligibleAmount = input.EligibleAmount,
             EligibleAmountNumber = input.EligibleAmountNumber,
+            WageTypeId = input.WageTypeId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -114,6 +116,7 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
         entity.MaxInstallments = input.MaxInstallments;
         entity.EligibleAmount = input.EligibleAmount;
         entity.EligibleAmountNumber = input.EligibleAmountNumber;
+        entity.WageTypeId = input.WageTypeId;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateUniquenessAsync(entity);
@@ -179,7 +182,10 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
             EligibleCountPerYear = entity.EligibleCountPerYear,
             MaxInstallments = entity.MaxInstallments,
             EligibleAmount = entity.EligibleAmount,
-            EligibleAmountNumber = entity.EligibleAmountNumber
+            EligibleAmountNumber = entity.EligibleAmountNumber,
+            WageTypeId = entity.WageTypeId,
+            WageTypeCode = entity.WageType != null ? entity.WageType.Code : null,
+            WageTypeNameEn = entity.WageType != null ? entity.WageType.NameEn : null
         };
     }
 
@@ -197,7 +203,8 @@ public class LoanTypesAppService : HCMv3AppServiceBase, ILoanTypesAppService
             EligibleCountPerYear = entity.EligibleCountPerYear,
             MaxInstallments = entity.MaxInstallments,
             EligibleAmount = entity.EligibleAmount,
-            EligibleAmountNumber = entity.EligibleAmountNumber
+            EligibleAmountNumber = entity.EligibleAmountNumber,
+            WageTypeId = entity.WageTypeId
         };
     }
 }

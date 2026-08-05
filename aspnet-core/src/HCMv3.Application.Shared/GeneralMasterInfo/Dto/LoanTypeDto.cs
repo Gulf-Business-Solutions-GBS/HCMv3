@@ -26,4 +26,14 @@ public class LoanTypeDto : EntityDto<int>
     public EligibleAmount EligibleAmount { get; set; }
 
     public double EligibleAmountNumber { get; set; }
+
+    /// <summary>
+    /// Legacy <c>LoanType.WageType</c> FK (restored wave P9). The Payroll Engine dispatches wage code 2001
+    /// "Loan Recovery Deduction" through it, so it must be settable from this master.
+    /// </summary>
+    public int? WageTypeId { get; set; }
+
+    public string WageTypeCode { get; set; }
+
+    public string WageTypeNameEn { get; set; }
 }

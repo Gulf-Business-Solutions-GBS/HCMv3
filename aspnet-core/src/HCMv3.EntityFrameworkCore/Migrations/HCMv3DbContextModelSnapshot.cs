@@ -6492,7 +6492,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WageTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WageTypeId");
 
                     b.ToTable("LoanTypes");
                 });
@@ -32998,6 +33003,16 @@ namespace HCMv3.Migrations
                         .HasForeignKey("UniversityId");
 
                     b.Navigation("University");
+                });
+
+            modelBuilder.Entity("HCMv3.GeneralMasterInfo.LoanType", b =>
+                {
+                    b.HasOne("HCMv3.PayrollManagement.WageType", "WageType")
+                        .WithMany()
+                        .HasForeignKey("WageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("WageType");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.LoanTypeDetail", b =>

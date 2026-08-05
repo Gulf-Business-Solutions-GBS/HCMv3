@@ -163,8 +163,15 @@ public static class ColumnMapper
         IReadOnlyDictionary<string, TableSpec> planByTarget,
         ref int fkAliasSeq)
     {
-        // Is this target column a foreign key we are able to remap?
-        if (targetTable.ForeignKeys.TryGetValue(target.Name, out var referencedTable))
+        // Is this target column a foreign key we are able to remap? An explicit LogicalForeignKeys entry wins
+        // over sys.foreign_keys, and is the ONLY way an unconstrained logical FK is ever seen at all -- see
+        // TableSpec.LogicalForeignKeys for what silently happens without it.
+        if (!spec.LogicalForeignKeys.TryGetValue(target.Name, out var referencedTable))
+        {
+            targetTable.ForeignKeys.TryGetValue(target.Name, out referencedTable);
+        }
+
+        if (referencedTable != null)
         {
             if (!planByTarget.ContainsKey(referencedTable))
             {

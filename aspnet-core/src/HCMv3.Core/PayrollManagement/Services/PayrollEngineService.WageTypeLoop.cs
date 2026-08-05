@@ -352,9 +352,13 @@ public partial class PayrollEngineService
         }
 
         // Legacy lines 2574-2582: the calculated-pay arm -- the ONLY arm that goes through the resolver.
-        // Legacy's wtCalculatedWageList (built at lines 2698-2702) is exactly "the codes some rule claims",
-        // which is what IWageTypeCalculatorResolver.Resolve answers, so membership is not re-derived here.
-        if (_wageTypeCalculatorResolver.Resolve(wageType.Code) != null)
+        // Legacy's wtCalculatedWageList (built at lines 2698-2702) has FIVE sources, only one of which is the
+        // hard-coded wage-code list; the other four are master tables holding a WageType reference
+        // (DisciplinaryType, TicketType, LoanType, TravelType). HasCalculatorFor answers both -- using
+        // Resolve(code) alone silently excluded every master-table-dispatched wage type, which is why wage
+        // code 2001 Loan Recovery Deduction posted nothing (it is COMMENTED OUT of legacy's wtcalList at
+        // line 2691 and reachable ONLY through LoanType.WageType).
+        if (_wageTypeCalculatorResolver.HasCalculatorFor(wageType))
         {
             await _wageTypeCalculatorResolver.TryCalculateAsync(context);
             return;

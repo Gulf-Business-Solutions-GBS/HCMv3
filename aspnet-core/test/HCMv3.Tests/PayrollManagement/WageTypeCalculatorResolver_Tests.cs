@@ -586,4 +586,123 @@ public class WageTypeCalculatorResolver_Tests
     }
 
     #endregion
+
+    #region << Wave P9: master-table dispatch (IMasterDataDispatchedWageTypeCalculator) >>
+
+    /// <summary>
+    /// A rule dispatched by a master table's WageType reference rather than by wage code -- legacy's second
+    /// dispatch mechanism (legacy <c>Program.cs</c> lines 2698-2701).
+    /// </summary>
+    private sealed class ClaimingWageTypeCalculator : IMasterDataDispatchedWageTypeCalculator
+    {
+        private readonly int _claimedWageTypeId;
+
+        public ClaimingWageTypeCalculator(int claimedWageTypeId)
+        {
+            _claimedWageTypeId = claimedWageTypeId;
+        }
+
+        public string WageCode => null;
+
+        public int CallCount { get; private set; }
+
+        public bool ClaimsWageType(int wageTypeId) => wageTypeId == _claimedWageTypeId;
+
+        public Task CalculateAsync(PayrollCalculationContext context)
+        {
+            CallCount++;
+            return Task.CompletedTask;
+        }
+    }
+
+    /// <summary>
+    /// The regression that wage code 2001 needed: a wage type NO calculator claims by code must still be
+    /// calculated when a master table points at it. Before wave P9 the engine's membership test was
+    /// <c>Resolve(code) != null</c>, which answered "no" here and silently produced nothing.
+    /// </summary>
+    [Fact]
+    public async Task A_MasterData_Claimant_Should_Run_For_A_WageCode_No_Rule_Claims()
+    {
+        var loanRecovery = new ClaimingWageTypeCalculator(claimedWageTypeId: 1000);
+        var resolver = BuildResolver(new IWageTypeCalculator[] { loanRecovery });
+
+        // "2001" is deliberately claimed by NO calculator's WageCode -- exactly as legacy leaves it
+        // (legacy Program.cs line 2691 comments "2001" out of wtcalList).
+        var wageType = Wage(1000, "2001", BillingType.Deduction);
+
+        resolver.Resolve("2001").ShouldBeNull();
+        resolver.HasCalculatorFor(wageType).ShouldBeTrue();
+
+        (await resolver.TryCalculateAsync(Context(wageType))).ShouldBeTrue();
+        loanRecovery.CallCount.ShouldBe(1);
+    }
+
+    [Fact]
+    public void HasCalculatorFor_Should_Be_False_When_Neither_Code_Nor_Master_Table_Claims_It()
+    {
+        var resolver = BuildResolver(new IWageTypeCalculator[]
+        {
+            new RecordingWageTypeCalculator("1006"),
+            new ClaimingWageTypeCalculator(claimedWageTypeId: 1000)
+        });
+
+        resolver.HasCalculatorFor(Wage(4711, "4711")).ShouldBeFalse();
+    }
+
+    /// <summary>
+    /// Master-data claimants must never be reachable by code. They declare <c>WageCode == null</c>, and
+    /// several of them will coexist once Air Ticket Pay / Travel Per Diem / Violation Deduction land -- so
+    /// <see cref="WageTypeCalculatorResolver.Resolve"/> must not see them as "duplicate claims on null".
+    /// </summary>
+    [Fact]
+    public void Resolve_Should_Ignore_MasterData_Claimants_Entirely()
+    {
+        var resolver = BuildResolver(new IWageTypeCalculator[]
+        {
+            new ClaimingWageTypeCalculator(claimedWageTypeId: 1000),
+            new ClaimingWageTypeCalculator(claimedWageTypeId: 1001),
+            new RecordingWageTypeCalculator("1006")
+        });
+
+        Should.NotThrow(() => resolver.Resolve("1006"));
+        resolver.Resolve("1006").ShouldNotBeNull();
+    }
+
+    /// <summary>
+    /// Legacy's master-table regions are sequential blocks, not an else-if chain, so EVERY claimant runs --
+    /// and they run BEFORE the by-code rule (legacy <c>EmployeeCalculatedPayService.Main</c> lines 44-130
+    /// precede the code branches from line 131).
+    /// </summary>
+    [Fact]
+    public async Task All_Claimants_Run_And_They_Run_Before_The_ByCode_Rule()
+    {
+        var first = new ClaimingWageTypeCalculator(claimedWageTypeId: 1000);
+        var second = new ClaimingWageTypeCalculator(claimedWageTypeId: 1000);
+        var byCode = new RecordingWageTypeCalculator("2001");
+
+        var resolver = BuildResolver(new IWageTypeCalculator[] { first, second, byCode });
+
+        (await resolver.TryCalculateAsync(Context(Wage(1000, "2001", BillingType.Deduction)))).ShouldBeTrue();
+
+        first.CallCount.ShouldBe(1);
+        second.CallCount.ShouldBe(1);
+        byCode.CallCount.ShouldBe(1);
+    }
+
+    /// <summary>The four dispatcher gates apply to master-data claimants too, not just to by-code rules.</summary>
+    [Fact]
+    public async Task Gates_Should_Apply_To_MasterData_Claimants()
+    {
+        var claimant = new ClaimingWageTypeCalculator(claimedWageTypeId: 1000);
+        var resolver = BuildResolver(new IWageTypeCalculator[] { claimant });
+
+        var context = Context(
+            Wage(1000, "2001", BillingType.Deduction),
+            onHold: new PayrollOnHoldFlags { AllDeductions = true });
+
+        (await resolver.TryCalculateAsync(context)).ShouldBeFalse();
+        claimant.CallCount.ShouldBe(0);
+    }
+
+    #endregion
 }

@@ -644,6 +644,14 @@ public class PayrollEngineServiceTests
                     ? Substitute.For<IWageTypeCalculator>()
                     : null);
 
+            // WAVE P9: the engine's calculated-pay membership test moved from Resolve(code) != null to
+            // HasCalculatorFor(wageType), because legacy's wtCalculatedWageList also contains every wage type
+            // referenced by a DisciplinaryType/TicketType/LoanType/TravelType (legacy Program.cs lines
+            // 2698-2701) -- codes NO calculator claims by name. Stubbing only Resolve leaves HasCalculatorFor
+            // returning NSubstitute's default false, which silently dispatches nothing at all.
+            calculatorResolver.HasCalculatorFor(Arg.Any<WageType>()).Returns(call =>
+                CalculatedWageCodes.Contains(call.Arg<WageType>().Code));
+
             calculatorResolver.TryCalculateAsync(Arg.Any<PayrollCalculationContext>()).Returns(call =>
             {
                 var context = call.Arg<PayrollCalculationContext>();

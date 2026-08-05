@@ -36,4 +36,10 @@ public class CreateOrEditLoanTypeDto
     public EligibleAmount EligibleAmount { get; set; }
 
     public double EligibleAmountNumber { get; set; }
+
+    /// <summary>
+    /// Legacy <c>LoanType.WageType</c> FK (restored wave P9) -- the wage type the loan recovery deduction is
+    /// posted against. Nullable: a loan type without one simply never produces a deduction line.
+    /// </summary>
+    public int? WageTypeId { get; set; }
 }

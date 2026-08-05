@@ -1666,6 +1666,14 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
         });
 
+        // WAVE P9: LoanType.WageTypeId -- the master-table reference wage code 2001 "Loan Recovery Deduction"
+        // is dispatched through (legacy Program.cs line 2700 / EmployeeCalculatedPayService.cs line 73).
+        // Restrict for the same reason as OvertimeType above: WageTypes already has convergent cascade paths.
+        modelBuilder.Entity<LoanType>(b =>
+        {
+            b.HasOne(e => e.WageType).WithMany().HasForeignKey(e => e.WageTypeId).OnDelete(DeleteBehavior.Restrict);
+        });
+
         // ---------------------------------------------------------------------------------------------
         // Live engine-run progress. Deliberately relationship-free: these rows are written on a short-lived
         // independent connection while the engine's own (hour-long) transaction is open, so an FK to

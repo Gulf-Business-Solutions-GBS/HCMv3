@@ -62,7 +62,12 @@ public class WageTypeCalculatorResolver : HCMv3DomainServiceBase, IWageTypeCalcu
             return null;
         }
 
-        var matches = _calculators.Where(c => c.WageCode == wageCode).ToList();
+        // IMasterDataDispatchedWageTypeCalculator implementations declare WageCode == null on purpose: they
+        // are dispatched by master-table reference, never by code. The null never equals a real code, so
+        // they are naturally excluded here; the OfType filter is kept explicit so it stays that way.
+        var matches = _calculators
+            .Where(c => c is not IMasterDataDispatchedWageTypeCalculator && c.WageCode == wageCode)
+            .ToList();
 
         if (matches.Count > 1)
         {
@@ -74,6 +79,29 @@ public class WageTypeCalculatorResolver : HCMv3DomainServiceBase, IWageTypeCalcu
         }
 
         return matches.FirstOrDefault();
+    }
+
+    /// <inheritdoc/>
+    public bool HasCalculatorFor(WageType wageType)
+    {
+        if (wageType == null)
+        {
+            return false;
+        }
+
+        return Resolve(wageType.Code) != null || MasterDataClaimants(wageType.Id).Any();
+    }
+
+    /// <summary>
+    /// Legacy's four master-table membership tests (<c>Program.cs</c> lines 2698-2701, re-applied inside
+    /// <c>EmployeeCalculatedPayService.Main</c> at lines 45, 59, 73, 119). ALL claimants run -- legacy's
+    /// regions are sequential blocks, not an else-if chain.
+    /// </summary>
+    private IEnumerable<IMasterDataDispatchedWageTypeCalculator> MasterDataClaimants(int wageTypeId)
+    {
+        return _calculators
+            .OfType<IMasterDataDispatchedWageTypeCalculator>()
+            .Where(c => c.ClaimsWageType(wageTypeId));
     }
 
     /// <inheritdoc/>
@@ -108,14 +136,26 @@ public class WageTypeCalculatorResolver : HCMv3DomainServiceBase, IWageTypeCalcu
             return false;
         }
 
-        var calculator = Resolve(context.WageType.Code);
-        if (calculator == null)
+        var ranSomething = false;
+
+        // Legacy EmployeeCalculatedPayService.Main runs its master-table regions FIRST (lines 44-130), then
+        // its by-code branches (line 131 onward). Order preserved: a by-code rule that reads register lines
+        // must see what the master-table rules already posted, exactly as legacy did.
+        // ToList() because a rule may write rows the claim predicate itself queries.
+        foreach (var claimant in MasterDataClaimants(context.WageType.Id).ToList())
         {
-            return false;
+            await claimant.CalculateAsync(context);
+            ranSomething = true;
         }
 
-        await calculator.CalculateAsync(context);
-        return true;
+        var calculator = Resolve(context.WageType.Code);
+        if (calculator != null)
+        {
+            await calculator.CalculateAsync(context);
+            ranSomething = true;
+        }
+
+        return ranSomething;
     }
 
     /// <summary>

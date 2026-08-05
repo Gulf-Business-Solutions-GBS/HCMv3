@@ -121,7 +121,21 @@ public class WageTypeCalculatorRegistration_Tests : AppTestBase
             + string.Join(", ", coreImplementations.Select(t => t.FullName)));
 
         // Each declared wage code must be unique, or the resolver refuses to pick between them.
-        resolved.Select(c => c.WageCode).Distinct().Count().ShouldBe(resolved.Length);
+        //
+        // Wave P9: IMasterDataDispatchedWageTypeCalculator implementations declare WageCode == null on
+        // purpose -- they are dispatched by a master table's WageType reference, never by code (see that
+        // interface). Several will coexist once Air Ticket Pay / Travel Per Diem / Violation Deduction land,
+        // so they are excluded from the uniqueness rule rather than colliding on null. Their dispatch is
+        // covered by WageTypeCalculatorResolver_Tests instead.
+        var byCode = resolved.Where(c => c is not IMasterDataDispatchedWageTypeCalculator).ToList();
+
+        byCode.Select(c => c.WageCode).Distinct().Count().ShouldBe(byCode.Count);
+
+        resolved.Where(c => c is IMasterDataDispatchedWageTypeCalculator)
+            .Where(c => c.WageCode != null)
+            .ShouldBeEmpty(
+                "An IMasterDataDispatchedWageTypeCalculator must declare WageCode == null: a non-null code "
+                + "would make it dispatchable BOTH by code and by master table, running it twice.");
     }
 
     /// <summary>

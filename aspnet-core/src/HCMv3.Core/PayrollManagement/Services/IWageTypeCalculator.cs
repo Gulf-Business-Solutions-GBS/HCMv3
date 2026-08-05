@@ -101,11 +101,29 @@ public interface IWageTypeCalculatorResolver : IDomainService
     IWageTypeCalculator Resolve(string wageCode);
 
     /// <summary>
-    /// Applies gates 1-4 above and, if all pass and a calculator exists for
-    /// <c>context.WageType.Code</c>, invokes it.
+    /// Legacy's <c>wtCalculatedWageList.Contains(currWageType.Oid)</c> membership test (legacy
+    /// <c>Program.cs</c> line 2574) -- i.e. "does the calculated-pay arm own this wage type?", asked BEFORE
+    /// any gate runs so the engine knows not to fall through to the attendance arm.
+    ///
+    /// <para>This is <see cref="Resolve"/> by code OR a claim from any
+    /// <see cref="IMasterDataDispatchedWageTypeCalculator"/>. It exists because the by-code test alone is
+    /// not the whole of legacy's list: legacy also adds every <c>DisciplinaryType</c>/<c>TicketType</c>/
+    /// <c>LoanType</c>/<c>TravelType</c> wage type to it (legacy <c>Program.cs</c> lines 2698-2701).</para>
+    /// </summary>
+    bool HasCalculatorFor(WageType wageType);
+
+    /// <summary>
+    /// Applies gates 1-4 above and then, if all pass, invokes -- in legacy's own order (legacy
+    /// <c>EmployeeCalculatedPayService.Main</c> runs its master-table regions at lines 44-130, before the
+    /// by-code branches from line 131 on):
+    /// <list type="number">
+    /// <item><description>every <see cref="IMasterDataDispatchedWageTypeCalculator"/> whose master table
+    /// claims <c>context.WageType.Id</c>;</description></item>
+    /// <item><description>the single by-code calculator for <c>context.WageType.Code</c>, if any.</description></item>
+    /// </list>
     /// </summary>
     /// <returns>
-    /// <c>true</c> if a calculator ran; <c>false</c> if the wage type was gated out or unclaimed.
+    /// <c>true</c> if at least one calculator ran; <c>false</c> if the wage type was gated out or unclaimed.
     /// </returns>
     Task<bool> TryCalculateAsync(PayrollCalculationContext context);
 }
