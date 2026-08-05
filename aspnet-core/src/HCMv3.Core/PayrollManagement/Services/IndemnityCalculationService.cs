@@ -513,6 +513,31 @@ public class IndemnityCalculationService : HCMv3DomainServiceBase, IIndemnityCal
             }
         }
 
+        // Legacy reached this point with `Program.IndemnitySlabList` ALREADY POPULATED for the current
+        // employee, and legacy's line 2689 refill above therefore only had to cover the one case where it was
+        // not: an End-Of-Service off-cycle run. That population was a SIDE EFFECT of
+        // `Program.GetTotalIndemnityDays` (Program.cs line 3391), whose `enableUnpaidDedSlabWise == true`
+        // branch calls `AddIndemnityRecord` once per slab (lines 3648 and 3662) into the static list, which
+        // `CreateIndemnityTable()` clears once per employee (line 1914). Because wage code 4006 (PayrollOrder
+        // 10530) drives that call with the run's payDate and every 3xxx provision has PayrollOrder >= 40010,
+        // the list was always filled, and filled FOR payDate, by the time the provisions ran.
+        //
+        // This port has no static, and the calculators pass `indemnitySlabs: null`, so on a REGULAR run the
+        // loop below was skipped entirely and every slab-wise provision amount came out 0 -- wage codes 3000
+        // and 3003 posted nothing for employee 3400 June 2024 against legacy's 14.70 and 2625.42.
+        //
+        // Rebuilding here through GetTotalIndemnityTableAsync (legacy Program.GetSlabWiseIndemnityTable, line
+        // 3996) reproduces that state rather than approximating it: the two routines' slab loops are
+        // line-for-line identical (compare Program.cs 3636-3675 with 4084-4120) -- same ChangeYear ordering,
+        // same `remainingPeriod <= (ChangeYear - prevChangeYear) * 365` split, same GetTotalUnpaidLeaveDays
+        // per slab, same AddIndemnityRecord arguments. They differ only in guard handling for a missing
+        // contract or sub-group, neither of which applies once a register line exists.
+        if (slabs == null || slabs.Count == 0)
+        {
+            slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+            result.IndemnitySlabs = slabs;
+        }
+
         if (slabs != null)
         {
             if (!isMonthly)

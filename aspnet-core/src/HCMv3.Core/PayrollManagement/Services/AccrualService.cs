@@ -1365,6 +1365,14 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
             ? _employeeSubGroupGratuityRepository.GetAll().Where(r => r.EmployeeSubGroupId == employeeSubGroupId.Value).ToList()
             : new List<EmployeeSubGroupGratuity>();
         var unpaidLeaveTypeId = _absenceTypeRepository.GetAll().Where(r => r.Code == "2").Select(r => r.Id).FirstOrDefault();
+
+        // Legacy GetTotalUnpaidLeaveDays (Program.cs line 3701) reads TWO DIFFERENT absence types, and this
+        // port was collapsing them onto one. The EmployeeAbsAdjustment term (legacy line 3739) filters on
+        // Program.UnpaidLeaveOid == code "2", but the TimeRegister.LeaveDay term (legacy lines 3734-3737)
+        // filters on `r.LeaveType.Code == "15"` -- Unapproved Absence Leave, a hard-coded literal in legacy.
+        // Passing the code-"2" id to both summed genuine unpaid-leave LeaveDay rows into the indemnity
+        // unpaid-day total on top of the UnpaidLeaveDay column that had already counted them.
+        var unapprovedAbsenceLeaveTypeId = _absenceTypeRepository.GetAll().Where(r => r.Code == "15").Select(r => r.Id).FirstOrDefault();
         var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
         var enableTimeRegisterApproval = timeSettings?.EnableTimeRegisterApproval ?? false;
 
@@ -1399,7 +1407,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         {
             var absStartDate = indemnityCountFromDate;
             var absEndDate = empContract.EndDate >= payDate ? payDate : empContract.EndDate;
-            var totalUnpaidDays = GetTotalUnpaidLeaveDays(absStartDate, absEndDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, enableTimeRegisterApproval);
+            var totalUnpaidDays = GetTotalUnpaidLeaveDays(absStartDate, absEndDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, unapprovedAbsenceLeaveTypeId, enableTimeRegisterApproval);
             totalDaysCount -= totalUnpaidDays;
         }
 
@@ -1431,7 +1439,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
             if (remainingPeriod <= (rec.ChangeYear - prevChangeYear) * 365)
             {
                 var slabTotalDays = remainingPeriod;
-                var slabUnpaidDays = GetTotalUnpaidLeaveDays(startDate, endDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, enableTimeRegisterApproval);
+                var slabUnpaidDays = GetTotalUnpaidLeaveDays(startDate, endDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, unapprovedAbsenceLeaveTypeId, enableTimeRegisterApproval);
                 var slabActualDays = enableUnpaidDedSlabWise ? slabTotalDays - slabUnpaidDays : slabTotalDays;
                 var slabIndemnity = (rec.GratuityDays / 365) * slabActualDays;
 
@@ -1440,7 +1448,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
             }
 
             var fullSlabTotalDays = rec.ChangeYear * 365;
-            var fullSlabUnpaidDays = GetTotalUnpaidLeaveDays(startDate, endDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, enableTimeRegisterApproval);
+            var fullSlabUnpaidDays = GetTotalUnpaidLeaveDays(startDate, endDate, empTimeRegister, empAbsAdjustmentList, empTimeTransferList, unpaidLeaveTypeId, unapprovedAbsenceLeaveTypeId, enableTimeRegisterApproval);
             var fullSlabActualDays = enableUnpaidDedSlabWise ? fullSlabTotalDays - fullSlabUnpaidDays : fullSlabTotalDays;
             var fullSlabIndemnity = (rec.GratuityDays / 365) * fullSlabActualDays;
 
@@ -1454,7 +1462,7 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
         return indemnitySlabs;
     }
 
-    private double GetTotalUnpaidLeaveDays(DateTime startDate, DateTime endDate, IQueryable<TimeRegister> empTimeRegister, List<EmployeeAbsAdjustment> empAbsAdjustmentList, List<TimeTransfer> empTimeTransferList, int unpaidLeaveTypeId, bool enableTimeRegisterApproval)
+    private double GetTotalUnpaidLeaveDays(DateTime startDate, DateTime endDate, IQueryable<TimeRegister> empTimeRegister, List<EmployeeAbsAdjustment> empAbsAdjustmentList, List<TimeTransfer> empTimeTransferList, int unpaidLeaveTypeId, int unapprovedAbsenceLeaveTypeId, bool enableTimeRegisterApproval)
     {
         double totalAbsCount = 0;
 
@@ -1473,12 +1481,12 @@ public class AccrualService : HCMv3DomainServiceBase, IAccrualService
             totalAbsCount += empTimeRegister.Where(r => r.DayDate >= startDate && r.DayDate <= endDate).Sum(r => (double?)r.UnpaidLeaveDay) ?? 0;
 
             totalAbsCount += empTimeRegister
-                .Where(r => r.DayDate >= startDate && r.DayDate <= endDate && r.LeaveTypeId == unpaidLeaveTypeId)
+                // Legacy lines 3734-3737: `r.LeaveType != null && r.LeaveType.Code == "15"` -- Unapproved
+                // Absence Leave (for a Planned time policy), NOT the code-"2" Unpaid Leave used by the
+                // adjustment term below. A zero id (no such AbsenceType configured) matches nothing, which is
+                // the same outcome as legacy's `LeaveType != null` guard on a database without code "15".
+                .Where(r => r.DayDate >= startDate && r.DayDate <= endDate && r.LeaveTypeId == unapprovedAbsenceLeaveTypeId)
                 .Sum(r => (double?)r.LeaveDay) ?? 0;
-            // NOTE: legacy also matches on the well-known code "15" (Unapproved Absence Leave) directly on the
-            // AbsenceType, not on the UnpaidLeave code "2" -- ported here filtering on LeaveTypeId resolved
-            // from AbsenceType.Code == "15" instead, see the caller-resolved unpaidLeaveTypeId parameter name
-            // mismatch note below.
 
             totalAbsCount += empAbsAdjustmentList
                 .Where(r => r.EffectiveDate >= startDate && r.EffectiveDate <= endDate && r.AbsenceTypeId == unpaidLeaveTypeId)

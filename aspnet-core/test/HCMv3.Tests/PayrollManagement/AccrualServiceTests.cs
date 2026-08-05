@@ -667,5 +667,112 @@ public class AccrualServiceTests : AppTestBase
         slabs[0].TotalDays.ShouldBe(totalCalendarDays);
     }
 
+    /// <summary>
+    /// REGRESSION. Legacy <c>GetTotalUnpaidLeaveDays</c> (<c>Program.cs</c> line 3701) reads TWO different
+    /// absence types and this port collapsed them onto one:
+    /// <list type="bullet">
+    /// <item><description>the <c>TimeRegister.LeaveDay</c> term (lines 3734-3737) filters on
+    /// <c>r.LeaveType.Code == "15"</c> -- Unapproved Absence Leave;</description></item>
+    /// <item><description>the <c>EmployeeAbsAdjustment</c> term (line 3739) filters on
+    /// <c>Program.UnpaidLeaveOid</c> -- code "2".</description></item>
+    /// </list>
+    ///
+    /// <para>Passing the code-"2" id to BOTH summed genuine unpaid-leave <c>LeaveDay</c> rows into the
+    /// indemnity unpaid-day total on top of the <c>UnpaidLeaveDay</c> column that had already counted them.
+    /// For employee 3400 that inflated the unpaid days over the 2012-2024 slab from 255 to 272 -- exactly 17
+    /// days -- which understated total indemnity days by 17 * 26/365 = 1.210959 and put wage code 3003 at
+    /// 2616.80 instead of legacy's 2625.42.</para>
+    ///
+    /// <para>Here the code-"2" row carries 9 LeaveDay and the code-"15" row 4. Only the 4 may count.</para>
+    /// </summary>
+    [Fact]
+    public async Task GetTotalIndemnityTableAsync_Should_Count_LeaveDay_Only_For_Absence_Code_15_Not_Code_2()
+    {
+        var contractStart = new DateTime(2024, 1, 1);
+        var payDate = new DateTime(2024, 6, 30);
+        var employeeId = CreateEmployee(contractStart);
+        var tenantId = AbpSession.TenantId ?? 1;
+
+        var employeeSubGroupId = UsingDbContext(context =>
+        {
+            var group = new EmployeeGroup { TenantId = tenantId, NameEn = "IndemG15", NameAr = "ج15" };
+            context.Set<EmployeeGroup>().Add(group);
+            context.SaveChanges();
+
+            var subGroup = new EmployeeSubGroup { TenantId = tenantId, EmployeeGroupId = group.Id, NameEn = "IndemSG15", NameAr = "ف15" };
+            context.Set<EmployeeSubGroup>().Add(subGroup);
+            context.SaveChanges();
+            return subGroup.Id;
+        });
+
+        UsingDbContext(context =>
+        {
+            var contractType = new ContractType { TenantId = tenantId, NameEn = "Fixed15", NameAr = "ثابت15" };
+            context.Set<ContractType>().Add(contractType);
+            context.SaveChanges();
+
+            context.Set<EmployeeContract>().Add(new EmployeeContract
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                ContractTypeId = contractType.Id,
+                StartDate = contractStart,
+                EndDate = new DateTime(2030, 12, 31)
+            });
+
+            context.Set<EmployeeSubGroupGratuity>().Add(new EmployeeSubGroupGratuity
+            {
+                TenantId = tenantId,
+                EmployeeSubGroupId = employeeSubGroupId,
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(9999, 12, 31),
+                ChangeYear = 5,
+                GratuityDays = 15,
+                BasisDays = 30
+            });
+
+            // The LeaveDay term is gated on wage code 4001 existing with IncludeInIndemnity.
+            context.Set<WageType>().Add(new WageType
+            {
+                TenantId = tenantId,
+                Code = "4001",
+                NameEn = "Unpaid Leave",
+                NameAr = "إجازة بدون راتب",
+                IncludeInIndemnity = true,
+                Status = true
+            });
+
+            var unpaidLeave = new AbsenceType { TenantId = tenantId, Code = "2", NameEn = "Unpaid Leave", NameAr = "بدون راتب" };
+            var unapprovedAbsence = new AbsenceType { TenantId = tenantId, Code = "15", NameEn = "Unapproved Absence", NameAr = "غياب" };
+            context.Set<AbsenceType>().AddRange(unpaidLeave, unapprovedAbsence);
+            context.SaveChanges();
+
+            // Code "2" -- legacy does NOT count this row's LeaveDay here.
+            context.Set<TimeRegister>().Add(new TimeRegister
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                DayDate = new DateTime(2024, 3, 10),
+                LeaveTypeId = unpaidLeave.Id,
+                LeaveDay = 9
+            });
+
+            // Code "15" -- legacy DOES count this one.
+            context.Set<TimeRegister>().Add(new TimeRegister
+            {
+                TenantId = tenantId,
+                EmployeeId = employeeId,
+                DayDate = new DateTime(2024, 4, 12),
+                LeaveTypeId = unapprovedAbsence.Id,
+                LeaveDay = 4
+            });
+        });
+
+        var slabs = await _accrualService.GetTotalIndemnityTableAsync(employeeId, payDate, employeeSubGroupId);
+
+        slabs.Count.ShouldBe(1);
+        slabs[0].UnpaidDays.ShouldBe(4);
+    }
+
     #endregion
 }

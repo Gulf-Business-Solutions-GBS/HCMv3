@@ -127,6 +127,20 @@ public static class MigrationPlan
         // WageTypes ids 976-1300 -- not one resolved.
         Lookup("AbsenceTypes", "AbsenceType", s => s.LogicalForeignKeys["WageTypeId"] = "WageTypes");
 
+        // The WageType <-> AbsenceType join table, absent from this plan entirely, so the target table held
+        // ZERO rows against legacy's 230. It is the sole input to legacy's `includeInPaidLeaveWageTypes`
+        // (EmployeeCalculatedPayService.cs lines 2290 and 2328:
+        // `WageTypeList.Where(r => r.WageTypeLeave.Any(d => d.AbsenceType.Oid == Program.AnnualLeaveOid))`),
+        // which is the wage-type set whose Rate is summed into `totalBasicPay` for BOTH annual-leave
+        // provisions. With the table empty the sum was over an empty set, so wage codes 3001 (Annual Leave
+        // Provision) and 3004 (Total Annual Leave Provision) computed Amount = 0 and were then dropped by
+        // the zero-means-delete -- employee 3400 June 2024 produced neither line against legacy's 17.50 and
+        // 116.51. The day-count inputs (4010/4022) were already exact; only this join was missing.
+        //
+        // MUST follow BOTH WageTypes and AbsenceTypes: WageTypeId and AbsenceTypeId are NOT NULL and both
+        // carry real FK constraints, so an unresolved FK DROPS the row silently rather than nulling it.
+        Lookup("WageTypeLeaves", "WageTypeLeave");
+
         // Needed only so EmployeeSubGroups.TicketClassId below has something to resolve against; a clean
         // Code/NameEn/NameAr root lookup with no outgoing FKs of its own.
         Lookup("TicketClasses", "TicketClass");

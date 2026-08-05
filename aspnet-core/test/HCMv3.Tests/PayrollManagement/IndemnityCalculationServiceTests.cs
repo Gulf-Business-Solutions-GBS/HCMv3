@@ -472,7 +472,11 @@ public class IndemnityCalculationServiceTests : AppTestBase
         SetPayrollSettings(enableUnpaidDedSlabWise: true);
         var employeeId = CreateEmployee(new DateTime(2020, 1, 1));
 
-        // Not an End-Of-Service off-cycle run, so legacy never rebuilds the slab table -> nothing accrues.
+        // No gratuity/contract rows are seeded, so the slab rebuild that now runs for a Regular run (see
+        // IndemnityCalculationService.GetIndemnityBifurcateAmountAsync) returns an EMPTY table and nothing
+        // accrues. Note the amount is 0 here because there are no slabs to charge against, NOT because the
+        // rebuild is skipped -- legacy reached this method with Program.IndemnitySlabList already populated
+        // by GetTotalIndemnityDays, and skipping the rebuild is what zeroed wage codes 3000/3003 outright.
         var result = await _indemnityService.GetIndemnityBifurcateAmountAsync(
             employeeId, new DateTime(2024, 6, 30), indemnityDays: 15, totalBasicPay: 900, fixedDays: 30,
             PayrollRunType.Regular, offCycleReason: null, isMonthly: false, employeeSubGroupId: null,
