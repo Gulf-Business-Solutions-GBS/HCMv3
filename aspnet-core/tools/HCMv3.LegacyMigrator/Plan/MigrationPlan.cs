@@ -118,6 +118,33 @@ public static class MigrationPlan
         Lookup("Nationalities", "Nationality");
         Lookup("PersonalActionReasons", "PersonalActionReason");
 
+        // Root lookups with no outgoing FKs of their own, but pulled up to LEVEL 1 because the social
+        // security allowance tables below reference them with NOT NULL FKs -- so if these are missing, every
+        // allowance row is DROPPED outright rather than merely nulled. Both are genuinely required, not
+        // theoretical: all 11 Education rows and all 12 EducationBranch rows are referenced.
+        Lookup("Educations", "Education");
+        Lookup("EducationBranches", "EducationBranch");
+
+        // ---- SOCIAL SECURITY -------------------------------------------------------------------------
+        // The entire chain was absent from this plan, so all six tables were empty and NO employee had any
+        // social security deducted. Found by the migrator pre-flight check (cross-reference every
+        // IRepository<T> the engines inject against target tables that are empty while legacy has live rows),
+        // not by comparing registers -- the five validation employees would have had to carry a deduction for
+        // a diff to reveal it.
+        //
+        // Strict dependency order below; every FK here is NOT NULL except SocialSecurityRules.MaritalStatusId,
+        // so a mis-ordered spec drops rows silently rather than nulling a column.
+        //   SocialSecurities                  -> Nationalities (above)
+        //   SocialSecurityDetails             -> SocialSecurities
+        //   SocialSecurityRules               -> SocialSecurities, Qualifications (L0), MaritalStatuses (L0)
+        //   SocialSecurityEducationAllowances -> SocialSecurities, Educations, EducationBranches
+        //   SocialSecurityMaritalAllowances   -> SocialSecurities, MaritalStatuses, EducationBranches
+        Lookup("SocialSecurities", "SocialSecurity");
+        Lookup("SocialSecurityDetails", "SocialSecurityDetail");
+        Lookup("SocialSecurityRules", "SocialSecurityRule");
+        Lookup("SocialSecurityEducationAllowances", "SocialSecurityEducationAllowance");
+        Lookup("SocialSecurityMaritalAllowances", "SocialSecurityMaritalAllowance");
+
         // AbsenceTypes.WageTypeId is an UNCONSTRAINED logical FK -- the single worst instance of the defect
         // TableSpec.LogicalForeignKeys describes. It is the master-table dispatch for the WHOLE leave-pay
         // family (legacy Program.cs line 2674 builds wtLeavePayWageList from AbsenceType.WageType.Oid), so
@@ -220,6 +247,29 @@ public static class MigrationPlan
         // it with the level-2 lookups silently dropped all 1,417 rows on an unresolvable FK.
         PerEmployee("EmployeeActions", "EmployeeAction");
 
+        // On-hold flags. Absent from this plan entirely until now: 0 rows migrated against 345 in legacy.
+        //
+        // This is the most dangerous of the missing-table defects found so far, because it does not remove a
+        // LINE from the register -- it removes a GATE. PayrollEngineService injects IRepository<EmployeeOnHold>
+        // and uses it for the AllEarnings, AllDeductions, LeavePay and BasicPay holds (legacy Program.cs 2545,
+        // 2555, and the INVERTED basic-pay hold at 2538). With the table empty, IsOnHold is false for every
+        // employee, every hold silently never fires, and an employee who should have been withheld is paid in
+        // full. Nothing is logged, and no register line is missing to notice.
+        //
+        // It is also invisible to per-employee comparison: none of the five validation employees (2362, 3400,
+        // 3804, 4225, 4528) has an on-hold row, so no amount of diffing their registers against legacy would
+        // ever have surfaced it. It was found by a migrator pre-flight check that cross-references every
+        // IRepository<T> the engines inject against target tables that are empty while legacy has rows.
+        //
+        // Must follow EmployeeActions (EmployeeActionId is a nullable FK into it -- unresolved would silently
+        // NULL, exactly the OvertimeTypes failure mode) and Employees (NOT NULL, unresolved drops the row).
+        PerEmployee("EmployeeOnHolds", "EmployeeOnHold");
+
+        // The per-employee end of the social security chain (the five shared tables are at LEVEL 1 above).
+        // Absent from this plan until now, so no employee had a social security record and therefore none
+        // had the deduction applied.
+        PerEmployee("EmployeeSocialSecurities", "EmployeeSocialSecurity");
+
         PerEmployee("EmployeePayrollStatuses", "EmployeePayrollStatus");
         PerEmployee("EmployeeDutyPeriods", "EmployeeDutyPeriod");
         PerEmployee("EmployeeTimePolicies", "EmployeeTimePolicy");
@@ -250,6 +300,25 @@ public static class MigrationPlan
         // `r.PayInterval == PayInterval.Monthly` predicate matches those rows. ColumnMapper's
         // ISNULL(...,0) coercion therefore REPRODUCES legacy's read semantics; it is not a guess.
         PerEmployee("EmployeeRecurringPayments", "EmployeeRecurringPayment");
+
+        // One-off payments and deductions. Also absent from this plan entirely until now: 0 rows migrated
+        // against 119 in legacy for the five validation employees.
+        //
+        // The clearest casualty is wage code 2005 "Advance Payment Ded". Nothing DISPATCHES on 2005 -- see
+        // IPayrollAdvancePaymentService -- because it is not calculated at payroll time at all. An off-cycle
+        // advance WRITES an EmployeePayment row carrying wage type 2005, and a later Regular run simply reads
+        // it back as an ordinary payment. With the table empty there was nothing to read, so the recovery
+        // silently never happened.
+        //
+        // That is a materially wrong payslip, not a rounding difference: employee 2362 has a 247.384615 row
+        // (PaymentDate 2024-06-01, OffCyclePaymentDate 2024-06-27) against a 168.00 basic salary, so legacy's
+        // June net pay is essentially zeroed by the recovery while ours would pay the employee in full.
+        //
+        // Must follow WageTypes and Employees (both NOT NULL FKs here, so an unresolved reference DROPS the
+        // row outright rather than nulling a column); CostCenterId and CurrencyId are nullable FKs into
+        // CostCenters/Currencies, which also precede this. All four are constrained in the target, so
+        // ColumnMapper sees them via sys.foreign_keys and no LogicalForeignKeys entry is needed.
+        PerEmployee("EmployeePayments", "EmployeePayment");
 
         // Wage code 2001 "Loan Recovery Deduction" reads these three, and all three were absent from this
         // plan entirely -- so the tables were empty and the deduction was 0 for every employee.
