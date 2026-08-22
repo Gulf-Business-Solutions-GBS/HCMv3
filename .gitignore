@@ -36,3 +36,7 @@ _qa-output/
 
 # Detached payroll test-suite log (~1.5h run); a local artefact, never a source file.
 payroll-suite.log
+
+# Local dev-server logs from ad-hoc runs; artefacts, never source.
+ng.log
+webhost.log

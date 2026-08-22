@@ -6,9 +6,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="PayrollEngine_PayrollArea">{{
-                            'PayrollAreaId' | localize
-                        }}</label>
+                        <label class="form-label required" for="PayrollEngine_PayrollArea">
+                            {{ 'PayrollAreaId' | localize }}
+                        </label>
                         <select
                             id="PayrollEngine_PayrollArea"
                             class="form-select"
@@ -23,9 +23,9 @@
                     </div>
 
                     <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="PayrollEngine_RunType">{{
-                            'PayrollRunType' | localize
-                        }}</label>
+                        <label class="form-label required" for="PayrollEngine_RunType">
+                            {{ 'PayrollRunType' | localize }}
+                        </label>
                         <select
                             id="PayrollEngine_RunType"
                             class="form-select"
@@ -38,9 +38,9 @@
                     </div>
 
                     <div class="col-md-3 mb-5">
-                        <label class="form-label" for="PayrollEngine_EmployeeCodes">{{
-                            'EmployeeCode' | localize
-                        }}</label>
+                        <label class="form-label" for="PayrollEngine_EmployeeCodes">
+                            {{ 'EmployeeCode' | localize }}
+                        </label>
                         <input
                             id="PayrollEngine_EmployeeCodes"
                             type="text"
@@ -52,9 +52,9 @@
                     </div>
 
                     <div class="col-md-3 mb-5">
-                        <label class="form-label required" for="PayrollEngine_PayInDate">{{
-                            'PayInDate' | localize
-                        }}</label>
+                        <label class="form-label required" for="PayrollEngine_PayInDate">
+                            {{ 'PayInDate' | localize }}
+                        </label>
                         <input
                             id="PayrollEngine_PayInDate"
                             type="date"
@@ -68,9 +68,9 @@
                 @if (isOffCycle()) {
                     <div class="row">
                         <div class="col-md-3 mb-5">
-                            <label class="form-label required" for="PayrollEngine_OffCycleReason">{{
-                                'OffCycleReason' | localize
-                            }}</label>
+                            <label class="form-label required" for="PayrollEngine_OffCycleReason">
+                                {{ 'OffCycleReason' | localize }}
+                            </label>
                             <select
                                 id="PayrollEngine_OffCycleReason"
                                 class="form-select"
@@ -85,9 +85,9 @@
                         </div>
 
                         <div class="col-md-3 mb-5">
-                            <label class="form-label" for="PayrollEngine_OffCyclePaymentDate">{{
-                                'OffCyclePaymentDate' | localize
-                            }}</label>
+                            <label class="form-label" for="PayrollEngine_OffCyclePaymentDate">
+                                {{ 'OffCyclePaymentDate' | localize }}
+                            </label>
                             <input
                                 id="PayrollEngine_OffCyclePaymentDate"
                                 type="date"
@@ -117,29 +117,12 @@
                         <span>{{ 'Refresh' | localize }}</span>
                     </button>
                 </div>
-
-                @if (latestLog(); as log) {
-                    <div class="row mt-5">
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'ExecutionStatus' | localize }}</label>
-                            <div class="fw-bold">{{ statusText(log.executionStatus) }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'TotalRecords' | localize }}</label>
-                            <div class="fw-bold">{{ log.totalRecords }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Successfull' | localize }}</label>
-                            <div class="fw-bold text-success">{{ log.successfull }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Failed' | localize }}</label>
-                            <div class="fw-bold text-danger">{{ log.failed }}</div>
-                        </div>
-                    </div>
-                }
             </div>
         </div>
+
+        <!-- Live per-run progress: gauge, counters, timings and the per-employee grid. Shared with the
+             other engine screen -- both engines expose the identical EngineRunStatusDto contract. -->
+        <engine-run-progress #engineProgress [engine]="EngineType.PayrollEngine"></engine-run-progress>
 
         <div class="card card-custom mt-5">
             <div class="card-body">

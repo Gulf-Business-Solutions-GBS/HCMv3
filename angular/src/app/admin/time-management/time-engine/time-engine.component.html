@@ -73,29 +73,12 @@
                         <span>{{ 'Refresh' | localize }}</span>
                     </button>
                 </div>
-
-                @if (latestLog(); as log) {
-                    <div class="row mt-5">
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'ExecutionStatus' | localize }}</label>
-                            <div class="fw-bold">{{ statusText(log.executionStatus) }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'TotalRecords' | localize }}</label>
-                            <div class="fw-bold">{{ log.totalRecords }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Successfull' | localize }}</label>
-                            <div class="fw-bold text-success">{{ log.successfull }}</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">{{ 'Failed' | localize }}</label>
-                            <div class="fw-bold text-danger">{{ log.failed }}</div>
-                        </div>
-                    </div>
-                }
             </div>
         </div>
+
+        <!-- Live per-run progress: gauge, counters, timings and the per-employee grid. Shared with the
+             other engine screen -- both engines expose the identical EngineRunStatusDto contract. -->
+        <engine-run-progress #engineProgress [engine]="EngineType.TimeEngine"></engine-run-progress>
 
         <div class="card card-custom mt-5">
             <div class="card-body">

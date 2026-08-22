@@ -11,6 +11,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import {
+    EngineType,
     ExecutionLogDto,
     ExecutionLogModule,
     ExecutionLogStatus,
@@ -26,6 +27,7 @@ import {
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { EngineRunProgressComponent } from '@app/shared/common/engine-run-progress/engine-run-progress.component';
 
 /**
  * Port of the legacy Payroll Engine run screen
@@ -44,6 +46,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
     animations: [appModuleAnimation()],
     imports: [
         SubHeaderComponent,
+        EngineRunProgressComponent,
         BusyIfDirective,
         FormsModule,
         TableModule,
@@ -60,6 +63,11 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
 
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
+
+    /** The shared live-progress panel; told to start polling as soon as a run is queued. */
+    readonly engineProgress = viewChild<EngineRunProgressComponent>('engineProgress');
+
+    readonly EngineType = EngineType;
 
     // Legacy args[0..6] -- see uscPayrollEngine.ascx.cs ExecuteLongOperation().
     readonly payrollRunType = signal<PayrollRunType>(PayrollRunType.Regular);
@@ -145,9 +153,7 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
             employeeCodes: this.employeeCodes() ? this.employeeCodes() : undefined,
             payInDate: DateTime.fromISO(this.payInDate()),
             payrollAreaName: this.payrollAreaName(),
-            offCyclePaymentDate: this.offCyclePaymentDate()
-                ? DateTime.fromISO(this.offCyclePaymentDate())
-                : undefined,
+            offCyclePaymentDate: this.offCyclePaymentDate() ? DateTime.fromISO(this.offCyclePaymentDate()) : undefined,
             offCycleReason: this.offCycleReason() ? this.offCycleReason() : undefined,
         });
 
@@ -158,6 +164,7 @@ export class PayrollEngineComponent extends AppComponentBase implements OnInit, 
             .subscribe(() => {
                 this.notify.info(this.l('PayrollEngineRunQueued'));
                 this.reloadPage();
+                this.engineProgress()?.onRunQueued();
                 this.startPolling();
             });
     }

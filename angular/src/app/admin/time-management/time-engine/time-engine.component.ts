@@ -11,6 +11,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import {
+    EngineType,
     ExecutionLogDto,
     ExecutionLogModule,
     ExecutionLogStatus,
@@ -25,6 +26,7 @@ import {
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { EngineRunProgressComponent } from '@app/shared/common/engine-run-progress/engine-run-progress.component';
 
 /**
  * Port of the legacy Time Engine run screen
@@ -40,6 +42,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
     animations: [appModuleAnimation()],
     imports: [
         SubHeaderComponent,
+        EngineRunProgressComponent,
         BusyIfDirective,
         FormsModule,
         TableModule,
@@ -56,6 +59,11 @@ export class TimeEngineComponent extends AppComponentBase implements OnInit, OnD
 
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
+
+    /** The shared live-progress panel; told to start polling as soon as a run is queued. */
+    readonly engineProgress = viewChild<EngineRunProgressComponent>('engineProgress');
+
+    readonly EngineType = EngineType;
 
     // Legacy args[0..3] -- see uscTimeEngine.ascx.cs ExecuteLongOperation().
     readonly employeeCodes = signal<string>('');
@@ -113,6 +121,7 @@ export class TimeEngineComponent extends AppComponentBase implements OnInit, OnD
             .subscribe(() => {
                 this.notify.info(this.l('TimeEngineRunQueued'));
                 this.reloadPage();
+                this.engineProgress()?.onRunQueued();
                 this.startPolling();
             });
     }
