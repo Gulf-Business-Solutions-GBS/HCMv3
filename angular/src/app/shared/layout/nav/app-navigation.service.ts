@@ -21,6 +21,167 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('ReportPreview', 'Pages.Reports.Preview', 'flaticon-file-2', '/app/admin/report-preview'),
             new AppMenuItem('PayslipReport', 'Pages.Reports.Payslip.Email', 'flaticon-envelope', '/app/admin/payslip-report'),
+            // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis). One child entry per
+            // ported report; the wave adds ~139 more siblings under this same parent.
+            new AppMenuItem(
+                'AnalysisReports',
+                '',
+                'flaticon-analytics',
+                '',
+                [],
+                [
+                    new AppMenuItem(
+                        'EmployeeContractReport',
+                        'Pages.Reports.Analysis.EmployeeContract',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-contract'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeActionReport',
+                        'Pages.Reports.Analysis.EmployeeAction',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-action'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeActionChangeReport',
+                        'Pages.Reports.Analysis.EmployeeActionChange',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-action-change'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeAssetReport',
+                        'Pages.Reports.Analysis.EmployeeAsset',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-asset'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeAttendanceReport',
+                        'Pages.Reports.Analysis.EmployeeAttendance',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-attendance'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeBankReport',
+                        'Pages.Reports.Analysis.EmployeeBank',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-bank'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeBasicPayReport',
+                        'Pages.Reports.Analysis.EmployeeBasicPay',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-basic-pay'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeManagerReport',
+                        'Pages.Reports.Analysis.EmployeeManager',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-manager'
+                    ),
+                    new AppMenuItem(
+                        'EmployeePostWiseReport',
+                        'Pages.Reports.Analysis.EmployeePostWise',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-post-wise'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeRejoinReport',
+                        'Pages.Reports.Analysis.EmployeeRejoin',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-rejoin'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeSalaryChangeReport',
+                        'Pages.Reports.Analysis.EmployeeSalaryChange',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-salary-change'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeSponsorReport',
+                        'Pages.Reports.Analysis.EmployeeSponsor',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-sponsor'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeStatusReport',
+                        'Pages.Reports.Analysis.EmployeeStatus',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-status'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeTransferReport',
+                        'Pages.Reports.Analysis.EmployeeTransfer',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-transfer'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeWorkLocationReport',
+                        'Pages.Reports.Analysis.EmployeeWorkLocation',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-work-location'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeWorkflowRoleReport',
+                        'Pages.Reports.Analysis.EmployeeWorkflowRole',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-workflow-role'
+                    ),
+                    new AppMenuItem(
+                        'SalaryBenefitsReport',
+                        'Pages.Reports.Analysis.SalaryBenefits',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-benefits'
+                    ),
+                    new AppMenuItem(
+                        'SalaryByNationalityReport',
+                        'Pages.Reports.Analysis.SalaryByNationality',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-by-nationality'
+                    ),
+                    new AppMenuItem(
+                        'StaffHeadcountReport',
+                        'Pages.Reports.Analysis.StaffHeadcount',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/staff-headcount'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeBonusReport',
+                        'Pages.Reports.Analysis.EmployeeBonus',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-bonus'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeCTCReport',
+                        'Pages.Reports.Analysis.EmployeeCTC',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-ctc'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeDeductionReport',
+                        'Pages.Reports.Analysis.EmployeeDeduction',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-deduction'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeHistoryReport',
+                        'Pages.Reports.Analysis.EmployeeHistory',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-history'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeIncentiveReport',
+                        'Pages.Reports.Analysis.EmployeeIncentive',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-incentive'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeInfoReport',
+                        'Pages.Reports.Analysis.EmployeeInfo',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-info'
+                    ),
+                ]
+            ),
             new AppMenuItem(
                 'Saas',
                 '',

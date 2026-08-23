@@ -2460,6 +2460,63 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Reports_Payslip_Email = "Pages.Reports.Payslip.Email";
 
+    //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis/**/usc*.ascx)
+    //
+    //One parent permission for the whole analysis-report family plus ONE CHILD PER REPORT, so a role can
+    //be granted individual reports. Every new report in this wave adds exactly one constant here, one
+    //CreateChildPermission line in AppAuthorizationProvider, and one localization key.
+    public const string Pages_Reports_Analysis = "Pages.Reports.Analysis";
+
+    public const string Pages_Reports_Analysis_EmployeeContract = "Pages.Reports.Analysis.EmployeeContract";
+
+    public const string Pages_Reports_Analysis_EmployeeAction = "Pages.Reports.Analysis.EmployeeAction";
+
+    public const string Pages_Reports_Analysis_EmployeeActionChange = "Pages.Reports.Analysis.EmployeeActionChange";
+
+    public const string Pages_Reports_Analysis_EmployeeAsset = "Pages.Reports.Analysis.EmployeeAsset";
+
+    public const string Pages_Reports_Analysis_EmployeeAttendance = "Pages.Reports.Analysis.EmployeeAttendance";
+
+    public const string Pages_Reports_Analysis_EmployeeBank = "Pages.Reports.Analysis.EmployeeBank";
+
+    public const string Pages_Reports_Analysis_EmployeeBasicPay = "Pages.Reports.Analysis.EmployeeBasicPay";
+
+    public const string Pages_Reports_Analysis_EmployeeBonus = "Pages.Reports.Analysis.EmployeeBonus";
+
+    public const string Pages_Reports_Analysis_EmployeeCTC = "Pages.Reports.Analysis.EmployeeCTC";
+
+    public const string Pages_Reports_Analysis_EmployeeDeduction = "Pages.Reports.Analysis.EmployeeDeduction";
+
+    public const string Pages_Reports_Analysis_EmployeeHistory = "Pages.Reports.Analysis.EmployeeHistory";
+
+    public const string Pages_Reports_Analysis_EmployeeIncentive = "Pages.Reports.Analysis.EmployeeIncentive";
+
+    public const string Pages_Reports_Analysis_EmployeeInfo = "Pages.Reports.Analysis.EmployeeInfo";
+
+    public const string Pages_Reports_Analysis_EmployeeManager = "Pages.Reports.Analysis.EmployeeManager";
+
+    public const string Pages_Reports_Analysis_EmployeePostWise = "Pages.Reports.Analysis.EmployeePostWise";
+
+    public const string Pages_Reports_Analysis_EmployeeRejoin = "Pages.Reports.Analysis.EmployeeRejoin";
+
+    public const string Pages_Reports_Analysis_EmployeeSalaryChange = "Pages.Reports.Analysis.EmployeeSalaryChange";
+
+    public const string Pages_Reports_Analysis_EmployeeSponsor = "Pages.Reports.Analysis.EmployeeSponsor";
+
+    public const string Pages_Reports_Analysis_EmployeeStatus = "Pages.Reports.Analysis.EmployeeStatus";
+
+    public const string Pages_Reports_Analysis_EmployeeTransfer = "Pages.Reports.Analysis.EmployeeTransfer";
+
+    public const string Pages_Reports_Analysis_EmployeeWorkLocation = "Pages.Reports.Analysis.EmployeeWorkLocation";
+
+    public const string Pages_Reports_Analysis_EmployeeWorkflowRole = "Pages.Reports.Analysis.EmployeeWorkflowRole";
+
+    public const string Pages_Reports_Analysis_SalaryBenefits = "Pages.Reports.Analysis.SalaryBenefits";
+
+    public const string Pages_Reports_Analysis_SalaryByNationality = "Pages.Reports.Analysis.SalaryByNationality";
+
+    public const string Pages_Reports_Analysis_StaffHeadcount = "Pages.Reports.Analysis.StaffHeadcount";
+
     //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration/*.ascx.cs)
     //
     //These are DESTRUCTIVE / BULK maintenance utilities, not settings screens. Legacy gated them by a

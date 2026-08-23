@@ -1,0 +1,140 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeBankReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <!-- Legacy cmbPayrollArea, projected into the shared panel. -->
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <p-select
+                            [options]="payrollAreaOptions()"
+                            [ngModel]="payrollAreaCode()"
+                            (ngModelChange)="payrollAreaCode.set($event)"
+                            name="employeeBankPayrollArea"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'AllPayrollAreas' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="civilId">
+                                        {{ 'CivilId' | localize }}
+                                        <p-sortIcon field="civilId" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="bankName">
+                                        {{ 'Bank' | localize }}
+                                        <p-sortIcon field="bankName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="effectiveDate">
+                                        {{ 'EffectiveDate' | localize }}
+                                        <p-sortIcon field="effectiveDate" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
+                                        {{ 'OrganizationUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitName" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="bankCountryName">
+                                        {{ 'BankCountry' | localize }}
+                                        <p-sortIcon field="bankCountryName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="paymentType">
+                                        {{ 'PaymentType' | localize }}
+                                        <p-sortIcon field="paymentType" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="accountNum">
+                                        {{ 'AccountNumber' | localize }}
+                                        <p-sortIcon field="accountNum" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="paymentCurrencyName">
+                                        {{ 'PaymentCurrency' | localize }}
+                                        <p-sortIcon field="paymentCurrencyName" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="iban">
+                                        {{ 'IBAN' | localize }}
+                                        <p-sortIcon field="iban" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 150px">{{ record.civilId }}</td>
+                                    <td style="min-width: 180px">{{ record.bankName }}</td>
+                                    <td style="min-width: 150px">
+                                        {{ record.effectiveDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 160px">{{ record.bankCountryName }}</td>
+                                    <td style="min-width: 140px">{{ record.paymentType }}</td>
+                                    <td style="min-width: 180px">{{ record.accountNum }}</td>
+                                    <td style="min-width: 170px">{{ record.paymentCurrencyName }}</td>
+                                    <td style="min-width: 220px">{{ record.iban }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

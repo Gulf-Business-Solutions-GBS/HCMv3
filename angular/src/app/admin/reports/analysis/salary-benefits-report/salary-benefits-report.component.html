@@ -1,0 +1,188 @@
+<div [@routerTransition]>
+    <sub-header [title]="'SalaryBenefitsReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [showDateRange]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <!-- Report-specific: legacy cmbPayrollArea (matched on the payroll area CODE). -->
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="payrollAreaCode"
+                            [ngModel]="payrollAreaCode()"
+                            (ngModelChange)="payrollAreaCode.set($event)"
+                            (keydown.enter)="reloadPage()"
+                            [placeholder]="'AllPayrollAreas' | localize" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '140rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="status">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="status" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="joiningDate">
+                                        {{ 'JoiningDate' | localize }}
+                                        <p-sortIcon field="joiningDate" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="jobTitleName">
+                                        {{ 'JobTitle' | localize }}
+                                        <p-sortIcon field="jobTitleName" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
+                                        {{ 'OrganizationUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitName" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="effectiveDate">
+                                        {{ 'EffectiveDate' | localize }}
+                                        <p-sortIcon field="effectiveDate" />
+                                    </th>
+                                    <!-- Dynamic wage-type columns, in the server-supplied (PayrollOrder) order. -->
+                                    @for (wageTypeName of wageTypeNames(); track wageTypeName) {
+                                        <th style="min-width: 150px">{{ wageTypeName }}</th>
+                                    }
+                                    <th style="min-width: 150px" pSortableColumn="totalSalary">
+                                        {{ 'TotalSalary' | localize }}
+                                        <p-sortIcon field="totalSalary" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="managerName">
+                                        {{ 'Manager' | localize }}
+                                        <p-sortIcon field="managerName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="recruitmentTypeName">
+                                        {{ 'RecruitmentType' | localize }}
+                                        <p-sortIcon field="recruitmentTypeName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="sponsorName">
+                                        {{ 'Sponsor' | localize }}
+                                        <p-sortIcon field="sponsorName" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="separationType">
+                                        {{ 'SeparationType' | localize }}
+                                        <p-sortIcon field="separationType" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="submissionDate">
+                                        {{ 'SubmissionDate' | localize }}
+                                        <p-sortIcon field="submissionDate" />
+                                    </th>
+                                    <th style="min-width: 170px" pSortableColumn="lastDayInService">
+                                        {{ 'LastDayInService' | localize }}
+                                        <p-sortIcon field="lastDayInService" />
+                                    </th>
+                                    <th style="min-width: 150px" pSortableColumn="revokeDate">
+                                        {{ 'RevokeDate' | localize }}
+                                        <p-sortIcon field="revokeDate" />
+                                    </th>
+                                    <th style="min-width: 160px">{{ 'ServiceDuration' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Age' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="accommodationTypeName">
+                                        {{ 'Accommodation' | localize }}
+                                        <p-sortIcon field="accommodationTypeName" />
+                                    </th>
+                                    <th style="min-width: 190px" pSortableColumn="transportationTypeName">
+                                        {{ 'TransportationType' | localize }}
+                                        <p-sortIcon field="transportationTypeName" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 120px">{{ record.status }}</td>
+                                    <td style="min-width: 140px">
+                                        {{ record.joiningDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.jobTitleName }}</td>
+                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 150px">
+                                        {{ record.effectiveDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    @for (wageTypeName of wageTypeNames(); track wageTypeName) {
+                                        <td style="min-width: 150px">
+                                            {{ wageAmount(record, wageTypeName) | number: '1.3-3' }}
+                                        </td>
+                                    }
+                                    <td style="min-width: 150px">{{ record.totalSalary | number: '1.3-3' }}</td>
+                                    <td style="min-width: 220px">{{ record.managerName }}</td>
+                                    <td style="min-width: 180px">{{ record.recruitmentTypeName }}</td>
+                                    <td style="min-width: 180px">{{ record.sponsorName }}</td>
+                                    <td style="min-width: 170px">{{ record.separationType }}</td>
+                                    <td style="min-width: 160px">
+                                        {{ record.submissionDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 170px">
+                                        {{ record.lastDayInService | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        {{ record.revokeDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.serviceDuration }}</td>
+                                    <td style="min-width: 100px">{{ record.age | number: '1.1-1' }}</td>
+                                    <td style="min-width: 180px">{{ record.accommodationTypeName }}</td>
+                                    <td style="min-width: 190px">{{ record.transportationTypeName }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

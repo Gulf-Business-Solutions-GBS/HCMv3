@@ -1,0 +1,134 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeActionReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Legacy panel has no cmbEmpStatus, hence [showEmployeeStatus]="false". -->
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <!-- Legacy cmbPersonalAction, projected into the shared panel. -->
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'PersonalAction' | localize }}</label>
+                        <p-select
+                            [options]="personalActionOptions()"
+                            [ngModel]="personalActionCode()"
+                            (ngModelChange)="personalActionCode.set($event)"
+                            name="employeeActionPersonalAction"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'AllActions' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="jobTitleName">
+                                        {{ 'JobTitle' | localize }}
+                                        <p-sortIcon field="jobTitleName" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="countryName">
+                                        {{ 'Country' | localize }}
+                                        <p-sortIcon field="countryName" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
+                                        {{ 'OrganizationUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="workLocationName">
+                                        {{ 'WorkLocation' | localize }}
+                                        <p-sortIcon field="workLocationName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="personalActionName">
+                                        {{ 'PersonalAction' | localize }}
+                                        <p-sortIcon field="personalActionName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="actionReasonName">
+                                        {{ 'ActionReason' | localize }}
+                                        <p-sortIcon field="actionReasonName" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 180px">{{ record.jobTitleName }}</td>
+                                    <td style="min-width: 160px">{{ record.countryName }}</td>
+                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 180px">{{ record.workLocationName }}</td>
+                                    <td style="min-width: 140px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 140px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 180px">{{ record.personalActionName }}</td>
+                                    <td style="min-width: 180px">{{ record.actionReasonName }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

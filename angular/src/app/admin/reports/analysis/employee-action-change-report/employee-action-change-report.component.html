@@ -1,0 +1,159 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'EmployeeActionChangeReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!-- Legacy panel has only dtFrom/dtTo/cmbPersonalAction. -->
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <!-- Legacy cmbPersonalAction, projected into the shared panel. -->
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'PersonalAction' | localize }}</label>
+                        <p-select
+                            [options]="personalActionOptions()"
+                            [ngModel]="personalActionCode()"
+                            (ngModelChange)="personalActionCode.set($event)"
+                            name="employeeActionChangePersonalAction"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'AllActions' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '100rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'EmployeeCode' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="actionTypeName">
+                                        {{ 'ActionType' | localize }}
+                                        <p-sortIcon field="actionTypeName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="component">
+                                        {{ 'Component' | localize }}
+                                        <p-sortIcon field="component" />
+                                    </th>
+                                    @if (showValueColumns()) {
+                                        <th style="min-width: 150px" pSortableColumn="originalValue">
+                                            {{ 'OriginalValue' | localize }}
+                                            <p-sortIcon field="originalValue" />
+                                        </th>
+                                        <th style="min-width: 150px" pSortableColumn="adjustedValue">
+                                            {{ 'AdjustedValue' | localize }}
+                                            <p-sortIcon field="adjustedValue" />
+                                        </th>
+                                        <th style="min-width: 150px" pSortableColumn="finalValue">
+                                            {{ 'FinalValue' | localize }}
+                                            <p-sortIcon field="finalValue" />
+                                        </th>
+                                    }
+                                    <th style="min-width: 160px" pSortableColumn="createdBy">
+                                        {{ 'CreatedBy' | localize }}
+                                        <p-sortIcon field="createdBy" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="createdOn">
+                                        {{ 'CreatedOn' | localize }}
+                                        <p-sortIcon field="createdOn" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="modifiedOn">
+                                        {{ 'ModifiedOn' | localize }}
+                                        <p-sortIcon field="modifiedOn" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="modifiedBy">
+                                        {{ 'ModifiedBy' | localize }}
+                                        <p-sortIcon field="modifiedBy" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 180px">{{ record.actionTypeName }}</td>
+                                    <td style="min-width: 140px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 140px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 180px">{{ record.component }}</td>
+                                    @if (showValueColumns()) {
+                                        <td style="min-width: 150px">{{ record.originalValue }}</td>
+                                        <td style="min-width: 150px">{{ record.adjustedValue }}</td>
+                                        <td style="min-width: 150px">{{ record.finalValue }}</td>
+                                    }
+                                    <td style="min-width: 160px">{{ record.createdBy }}</td>
+                                    <td style="min-width: 160px">
+                                        {{ record.createdOn | luxonFormat: 'dd/MM/yyyy HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 160px">
+                                        {{ record.modifiedOn | luxonFormat: 'dd/MM/yyyy HH:mm' }}
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.modifiedBy }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

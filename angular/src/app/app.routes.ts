@@ -1250,6 +1250,208 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Payslip.Email' },
                     },
                     {
+                        // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis).
+                        // Every report in the wave adds one entry of exactly this shape.
+                        path: 'reports/analysis/employee-contract',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-contract-report/employee-contract-report.component'
+                            ).then((m) => m.EmployeeContractReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeContract' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-action',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-action-report/employee-action-report.component'
+                            ).then((m) => m.EmployeeActionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeAction' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-action-change',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-action-change-report/employee-action-change-report.component'
+                            ).then((m) => m.EmployeeActionChangeReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeActionChange' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-asset',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-asset-report/employee-asset-report.component'
+                            ).then((m) => m.EmployeeAssetReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeAsset' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-attendance',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-attendance-report/employee-attendance-report.component'
+                            ).then((m) => m.EmployeeAttendanceReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeAttendance' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-bank',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-bank-report/employee-bank-report.component'
+                            ).then((m) => m.EmployeeBankReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeBank' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-basic-pay',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-basic-pay-report/employee-basic-pay-report.component'
+                            ).then((m) => m.EmployeeBasicPayReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeBasicPay' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-manager',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-manager-report/employee-manager-report.component'
+                            ).then((m) => m.EmployeeManagerReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeManager' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-post-wise',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-post-wise-report/employee-post-wise-report.component'
+                            ).then((m) => m.EmployeePostWiseReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeePostWise' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-rejoin',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-rejoin-report/employee-rejoin-report.component'
+                            ).then((m) => m.EmployeeRejoinReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeRejoin' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-salary-change',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-salary-change-report/employee-salary-change-report.component'
+                            ).then((m) => m.EmployeeSalaryChangeReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeSalaryChange' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-sponsor',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-sponsor-report/employee-sponsor-report.component'
+                            ).then((m) => m.EmployeeSponsorReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeSponsor' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-status',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-status-report/employee-status-report.component'
+                            ).then((m) => m.EmployeeStatusReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeStatus' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-transfer',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-transfer-report/employee-transfer-report.component'
+                            ).then((m) => m.EmployeeTransferReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeTransfer' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-work-location',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-work-location-report/employee-work-location-report.component'
+                            ).then((m) => m.EmployeeWorkLocationReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeWorkLocation' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-workflow-role',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-workflow-role-report/employee-workflow-role-report.component'
+                            ).then((m) => m.EmployeeWorkflowRoleReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeWorkflowRole' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-benefits',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/salary-benefits-report/salary-benefits-report.component'
+                            ).then((m) => m.SalaryBenefitsReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryBenefits' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-by-nationality',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/salary-by-nationality-report/salary-by-nationality-report.component'
+                            ).then((m) => m.SalaryByNationalityReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryByNationality' },
+                    },
+                    {
+                        path: 'reports/analysis/staff-headcount',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/staff-headcount-report/staff-headcount-report.component'
+                            ).then((m) => m.StaffHeadcountReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.StaffHeadcount' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-bonus',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-bonus-report/employee-bonus-report.component'
+                            ).then((m) => m.EmployeeBonusReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeBonus' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-ctc',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-ctc-report/employee-ctc-report.component'
+                            ).then((m) => m.EmployeeCTCReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeCTC' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-deduction',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-deduction-report/employee-deduction-report.component'
+                            ).then((m) => m.EmployeeDeductionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeDeduction' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-history',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-history-report/employee-history-report.component'
+                            ).then((m) => m.EmployeeHistoryReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeHistory' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-incentive',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-incentive-report/employee-incentive-report.component'
+                            ).then((m) => m.EmployeeIncentiveReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeIncentive' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-info',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-info-report/employee-info-report.component'
+                            ).then((m) => m.EmployeeInfoReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeInfo' },
+                    },
+                    {
                         path: 'employees/:id',
                         loadComponent: () =>
                             import(

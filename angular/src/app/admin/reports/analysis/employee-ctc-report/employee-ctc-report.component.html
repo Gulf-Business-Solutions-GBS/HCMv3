@@ -1,0 +1,100 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeCTCReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!--
+                    Legacy hides both date pickers (uscRptEmployeeCTC.ascx:20-23); the extra Payroll Area
+                    filter is projected into the shared panel rather than forking it.
+                -->
+                <grid-report-filter
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [showDateRange]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <p-select
+                            [options]="payrollAreas()"
+                            [ngModel]="payrollAreaId()"
+                            (ngModelChange)="payrollAreaId.set($event)"
+                            name="ctcPayrollArea"
+                            optionLabel="label"
+                            optionValue="value"
+                            [filter]="true"
+                            [showClear]="true"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    @for (col of columns(); track col.field) {
+                                        @if (col.sortable) {
+                                            <th [style.min-width.px]="col.width" [pSortableColumn]="col.field">
+                                                {{ col.header }}
+                                                <p-sortIcon [field]="col.field" />
+                                            </th>
+                                        } @else {
+                                            <th [style.min-width.px]="col.width">{{ col.header }}</th>
+                                        }
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    @for (col of columns(); track col.field) {
+                                        <td [style.min-width.px]="col.width">
+                                            @if (col.isDate) {
+                                                {{ record[col.field] | luxonFormat: 'dd/MM/yyyy' }}
+                                            } @else {
+                                                {{ record[col.field] }}
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,160 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeAssetReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [(employeeStatus)]="employeeStatus"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()" />
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '120rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="employeeCode" />
+                                    </th>
+                                    <th style="min-width: 220px" pSortableColumn="employeeName">
+                                        {{ 'Employee' | localize }}
+                                        <p-sortIcon field="employeeName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="startDate">
+                                        {{ 'StartDate' | localize }}
+                                        <p-sortIcon field="startDate" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="endDate">
+                                        {{ 'EndDate' | localize }}
+                                        <p-sortIcon field="endDate" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
+                                        {{ 'OrganizationUnit' | localize }}
+                                        <p-sortIcon field="organizationUnitName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="assetName">
+                                        {{ 'Asset' | localize }}
+                                        <p-sortIcon field="assetName" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="assetTypeName">
+                                        {{ 'AssetType' | localize }}
+                                        <p-sortIcon field="assetTypeName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="brand">
+                                        {{ 'Brand' | localize }}
+                                        <p-sortIcon field="brand" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="model">
+                                        {{ 'Model' | localize }}
+                                        <p-sortIcon field="model" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="year">
+                                        {{ 'Year' | localize }}
+                                        <p-sortIcon field="year" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="color">
+                                        {{ 'Color' | localize }}
+                                        <p-sortIcon field="color" />
+                                    </th>
+                                    <th style="min-width: 160px" pSortableColumn="vinNumber">
+                                        {{ 'VINNumber' | localize }}
+                                        <p-sortIcon field="vinNumber" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="serial">
+                                        {{ 'Serial' | localize }}
+                                        <p-sortIcon field="serial" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="plateNumber">
+                                        {{ 'PlateNumber' | localize }}
+                                        <p-sortIcon field="plateNumber" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="barcode">
+                                        {{ 'Barcode' | localize }}
+                                        <p-sortIcon field="barcode" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="assetStatus">
+                                        {{ 'Status' | localize }}
+                                        <p-sortIcon field="assetStatus" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="expiryDate">
+                                        {{ 'ExpiryDate' | localize }}
+                                        <p-sortIcon field="expiryDate" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="value">
+                                        {{ 'Value' | localize }}
+                                        <p-sortIcon field="value" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">
+                                            {{ record.employeeCode }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 220px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 140px">{{ record.startDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 140px">{{ record.endDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 180px">{{ record.assetName }}</td>
+                                    <td style="min-width: 160px">{{ record.assetTypeName }}</td>
+                                    <td style="min-width: 140px">{{ record.brand }}</td>
+                                    <td style="min-width: 140px">{{ record.model }}</td>
+                                    <td style="min-width: 100px">{{ record.year }}</td>
+                                    <td style="min-width: 120px">{{ record.color }}</td>
+                                    <td style="min-width: 160px">{{ record.vinNumber }}</td>
+                                    <td style="min-width: 140px">{{ record.serial }}</td>
+                                    <td style="min-width: 140px">{{ record.plateNumber }}</td>
+                                    <td style="min-width: 140px">{{ record.barcode }}</td>
+                                    <td style="min-width: 120px">{{ record.assetStatus }}</td>
+                                    <td style="min-width: 140px">
+                                        {{ record.expiryDate | luxonFormat: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="min-width: 120px">{{ record.value }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

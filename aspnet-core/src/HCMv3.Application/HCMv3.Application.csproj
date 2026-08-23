@@ -18,6 +18,7 @@
     <PackageReference Include="FastReport.OpenSource" Version="2026.2.3" />
     <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2026.2.3" />
     <PackageReference Include="MiniExcel" Version="1.42.0" />
+    <PackageReference Include="Stimulsoft.Reports.Engine.NetCore" Version="2026.2.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HCMv3.Application.Shared\HCMv3.Application.Shared.csproj" />

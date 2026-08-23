@@ -2518,6 +2518,34 @@ public class AppAuthorizationProvider : AuthorizationProvider
         var reportPreview = pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
         reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
 
+        //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis)
+        var analysisReports = pages.CreateChildPermission(AppPermissions.Pages_Reports_Analysis, L("AnalysisReports"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeContract, L("EmployeeContractReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeAction, L("EmployeeActionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeActionChange, L("EmployeeActionChangeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeAsset, L("EmployeeAssetReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeAttendance, L("EmployeeAttendanceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeBank, L("EmployeeBankReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeBasicPay, L("EmployeeBasicPayReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeBonus, L("EmployeeBonusReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeCTC, L("EmployeeCTCReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDeduction, L("EmployeeDeductionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeHistory, L("EmployeeHistoryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeIncentive, L("EmployeeIncentiveReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeInfo, L("EmployeeInfoReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeManager, L("EmployeeManagerReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeePostWise, L("EmployeePostWiseReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeRejoin, L("EmployeeRejoinReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeSalaryChange, L("EmployeeSalaryChangeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeSponsor, L("EmployeeSponsorReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeStatus, L("EmployeeStatusReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeTransfer, L("EmployeeTransferReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeWorkLocation, L("EmployeeWorkLocationReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeWorkflowRole, L("EmployeeWorkflowRoleReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryBenefits, L("SalaryBenefitsReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryByNationality, L("SalaryByNationalityReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_StaffHeadcount, L("StaffHeadcountReport"));
+
         //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration)
         var administrationTools = pages.CreateChildPermission(AppPermissions.Pages_Administration_Tools, L("AdministrationTools"));
         administrationTools.CreateChildPermission(AppPermissions.Pages_Administration_Tools_GeneratePayrollCalendar, L("GeneratingPayrollCalendar"));

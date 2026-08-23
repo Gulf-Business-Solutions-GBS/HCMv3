@@ -1,0 +1,134 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'EmployeeDeductionReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <!--
+                    Legacy's panel is Month / Year / Run Type / Payroll Area only
+                    (uscRptEmployeeDeduction.ascx:15-34), so the three standard filters are switched off and
+                    the report-specific ones are projected into the shared panel's <ng-content> slot.
+                -->
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <p-inputNumber
+                            [ngModel]="month()"
+                            (ngModelChange)="month.set($event)"
+                            name="deductionMonth"
+                            [min]="1"
+                            [max]="12"
+                            [useGrouping]="false"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <p-inputNumber
+                            [ngModel]="year()"
+                            (ngModelChange)="year.set($event)"
+                            name="deductionYear"
+                            [min]="1900"
+                            [max]="2999"
+                            [useGrouping]="false"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            name="deductionRunType"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'PayrollArea' | localize }}</label>
+                        <p-select
+                            [options]="payrollAreas()"
+                            [ngModel]="payrollAreaId()"
+                            (ngModelChange)="payrollAreaId.set($event)"
+                            name="deductionPayrollArea"
+                            optionLabel="label"
+                            optionValue="value"
+                            [filter]="true"
+                            [showClear]="true"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '60rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    @for (col of columns; track col.field) {
+                                        @if (col.sortable) {
+                                            <th [style.min-width.px]="col.width" [pSortableColumn]="col.field">
+                                                {{ col.header }}
+                                                <p-sortIcon [field]="col.field" />
+                                            </th>
+                                        } @else {
+                                            <th [style.min-width.px]="col.width">{{ col.header }}</th>
+                                        }
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    @for (col of columns; track col.field) {
+                                        <td [style.min-width.px]="col.width">{{ record[col.field] }}</td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
