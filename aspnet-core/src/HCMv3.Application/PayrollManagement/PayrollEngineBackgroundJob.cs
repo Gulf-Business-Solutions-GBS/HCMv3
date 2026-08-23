@@ -61,9 +61,14 @@ public class PayrollEngineBackgroundJob : AsyncBackgroundJob<PayrollEngineJobArg
                     result.EmployeeResults.FindAll(r => r.Succeeded).Count,
                     result.EmployeeResults.FindAll(r => !r.Succeeded).Count,
                     result.Aborted));
-            }
 
-            await uow.CompleteAsync();
+                // CompleteAsync MUST stay INSIDE the SetTenantId scope. SaveChanges happens here, not during
+                // the run, so if the scope is already disposed every IMustHaveTenant entity the run tracked is
+                // flushed with TenantId 0 and ABP throws "Can not set TenantId to 0 for IMustHaveTenant
+                // entities!", rolling back the whole run. That made every engine run queued from the UI fail
+                // after doing all its work: nothing was written and the progress panel stayed empty.
+                await uow.CompleteAsync();
+            }
         }
     }
 }

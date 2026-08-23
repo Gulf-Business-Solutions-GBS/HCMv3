@@ -64,9 +64,14 @@ public class TimeEngineBackgroundJob : AsyncBackgroundJob<TimeEngineJobArgs>, IT
                     "TimeEngine run finished. ExecutionLogId={0} Status={1} Total={2} Success={3} Failed={4} Aborted={5}",
                     result.ExecutionLogId, result.ExecutionStatus, result.TotalRecords,
                     result.Successfull, result.Failed, result.Aborted));
-            }
 
-            await uow.CompleteAsync();
+                // CompleteAsync MUST stay INSIDE the SetTenantId scope. SaveChanges happens here, not during
+                // the run, so if the scope is already disposed every IMustHaveTenant entity the run tracked is
+                // flushed with TenantId 0 and ABP throws "Can not set TenantId to 0 for IMustHaveTenant
+                // entities!", rolling back the whole run. That made every engine run queued from the UI fail
+                // after doing all its work: nothing was written and the progress panel stayed empty.
+                await uow.CompleteAsync();
+            }
         }
     }
 }
