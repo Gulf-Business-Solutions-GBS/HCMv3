@@ -35,13 +35,16 @@ public class EmployeeActionReportAppService : GridReportAppServiceBase, IEmploye
 {
     private readonly IRepository<EmployeeAction> _employeeActionRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeActionReportAppService(
         IRepository<EmployeeAction> employeeActionRepository,
-        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeActionRepository = employeeActionRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeAction";
@@ -63,6 +66,8 @@ public class EmployeeActionReportAppService : GridReportAppServiceBase, IEmploye
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await WriteExecutionLogAsync(ExecutionLogAction.VIEW, BuildActionParameterString(input), totalCount);
 
         return new PagedResultDto<EmployeeActionReportRowDto>(totalCount, rows);
@@ -79,6 +84,8 @@ public class EmployeeActionReportAppService : GridReportAppServiceBase, IEmploye
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         return await ExportToFileAsync(
             "EmployeeAction.xlsx",
@@ -149,11 +156,11 @@ public class EmployeeActionReportAppService : GridReportAppServiceBase, IEmploye
                 ? string.Empty
                 : (useArabicNames ? a.Employee.Country.NameAr : a.Employee.Country.NameEn),
             // Legacy OrgLevel1..7 collapsed to one OrganizationUnit column -- see the DTO remarks.
-            OrganizationUnitName = _employeeOrgAssignmentRepository.GetAll()
+            OrganizationUnitId = _employeeOrgAssignmentRepository.GetAll()
                 .Where(o => o.EmployeeId == a.EmployeeId && o.StartDate <= today && o.EndDate >= today)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit == null ? null : o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             WorkLocationName = _employeeOrgAssignmentRepository.GetAll()
                 .Where(o => o.EmployeeId == a.EmployeeId && o.StartDate <= today && o.EndDate >= today)
@@ -187,12 +194,44 @@ public class EmployeeActionReportAppService : GridReportAppServiceBase, IEmploye
             new("Employee", r => r.EmployeeName),
             new("JobTitle", r => r.JobTitleName),
             new("Country", r => r.CountryName),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("WorkLocation", r => r.WorkLocationName),
             new("StartDate", r => r.StartDate),
             new("EndDate", r => r.EndDate),
             new("PersonalAction", r => r.PersonalActionName),
             new("ActionReason", r => r.ActionReasonName)
         };
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeActionReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

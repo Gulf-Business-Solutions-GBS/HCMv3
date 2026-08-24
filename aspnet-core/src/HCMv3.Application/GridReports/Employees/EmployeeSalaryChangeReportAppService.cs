@@ -46,17 +46,20 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
     private readonly IRepository<EmployeeBasicPay> _employeeBasicPayRepository;
     private readonly IRepository<EmployeeBasicPayDetail> _employeeBasicPayDetailRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeSalaryChangeReportAppService(
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeBasicPay> employeeBasicPayRepository,
         IRepository<EmployeeBasicPayDetail> employeeBasicPayDetailRepository,
-        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeRepository = employeeRepository;
         _employeeBasicPayRepository = employeeBasicPayRepository;
         _employeeBasicPayDetailRepository = employeeBasicPayDetailRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeSalaryChange";
@@ -78,6 +81,8 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await FillPivotAsync(rows);
 
         await WriteExecutionLogAsync(ExecutionLogAction.VIEW, BuildParameterString(input), totalCount);
@@ -96,6 +101,8 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         var components = await FillPivotAsync(rows);
 
@@ -146,14 +153,14 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
             Status = e.Status,
             ParameterStartDate = fromDate,
             ParameterEndDate = toDate,
-            OrganizationUnitName = _employeeOrgAssignmentRepository.GetAll()
+            OrganizationUnitId = _employeeOrgAssignmentRepository.GetAll()
                 .Where(o => o.EmployeeId == e.Id
                             && o.StartDate <= today
                             && o.EndDate >= today
                             && o.OrganizationUnitId != null)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             // Legacy lines 544-549 ("BEFORE"): the latest pay STARTING STRICTLY BEFORE the From date.
             OldBasicPayId = basicPays
@@ -308,7 +315,13 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
         {
             new("Code", r => r.EmployeeCode),
             new("EmployeeName", r => r.EmployeeName),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("Status", r => r.Status.ToString()),
             new("ParameterStartDate", r => r.ParameterStartDate),
             new("ParameterEndDate", r => r.ParameterEndDate)
@@ -363,5 +376,31 @@ public class EmployeeSalaryChangeReportAppService : GridReportAppServiceBase, IE
         public int WageTypeId { get; set; }
 
         public double Amount { get; set; }
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeSalaryChangeReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

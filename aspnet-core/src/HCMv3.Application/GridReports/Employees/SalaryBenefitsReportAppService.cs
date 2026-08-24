@@ -64,6 +64,7 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
     private readonly IRepository<EmployeeSeparation> _employeeSeparationRepository;
     private readonly IRepository<EmployeeAccommodation> _employeeAccommodationRepository;
     private readonly IRepository<AccommodationServices> _accommodationServicesRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public SalaryBenefitsReportAppService(
         IRepository<Employee> employeeRepository,
@@ -74,7 +75,8 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
         IRepository<EmployeeSponsor> employeeSponsorRepository,
         IRepository<EmployeeSeparation> employeeSeparationRepository,
         IRepository<EmployeeAccommodation> employeeAccommodationRepository,
-        IRepository<AccommodationServices> accommodationServicesRepository)
+        IRepository<AccommodationServices> accommodationServicesRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeRepository = employeeRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
@@ -85,6 +87,7 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
         _employeeSeparationRepository = employeeSeparationRepository;
         _employeeAccommodationRepository = employeeAccommodationRepository;
         _accommodationServicesRepository = accommodationServicesRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptSalaryBenefits";
@@ -104,6 +107,8 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
             .OrderBy(input.Sorting)
             .PageBy(input)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         var wageTypeNames = await PopulateDerivedValuesAsync(rows);
 
@@ -131,6 +136,8 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         var wageTypeNames = await PopulateDerivedValuesAsync(rows);
 
@@ -226,11 +233,11 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
                     ? null
                     : (useArabicNames ? o.JobTitle.NameAr : o.JobTitle.NameEn))
                 .FirstOrDefault(),
-            OrganizationUnitName = currentAssignments
+            OrganizationUnitId = currentAssignments
                 .Where(o => o.EmployeeId == e.Id)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
 
             // Legacy lines 822-838: the basic pay current today.
@@ -432,7 +439,13 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
             new("Status", r => r.Status),
             new("JoiningDate", r => r.JoiningDate),
             new("JobTitle", r => r.JobTitleName),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("EffectiveDate", r => r.EffectiveDate)
         };
 
@@ -463,5 +476,31 @@ public class SalaryBenefitsReportAppService : GridReportAppServiceBase, ISalaryB
         });
 
         return columns;
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<SalaryBenefitsReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

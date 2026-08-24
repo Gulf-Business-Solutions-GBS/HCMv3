@@ -27,14 +27,15 @@ public class GetEmployeeTransferReportInput : GridReportInputBase
 /// "Previous OrgLevel2", OrgLevel3, "Previous OrgLevel3", OrgLevel4, "Previous OrgLevel4", OrgLevel5,
 /// OrgLevel6, OrgLevel7, WorkLocation, PreviousWorkLocation, CostCenter, PreviousCostCenter, Country.
 ///
-/// DEVIATION -- the 10 org-level columns collapse to 2. HCMv3's <c>EmployeeOrgAssignment</c> models the
-/// legacy's 7 discrete <c>OrgLevel1..OrgLevel7</c> FKs as a SINGLE <c>OrganizationUnitId</c> pointing
-/// into Zero's already-hierarchical <c>Abp.Organizations.OrganizationUnit</c> tree (see the entity's
-/// class remarks, and the same collapse in <c>ReportsAppService.cs:727-728</c>). There is therefore no
-/// per-level column to project, and ABP's <c>OrganizationUnit</c> carries a single
-/// <c>DisplayName</c> rather than NameEn/NameAr, so these two columns are culture-invariant.
+/// All TEN legacy org-level columns are kept: OrgLevel1..OrgLevel7 for the assignment current as of the
+/// transfer date, plus Previous OrgLevel2/3/4 for the assignment that preceded it. HCMv3's
+/// <c>EmployeeOrgAssignment</c> models legacy's 7 discrete <c>OrgLevel1..OrgLevel7</c> FKs as a SINGLE
+/// <c>OrganizationUnitId</c> pointing into Zero's already-hierarchical
+/// <c>Abp.Organizations.OrganizationUnit</c> tree (see the entity's class remarks), so each level is the
+/// ancestor-or-self of that leaf classified at the matching level; the values are stamped after
+/// materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT server-sortable.
 /// </summary>
-public class EmployeeTransferReportRowDto : EntityDto<int>
+public class EmployeeTransferReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     /// <summary>Legacy "Code" column (line 604).</summary>
     public string EmployeeCode { get; set; }
@@ -48,16 +49,40 @@ public class EmployeeTransferReportRowDto : EntityDto<int>
     public DateTime TransferDate { get; set; }
 
     /// <summary>
-    /// Stands in for legacy OrgLevel1..OrgLevel7 (lines 608-621): the org unit of the assignment that was
-    /// current AS OF THE TRANSFER DATE. Null when there is no such assignment or it has no org unit.
+    /// Legacy OrgLevel1..OrgLevel7 (lines 608-621), resolved from the org unit of the assignment that was
+    /// current AS OF THE TRANSFER DATE. Stamped post-materialization, so NOT server-sortable.
     /// </summary>
-    public string OrganizationUnitName { get; set; }
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
 
     /// <summary>
-    /// Stands in for legacy "Previous OrgLevel2/3/4" (lines 610/613/616): the org unit of the latest
-    /// assignment STARTING STRICTLY BEFORE the transfer date.
+    /// Legacy "Previous OrgLevel2" (line 610), resolved from the org unit of the latest assignment
+    /// STARTING STRICTLY BEFORE the transfer date. Legacy rendered only levels 2, 3 and 4 as "Previous".
     /// </summary>
-    public string PreviousOrganizationUnitName { get; set; }
+    public string PreviousOrgLevel2 { get; set; }
+
+    /// <summary>Legacy "Previous OrgLevel3" (line 613).</summary>
+    public string PreviousOrgLevel3 { get; set; }
+
+    /// <summary>Legacy "Previous OrgLevel4" (line 616).</summary>
+    public string PreviousOrgLevel4 { get; set; }
+
+    /// <summary>Leaf org unit of the assignment current as of the transfer date. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
+
+    /// <summary>Leaf org unit of the PREVIOUS assignment; input to the Previous OrgLevel2/3/4 columns.</summary>
+    public long? PreviousOrganizationUnitId { get; set; }
 
     /// <summary>Legacy "WorkLocation" column -- from the assignment current as of the transfer date (line 623).</summary>
     public string WorkLocationName { get; set; }

@@ -54,10 +54,13 @@
                                         {{ 'JobTitle' | localize }}
                                         <p-sortIcon field="jobTitleName" />
                                     </th>
-                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
-                                        {{ 'OrganizationUnit' | localize }}
-                                        <p-sortIcon field="organizationUnitName" />
-                                    </th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel1' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel2' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel3' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel4' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel5' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel6' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel7' | localize }}</th>
                                     <th style="min-width: 140px" pSortableColumn="basicSalary">
                                         {{ 'BasicSalary' | localize }}
                                         <p-sortIcon field="basicSalary" />
@@ -104,7 +107,13 @@
                                         {{ record.joiningDate | luxonFormat: 'dd/MM/yyyy' }}
                                     </td>
                                     <td style="min-width: 180px">{{ record.jobTitleName }}</td>
-                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel1 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel2 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel3 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel4 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel5 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel6 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel7 }}</td>
                                     <td style="min-width: 140px">{{ record.basicSalary }}</td>
                                     <td style="min-width: 140px">{{ record.allowance }}</td>
                                     <td style="min-width: 140px">{{ record.totalSalary }}</td>

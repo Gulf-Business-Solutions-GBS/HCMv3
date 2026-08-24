@@ -4495,6 +4495,9 @@
     <text name="OrgLevel5">Org Level 5</text>
     <text name="OrgLevel6">Org Level 6</text>
     <text name="OrgLevel7">Org Level 7</text>
+    <text name="PreviousOrgLevel2">Previous Org Level 2</text>
+    <text name="PreviousOrgLevel3">Previous Org Level 3</text>
+    <text name="PreviousOrgLevel4">Previous Org Level 4</text>
     <text name="OrgLevel1Ar">Org Level 1 (Arabic)</text>
     <text name="OrgLevel2Ar">Org Level 2 (Arabic)</text>
     <text name="OrgLevel3Ar">Org Level 3 (Arabic)</text>

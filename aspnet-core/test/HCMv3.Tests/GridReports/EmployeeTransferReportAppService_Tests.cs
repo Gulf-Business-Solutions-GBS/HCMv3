@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GridReports.Employees;
 using HCMv3.GridReports.Employees.Dto;
@@ -126,16 +127,53 @@ public class EmployeeTransferReportAppService_Tests : AppTestBase
         });
     }
 
-    private long CreateOrganizationUnit(string displayName)
+    /// <summary>Source of unique <c>OrganizationUnit.Code</c> values across the whole test class.</summary>
+    private static int _nextOrgUnitCodeNumber = 6000;
+
+    /// <summary>
+    /// Creates an org unit AND the <see cref="OrgUnitProfile"/> that classifies it at
+    /// <paramref name="levelCode"/>, which is what <c>EmployeeOrgLevelNameResolver</c> prefix-matches on to
+    /// fill the OrgLevel1..OrgLevel7 columns.
+    /// </summary>
+    private long CreateOrganizationUnit(string displayName, string levelCode = null)
     {
+        levelCode ??= OrganizationUnitType.Level2Code;
+
         long id = 0;
         UsingDbContext(context =>
         {
+            // OrganizationUnit.Code is normally assigned by OrganizationUnitManager; created directly here,
+            // so a unique tree code is stamped explicitly (the resolver prefix-matches on it).
             var unit = context.OrganizationUnits.Add(
-                new Abp.Organizations.OrganizationUnit(AbpSession.TenantId, displayName, null)
+                new OrganizationUnit(AbpSession.TenantId, displayName, null)
                 {
-                    Code = Guid.NewGuid().ToString("N").Substring(0, 8)
+                    Code = OrganizationUnit.CreateCode(++_nextOrgUnitCodeNumber)
                 }).Entity;
+            context.SaveChanges();
+
+            var unitType = context.Set<OrganizationUnitType>().FirstOrDefault(t => t.Code == levelCode);
+
+            if (unitType == null)
+            {
+                unitType = context.Set<OrganizationUnitType>().Add(new OrganizationUnitType
+                {
+                    TenantId = TenantId,
+                    Code = levelCode,
+                    NameEn = levelCode,
+                    NameAr = levelCode + "-Ar"
+                }).Entity;
+                context.SaveChanges();
+            }
+
+            context.Set<OrgUnitProfile>().Add(new OrgUnitProfile
+            {
+                TenantId = TenantId,
+                OrganizationUnitId = unit.Id,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameAr = displayName + "-Ar",
+                OrganizationUnitTypeId = unitType.Id
+            });
+
             context.SaveChanges();
             id = unit.Id;
         });
@@ -280,8 +318,17 @@ public class EmployeeTransferReportAppService_Tests : AppTestBase
         row.EmployeeCode.ShouldBe("TRF-PROJ");
         row.EmployeeName.ShouldBe("Full TRF-PROJ");
         row.TransferDate.ShouldBe(new DateTime(2024, 6, 1));
-        row.OrganizationUnitName.ShouldBe("New Unit");
-        row.PreviousOrganizationUnitName.ShouldBe("Old Unit");
+        row.OrganizationUnitId.ShouldBe(newUnit);
+        row.PreviousOrganizationUnitId.ShouldBe(oldUnit);
+
+        // Legacy rendered OrgLevel1..7 plus "Previous OrgLevel2/3/4"; both unit fixtures are classified at
+        // Level2, so exactly those two columns carry a value and the rest come back as "" (never null).
+        row.OrgLevel2.ShouldBe("New Unit");
+        row.PreviousOrgLevel2.ShouldBe("Old Unit");
+        row.OrgLevel1.ShouldBe(string.Empty);
+        row.OrgLevel7.ShouldBe(string.Empty);
+        row.PreviousOrgLevel3.ShouldBe(string.Empty);
+        row.PreviousOrgLevel4.ShouldBe(string.Empty);
         row.WorkLocationName.ShouldBe("New Site");
         row.PreviousWorkLocationName.ShouldBe("Old Site");
     }
@@ -321,6 +368,12 @@ public class EmployeeTransferReportAppService_Tests : AppTestBase
         var exportedCodes = exported.Select(r => r["Code"]?.ToString()).OrderBy(c => c).ToList();
         exportedCodes.ShouldBe(new List<string> { "TRF-EXP-A", "TRF-EXP-B", "TRF-EXP-C" });
         // The exporter writes LOCALIZED header cells, not the raw localization key.
-        exported.First().Keys.ShouldContain("Previous Organization Unit");
+        //
+        // NOTE: this used to assert "Previous Organization Unit". Legacy renders TEN org columns on this
+        // report -- OrgLevel1-7 plus Previous OrgLevel2/3/4 (uscRptEmployeeTransfer.ascx.cs lines 505-523)
+        // -- so the single collapsed column was replaced by the real set. Asserting one of each proves the
+        // localization keys resolve; a missing key would surface here as the raw "[PreviousOrgLevel2]".
+        exported.First().Keys.ShouldContain("Org Level 1");
+        exported.First().Keys.ShouldContain("Previous Org Level 2");
     }
 }

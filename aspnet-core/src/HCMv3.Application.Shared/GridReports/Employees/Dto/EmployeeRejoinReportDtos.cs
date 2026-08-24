@@ -23,9 +23,10 @@ public class GetEmployeeRejoinReportInput : GridReportInputBase
 ///
 /// DEVIATIONS forced by the HCMv3 entity model (never by choice):
 /// <list type="bullet">
-/// <item><description>OrgLevel1..7 collapse into the single <see cref="OrganizationUnitName"/> column --
-/// HCMv3's <c>EmployeeOrgAssignment</c> replaced those seven FKs with one FK to ABP's hierarchical
-/// <c>OrganizationUnit</c> tree.</description></item>
+/// <item><description>OrgLevel1..OrgLevel7 are kept as SEVEN columns, as in legacy. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.</description></item>
 /// <item><description>Legacy <c>StartDate</c> is HCMv3's <c>EmployeeRejoin.RejoinDate</c> (renamed in the
 /// entity port); the column keeps the legacy name/meaning.</description></item>
 /// <item><description>The legacy boolean columns <c>RejoinWithPrev*Accrual</c>/<c>RejoinWithPrevLoan</c> are
@@ -34,7 +35,7 @@ public class GetEmployeeRejoinReportInput : GridReportInputBase
 /// HCMv3 has no such field, and there is no other source for it.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeRejoinReportRowDto : EntityDto<int>
+public class EmployeeRejoinReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -44,10 +45,28 @@ public class EmployeeRejoinReportRowDto : EntityDto<int>
     public DateTime StartDate { get; set; }
 
     /// <summary>
-    /// Replaces the legacy OrgLevel1..7 block. Resolved from the assignment current TODAY
-    /// (legacy line 549 used <c>DateTime.Now</c>, not the report dates).
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
     /// </summary>
-    public string OrganizationUnitName { get; set; }
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>Legacy "RejoinWithPrevLeaveAccrual" -- HCMv3 <c>CarryForwardLeaveBalance</c>.</summary>
     public bool RejoinWithPrevLeaveAccrual { get; set; }

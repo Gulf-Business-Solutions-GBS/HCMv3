@@ -27,16 +27,17 @@ public class GetEmployeePostWiseReportInput : GridReportInputBase
 /// OrgLevel1..7, BasicSalary, Allowance, TotalSalary, AccommodationType, TransportationType,
 /// ServiceDuration, LastWorkingDay, Age.
 ///
-/// DEVIATION forced by the entity model: OrgLevel1..7 collapse into the single
-/// <see cref="OrganizationUnitName"/> column (HCMv3's <c>EmployeeOrgAssignment</c> replaced those seven
-/// FKs with one FK to ABP's hierarchical <c>OrganizationUnit</c> tree).
+/// OrgLevel1..OrgLevel7 are kept as SEVEN columns, exactly as legacy rendered them. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.
 ///
 /// <see cref="Age"/> and <see cref="ServiceDurationYears"/> are stamped onto the row AFTER the query
 /// materializes, not computed in SQL: they depend on "now" and on a rounding format that has no faithful
 /// SQL translation. They are therefore not sortable server-side; the underlying
 /// <see cref="BirthDate"/>/<see cref="JoiningDate"/>/<see cref="LastWorkingDay"/> columns are.
 /// </summary>
-public class EmployeePostWiseReportRowDto : EntityDto<int>
+public class EmployeePostWiseReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -53,8 +54,29 @@ public class EmployeePostWiseReportRowDto : EntityDto<int>
     /// <summary>Resolved from the org assignment current TODAY (legacy line 573 used <c>DateTime.Now</c>).</summary>
     public string JobTitleName { get; set; }
 
-    /// <summary>Replaces the legacy OrgLevel1..7 block; also as of the assignment current TODAY.</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>Legacy "BasicSalary" (line 671): the amount of wage type code <c>1000</c>, or 0.</summary>
     public double BasicSalary { get; set; }

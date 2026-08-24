@@ -39,11 +39,13 @@ public class GetEmployeeBasicPayReportInput : GridReportInputBase
 /// in the data, ordered by <c>WageType.PayrollOrder</c> -- lines 481/540-545). A typed DTO cannot have
 /// dynamic properties, so they are carried as the <see cref="WageAmounts"/> list and the Angular grid
 /// and the Excel export both expand that list into columns.</description></item>
-/// <item><description>The legacy OrgLevel1..7 columns are the single <see cref="OrganizationUnitName"/>
-/// (HCMv3 collapsed those seven fields into one OrganizationUnit FK).</description></item>
+/// <item><description>OrgLevel1..OrgLevel7 are kept as SEVEN columns, as in legacy. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeBasicPayReportRowDto : EntityDto<int>
+public class EmployeeBasicPayReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -65,8 +67,29 @@ public class EmployeeBasicPayReportRowDto : EntityDto<int>
     /// <summary>Legacy "WorkLocation" column, from the org assignment current TODAY.</summary>
     public string WorkLocationName { get; set; }
 
-    /// <summary>Stands in for the legacy OrgLevel1..7 columns, from the assignment current TODAY.</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>
     /// Legacy "Status" column (line 662): "Current" when the pay record covers today, else "History".

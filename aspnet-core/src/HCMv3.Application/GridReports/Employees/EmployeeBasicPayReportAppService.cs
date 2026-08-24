@@ -54,15 +54,18 @@ public class EmployeeBasicPayReportAppService : GridReportAppServiceBase, IEmplo
     private readonly IRepository<EmployeeBasicPay> _employeeBasicPayRepository;
     private readonly IRepository<EmployeeBasicPayDetail> _basicPayDetailRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeBasicPayReportAppService(
         IRepository<EmployeeBasicPay> employeeBasicPayRepository,
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
-        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeBasicPayRepository = employeeBasicPayRepository;
         _basicPayDetailRepository = basicPayDetailRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeBasicPay";
@@ -170,11 +173,11 @@ public class EmployeeBasicPayReportAppService : GridReportAppServiceBase, IEmplo
                     ? string.Empty
                     : (useArabicNames ? o.WorkLocation.NameAr : o.WorkLocation.NameEn))
                 .FirstOrDefault(),
-            OrganizationUnitName = _employeeOrgAssignmentRepository.GetAll()
+            OrganizationUnitId = _employeeOrgAssignmentRepository.GetAll()
                 .Where(o => o.EmployeeId == p.EmployeeId && o.StartDate <= today && o.EndDate >= today)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit == null ? null : o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             // Legacy line 662.
             RecordStatus = p.StartDate <= today && p.EndDate >= today ? "Current" : "History",
@@ -239,6 +242,8 @@ public class EmployeeBasicPayReportAppService : GridReportAppServiceBase, IEmplo
             row.Currency = row.WageAmounts.Select(w => w.CurrencyShortForm).FirstOrDefault() ?? string.Empty;
         }
 
+        await StampOrgLevelsAsync(rows);
+
         ApplyIncrementAmounts(rows);
 
         return rows;
@@ -285,7 +290,13 @@ public class EmployeeBasicPayReportAppService : GridReportAppServiceBase, IEmplo
             new("EndDate", r => r.EndDate),
             new("JobTitle", r => r.JobTitleName),
             new("WorkLocation", r => r.WorkLocationName),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("Status", r => r.RecordStatus),
             new("Currency", r => r.Currency)
         };
@@ -335,5 +346,31 @@ public class EmployeeBasicPayReportAppService : GridReportAppServiceBase, IEmplo
         public double Amount { get; set; }
 
         public string CurrencyShortForm { get; set; }
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeBasicPayReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

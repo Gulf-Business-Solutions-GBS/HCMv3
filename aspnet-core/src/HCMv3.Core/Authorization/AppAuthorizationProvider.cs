@@ -2545,6 +2545,13 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryBenefits, L("SalaryBenefitsReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryByNationality, L("SalaryByNationalityReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_StaffHeadcount, L("StaffHeadcountReport"));
+        //PayrollReport grouping (legacy HCM10.Web/UserControls/Reports/Analysis/PayrollReport).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_BasicSalaryRegister, L("BasicSalaryRegisterReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryRegister, L("SalaryRegisterReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollAnalysis, L("PayrollAnalysisReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollAnalysisByDept, L("PayrollAnalysisByDeptReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheet, L("PayrollSheetReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheetCustom023, L("PayrollSheetCustom023Report"));
 
         //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration)
         var administrationTools = pages.CreateChildPermission(AppPermissions.Pages_Administration_Tools, L("AdministrationTools"));

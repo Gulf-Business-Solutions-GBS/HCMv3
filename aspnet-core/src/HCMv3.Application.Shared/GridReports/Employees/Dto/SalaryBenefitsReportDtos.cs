@@ -62,8 +62,10 @@ public class SalaryBenefitsReportOutput : PagedResultDto<SalaryBenefitsReportRow
 /// the wage type name, and the client renders one column per key. The key list is stable within one
 /// response because it is built once per request from the same wage-type query legacy used.
 ///
-/// DEVIATION 1 -- OrgLevel1..OrgLevel7 collapse to a single <see cref="OrganizationUnitName"/>; see
-/// <see cref="EmployeeTransferReportRowDto"/> remarks.
+/// OrgLevel1..OrgLevel7 are kept as SEVEN columns, exactly as legacy rendered them. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.
 ///
 /// DEVIATION 2 -- legacy's "WorkflowGroup" column (line 843) is DROPPED. It reads
 /// <c>EmployeeOrgAssignment.WorkflowGroup</c>, which is explicitly still deferred in HCMv3's
@@ -73,7 +75,7 @@ public class SalaryBenefitsReportOutput : PagedResultDto<SalaryBenefitsReportRow
 /// DEVIATION 3 -- legacy's "RevokeComments" column (line 858) is DROPPED. HCMv3's
 /// <c>EmployeeSeparation</c> ports <c>RevokeDate</c> but has no RevokeComments property.
 /// </summary>
-public class SalaryBenefitsReportRowDto : EntityDto<int>
+public class SalaryBenefitsReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     /// <summary>Legacy "Code" column (line 801).</summary>
     public string EmployeeCode { get; set; }
@@ -92,8 +94,29 @@ public class SalaryBenefitsReportRowDto : EntityDto<int>
     /// <summary>Legacy "JobTitle" column -- <c>Employee.CurrentJobtitle</c>, i.e. today's assignment.</summary>
     public string JobTitleName { get; set; }
 
-    /// <summary>Stands in for legacy OrgLevel1..OrgLevel7 -- the org unit of today's assignment.</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>
     /// Legacy "EffectiveDate" column -- StartDate of the basic pay current today (line 831). Null when

@@ -58,7 +58,10 @@ public class EmployeeSalaryChangeComponentDto
 ///
 /// DEVIATIONS:
 /// <list type="bullet">
-/// <item><description>OrgLevel1..7 collapse into the single <see cref="OrganizationUnitName"/> column.</description></item>
+/// <item><description>OrgLevel1..OrgLevel7 are kept as SEVEN columns, as in legacy. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.</description></item>
 /// <item><description>Legacy keyed its per-component dictionary on <c>WageType.NameEn</c> (line 616), so two
 /// distinct wage types sharing a name silently shared a value. Here the pivot is keyed on the wage-type
 /// ID, which is identical whenever names are unique and correct when they are not.</description></item>
@@ -66,15 +69,36 @@ public class EmployeeSalaryChangeComponentDto
 /// on this one screen (lines 526/511-518). Kept as legacy had it.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeSalaryChangeReportRowDto : EntityDto<int>
+public class EmployeeSalaryChangeReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
     /// <summary>Legacy "Employee Name" -- <c>emp.FullNameEn</c>, English regardless of culture.</summary>
     public string EmployeeName { get; set; }
 
-    /// <summary>Replaces the legacy OrgLevel1..7 block; as of the assignment current TODAY (legacy line 507).</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     public EmployeeStatus Status { get; set; }
 

@@ -33,11 +33,12 @@ public class GetEmployeeActionReportInput : GridReportInputBase
 /// <c>uscRptEmployeeAction.ascx.cs:484-643</c>: OID, Code, Name, JobTitle, Country, OrgLevel1..7,
 /// WorkLocation, StartDate, EndDate, PersonalAction, ActionReason.
 ///
-/// DEVIATION (structural, family-wide): the legacy seven OrgLevel columns do not exist in HCMv3 --
-/// Wave B collapsed them into the single <c>EmployeeOrgAssignment.OrganizationUnitId</c> FK into Zero's
-/// hierarchical OrganizationUnit tree -- so they are one <see cref="OrganizationUnitName"/> column here.
+/// OrgLevel1..OrgLevel7 are kept as SEVEN columns, exactly as legacy rendered them. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.
 /// </summary>
-public class EmployeeActionReportRowDto : EntityDto<int>
+public class EmployeeActionReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -53,8 +54,29 @@ public class EmployeeActionReportRowDto : EntityDto<int>
     /// </summary>
     public string CountryName { get; set; }
 
-    /// <summary>Stands in for the legacy OrgLevel1..7 columns, from the assignment current TODAY.</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>Legacy "WorkLocation" column, from the org assignment current TODAY.</summary>
     public string WorkLocationName { get; set; }

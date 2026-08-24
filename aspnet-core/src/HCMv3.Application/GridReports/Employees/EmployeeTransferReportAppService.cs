@@ -53,13 +53,16 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
 
     private readonly IRepository<EmployeeAction> _employeeActionRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeTransferReportAppService(
         IRepository<EmployeeAction> employeeActionRepository,
-        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository)
+        IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeActionRepository = employeeActionRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeTransfer";
@@ -81,6 +84,8 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await WriteExecutionLogAsync(ExecutionLogAction.VIEW, BuildParameterString(input), totalCount);
 
         return new PagedResultDto<EmployeeTransferReportRowDto>(totalCount, rows);
@@ -97,6 +102,8 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         return await ExportToFileAsync(
             "EmployeeTransfer.xlsx",
@@ -144,13 +151,13 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
             TransferDate = a.StartDate,
 
             // ---- assignment CURRENT as of the transfer date (legacy lines 583-586) ----
-            OrganizationUnitName = assignments
+            OrganizationUnitId = assignments
                 .Where(o => o.EmployeeId == a.EmployeeId
                             && o.StartDate <= a.StartDate
                             && o.EndDate >= a.StartDate)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             WorkLocationName = assignments
                 .Where(o => o.EmployeeId == a.EmployeeId
@@ -185,11 +192,11 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
 
             // ---- PREVIOUS assignment: latest one starting strictly before the transfer date
             //      (legacy lines 589-591: StartDate < rec.StartDate, OrderByDescending(StartDate)) ----
-            PreviousOrganizationUnitName = assignments
+            PreviousOrganizationUnitId = assignments
                 .Where(o => o.EmployeeId == a.EmployeeId && o.StartDate < a.StartDate)
                 .OrderByDescending(o => o.StartDate)
                 .ThenByDescending(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             PreviousWorkLocationName = assignments
                 .Where(o => o.EmployeeId == a.EmployeeId && o.StartDate < a.StartDate)
@@ -221,13 +228,54 @@ public class EmployeeTransferReportAppService : GridReportAppServiceBase, IEmplo
             new("Code", r => r.EmployeeCode),
             new("Employee", r => r.EmployeeName),
             new("TransferDate", r => r.TransferDate),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
-            new("PreviousOrganizationUnit", r => r.PreviousOrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("PreviousOrgLevel2", r => r.PreviousOrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("PreviousOrgLevel3", r => r.PreviousOrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("PreviousOrgLevel4", r => r.PreviousOrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("WorkLocation", r => r.WorkLocationName),
             new("PreviousWorkLocation", r => r.PreviousWorkLocationName),
             new("CostCenter", r => r.CostCenterName),
             new("PreviousCostCenter", r => r.PreviousCostCenterName),
             new("Country", r => r.CountryName)
         };
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// Also fills legacy's "Previous OrgLevel2/3/4" from the PREVIOUS assignment's org unit.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeTransferReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+
+            // Legacy rendered ONLY levels 2, 3 and 4 of the previous assignment (lines 610/613/616).
+            var previousLevels = lookup.GetLevelNames(row.PreviousOrganizationUnitId);
+            row.PreviousOrgLevel2 = previousLevels[1];
+            row.PreviousOrgLevel3 = previousLevels[2];
+            row.PreviousOrgLevel4 = previousLevels[3];
+        }
     }
 }

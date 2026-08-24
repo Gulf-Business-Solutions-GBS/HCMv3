@@ -27,12 +27,12 @@ public class GetEmployeeAssetReportInput : GridReportInputBase
 /// ExpiryDate, Value.
 ///
 /// DEVIATION (structural, applies to every report in this family): the legacy seven
-/// <c>OrgLevel1</c>..<c>OrgLevel7</c> columns do not exist in HCMv3 -- Wave B collapsed them into the
-/// single <c>EmployeeOrgAssignment.OrganizationUnitId</c> FK into Zero's hierarchical
-/// <c>OrganizationUnit</c> tree (see EmployeeOrgAssignment class remarks). They are therefore
-/// represented by ONE <see cref="OrganizationUnitName"/> column rather than seven.
+/// <c>OrgLevel1</c>..<c>OrgLevel7</c> are kept as SEVEN columns, as in legacy. HCMv3's
+/// <c>EmployeeOrgAssignment</c> stores one <c>OrganizationUnitId</c> FK into Zero's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.
 /// </summary>
-public class EmployeeAssetReportRowDto : EntityDto<int>
+public class EmployeeAssetReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     /// <summary>Legacy "Code" column -- <c>rec.Employee.Code</c>.</summary>
     public string EmployeeCode { get; set; }
@@ -44,10 +44,29 @@ public class EmployeeAssetReportRowDto : EntityDto<int>
 
     public DateTime EndDate { get; set; }
 
-    /// <summary>Stands in for the legacy OrgLevel1..7 columns (see class remarks). Null when the
-    /// employee has no org assignment current TODAY -- legacy used <c>DateTime.Now</c> here, NOT the
-    /// report's from/to dates (uscRptEmployeeAsset.ascx.cs:566-568).</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     /// <summary>Legacy "Asset" column -- empty string (not null) when the row has no asset.</summary>
     public string AssetName { get; set; }

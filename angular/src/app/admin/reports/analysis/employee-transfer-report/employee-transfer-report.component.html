@@ -43,14 +43,22 @@
                                         {{ 'TransferDate' | localize }}
                                         <p-sortIcon field="transferDate" />
                                     </th>
-                                    <th style="min-width: 200px" pSortableColumn="organizationUnitName">
-                                        {{ 'OrganizationUnit' | localize }}
-                                        <p-sortIcon field="organizationUnitName" />
+                                    <th style="min-width: 160px">{{ 'OrgLevel1' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel2' | localize }}</th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Previous' | localize }} {{ 'OrgLevel2' | localize }}
                                     </th>
-                                    <th style="min-width: 200px" pSortableColumn="previousOrganizationUnitName">
-                                        {{ 'PreviousOrganizationUnit' | localize }}
-                                        <p-sortIcon field="previousOrganizationUnitName" />
+                                    <th style="min-width: 160px">{{ 'OrgLevel3' | localize }}</th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Previous' | localize }} {{ 'OrgLevel3' | localize }}
                                     </th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel4' | localize }}</th>
+                                    <th style="min-width: 180px">
+                                        {{ 'Previous' | localize }} {{ 'OrgLevel4' | localize }}
+                                    </th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel5' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel6' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'OrgLevel7' | localize }}</th>
                                     <th style="min-width: 180px" pSortableColumn="workLocationName">
                                         {{ 'WorkLocation' | localize }}
                                         <p-sortIcon field="workLocationName" />
@@ -84,8 +92,16 @@
                                     <td style="min-width: 140px">
                                         {{ record.transferDate | luxonFormat: 'dd/MM/yyyy' }}
                                     </td>
-                                    <td style="min-width: 200px">{{ record.organizationUnitName }}</td>
-                                    <td style="min-width: 200px">{{ record.previousOrganizationUnitName }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel1 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel2 }}</td>
+                                    <td style="min-width: 180px">{{ record.previousOrgLevel2 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel3 }}</td>
+                                    <td style="min-width: 180px">{{ record.previousOrgLevel3 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel4 }}</td>
+                                    <td style="min-width: 180px">{{ record.previousOrgLevel4 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel5 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel6 }}</td>
+                                    <td style="min-width: 160px">{{ record.orgLevel7 }}</td>
                                     <td style="min-width: 180px">{{ record.workLocationName }}</td>
                                     <td style="min-width: 180px">{{ record.previousWorkLocationName }}</td>
                                     <td style="min-width: 180px">{{ record.costCenterName }}</td>

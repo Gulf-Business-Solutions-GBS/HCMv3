@@ -50,6 +50,7 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
     private readonly IRepository<EmployeeSeparation> _employeeSeparationRepository;
     private readonly IRepository<EmployeeFnFPayment> _employeeFnFPaymentRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeStatusReportAppService(
         IRepository<Employee> employeeRepository,
@@ -57,7 +58,8 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
         IRepository<EmployeeBasicPayDetail> employeeBasicPayDetailRepository,
         IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
         IRepository<EmployeeSeparation> employeeSeparationRepository,
-        IRepository<EmployeeFnFPayment> employeeFnFPaymentRepository)
+        IRepository<EmployeeFnFPayment> employeeFnFPaymentRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeRepository = employeeRepository;
         _employeeBasicPayRepository = employeeBasicPayRepository;
@@ -65,6 +67,7 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
         _employeeSeparationRepository = employeeSeparationRepository;
         _employeeFnFPaymentRepository = employeeFnFPaymentRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeStatus";
@@ -86,6 +89,8 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await WriteExecutionLogAsync(ExecutionLogAction.VIEW, BuildParameterString(input), totalCount);
 
         return new PagedResultDto<EmployeeStatusReportRowDto>(totalCount, rows);
@@ -102,6 +107,8 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         return await ExportToFileAsync(
             "EmployeeStatus.xlsx",
@@ -176,10 +183,10 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
                     ? string.Empty
                     : (useArabicNames ? o.JobTitle.NameAr : o.JobTitle.NameEn))
                 .FirstOrDefault(),
-            OrganizationUnitName = currentOrgAssignments
+            OrganizationUnitId = currentOrgAssignments
                 .Where(o => o.EmployeeId == e.Id && o.OrganizationUnitId != null)
                 .OrderBy(o => o.StartDate).ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             WorkLocationName = currentOrgAssignments
                 .Where(o => o.EmployeeId == e.Id)
@@ -221,7 +228,13 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
             new("JobTitle", r => r.JobTitleName),
             new("IsActive", r => r.IsActive),
             new("Status", r => r.StatusLabel),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("BirthDate", r => r.BirthDate),
             new("JoiningDate", r => r.JoiningDate),
             new("BasicPay", r => r.BasicPay),
@@ -229,5 +242,31 @@ public class EmployeeStatusReportAppService : GridReportAppServiceBase, IEmploye
             new("TotalSalary", r => r.TotalSalary),
             new("WorkLocation", r => r.WorkLocationName)
         };
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeStatusReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

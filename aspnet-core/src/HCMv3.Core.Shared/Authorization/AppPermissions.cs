@@ -2469,6 +2469,19 @@ public static class AppPermissions
 
     public const string Pages_Reports_Analysis_EmployeeContract = "Pages.Reports.Analysis.EmployeeContract";
 
+    // PayrollReport grouping.
+    public const string Pages_Reports_Analysis_BasicSalaryRegister = "Pages.Reports.Analysis.BasicSalaryRegister";
+
+    public const string Pages_Reports_Analysis_SalaryRegister = "Pages.Reports.Analysis.SalaryRegister";
+
+    public const string Pages_Reports_Analysis_PayrollAnalysisByDept = "Pages.Reports.Analysis.PayrollAnalysisByDept";
+
+    public const string Pages_Reports_Analysis_PayrollAnalysis = "Pages.Reports.Analysis.PayrollAnalysis";
+
+    public const string Pages_Reports_Analysis_PayrollSheet = "Pages.Reports.Analysis.PayrollSheet";
+
+    public const string Pages_Reports_Analysis_PayrollSheetCustom023 = "Pages.Reports.Analysis.PayrollSheetCustom023";
+
     public const string Pages_Reports_Analysis_EmployeeAction = "Pages.Reports.Analysis.EmployeeAction";
 
     public const string Pages_Reports_Analysis_EmployeeActionChange = "Pages.Reports.Analysis.EmployeeActionChange";

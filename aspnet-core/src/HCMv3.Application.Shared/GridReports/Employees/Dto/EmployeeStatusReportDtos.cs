@@ -28,8 +28,10 @@ public class GetEmployeeStatusReportInput : GridReportInputBase
 ///
 /// DEVIATIONS:
 /// <list type="bullet">
-/// <item><description>OrgLevel1..7 collapse into the single <see cref="OrganizationUnitName"/> column
-/// (HCMv3 replaced those seven FKs with one FK to ABP's hierarchical <c>OrganizationUnit</c> tree).</description></item>
+/// <item><description>OrgLevel1..OrgLevel7 are kept as SEVEN columns, as in legacy. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.</description></item>
 /// <item><description>The legacy <c>SeperationDate</c> and <c>LastDate</c> columns are DROPPED. They are
 /// declared in the legacy DataTable but the only two lines that would fill them are commented out
 /// (lines 606-607 in the projection, 667-668 in the fill loop), so legacy always rendered them empty.
@@ -39,7 +41,7 @@ public class GetEmployeeStatusReportInput : GridReportInputBase
 /// they come from the org assignment current TODAY -- which is exactly what "Current*" meant in legacy.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeStatusReportRowDto : EntityDto<int>
+public class EmployeeStatusReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -61,8 +63,29 @@ public class EmployeeStatusReportRowDto : EntityDto<int>
     /// </summary>
     public string StatusLabel { get; set; }
 
-    /// <summary>Replaces the legacy OrgLevel1..7 block; as of the assignment current TODAY.</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     public DateTime BirthDate { get; set; }
 

@@ -28,11 +28,12 @@ public class GetEmployeeBankReportInput : GridReportInputBase
 /// <c>uscRptEmployeeBank.ascx.cs:482-652</c>: OID, Code, Name, CivilId, Bank, EffectiveDate,
 /// OrgLevel1..7, BankCountry, PaymentType, AccountNumber, PaymentCurrency, IBAN.
 ///
-/// DEVIATION (structural, family-wide): the legacy seven OrgLevel columns do not exist in HCMv3 --
-/// Wave B collapsed them into the single <c>EmployeeOrgAssignment.OrganizationUnitId</c> FK into Zero's
-/// hierarchical OrganizationUnit tree -- so they are one <see cref="OrganizationUnitName"/> column here.
+/// OrgLevel1..OrgLevel7 are kept as SEVEN columns, exactly as legacy rendered them. HCMv3's
+/// <c>EmployeeOrgAssignment</c> replaced legacy's seven FKs with one FK into ABP's hierarchical
+/// <c>OrganizationUnit</c> tree, so each level is resolved from that tree after materialization --
+/// see <c>EmployeeOrgLevelNameResolver</c>.
 /// </summary>
-public class EmployeeBankReportRowDto : EntityDto<int>
+public class EmployeeBankReportRowDto : EntityDto<int>, IEmployeeOrgLevelRow
 {
     public string EmployeeCode { get; set; }
 
@@ -48,9 +49,29 @@ public class EmployeeBankReportRowDto : EntityDto<int>
     /// <summary>Legacy "EffectiveDate" column -- the record's <c>StartDate</c> (line 611).</summary>
     public DateTime EffectiveDate { get; set; }
 
-    /// <summary>Stands in for the legacy OrgLevel1..7 columns. Resolved on the assignment current
-    /// TODAY -- legacy used <c>DateTime.Now</c> here, not the report dates (line 578).</summary>
-    public string OrganizationUnitName { get; set; }
+    /// <summary>
+    /// Legacy <c>OrgLevel1</c>..<c>OrgLevel7</c> columns. HCMv3 stores ONE
+    /// <c>EmployeeOrgAssignment.OrganizationUnitId</c> into Zero's hierarchical OrganizationUnit tree, so
+    /// each level is the ancestor-or-self of that leaf classified at the matching level. The values are
+    /// stamped after materialization by <c>EmployeeOrgLevelNameResolver</c> and are therefore NOT
+    /// server-sortable.
+    /// </summary>
+    public string OrgLevel1 { get; set; }
+
+    public string OrgLevel2 { get; set; }
+
+    public string OrgLevel3 { get; set; }
+
+    public string OrgLevel4 { get; set; }
+
+    public string OrgLevel5 { get; set; }
+
+    public string OrgLevel6 { get; set; }
+
+    public string OrgLevel7 { get; set; }
+
+    /// <summary>Leaf org unit the seven levels are resolved from. See <see cref="IEmployeeOrgLevelRow"/>.</summary>
+    public long? OrganizationUnitId { get; set; }
 
     public string BankCountryName { get; set; }
 

@@ -45,13 +45,16 @@ public class EmployeeWorkLocationReportAppService : GridReportAppServiceBase,
 {
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
     private readonly IRepository<EmployeeSeparation> _employeeSeparationRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeWorkLocationReportAppService(
         IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
-        IRepository<EmployeeSeparation> employeeSeparationRepository)
+        IRepository<EmployeeSeparation> employeeSeparationRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
         _employeeSeparationRepository = employeeSeparationRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeWorkLocation";
@@ -73,6 +76,8 @@ public class EmployeeWorkLocationReportAppService : GridReportAppServiceBase,
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await WriteExecutionLogAsync(
             ExecutionLogAction.VIEW,
             BuildParameterString(input, WorkLocationParameterPart(input)),
@@ -92,6 +97,8 @@ public class EmployeeWorkLocationReportAppService : GridReportAppServiceBase,
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         return await ExportToFileAsync(
             "EmployeeWorkLocation.xlsx",
@@ -170,11 +177,11 @@ public class EmployeeWorkLocationReportAppService : GridReportAppServiceBase,
                     ? null
                     : (useArabicNames ? c.JobTitle.NameAr : c.JobTitle.NameEn))
                 .FirstOrDefault(),
-            OrganizationUnitName = currentAssignments
+            OrganizationUnitId = currentAssignments
                 .Where(c => c.EmployeeId == o.EmployeeId)
                 .OrderBy(c => c.StartDate)
                 .ThenBy(c => c.Id)
-                .Select(c => c.OrganizationUnit.DisplayName)
+                .Select(c => c.OrganizationUnitId)
                 .FirstOrDefault(),
             CountryName = currentAssignments
                 .Where(c => c.EmployeeId == o.EmployeeId)
@@ -209,10 +216,42 @@ public class EmployeeWorkLocationReportAppService : GridReportAppServiceBase,
             new("JobTitle", r => r.JobTitleName),
             new("CivilId", r => r.CivilId),
             new("Nationality", r => r.NationalityName),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("WorkLocation", r => r.WorkLocationName),
             new("Country", r => r.CountryName),
             new("LastDayInService", r => r.LastDayInService)
         };
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeWorkLocationReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }

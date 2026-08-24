@@ -283,6 +283,10 @@ public class EmployeeAssetReportAppService_Tests : AppTestBase
         exported.Count.ShouldBe(3);
         var exportedCodes = exported.Select(r => r["Code"]?.ToString()).OrderBy(c => c).ToList();
         exportedCodes.ShouldBe(new List<string> { "AEXP-A", "AEXP-B", "AEXP-C" });
-        exported.First().Keys.ShouldContain("Organization Unit");
+        // Legacy rendered SEVEN org-level columns, so the export must carry all seven headers.
+        for (var level = 1; level <= 7; level++)
+        {
+            exported.First().Keys.ShouldContain("Org Level " + level);
+        }
     }
 }

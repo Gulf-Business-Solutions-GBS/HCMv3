@@ -36,15 +36,18 @@ public class EmployeeRejoinReportAppService : GridReportAppServiceBase, IEmploye
     private readonly IRepository<EmployeeRejoin> _employeeRejoinRepository;
     private readonly IRepository<EmployeeOrgAssignment> _employeeOrgAssignmentRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly EmployeeOrgLevelNameResolver _orgLevelNameResolver;
 
     public EmployeeRejoinReportAppService(
         IRepository<EmployeeRejoin> employeeRejoinRepository,
         IRepository<EmployeeOrgAssignment> employeeOrgAssignmentRepository,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        EmployeeOrgLevelNameResolver orgLevelNameResolver)
     {
         _employeeRejoinRepository = employeeRejoinRepository;
         _employeeOrgAssignmentRepository = employeeOrgAssignmentRepository;
         _employeeRepository = employeeRepository;
+        _orgLevelNameResolver = orgLevelNameResolver;
     }
 
     protected override string LegacyScreenName => "uscRptEmployeeRejoin";
@@ -66,6 +69,8 @@ public class EmployeeRejoinReportAppService : GridReportAppServiceBase, IEmploye
             .PageBy(input)
             .ToListAsync();
 
+        await StampOrgLevelsAsync(rows);
+
         await WriteExecutionLogAsync(ExecutionLogAction.VIEW, BuildParameterString(input), totalCount);
 
         return new PagedResultDto<EmployeeRejoinReportRowDto>(totalCount, rows);
@@ -82,6 +87,8 @@ public class EmployeeRejoinReportAppService : GridReportAppServiceBase, IEmploye
         var rows = await query
             .OrderBy(input.Sorting)
             .ToListAsync();
+
+        await StampOrgLevelsAsync(rows);
 
         return await ExportToFileAsync(
             "EmployeeRejoin.xlsx",
@@ -127,14 +134,14 @@ public class EmployeeRejoinReportAppService : GridReportAppServiceBase, IEmploye
             EmployeeCode = r.Employee.Code,
             EmployeeName = useArabicNames ? r.Employee.FullNameAr : r.Employee.FullNameEn,
             StartDate = r.RejoinDate,
-            OrganizationUnitName = _employeeOrgAssignmentRepository.GetAll()
+            OrganizationUnitId = _employeeOrgAssignmentRepository.GetAll()
                 .Where(o => o.EmployeeId == r.EmployeeId
                             && o.StartDate <= today
                             && o.EndDate >= today
                             && o.OrganizationUnitId != null)
                 .OrderBy(o => o.StartDate)
                 .ThenBy(o => o.Id)
-                .Select(o => o.OrganizationUnit.DisplayName)
+                .Select(o => o.OrganizationUnitId)
                 .FirstOrDefault(),
             RejoinWithPrevLeaveAccrual = r.CarryForwardLeaveBalance,
             RejoinWithPrevIndemnityAccrual = r.CarryForwardIndemnityBalance,
@@ -161,12 +168,44 @@ public class EmployeeRejoinReportAppService : GridReportAppServiceBase, IEmploye
             new("Code", r => r.EmployeeCode),
             new("Employee", r => r.EmployeeName),
             new("StartDate", r => r.StartDate),
-            new("OrganizationUnit", r => r.OrganizationUnitName),
+            new("OrgLevel1", r => r.OrgLevel1),
+            new("OrgLevel2", r => r.OrgLevel2),
+            new("OrgLevel3", r => r.OrgLevel3),
+            new("OrgLevel4", r => r.OrgLevel4),
+            new("OrgLevel5", r => r.OrgLevel5),
+            new("OrgLevel6", r => r.OrgLevel6),
+            new("OrgLevel7", r => r.OrgLevel7),
             new("RejoinWithPrevLeaveAccrual", r => r.RejoinWithPrevLeaveAccrual),
             new("RejoinWithPrevIndemnityAccrual", r => r.RejoinWithPrevIndemnityAccrual),
             new("RejoinWithPrevTicketAccrual", r => r.RejoinWithPrevTicketAccrual),
             new("RejoinWithPrevLoan", r => r.RejoinWithPrevLoan),
             new("NewEmployeeCode", r => r.NewEmployeeCode)
         };
+    }
+
+    /// <summary>
+    /// Fills OrgLevel1..OrgLevel7 on already-materialized rows. Shared by the read and the export so the
+    /// two cannot drift. See <see cref="EmployeeOrgLevelNameResolver"/>.
+    /// </summary>
+    private async Task StampOrgLevelsAsync(List<EmployeeRejoinReportRowDto> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var lookup = await _orgLevelNameResolver.BuildLookupAsync(UseArabicNames);
+
+        foreach (var row in rows)
+        {
+            var levels = lookup.GetLevelNames(row.OrganizationUnitId);
+            row.OrgLevel1 = levels[0];
+            row.OrgLevel2 = levels[1];
+            row.OrgLevel3 = levels[2];
+            row.OrgLevel4 = levels[3];
+            row.OrgLevel5 = levels[4];
+            row.OrgLevel6 = levels[5];
+            row.OrgLevel7 = levels[6];
+        }
     }
 }
