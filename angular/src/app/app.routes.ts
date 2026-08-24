@@ -1452,6 +1452,56 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.EmployeeInfo' },
                     },
                     {
+                        // PAYROLL analysis grid reports (legacy
+                        // HCM10.Web/UserControls/Reports/Analysis/PayrollReport).
+                        path: 'reports/analysis/basic-salary-register',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/basic-salary-register-report/basic-salary-register-report.component'
+                            ).then((m) => m.BasicSalaryRegisterReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.BasicSalaryRegister' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-register',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/salary-register-report/salary-register-report.component'
+                            ).then((m) => m.SalaryRegisterReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryRegister' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-sheet',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-sheet-report/payroll-sheet-report.component'
+                            ).then((m) => m.PayrollSheetReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollSheet' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-sheet-custom023',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-sheet-custom023-report/payroll-sheet-custom023-report.component'
+                            ).then((m) => m.PayrollSheetCustom023ReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollSheetCustom023' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-analysis',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-analysis-report/payroll-analysis-report.component'
+                            ).then((m) => m.PayrollAnalysisReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollAnalysis' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-analysis-by-dept',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-analysis-by-dept-report/payroll-analysis-by-dept-report.component'
+                            ).then((m) => m.PayrollAnalysisByDeptReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollAnalysisByDept' },
+                    },
+                    {
                         path: 'employees/:id',
                         loadComponent: () =>
                             import(

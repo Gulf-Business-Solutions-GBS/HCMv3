@@ -180,6 +180,44 @@ export class AppNavigationService {
                         'flaticon-list-3',
                         '/app/admin/reports/analysis/employee-info'
                     ),
+                    // PAYROLL analysis grid reports (legacy
+                    // HCM10.Web/UserControls/Reports/Analysis/PayrollReport).
+                    new AppMenuItem(
+                        'BasicSalaryRegisterReport',
+                        'Pages.Reports.Analysis.BasicSalaryRegister',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/basic-salary-register'
+                    ),
+                    new AppMenuItem(
+                        'SalaryRegisterReport',
+                        'Pages.Reports.Analysis.SalaryRegister',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-register'
+                    ),
+                    new AppMenuItem(
+                        'PayrollSheetReport',
+                        'Pages.Reports.Analysis.PayrollSheet',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-sheet'
+                    ),
+                    new AppMenuItem(
+                        'PayrollSheetCustom023Report',
+                        'Pages.Reports.Analysis.PayrollSheetCustom023',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-sheet-custom023'
+                    ),
+                    new AppMenuItem(
+                        'PayrollAnalysisReport',
+                        'Pages.Reports.Analysis.PayrollAnalysis',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-analysis'
+                    ),
+                    new AppMenuItem(
+                        'PayrollAnalysisByDeptReport',
+                        'Pages.Reports.Analysis.PayrollAnalysisByDept',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-analysis-by-dept'
+                    ),
                 ]
             ),
             new AppMenuItem(

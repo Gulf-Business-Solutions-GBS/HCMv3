@@ -92,6 +92,15 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.EmployeeHistoryReportServiceProxy,
     ApiServiceProxies.EmployeeIncentiveReportServiceProxy,
     ApiServiceProxies.EmployeeInfoReportServiceProxy,
+    // PAYROLL analysis grid reports. NSwag emits proxies as plain @Injectable() WITHOUT
+    // providedIn:'root', so an unregistered one compiles fine and throws NullInjectorError only when a
+    // user opens the screen -- registration here is mandatory, not optional.
+    ApiServiceProxies.BasicSalaryRegisterReportServiceProxy,
+    ApiServiceProxies.SalaryRegisterReportServiceProxy,
+    ApiServiceProxies.PayrollSheetReportServiceProxy,
+    ApiServiceProxies.PayrollSheetCustom023ReportServiceProxy,
+    ApiServiceProxies.PayrollAnalysisReportServiceProxy,
+    ApiServiceProxies.PayrollAnalysisByDeptReportServiceProxy,
     ApiServiceProxies.EmployeeSurveyResponseServiceProxy,
     ApiServiceProxies.PerformanceAppraisalDashboardServiceProxy,
     ApiServiceProxies.SalaryPivotServiceProxy,
