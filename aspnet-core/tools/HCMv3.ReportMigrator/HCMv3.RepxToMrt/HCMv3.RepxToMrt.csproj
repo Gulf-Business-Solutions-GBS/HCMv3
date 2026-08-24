@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>HCMv3.RepxToMrt</AssemblyName>
+    <RootNamespace>HCMv3.RepxToMrt</RootNamespace>
+
+    <!--
+      StiDevExpressHelper.cs is vendored verbatim from Stimulsoft's own Importing.Tools repository
+      (Import.XtraReports2025 / StiDevExpressHelper.cs) plus five local patches. It is signed with
+      Stimulsoft's public key file because several of the Stimulsoft.Report types it constructs are
+      internal-but-InternalsVisibleTo'd to the Import.XtraReports assembly identity.
+    -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Stimulsoft.snk</AssemblyOriginatorKeyFile>
+
+    <!-- Vendored upstream source: do not "clean up" its obsolete/unused-field warnings. -->
+    <NoWarn>$(NoWarn);CS0618;CS0612;CS0414;CS0649;SYSLIB0011</NoWarn>
+
+    <!-- Arabic report text must round-trip; the invariant-globalization mode mangles it. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Already referenced by HCMv3.Application (same version) - no new package is introduced into the
+      solution by this tool. The importer itself has NO DevExpress dependency: it is a pure XML parser.
+    -->
+    <PackageReference Include="Stimulsoft.Reports.Engine.NetCore" Version="2026.2.4" />
+  </ItemGroup>
+
+</Project>

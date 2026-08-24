@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>HCMv3.MrtRender</AssemblyName>
+    <RootNamespace>HCMv3.MrtRender</RootNamespace>
+    <!-- Arabic payslips must round-trip; invariant globalization mangles RTL text and month names. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Same version already referenced by HCMv3.Application. No new package enters the solution. -->
+    <PackageReference Include="Stimulsoft.Reports.Engine.NetCore" Version="2026.2.4" />
+  </ItemGroup>
+
+</Project>
