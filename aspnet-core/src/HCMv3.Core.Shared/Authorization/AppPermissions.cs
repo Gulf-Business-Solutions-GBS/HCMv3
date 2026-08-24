@@ -2482,6 +2482,24 @@ public static class AppPermissions
 
     public const string Pages_Reports_Analysis_PayrollSheetCustom023 = "Pages.Reports.Analysis.PayrollSheetCustom023";
 
+    // Customer-specific Journal Voucher variants (legacy uscRptPayrollJV_Custom0NN). Custom 016 is NOT
+    // ported yet -- see PayrollJVCustom019ReportAppService remarks for why it is a separate unit of work.
+    public const string Pages_Reports_Analysis_PayrollJVCustom017 = "Pages.Reports.Analysis.PayrollJVCustom017";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom018 = "Pages.Reports.Analysis.PayrollJVCustom018";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom019 = "Pages.Reports.Analysis.PayrollJVCustom019";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom023 = "Pages.Reports.Analysis.PayrollJVCustom023";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom030 = "Pages.Reports.Analysis.PayrollJVCustom030";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom035 = "Pages.Reports.Analysis.PayrollJVCustom035";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom045 = "Pages.Reports.Analysis.PayrollJVCustom045";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom051 = "Pages.Reports.Analysis.PayrollJVCustom051";
+
     public const string Pages_Reports_Analysis_EmployeeAction = "Pages.Reports.Analysis.EmployeeAction";
 
     public const string Pages_Reports_Analysis_EmployeeActionChange = "Pages.Reports.Analysis.EmployeeActionChange";
@@ -2529,6 +2547,52 @@ public static class AppPermissions
     public const string Pages_Reports_Analysis_SalaryByNationality = "Pages.Reports.Analysis.SalaryByNationality";
 
     public const string Pages_Reports_Analysis_StaffHeadcount = "Pages.Reports.Analysis.StaffHeadcount";
+
+    //TimeReport grouping (legacy HCM10.Web/UserControls/Reports/Analysis/TimeReport).
+    public const string Pages_Reports_Analysis_MonthlyAttWithTolerance = "Pages.Reports.Analysis.MonthlyAttWithTolerance";
+
+    public const string Pages_Reports_Analysis_MonthlyTimeAttendance = "Pages.Reports.Analysis.MonthlyTimeAttendance";
+
+    public const string Pages_Reports_Analysis_TimeAnalysisByDept = "Pages.Reports.Analysis.TimeAnalysisByDept";
+
+    public const string Pages_Reports_Analysis_TimeRegister = "Pages.Reports.Analysis.TimeRegister";
+
+    public const string Pages_Reports_Analysis_TimeRegisterApproval = "Pages.Reports.Analysis.TimeRegisterApproval";
+
+    public const string Pages_Reports_Analysis_EmployeeDutyPeriod = "Pages.Reports.Analysis.EmployeeDutyPeriod";
+
+    public const string Pages_Reports_Analysis_LateEarlyLog = "Pages.Reports.Analysis.LateEarlyLog";
+
+    public const string Pages_Reports_Analysis_AttendanceLog = "Pages.Reports.Analysis.AttendanceLog";
+
+    public const string Pages_Reports_Analysis_EmpAttendanceLog = "Pages.Reports.Analysis.EmpAttendanceLog";
+
+    public const string Pages_Reports_Analysis_DailyAttendanceSummary = "Pages.Reports.Analysis.DailyAttendanceSummary";
+
+    public const string Pages_Reports_Analysis_DailyManHoursSummary = "Pages.Reports.Analysis.DailyManHoursSummary";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogWithPhoto = "Pages.Reports.Analysis.LateEarlyLogWithPhoto";
+
+    public const string Pages_Reports_Analysis_TimeSchedule = "Pages.Reports.Analysis.TimeSchedule";
+
+    //Per-customer TimeReport variants. Each legacy _Custom0NN control is a SEPARATE implementation with
+    //its own column set and arithmetic, so each gets its own permission rather than sharing the base
+    //report's -- a role granted the base Late/Early Log must not silently gain the variants.
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom040 = "Pages.Reports.Analysis.LateEarlyLogCustom040";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom045 = "Pages.Reports.Analysis.LateEarlyLogCustom045";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom053 = "Pages.Reports.Analysis.LateEarlyLogCustom053";
+
+    public const string Pages_Reports_Analysis_MonthlyAttWithToleranceCustom019 = "Pages.Reports.Analysis.MonthlyAttWithToleranceCustom019";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom019 = "Pages.Reports.Analysis.LateEarlyLogCustom019";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom023 = "Pages.Reports.Analysis.LateEarlyLogCustom023";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom033 = "Pages.Reports.Analysis.LateEarlyLogCustom033";
+
+    public const string Pages_Reports_Analysis_LateEarlyLogCustom036 = "Pages.Reports.Analysis.LateEarlyLogCustom036";
 
     //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration/*.ascx.cs)
     //

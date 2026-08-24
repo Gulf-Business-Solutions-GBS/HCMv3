@@ -2552,6 +2552,37 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollAnalysisByDept, L("PayrollAnalysisByDeptReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheet, L("PayrollSheetReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheetCustom023, L("PayrollSheetCustom023Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom017, L("PayrollJVCustom017Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom018, L("PayrollJVCustom018Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom019, L("PayrollJVCustom019Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom023, L("PayrollJVCustom023Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom030, L("PayrollJVCustom030Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom035, L("PayrollJVCustom035Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom045, L("PayrollJVCustom045Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom051, L("PayrollJVCustom051Report"));
+        //TimeReport grouping (legacy HCM10.Web/UserControls/Reports/Analysis/TimeReport).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyAttWithTolerance, L("MonthlyAttWithToleranceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyTimeAttendance, L("MonthlyTimeAttendanceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TimeAnalysisByDept, L("TimeAnalysisByDeptReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TimeRegister, L("TimeRegisterReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TimeRegisterApproval, L("TimeRegisterApprovalReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDutyPeriod, L("EmployeeDutyPeriodReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLog, L("LateEarlyLogReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogWithPhoto, L("LateEarlyLogWithPhotoReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TimeSchedule, L("TimeScheduleReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_AttendanceLog, L("AttendanceLogReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmpAttendanceLog, L("EmpAttendanceLogReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_DailyAttendanceSummary, L("DailyAttendanceSummaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_DailyManHoursSummary, L("DailyManHoursSummaryReport"));
+        //Per-customer TimeReport variants (legacy usc*_Custom0NN controls).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom040, L("LateEarlyLogCustom040Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom045, L("LateEarlyLogCustom045Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom053, L("LateEarlyLogCustom053Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyAttWithToleranceCustom019, L("MonthlyAttWithToleranceCustom019Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom019, L("LateEarlyLogCustom019Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom023, L("LateEarlyLogCustom023Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom033, L("LateEarlyLogCustom033Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom036, L("LateEarlyLogCustom036Report"));
 
         //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration)
         var administrationTools = pages.CreateChildPermission(AppPermissions.Pages_Administration_Tools, L("AdministrationTools"));

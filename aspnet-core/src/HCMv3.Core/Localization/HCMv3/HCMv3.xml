@@ -4538,6 +4538,25 @@
     <text name="PayrollAnalysisByDeptReport">Payroll Analysis By Department</text>
     <text name="PayrollSheetReport">Payroll Sheet</text>
     <text name="PayrollSheetCustom023Report">Payroll Sheet (Custom 023)</text>
+    <!-- Customer-specific Journal Voucher variants (legacy uscRptPayrollJV_Custom0NN). The per-report
+         "type" keys are deliberately prefixed with the report number: the same caption text ("Missing
+         Accounts", "EmployeeWise BreakDown") appears in several of these controls with a DIFFERENT column
+         set behind it, and ABP throws AbpException on a duplicate key. -->
+    <text name="PayrollJVCustom030Report">Payroll JV (Custom 030)</text>
+    <text name="PayrollJVCustom030TypeSalaryJV">Salary JV</text>
+    <text name="PayrollJVCustom030TypeMissingAccounts">Missing Accounts</text>
+    <text name="PayrollJVCustom030TypeEmployeeWiseBreakDown">EmployeeWise BreakDown</text>
+    <text name="PayrollJVCustom030TypeIndemnityJV">Indemnity JV</text>
+    <text name="PayrollJVCustom030TypeAnnualLeaveJV">Annual Leave JV</text>
+    <text name="PayrollJVCustom035Report">Payroll JV (Custom 035)</text>
+    <text name="PayrollJVCustom035TypeMainFormat">Main Format</text>
+    <text name="PayrollJVCustom035TypeMissingAccounts">Missing Accounts</text>
+    <text name="PayrollJVCustom035TypeEmployeeWiseBreakDown">EmployeeWise BreakDown</text>
+    <text name="PayrollJVCustom045Report">Payroll JV (Custom 045)</text>
+    <text name="PayrollJVCustom045TypeSalaryJV">Salary JV</text>
+    <text name="PayrollJVCustom045TypeMissingAccounts">Missing Accounts</text>
+    <text name="PayrollJVCustom045TypeEmployeeWiseBreakDown">EmployeeWise BreakDown</text>
+    <text name="PayrollJVCustom051Report">Payroll JV (Custom 051)</text>
     <text name="PayrollSheetFromPeriodMustNotBeAfterToPeriod">The From period must not be after the To period.</text>
     <text name="PayrollSheetAllowedMonths">This report may span at most {0} month(s).</text>
     <text name="Difference">Difference</text>
@@ -4659,5 +4678,168 @@
     <text name="AdvanceLeaveRecoveryDaysArrear">Advance Leave Recovery Days (Arrear)</text>
     <text name="AdvanceLeavePaidRecovery">Advance Leave Paid Recovery</text>
     <text name="AdvanceLeavePaidRecoveryArrear">Advance Leave Paid Recovery (Arrear)</text>
+    <text name="MonthlyAttWithToleranceReport">Monthly Attendance With Tolerance Report</text>
+    <text name="MonthlyTimeAttendanceReport">Monthly Time Attendance Report</text>
+    <text name="TimeAnalysisByDeptReport">Time Analysis By Department Report</text>
+    <text name="TimeRegisterReport">Time Register Report</text>
+    <text name="TimeRegisterApprovalReport">Time Register Approval Report</text>
+    <text name="WeekDay">Week Day</text>
+    <text name="DedLateInEarlyOutMinutes">Deducted Late In / Early Out Minutes</text>
+    <text name="ApprovedDedLateInEarlyOutMinutes">Approved Deducted Late In / Early Out Minutes</text>
+    <text name="ShiftStart">Shift Start</text>
+    <text name="ActualSignIn">Actual Sign In</text>
+    <text name="ShiftEnd">Shift End</text>
+    <text name="ActualSignOut">Actual Sign Out</text>
+    <text name="TotalWorkingHours">Total Working Hours</text>
+    <text name="DeductionAfterMonthlyTolerance">Deduction After Monthly Tolerance</text>
+    <text name="TotalLateMinutes">Total Late Minutes</text>
+    <text name="TotalValue">Total Value</text>
+    <text name="NoOfEmployees">No. of Employees</text>
+    <text name="SignIn">Sign In</text>
+    <text name="SignOut">Sign Out</text>
+    <text name="LeaveMins">Leave Mins</text>
+    <text name="EarlyIn">Early In</text>
+    <text name="LateOut">Late Out</text>
+    <text name="WorkingMins">Working Mins</text>
+    <text name="PlannedMins">Planned Mins</text>
+    <text name="DailyAdjustment">DA</text>
+    <text name="MonthlyAccumulation">MA</text>
+    <text name="SystemRemarks">System Remarks</text>
+    <!-- TimeReport analysis grid reports: uscRptEmployeeDutyPeriod / uscRptLateEarlyLog /
+         uscRptLateEarlyLogWithPhoto / uscRptTimeSchedule. -->
+    <text name="EmployeeDutyPeriodReport">Employee Duty Period Report</text>
+    <text name="LateEarlyLogReport">Late/Early Log Report</text>
+    <text name="LateEarlyLogWithPhotoReport">Late/Early Log With Photo Report</text>
+    <text name="LateEarlyLogCustom040Report">Late/Early Log Report (Custom 040)</text>
+    <text name="LateEarlyLogCustom045Report">Late/Early Log Report (Custom 045)</text>
+    <text name="LateEarlyLogCustom053Report">Late/Early Log Report (Custom 053)</text>
+    <text name="MonthlyAttWithToleranceCustom019Report">Monthly Attendance With Tolerance Report (Custom 019)</text>
+    <!-- Column captions and filter labels introduced by the per-customer TimeReport variants. -->
+    <text name="Summary">Summary</text>
+    <text name="Variant">Variant</text>
+    <text name="Division">Division</text>
+    <text name="Section">Section</text>
+    <text name="DailyDeduction">Daily Deduction</text>
+    <text name="RunningDeduction">Running Deduction</text>
+    <text name="LateEarlyLogCustom019Report">Late/Early Log Report (Custom 019)</text>
+    <text name="LateEarlyLogCustom023Report">Late/Early Log Report (Custom 023)</text>
+    <text name="LateEarlyLogCustom033Report">Late/Early Log Report (Custom 033)</text>
+    <text name="LateEarlyLogCustom036Report">Late/Early Log Report (Custom 036)</text>
+    <!-- Filter labels unique to uscRptLateEarlyLog_Custom019, whose panel replaces the payroll-area combo
+         with three org-hierarchy combos (legacy OrgLevel2/3/4) plus a report-variant combo. "Department"
+         and "Detail" already exist above and are reused. -->
+    <text name="OrgDivision">Division</text>
+    <text name="OrgSection">Section</text>
+    <text name="ReportVariant">Variant</text>
+    <text name="ReportVariantSummary">Summary</text>
+    <text name="ReportVariantSummaryLateInOverThreeHours">Summary (Late In &gt; 3 Hours)</text>
+    <text name="TimeScheduleReport">Time Schedule Report</text>
+    <text name="AllDutyPeriods">All duty periods</text>
+    <text name="AccessId">Access Id</text>
+    <text name="BreakHours">Break Hours</text>
+    <text name="PlannedHours">Planned Hours</text>
+    <text name="AbsenceHours">Absence Hours</text>
+    <text name="PartialLeaveHours">Partial Leave Hours</text>
+    <text name="PunchInAccessUnit">Punch In Access Unit</text>
+    <text name="PunchOutAccessUnit">Punch Out Access Unit</text>
+    <text name="PunchInLocation">Punch In Location</text>
+    <text name="PunchOutLocation">Punch Out Location</text>
+    <text name="GeoSelfie">Geo Selfie</text>
+    <text name="AttendanceLogReport">Attendance Log</text>
+    <text name="EmpAttendanceLogReport">Employee Attendance Log</text>
+    <text name="DailyAttendanceSummaryReport">Daily Attendance Summary</text>
+    <text name="DailyManHoursSummaryReport">Daily Man Hours Summary</text>
+    <text name="WorkingHours">Working Hours</text>
+    <text name="OverTime">Over Time</text>
+    <text name="Type">Type</text>
+    <text name="TotalEmp">Total Emp</text>
+    <text name="ManHourType">Man Hour Type</text>
+    <text name="AccumulatedOTHours">Accumulated OT Hours</text>
+    <text name="BackToSummary">Back to summary</text>
+    <!-- Customer-specific Journal Voucher grid reports (legacy uscRptPayrollJV_Custom0NN). -->
+    <text name="PayrollJVCustom016Report">Payroll JV (Custom 016)</text>
+    <text name="PayrollJVCustom017Report">Payroll JV (Custom 017)</text>
+    <text name="PayrollJVCustom018Report">Payroll JV (Custom 018)</text>
+    <text name="PayrollJVCustom019Report">Payroll JV (Custom 019)</text>
+    <text name="PayrollJVCustom023Report">Payroll JV (Custom 023)</text>
+    <!-- Custom 018 voucher columns. -->
+    <text name="GLAccount">G/L Account</text>
+    <text name="Reference">Reference</text>
+    <text name="JobID">Job ID</text>
+    <text name="UsedForReimbursableExpenses">Used for Reimbursable Expenses</text>
+    <text name="TransactionPeriod">Transaction Period</text>
+    <text name="TransactionNumber">Transaction Number</text>
+    <text name="ConsolidatedTransaction">Consolidated Transaction</text>
+    <!-- Custom 019 / 023 voucher columns. -->
+    <text name="GLCode">GL Code</text>
+    <text name="GLDesc">GL Desc.</text>
+    <text name="GLAcctBPCode">G/L Acct/BP Code</text>
+    <text name="GLAcctBPName">G/L Acct/BP Name</text>
+    <text name="ControlAcct">Control Acct</text>
+    <text name="RemarksTemplate">Remarks Template</text>
+    <text name="LineOfBusiness">Line of Business</text>
+    <text name="VehicleMachinery">Vehicle/Machinery</text>
+    <text name="Departments">Departments</text>
+    <text name="EmpCode">Emp Code</text>
+    <text name="AccountInfoCode">AccountInfo Code</text>
+    <text name="AccountInfoName">AccountInfo Name</text>
+    <text name="OffsetAccountInfoCode">OffsetAccountInfo Code</text>
+    <text name="OffsetAccountInfoName">OffsetAccountInfo Name</text>
+    <text name="MainFormat">Main Format</text>
+    <text name="ProvisionFormat">Provision Format</text>
+    <text name="MissingAccounts">Missing Accounts</text>
+    <text name="EmployeeWiseBreakDown">EmployeeWise BreakDown</text>
+    <!-- Custom 019 payroll-area toggle: legacy binds two hard-coded entries, not payroll areas. -->
+    <text name="AllExceptSubContractors">All except Sub-Contractors</text>
+    <text name="SubContractorsOnly">Sub-Contractors only</text>
+    <!-- Custom 017 (Dynamics AX journal import layout) columns. -->
+    <text name="Valid">Valid</text>
+    <text name="CompanyAccounts">Company accounts</text>
+    <text name="RecId">RecId</text>
+    <text name="LineNumber">Line number</text>
+    <text name="LineNumberDate">Line number.Date</text>
+    <text name="LineNumberAccountType">Line number.Account type</text>
+    <text name="LedgerDimensionMainAccount">LedgerDimension.MainAccount</text>
+    <text name="LedgerDimensionMainAccountName">LedgerDimension.MainAccountName</text>
+    <text name="DefaultDimensionLocation">DefaultDimension.Location</text>
+    <text name="DefaultDimensionEmployees">DefaultDimension.Employees</text>
+    <text name="LedgerDimensionLocation">LedgerDimension.Location</text>
+    <text name="LedgerDimensionBrand">LedgerDimension.Brand</text>
+    <text name="LedgerDimensionDepartment">LedgerDimension.Department</text>
+    <text name="LedgerDimensionEmployees">LedgerDimension.Employees</text>
+    <text name="ExchangeRate">Exchange rate</text>
+    <text name="Voucher">Voucher</text>
+    <text name="OffsetAccountType">Offset account type</text>
+    <text name="OffsetLedgerDimensionMainAccount">OffsetLedgerDimension.MainAccount</text>
+    <text name="OffsetCompanyAccounts">Offset company accounts</text>
+    <text name="IsMerged">Is Merged</text>
+    <!-- Custom 016 (BMC / MYB journal layouts) columns. -->
+    <text name="JournalRef">Journal Ref</text>
+    <text name="Account">Account</text>
+    <text name="Suffix">Suffix</text>
+    <text name="Narrative">Narrative</text>
+    <text name="CC">CC</text>
+    <text name="Exp">Exp</text>
+    <text name="DocDate">Doc date</text>
+    <text name="Srce">Srce</text>
+    <text name="Co">Co</text>
+    <text name="SLPLAcc">SL/PL a/c</text>
+    <text name="ReconciledReference">Reconciled reference</text>
+    <text name="RCol">R</text>
+    <text name="MCSR">MCSR</text>
+    <text name="DocumentDate">Document date</text>
+    <text name="DueDate">Due date</text>
+    <text name="VAT">VAT</text>
+    <text name="NLCode">NL CODE</text>
+    <text name="GoodsValue">Goods value</text>
+    <text name="Branch">Branch</text>
+    <text name="LoanFormat">Loan Format</text>
+    <text name="NetPayDifference">NetPay Difference</text>
+    <text name="LeaveProvision">Leave Provision</text>
+    <text name="IndemnityProvision">Indemnity Provision</text>
+    <text name="ProvisionDiff">Provision Diff</text>
+    <text name="JVFormat">Format</text>
+    <text name="JVCompany">Company</text>
+    <text name="AXBatchHasNoRecord">AXBatch has no record. Please add a record in AXBatch before running this report.</text>
   </texts>
 </localizationDictionary>

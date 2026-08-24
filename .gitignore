@@ -40,3 +40,4 @@ payroll-suite.log
 # Local dev-server logs from ad-hoc runs; artefacts, never source.
 ng.log
 webhost.log
+gridreports-tests.log

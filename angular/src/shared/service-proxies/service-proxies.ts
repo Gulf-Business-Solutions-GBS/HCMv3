@@ -6085,6 +6085,130 @@ export class AssetTypesServiceProxy {
 }
 
 @Injectable()
+export class AttendanceLogReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAttendanceLogReport(body?: GetAttendanceLogReportInput | undefined): Observable<PagedResultDtoOfAttendanceLogReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceLogReport/GetAttendanceLogReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttendanceLogReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttendanceLogReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfAttendanceLogReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfAttendanceLogReportRowDto>;
+        }));
+    }
+
+    protected processGetAttendanceLogReport(response: HttpResponseBase): Observable<PagedResultDtoOfAttendanceLogReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAttendanceLogReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAttendanceLogReportToExcel(body?: GetAttendanceLogReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/AttendanceLogReport/GetAttendanceLogReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttendanceLogReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttendanceLogReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetAttendanceLogReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AttendanceTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -19085,6 +19209,242 @@ export class D365FinancePostingClientServiceProxy {
 }
 
 @Injectable()
+export class DailyAttendanceSummaryReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyAttendanceSummaryReport(body?: GetDailyAttendanceSummaryReportInput | undefined): Observable<PagedResultDtoOfDailyAttendanceSummaryReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyAttendanceSummaryReport/GetDailyAttendanceSummaryReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyAttendanceSummaryReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyAttendanceSummaryReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDailyAttendanceSummaryReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDailyAttendanceSummaryReportRowDto>;
+        }));
+    }
+
+    protected processGetDailyAttendanceSummaryReport(response: HttpResponseBase): Observable<PagedResultDtoOfDailyAttendanceSummaryReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfDailyAttendanceSummaryReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyAttendanceSummaryReportToExcel(body?: GetDailyAttendanceSummaryReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyAttendanceSummaryReport/GetDailyAttendanceSummaryReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyAttendanceSummaryReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyAttendanceSummaryReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetDailyAttendanceSummaryReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyAttendanceSummaryDetailReport(body?: GetDailyAttendanceSummaryDetailReportInput | undefined): Observable<PagedResultDtoOfDailyAttendanceSummaryDetailRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyAttendanceSummaryReport/GetDailyAttendanceSummaryDetailReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyAttendanceSummaryDetailReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyAttendanceSummaryDetailReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDailyAttendanceSummaryDetailRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDailyAttendanceSummaryDetailRowDto>;
+        }));
+    }
+
+    protected processGetDailyAttendanceSummaryDetailReport(response: HttpResponseBase): Observable<PagedResultDtoOfDailyAttendanceSummaryDetailRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfDailyAttendanceSummaryDetailRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyAttendanceSummaryDetailReportToExcel(body?: GetDailyAttendanceSummaryDetailReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyAttendanceSummaryReport/GetDailyAttendanceSummaryDetailReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyAttendanceSummaryDetailReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyAttendanceSummaryDetailReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetDailyAttendanceSummaryDetailReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class DailyDutiesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -19302,6 +19662,354 @@ export class DailyDutiesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class DailyManHoursSummaryReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursSummaryReport(body?: GetDailyManHoursSummaryReportInput | undefined): Observable<PagedResultDtoOfDailyManHoursSummaryReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursSummaryReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursSummaryReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursSummaryReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDailyManHoursSummaryReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDailyManHoursSummaryReportRowDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursSummaryReport(response: HttpResponseBase): Observable<PagedResultDtoOfDailyManHoursSummaryReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfDailyManHoursSummaryReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursSummaryReportToExcel(body?: GetDailyManHoursSummaryReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursSummaryReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursSummaryReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursSummaryReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursSummaryReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursRegularDetailReport(body?: GetDailyManHoursSummaryDetailReportInput | undefined): Observable<PagedResultDtoOfDailyManHoursRegularDetailRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursRegularDetailReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursRegularDetailReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursRegularDetailReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDailyManHoursRegularDetailRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDailyManHoursRegularDetailRowDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursRegularDetailReport(response: HttpResponseBase): Observable<PagedResultDtoOfDailyManHoursRegularDetailRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfDailyManHoursRegularDetailRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursRegularDetailReportToExcel(body?: GetDailyManHoursSummaryDetailReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursRegularDetailReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursRegularDetailReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursRegularDetailReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursRegularDetailReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursOvertimeDetailReport(body?: GetDailyManHoursSummaryDetailReportInput | undefined): Observable<PagedResultDtoOfDailyManHoursOvertimeDetailRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursOvertimeDetailReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursOvertimeDetailReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursOvertimeDetailReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfDailyManHoursOvertimeDetailRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfDailyManHoursOvertimeDetailRowDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursOvertimeDetailReport(response: HttpResponseBase): Observable<PagedResultDtoOfDailyManHoursOvertimeDetailRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfDailyManHoursOvertimeDetailRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getDailyManHoursOvertimeDetailReportToExcel(body?: GetDailyManHoursSummaryDetailReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/DailyManHoursSummaryReport/GetDailyManHoursOvertimeDetailReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDailyManHoursOvertimeDetailReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDailyManHoursOvertimeDetailReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetDailyManHoursOvertimeDetailReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -26667,6 +27375,130 @@ export class EmailTokensServiceProxy {
 }
 
 @Injectable()
+export class EmpAttendanceLogReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmpAttendanceLogReport(body?: GetEmpAttendanceLogReportInput | undefined): Observable<PagedResultDtoOfEmpAttendanceLogReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmpAttendanceLogReport/GetEmpAttendanceLogReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmpAttendanceLogReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmpAttendanceLogReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEmpAttendanceLogReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEmpAttendanceLogReportRowDto>;
+        }));
+    }
+
+    protected processGetEmpAttendanceLogReport(response: HttpResponseBase): Observable<PagedResultDtoOfEmpAttendanceLogReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEmpAttendanceLogReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmpAttendanceLogReportToExcel(body?: GetEmpAttendanceLogReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmpAttendanceLogReport/GetEmpAttendanceLogReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmpAttendanceLogReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmpAttendanceLogReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetEmpAttendanceLogReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeAbsAdjustmentsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -33824,6 +34656,130 @@ export class EmployeeDottedLineManagersServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class EmployeeDutyPeriodReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeeDutyPeriodReport(body?: GetEmployeeDutyPeriodReportInput | undefined): Observable<PagedResultDtoOfEmployeeDutyPeriodReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeDutyPeriodReport/GetEmployeeDutyPeriodReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeDutyPeriodReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeDutyPeriodReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEmployeeDutyPeriodReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEmployeeDutyPeriodReportRowDto>;
+        }));
+    }
+
+    protected processGetEmployeeDutyPeriodReport(response: HttpResponseBase): Observable<PagedResultDtoOfEmployeeDutyPeriodReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEmployeeDutyPeriodReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getEmployeeDutyPeriodReportToExcel(body?: GetEmployeeDutyPeriodReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeDutyPeriodReport/GetEmployeeDutyPeriodReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeDutyPeriodReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeDutyPeriodReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetEmployeeDutyPeriodReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -68938,6 +69894,1122 @@ export class LanguageInfosServiceProxy {
 }
 
 @Injectable()
+export class LateEarlyLogCustom019ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom019Report(body?: GetLateEarlyLogCustom019ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom019ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom019Report/GetLateEarlyLogCustom019Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom019Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom019Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom019ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom019ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom019Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom019ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom019ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom019ReportToExcel(body?: GetLateEarlyLogCustom019ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom019Report/GetLateEarlyLogCustom019ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom019ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom019ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom019ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom023ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom023Report(body?: GetLateEarlyLogCustom023ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom023ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom023Report/GetLateEarlyLogCustom023Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom023Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom023Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom023ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom023ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom023Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom023ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom023ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom023ReportToExcel(body?: GetLateEarlyLogCustom023ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom023Report/GetLateEarlyLogCustom023ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom023ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom023ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom023ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom033ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom033Report(body?: GetLateEarlyLogCustom033ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom033ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom033Report/GetLateEarlyLogCustom033Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom033Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom033Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom033ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom033ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom033Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom033ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom033ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom033ReportToExcel(body?: GetLateEarlyLogCustom033ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom033Report/GetLateEarlyLogCustom033ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom033ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom033ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom033ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom036ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom036Report(body?: GetLateEarlyLogCustom036ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom036ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom036Report/GetLateEarlyLogCustom036Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom036Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom036Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom036ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom036ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom036Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom036ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom036ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom036ReportToExcel(body?: GetLateEarlyLogCustom036ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom036Report/GetLateEarlyLogCustom036ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom036ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom036ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom036ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom040ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom040Report(body?: GetLateEarlyLogCustom040ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom040ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom040Report/GetLateEarlyLogCustom040Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom040Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom040Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom040ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom040ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom040Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom040ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom040ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom040ReportToExcel(body?: GetLateEarlyLogCustom040ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom040Report/GetLateEarlyLogCustom040ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom040ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom040ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom040ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom045ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom045Report(body?: GetLateEarlyLogCustom045ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom045ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom045Report/GetLateEarlyLogCustom045Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom045Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom045Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom045ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom045ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom045Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom045ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom045ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom045ReportToExcel(body?: GetLateEarlyLogCustom045ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom045Report/GetLateEarlyLogCustom045ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom045ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom045ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom045ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogCustom053ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom053Report(body?: GetLateEarlyLogCustom053ReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogCustom053ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom053Report/GetLateEarlyLogCustom053Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom053Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom053Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogCustom053ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogCustom053ReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom053Report(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogCustom053ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogCustom053ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogCustom053ReportToExcel(body?: GetLateEarlyLogCustom053ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogCustom053Report/GetLateEarlyLogCustom053ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogCustom053ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogCustom053ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogCustom053ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogReport(body?: GetLateEarlyLogReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogReport/GetLateEarlyLogReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogReport(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogReportToExcel(body?: GetLateEarlyLogReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogReport/GetLateEarlyLogReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class LateEarlyLogWithPhotoReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogWithPhotoReport(body?: GetLateEarlyLogWithPhotoReportInput | undefined): Observable<PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogWithPhotoReport/GetLateEarlyLogWithPhotoReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogWithPhotoReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogWithPhotoReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogWithPhotoReport(response: HttpResponseBase): Observable<PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLateEarlyLogWithPhotoReportToExcel(body?: GetLateEarlyLogWithPhotoReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/LateEarlyLogWithPhotoReport/GetLateEarlyLogWithPhotoReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLateEarlyLogWithPhotoReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLateEarlyLogWithPhotoReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetLateEarlyLogWithPhotoReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class LeaveAccrualSummariesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -74387,6 +76459,378 @@ export class MaritalStatusesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MonthlyAttWithToleranceCustom019ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyAttWithToleranceCustom019Report(body?: GetMonthlyAttWithToleranceCustom019ReportInput | undefined): Observable<PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyAttWithToleranceCustom019Report/GetMonthlyAttWithToleranceCustom019Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyAttWithToleranceCustom019Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyAttWithToleranceCustom019Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto>;
+        }));
+    }
+
+    protected processGetMonthlyAttWithToleranceCustom019Report(response: HttpResponseBase): Observable<PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyAttWithToleranceCustom019ReportToExcel(body?: GetMonthlyAttWithToleranceCustom019ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyAttWithToleranceCustom019Report/GetMonthlyAttWithToleranceCustom019ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyAttWithToleranceCustom019ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyAttWithToleranceCustom019ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetMonthlyAttWithToleranceCustom019ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MonthlyAttWithToleranceReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyAttWithToleranceReport(body?: GetMonthlyAttWithToleranceReportInput | undefined): Observable<PagedResultDtoOfMonthlyAttWithToleranceReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyAttWithToleranceReport/GetMonthlyAttWithToleranceReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyAttWithToleranceReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyAttWithToleranceReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMonthlyAttWithToleranceReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMonthlyAttWithToleranceReportRowDto>;
+        }));
+    }
+
+    protected processGetMonthlyAttWithToleranceReport(response: HttpResponseBase): Observable<PagedResultDtoOfMonthlyAttWithToleranceReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMonthlyAttWithToleranceReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyAttWithToleranceReportToExcel(body?: GetMonthlyAttWithToleranceReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyAttWithToleranceReport/GetMonthlyAttWithToleranceReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyAttWithToleranceReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyAttWithToleranceReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetMonthlyAttWithToleranceReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MonthlyTimeAttendanceReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyTimeAttendanceReport(body?: GetMonthlyTimeAttendanceReportInput | undefined): Observable<PagedResultDtoOfMonthlyTimeAttendanceReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyTimeAttendanceReport/GetMonthlyTimeAttendanceReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyTimeAttendanceReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyTimeAttendanceReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMonthlyTimeAttendanceReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMonthlyTimeAttendanceReportRowDto>;
+        }));
+    }
+
+    protected processGetMonthlyTimeAttendanceReport(response: HttpResponseBase): Observable<PagedResultDtoOfMonthlyTimeAttendanceReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMonthlyTimeAttendanceReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMonthlyTimeAttendanceReportToExcel(body?: GetMonthlyTimeAttendanceReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MonthlyTimeAttendanceReport/GetMonthlyTimeAttendanceReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthlyTimeAttendanceReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthlyTimeAttendanceReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetMonthlyTimeAttendanceReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -89213,6 +91657,998 @@ export class PayrollEngineServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : null as any;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom017ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom017Report(body?: GetPayrollJVCustom017ReportInput | undefined): Observable<PayrollJVCustom017ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom017Report/GetPayrollJVCustom017Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom017Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom017Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom017ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom017ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom017Report(response: HttpResponseBase): Observable<PayrollJVCustom017ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom017ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom017ReportToExcel(body?: GetPayrollJVCustom017ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom017Report/GetPayrollJVCustom017ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom017ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom017ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom017ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom018ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom018Report(body?: GetPayrollJVCustom018ReportInput | undefined): Observable<PayrollJVCustom018ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom018Report/GetPayrollJVCustom018Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom018Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom018Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom018ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom018ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom018Report(response: HttpResponseBase): Observable<PayrollJVCustom018ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom018ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom018ReportToExcel(body?: GetPayrollJVCustom018ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom018Report/GetPayrollJVCustom018ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom018ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom018ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom018ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom019ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom019Report(body?: GetPayrollJVCustom019ReportInput | undefined): Observable<PayrollJVCustom019ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom019Report/GetPayrollJVCustom019Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom019Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom019Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom019ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom019ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom019Report(response: HttpResponseBase): Observable<PayrollJVCustom019ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom019ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom019ReportToExcel(body?: GetPayrollJVCustom019ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom019Report/GetPayrollJVCustom019ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom019ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom019ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom019ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom023ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom023Report(body?: GetPayrollJVCustom023ReportInput | undefined): Observable<PayrollJVCustom023ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom023Report/GetPayrollJVCustom023Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom023Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom023Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom023ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom023ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom023Report(response: HttpResponseBase): Observable<PayrollJVCustom023ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom023ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom023ReportToExcel(body?: GetPayrollJVCustom023ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom023Report/GetPayrollJVCustom023ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom023ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom023ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom023ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom030ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom030Report(body?: GetPayrollJVCustom030ReportInput | undefined): Observable<PayrollJVCustom030ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom030Report/GetPayrollJVCustom030Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom030Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom030Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom030ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom030ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom030Report(response: HttpResponseBase): Observable<PayrollJVCustom030ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom030ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom030ReportToExcel(body?: GetPayrollJVCustom030ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom030Report/GetPayrollJVCustom030ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom030ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom030ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom030ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom035ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom035Report(body?: GetPayrollJVCustom035ReportInput | undefined): Observable<PayrollJVCustom035ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom035Report/GetPayrollJVCustom035Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom035Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom035Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom035ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom035ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom035Report(response: HttpResponseBase): Observable<PayrollJVCustom035ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom035ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom035ReportToExcel(body?: GetPayrollJVCustom035ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom035Report/GetPayrollJVCustom035ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom035ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom035ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom035ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom045ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom045Report(body?: GetPayrollJVCustom045ReportInput | undefined): Observable<PayrollJVCustom045ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom045Report/GetPayrollJVCustom045Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom045Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom045Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom045ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom045ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom045Report(response: HttpResponseBase): Observable<PayrollJVCustom045ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom045ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom045ReportToExcel(body?: GetPayrollJVCustom045ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom045Report/GetPayrollJVCustom045ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom045ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom045ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom045ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PayrollJVCustom051ReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom051Report(body?: GetPayrollJVCustom051ReportInput | undefined): Observable<PayrollJVCustom051ReportOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom051Report/GetPayrollJVCustom051Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom051Report(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom051Report(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PayrollJVCustom051ReportOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PayrollJVCustom051ReportOutput>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom051Report(response: HttpResponseBase): Observable<PayrollJVCustom051ReportOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PayrollJVCustom051ReportOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollJVCustom051ReportToExcel(body?: GetPayrollJVCustom051ReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollJVCustom051Report/GetPayrollJVCustom051ReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollJVCustom051ReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollJVCustom051ReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetPayrollJVCustom051ReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -117897,6 +121333,130 @@ export class TicketTypesServiceProxy {
 }
 
 @Injectable()
+export class TimeAnalysisByDeptReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeAnalysisByDeptReport(body?: GetTimeAnalysisByDeptReportInput | undefined): Observable<PagedResultDtoOfTimeAnalysisByDeptReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeAnalysisByDeptReport/GetTimeAnalysisByDeptReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeAnalysisByDeptReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeAnalysisByDeptReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfTimeAnalysisByDeptReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfTimeAnalysisByDeptReportRowDto>;
+        }));
+    }
+
+    protected processGetTimeAnalysisByDeptReport(response: HttpResponseBase): Observable<PagedResultDtoOfTimeAnalysisByDeptReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfTimeAnalysisByDeptReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeAnalysisByDeptReportToExcel(body?: GetTimeAnalysisByDeptReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeAnalysisByDeptReport/GetTimeAnalysisByDeptReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeAnalysisByDeptReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeAnalysisByDeptReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetTimeAnalysisByDeptReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class TimeAttAPIsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -119130,6 +122690,254 @@ export class TimePoliciesServiceProxy {
 }
 
 @Injectable()
+export class TimeRegisterApprovalReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeRegisterApprovalReport(body?: GetTimeRegisterApprovalReportInput | undefined): Observable<PagedResultDtoOfTimeRegisterApprovalReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeRegisterApprovalReport/GetTimeRegisterApprovalReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeRegisterApprovalReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeRegisterApprovalReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfTimeRegisterApprovalReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfTimeRegisterApprovalReportRowDto>;
+        }));
+    }
+
+    protected processGetTimeRegisterApprovalReport(response: HttpResponseBase): Observable<PagedResultDtoOfTimeRegisterApprovalReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfTimeRegisterApprovalReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeRegisterApprovalReportToExcel(body?: GetTimeRegisterApprovalReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeRegisterApprovalReport/GetTimeRegisterApprovalReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeRegisterApprovalReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeRegisterApprovalReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetTimeRegisterApprovalReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class TimeRegisterReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeRegisterReport(body?: GetTimeRegisterReportInput | undefined): Observable<PagedResultDtoOfTimeRegisterReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeRegisterReport/GetTimeRegisterReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeRegisterReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeRegisterReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfTimeRegisterReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfTimeRegisterReportRowDto>;
+        }));
+    }
+
+    protected processGetTimeRegisterReport(response: HttpResponseBase): Observable<PagedResultDtoOfTimeRegisterReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfTimeRegisterReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeRegisterReportToExcel(body?: GetTimeRegisterReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeRegisterReport/GetTimeRegisterReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeRegisterReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeRegisterReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetTimeRegisterReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class TimeRegistersServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -119347,6 +123155,130 @@ export class TimeRegistersServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class TimeScheduleReportServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeScheduleReport(body?: GetTimeScheduleReportInput | undefined): Observable<PagedResultDtoOfTimeScheduleReportRowDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeScheduleReport/GetTimeScheduleReport";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeScheduleReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeScheduleReport(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfTimeScheduleReportRowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfTimeScheduleReportRowDto>;
+        }));
+    }
+
+    protected processGetTimeScheduleReport(response: HttpResponseBase): Observable<PagedResultDtoOfTimeScheduleReportRowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfTimeScheduleReportRowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getTimeScheduleReportToExcel(body?: GetTimeScheduleReportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeScheduleReport/GetTimeScheduleReportToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeScheduleReportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeScheduleReportToExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetTimeScheduleReportToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -136067,6 +139999,138 @@ export interface IAssetDto {
 export enum AssetStatus {
     Active = 0,
     Inactive = 1,
+}
+
+export class AttendanceLogReportRowDto implements IAttendanceLogReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    status!: string | undefined;
+    countryName!: string | undefined;
+    workLocationName!: string | undefined;
+    dutyPeriodName!: string | undefined;
+    dayDate!: DateTime;
+    weekDay!: string | undefined;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    workingHours!: string | undefined;
+    overTime!: string | undefined;
+    actualIn!: DateTime;
+    actualOut!: DateTime;
+    actualWorkingMinutes!: number;
+    overtimeMinutes!: number;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IAttendanceLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.status = _data["status"];
+            this.countryName = _data["countryName"];
+            this.workLocationName = _data["workLocationName"];
+            this.dutyPeriodName = _data["dutyPeriodName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.workingHours = _data["workingHours"];
+            this.overTime = _data["overTime"];
+            this.actualIn = _data["actualIn"] ? DateTime.fromISO(_data["actualIn"].toString()) : undefined as any;
+            this.actualOut = _data["actualOut"] ? DateTime.fromISO(_data["actualOut"].toString()) : undefined as any;
+            this.actualWorkingMinutes = _data["actualWorkingMinutes"];
+            this.overtimeMinutes = _data["overtimeMinutes"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): AttendanceLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AttendanceLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["status"] = this.status;
+        data["countryName"] = this.countryName;
+        data["workLocationName"] = this.workLocationName;
+        data["dutyPeriodName"] = this.dutyPeriodName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["workingHours"] = this.workingHours;
+        data["overTime"] = this.overTime;
+        data["actualIn"] = this.actualIn ? this.actualIn.toString() : undefined as any;
+        data["actualOut"] = this.actualOut ? this.actualOut.toString() : undefined as any;
+        data["actualWorkingMinutes"] = this.actualWorkingMinutes;
+        data["overtimeMinutes"] = this.overtimeMinutes;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data;
+    }
+}
+
+export interface IAttendanceLogReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    status: string | undefined;
+    countryName: string | undefined;
+    workLocationName: string | undefined;
+    dutyPeriodName: string | undefined;
+    dayDate: DateTime;
+    weekDay: string | undefined;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    workingHours: string | undefined;
+    overTime: string | undefined;
+    actualIn: DateTime;
+    actualOut: DateTime;
+    actualWorkingMinutes: number;
+    overtimeMinutes: number;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
 }
 
 export class AttendanceTypeDto implements IAttendanceTypeDto {
@@ -165777,6 +169841,138 @@ export enum CustomStartMonth {
     December = 12,
 }
 
+export class DailyAttendanceSummaryDetailRowDto implements IDailyAttendanceSummaryDetailRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    leaveTypeName!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IDailyAttendanceSummaryDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.leaveTypeName = _data["leaveTypeName"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): DailyAttendanceSummaryDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DailyAttendanceSummaryDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["leaveTypeName"] = this.leaveTypeName;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data;
+    }
+}
+
+export interface IDailyAttendanceSummaryDetailRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    leaveTypeName: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+}
+
+export class DailyAttendanceSummaryReportRowDto implements IDailyAttendanceSummaryReportRowDto {
+    type!: DailyAttendanceType;
+    typeName!: string | undefined;
+    totalEmployees!: number;
+
+    constructor(data?: IDailyAttendanceSummaryReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.typeName = _data["typeName"];
+            this.totalEmployees = _data["totalEmployees"];
+        }
+    }
+
+    static fromJS(data: any): DailyAttendanceSummaryReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DailyAttendanceSummaryReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["typeName"] = this.typeName;
+        data["totalEmployees"] = this.totalEmployees;
+        return data;
+    }
+}
+
+export interface IDailyAttendanceSummaryReportRowDto {
+    type: DailyAttendanceType;
+    typeName: string | undefined;
+    totalEmployees: number;
+}
+
+export enum DailyAttendanceType {
+    OnDuty = 1,
+    DayOff = 2,
+    Medical = 3,
+    OnLeave = 4,
+    Absent = 5,
+}
+
 export class DailyDutyDto implements IDailyDutyDto {
     id!: number;
     code!: string | undefined;
@@ -165859,6 +170055,230 @@ export interface IDailyDutyDto {
     breakShiftName: string | undefined;
     allowTransStart: boolean;
     allowTransEnd: boolean;
+}
+
+export class DailyManHoursOvertimeDetailRowDto implements IDailyManHoursOvertimeDetailRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    overtimeHours!: number;
+    accumulatedOvertimeHours!: number;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IDailyManHoursOvertimeDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.accumulatedOvertimeHours = _data["accumulatedOvertimeHours"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): DailyManHoursOvertimeDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DailyManHoursOvertimeDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["overtimeHours"] = this.overtimeHours;
+        data["accumulatedOvertimeHours"] = this.accumulatedOvertimeHours;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data;
+    }
+}
+
+export interface IDailyManHoursOvertimeDetailRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    overtimeHours: number;
+    accumulatedOvertimeHours: number;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+}
+
+export class DailyManHoursRegularDetailRowDto implements IDailyManHoursRegularDetailRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    totalHours!: string | undefined;
+    firstIn!: DateTime | undefined;
+    lastOut!: DateTime | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IDailyManHoursRegularDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.totalHours = _data["totalHours"];
+            this.firstIn = _data["firstIn"] ? DateTime.fromISO(_data["firstIn"].toString()) : undefined as any;
+            this.lastOut = _data["lastOut"] ? DateTime.fromISO(_data["lastOut"].toString()) : undefined as any;
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): DailyManHoursRegularDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DailyManHoursRegularDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["totalHours"] = this.totalHours;
+        data["firstIn"] = this.firstIn ? this.firstIn.toString() : undefined as any;
+        data["lastOut"] = this.lastOut ? this.lastOut.toString() : undefined as any;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data;
+    }
+}
+
+export interface IDailyManHoursRegularDetailRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    totalHours: string | undefined;
+    firstIn: DateTime | undefined;
+    lastOut: DateTime | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+}
+
+export class DailyManHoursSummaryReportRowDto implements IDailyManHoursSummaryReportRowDto {
+    type!: ManHourType;
+    typeName!: string | undefined;
+    employeeCount!: number;
+
+    constructor(data?: IDailyManHoursSummaryReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.typeName = _data["typeName"];
+            this.employeeCount = _data["employeeCount"];
+        }
+    }
+
+    static fromJS(data: any): DailyManHoursSummaryReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DailyManHoursSummaryReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["typeName"] = this.typeName;
+        data["employeeCount"] = this.employeeCount;
+        return data;
+    }
+}
+
+export interface IDailyManHoursSummaryReportRowDto {
+    type: ManHourType;
+    typeName: string | undefined;
+    employeeCount: number;
 }
 
 export class Dashboard implements IDashboard {
@@ -167803,6 +172223,74 @@ export interface IEmailTokenDto {
     emailTemplateId: number;
     emailTemplateNameEn: string | undefined;
     objectKey: boolean;
+}
+
+export class EmpAttendanceLogReportRowDto implements IEmpAttendanceLogReportRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    dayDate!: DateTime;
+    dateText!: string | undefined;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    workingHours!: string | undefined;
+    totalWorkingHours!: string | undefined;
+
+    constructor(data?: IEmpAttendanceLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.dateText = _data["dateText"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.workingHours = _data["workingHours"];
+            this.totalWorkingHours = _data["totalWorkingHours"];
+        }
+    }
+
+    static fromJS(data: any): EmpAttendanceLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmpAttendanceLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["dateText"] = this.dateText;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["workingHours"] = this.workingHours;
+        data["totalWorkingHours"] = this.totalWorkingHours;
+        return data;
+    }
+}
+
+export interface IEmpAttendanceLogReportRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    dayDate: DateTime;
+    dateText: string | undefined;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    workingHours: string | undefined;
+    totalWorkingHours: string | undefined;
 }
 
 export class EmpPerformanceHistoryDto implements IEmpPerformanceHistoryDto {
@@ -171847,6 +176335,110 @@ export interface IEmployeeDutyPeriodDto {
     dutyPeriodName: string | undefined;
     startDate: DateTime;
     endDate: DateTime;
+}
+
+export class EmployeeDutyPeriodReportRowDto implements IEmployeeDutyPeriodReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    jobTitleName!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    dutyPeriodName!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    startPoint!: number;
+    countryName!: string | undefined;
+    workLocationName!: string | undefined;
+
+    constructor(data?: IEmployeeDutyPeriodReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.jobTitleName = _data["jobTitleName"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.dutyPeriodName = _data["dutyPeriodName"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.startPoint = _data["startPoint"];
+            this.countryName = _data["countryName"];
+            this.workLocationName = _data["workLocationName"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeDutyPeriodReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeDutyPeriodReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["jobTitleName"] = this.jobTitleName;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["dutyPeriodName"] = this.dutyPeriodName;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["startPoint"] = this.startPoint;
+        data["countryName"] = this.countryName;
+        data["workLocationName"] = this.workLocationName;
+        return data;
+    }
+}
+
+export interface IEmployeeDutyPeriodReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    jobTitleName: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    dutyPeriodName: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    startPoint: number;
+    countryName: string | undefined;
+    workLocationName: string | undefined;
 }
 
 export class EmployeeDutyScheduleDto implements IEmployeeDutyScheduleDto {
@@ -200627,6 +205219,70 @@ export interface IGetAssetForEditOutput {
     asset: CreateOrEditAssetDto;
 }
 
+export class GetAttendanceLogReportInput implements IGetAttendanceLogReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetAttendanceLogReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetAttendanceLogReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttendanceLogReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetAttendanceLogReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
 export class GetAttendanceTypeForEditOutput implements IGetAttendanceTypeForEditOutput {
     attendanceType!: CreateOrEditAttendanceTypeDto;
 
@@ -202047,6 +206703,130 @@ export interface IGetCurrentLoginInformationsOutput {
     isSessionRevocationEnabled: boolean;
 }
 
+export class GetDailyAttendanceSummaryDetailReportInput implements IGetDailyAttendanceSummaryDetailReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    type!: DailyAttendanceType;
+
+    constructor(data?: IGetDailyAttendanceSummaryDetailReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.type = _data["type"];
+        }
+    }
+
+    static fromJS(data: any): GetDailyAttendanceSummaryDetailReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDailyAttendanceSummaryDetailReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["type"] = this.type;
+        return data;
+    }
+}
+
+export interface IGetDailyAttendanceSummaryDetailReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    type: DailyAttendanceType;
+}
+
+export class GetDailyAttendanceSummaryReportInput implements IGetDailyAttendanceSummaryReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetDailyAttendanceSummaryReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetDailyAttendanceSummaryReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDailyAttendanceSummaryReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetDailyAttendanceSummaryReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+}
+
 export class GetDailyDutyForEditOutput implements IGetDailyDutyForEditOutput {
     dailyDuty!: CreateOrEditDailyDutyDto;
 
@@ -202081,6 +206861,134 @@ export class GetDailyDutyForEditOutput implements IGetDailyDutyForEditOutput {
 
 export interface IGetDailyDutyForEditOutput {
     dailyDuty: CreateOrEditDailyDutyDto;
+}
+
+export class GetDailyManHoursSummaryDetailReportInput implements IGetDailyManHoursSummaryDetailReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    workLocationCode!: string | undefined;
+
+    constructor(data?: IGetDailyManHoursSummaryDetailReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.workLocationCode = _data["workLocationCode"];
+        }
+    }
+
+    static fromJS(data: any): GetDailyManHoursSummaryDetailReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDailyManHoursSummaryDetailReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["workLocationCode"] = this.workLocationCode;
+        return data;
+    }
+}
+
+export interface IGetDailyManHoursSummaryDetailReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    workLocationCode: string | undefined;
+}
+
+export class GetDailyManHoursSummaryReportInput implements IGetDailyManHoursSummaryReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    workLocationCode!: string | undefined;
+
+    constructor(data?: IGetDailyManHoursSummaryReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.workLocationCode = _data["workLocationCode"];
+        }
+    }
+
+    static fromJS(data: any): GetDailyManHoursSummaryReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDailyManHoursSummaryReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["workLocationCode"] = this.workLocationCode;
+        return data;
+    }
+}
+
+export interface IGetDailyManHoursSummaryReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    workLocationCode: string | undefined;
 }
 
 export class GetDailySalesOutput implements IGetDailySalesOutput {
@@ -202845,6 +207753,66 @@ export class GetEmailTokenForEditOutput implements IGetEmailTokenForEditOutput {
 
 export interface IGetEmailTokenForEditOutput {
     emailToken: CreateOrEditEmailTokenDto;
+}
+
+export class GetEmpAttendanceLogReportInput implements IGetEmpAttendanceLogReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetEmpAttendanceLogReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetEmpAttendanceLogReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmpAttendanceLogReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetEmpAttendanceLogReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
 }
 
 export class GetEmpPerformanceHistoryForEditOutput implements IGetEmpPerformanceHistoryForEditOutput {
@@ -204557,6 +209525,70 @@ export class GetEmployeeDutyPeriodForEditOutput implements IGetEmployeeDutyPerio
 
 export interface IGetEmployeeDutyPeriodForEditOutput {
     employeeDutyPeriod: CreateOrEditEmployeeDutyPeriodDto;
+}
+
+export class GetEmployeeDutyPeriodReportInput implements IGetEmployeeDutyPeriodReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    dutyPeriodCode!: string | undefined;
+
+    constructor(data?: IGetEmployeeDutyPeriodReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.dutyPeriodCode = _data["dutyPeriodCode"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeDutyPeriodReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeDutyPeriodReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["dutyPeriodCode"] = this.dutyPeriodCode;
+        return data;
+    }
+}
+
+export interface IGetEmployeeDutyPeriodReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    dutyPeriodCode: string | undefined;
 }
 
 export class GetEmployeeDutyScheduleForEditOutput implements IGetEmployeeDutyScheduleForEditOutput {
@@ -209587,6 +214619,594 @@ export interface IGetLanguagesOutput {
     defaultLanguageName: string | undefined;
 }
 
+export class GetLateEarlyLogCustom019ReportInput implements IGetLateEarlyLogCustom019ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    departmentCode!: string | undefined;
+    divisionCode!: string | undefined;
+    sectionCode!: string | undefined;
+    variant!: LateEarlyLogCustom019Variant;
+
+    constructor(data?: IGetLateEarlyLogCustom019ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.departmentCode = _data["departmentCode"];
+            this.divisionCode = _data["divisionCode"];
+            this.sectionCode = _data["sectionCode"];
+            this.variant = _data["variant"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom019ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom019ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["departmentCode"] = this.departmentCode;
+        data["divisionCode"] = this.divisionCode;
+        data["sectionCode"] = this.sectionCode;
+        data["variant"] = this.variant;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom019ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    departmentCode: string | undefined;
+    divisionCode: string | undefined;
+    sectionCode: string | undefined;
+    variant: LateEarlyLogCustom019Variant;
+}
+
+export class GetLateEarlyLogCustom023ReportInput implements IGetLateEarlyLogCustom023ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom023ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom023ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom023ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom023ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogCustom033ReportInput implements IGetLateEarlyLogCustom033ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom033ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom033ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom033ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom033ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogCustom036ReportInput implements IGetLateEarlyLogCustom036ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom036ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom036ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom036ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom036ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogCustom040ReportInput implements IGetLateEarlyLogCustom040ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom040ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom040ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom040ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom040ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogCustom045ReportInput implements IGetLateEarlyLogCustom045ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom045ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom045ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom045ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom045ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogCustom053ReportInput implements IGetLateEarlyLogCustom053ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogCustom053ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogCustom053ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogCustom053ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogCustom053ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogReportInput implements IGetLateEarlyLogReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
+export class GetLateEarlyLogWithPhotoReportInput implements IGetLateEarlyLogWithPhotoReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetLateEarlyLogWithPhotoReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetLateEarlyLogWithPhotoReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLateEarlyLogWithPhotoReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetLateEarlyLogWithPhotoReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
 export class GetLatestWebLogsOutput implements IGetLatestWebLogsOutput {
     latestWebLogLines!: string[] | undefined;
 
@@ -209961,6 +215581,218 @@ export class GetMemberActivityOutput implements IGetMemberActivityOutput {
 
 export interface IGetMemberActivityOutput {
     memberActivities: MemberActivity[] | undefined;
+}
+
+export class GetMonthlyAttWithToleranceCustom019ReportInput implements IGetMonthlyAttWithToleranceCustom019ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    departmentCode!: string | undefined;
+    divisionCode!: string | undefined;
+    sectionCode!: string | undefined;
+    variant!: MonthlyAttWithToleranceCustom019Variant;
+
+    constructor(data?: IGetMonthlyAttWithToleranceCustom019ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.departmentCode = _data["departmentCode"];
+            this.divisionCode = _data["divisionCode"];
+            this.sectionCode = _data["sectionCode"];
+            this.variant = _data["variant"];
+        }
+    }
+
+    static fromJS(data: any): GetMonthlyAttWithToleranceCustom019ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMonthlyAttWithToleranceCustom019ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["departmentCode"] = this.departmentCode;
+        data["divisionCode"] = this.divisionCode;
+        data["sectionCode"] = this.sectionCode;
+        data["variant"] = this.variant;
+        return data;
+    }
+}
+
+export interface IGetMonthlyAttWithToleranceCustom019ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    departmentCode: string | undefined;
+    divisionCode: string | undefined;
+    sectionCode: string | undefined;
+    variant: MonthlyAttWithToleranceCustom019Variant;
+}
+
+export class GetMonthlyAttWithToleranceReportInput implements IGetMonthlyAttWithToleranceReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+
+    constructor(data?: IGetMonthlyAttWithToleranceReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+        }
+    }
+
+    static fromJS(data: any): GetMonthlyAttWithToleranceReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMonthlyAttWithToleranceReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        return data;
+    }
+}
+
+export interface IGetMonthlyAttWithToleranceReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+}
+
+export class GetMonthlyTimeAttendanceReportInput implements IGetMonthlyTimeAttendanceReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetMonthlyTimeAttendanceReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetMonthlyTimeAttendanceReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMonthlyTimeAttendanceReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetMonthlyTimeAttendanceReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
 }
 
 export class GetMonthlyTimeRegisterDetailForEditOutput implements IGetMonthlyTimeRegisterDetailForEditOutput {
@@ -212001,6 +217833,634 @@ export interface IGetPayrollDriversInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+}
+
+export class GetPayrollJVCustom017ReportInput implements IGetPayrollJVCustom017ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    payrollAreaId!: number | undefined;
+    format!: PayrollJVCustom017Format;
+
+    constructor(data?: IGetPayrollJVCustom017ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.format = _data["format"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom017ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom017ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["format"] = this.format;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom017ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollRunType: PayrollRunType;
+    payrollAreaId: number | undefined;
+    format: PayrollJVCustom017Format;
+}
+
+export class GetPayrollJVCustom018ReportInput implements IGetPayrollJVCustom018ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    payrollAreaId!: number | undefined;
+
+    constructor(data?: IGetPayrollJVCustom018ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.payrollAreaId = _data["payrollAreaId"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom018ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom018ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        data["payrollAreaId"] = this.payrollAreaId;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom018ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollRunType: PayrollRunType;
+    payrollAreaId: number | undefined;
+}
+
+export class GetPayrollJVCustom019ReportInput implements IGetPayrollJVCustom019ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    payrollAreaScope!: PayrollJVCustom019PayrollAreaScope;
+    format!: PayrollJVCustom019Format;
+
+    constructor(data?: IGetPayrollJVCustom019ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.payrollAreaScope = _data["payrollAreaScope"];
+            this.format = _data["format"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom019ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom019ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        data["payrollAreaScope"] = this.payrollAreaScope;
+        data["format"] = this.format;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom019ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollRunType: PayrollRunType;
+    payrollAreaScope: PayrollJVCustom019PayrollAreaScope;
+    format: PayrollJVCustom019Format;
+}
+
+export class GetPayrollJVCustom023ReportInput implements IGetPayrollJVCustom023ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    payrollAreaId!: number | undefined;
+    format!: PayrollJVCustom023Format;
+
+    constructor(data?: IGetPayrollJVCustom023ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.format = _data["format"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom023ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom023ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollRunType"] = this.payrollRunType;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["format"] = this.format;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom023ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollRunType: PayrollRunType;
+    payrollAreaId: number | undefined;
+    format: PayrollJVCustom023Format;
+}
+
+export class GetPayrollJVCustom030ReportInput implements IGetPayrollJVCustom030ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollAreaId!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    reportType!: PayrollJVCustom030ReportType;
+
+    constructor(data?: IGetPayrollJVCustom030ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.reportType = _data["reportType"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom030ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom030ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["payrollRunType"] = this.payrollRunType;
+        data["reportType"] = this.reportType;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom030ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollAreaId: number | undefined;
+    payrollRunType: PayrollRunType;
+    reportType: PayrollJVCustom030ReportType;
+}
+
+export class GetPayrollJVCustom035ReportInput implements IGetPayrollJVCustom035ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollAreaId!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    reportType!: PayrollJVCustom035ReportType;
+
+    constructor(data?: IGetPayrollJVCustom035ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.reportType = _data["reportType"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom035ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom035ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["payrollRunType"] = this.payrollRunType;
+        data["reportType"] = this.reportType;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom035ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollAreaId: number | undefined;
+    payrollRunType: PayrollRunType;
+    reportType: PayrollJVCustom035ReportType;
+}
+
+export class GetPayrollJVCustom045ReportInput implements IGetPayrollJVCustom045ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollAreaId!: number | undefined;
+    payrollRunType!: PayrollRunType;
+    reportType!: PayrollJVCustom045ReportType;
+
+    constructor(data?: IGetPayrollJVCustom045ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollAreaId = _data["payrollAreaId"];
+            this.payrollRunType = _data["payrollRunType"];
+            this.reportType = _data["reportType"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom045ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom045ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollAreaId"] = this.payrollAreaId;
+        data["payrollRunType"] = this.payrollRunType;
+        data["reportType"] = this.reportType;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom045ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollAreaId: number | undefined;
+    payrollRunType: PayrollRunType;
+    reportType: PayrollJVCustom045ReportType;
+}
+
+export class GetPayrollJVCustom051ReportInput implements IGetPayrollJVCustom051ReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    month!: number | undefined;
+    year!: number | undefined;
+    payrollAreaId!: number | undefined;
+
+    constructor(data?: IGetPayrollJVCustom051ReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.payrollAreaId = _data["payrollAreaId"];
+        }
+    }
+
+    static fromJS(data: any): GetPayrollJVCustom051ReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPayrollJVCustom051ReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["payrollAreaId"] = this.payrollAreaId;
+        return data;
+    }
+}
+
+export interface IGetPayrollJVCustom051ReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    month: number | undefined;
+    year: number | undefined;
+    payrollAreaId: number | undefined;
 }
 
 export class GetPayrollLogForEditOutput implements IGetPayrollLogForEditOutput {
@@ -215967,6 +222427,66 @@ export interface IGetTicketTypeForEditOutput {
     ticketType: CreateOrEditTicketTypeDto;
 }
 
+export class GetTimeAnalysisByDeptReportInput implements IGetTimeAnalysisByDeptReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetTimeAnalysisByDeptReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeAnalysisByDeptReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeAnalysisByDeptReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetTimeAnalysisByDeptReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+}
+
 export class GetTimeAttAPIForEditOutput implements IGetTimeAttAPIForEditOutput {
     timeAttAPI!: CreateOrEditTimeAttAPIDto;
 
@@ -216111,6 +222631,70 @@ export interface IGetTimePolicyForEditOutput {
     timePolicy: CreateOrEditTimePolicyDto;
 }
 
+export class GetTimeRegisterApprovalReportInput implements IGetTimeRegisterApprovalReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+    payrollAreaCode!: string | undefined;
+
+    constructor(data?: IGetTimeRegisterApprovalReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.payrollAreaCode = _data["payrollAreaCode"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeRegisterApprovalReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeRegisterApprovalReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        data["payrollAreaCode"] = this.payrollAreaCode;
+        return data;
+    }
+}
+
+export interface IGetTimeRegisterApprovalReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+    payrollAreaCode: string | undefined;
+}
+
 export class GetTimeRegisterForEditOutput implements IGetTimeRegisterForEditOutput {
     timeRegister!: CreateOrEditTimeRegisterDto;
 
@@ -216145,6 +222729,126 @@ export class GetTimeRegisterForEditOutput implements IGetTimeRegisterForEditOutp
 
 export interface IGetTimeRegisterForEditOutput {
     timeRegister: CreateOrEditTimeRegisterDto;
+}
+
+export class GetTimeRegisterReportInput implements IGetTimeRegisterReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetTimeRegisterReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeRegisterReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeRegisterReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetTimeRegisterReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
+}
+
+export class GetTimeScheduleReportInput implements IGetTimeScheduleReportInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+    employeeCode!: string | undefined;
+    employeeStatus!: EmployeeStatus;
+
+    constructor(data?: IGetTimeScheduleReportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+            this.employeeCode = _data["employeeCode"];
+            this.employeeStatus = _data["employeeStatus"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeScheduleReportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeScheduleReportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeStatus"] = this.employeeStatus;
+        return data;
+    }
+}
+
+export interface IGetTimeScheduleReportInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+    employeeCode: string | undefined;
+    employeeStatus: EmployeeStatus;
 }
 
 export class GetTimeTransferForEditOutput implements IGetTimeTransferForEditOutput {
@@ -220489,6 +227193,1432 @@ export interface ILanguageTextListDto {
     targetValue: string | undefined;
 }
 
+export class LateEarlyLogCustom019ReportRowDto implements ILateEarlyLogCustom019ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime | undefined;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: string | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom019ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom019ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom019ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom019ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime | undefined;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: string | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+}
+
+export enum LateEarlyLogCustom019Variant {
+    Detail = 0,
+    Summary = 1,
+    SummaryLateInOverThreeHours = 2,
+}
+
+export class LateEarlyLogCustom023ReportRowDto implements ILateEarlyLogCustom023ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: string | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom023ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom023ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom023ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom023ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: string | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+}
+
+export class LateEarlyLogCustom033ReportRowDto implements ILateEarlyLogCustom033ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    totalHours!: string;
+    status!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom033ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.totalHours = _data["totalHours"];
+            this.status = _data["status"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom033ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom033ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["totalHours"] = this.totalHours;
+        data["status"] = this.status;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom033ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    totalHours: string;
+    status: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+}
+
+export class LateEarlyLogCustom036ReportRowDto implements ILateEarlyLogCustom036ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    totalHours!: string;
+    status!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom036ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.totalHours = _data["totalHours"];
+            this.status = _data["status"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom036ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom036ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["totalHours"] = this.totalHours;
+        data["status"] = this.status;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom036ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    totalHours: string;
+    status: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+}
+
+export class LateEarlyLogCustom040ReportRowDto implements ILateEarlyLogCustom040ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: string | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom040ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom040ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom040ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom040ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: string | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+}
+
+export class LateEarlyLogCustom045ReportRowDto implements ILateEarlyLogCustom045ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    breakOut!: string | undefined;
+    breakIn!: string | undefined;
+    breakHours!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: string | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+    overtimeTypeName!: string | undefined;
+    overtimeTypeId!: number;
+
+    constructor(data?: ILateEarlyLogCustom045ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.breakOut = _data["breakOut"];
+            this.breakIn = _data["breakIn"];
+            this.breakHours = _data["breakHours"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+            this.overtimeTypeName = _data["overtimeTypeName"];
+            this.overtimeTypeId = _data["overtimeTypeId"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom045ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom045ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["breakOut"] = this.breakOut;
+        data["breakIn"] = this.breakIn;
+        data["breakHours"] = this.breakHours;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        data["overtimeTypeName"] = this.overtimeTypeName;
+        data["overtimeTypeId"] = this.overtimeTypeId;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom045ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    breakOut: string | undefined;
+    breakIn: string | undefined;
+    breakHours: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: string | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+    overtimeTypeName: string | undefined;
+    overtimeTypeId: number;
+}
+
+export class LateEarlyLogCustom053ReportRowDto implements ILateEarlyLogCustom053ReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: number | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+
+    constructor(data?: ILateEarlyLogCustom053ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogCustom053ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogCustom053ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogCustom053ReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: number | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+}
+
+export class LateEarlyLogReportRowDto implements ILateEarlyLogReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    accessId!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    weekDay!: string | undefined;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    breakOut!: string | undefined;
+    breakIn!: string | undefined;
+    breakHours!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    totalHours!: string | undefined;
+    plannedHours!: string | undefined;
+    overtimeHours!: string | undefined;
+    absenceHours!: string | undefined;
+    status!: string | undefined;
+    leaveType!: string | undefined;
+    partialLeaveHours!: string | undefined;
+    punchInAccessUnit!: string | undefined;
+    punchOutAccessUnit!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+
+    constructor(data?: ILateEarlyLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.accessId = _data["accessId"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.breakOut = _data["breakOut"];
+            this.breakIn = _data["breakIn"];
+            this.breakHours = _data["breakHours"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.totalHours = _data["totalHours"];
+            this.plannedHours = _data["plannedHours"];
+            this.overtimeHours = _data["overtimeHours"];
+            this.absenceHours = _data["absenceHours"];
+            this.status = _data["status"];
+            this.leaveType = _data["leaveType"];
+            this.partialLeaveHours = _data["partialLeaveHours"];
+            this.punchInAccessUnit = _data["punchInAccessUnit"];
+            this.punchOutAccessUnit = _data["punchOutAccessUnit"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["accessId"] = this.accessId;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["breakOut"] = this.breakOut;
+        data["breakIn"] = this.breakIn;
+        data["breakHours"] = this.breakHours;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["totalHours"] = this.totalHours;
+        data["plannedHours"] = this.plannedHours;
+        data["overtimeHours"] = this.overtimeHours;
+        data["absenceHours"] = this.absenceHours;
+        data["status"] = this.status;
+        data["leaveType"] = this.leaveType;
+        data["partialLeaveHours"] = this.partialLeaveHours;
+        data["punchInAccessUnit"] = this.punchInAccessUnit;
+        data["punchOutAccessUnit"] = this.punchOutAccessUnit;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    accessId: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    weekDay: string | undefined;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    breakOut: string | undefined;
+    breakIn: string | undefined;
+    breakHours: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    totalHours: string | undefined;
+    plannedHours: string | undefined;
+    overtimeHours: string | undefined;
+    absenceHours: string | undefined;
+    status: string | undefined;
+    leaveType: string | undefined;
+    partialLeaveHours: string | undefined;
+    punchInAccessUnit: string | undefined;
+    punchOutAccessUnit: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+}
+
+export class LateEarlyLogWithPhotoReportRowDto implements ILateEarlyLogWithPhotoReportRowDto {
+    id!: number;
+    geoSelfiePath!: string | undefined;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    date!: DateTime;
+    shiftStart!: string;
+    shiftEnd!: string;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    earlyIn!: string | undefined;
+    earlyOut!: string | undefined;
+    lateIn!: string | undefined;
+    lateOut!: string | undefined;
+    punchInLocation!: string | undefined;
+    punchOutLocation!: string | undefined;
+    status!: string | undefined;
+    weekDay!: string | undefined;
+    timePolicyName!: string | undefined;
+    workLocationName!: string | undefined;
+    countryName!: string | undefined;
+
+    constructor(data?: ILateEarlyLogWithPhotoReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.geoSelfiePath = _data["geoSelfiePath"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.earlyIn = _data["earlyIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateIn = _data["lateIn"];
+            this.lateOut = _data["lateOut"];
+            this.punchInLocation = _data["punchInLocation"];
+            this.punchOutLocation = _data["punchOutLocation"];
+            this.status = _data["status"];
+            this.weekDay = _data["weekDay"];
+            this.timePolicyName = _data["timePolicyName"];
+            this.workLocationName = _data["workLocationName"];
+            this.countryName = _data["countryName"];
+        }
+    }
+
+    static fromJS(data: any): LateEarlyLogWithPhotoReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LateEarlyLogWithPhotoReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["geoSelfiePath"] = this.geoSelfiePath;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["earlyIn"] = this.earlyIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateIn"] = this.lateIn;
+        data["lateOut"] = this.lateOut;
+        data["punchInLocation"] = this.punchInLocation;
+        data["punchOutLocation"] = this.punchOutLocation;
+        data["status"] = this.status;
+        data["weekDay"] = this.weekDay;
+        data["timePolicyName"] = this.timePolicyName;
+        data["workLocationName"] = this.workLocationName;
+        data["countryName"] = this.countryName;
+        return data;
+    }
+}
+
+export interface ILateEarlyLogWithPhotoReportRowDto {
+    id: number;
+    geoSelfiePath: string | undefined;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    date: DateTime;
+    shiftStart: string;
+    shiftEnd: string;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    earlyIn: string | undefined;
+    earlyOut: string | undefined;
+    lateIn: string | undefined;
+    lateOut: string | undefined;
+    punchInLocation: string | undefined;
+    punchOutLocation: string | undefined;
+    status: string | undefined;
+    weekDay: string | undefined;
+    timePolicyName: string | undefined;
+    workLocationName: string | undefined;
+    countryName: string | undefined;
+}
+
 export class LdapSettingsEditDto implements ILdapSettingsEditDto {
     isModuleEnabled!: boolean;
     isEnabled!: boolean;
@@ -222053,6 +230183,11 @@ export enum LoginType {
     External = 1,
 }
 
+export enum ManHourType {
+    Regular = 1,
+    Overtime = 2,
+}
+
 export class ManageGeneralSettingsEditDto implements IManageGeneralSettingsEditDto {
     id!: number;
     disableAutoEmpcode!: boolean;
@@ -222799,6 +230934,267 @@ export class MicrosoftExternalLoginProviderSettings implements IMicrosoftExterna
 export interface IMicrosoftExternalLoginProviderSettings {
     clientId: string | undefined;
     clientSecret: string | undefined;
+}
+
+export class MonthlyAttWithToleranceCustom019ReportRowDto implements IMonthlyAttWithToleranceCustom019ReportRowDto {
+    employeeId!: number | undefined;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    dayDate!: DateTime | undefined;
+    weekDay!: string | undefined;
+    shiftStart!: string | undefined;
+    shiftEnd!: string | undefined;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    leaveMins!: number | undefined;
+    earlyIn!: number | undefined;
+    lateIn!: number | undefined;
+    earlyOut!: number | undefined;
+    lateOut!: number | undefined;
+    workingMins!: number | undefined;
+    plannedMins!: number | undefined;
+    dailyDeduction!: number | undefined;
+    runningDeduction!: number | undefined;
+    systemRemarks!: string | undefined;
+
+    constructor(data?: IMonthlyAttWithToleranceCustom019ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.leaveMins = _data["leaveMins"];
+            this.earlyIn = _data["earlyIn"];
+            this.lateIn = _data["lateIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateOut = _data["lateOut"];
+            this.workingMins = _data["workingMins"];
+            this.plannedMins = _data["plannedMins"];
+            this.dailyDeduction = _data["dailyDeduction"];
+            this.runningDeduction = _data["runningDeduction"];
+            this.systemRemarks = _data["systemRemarks"];
+        }
+    }
+
+    static fromJS(data: any): MonthlyAttWithToleranceCustom019ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MonthlyAttWithToleranceCustom019ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["leaveMins"] = this.leaveMins;
+        data["earlyIn"] = this.earlyIn;
+        data["lateIn"] = this.lateIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateOut"] = this.lateOut;
+        data["workingMins"] = this.workingMins;
+        data["plannedMins"] = this.plannedMins;
+        data["dailyDeduction"] = this.dailyDeduction;
+        data["runningDeduction"] = this.runningDeduction;
+        data["systemRemarks"] = this.systemRemarks;
+        return data;
+    }
+}
+
+export interface IMonthlyAttWithToleranceCustom019ReportRowDto {
+    employeeId: number | undefined;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    dayDate: DateTime | undefined;
+    weekDay: string | undefined;
+    shiftStart: string | undefined;
+    shiftEnd: string | undefined;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    leaveMins: number | undefined;
+    earlyIn: number | undefined;
+    lateIn: number | undefined;
+    earlyOut: number | undefined;
+    lateOut: number | undefined;
+    workingMins: number | undefined;
+    plannedMins: number | undefined;
+    dailyDeduction: number | undefined;
+    runningDeduction: number | undefined;
+    systemRemarks: string | undefined;
+}
+
+export enum MonthlyAttWithToleranceCustom019Variant {
+    Detail = 0,
+    Summary = 1,
+}
+
+export class MonthlyAttWithToleranceReportRowDto implements IMonthlyAttWithToleranceReportRowDto {
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    dayDate!: DateTime | undefined;
+    weekDay!: string | undefined;
+    shiftStart!: string | undefined;
+    shiftEnd!: string | undefined;
+    signIn!: string | undefined;
+    signOut!: string | undefined;
+    leaveMins!: number | undefined;
+    earlyIn!: number | undefined;
+    lateIn!: number | undefined;
+    earlyOut!: number | undefined;
+    lateOut!: number | undefined;
+    workingMins!: number | undefined;
+    plannedMins!: number | undefined;
+    da!: number | undefined;
+    ma!: number | undefined;
+    deduction!: boolean | undefined;
+    systemRemarks!: string | undefined;
+
+    constructor(data?: IMonthlyAttWithToleranceReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.shiftStart = _data["shiftStart"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.signIn = _data["signIn"];
+            this.signOut = _data["signOut"];
+            this.leaveMins = _data["leaveMins"];
+            this.earlyIn = _data["earlyIn"];
+            this.lateIn = _data["lateIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.lateOut = _data["lateOut"];
+            this.workingMins = _data["workingMins"];
+            this.plannedMins = _data["plannedMins"];
+            this.da = _data["da"];
+            this.ma = _data["ma"];
+            this.deduction = _data["deduction"];
+            this.systemRemarks = _data["systemRemarks"];
+        }
+    }
+
+    static fromJS(data: any): MonthlyAttWithToleranceReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MonthlyAttWithToleranceReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["shiftStart"] = this.shiftStart;
+        data["shiftEnd"] = this.shiftEnd;
+        data["signIn"] = this.signIn;
+        data["signOut"] = this.signOut;
+        data["leaveMins"] = this.leaveMins;
+        data["earlyIn"] = this.earlyIn;
+        data["lateIn"] = this.lateIn;
+        data["earlyOut"] = this.earlyOut;
+        data["lateOut"] = this.lateOut;
+        data["workingMins"] = this.workingMins;
+        data["plannedMins"] = this.plannedMins;
+        data["da"] = this.da;
+        data["ma"] = this.ma;
+        data["deduction"] = this.deduction;
+        data["systemRemarks"] = this.systemRemarks;
+        return data;
+    }
+}
+
+export interface IMonthlyAttWithToleranceReportRowDto {
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    dayDate: DateTime | undefined;
+    weekDay: string | undefined;
+    shiftStart: string | undefined;
+    shiftEnd: string | undefined;
+    signIn: string | undefined;
+    signOut: string | undefined;
+    leaveMins: number | undefined;
+    earlyIn: number | undefined;
+    lateIn: number | undefined;
+    earlyOut: number | undefined;
+    lateOut: number | undefined;
+    workingMins: number | undefined;
+    plannedMins: number | undefined;
+    da: number | undefined;
+    ma: number | undefined;
+    deduction: boolean | undefined;
+    systemRemarks: string | undefined;
+}
+
+export class MonthlyTimeAttendanceReportRowDto implements IMonthlyTimeAttendanceReportRowDto {
+    departmentName!: string | undefined;
+    noOfEmployees!: number;
+
+    constructor(data?: IMonthlyTimeAttendanceReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.departmentName = _data["departmentName"];
+            this.noOfEmployees = _data["noOfEmployees"];
+        }
+    }
+
+    static fromJS(data: any): MonthlyTimeAttendanceReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MonthlyTimeAttendanceReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["departmentName"] = this.departmentName;
+        data["noOfEmployees"] = this.noOfEmployees;
+        return data;
+    }
+}
+
+export interface IMonthlyTimeAttendanceReportRowDto {
+    departmentName: string | undefined;
+    noOfEmployees: number;
 }
 
 export class MonthlyTimeRegisterDetailDto implements IMonthlyTimeRegisterDetailDto {
@@ -227591,6 +235987,54 @@ export interface IPagedResultDtoOfAssetDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfAttendanceLogReportRowDto implements IPagedResultDtoOfAttendanceLogReportRowDto {
+    items!: AttendanceLogReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfAttendanceLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AttendanceLogReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAttendanceLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAttendanceLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfAttendanceLogReportRowDto {
+    items: AttendanceLogReportRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfAttendanceTypeDto implements IPagedResultDtoOfAttendanceTypeDto {
     items!: AttendanceTypeDto[] | undefined;
     totalCount!: number;
@@ -229319,6 +237763,102 @@ export interface IPagedResultDtoOfCurrencyDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfDailyAttendanceSummaryDetailRowDto implements IPagedResultDtoOfDailyAttendanceSummaryDetailRowDto {
+    items!: DailyAttendanceSummaryDetailRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfDailyAttendanceSummaryDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(DailyAttendanceSummaryDetailRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDailyAttendanceSummaryDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfDailyAttendanceSummaryDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfDailyAttendanceSummaryDetailRowDto {
+    items: DailyAttendanceSummaryDetailRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfDailyAttendanceSummaryReportRowDto implements IPagedResultDtoOfDailyAttendanceSummaryReportRowDto {
+    items!: DailyAttendanceSummaryReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfDailyAttendanceSummaryReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(DailyAttendanceSummaryReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDailyAttendanceSummaryReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfDailyAttendanceSummaryReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfDailyAttendanceSummaryReportRowDto {
+    items: DailyAttendanceSummaryReportRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfDailyDutyDto implements IPagedResultDtoOfDailyDutyDto {
     items!: DailyDutyDto[] | undefined;
     totalCount!: number;
@@ -229364,6 +237904,150 @@ export class PagedResultDtoOfDailyDutyDto implements IPagedResultDtoOfDailyDutyD
 
 export interface IPagedResultDtoOfDailyDutyDto {
     items: DailyDutyDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfDailyManHoursOvertimeDetailRowDto implements IPagedResultDtoOfDailyManHoursOvertimeDetailRowDto {
+    items!: DailyManHoursOvertimeDetailRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfDailyManHoursOvertimeDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(DailyManHoursOvertimeDetailRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDailyManHoursOvertimeDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfDailyManHoursOvertimeDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfDailyManHoursOvertimeDetailRowDto {
+    items: DailyManHoursOvertimeDetailRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfDailyManHoursRegularDetailRowDto implements IPagedResultDtoOfDailyManHoursRegularDetailRowDto {
+    items!: DailyManHoursRegularDetailRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfDailyManHoursRegularDetailRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(DailyManHoursRegularDetailRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDailyManHoursRegularDetailRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfDailyManHoursRegularDetailRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfDailyManHoursRegularDetailRowDto {
+    items: DailyManHoursRegularDetailRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfDailyManHoursSummaryReportRowDto implements IPagedResultDtoOfDailyManHoursSummaryReportRowDto {
+    items!: DailyManHoursSummaryReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfDailyManHoursSummaryReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(DailyManHoursSummaryReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDailyManHoursSummaryReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfDailyManHoursSummaryReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfDailyManHoursSummaryReportRowDto {
+    items: DailyManHoursSummaryReportRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -230036,6 +238720,54 @@ export class PagedResultDtoOfEmailTokenDto implements IPagedResultDtoOfEmailToke
 
 export interface IPagedResultDtoOfEmailTokenDto {
     items: EmailTokenDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfEmpAttendanceLogReportRowDto implements IPagedResultDtoOfEmpAttendanceLogReportRowDto {
+    items!: EmpAttendanceLogReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfEmpAttendanceLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmpAttendanceLogReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfEmpAttendanceLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfEmpAttendanceLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfEmpAttendanceLogReportRowDto {
+    items: EmpAttendanceLogReportRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -231908,6 +240640,54 @@ export class PagedResultDtoOfEmployeeDutyPeriodDto implements IPagedResultDtoOfE
 
 export interface IPagedResultDtoOfEmployeeDutyPeriodDto {
     items: EmployeeDutyPeriodDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfEmployeeDutyPeriodReportRowDto implements IPagedResultDtoOfEmployeeDutyPeriodReportRowDto {
+    items!: EmployeeDutyPeriodReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfEmployeeDutyPeriodReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeeDutyPeriodReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfEmployeeDutyPeriodReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfEmployeeDutyPeriodReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfEmployeeDutyPeriodReportRowDto {
+    items: EmployeeDutyPeriodReportRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -237959,6 +246739,438 @@ export interface IPagedResultDtoOfLanguageTextListDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfLateEarlyLogCustom019ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom019ReportRowDto {
+    items!: LateEarlyLogCustom019ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom019ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom019ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom019ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom019ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom019ReportRowDto {
+    items: LateEarlyLogCustom019ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom023ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom023ReportRowDto {
+    items!: LateEarlyLogCustom023ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom023ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom023ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom023ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom023ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom023ReportRowDto {
+    items: LateEarlyLogCustom023ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom033ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom033ReportRowDto {
+    items!: LateEarlyLogCustom033ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom033ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom033ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom033ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom033ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom033ReportRowDto {
+    items: LateEarlyLogCustom033ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom036ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom036ReportRowDto {
+    items!: LateEarlyLogCustom036ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom036ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom036ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom036ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom036ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom036ReportRowDto {
+    items: LateEarlyLogCustom036ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom040ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom040ReportRowDto {
+    items!: LateEarlyLogCustom040ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom040ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom040ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom040ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom040ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom040ReportRowDto {
+    items: LateEarlyLogCustom040ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom045ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom045ReportRowDto {
+    items!: LateEarlyLogCustom045ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom045ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom045ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom045ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom045ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom045ReportRowDto {
+    items: LateEarlyLogCustom045ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogCustom053ReportRowDto implements IPagedResultDtoOfLateEarlyLogCustom053ReportRowDto {
+    items!: LateEarlyLogCustom053ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogCustom053ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogCustom053ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogCustom053ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogCustom053ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogCustom053ReportRowDto {
+    items: LateEarlyLogCustom053ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogReportRowDto implements IPagedResultDtoOfLateEarlyLogReportRowDto {
+    items!: LateEarlyLogReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogReportRowDto {
+    items: LateEarlyLogReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto implements IPagedResultDtoOfLateEarlyLogWithPhotoReportRowDto {
+    items!: LateEarlyLogWithPhotoReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLateEarlyLogWithPhotoReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LateEarlyLogWithPhotoReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLateEarlyLogWithPhotoReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLateEarlyLogWithPhotoReportRowDto {
+    items: LateEarlyLogWithPhotoReportRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfLeaveAccrualSummaryDto implements IPagedResultDtoOfLeaveAccrualSummaryDto {
     items!: LeaveAccrualSummaryDto[] | undefined;
     totalCount!: number;
@@ -238580,6 +247792,150 @@ export class PagedResultDtoOfMassNotificationUserLookupTableDto implements IPage
 
 export interface IPagedResultDtoOfMassNotificationUserLookupTableDto {
     items: MassNotificationUserLookupTableDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto implements IPagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto {
+    items!: MonthlyAttWithToleranceCustom019ReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MonthlyAttWithToleranceCustom019ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMonthlyAttWithToleranceCustom019ReportRowDto {
+    items: MonthlyAttWithToleranceCustom019ReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMonthlyAttWithToleranceReportRowDto implements IPagedResultDtoOfMonthlyAttWithToleranceReportRowDto {
+    items!: MonthlyAttWithToleranceReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMonthlyAttWithToleranceReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MonthlyAttWithToleranceReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMonthlyAttWithToleranceReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMonthlyAttWithToleranceReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMonthlyAttWithToleranceReportRowDto {
+    items: MonthlyAttWithToleranceReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMonthlyTimeAttendanceReportRowDto implements IPagedResultDtoOfMonthlyTimeAttendanceReportRowDto {
+    items!: MonthlyTimeAttendanceReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMonthlyTimeAttendanceReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MonthlyTimeAttendanceReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMonthlyTimeAttendanceReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMonthlyTimeAttendanceReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMonthlyTimeAttendanceReportRowDto {
+    items: MonthlyTimeAttendanceReportRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -245447,6 +254803,54 @@ export interface IPagedResultDtoOfTicketTypeDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfTimeAnalysisByDeptReportRowDto implements IPagedResultDtoOfTimeAnalysisByDeptReportRowDto {
+    items!: TimeAnalysisByDeptReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfTimeAnalysisByDeptReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TimeAnalysisByDeptReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfTimeAnalysisByDeptReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfTimeAnalysisByDeptReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfTimeAnalysisByDeptReportRowDto {
+    items: TimeAnalysisByDeptReportRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfTimeAttAPIDto implements IPagedResultDtoOfTimeAttAPIDto {
     items!: TimeAttAPIDto[] | undefined;
     totalCount!: number;
@@ -245639,6 +255043,54 @@ export interface IPagedResultDtoOfTimePolicyDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfTimeRegisterApprovalReportRowDto implements IPagedResultDtoOfTimeRegisterApprovalReportRowDto {
+    items!: TimeRegisterApprovalReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfTimeRegisterApprovalReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TimeRegisterApprovalReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfTimeRegisterApprovalReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfTimeRegisterApprovalReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfTimeRegisterApprovalReportRowDto {
+    items: TimeRegisterApprovalReportRowDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfTimeRegisterDto implements IPagedResultDtoOfTimeRegisterDto {
     items!: TimeRegisterDto[] | undefined;
     totalCount!: number;
@@ -245684,6 +255136,102 @@ export class PagedResultDtoOfTimeRegisterDto implements IPagedResultDtoOfTimeReg
 
 export interface IPagedResultDtoOfTimeRegisterDto {
     items: TimeRegisterDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfTimeRegisterReportRowDto implements IPagedResultDtoOfTimeRegisterReportRowDto {
+    items!: TimeRegisterReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfTimeRegisterReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TimeRegisterReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfTimeRegisterReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfTimeRegisterReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfTimeRegisterReportRowDto {
+    items: TimeRegisterReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfTimeScheduleReportRowDto implements IPagedResultDtoOfTimeScheduleReportRowDto {
+    items!: TimeScheduleReportRowDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfTimeScheduleReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(TimeScheduleReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfTimeScheduleReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfTimeScheduleReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfTimeScheduleReportRowDto {
+    items: TimeScheduleReportRowDto[] | undefined;
     totalCount: number;
 }
 
@@ -248347,6 +257895,1487 @@ export interface IPayrollDriverListDto {
     countryId: number;
     countryName: string | undefined;
     leaveDeductionStartMonth: boolean;
+}
+
+export enum PayrollJVCustom017Format {
+    MainFormat = 0,
+    ProvisionFormat = 1,
+    MissingAccounts = 2,
+    EmployeeWiseBreakDown = 3,
+}
+
+export class PayrollJVCustom017ReportOutput implements IPayrollJVCustom017ReportOutput {
+    items!: PayrollJVCustom017ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom017ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom017ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom017ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom017ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom017ReportOutput {
+    items: PayrollJVCustom017ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom017ReportRowDto implements IPayrollJVCustom017ReportRowDto {
+    id!: number;
+    lineNumber!: number;
+    valid!: string | undefined;
+    companyAccounts!: string | undefined;
+    journalBatchNumber!: string | undefined;
+    recId!: number;
+    axLineNumber!: number;
+    lineNumberDate!: string | undefined;
+    lineNumberAccountType!: string | undefined;
+    ledgerDimensionMainAccount!: string | undefined;
+    ledgerDimensionMainAccountName!: string | undefined;
+    defaultDimensionLocation!: string | undefined;
+    defaultDimensionEmployees!: string | undefined;
+    ledgerDimensionLocation!: string | undefined;
+    ledgerDimensionBrand!: string | undefined;
+    ledgerDimensionDepartment!: string | undefined;
+    ledgerDimensionEmployees!: string | undefined;
+    currency!: string | undefined;
+    exchangeRate!: string | undefined;
+    debit!: number;
+    credit!: number;
+    description!: string | undefined;
+    voucher!: string | undefined;
+    offsetAccountType!: string | undefined;
+    offsetLedgerDimensionMainAccount!: string | undefined;
+    offsetCompanyAccounts!: string | undefined;
+    billingType!: string | undefined;
+    isMerged!: boolean;
+
+    constructor(data?: IPayrollJVCustom017ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.lineNumber = _data["lineNumber"];
+            this.valid = _data["valid"];
+            this.companyAccounts = _data["companyAccounts"];
+            this.journalBatchNumber = _data["journalBatchNumber"];
+            this.recId = _data["recId"];
+            this.axLineNumber = _data["axLineNumber"];
+            this.lineNumberDate = _data["lineNumberDate"];
+            this.lineNumberAccountType = _data["lineNumberAccountType"];
+            this.ledgerDimensionMainAccount = _data["ledgerDimensionMainAccount"];
+            this.ledgerDimensionMainAccountName = _data["ledgerDimensionMainAccountName"];
+            this.defaultDimensionLocation = _data["defaultDimensionLocation"];
+            this.defaultDimensionEmployees = _data["defaultDimensionEmployees"];
+            this.ledgerDimensionLocation = _data["ledgerDimensionLocation"];
+            this.ledgerDimensionBrand = _data["ledgerDimensionBrand"];
+            this.ledgerDimensionDepartment = _data["ledgerDimensionDepartment"];
+            this.ledgerDimensionEmployees = _data["ledgerDimensionEmployees"];
+            this.currency = _data["currency"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.debit = _data["debit"];
+            this.credit = _data["credit"];
+            this.description = _data["description"];
+            this.voucher = _data["voucher"];
+            this.offsetAccountType = _data["offsetAccountType"];
+            this.offsetLedgerDimensionMainAccount = _data["offsetLedgerDimensionMainAccount"];
+            this.offsetCompanyAccounts = _data["offsetCompanyAccounts"];
+            this.billingType = _data["billingType"];
+            this.isMerged = _data["isMerged"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom017ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom017ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["lineNumber"] = this.lineNumber;
+        data["valid"] = this.valid;
+        data["companyAccounts"] = this.companyAccounts;
+        data["journalBatchNumber"] = this.journalBatchNumber;
+        data["recId"] = this.recId;
+        data["axLineNumber"] = this.axLineNumber;
+        data["lineNumberDate"] = this.lineNumberDate;
+        data["lineNumberAccountType"] = this.lineNumberAccountType;
+        data["ledgerDimensionMainAccount"] = this.ledgerDimensionMainAccount;
+        data["ledgerDimensionMainAccountName"] = this.ledgerDimensionMainAccountName;
+        data["defaultDimensionLocation"] = this.defaultDimensionLocation;
+        data["defaultDimensionEmployees"] = this.defaultDimensionEmployees;
+        data["ledgerDimensionLocation"] = this.ledgerDimensionLocation;
+        data["ledgerDimensionBrand"] = this.ledgerDimensionBrand;
+        data["ledgerDimensionDepartment"] = this.ledgerDimensionDepartment;
+        data["ledgerDimensionEmployees"] = this.ledgerDimensionEmployees;
+        data["currency"] = this.currency;
+        data["exchangeRate"] = this.exchangeRate;
+        data["debit"] = this.debit;
+        data["credit"] = this.credit;
+        data["description"] = this.description;
+        data["voucher"] = this.voucher;
+        data["offsetAccountType"] = this.offsetAccountType;
+        data["offsetLedgerDimensionMainAccount"] = this.offsetLedgerDimensionMainAccount;
+        data["offsetCompanyAccounts"] = this.offsetCompanyAccounts;
+        data["billingType"] = this.billingType;
+        data["isMerged"] = this.isMerged;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom017ReportRowDto {
+    id: number;
+    lineNumber: number;
+    valid: string | undefined;
+    companyAccounts: string | undefined;
+    journalBatchNumber: string | undefined;
+    recId: number;
+    axLineNumber: number;
+    lineNumberDate: string | undefined;
+    lineNumberAccountType: string | undefined;
+    ledgerDimensionMainAccount: string | undefined;
+    ledgerDimensionMainAccountName: string | undefined;
+    defaultDimensionLocation: string | undefined;
+    defaultDimensionEmployees: string | undefined;
+    ledgerDimensionLocation: string | undefined;
+    ledgerDimensionBrand: string | undefined;
+    ledgerDimensionDepartment: string | undefined;
+    ledgerDimensionEmployees: string | undefined;
+    currency: string | undefined;
+    exchangeRate: string | undefined;
+    debit: number;
+    credit: number;
+    description: string | undefined;
+    voucher: string | undefined;
+    offsetAccountType: string | undefined;
+    offsetLedgerDimensionMainAccount: string | undefined;
+    offsetCompanyAccounts: string | undefined;
+    billingType: string | undefined;
+    isMerged: boolean;
+}
+
+export class PayrollJVCustom018ReportOutput implements IPayrollJVCustom018ReportOutput {
+    items!: PayrollJVCustom018ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom018ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom018ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom018ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom018ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom018ReportOutput {
+    items: PayrollJVCustom018ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom018ReportRowDto implements IPayrollJVCustom018ReportRowDto {
+    id!: number;
+    lineNumber!: number;
+    date!: DateTime;
+    reference!: string | undefined;
+    glAccount!: string | undefined;
+    description!: string | undefined;
+    amount!: number;
+    jobId!: string | undefined;
+    usedForReimbursableExpenses!: string | undefined;
+    transactionPeriod!: string | undefined;
+    transactionNumber!: string | undefined;
+    consolidatedTransaction!: string | undefined;
+
+    constructor(data?: IPayrollJVCustom018ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.lineNumber = _data["lineNumber"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.reference = _data["reference"];
+            this.glAccount = _data["glAccount"];
+            this.description = _data["description"];
+            this.amount = _data["amount"];
+            this.jobId = _data["jobId"];
+            this.usedForReimbursableExpenses = _data["usedForReimbursableExpenses"];
+            this.transactionPeriod = _data["transactionPeriod"];
+            this.transactionNumber = _data["transactionNumber"];
+            this.consolidatedTransaction = _data["consolidatedTransaction"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom018ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom018ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["lineNumber"] = this.lineNumber;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["reference"] = this.reference;
+        data["glAccount"] = this.glAccount;
+        data["description"] = this.description;
+        data["amount"] = this.amount;
+        data["jobId"] = this.jobId;
+        data["usedForReimbursableExpenses"] = this.usedForReimbursableExpenses;
+        data["transactionPeriod"] = this.transactionPeriod;
+        data["transactionNumber"] = this.transactionNumber;
+        data["consolidatedTransaction"] = this.consolidatedTransaction;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom018ReportRowDto {
+    id: number;
+    lineNumber: number;
+    date: DateTime;
+    reference: string | undefined;
+    glAccount: string | undefined;
+    description: string | undefined;
+    amount: number;
+    jobId: string | undefined;
+    usedForReimbursableExpenses: string | undefined;
+    transactionPeriod: string | undefined;
+    transactionNumber: string | undefined;
+    consolidatedTransaction: string | undefined;
+}
+
+export enum PayrollJVCustom019Format {
+    MainFormat = 0,
+    ProvisionFormat = 1,
+    MissingAccounts = 2,
+    EmployeeWiseBreakDown = 3,
+}
+
+export enum PayrollJVCustom019PayrollAreaScope {
+    AllExceptSubContractors = 0,
+    SubContractorsOnly = 1,
+}
+
+export class PayrollJVCustom019ReportOutput implements IPayrollJVCustom019ReportOutput {
+    items!: PayrollJVCustom019ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom019ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom019ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom019ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom019ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom019ReportOutput {
+    items: PayrollJVCustom019ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom019ReportRowDto implements IPayrollJVCustom019ReportRowDto {
+    id!: number;
+    lineNumber!: number;
+    employeeCode!: string | undefined;
+    wageTypeName!: string | undefined;
+    glCode!: string | undefined;
+    glName!: string | undefined;
+    controlAcct!: string | undefined;
+    debit!: number;
+    credit!: number;
+    remarksTemplate!: string | undefined;
+    project!: string | undefined;
+    lineOfBusiness!: string | undefined;
+    vehicleMachinery!: string | undefined;
+    departments!: string | undefined;
+    forPeriod!: DateTime | undefined;
+    accountInfoCode!: string | undefined;
+    accountInfoName!: string | undefined;
+    offsetAccountInfoCode!: string | undefined;
+    offsetAccountInfoName!: string | undefined;
+    costPercentage!: number;
+    amount!: number;
+
+    constructor(data?: IPayrollJVCustom019ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.lineNumber = _data["lineNumber"];
+            this.employeeCode = _data["employeeCode"];
+            this.wageTypeName = _data["wageTypeName"];
+            this.glCode = _data["glCode"];
+            this.glName = _data["glName"];
+            this.controlAcct = _data["controlAcct"];
+            this.debit = _data["debit"];
+            this.credit = _data["credit"];
+            this.remarksTemplate = _data["remarksTemplate"];
+            this.project = _data["project"];
+            this.lineOfBusiness = _data["lineOfBusiness"];
+            this.vehicleMachinery = _data["vehicleMachinery"];
+            this.departments = _data["departments"];
+            this.forPeriod = _data["forPeriod"] ? DateTime.fromISO(_data["forPeriod"].toString()) : undefined as any;
+            this.accountInfoCode = _data["accountInfoCode"];
+            this.accountInfoName = _data["accountInfoName"];
+            this.offsetAccountInfoCode = _data["offsetAccountInfoCode"];
+            this.offsetAccountInfoName = _data["offsetAccountInfoName"];
+            this.costPercentage = _data["costPercentage"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom019ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom019ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["lineNumber"] = this.lineNumber;
+        data["employeeCode"] = this.employeeCode;
+        data["wageTypeName"] = this.wageTypeName;
+        data["glCode"] = this.glCode;
+        data["glName"] = this.glName;
+        data["controlAcct"] = this.controlAcct;
+        data["debit"] = this.debit;
+        data["credit"] = this.credit;
+        data["remarksTemplate"] = this.remarksTemplate;
+        data["project"] = this.project;
+        data["lineOfBusiness"] = this.lineOfBusiness;
+        data["vehicleMachinery"] = this.vehicleMachinery;
+        data["departments"] = this.departments;
+        data["forPeriod"] = this.forPeriod ? this.forPeriod.toString() : undefined as any;
+        data["accountInfoCode"] = this.accountInfoCode;
+        data["accountInfoName"] = this.accountInfoName;
+        data["offsetAccountInfoCode"] = this.offsetAccountInfoCode;
+        data["offsetAccountInfoName"] = this.offsetAccountInfoName;
+        data["costPercentage"] = this.costPercentage;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom019ReportRowDto {
+    id: number;
+    lineNumber: number;
+    employeeCode: string | undefined;
+    wageTypeName: string | undefined;
+    glCode: string | undefined;
+    glName: string | undefined;
+    controlAcct: string | undefined;
+    debit: number;
+    credit: number;
+    remarksTemplate: string | undefined;
+    project: string | undefined;
+    lineOfBusiness: string | undefined;
+    vehicleMachinery: string | undefined;
+    departments: string | undefined;
+    forPeriod: DateTime | undefined;
+    accountInfoCode: string | undefined;
+    accountInfoName: string | undefined;
+    offsetAccountInfoCode: string | undefined;
+    offsetAccountInfoName: string | undefined;
+    costPercentage: number;
+    amount: number;
+}
+
+export enum PayrollJVCustom023Format {
+    MainFormat = 0,
+    MissingAccounts = 1,
+    EmployeeWiseBreakDown = 2,
+}
+
+export class PayrollJVCustom023ReportOutput implements IPayrollJVCustom023ReportOutput {
+    items!: PayrollJVCustom023ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom023ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom023ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom023ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom023ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom023ReportOutput {
+    items: PayrollJVCustom023ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom023ReportRowDto implements IPayrollJVCustom023ReportRowDto {
+    id!: number;
+    lineNumber!: number;
+    remark!: string | undefined;
+    glCode!: string | undefined;
+    debit!: number;
+    credit!: number;
+    amount!: number;
+    glDesc!: string | undefined;
+    employeeCode!: string | undefined;
+    wageTypeName!: string | undefined;
+    glName!: string | undefined;
+    controlAcct!: string | undefined;
+    remarksTemplate!: string | undefined;
+    forPeriod!: DateTime | undefined;
+    accountInfoCode!: string | undefined;
+    accountInfoName!: string | undefined;
+    offsetAccountInfoCode!: string | undefined;
+    offsetAccountInfoName!: string | undefined;
+    lineOfBusiness!: string | undefined;
+    vehicleMachinery!: string | undefined;
+    departments!: string | undefined;
+    project!: string | undefined;
+    costPercentage!: number;
+
+    constructor(data?: IPayrollJVCustom023ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.lineNumber = _data["lineNumber"];
+            this.remark = _data["remark"];
+            this.glCode = _data["glCode"];
+            this.debit = _data["debit"];
+            this.credit = _data["credit"];
+            this.amount = _data["amount"];
+            this.glDesc = _data["glDesc"];
+            this.employeeCode = _data["employeeCode"];
+            this.wageTypeName = _data["wageTypeName"];
+            this.glName = _data["glName"];
+            this.controlAcct = _data["controlAcct"];
+            this.remarksTemplate = _data["remarksTemplate"];
+            this.forPeriod = _data["forPeriod"] ? DateTime.fromISO(_data["forPeriod"].toString()) : undefined as any;
+            this.accountInfoCode = _data["accountInfoCode"];
+            this.accountInfoName = _data["accountInfoName"];
+            this.offsetAccountInfoCode = _data["offsetAccountInfoCode"];
+            this.offsetAccountInfoName = _data["offsetAccountInfoName"];
+            this.lineOfBusiness = _data["lineOfBusiness"];
+            this.vehicleMachinery = _data["vehicleMachinery"];
+            this.departments = _data["departments"];
+            this.project = _data["project"];
+            this.costPercentage = _data["costPercentage"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom023ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom023ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["lineNumber"] = this.lineNumber;
+        data["remark"] = this.remark;
+        data["glCode"] = this.glCode;
+        data["debit"] = this.debit;
+        data["credit"] = this.credit;
+        data["amount"] = this.amount;
+        data["glDesc"] = this.glDesc;
+        data["employeeCode"] = this.employeeCode;
+        data["wageTypeName"] = this.wageTypeName;
+        data["glName"] = this.glName;
+        data["controlAcct"] = this.controlAcct;
+        data["remarksTemplate"] = this.remarksTemplate;
+        data["forPeriod"] = this.forPeriod ? this.forPeriod.toString() : undefined as any;
+        data["accountInfoCode"] = this.accountInfoCode;
+        data["accountInfoName"] = this.accountInfoName;
+        data["offsetAccountInfoCode"] = this.offsetAccountInfoCode;
+        data["offsetAccountInfoName"] = this.offsetAccountInfoName;
+        data["lineOfBusiness"] = this.lineOfBusiness;
+        data["vehicleMachinery"] = this.vehicleMachinery;
+        data["departments"] = this.departments;
+        data["project"] = this.project;
+        data["costPercentage"] = this.costPercentage;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom023ReportRowDto {
+    id: number;
+    lineNumber: number;
+    remark: string | undefined;
+    glCode: string | undefined;
+    debit: number;
+    credit: number;
+    amount: number;
+    glDesc: string | undefined;
+    employeeCode: string | undefined;
+    wageTypeName: string | undefined;
+    glName: string | undefined;
+    controlAcct: string | undefined;
+    remarksTemplate: string | undefined;
+    forPeriod: DateTime | undefined;
+    accountInfoCode: string | undefined;
+    accountInfoName: string | undefined;
+    offsetAccountInfoCode: string | undefined;
+    offsetAccountInfoName: string | undefined;
+    lineOfBusiness: string | undefined;
+    vehicleMachinery: string | undefined;
+    departments: string | undefined;
+    project: string | undefined;
+    costPercentage: number;
+}
+
+export class PayrollJVCustom030ReportColumnDto implements IPayrollJVCustom030ReportColumnDto {
+    name!: string | undefined;
+    isNumeric!: boolean;
+
+    constructor(data?: IPayrollJVCustom030ReportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isNumeric = _data["isNumeric"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom030ReportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom030ReportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isNumeric"] = this.isNumeric;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom030ReportColumnDto {
+    name: string | undefined;
+    isNumeric: boolean;
+}
+
+export class PayrollJVCustom030ReportOutput implements IPayrollJVCustom030ReportOutput {
+    items!: PayrollJVCustom030ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVCustom030ReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom030ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom030ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVCustom030ReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom030ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom030ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom030ReportOutput {
+    items: PayrollJVCustom030ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVCustom030ReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom030ReportRowDto implements IPayrollJVCustom030ReportRowDto {
+    id!: number;
+    serialNumber!: number;
+    values!: { [key: string]: string; } | undefined;
+    amounts!: { [key: string]: number; } | undefined;
+
+    constructor(data?: IPayrollJVCustom030ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.serialNumber = _data["serialNumber"];
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+            if (_data["amounts"]) {
+                this.amounts = {} as any;
+                for (let key in _data["amounts"]) {
+                    if (_data["amounts"].hasOwnProperty(key))
+                        (this.amounts as any)![key] = _data["amounts"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom030ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom030ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["serialNumber"] = this.serialNumber;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        if (this.amounts) {
+            data["amounts"] = {};
+            for (let key in this.amounts) {
+                if (this.amounts.hasOwnProperty(key))
+                    (data["amounts"] as any)[key] = (this.amounts as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom030ReportRowDto {
+    id: number;
+    serialNumber: number;
+    values: { [key: string]: string; } | undefined;
+    amounts: { [key: string]: number; } | undefined;
+}
+
+export enum PayrollJVCustom030ReportType {
+    SalaryJV = 0,
+    MissingAccounts = 1,
+    EmployeeWiseBreakDown = 2,
+    IndemnityJV = 3,
+    AnnualLeaveJV = 4,
+}
+
+export class PayrollJVCustom035ReportColumnDto implements IPayrollJVCustom035ReportColumnDto {
+    name!: string | undefined;
+    isNumeric!: boolean;
+
+    constructor(data?: IPayrollJVCustom035ReportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isNumeric = _data["isNumeric"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom035ReportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom035ReportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isNumeric"] = this.isNumeric;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom035ReportColumnDto {
+    name: string | undefined;
+    isNumeric: boolean;
+}
+
+export class PayrollJVCustom035ReportOutput implements IPayrollJVCustom035ReportOutput {
+    items!: PayrollJVCustom035ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVCustom035ReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom035ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom035ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVCustom035ReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom035ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom035ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom035ReportOutput {
+    items: PayrollJVCustom035ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVCustom035ReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom035ReportRowDto implements IPayrollJVCustom035ReportRowDto {
+    id!: number;
+    serialNumber!: number;
+    values!: { [key: string]: string; } | undefined;
+    amounts!: { [key: string]: number; } | undefined;
+
+    constructor(data?: IPayrollJVCustom035ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.serialNumber = _data["serialNumber"];
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+            if (_data["amounts"]) {
+                this.amounts = {} as any;
+                for (let key in _data["amounts"]) {
+                    if (_data["amounts"].hasOwnProperty(key))
+                        (this.amounts as any)![key] = _data["amounts"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom035ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom035ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["serialNumber"] = this.serialNumber;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        if (this.amounts) {
+            data["amounts"] = {};
+            for (let key in this.amounts) {
+                if (this.amounts.hasOwnProperty(key))
+                    (data["amounts"] as any)[key] = (this.amounts as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom035ReportRowDto {
+    id: number;
+    serialNumber: number;
+    values: { [key: string]: string; } | undefined;
+    amounts: { [key: string]: number; } | undefined;
+}
+
+export enum PayrollJVCustom035ReportType {
+    MainFormat = 0,
+    MissingAccounts = 1,
+    EmployeeWiseBreakDown = 2,
+}
+
+export class PayrollJVCustom045ReportColumnDto implements IPayrollJVCustom045ReportColumnDto {
+    name!: string | undefined;
+    isNumeric!: boolean;
+
+    constructor(data?: IPayrollJVCustom045ReportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isNumeric = _data["isNumeric"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom045ReportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom045ReportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isNumeric"] = this.isNumeric;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom045ReportColumnDto {
+    name: string | undefined;
+    isNumeric: boolean;
+}
+
+export class PayrollJVCustom045ReportOutput implements IPayrollJVCustom045ReportOutput {
+    items!: PayrollJVCustom045ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVCustom045ReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom045ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom045ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVCustom045ReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom045ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom045ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom045ReportOutput {
+    items: PayrollJVCustom045ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVCustom045ReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom045ReportRowDto implements IPayrollJVCustom045ReportRowDto {
+    id!: number;
+    serialNumber!: number;
+    values!: { [key: string]: string; } | undefined;
+    amounts!: { [key: string]: number; } | undefined;
+
+    constructor(data?: IPayrollJVCustom045ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.serialNumber = _data["serialNumber"];
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+            if (_data["amounts"]) {
+                this.amounts = {} as any;
+                for (let key in _data["amounts"]) {
+                    if (_data["amounts"].hasOwnProperty(key))
+                        (this.amounts as any)![key] = _data["amounts"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom045ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom045ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["serialNumber"] = this.serialNumber;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        if (this.amounts) {
+            data["amounts"] = {};
+            for (let key in this.amounts) {
+                if (this.amounts.hasOwnProperty(key))
+                    (data["amounts"] as any)[key] = (this.amounts as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom045ReportRowDto {
+    id: number;
+    serialNumber: number;
+    values: { [key: string]: string; } | undefined;
+    amounts: { [key: string]: number; } | undefined;
+}
+
+export enum PayrollJVCustom045ReportType {
+    SalaryJV = 0,
+    MissingAccounts = 1,
+    EmployeeWiseBreakDown = 2,
+}
+
+export class PayrollJVCustom051ReportColumnDto implements IPayrollJVCustom051ReportColumnDto {
+    name!: string | undefined;
+    isNumeric!: boolean;
+
+    constructor(data?: IPayrollJVCustom051ReportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isNumeric = _data["isNumeric"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom051ReportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom051ReportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isNumeric"] = this.isNumeric;
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom051ReportColumnDto {
+    name: string | undefined;
+    isNumeric: boolean;
+}
+
+export class PayrollJVCustom051ReportOutput implements IPayrollJVCustom051ReportOutput {
+    items!: PayrollJVCustom051ReportRowDto[] | undefined;
+    totalCount!: number;
+    columns!: PayrollJVCustom051ReportColumnDto[] | undefined;
+
+    constructor(data?: IPayrollJVCustom051ReportOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PayrollJVCustom051ReportRowDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(PayrollJVCustom051ReportColumnDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom051ReportOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom051ReportOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom051ReportOutput {
+    items: PayrollJVCustom051ReportRowDto[] | undefined;
+    totalCount: number;
+    columns: PayrollJVCustom051ReportColumnDto[] | undefined;
+}
+
+export class PayrollJVCustom051ReportRowDto implements IPayrollJVCustom051ReportRowDto {
+    id!: number;
+    sortOrder!: number;
+    values!: { [key: string]: string; } | undefined;
+    amounts!: { [key: string]: number; } | undefined;
+
+    constructor(data?: IPayrollJVCustom051ReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.sortOrder = _data["sortOrder"];
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+            if (_data["amounts"]) {
+                this.amounts = {} as any;
+                for (let key in _data["amounts"]) {
+                    if (_data["amounts"].hasOwnProperty(key))
+                        (this.amounts as any)![key] = _data["amounts"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): PayrollJVCustom051ReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVCustom051ReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["sortOrder"] = this.sortOrder;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        if (this.amounts) {
+            data["amounts"] = {};
+            for (let key in this.amounts) {
+                if (this.amounts.hasOwnProperty(key))
+                    (data["amounts"] as any)[key] = (this.amounts as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IPayrollJVCustom051ReportRowDto {
+    id: number;
+    sortOrder: number;
+    values: { [key: string]: string; } | undefined;
+    amounts: { [key: string]: number; } | undefined;
+}
+
+export class PayrollJVReportColumnDto implements IPayrollJVReportColumnDto {
+    field!: string | undefined;
+    header!: string | undefined;
+    localize!: boolean;
+
+    constructor(data?: IPayrollJVReportColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.field = _data["field"];
+            this.header = _data["header"];
+            this.localize = _data["localize"];
+        }
+    }
+
+    static fromJS(data: any): PayrollJVReportColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollJVReportColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["field"] = this.field;
+        data["header"] = this.header;
+        data["localize"] = this.localize;
+        return data;
+    }
+}
+
+export interface IPayrollJVReportColumnDto {
+    field: string | undefined;
+    header: string | undefined;
+    localize: boolean;
 }
 
 export class PayrollLogDto implements IPayrollLogDto {
@@ -261053,6 +272082,50 @@ export interface ITicketTypeDto {
     wageTypeName: string | undefined;
 }
 
+export class TimeAnalysisByDeptReportRowDto implements ITimeAnalysisByDeptReportRowDto {
+    departmentName!: string | undefined;
+    period!: DateTime;
+    totalValue!: number;
+
+    constructor(data?: ITimeAnalysisByDeptReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.departmentName = _data["departmentName"];
+            this.period = _data["period"] ? DateTime.fromISO(_data["period"].toString()) : undefined as any;
+            this.totalValue = _data["totalValue"];
+        }
+    }
+
+    static fromJS(data: any): TimeAnalysisByDeptReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeAnalysisByDeptReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["departmentName"] = this.departmentName;
+        data["period"] = this.period ? this.period.toString() : undefined as any;
+        data["totalValue"] = this.totalValue;
+        return data;
+    }
+}
+
+export interface ITimeAnalysisByDeptReportRowDto {
+    departmentName: string | undefined;
+    period: DateTime;
+    totalValue: number;
+}
+
 export class TimeAttAPIDto implements ITimeAttAPIDto {
     id!: number;
     tokenUrl!: string | undefined;
@@ -261550,6 +272623,86 @@ export interface ITimePolicyDto {
     monthlyEarlyOutTolerance: number;
 }
 
+export class TimeRegisterApprovalReportRowDto implements ITimeRegisterApprovalReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    dayDate!: DateTime;
+    weekDay!: string | undefined;
+    leaveDay!: number;
+    leaveType!: string | undefined;
+    dedLateInEarlyOutMinutes!: number;
+    absentDay!: number;
+    approvedDedLateInEarlyOutMinutes!: number;
+    approvedAbsentDay!: number;
+    status!: TimeRegisterStatus;
+    remarks!: string | undefined;
+
+    constructor(data?: ITimeRegisterApprovalReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.weekDay = _data["weekDay"];
+            this.leaveDay = _data["leaveDay"];
+            this.leaveType = _data["leaveType"];
+            this.dedLateInEarlyOutMinutes = _data["dedLateInEarlyOutMinutes"];
+            this.absentDay = _data["absentDay"];
+            this.approvedDedLateInEarlyOutMinutes = _data["approvedDedLateInEarlyOutMinutes"];
+            this.approvedAbsentDay = _data["approvedAbsentDay"];
+            this.status = _data["status"];
+            this.remarks = _data["remarks"];
+        }
+    }
+
+    static fromJS(data: any): TimeRegisterApprovalReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeRegisterApprovalReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["weekDay"] = this.weekDay;
+        data["leaveDay"] = this.leaveDay;
+        data["leaveType"] = this.leaveType;
+        data["dedLateInEarlyOutMinutes"] = this.dedLateInEarlyOutMinutes;
+        data["absentDay"] = this.absentDay;
+        data["approvedDedLateInEarlyOutMinutes"] = this.approvedDedLateInEarlyOutMinutes;
+        data["approvedAbsentDay"] = this.approvedAbsentDay;
+        data["status"] = this.status;
+        data["remarks"] = this.remarks;
+        return data;
+    }
+}
+
+export interface ITimeRegisterApprovalReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    dayDate: DateTime;
+    weekDay: string | undefined;
+    leaveDay: number;
+    leaveType: string | undefined;
+    dedLateInEarlyOutMinutes: number;
+    absentDay: number;
+    approvedDedLateInEarlyOutMinutes: number;
+    approvedAbsentDay: number;
+    status: TimeRegisterStatus;
+    remarks: string | undefined;
+}
+
 export class TimeRegisterDto implements ITimeRegisterDto {
     id!: number;
     employeeId!: number;
@@ -261858,10 +273011,302 @@ export interface ITimeRegisterDto {
     remarks: string | undefined;
 }
 
+export class TimeRegisterReportRowDto implements ITimeRegisterReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    jobTitleName!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    dayDate!: DateTime;
+    shiftStart!: string | undefined;
+    actualSignIn!: string | undefined;
+    shiftEnd!: string | undefined;
+    actualSignOut!: string | undefined;
+    totalWorkingHours!: number;
+    lateIn!: string | undefined;
+    deductionLateIn!: string | undefined;
+    earlyOut!: string | undefined;
+    deductionEarlyOut!: string | undefined;
+    deductionAfterMonthlyTolerance!: string | undefined;
+    totalLateMinutes!: number;
+    absentDay!: boolean;
+    countryName!: string | undefined;
+    workLocationName!: string | undefined;
+    lateInMinutes!: number;
+    deductionLateInMinutes!: number;
+    earlyOutMinutes!: number;
+    deductionEarlyOutMinutes!: number;
+    dedAfterMonthlyTolMinutes!: number;
+    shiftStartTime!: DateTime;
+    actualStartTime!: DateTime;
+    shiftEndTime!: DateTime;
+    actualEndTime!: DateTime;
+    weekendDutyName!: string | undefined;
+
+    constructor(data?: ITimeRegisterReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.jobTitleName = _data["jobTitleName"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.dayDate = _data["dayDate"] ? DateTime.fromISO(_data["dayDate"].toString()) : undefined as any;
+            this.shiftStart = _data["shiftStart"];
+            this.actualSignIn = _data["actualSignIn"];
+            this.shiftEnd = _data["shiftEnd"];
+            this.actualSignOut = _data["actualSignOut"];
+            this.totalWorkingHours = _data["totalWorkingHours"];
+            this.lateIn = _data["lateIn"];
+            this.deductionLateIn = _data["deductionLateIn"];
+            this.earlyOut = _data["earlyOut"];
+            this.deductionEarlyOut = _data["deductionEarlyOut"];
+            this.deductionAfterMonthlyTolerance = _data["deductionAfterMonthlyTolerance"];
+            this.totalLateMinutes = _data["totalLateMinutes"];
+            this.absentDay = _data["absentDay"];
+            this.countryName = _data["countryName"];
+            this.workLocationName = _data["workLocationName"];
+            this.lateInMinutes = _data["lateInMinutes"];
+            this.deductionLateInMinutes = _data["deductionLateInMinutes"];
+            this.earlyOutMinutes = _data["earlyOutMinutes"];
+            this.deductionEarlyOutMinutes = _data["deductionEarlyOutMinutes"];
+            this.dedAfterMonthlyTolMinutes = _data["dedAfterMonthlyTolMinutes"];
+            this.shiftStartTime = _data["shiftStartTime"] ? DateTime.fromISO(_data["shiftStartTime"].toString()) : undefined as any;
+            this.actualStartTime = _data["actualStartTime"] ? DateTime.fromISO(_data["actualStartTime"].toString()) : undefined as any;
+            this.shiftEndTime = _data["shiftEndTime"] ? DateTime.fromISO(_data["shiftEndTime"].toString()) : undefined as any;
+            this.actualEndTime = _data["actualEndTime"] ? DateTime.fromISO(_data["actualEndTime"].toString()) : undefined as any;
+            this.weekendDutyName = _data["weekendDutyName"];
+        }
+    }
+
+    static fromJS(data: any): TimeRegisterReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeRegisterReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["jobTitleName"] = this.jobTitleName;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["dayDate"] = this.dayDate ? this.dayDate.toString() : undefined as any;
+        data["shiftStart"] = this.shiftStart;
+        data["actualSignIn"] = this.actualSignIn;
+        data["shiftEnd"] = this.shiftEnd;
+        data["actualSignOut"] = this.actualSignOut;
+        data["totalWorkingHours"] = this.totalWorkingHours;
+        data["lateIn"] = this.lateIn;
+        data["deductionLateIn"] = this.deductionLateIn;
+        data["earlyOut"] = this.earlyOut;
+        data["deductionEarlyOut"] = this.deductionEarlyOut;
+        data["deductionAfterMonthlyTolerance"] = this.deductionAfterMonthlyTolerance;
+        data["totalLateMinutes"] = this.totalLateMinutes;
+        data["absentDay"] = this.absentDay;
+        data["countryName"] = this.countryName;
+        data["workLocationName"] = this.workLocationName;
+        data["lateInMinutes"] = this.lateInMinutes;
+        data["deductionLateInMinutes"] = this.deductionLateInMinutes;
+        data["earlyOutMinutes"] = this.earlyOutMinutes;
+        data["deductionEarlyOutMinutes"] = this.deductionEarlyOutMinutes;
+        data["dedAfterMonthlyTolMinutes"] = this.dedAfterMonthlyTolMinutes;
+        data["shiftStartTime"] = this.shiftStartTime ? this.shiftStartTime.toString() : undefined as any;
+        data["actualStartTime"] = this.actualStartTime ? this.actualStartTime.toString() : undefined as any;
+        data["shiftEndTime"] = this.shiftEndTime ? this.shiftEndTime.toString() : undefined as any;
+        data["actualEndTime"] = this.actualEndTime ? this.actualEndTime.toString() : undefined as any;
+        data["weekendDutyName"] = this.weekendDutyName;
+        return data;
+    }
+}
+
+export interface ITimeRegisterReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    jobTitleName: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    dayDate: DateTime;
+    shiftStart: string | undefined;
+    actualSignIn: string | undefined;
+    shiftEnd: string | undefined;
+    actualSignOut: string | undefined;
+    totalWorkingHours: number;
+    lateIn: string | undefined;
+    deductionLateIn: string | undefined;
+    earlyOut: string | undefined;
+    deductionEarlyOut: string | undefined;
+    deductionAfterMonthlyTolerance: string | undefined;
+    totalLateMinutes: number;
+    absentDay: boolean;
+    countryName: string | undefined;
+    workLocationName: string | undefined;
+    lateInMinutes: number;
+    deductionLateInMinutes: number;
+    earlyOutMinutes: number;
+    deductionEarlyOutMinutes: number;
+    dedAfterMonthlyTolMinutes: number;
+    shiftStartTime: DateTime;
+    actualStartTime: DateTime;
+    shiftEndTime: DateTime;
+    actualEndTime: DateTime;
+    weekendDutyName: string | undefined;
+}
+
 export enum TimeRegisterStatus {
     Opened = 0,
     Approved = 1,
     Reopened = 2,
+}
+
+export class TimeScheduleReportRowDto implements ITimeScheduleReportRowDto {
+    id!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    jobTitleName!: string | undefined;
+    orgLevel1!: string | undefined;
+    orgLevel2!: string | undefined;
+    orgLevel3!: string | undefined;
+    orgLevel4!: string | undefined;
+    orgLevel5!: string | undefined;
+    orgLevel6!: string | undefined;
+    orgLevel7!: string | undefined;
+    organizationUnitId!: number | undefined;
+    date!: DateTime;
+    day!: string | undefined;
+    dutyPeriodName!: string | undefined;
+    dutyName!: string | undefined;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    countryName!: string | undefined;
+    workLocationName!: string | undefined;
+
+    constructor(data?: ITimeScheduleReportRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.jobTitleName = _data["jobTitleName"];
+            this.orgLevel1 = _data["orgLevel1"];
+            this.orgLevel2 = _data["orgLevel2"];
+            this.orgLevel3 = _data["orgLevel3"];
+            this.orgLevel4 = _data["orgLevel4"];
+            this.orgLevel5 = _data["orgLevel5"];
+            this.orgLevel6 = _data["orgLevel6"];
+            this.orgLevel7 = _data["orgLevel7"];
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.day = _data["day"];
+            this.dutyPeriodName = _data["dutyPeriodName"];
+            this.dutyName = _data["dutyName"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.countryName = _data["countryName"];
+            this.workLocationName = _data["workLocationName"];
+        }
+    }
+
+    static fromJS(data: any): TimeScheduleReportRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeScheduleReportRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["jobTitleName"] = this.jobTitleName;
+        data["orgLevel1"] = this.orgLevel1;
+        data["orgLevel2"] = this.orgLevel2;
+        data["orgLevel3"] = this.orgLevel3;
+        data["orgLevel4"] = this.orgLevel4;
+        data["orgLevel5"] = this.orgLevel5;
+        data["orgLevel6"] = this.orgLevel6;
+        data["orgLevel7"] = this.orgLevel7;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["day"] = this.day;
+        data["dutyPeriodName"] = this.dutyPeriodName;
+        data["dutyName"] = this.dutyName;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["countryName"] = this.countryName;
+        data["workLocationName"] = this.workLocationName;
+        return data;
+    }
+}
+
+export interface ITimeScheduleReportRowDto {
+    id: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    jobTitleName: string | undefined;
+    orgLevel1: string | undefined;
+    orgLevel2: string | undefined;
+    orgLevel3: string | undefined;
+    orgLevel4: string | undefined;
+    orgLevel5: string | undefined;
+    orgLevel6: string | undefined;
+    orgLevel7: string | undefined;
+    organizationUnitId: number | undefined;
+    date: DateTime;
+    day: string | undefined;
+    dutyPeriodName: string | undefined;
+    dutyName: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    countryName: string | undefined;
+    workLocationName: string | undefined;
 }
 
 export class TimeSettingsEditDto implements ITimeSettingsEditDto {
