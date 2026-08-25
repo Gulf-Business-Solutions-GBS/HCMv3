@@ -1,0 +1,117 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'ApplicantSearchReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="form-group mr-2">
+                        <label>{{ 'FirstName' | localize }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="firstName" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'LastName' | localize }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="lastName" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'Gender' | localize }}</label>
+                        <p-select [options]="genderOptions" [(ngModel)]="gender" [showClear]="true" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'Nationality' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="nationalityId" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'MaritalStatus' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="maritalStatusId" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'AgeFrom' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="ageFrom" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'AgeTo' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="ageTo" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '80rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="code">
+                                        {{ 'Code' | localize }}
+                                        <p-sortIcon field="code" />
+                                    </th>
+                                    <th style="min-width: 160px">{{ 'FirstName' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'LastName' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'Email' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Nationality' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'MaritalStatus' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Gender' | localize }}</th>
+                                    <th style="min-width: 90px">{{ 'Age' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'Phone' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.code }}" class="hide-overflown">
+                                            {{ record.code }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 160px">{{ record.firstName }}</td>
+                                    <td style="min-width: 160px">{{ record.lastName }}</td>
+                                    <td style="min-width: 200px">{{ record.email }}</td>
+                                    <td style="min-width: 140px">{{ record.nationalityName }}</td>
+                                    <td style="min-width: 140px">{{ record.maritalStatusName }}</td>
+                                    <td style="min-width: 100px">{{ record.gender }}</td>
+                                    <td style="min-width: 90px">{{ record.age }}</td>
+                                    <td style="min-width: 140px">{{ record.mobile }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

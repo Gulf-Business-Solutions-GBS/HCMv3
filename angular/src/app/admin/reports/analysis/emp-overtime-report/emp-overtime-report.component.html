@@ -1,0 +1,109 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmpOvertimeReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [(employeeCode)]="employeeCode"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'OvertimeType' | localize }}</label>
+                        <p-select
+                            [options]="overtimeTypeOptions()"
+                            [ngModel]="overtimeTypeCode()"
+                            (ngModelChange)="overtimeTypeCode.set($event)"
+                            [showClear]="true"
+                            optionLabel="label"
+                            optionValue="value"
+                            styleClass="w-100"
+                            [placeholder]="'OvertimeType' | localize" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '190rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px" pSortableColumn="employeeCode">{{ 'Code' | localize }}</th>
+                                    <th style="min-width: 180px" pSortableColumn="employeeName">{{ 'Employee' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'JobTitle' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'PayrollArea' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel1' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel2' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel3' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel4' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel5' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel6' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'OrgLevel7' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'NormalHours' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'WeekendHours' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'PublicHolidayHours' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'SpecialHours' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'TotalHours' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'ExpectedOvertimeAmount' | localize }}</th>
+                                    <th style="min-width: 130px">{{ 'Country' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">
+                                        <span pTooltip="{{ record.employeeCode }}" class="hide-overflown">{{ record.employeeCode }}</span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.employeeName }}</td>
+                                    <td style="min-width: 140px">{{ record.jobTitleName }}</td>
+                                    <td style="min-width: 140px">{{ record.payrollAreaName }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel1 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel2 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel3 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel4 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel5 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel6 }}</td>
+                                    <td style="min-width: 130px">{{ record.orgLevel7 }}</td>
+                                    <td style="min-width: 130px">{{ record.normalHours }}</td>
+                                    <td style="min-width: 140px">{{ record.weekendHours }}</td>
+                                    <td style="min-width: 160px">{{ record.publicHolidayHours }}</td>
+                                    <td style="min-width: 130px">{{ record.specialHours }}</td>
+                                    <td style="min-width: 130px">{{ record.totalHours }}</td>
+                                    <td style="min-width: 180px">{{ record.expectedOvertimeAmount }}</td>
+                                    <td style="min-width: 130px">{{ record.countryName }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

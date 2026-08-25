@@ -1383,6 +1383,119 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.EmployeeContract' },
                     },
                     {
+                        path: 'reports/analysis/project-costing',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/project-costing-report/project-costing-report.component').then(
+                                (m) => m.ProjectCostingReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ProjectCosting' },
+                    },
+                    {
+                        path: 'reports/analysis/project-costing-custom052',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/project-costing-custom052-report/project-costing-custom052-report.component').then(
+                                (m) => m.ProjectCostingCustom052ReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ProjectCostingCustom052' },
+                    },
+                    {
+                        path: 'reports/analysis/project-monthwise-summary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/project-monthwise-summary-report/project-monthwise-summary-report.component').then(
+                                (m) => m.ProjectMonthwiseSummaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ProjectMonthwiseSummary' },
+                    },
+                    {
+                        path: 'reports/analysis/project-wise-accrual',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/project-wise-accrual-report/project-wise-accrual-report.component').then(
+                                (m) => m.ProjectWiseAccrualReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ProjectWiseAccrual' },
+                    },
+                    {
+                        path: 'reports/analysis/applicant-search',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/applicant-search-report/applicant-search-report.component').then(
+                                (m) => m.ApplicantSearchReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ApplicantSearch' },
+                    },
+                    {
+                        path: 'reports/analysis/candidate-onb-init',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/candidate-onb-init-report/candidate-onb-init-report.component').then(
+                                (m) => m.CandidateOnbInitReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.CandidateOnbInit' },
+                    },
+                    {
+                        path: 'reports/analysis/vacancy-status',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/vacancy-status-report/vacancy-status-report.component').then(
+                                (m) => m.VacancyStatusReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.VacancyStatus' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-accommodation',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-accommodation-report/employee-accommodation-report.component').then(
+                                (m) => m.EmployeeAccommodationReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeAccommodation' },
+                    },
+                    {
+                        // TRANSACTION ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis/Transaction).
+                        path: 'reports/analysis/news',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/news-report/news-report.component').then(
+                                (m) => m.NewsReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.News' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-asset-invoice',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-asset-invoice-report/employee-asset-invoice-report.component').then(
+                                (m) => m.EmployeeAssetInvoiceReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeAssetInvoice' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-disciplinary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-disciplinary-report/employee-disciplinary-report.component').then(
+                                (m) => m.EmployeeDisciplinaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeDisciplinary' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-document',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-document-report/employee-document-report.component').then(
+                                (m) => m.EmployeeDocumentReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeDocument' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-document-custom033',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-document-custom033-report/employee-document-custom033-report.component').then(
+                                (m) => m.EmployeeDocumentCustom033ReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeDocumentCustom033' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-health-reimburse',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-health-reimburse-report/employee-health-reimburse-report.component').then(
+                                (m) => m.EmployeeHealthReimburseReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeHealthReimburse' },
+                    },
+                    {
                         path: 'reports/analysis/employee-action',
                         loadComponent: () =>
                             import('./admin/reports/analysis/employee-action-report/employee-action-report.component').then(
@@ -1858,6 +1971,390 @@ export const appRoutes: Routes = [
                                 (m) => m.TimeScheduleReportComponent
                             ),
                         data: { permission: 'Pages.Reports.Analysis.TimeSchedule' },
+                    },
+                    {
+                        path: 'reports/analysis/org-unit-tree',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/org-unit-tree-report/org-unit-tree-report.component').then(
+                                (m) => m.OrgUnitTreeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.OrgUnitTree' },
+                    },
+                    {
+                        path: 'reports/analysis/organization-document',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/organization-document-report/organization-document-report.component').then(
+                                (m) => m.OrganizationDocumentReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.OrganizationDocument' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-requests',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-requests-report/employee-requests-report.component').then(
+                                (m) => m.EmployeeRequestsReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeRequests' },
+                    },
+                    {
+                        path: 'reports/analysis/leave-request-analysis',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/leave-request-report/leave-request-report.component').then(
+                                (m) => m.LeaveRequestReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.LeaveRequestAnalysis' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-leave-salary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-leave-salary-report/employee-leave-salary-report.component').then(
+                                (m) => m.EmployeeLeaveSalaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeLeaveSalary' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-loan',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-loan-report/employee-loan-report.component').then(
+                                (m) => m.EmployeeLoanReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeLoan' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-non-payroll',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-non-payroll-report/employee-non-payroll-report.component').then(
+                                (m) => m.EmployeeNonPayrollReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeNonPayroll' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-payment',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-payment-report/employee-payment-report.component').then(
+                                (m) => m.EmployeePaymentReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeePayment' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-social-security',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/employee-social-security-report/employee-social-security-report.component'
+                            ).then((m) => m.EmployeeSocialSecurityReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeSocialSecurity' },
+                    },
+                    {
+                        path: 'reports/analysis/emp-overtime',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/emp-overtime-report/emp-overtime-report.component').then(
+                                (m) => m.EmpOvertimeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmpOvertime' },
+                    },
+                    {
+                        path: 'reports/analysis/emp-overtime-by-day',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/emp-overtime-by-day-report/emp-overtime-by-day-report.component').then(
+                                (m) => m.EmpOvertimeByDayReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmpOvertimeByDay' },
+                    },
+                    {
+                        path: 'reports/analysis/monthly-payroll-transaction',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/monthly-payroll-transaction-report/monthly-payroll-transaction-report.component'
+                            ).then((m) => m.MonthlyPayrollTransactionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.MonthlyPayrollTransaction' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-doc-movement',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-doc-movement-report/employee-doc-movement-report.component').then(
+                                (m) => m.EmployeeDocMovementReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeDocMovement' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-fnf-payment',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-fnf-payment-report/employee-fnf-payment-report.component').then(
+                                (m) => m.EmployeeFnFPaymentReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeFnFPayment' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-new-joiner',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-new-joiner-report/employee-new-joiner-report.component').then(
+                                (m) => m.EmployeeNewJoinerReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeNewJoiner' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-on-hold',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-on-hold-report/employee-on-hold-report.component').then(
+                                (m) => m.EmployeeOnHoldReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeOnHold' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-passport',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-passport-report/employee-passport-report.component').then(
+                                (m) => m.EmployeePassportReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeePassport' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-probation',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-probation-report/employee-probation-report.component').then(
+                                (m) => m.EmployeeProbationReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeProbation' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-residency',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-residency-report/employee-residency-report.component').then(
+                                (m) => m.EmployeeResidencyReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeResidency' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-separation',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-separation-report/employee-separation-report.component').then(
+                                (m) => m.EmployeeSeparationReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeSeparation' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-training',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-training-report/employee-training-report.component').then(
+                                (m) => m.EmployeeTrainingReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeTraining' },
+                    },
+                    {
+                        path: 'reports/analysis/training-course',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/training-course-report/training-course-report.component').then(
+                                (m) => m.TrainingCourseReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.TrainingCourse' },
+                    },
+                    {
+                        path: 'reports/analysis/training-schedule',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/training-schedule-report/training-schedule-report.component').then(
+                                (m) => m.TrainingScheduleReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.TrainingSchedule' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-survey',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-survey-report/employee-survey-report.component').then(
+                                (m) => m.EmployeeSurveyReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeSurvey' },
+                    },
+                    {
+                        path: 'reports/analysis/survey-status',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/survey-status-report/survey-status-report.component').then(
+                                (m) => m.SurveyStatusReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.SurveyStatus' },
+                    },
+                    {
+                        path: 'reports/analysis/audit-report',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/audit-report/audit-report.component').then(
+                                (m) => m.AuditReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.AuditReport' },
+                    },
+                    {
+                        path: 'reports/analysis/execution-log-report',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/execution-log-report/execution-log-report.component').then(
+                                (m) => m.ExecutionLogReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ExecutionLogReport' },
+                    },
+                    {
+                        path: 'reports/analysis/sponsor',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/sponsor-report/sponsor-report.component').then(
+                                (m) => m.SponsorReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.Sponsor' },
+                    },
+                    {
+                        path: 'reports/analysis/sponsor-job-title-quota',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/sponsor-job-title-quota-report/sponsor-job-title-quota-report.component').then(
+                                (m) => m.SponsorJobTitleQuotaReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.SponsorJobTitleQuota' },
+                    },
+                    {
+                        path: 'reports/analysis/pa-employee',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/pa-employee-report/pa-employee-report.component').then(
+                                (m) => m.PAEmployeeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PAEmployee' },
+                    },
+                    {
+                        path: 'reports/analysis/pa-employee-scorecard',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/pa-employee-scorecard-report/pa-employee-scorecard-report.component').then(
+                                (m) => m.PAEmployeeScorecardReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PAEmployeeScorecard' },
+                    },
+                    {
+                        path: 'reports/analysis/pa-summary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/pa-summary-report/pa-summary-report.component').then(
+                                (m) => m.PASummaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PASummary' },
+                    },
+                    {
+                        path: 'reports/analysis/performance-appraisal',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/performance-appraisal-report/performance-appraisal-report.component').then(
+                                (m) => m.PerformanceAppraisalReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PerformanceAppraisal' },
+                    },
+                    {
+                        path: 'reports/analysis/performance-appraisal-reviewer-summary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/performance-appraisal-reviewer-summary-report/performance-appraisal-reviewer-summary-report.component').then(
+                                (m) => m.PerformanceAppraisalReviewerSummaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PerformanceAppraisalReviewerSummary' },
+                    },
+                    {
+                        path: 'reports/analysis/performance-appraisal-manager-evaluation',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/performance-appraisal-manager-evaluation-report/performance-appraisal-manager-evaluation-report.component').then(
+                                (m) => m.PerformanceAppraisalManagerEvaluationReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PerformanceAppraisalManagerEvaluation' },
+                    },
+                    {
+                        path: 'reports/analysis/employee-travel',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/employee-travel-report/employee-travel-report.component').then(
+                                (m) => m.EmployeeTravelReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EmployeeTravel' },
+                    },
+                    {
+                        path: 'reports/analysis/asset',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/asset-report/asset-report.component').then(
+                                (m) => m.AssetReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.Asset' },
+                    },
+                    {
+                        path: 'reports/analysis/air-ticket-quota-balance',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/air-ticket-quota-balance-report/air-ticket-quota-balance-report.component'
+                            ).then((m) => m.AirTicketQuotaBalanceReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.AirTicketQuotaBalance' },
+                    },
+                    {
+                        path: 'reports/analysis/annual-leave-sheet',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/annual-leave-sheet-report/annual-leave-sheet-report.component').then(
+                                (m) => m.AnnualLeaveSheetReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.AnnualLeaveSheet' },
+                    },
+                    {
+                        path: 'reports/analysis/end-of-service',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/end-of-service-report/end-of-service-report.component').then(
+                                (m) => m.EndOfServiceReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.EndOfService' },
+                    },
+                    {
+                        path: 'reports/analysis/indemnity-provision',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/indemnity-provision-report/indemnity-provision-report.component'
+                            ).then((m) => m.IndemnityProvisionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.IndemnityProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/indemnity-provision-as-on-date',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/indemnity-provision-as-on-date-report/indemnity-provision-as-on-date-report.component'
+                            ).then((m) => m.IndemnityProvisionAsOnDateReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.IndemnityProvisionAsOnDate' },
+                    },
+                    {
+                        path: 'reports/analysis/leave-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/leave-provision-report/leave-provision-report.component').then(
+                                (m) => m.LeaveProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.LeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/leave-quota-balance',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/leave-quota-balance-report/leave-quota-balance-report.component'
+                            ).then((m) => m.LeaveQuotaBalanceReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.LeaveQuotaBalance' },
+                    },
+                    {
+                        path: 'reports/analysis/provision-change',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/provision-change-report/provision-change-report.component').then(
+                                (m) => m.ProvisionChangeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ProvisionChange' },
+                    },
+                    {
+                        path: 'reports/analysis/quota-provision-as-on-date',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/quota-provision-as-on-date-report/quota-provision-as-on-date-report.component'
+                            ).then((m) => m.QuotaProvisionAsOnDateReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.QuotaProvisionAsOnDate' },
+                    },
+                    {
+                        path: 'reports/analysis/yearly-leave-indemnity-detail-custom016',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/yearly-leave-indemnity-detail-custom016-report/yearly-leave-indemnity-detail-custom016-report.component'
+                            ).then((m) => m.YearlyLeaveIndemnityDetailCustom016ReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom016' },
+                    },
+                    {
+                        path: 'reports/analysis/yearly-leave-indemnity-detail-custom023',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/yearly-leave-indemnity-detail-custom023-report/yearly-leave-indemnity-detail-custom023-report.component'
+                            ).then((m) => m.YearlyLeaveIndemnityDetailCustom023ReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom023' },
                     },
                     {
                         path: 'employees/:id',

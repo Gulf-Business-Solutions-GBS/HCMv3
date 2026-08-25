@@ -1,0 +1,107 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'SponsorJobTitleQuotaReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ 'SponsorCode' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="sponsorCode"
+                            [ngModel]="sponsorCode()"
+                            (ngModelChange)="sponsorCode.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '100rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 200px" pSortableColumn="sponsorName">
+                                        {{ 'Sponsor' | localize }}
+                                        <p-sortIcon field="sponsorName" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="govtJobTitleName">
+                                        {{ 'GovtJobTitle' | localize }}
+                                        <p-sortIcon field="govtJobTitleName" />
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'GovtJobCategory' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="noofPosition">
+                                        {{ 'NoOfPosition' | localize }}
+                                        <p-sortIcon field="noofPosition" />
+                                    </th>
+                                    <th style="min-width: 130px">{{ 'CitizenPercent' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'CitizenQuotaAccrued' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'CitizenQuotaUsed' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'CitizenQuotaBalance' | localize }}</th>
+                                    <th style="min-width: 150px">{{ 'NonCitizenPercent' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'NonCitizenQuotaAccrued' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'NonCitizenQuotaUsed' | localize }}</th>
+                                    <th style="min-width: 170px">{{ 'NonCitizenQuotaBalance' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 200px">{{ record.sponsorName }}</td>
+                                    <td style="min-width: 180px">{{ record.govtJobTitleName }}</td>
+                                    <td style="min-width: 180px">{{ record.govtJobCategoryName }}</td>
+                                    <td style="min-width: 120px">{{ record.noofPosition }}</td>
+                                    <td style="min-width: 130px">{{ record.citizenPercent }}</td>
+                                    <td style="min-width: 150px">{{ record.citizenQuotaAccrued }}</td>
+                                    <td style="min-width: 150px">{{ record.citizenQuotaUsed }}</td>
+                                    <td style="min-width: 150px">{{ record.citizenQuotaBalance }}</td>
+                                    <td style="min-width: 150px">{{ record.nonCitizenPercent }}</td>
+                                    <td style="min-width: 170px">{{ record.nonCitizenQuotaAccrued }}</td>
+                                    <td style="min-width: 170px">{{ record.nonCitizenQuotaUsed }}</td>
+                                    <td style="min-width: 170px">{{ record.nonCitizenQuotaBalance }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2583,6 +2583,54 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom023, L("LateEarlyLogCustom023Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom033, L("LateEarlyLogCustom033Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LateEarlyLogCustom036, L("LateEarlyLogCustom036Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_Asset, L("AssetReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeTravel, L("EmployeeTravelReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDocMovement, L("EmployeeDocMovementReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeFnFPayment, L("EmployeeFnFPaymentReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeNewJoiner, L("EmployeeNewJoinerReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeOnHold, L("EmployeeOnHoldReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeePassport, L("EmployeePassportReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeProbation, L("EmployeeProbationReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeResidency, L("EmployeeResidencyReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeSeparation, L("EmployeeSeparationReport"));
+        //Transaction analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Transaction).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_News, L("NewsReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeAssetInvoice, L("EmployeeAssetInvoiceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDisciplinary, L("EmployeeDisciplinaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDocument, L("EmployeeDocumentReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeDocumentCustom033, L("EmployeeDocumentCustom033Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeHealthReimburse, L("EmployeeHealthReimburseReport"));
+        //Organization/Workflow analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Organization, /Workflow).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_OrgUnitTree, L("OrgUnitTreeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_OrganizationDocument, L("OrganizationDocumentReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeRequests, L("EmployeeRequestsReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LeaveRequestAnalysis, L("LeaveRequestAnalysisReport"));
+        //Transaction analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Transaction).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeLeaveSalary, L("EmployeeLeaveSalaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeLoan, L("EmployeeLoanReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeNonPayroll, L("EmployeeNonPayrollReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeePayment, L("EmployeePaymentReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeSocialSecurity, L("EmployeeSocialSecurityReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmpOvertime, L("EmpOvertimeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmpOvertimeByDay, L("EmpOvertimeByDayReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyPayrollTransaction, L("MonthlyPayrollTransactionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_AirTicketQuotaBalance, L("AirTicketQuotaBalanceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_AnnualLeaveSheet, L("AnnualLeaveSheetReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EndOfService, L("EndOfServiceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_IndemnityProvision, L("IndemnityProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_IndemnityProvisionAsOnDate, L("IndemnityProvisionAsOnDateReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LeaveProvision, L("LeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_LeaveQuotaBalance, L("LeaveQuotaBalanceReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ProvisionChange, L("ProvisionChangeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_QuotaProvisionAsOnDate, L("QuotaProvisionAsOnDateReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_YearlyLeaveIndemnityDetailCustom016, L("YearlyLeaveIndemnityDetailCustom016Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_YearlyLeaveIndemnityDetailCustom023, L("YearlyLeaveIndemnityDetailCustom023Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PAEmployee, L("PAEmployeeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PAEmployeeScorecard, L("PAEmployeeScorecardReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PASummary, L("PASummaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PerformanceAppraisal, L("PerformanceAppraisalReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PerformanceAppraisalReviewerSummary, L("PerformanceAppraisalReviewerSummaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PerformanceAppraisalManagerEvaluation, L("PerformanceAppraisalManagerEvaluationReport"));
 
         //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration)
         var administrationTools = pages.CreateChildPermission(AppPermissions.Pages_Administration_Tools, L("AdministrationTools"));
@@ -2607,6 +2655,28 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         importExport.CreateChildPermission(AppPermissions.Pages_ImportExport_ProfilePhotoImport, L("RunningProfilePhotoImport"));
         importExport.CreateChildPermission(AppPermissions.Pages_ImportExport_TimesheetImport, L("RunningTimesheetImport"));
+
+        // ProjectReport / Recruitment / AccommodationReport analysis grid reports (legacy
+        // HCM10.Web/UserControls/Reports/Analysis/ProjectReport, /Recruitment, /AccommodationReport).
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ProjectCosting, L("ProjectCostingReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ProjectCostingCustom052, L("ProjectCostingCustom052Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ProjectMonthwiseSummary, L("ProjectMonthwiseSummaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ProjectWiseAccrual, L("ProjectWiseAccrualReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ApplicantSearch, L("ApplicantSearchReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_CandidateOnbInit, L("CandidateOnbInitReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_VacancyStatus, L("VacancyStatusReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeAccommodation, L("EmployeeAccommodationReport"));
+
+        // TrainingReport / SurveyReport / Administration / GovtRelations analysis grid reports.
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeTraining, L("EmployeeTrainingReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TrainingCourse, L("TrainingCourseReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_TrainingSchedule, L("TrainingScheduleReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_EmployeeSurvey, L("EmployeeSurveyReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SurveyStatus, L("SurveyStatusReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_AuditReport, L("AuditReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ExecutionLogReport, L("ExecutionLogReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_Sponsor, L("SponsorReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SponsorJobTitleQuota, L("SponsorJobTitleQuotaReport"));
     }
 
     private static ILocalizableString L(string name)

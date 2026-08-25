@@ -1,0 +1,95 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'CandidateOnbInitReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="form-group mr-2">
+                        <label>{{ 'Vacancy' | localize }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="vacancyId" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>{{ 'VacancyStatus' | localize }}</label>
+                        <p-select [options]="statusOptions" [(ngModel)]="vacancyStatus" [showClear]="true" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '90rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 120px">{{ 'Code' | localize }}</th>
+                                    <th style="min-width: 100px" pSortableColumn="vacancyId">
+                                        {{ 'VacancyId' | localize }}
+                                        <p-sortIcon field="vacancyId" />
+                                    </th>
+                                    <th style="min-width: 180px">{{ 'VacancyName' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Company' | localize }}</th>
+                                    <th style="min-width: 160px">{{ 'Department' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'PublishOn' | localize }}</th>
+                                    <th style="min-width: 140px">{{ 'ClosedOn' | localize }}</th>
+                                    @for (col of statusColumns(); track col.status) {
+                                        <th style="min-width: 120px">{{ col.status }}</th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 120px">{{ record.code }}</td>
+                                    <td style="min-width: 100px">{{ record.vacancyId }}</td>
+                                    <td style="min-width: 180px">{{ record.vacancyName }}</td>
+                                    <td style="min-width: 160px">{{ record.company }}</td>
+                                    <td style="min-width: 160px">{{ record.department }}</td>
+                                    <td style="min-width: 140px">{{ record.publishOn | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 140px">{{ record.closedOn | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    @for (col of record.statusCounts; track col.status) {
+                                        <td style="min-width: 120px">{{ col.count }}</td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

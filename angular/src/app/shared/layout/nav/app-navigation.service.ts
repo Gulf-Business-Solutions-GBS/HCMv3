@@ -42,6 +42,144 @@ export class AppNavigationService {
                         '/app/admin/reports/analysis/employee-contract'
                     ),
                     new AppMenuItem(
+                        'ProjectCostingReport',
+                        'Pages.Reports.Analysis.ProjectCosting',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/project-costing'
+                    ),
+                    new AppMenuItem(
+                        'ProjectCostingCustom052Report',
+                        'Pages.Reports.Analysis.ProjectCostingCustom052',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/project-costing-custom052'
+                    ),
+                    new AppMenuItem(
+                        'ProjectMonthwiseSummaryReport',
+                        'Pages.Reports.Analysis.ProjectMonthwiseSummary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/project-monthwise-summary'
+                    ),
+                    new AppMenuItem(
+                        'ProjectWiseAccrualReport',
+                        'Pages.Reports.Analysis.ProjectWiseAccrual',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/project-wise-accrual'
+                    ),
+                    new AppMenuItem(
+                        'ApplicantSearchReport',
+                        'Pages.Reports.Analysis.ApplicantSearch',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/applicant-search'
+                    ),
+                    new AppMenuItem(
+                        'CandidateOnbInitReport',
+                        'Pages.Reports.Analysis.CandidateOnbInit',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/candidate-onb-init'
+                    ),
+                    new AppMenuItem(
+                        'VacancyStatusReport',
+                        'Pages.Reports.Analysis.VacancyStatus',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/vacancy-status'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeAccommodationReport',
+                        'Pages.Reports.Analysis.EmployeeAccommodation',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-accommodation'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeTrainingReport',
+                        'Pages.Reports.Analysis.EmployeeTraining',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-training'
+                    ),
+                    new AppMenuItem(
+                        'TrainingCourseReport',
+                        'Pages.Reports.Analysis.TrainingCourse',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/training-course'
+                    ),
+                    new AppMenuItem(
+                        'TrainingScheduleReport',
+                        'Pages.Reports.Analysis.TrainingSchedule',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/training-schedule'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeSurveyReport',
+                        'Pages.Reports.Analysis.EmployeeSurvey',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-survey'
+                    ),
+                    new AppMenuItem(
+                        'SurveyStatusReport',
+                        'Pages.Reports.Analysis.SurveyStatus',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/survey-status'
+                    ),
+                    new AppMenuItem(
+                        'AuditReport',
+                        'Pages.Reports.Analysis.AuditReport',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/audit-report'
+                    ),
+                    new AppMenuItem(
+                        'ExecutionLogReport',
+                        'Pages.Reports.Analysis.ExecutionLogReport',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/execution-log-report'
+                    ),
+                    new AppMenuItem(
+                        'SponsorReport',
+                        'Pages.Reports.Analysis.Sponsor',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/sponsor'
+                    ),
+                    new AppMenuItem(
+                        'SponsorJobTitleQuotaReport',
+                        'Pages.Reports.Analysis.SponsorJobTitleQuota',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/sponsor-job-title-quota'
+                    ),
+                    new AppMenuItem(
+                        'NewsReport',
+                        'Pages.Reports.Analysis.News',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/news'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeAssetInvoiceReport',
+                        'Pages.Reports.Analysis.EmployeeAssetInvoice',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-asset-invoice'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeDisciplinaryReport',
+                        'Pages.Reports.Analysis.EmployeeDisciplinary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-disciplinary'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeDocumentReport',
+                        'Pages.Reports.Analysis.EmployeeDocument',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-document'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeDocumentCustom033Report',
+                        'Pages.Reports.Analysis.EmployeeDocumentCustom033',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-document-custom033'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeHealthReimburseReport',
+                        'Pages.Reports.Analysis.EmployeeHealthReimburse',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-health-reimburse'
+                    ),
+                    new AppMenuItem(
                         'EmployeeActionReport',
                         'Pages.Reports.Analysis.EmployeeAction',
                         'flaticon-list-3',
@@ -378,6 +516,240 @@ export class AppNavigationService {
                         'Pages.Reports.Analysis.TimeSchedule',
                         'flaticon-list-3',
                         '/app/admin/reports/analysis/time-schedule'
+                    ),
+                    new AppMenuItem(
+                        'OrgUnitTreeReport',
+                        'Pages.Reports.Analysis.OrgUnitTree',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/org-unit-tree'
+                    ),
+                    new AppMenuItem(
+                        'OrganizationDocumentReport',
+                        'Pages.Reports.Analysis.OrganizationDocument',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/organization-document'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeRequestsReport',
+                        'Pages.Reports.Analysis.EmployeeRequests',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-requests'
+                    ),
+                    new AppMenuItem(
+                        'LeaveRequestAnalysisReport',
+                        'Pages.Reports.Analysis.LeaveRequestAnalysis',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/leave-request-analysis'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeLeaveSalaryReport',
+                        'Pages.Reports.Analysis.EmployeeLeaveSalary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-leave-salary'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeLoanReport',
+                        'Pages.Reports.Analysis.EmployeeLoan',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-loan'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeNonPayrollReport',
+                        'Pages.Reports.Analysis.EmployeeNonPayroll',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-non-payroll'
+                    ),
+                    new AppMenuItem(
+                        'EmployeePaymentReport',
+                        'Pages.Reports.Analysis.EmployeePayment',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-payment'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeSocialSecurityReport',
+                        'Pages.Reports.Analysis.EmployeeSocialSecurity',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-social-security'
+                    ),
+                    new AppMenuItem(
+                        'EmpOvertimeReport',
+                        'Pages.Reports.Analysis.EmpOvertime',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/emp-overtime'
+                    ),
+                    new AppMenuItem(
+                        'EmpOvertimeByDayReport',
+                        'Pages.Reports.Analysis.EmpOvertimeByDay',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/emp-overtime-by-day'
+                    ),
+                    new AppMenuItem(
+                        'MonthlyPayrollTransactionReport',
+                        'Pages.Reports.Analysis.MonthlyPayrollTransaction',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/monthly-payroll-transaction'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeDocMovementReport',
+                        'Pages.Reports.Analysis.EmployeeDocMovement',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-doc-movement'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeFnFPaymentReport',
+                        'Pages.Reports.Analysis.EmployeeFnFPayment',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-fnf-payment'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeNewJoinerReport',
+                        'Pages.Reports.Analysis.EmployeeNewJoiner',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-new-joiner'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeOnHoldReport',
+                        'Pages.Reports.Analysis.EmployeeOnHold',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-on-hold'
+                    ),
+                    new AppMenuItem(
+                        'EmployeePassportReport',
+                        'Pages.Reports.Analysis.EmployeePassport',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-passport'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeProbationReport',
+                        'Pages.Reports.Analysis.EmployeeProbation',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-probation'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeResidencyReport',
+                        'Pages.Reports.Analysis.EmployeeResidency',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-residency'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeSeparationReport',
+                        'Pages.Reports.Analysis.EmployeeSeparation',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-separation'
+                    ),
+                    new AppMenuItem(
+                        'PAEmployeeReport',
+                        'Pages.Reports.Analysis.PAEmployee',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/pa-employee'
+                    ),
+                    new AppMenuItem(
+                        'PAEmployeeScorecardReport',
+                        'Pages.Reports.Analysis.PAEmployeeScorecard',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/pa-employee-scorecard'
+                    ),
+                    new AppMenuItem(
+                        'PASummaryReport',
+                        'Pages.Reports.Analysis.PASummary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/pa-summary'
+                    ),
+                    new AppMenuItem(
+                        'PerformanceAppraisalReport',
+                        'Pages.Reports.Analysis.PerformanceAppraisal',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/performance-appraisal'
+                    ),
+                    new AppMenuItem(
+                        'PerformanceAppraisalReviewerSummaryReport',
+                        'Pages.Reports.Analysis.PerformanceAppraisalReviewerSummary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/performance-appraisal-reviewer-summary'
+                    ),
+                    new AppMenuItem(
+                        'PerformanceAppraisalManagerEvaluationReport',
+                        'Pages.Reports.Analysis.PerformanceAppraisalManagerEvaluation',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/performance-appraisal-manager-evaluation'
+                    ),
+                    new AppMenuItem(
+                        'EmployeeTravelReport',
+                        'Pages.Reports.Analysis.EmployeeTravel',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/employee-travel'
+                    ),
+                    new AppMenuItem(
+                        'AssetReport',
+                        'Pages.Reports.Analysis.Asset',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/asset'
+                    ),
+                    new AppMenuItem(
+                        'AirTicketQuotaBalanceReport',
+                        'Pages.Reports.Analysis.AirTicketQuotaBalance',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/air-ticket-quota-balance'
+                    ),
+                    new AppMenuItem(
+                        'AnnualLeaveSheetReport',
+                        'Pages.Reports.Analysis.AnnualLeaveSheet',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/annual-leave-sheet'
+                    ),
+                    new AppMenuItem(
+                        'EndOfServiceReport',
+                        'Pages.Reports.Analysis.EndOfService',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/end-of-service'
+                    ),
+                    new AppMenuItem(
+                        'IndemnityProvisionReport',
+                        'Pages.Reports.Analysis.IndemnityProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/indemnity-provision'
+                    ),
+                    new AppMenuItem(
+                        'IndemnityProvisionAsOnDateReport',
+                        'Pages.Reports.Analysis.IndemnityProvisionAsOnDate',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/indemnity-provision-as-on-date'
+                    ),
+                    new AppMenuItem(
+                        'LeaveProvisionReport',
+                        'Pages.Reports.Analysis.LeaveProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/leave-provision'
+                    ),
+                    new AppMenuItem(
+                        'LeaveQuotaBalanceReport',
+                        'Pages.Reports.Analysis.LeaveQuotaBalance',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/leave-quota-balance'
+                    ),
+                    new AppMenuItem(
+                        'ProvisionChangeReport',
+                        'Pages.Reports.Analysis.ProvisionChange',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/provision-change'
+                    ),
+                    new AppMenuItem(
+                        'QuotaProvisionAsOnDateReport',
+                        'Pages.Reports.Analysis.QuotaProvisionAsOnDate',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/quota-provision-as-on-date'
+                    ),
+                    new AppMenuItem(
+                        'YearlyLeaveIndemnityDetailCustom016Report',
+                        'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom016',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/yearly-leave-indemnity-detail-custom016'
+                    ),
+                    new AppMenuItem(
+                        'YearlyLeaveIndemnityDetailCustom023Report',
+                        'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom023',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/yearly-leave-indemnity-detail-custom023'
                     ),
                 ]
             ),

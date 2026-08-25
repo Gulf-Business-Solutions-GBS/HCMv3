@@ -1,0 +1,124 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'ExecutionLogReport' | localize"
+        [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [(toDate)]="toDate"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'UserName' | localize }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="logUserName"
+                            [ngModel]="logUserName()"
+                            (ngModelChange)="logUserName.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '110rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 160px" pSortableColumn="userName">
+                                        {{ 'UserName' | localize }}
+                                        <p-sortIcon field="userName" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="actionDate">
+                                        {{ 'ActionDate' | localize }}
+                                        <p-sortIcon field="actionDate" />
+                                    </th>
+                                    <th style="min-width: 120px">{{ 'ActionTime' | localize }}</th>
+                                    <th style="min-width: 120px" pSortableColumn="action">
+                                        {{ 'Action' | localize }}
+                                        <p-sortIcon field="action" />
+                                    </th>
+                                    <th style="min-width: 140px" pSortableColumn="module">
+                                        {{ 'Module' | localize }}
+                                        <p-sortIcon field="module" />
+                                    </th>
+                                    <th style="min-width: 200px" pSortableColumn="screenCaption">
+                                        {{ 'ScreenCaption' | localize }}
+                                        <p-sortIcon field="screenCaption" />
+                                    </th>
+                                    <th style="min-width: 260px">{{ 'Parameters' | localize }}</th>
+                                    <th style="min-width: 140px" pSortableColumn="executionStatus">
+                                        {{ 'ExecutionStatus' | localize }}
+                                        <p-sortIcon field="executionStatus" />
+                                    </th>
+                                    <th style="min-width: 120px" pSortableColumn="totalRecords">
+                                        {{ 'TotalRecords' | localize }}
+                                        <p-sortIcon field="totalRecords" />
+                                    </th>
+                                    <th style="min-width: 110px" pSortableColumn="successfull">
+                                        {{ 'Successfull' | localize }}
+                                        <p-sortIcon field="successfull" />
+                                    </th>
+                                    <th style="min-width: 100px" pSortableColumn="failed">
+                                        {{ 'Failed' | localize }}
+                                        <p-sortIcon field="failed" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="min-width: 160px">{{ record.userName }}</td>
+                                    <td style="min-width: 140px">{{ record.actionDate | luxonFormat: 'dd/MM/yyyy' }}</td>
+                                    <td style="min-width: 120px">{{ record.actionTime }}</td>
+                                    <td style="min-width: 120px">{{ record.action }}</td>
+                                    <td style="min-width: 140px">{{ record.module }}</td>
+                                    <td style="min-width: 200px">{{ record.screenCaption }}</td>
+                                    <td style="min-width: 260px">{{ record.parameters }}</td>
+                                    <td style="min-width: 140px">{{ record.executionStatus }}</td>
+                                    <td style="min-width: 120px">{{ record.totalRecords }}</td>
+                                    <td style="min-width: 110px">{{ record.successfull }}</td>
+                                    <td style="min-width: 100px">{{ record.failed }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

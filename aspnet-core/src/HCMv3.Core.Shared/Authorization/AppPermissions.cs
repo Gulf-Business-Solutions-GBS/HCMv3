@@ -2594,6 +2594,91 @@ public static class AppPermissions
 
     public const string Pages_Reports_Analysis_LateEarlyLogCustom036 = "Pages.Reports.Analysis.LateEarlyLogCustom036";
 
+    // Legacy uscRptAsset.ascx (MasterReport) -- Asset master analysis grid report.
+    public const string Pages_Reports_Analysis_Asset = "Pages.Reports.Analysis.Asset";
+
+    // Legacy uscRptEmployeeTravel.ascx (TravelReport) -- Employee Travel analysis grid report (Table1 only).
+    public const string Pages_Reports_Analysis_EmployeeTravel = "Pages.Reports.Analysis.EmployeeTravel";
+
+    // Status grouping (legacy HCM10.Web/UserControls/Reports/Analysis/Status/usc*.ascx).
+    public const string Pages_Reports_Analysis_EmployeeDocMovement = "Pages.Reports.Analysis.EmployeeDocMovement";
+
+    public const string Pages_Reports_Analysis_EmployeeFnFPayment = "Pages.Reports.Analysis.EmployeeFnFPayment";
+
+    public const string Pages_Reports_Analysis_EmployeeNewJoiner = "Pages.Reports.Analysis.EmployeeNewJoiner";
+
+    public const string Pages_Reports_Analysis_EmployeeOnHold = "Pages.Reports.Analysis.EmployeeOnHold";
+
+    public const string Pages_Reports_Analysis_EmployeePassport = "Pages.Reports.Analysis.EmployeePassport";
+
+    public const string Pages_Reports_Analysis_EmployeeProbation = "Pages.Reports.Analysis.EmployeeProbation";
+
+    public const string Pages_Reports_Analysis_EmployeeResidency = "Pages.Reports.Analysis.EmployeeResidency";
+
+    public const string Pages_Reports_Analysis_EmployeeSeparation = "Pages.Reports.Analysis.EmployeeSeparation";
+
+    //Transaction analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Transaction).
+    public const string Pages_Reports_Analysis_News = "Pages.Reports.Analysis.News";
+
+    public const string Pages_Reports_Analysis_EmployeeAssetInvoice = "Pages.Reports.Analysis.EmployeeAssetInvoice";
+
+    public const string Pages_Reports_Analysis_EmployeeDisciplinary = "Pages.Reports.Analysis.EmployeeDisciplinary";
+
+    public const string Pages_Reports_Analysis_EmployeeDocument = "Pages.Reports.Analysis.EmployeeDocument";
+
+    public const string Pages_Reports_Analysis_EmployeeDocumentCustom033 = "Pages.Reports.Analysis.EmployeeDocumentCustom033";
+
+    public const string Pages_Reports_Analysis_EmployeeHealthReimburse = "Pages.Reports.Analysis.EmployeeHealthReimburse";
+
+    //Organization/Workflow analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Organization, /Workflow).
+    public const string Pages_Reports_Analysis_OrgUnitTree = "Pages.Reports.Analysis.OrgUnitTree";
+
+    public const string Pages_Reports_Analysis_OrganizationDocument = "Pages.Reports.Analysis.OrganizationDocument";
+
+    public const string Pages_Reports_Analysis_EmployeeRequests = "Pages.Reports.Analysis.EmployeeRequests";
+
+    public const string Pages_Reports_Analysis_LeaveRequestAnalysis = "Pages.Reports.Analysis.LeaveRequestAnalysis";
+
+    //Transaction analysis reports (legacy HCM10.Web/UserControls/Reports/Analysis/Transaction).
+    public const string Pages_Reports_Analysis_EmployeeLeaveSalary = "Pages.Reports.Analysis.EmployeeLeaveSalary";
+
+    public const string Pages_Reports_Analysis_EmployeeLoan = "Pages.Reports.Analysis.EmployeeLoan";
+
+    public const string Pages_Reports_Analysis_EmployeeNonPayroll = "Pages.Reports.Analysis.EmployeeNonPayroll";
+
+    public const string Pages_Reports_Analysis_EmployeePayment = "Pages.Reports.Analysis.EmployeePayment";
+
+    public const string Pages_Reports_Analysis_EmployeeSocialSecurity = "Pages.Reports.Analysis.EmployeeSocialSecurity";
+
+    public const string Pages_Reports_Analysis_EmpOvertime = "Pages.Reports.Analysis.EmpOvertime";
+
+    public const string Pages_Reports_Analysis_EmpOvertimeByDay = "Pages.Reports.Analysis.EmpOvertimeByDay";
+
+    public const string Pages_Reports_Analysis_MonthlyPayrollTransaction = "Pages.Reports.Analysis.MonthlyPayrollTransaction";
+
+    // QuotaProvision grid reports (legacy HCM10.Web/UserControls/Reports/Analysis/QuotaProvision/usc*.ascx.cs).
+    public const string Pages_Reports_Analysis_AirTicketQuotaBalance = "Pages.Reports.Analysis.AirTicketQuotaBalance";
+    public const string Pages_Reports_Analysis_AnnualLeaveSheet = "Pages.Reports.Analysis.AnnualLeaveSheet";
+    public const string Pages_Reports_Analysis_EndOfService = "Pages.Reports.Analysis.EndOfService";
+    public const string Pages_Reports_Analysis_IndemnityProvision = "Pages.Reports.Analysis.IndemnityProvision";
+    public const string Pages_Reports_Analysis_IndemnityProvisionAsOnDate = "Pages.Reports.Analysis.IndemnityProvisionAsOnDate";
+    public const string Pages_Reports_Analysis_LeaveProvision = "Pages.Reports.Analysis.LeaveProvision";
+    public const string Pages_Reports_Analysis_LeaveQuotaBalance = "Pages.Reports.Analysis.LeaveQuotaBalance";
+    public const string Pages_Reports_Analysis_ProvisionChange = "Pages.Reports.Analysis.ProvisionChange";
+    public const string Pages_Reports_Analysis_QuotaProvisionAsOnDate = "Pages.Reports.Analysis.QuotaProvisionAsOnDate";
+    public const string Pages_Reports_Analysis_YearlyLeaveIndemnityDetailCustom016 = "Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom016";
+    public const string Pages_Reports_Analysis_YearlyLeaveIndemnityDetailCustom023 = "Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom023";
+
+    // PerformanceReport / TravelReport / MasterReport grid reports (legacy
+    // HCM10.Web/UserControls/Reports/Analysis/{PerformanceReport,TravelReport,MasterReport}/usc*.ascx.cs).
+    public const string Pages_Reports_Analysis_PAEmployee = "Pages.Reports.Analysis.PAEmployee";
+    public const string Pages_Reports_Analysis_PAEmployeeScorecard = "Pages.Reports.Analysis.PAEmployeeScorecard";
+    public const string Pages_Reports_Analysis_PASummary = "Pages.Reports.Analysis.PASummary";
+    public const string Pages_Reports_Analysis_PerformanceAppraisal = "Pages.Reports.Analysis.PerformanceAppraisal";
+    public const string Pages_Reports_Analysis_PerformanceAppraisalReviewerSummary = "Pages.Reports.Analysis.PerformanceAppraisalReviewerSummary";
+    public const string Pages_Reports_Analysis_PerformanceAppraisalManagerEvaluation = "Pages.Reports.Analysis.PerformanceAppraisalManagerEvaluation";
+    // Pages_Reports_Analysis_EmployeeTravel and Pages_Reports_Analysis_Asset already declared above.
+
     //ADMINISTRATION TOOLS (ported from legacy HCM10.Web/UserControls/Administration/*.ascx.cs)
     //
     //These are DESTRUCTIVE / BULK maintenance utilities, not settings screens. Legacy gated them by a
@@ -2673,4 +2758,26 @@ public static class AppPermissions
     public const string Pages_ImportExport_ProfilePhotoImport = "Pages.ImportExport.ProfilePhotoImport";
     public const string Pages_ImportExport_TimesheetImport = "Pages.ImportExport.TimesheetImport";
 
+    // ProjectReport / Recruitment / AccommodationReport analysis grid reports (legacy
+    // HCM10.Web/UserControls/Reports/Analysis/ProjectReport, /Recruitment, /AccommodationReport).
+    public const string Pages_Reports_Analysis_ProjectCosting = "Pages.Reports.Analysis.ProjectCosting";
+    public const string Pages_Reports_Analysis_ProjectCostingCustom052 = "Pages.Reports.Analysis.ProjectCostingCustom052";
+    public const string Pages_Reports_Analysis_ProjectMonthwiseSummary = "Pages.Reports.Analysis.ProjectMonthwiseSummary";
+    public const string Pages_Reports_Analysis_ProjectWiseAccrual = "Pages.Reports.Analysis.ProjectWiseAccrual";
+    public const string Pages_Reports_Analysis_ApplicantSearch = "Pages.Reports.Analysis.ApplicantSearch";
+    public const string Pages_Reports_Analysis_CandidateOnbInit = "Pages.Reports.Analysis.CandidateOnbInit";
+    public const string Pages_Reports_Analysis_VacancyStatus = "Pages.Reports.Analysis.VacancyStatus";
+    public const string Pages_Reports_Analysis_EmployeeAccommodation = "Pages.Reports.Analysis.EmployeeAccommodation";
+
+    // TrainingReport / SurveyReport / Administration / GovtRelations analysis grid reports (legacy
+    // HCM10.Web/UserControls/Reports/Analysis/TrainingReport, /SurveyReport, /Administration, /GovtRelations).
+    public const string Pages_Reports_Analysis_EmployeeTraining = "Pages.Reports.Analysis.EmployeeTraining";
+    public const string Pages_Reports_Analysis_TrainingCourse = "Pages.Reports.Analysis.TrainingCourse";
+    public const string Pages_Reports_Analysis_TrainingSchedule = "Pages.Reports.Analysis.TrainingSchedule";
+    public const string Pages_Reports_Analysis_EmployeeSurvey = "Pages.Reports.Analysis.EmployeeSurvey";
+    public const string Pages_Reports_Analysis_SurveyStatus = "Pages.Reports.Analysis.SurveyStatus";
+    public const string Pages_Reports_Analysis_AuditReport = "Pages.Reports.Analysis.AuditReport";
+    public const string Pages_Reports_Analysis_ExecutionLogReport = "Pages.Reports.Analysis.ExecutionLogReport";
+    public const string Pages_Reports_Analysis_Sponsor = "Pages.Reports.Analysis.Sponsor";
+    public const string Pages_Reports_Analysis_SponsorJobTitleQuota = "Pages.Reports.Analysis.SponsorJobTitleQuota";
 }

@@ -1,0 +1,136 @@
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DateTime } from 'luxon';
+import { LazyLoadEvent } from 'primeng/api';
+import { Paginator, PaginatorModule } from 'primeng/paginator';
+import { Select } from 'primeng/select';
+import { Table, TableModule } from 'primeng/table';
+import { Tooltip } from 'primeng/tooltip';
+import { finalize } from 'rxjs/operators';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import { BusyIfDirective } from '@shared/utils/busy-if.directive';
+import { FileDownloadService } from '@shared/utils/file-download.service';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import {
+    EmpOvertimeByDayReportServiceProxy,
+    GetAllOvertimeTypesInput,
+    GetEmpOvertimeByDayReportInput,
+    OvertimeTypesServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
+
+/**
+ * Employee Overtime By Day analysis grid report.
+ *
+ * Ported legacy screen: HCM10.Web/UserControls/Reports/Analysis/Transaction/uscRptEmpOvertimeByDay.ascx(.cs).
+ *
+ * ATYPICAL: no cmbEmpStatus on the legacy screen. cmbOvertimeType is projected into <ng-content />.
+ *
+ * SCOPE REDUCTION: the legacy per-calendar-day pivot columns are not ported -- see the backend row DTO's
+ * remarks for why. Only the per-employee summary columns are shown.
+ */
+@Component({
+    templateUrl: './emp-overtime-by-day-report.component.html',
+    animations: [appModuleAnimation()],
+    imports: [
+        SubHeaderComponent,
+        BusyIfDirective,
+        FormsModule,
+        TableModule,
+        PaginatorModule,
+        Select,
+        Tooltip,
+        GridReportFilterComponent,
+        LocalizePipe,
+        LuxonFormatPipe,
+    ],
+})
+export class EmpOvertimeByDayReportComponent extends AppComponentBase implements OnInit {
+    private readonly _reportService = inject(EmpOvertimeByDayReportServiceProxy);
+    private readonly _overtimeTypeService = inject(OvertimeTypesServiceProxy);
+    private readonly _fileDownloadService = inject(FileDownloadService);
+
+    readonly dataTable = viewChild<Table>('dataTable');
+    readonly paginator = viewChild<Paginator>('paginator');
+
+    readonly fromDate = signal<Date | undefined>(new Date());
+    readonly toDate = signal<Date | undefined>(new Date());
+    readonly employeeCode = signal<string>('');
+
+    readonly overtimeTypeCode = signal<string | undefined>(undefined);
+    readonly overtimeTypeOptions = signal<{ label: string; value: string }[]>([]);
+
+    readonly exporting = signal<boolean>(false);
+
+    ngOnInit(): void {
+        this._overtimeTypeService
+            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => {
+                this.overtimeTypeOptions.set(
+                    result.items.map((item) => ({ label: item.nameEn ?? item.code ?? '', value: item.code ?? '' }))
+                );
+            });
+    }
+
+    getRecords(event?: LazyLoadEvent): void {
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator().changePage(0);
+            return;
+        }
+
+        this.primengTableHelper.showLoadingIndicator();
+
+        this._reportService
+            .getEmpOvertimeByDayReport(
+                this.buildInput(
+                    this.primengTableHelper.getSorting(this.dataTable()),
+                    this.primengTableHelper.getMaxResultCount(this.paginator(), event),
+                    this.primengTableHelper.getSkipCount(this.paginator(), event)
+                )
+            )
+            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+            .subscribe((result) => {
+                this.primengTableHelper.totalRecordsCount.set(result.totalCount);
+                this.primengTableHelper.records.set(result.items);
+                this.primengTableHelper.hideLoadingIndicator();
+            });
+    }
+
+    reloadPage(): void {
+        const rows = this.paginator().rows || this.primengTableHelper.defaultRecordsCountPerPage;
+        this.getRecords({ first: this.paginator().getPage() * rows, rows } as LazyLoadEvent);
+    }
+
+    exportToExcel(): void {
+        this.exporting.set(true);
+
+        this._reportService
+            .getEmpOvertimeByDayReportToExcel(
+                this.buildInput(
+                    this.primengTableHelper.getSorting(this.dataTable()),
+                    this.paginator()?.rows || this.primengTableHelper.defaultRecordsCountPerPage,
+                    0
+                )
+            )
+            .pipe(finalize(() => this.exporting.set(false)))
+            .subscribe((result) => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+    }
+
+    private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetEmpOvertimeByDayReportInput {
+        return new GetEmpOvertimeByDayReportInput({
+            fromDate: this.fromDate() ? DateTime.fromJSDate(this.fromDate()) : undefined,
+            toDate: this.toDate() ? DateTime.fromJSDate(this.toDate()) : undefined,
+            employeeCode: this.employeeCode(),
+            employeeStatus: undefined,
+            overtimeTypeCode: this.overtimeTypeCode(),
+            sorting: sorting,
+            maxResultCount: maxResultCount,
+            skipCount: skipCount,
+        });
+    }
+}
