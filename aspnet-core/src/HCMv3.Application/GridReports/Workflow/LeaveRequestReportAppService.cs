@@ -160,7 +160,7 @@ public class LeaveRequestReportAppService : GridReportAppServiceBase, ILeaveRequ
             RequestType = r.RequestType,
             RequestStatus = r.RequestStatus,
             WorkflowStep = r.WorkflowStep,
-            StalledDays = (int)EF.Functions.DateDiffDay((r.LastModificationTime ?? r.CreationTime).Date, today)
+            StalledDays = (today - (r.LastModificationTime ?? r.CreationTime).Date).Days
         });
     }
 

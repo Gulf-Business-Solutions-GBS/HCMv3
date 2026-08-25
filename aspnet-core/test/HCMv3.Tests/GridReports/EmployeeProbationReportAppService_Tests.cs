@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HCMv3.GeneralMasterInfo;
 using HCMv3.GridReports.Status;
 using HCMv3.GridReports.Status.Dto;
 using HCMv3.PersonnelAdministration;
@@ -36,6 +37,18 @@ public class EmployeeProbationReportAppService_Tests : AppTestBase
         DateTime probationEndDate,
         EmployeeStatus status = EmployeeStatus.Active)
     {
+        Nationality nationality = null;
+        UsingDbContext(context =>
+        {
+            nationality = context.Set<Nationality>().Add(new Nationality
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "N",
+                NameAr = "N"
+            }).Entity;
+        });
+
         Employee employee = null;
         UsingDbContext(context =>
         {
@@ -51,6 +64,7 @@ public class EmployeeProbationReportAppService_Tests : AppTestBase
                 FullNameAr = "عربي " + code,
                 BirthDate = new DateTime(1990, 1, 1),
                 JoiningDate = new DateTime(2020, 1, 1),
+                NationalityId = nationality.Id,
                 ProbationDays = 90,
                 ProbationEndDate = probationEndDate,
                 Status = status

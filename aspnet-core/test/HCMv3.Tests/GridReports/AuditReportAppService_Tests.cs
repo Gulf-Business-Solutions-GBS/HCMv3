@@ -44,9 +44,11 @@ public class AuditReportAppService_Tests : AppTestBase
             {
                 TenantId = TenantId,
                 UserName = userName,
+                NormalizedUserName = userName.ToUpperInvariant(),
                 Name = userName,
                 Surname = userName,
                 EmailAddress = userName + "@test.com",
+                NormalizedEmailAddress = (userName + "@test.com").ToUpperInvariant(),
                 Password = "AM4OyzZuGHwzeIP+dzk/UjBiEzUEofn9zwEBUUJTf3M2gd+dCcQXKQeIP4vJdG8W",
                 IsActive = true
             }).Entity;

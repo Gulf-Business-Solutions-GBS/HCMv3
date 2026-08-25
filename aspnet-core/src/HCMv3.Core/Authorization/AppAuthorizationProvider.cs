@@ -2560,6 +2560,16 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom035, L("PayrollJVCustom035Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom045, L("PayrollJVCustom045Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom051, L("PayrollJVCustom051Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollCTC, L("PayrollCTCReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollNetPayContractDiff, L("PayrollNetPayContractDiffReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PrePayrollReport, L("PrePayrollReportReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryDeduction, L("SalaryDeductionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryForecast, L("SalaryForecastReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_SalaryRetroResult, L("SalaryRetroResultReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_ServiceBonus, L("ServiceBonusReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_StaffNotinPayroll, L("StaffNotinPayrollReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_StaffOvertime, L("StaffOvertimeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_StaffTurnover, L("StaffTurnoverReport"));
         //TimeReport grouping (legacy HCM10.Web/UserControls/Reports/Analysis/TimeReport).
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyAttWithTolerance, L("MonthlyAttWithToleranceReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_MonthlyTimeAttendance, L("MonthlyTimeAttendanceReport"));

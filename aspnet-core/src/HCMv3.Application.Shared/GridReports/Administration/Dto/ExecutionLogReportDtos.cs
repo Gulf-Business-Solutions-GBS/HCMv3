@@ -19,7 +19,7 @@ public class GetExecutionLogReportInput : GridReportInputBase
     /// <summary>Legacy <c>cmbUserName</c>. Blank means "all users".</summary>
     public string LogUserName { get; set; }
 
-    protected override string DefaultSorting => "ActionDate ASC";
+    protected override string DefaultSorting => "ActionDateTime ASC";
 }
 
 /// <summary>

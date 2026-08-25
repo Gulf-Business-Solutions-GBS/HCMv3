@@ -398,6 +398,66 @@ export class AppNavigationService {
                         '/app/admin/reports/analysis/payroll-jv-custom051'
                     ),
                     new AppMenuItem(
+                        'PayrollCTCReport',
+                        'Pages.Reports.Analysis.PayrollCTC',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-ctc'
+                    ),
+                    new AppMenuItem(
+                        'PayrollNetPayContractDiffReport',
+                        'Pages.Reports.Analysis.PayrollNetPayContractDiff',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-net-pay-contract-diff'
+                    ),
+                    new AppMenuItem(
+                        'PrePayrollReportReport',
+                        'Pages.Reports.Analysis.PrePayrollReport',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/pre-payroll-report'
+                    ),
+                    new AppMenuItem(
+                        'SalaryDeductionReport',
+                        'Pages.Reports.Analysis.SalaryDeduction',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-deduction'
+                    ),
+                    new AppMenuItem(
+                        'SalaryForecastReport',
+                        'Pages.Reports.Analysis.SalaryForecast',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-forecast'
+                    ),
+                    new AppMenuItem(
+                        'SalaryRetroResultReport',
+                        'Pages.Reports.Analysis.SalaryRetroResult',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/salary-retro-result'
+                    ),
+                    new AppMenuItem(
+                        'ServiceBonusReport',
+                        'Pages.Reports.Analysis.ServiceBonus',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/service-bonus'
+                    ),
+                    new AppMenuItem(
+                        'StaffNotinPayrollReport',
+                        'Pages.Reports.Analysis.StaffNotinPayroll',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/staff-notin-payroll'
+                    ),
+                    new AppMenuItem(
+                        'StaffOvertimeReport',
+                        'Pages.Reports.Analysis.StaffOvertime',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/staff-overtime'
+                    ),
+                    new AppMenuItem(
+                        'StaffTurnoverReport',
+                        'Pages.Reports.Analysis.StaffTurnover',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/staff-turnover'
+                    ),
+                    new AppMenuItem(
                         'PayrollAnalysisReport',
                         'Pages.Reports.Analysis.PayrollAnalysis',
                         'flaticon-list-3',

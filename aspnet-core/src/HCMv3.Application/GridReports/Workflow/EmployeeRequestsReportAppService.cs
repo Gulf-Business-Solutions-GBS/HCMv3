@@ -142,7 +142,7 @@ public class EmployeeRequestsReportAppService : GridReportAppServiceBase, IEmplo
             RequestStatus = r.RequestStatus,
             WorkflowStep = r.WorkflowStep,
             // Legacy line 579-581: SysModifiedOn if it was ever set, otherwise SysCreatedOn.
-            StalledDays = (int)EF.Functions.DateDiffDay((r.LastModificationTime ?? r.CreationTime).Date, today)
+            StalledDays = (today - (r.LastModificationTime ?? r.CreationTime).Date).Days
         });
     }
 

@@ -2500,6 +2500,26 @@ public static class AppPermissions
 
     public const string Pages_Reports_Analysis_PayrollJVCustom051 = "Pages.Reports.Analysis.PayrollJVCustom051";
 
+    public const string Pages_Reports_Analysis_PayrollCTC = "Pages.Reports.Analysis.PayrollCTC";
+
+    public const string Pages_Reports_Analysis_PayrollNetPayContractDiff = "Pages.Reports.Analysis.PayrollNetPayContractDiff";
+
+    public const string Pages_Reports_Analysis_PrePayrollReport = "Pages.Reports.Analysis.PrePayrollReport";
+
+    public const string Pages_Reports_Analysis_SalaryDeduction = "Pages.Reports.Analysis.SalaryDeduction";
+
+    public const string Pages_Reports_Analysis_SalaryForecast = "Pages.Reports.Analysis.SalaryForecast";
+
+    public const string Pages_Reports_Analysis_SalaryRetroResult = "Pages.Reports.Analysis.SalaryRetroResult";
+
+    public const string Pages_Reports_Analysis_ServiceBonus = "Pages.Reports.Analysis.ServiceBonus";
+
+    public const string Pages_Reports_Analysis_StaffNotinPayroll = "Pages.Reports.Analysis.StaffNotinPayroll";
+
+    public const string Pages_Reports_Analysis_StaffOvertime = "Pages.Reports.Analysis.StaffOvertime";
+
+    public const string Pages_Reports_Analysis_StaffTurnover = "Pages.Reports.Analysis.StaffTurnover";
+
     public const string Pages_Reports_Analysis_EmployeeAction = "Pages.Reports.Analysis.EmployeeAction";
 
     public const string Pages_Reports_Analysis_EmployeeActionChange = "Pages.Reports.Analysis.EmployeeActionChange";

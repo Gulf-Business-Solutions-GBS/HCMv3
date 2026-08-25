@@ -215,6 +215,6 @@ public class ProjectWiseAccrualReportAppService_Tests : AppTestBase
         var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
 
         exported.Count.ShouldBe(2);
-        exported.First().Keys.ShouldContain("NetPay");
+        exported.First().Keys.ShouldContain("Net Pay");
     }
 }

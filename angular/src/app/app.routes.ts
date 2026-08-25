@@ -1786,6 +1786,86 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom051' },
                     },
                     {
+                        path: 'reports/analysis/payroll-ctc',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-ctc-report/payroll-ctc-report.component').then(
+                                (m) => m.PayrollCTCReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollCTC' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-net-pay-contract-diff',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-net-pay-contract-diff-report/payroll-net-pay-contract-diff-report.component').then(
+                                (m) => m.PayrollNetPayContractDiffReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollNetPayContractDiff' },
+                    },
+                    {
+                        path: 'reports/analysis/pre-payroll-report',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/pre-payroll-report/pre-payroll-report.component').then(
+                                (m) => m.PrePayrollReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PrePayrollReport' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-deduction',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/salary-deduction-report/salary-deduction-report.component').then(
+                                (m) => m.SalaryDeductionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryDeduction' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-forecast',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/salary-forecast-report/salary-forecast-report.component').then(
+                                (m) => m.SalaryForecastReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryForecast' },
+                    },
+                    {
+                        path: 'reports/analysis/salary-retro-result',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/salary-retro-result-report/salary-retro-result-report.component').then(
+                                (m) => m.SalaryRetroResultReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.SalaryRetroResult' },
+                    },
+                    {
+                        path: 'reports/analysis/service-bonus',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/service-bonus-report/service-bonus-report.component').then(
+                                (m) => m.ServiceBonusReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.ServiceBonus' },
+                    },
+                    {
+                        path: 'reports/analysis/staff-notin-payroll',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/staff-notin-payroll-report/staff-notin-payroll-report.component').then(
+                                (m) => m.StaffNotinPayrollReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.StaffNotinPayroll' },
+                    },
+                    {
+                        path: 'reports/analysis/staff-overtime',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/staff-overtime-report/staff-overtime-report.component').then(
+                                (m) => m.StaffOvertimeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.StaffOvertime' },
+                    },
+                    {
+                        path: 'reports/analysis/staff-turnover',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/staff-turnover-report/staff-turnover-report.component').then(
+                                (m) => m.StaffTurnoverReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.StaffTurnover' },
+                    },
+                    {
                         path: 'reports/analysis/payroll-analysis',
                         loadComponent: () =>
                             import('./admin/reports/analysis/payroll-analysis-report/payroll-analysis-report.component').then(

@@ -206,6 +206,6 @@ public class ProjectMonthwiseSummaryReportAppService_Tests : AppTestBase
         var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
 
         exported.Count.ShouldBe(2);
-        exported.First().Keys.ShouldContain("TotalWorkingDays");
+        exported.First().Keys.ShouldContain("Total Working Days");
     }
 }

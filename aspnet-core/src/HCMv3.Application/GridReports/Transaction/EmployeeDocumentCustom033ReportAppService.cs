@@ -157,7 +157,7 @@ public class EmployeeDocumentCustom033ReportAppService : GridReportAppServiceBas
             IsActive = d.IssueDate.Date <= today && d.ExpiryDate.Date >= today,
             DocumentNum = d.DocumentNum,
             Description = d.Description,
-            DaysLeft = EF.Functions.DateDiffDay(today, d.ExpiryDate.Date)
+            DaysLeft = (d.ExpiryDate.Date - today).Days
         });
     }
 

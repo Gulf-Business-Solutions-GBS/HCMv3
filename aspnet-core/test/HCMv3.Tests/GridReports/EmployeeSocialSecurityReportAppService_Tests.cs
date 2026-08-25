@@ -6,6 +6,7 @@ using HCMv3.GridReports.Transaction;
 using HCMv3.GridReports.Transaction.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings;
 using Shouldly;
 using Xunit;
 
@@ -20,6 +21,21 @@ public class EmployeeSocialSecurityReportAppService_Tests : AppTestBase
     {
         LoginAsDefaultTenantAdmin();
         _appService = Resolve<IEmployeeSocialSecurityReportAppService>();
+        SeedPayrollSettings();
+    }
+
+    private void SeedPayrollSettings()
+    {
+        UsingDbContext(context =>
+        {
+            if (context.Set<ManagePayrollSettings>().FirstOrDefault() == null)
+            {
+                context.Set<ManagePayrollSettings>().Add(new ManagePayrollSettings
+                {
+                    TenantId = TenantId
+                });
+            }
+        });
     }
 
     private int TenantId => AbpSession.TenantId ?? 1;

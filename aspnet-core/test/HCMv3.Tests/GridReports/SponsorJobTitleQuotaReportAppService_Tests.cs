@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
 using HCMv3.GridReports.GovtRelations;
@@ -59,6 +60,15 @@ public class SponsorJobTitleQuotaReportAppService_Tests : AppTestBase
             }).Entity;
         });
 
+        OrganizationUnit organizationUnit = null;
+        UsingDbContext(context =>
+        {
+            organizationUnit = context.OrganizationUnits.Add(new OrganizationUnit(TenantId, "Sponsor OU")
+            {
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8)
+            }).Entity;
+        });
+
         Sponsor sponsor = null;
         UsingDbContext(context =>
         {
@@ -71,6 +81,7 @@ public class SponsorJobTitleQuotaReportAppService_Tests : AppTestBase
                 NationalityId = nationality.Id,
                 BusinessTypeId = businessType.Id,
                 GovernorateId = governorate.Id,
+                OrganizationUnitId = organizationUnit.Id,
                 Telephone = 1
             }).Entity;
         });

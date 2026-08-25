@@ -450,7 +450,11 @@ public class PayrollJVCustom019ReportAppService_Tests : AppTestBase
     public async Task Should_Resolve_Every_Exported_Column_Header(PayrollJVCustom019Format format)
     {
         var employee = _data.CreateEmployee("JV19-HDR-" + (int)format);
-        var wageType = _data.CreateWageType("1000");
+        // ProvisionFormat only ever includes Provision-billing lines (BuildProvisionFormatRows filters on
+        // BillingType.Provision) -- a normal Earning wage type produces zero rows for that format.
+        var wageType = format == PayrollJVCustom019Format.ProvisionFormat
+            ? _data.CreateWageType("3001", BillingType.Provision)
+            : _data.CreateWageType("1000");
         _data.CreateDetail(_data.CreateRegister(employee, JuneEnd), wageType, 100);
 
         var file = await _appService.GetPayrollJVCustom019ReportToExcel(Input(format: format));

@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <sub-header [title]="'SalaryForecastReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [(fromDate)]="fromDate"
+                    [showDateRange]="true"
+                    [showEmployeeCode]="false"
+                    [showEmployeeStatus]="false"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'ForecastType' | localize }}</label>
+                        <select class="form-select" name="sfForecastType" [(ngModel)]="forecastType">
+                            <option [ngValue]="undefined">{{ 'All' | localize }}</option>
+                            @for (opt of forecastTypeOptions; track opt.value) {
+                                <option [ngValue]="opt.value">{{ opt.label }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'SalaryChangePercent' | localize }}</label>
+                        <input type="number" class="form-control" name="sfSalaryChange" [(ngModel)]="salaryChangePercent" (keydown.enter)="reloadPage()" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '70rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th pSortableColumn="companyName">{{ 'Company' | localize }}<p-sortIcon field="companyName" /></th>
+                                    <th>{{ 'Department' | localize }}</th>
+                                    <th>{{ 'Current' | localize }}</th>
+                                    @for (year of forecastYears(); track year; let i = $index) {
+                                        <th>{{ year }}</th>
+                                    }
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>{{ record.companyName }}</td>
+                                    <td>{{ record.departmentName }}</td>
+                                    <td>{{ record.currentAmount }}</td>
+                                    @for (year of forecastYears(); track year; let i = $index) {
+                                        <td>{{ forecastAmount(record, i) }}</td>
+                                    }
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

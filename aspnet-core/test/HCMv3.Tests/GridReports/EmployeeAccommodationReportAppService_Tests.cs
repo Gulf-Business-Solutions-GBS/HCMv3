@@ -215,6 +215,6 @@ public class EmployeeAccommodationReportAppService_Tests : AppTestBase
         var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
 
         exported.Count.ShouldBe(2);
-        exported.First().Keys.ShouldContain("AccommodationType");
+        exported.First().Keys.ShouldContain("Accommodation Type");
     }
 }

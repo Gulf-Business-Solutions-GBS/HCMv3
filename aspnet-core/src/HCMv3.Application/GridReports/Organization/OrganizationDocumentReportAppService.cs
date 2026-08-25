@@ -127,7 +127,7 @@ public class OrganizationDocumentReportAppService : GridReportAppServiceBase, IO
             Description = d.Comments,
             // Legacy computed OrganizationDocument.DaysLeft, dropped from the ported entity -- recomputed
             // here from ExpiryDate, the same value legacy stored.
-            DaysLeft = (int)EF.Functions.DateDiffDay(today, d.ExpiryDate.Date)
+            DaysLeft = (d.ExpiryDate.Date - today).Days
         });
     }
 

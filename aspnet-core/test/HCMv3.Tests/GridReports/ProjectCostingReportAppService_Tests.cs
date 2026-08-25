@@ -177,6 +177,6 @@ public class ProjectCostingReportAppService_Tests : AppTestBase
 
         exported.Count.ShouldBe(1);
         exported.First().Keys.ShouldContain("WT-1000");
-        exported.First().Keys.ShouldContain("NetPay");
+        exported.First().Keys.ShouldContain("Net Pay");
     }
 }
