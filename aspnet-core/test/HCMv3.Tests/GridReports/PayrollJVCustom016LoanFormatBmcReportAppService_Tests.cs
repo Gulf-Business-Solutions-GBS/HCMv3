@@ -49,11 +49,15 @@ public class PayrollJVCustom016LoanFormatBmcReportAppService_Tests : AppTestBase
     /// Arranges one employee with a Loan Recovery Deduction (2001) line, mapped to a wage account and a
     /// cost-center-bearing org assignment, for the payroll area literally named "BMC".
     /// </summary>
+    private PayrollArea _bmcArea;
+
     private (Employee employee, HCMv3.OrganizationManagement.CostCenter costCenter) ArrangeBasicLoanLine(
         string employeeCode, string costCenterCode, double amount, string wageTypeCode = "2001",
         BillingType billingType = BillingType.Deduction)
     {
-        var bmcArea = _data.CreatePayrollArea("BMC01", "BMC");
+        // The app service resolves a SINGLE payroll area by Name == "BMC" (FirstOrDefaultAsync); creating a
+        // fresh one per call would silently drop every employee but the first-matched area's from results.
+        var bmcArea = _bmcArea ??= _data.CreatePayrollArea("BMC01", "BMC");
         var costCenter = _data.CreateCostCenter(costCenterCode);
         var employee = _data.CreateEmployee(employeeCode);
         _data.CreateOrgAssignment(employee, bmcArea, new DateTime(2024, 1, 1), new DateTime(2024, 12, 31), costCenter);

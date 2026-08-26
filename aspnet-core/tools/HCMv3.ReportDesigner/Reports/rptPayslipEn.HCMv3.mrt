@@ -1,0 +1,3481 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="10">
+      <db Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="4" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="5" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="6" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="7" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="8" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="9" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="10" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+      <db Ref="11" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>db</Alias>
+        <ConnectionStringEncrypted />
+        <Name>db</Name>
+      </db>
+    </Databases>
+    <DataSources isList="true" count="11">
+      <PayrollArea Ref="12" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayrollArea</Alias>
+        <Columns isList="true" count="2">
+          <value>Code,System.String</value>
+          <value>Name,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>861bf88cc3ef49579d243b496f1f474c</Key>
+        <Name>PayrollArea</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>PrmPayrollArea,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmPayrollArea_x005D__x0029_,12,4000</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayrollArea (parameter look-up list feeding the @PrmPayrollArea combo)
+-- Legacy: "select * from PayrollArea"  -- MECHANICAL rewrite, plus the two ABP filters the legacy
+-- corpus has no concept of.
+SELECT *
+FROM PayrollAreas
+WHERE TenantId = @TenantId
+  AND IsDeleted = 0
+ORDER BY Name;
+</SqlCommand>
+      </PayrollArea>
+      <PayslipOrgV2Query Ref="13" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipOrgV2Query</Alias>
+        <Columns isList="true" count="29">
+          <value>Employee_x0020_Code,System.String</value>
+          <value>Status,System.Int32</value>
+          <value>CivilID,System.Int64</value>
+          <value>Mobile,System.Int64</value>
+          <value>Bank_x0020_Name,System.String</value>
+          <value>BankCode,System.String</value>
+          <value>StartDate,System.DateTime</value>
+          <value>Bank_x0020_IBAN,System.String</value>
+          <value>AccountNum,System.String</value>
+          <value>OrgUnit,System.String</value>
+          <value>Employee_x0020_Name,System.String</value>
+          <value>Grade,System.String</value>
+          <value>Salary_x0020_Profile,System.String</value>
+          <value>Jobtitle,System.String</value>
+          <value>Joining_x0020_Date,System.DateTime</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Net_x0020_Pay,System.Double</value>
+          <value>Payroll_x0020_Area,System.String</value>
+          <value>Payroll_x0020_Area_x0020_Code,System.String</value>
+          <value>Currency,System.String</value>
+          <value>CompanyLogo,System.Object</value>
+          <value>HeaderText,System.String</value>
+          <value>LastDayInService,System.DateTime</value>
+          <value>PassportNo,System.String</value>
+          <value>PassportExpiryDate,System.DateTime</value>
+          <value>CivilIdExpiryDate,System.DateTime</value>
+          <value>SponsorEn,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>c20e8eb006614748abfef80e1637e68f</Key>
+        <Name>PayslipOrgV2Query</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="8">
+          <value>PrmEmpCode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmEmpCode_x005D__x0029_,12,4000</value>
+          <value>PrmEmployeeStatus,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmEmployeeStatus_x005D__x0029_,8,0</value>
+          <value>PrmEncashment,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmEncashment_x005D__x0029_,8,0</value>
+          <value>PrmMonth,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmMonth_x005D__x0029_,8,0</value>
+          <value>PrmPayrollArea,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmPayrollArea_x005D__x0029_,12,4000</value>
+          <value>PrmPayrollRunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmPayrollRunType_x005D__x0029_,8,0</value>
+          <value>PrmYear,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmYear_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- ===================================================================================================
+-- rptPayslipEn :: PayslipOrgV2Query  (MASTER query -- one row per employee/period)
+-- HCMv3 rewrite of the legacy DevExpress CustomSqlQuery.
+--
+-- MULTI-TENANCY / SOFT DELETE
+--   The legacy corpus contains ZERO references to TenantId or IsDeleted -- HCM10 was single-tenant
+--   and hard-deleted. Every table touched below is an ABP FullAuditedEntity with both columns, so
+--   @TenantId and "IsDeleted = 0" are ADDED to every single join. Omitting either silently leaks
+--   rows across tenants / resurrects deleted records, and nothing in the report would show it.
+--
+-- MECHANICAL RENAMES applied throughout
+--   Employee-&gt;Employees, SalaryRegister-&gt;SalaryRegisters, ...        (table pluralisation)
+--   OID -&gt; Id                                                        (PK)
+--   &lt;EntityName&gt; -&gt; &lt;EntityName&gt;Id                                   (FK columns)
+--
+-- NON-MECHANICAL REWRITES -- see PORTING-NOTES.md for the full list. Summary:
+--   1. OrgLevel1..7 + OrganizationUnitType. Legacy EmployeeOrgAssignment carried seven flat FK
+--      columns and picked the one whose OrganizationUnit had type 'Department' (or 'Company').
+--      HCMv3 has a SINGLE OrganizationUnitId into AbpOrganizationUnits, which is an ABP
+--      materialised-path tree (Code/ParentId) with NO unit-type concept at all. The 14 aliased
+--      joins collapse to one; "which ancestor is the Department" is not expressible and the
+--      employee's own unit is used instead.  *** SEMANTIC DEVIATION -- needs a product decision. ***
+--   2. CompanyLogo. Sourced from OrganizationUnit.logo. AbpOrganizationUnits has no Logo column and
+--      HCMv3 has no Company entity carrying one. Returned as NULL.  *** FEATURE LOST. ***
+--   3. PayrollArea join. Legacy joined on a STRING: PayrollArea.Code = EmployeeOrgAssignment.PayrollArea.
+--      HCMv3 models it properly as EmployeeOrgAssignments.PayrollAreaId -&gt; PayrollAreas.Id.
+--      The @PrmPayrollArea parameter still filters on PayrollAreas.Name for operator parity.
+--   4. EmployeeBasicPayDetail.WageType = 1 -- a RAW LEGACY PRIMARY KEY, not a code. HRMS_RCF
+--      WageType OID 1 = Code '1000' (Basic Salary). HCMv3 has an unrelated wage type whose *Code*
+--      is '1' (Employee PIFSS Ded), so translating the literal 1 mechanically returns a deduction
+--      instead of basic pay. Rewritten as WageTypes.Code = '1000'.
+--   5. EmployeeVisaInfo / EmployeeGratuity joins dropped: no column from either is projected, and
+--      as LEFT JOINs to 1:N tables they could only fan the master row out. Legacy bug, not ported.
+-- ===================================================================================================
+
+DECLARE @PaySlipDate DATE = EOMONTH(DATEFROMPARTS(@PrmYear, @PrmMonth, 1));
+
+SELECT
+      emp.Code                                  AS [Employee Code]
+    , emp.Status
+    , emp.CivilID
+    , emp.Mobile
+    , bank.NameEn                               AS [Bank Name]
+    , bank.Code                                 AS BankCode
+    , empBank.StartDate
+    , empBank.IBAN                              AS [Bank IBAN]
+    , empBank.AccountNum
+    , orgUnit.DisplayName                       AS OrgUnit          -- see rewrite note 1
+    , emp.FullNameEn                            AS [Employee Name]
+    , subGroup.NameEn                           AS Grade
+    , grp.NameEn                                AS [Salary Profile]
+    , jobTitle.NameEn                           AS Jobtitle
+    , emp.JoiningDate                           AS [Joining Date]
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srdNet.Amount                             AS [Net Pay]
+    , payrollArea.Name                          AS [Payroll Area]
+    , payrollArea.Code                          AS [Payroll Area Code]
+    , basicPayCurrency.CurrencyShortFormEn      AS Currency
+    , CAST(NULL AS VARBINARY(MAX))              AS CompanyLogo      -- see rewrite note 2
+    , UPPER(CASE
+        WHEN sr.PayrollRunType = 0 THEN
+            CASE WHEN @PrmEncashment = 1
+                 THEN 'LEAVE ENCASHMENT PAYSLIP FOR THE MONTH : ' + DATENAME(Month, sr.ForPeriod) + '-' + CONVERT(VARCHAR(10), @PrmYear)
+                 ELSE 'REGULAR PAYSLIP FOR THE MONTH : '          + DATENAME(Month, sr.ForPeriod) + '-' + CONVERT(VARCHAR(10), @PrmYear)
+            END
+        WHEN sr.PayrollRunType = 1 THEN
+            CASE ISNULL(reason.NameEn, '')
+                 WHEN 'Advance Leave'  THEN 'LEAVE SALARY PAYSLIP'
+                 WHEN 'End Of Service' THEN 'END OF SERVICE SETTLEMENT'
+            END
+      END)                                      AS HeaderText
+    , CASE WHEN sr.PayrollRunType = 1 AND ISNULL(reason.NameEn, '') = 'End Of Service'
+           THEN separation.LastDayInService END AS LastDayInService
+    , passport.DocumentNum                      AS PassportNo
+    , passport.ExpiryDate                       AS PassportExpiryDate
+    , civilId.ExpiryDate                        AS CivilIdExpiryDate
+    , sponsor.NameEn                            AS SponsorEn
+
+FROM Employees emp
+
+INNER JOIN SalaryRegisters sr
+        ON sr.EmployeeId = emp.Id
+       AND sr.TenantId   = @TenantId
+       AND sr.IsDeleted  = 0
+
+-- Legacy: WageType IN (SELECT OID FROM WageType WHERE Code = 9000). The net-pay carrier row.
+INNER JOIN SalaryRegisterDetails srdNet
+        ON srdNet.SalaryRegisterId = sr.Id
+       AND srdNet.TenantId         = @TenantId
+       AND srdNet.IsDeleted        = 0
+INNER JOIN WageTypes wtNet
+        ON wtNet.Id       = srdNet.WageTypeId
+       AND wtNet.Code     = '9000'
+       AND wtNet.TenantId = @TenantId
+       AND wtNet.IsDeleted = 0
+
+LEFT JOIN EmployeeOrgAssignments eoa
+       ON eoa.EmployeeId = emp.Id
+      AND eoa.TenantId   = @TenantId
+      AND eoa.IsDeleted  = 0
+      AND @PaySlipDate BETWEEN eoa.StartDate AND eoa.EndDate
+LEFT JOIN JobTitles      jobTitle     ON jobTitle.Id     = eoa.JobTitleId        AND jobTitle.TenantId     = @TenantId AND jobTitle.IsDeleted     = 0
+LEFT JOIN PayrollAreas   payrollArea  ON payrollArea.Id  = eoa.PayrollAreaId     AND payrollArea.TenantId  = @TenantId AND payrollArea.IsDeleted  = 0
+LEFT JOIN EmployeeGroups grp          ON grp.Id          = eoa.EmployeeGroupId   AND grp.TenantId          = @TenantId AND grp.IsDeleted          = 0
+LEFT JOIN EmployeeSubGroups subGroup  ON subGroup.Id     = eoa.EmployeeSubGroupId AND subGroup.TenantId    = @TenantId AND subGroup.IsDeleted     = 0
+LEFT JOIN AbpOrganizationUnits orgUnit ON orgUnit.Id     = eoa.OrganizationUnitId AND orgUnit.TenantId     = @TenantId AND orgUnit.IsDeleted      = 0
+
+LEFT JOIN EmployeeSponsors empSponsor
+       ON empSponsor.EmployeeId = emp.Id
+      AND empSponsor.TenantId   = @TenantId
+      AND empSponsor.IsDeleted  = 0
+      AND @PaySlipDate BETWEEN empSponsor.StartDate AND empSponsor.EndDate
+LEFT JOIN Sponsors sponsor ON sponsor.Id = empSponsor.SponsorId AND sponsor.TenantId = @TenantId AND sponsor.IsDeleted = 0
+
+LEFT JOIN EmployeeBanks empBank
+       ON empBank.EmployeeId = emp.Id
+      AND empBank.TenantId   = @TenantId
+      AND empBank.IsDeleted  = 0
+      AND @PaySlipDate BETWEEN empBank.StartDate AND empBank.EndDate
+LEFT JOIN Banks bank ON bank.Id = empBank.BankId AND bank.TenantId = @TenantId AND bank.IsDeleted = 0
+
+-- Latest passport / civil-id document. Legacy used a correlated "OID IN (SELECT TOP 1 ...)"; kept as
+-- an OUTER APPLY, which expresses the same "one most-recently-expiring document" intent and lets the
+-- optimiser see the correlation.
+OUTER APPLY (
+    SELECT TOP 1 ed.DocumentNum, ed.ExpiryDate
+    FROM EmployeeDocuments ed
+    JOIN DocumentTypes dt ON dt.Id = ed.DocumentTypeId AND dt.TenantId = @TenantId AND dt.IsDeleted = 0
+    WHERE ed.EmployeeId = emp.Id AND ed.TenantId = @TenantId AND ed.IsDeleted = 0
+      AND dt.NameEn LIKE '%passport%'
+    ORDER BY ed.ExpiryDate DESC
+) passport
+OUTER APPLY (
+    SELECT TOP 1 ed.DocumentNum, ed.ExpiryDate
+    FROM EmployeeDocuments ed
+    JOIN DocumentTypes dt ON dt.Id = ed.DocumentTypeId AND dt.TenantId = @TenantId AND dt.IsDeleted = 0
+    WHERE ed.EmployeeId = emp.Id AND ed.TenantId = @TenantId AND ed.IsDeleted = 0
+      AND dt.Code = '2'
+    ORDER BY ed.ExpiryDate DESC
+) civilId
+
+-- Currency of the employee's most recent BASIC PAY line -- see rewrite note 4.
+OUTER APPLY (
+    SELECT TOP 1 cur.CurrencyShortFormEn
+    FROM EmployeeBasicPays ebp
+    JOIN EmployeeBasicPayDetails ebpd ON ebpd.EmployeeBasicPayId = ebp.Id AND ebpd.TenantId = @TenantId AND ebpd.IsDeleted = 0
+    JOIN WageTypes wtBasic ON wtBasic.Id = ebpd.WageTypeId AND wtBasic.Code = '1000' AND wtBasic.TenantId = @TenantId AND wtBasic.IsDeleted = 0
+    LEFT JOIN Currencies cur ON cur.Id = ebpd.CurrencyId AND cur.TenantId = @TenantId AND cur.IsDeleted = 0
+    WHERE ebp.EmployeeId = emp.Id AND ebp.TenantId = @TenantId AND ebp.IsDeleted = 0
+    ORDER BY ebp.StartDate DESC
+) basicPayCurrency
+
+LEFT JOIN PayrollReasonTypes reason
+       ON reason.Id = sr.PayrollReasonTypeId AND reason.TenantId = @TenantId AND reason.IsDeleted = 0
+
+OUTER APPLY (
+    SELECT TOP 1 es.LastDayInService
+    FROM EmployeeSeparations es
+    WHERE es.EmployeeId = emp.Id AND es.TenantId = @TenantId AND es.IsDeleted = 0
+    ORDER BY es.LastDayInService DESC
+) separation
+
+WHERE emp.TenantId  = @TenantId
+  AND emp.IsDeleted = 0
+  AND ((@PrmEmployeeStatus &lt;&gt; -1 AND emp.Status = @PrmEmployeeStatus) OR @PrmEmployeeStatus = -1)
+  AND sr.InPeriod = sr.ForPeriod
+  AND DATEPART(Month, sr.InPeriod) = @PrmMonth
+  AND DATEPART(Year,  sr.InPeriod) = @PrmYear
+  AND sr.PayrollRunType = @PrmPayrollRunType
+  AND (
+        (ISNULL(@PrmEmpCode, '') &lt;&gt; '' AND emp.Code = @PrmEmpCode)
+     OR (ISNULL(@PrmEmpCode, '') =  '' AND ISNULL(@PrmPayrollArea, '') &lt;&gt; '' AND payrollArea.Name = @PrmPayrollArea)
+      )
+ORDER BY
+    -- Legacy sort key preserved verbatim: numeric codes right-aligned zero-padded to 20,
+    -- non-numeric left-aligned. (The legacy Replicate('',21) is a no-op; kept for byte parity.)
+    CASE WHEN ISNUMERIC(emp.Code) = 1 THEN RIGHT(REPLICATE('0', 21) + emp.Code, 20)
+         WHEN ISNUMERIC(emp.Code) = 0 THEN LEFT(emp.Code + REPLICATE('', 21), 20)
+         ELSE emp.Code
+    END;
+</SqlCommand>
+      </PayslipOrgV2Query>
+      <OvertimeQuery Ref="14" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>OvertimeQuery</Alias>
+        <Columns isList="true" count="5">
+          <value>Code,System.String</value>
+          <value>FullNameEn,System.String</value>
+          <value>Type,System.String</value>
+          <value>ActualHrs,System.Double</value>
+          <value>EndOfMonth,System.DateTime</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>400cf3b0a3034363b1fb69ce48770c2f</Key>
+        <Name>OvertimeQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: OvertimeQuery (srptPayslipOvertime subreport)
+-- MECHANICAL rewrite: table pluralisation + OID/FK renames + TenantId/IsDeleted.
+-- EOMonth(EffectiveDate) = @ForPeriod is kept verbatim: @ForPeriod is always a month-end date.
+SELECT
+      emp.Code
+    , emp.FullNameEn
+    , ot.NameEn                              AS Type
+    , SUM(eot.ApprovedOvertimeHours)         AS ActualHrs
+    , EOMONTH(eot.EffectiveDate)             AS EndOfMonth
+FROM EmployeeOvertimes eot
+LEFT JOIN OvertimeTypes ot ON ot.Id  = eot.OvertimeTypeId AND ot.TenantId  = @TenantId AND ot.IsDeleted  = 0
+LEFT JOIN Employees     emp ON emp.Id = eot.EmployeeId     AND emp.TenantId = @TenantId AND emp.IsDeleted = 0
+WHERE eot.TenantId  = @TenantId
+  AND eot.IsDeleted = 0
+  AND emp.Code = @empcode
+  AND EOMONTH(eot.EffectiveDate) = @ForPeriod
+GROUP BY emp.Code, emp.FullNameEn, ot.NameEn, EOMONTH(eot.EffectiveDate);
+</SqlCommand>
+      </OvertimeQuery>
+      <BasicPayQuery Ref="15" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>BasicPayQuery</Alias>
+        <Columns isList="true" count="7">
+          <value>Code,System.String</value>
+          <value>FullNameEn,System.String</value>
+          <value>WageType,System.String</value>
+          <value>Amount,System.Double</value>
+          <value>StartDate,System.DateTime</value>
+          <value>EndDate,System.DateTime</value>
+          <value>Currency,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>05b62118cf324564b219dc438aa1d12b</Key>
+        <Name>BasicPayQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: BasicPayQuery (srptPayslipBasicPay subreport)
+-- MECHANICAL rewrite. Note EmployeeBasicPayDetail.Currency -&gt; EmployeeBasicPayDetails.CurrencyId.
+SELECT
+      emp.Code
+    , emp.FullNameEn
+    , wt.NameEn                    AS WageType
+    , ebpd.Amount
+    , ebp.StartDate
+    , ebp.EndDate
+    , cur.CurrencyShortFormEn      AS Currency
+FROM EmployeeBasicPays ebp
+LEFT JOIN EmployeeBasicPayDetails ebpd ON ebpd.EmployeeBasicPayId = ebp.Id  AND ebpd.TenantId = @TenantId AND ebpd.IsDeleted = 0
+LEFT JOIN WageTypes  wt  ON wt.Id  = ebpd.WageTypeId  AND wt.TenantId  = @TenantId AND wt.IsDeleted  = 0
+LEFT JOIN Employees  emp ON emp.Id = ebp.EmployeeId   AND emp.TenantId = @TenantId AND emp.IsDeleted = 0
+LEFT JOIN Currencies cur ON cur.Id = ebpd.CurrencyId  AND cur.TenantId = @TenantId AND cur.IsDeleted = 0
+WHERE ebp.TenantId  = @TenantId
+  AND ebp.IsDeleted = 0
+  AND emp.Code = @empcode
+  AND ebp.StartDate &lt;= @ForPeriod
+  AND ebp.EndDate   &gt;= @ForPeriod;
+</SqlCommand>
+      </BasicPayQuery>
+      <LeaveEncashQuery Ref="16" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>LeaveEncashQuery</Alias>
+        <Columns isList="true" count="11">
+          <value>Employee_x0020_Code,System.String</value>
+          <value>Employee_x0020_Name,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Amount,System.Double</value>
+          <value>Number,System.Double</value>
+          <value>Rate,System.Double</value>
+          <value>Wage_x0020_Type,System.String</value>
+          <value>BillingType,System.Int32</value>
+          <value>Currency,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>bc3a682a9bbb407cbb2bfc4c710b952c</Key>
+        <Name>LeaveEncashQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>PrmEmpCode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmEmpCode_x005D__x0029_,12,4000</value>
+          <value>PrmMonth,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmMonth_x005D__x0029_,8,0</value>
+          <value>PrmPayrollRunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmPayrollRunType_x005D__x0029_,8,0</value>
+          <value>PrmYear,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmYear_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: LeaveEncashQuery (srptPayslipLeaveEncashment subreport)
+-- MECHANICAL rewrite + the Code-quoting and basic-pay-currency notes from PayslipEarningQuery.
+-- Wage type '1052' is a business code and carries over unchanged.
+SELECT
+      emp.Code        AS [Employee Code]
+    , emp.FullNameEn  AS [Employee Name]
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Amount
+    , srd.Number
+    , srd.Rate
+    , wt.NameEn       AS [Wage Type]
+    , wt.BillingType
+    , basicPayCurrency.CurrencyShortFormEn AS Currency
+FROM Employees emp
+INNER JOIN SalaryRegisters sr        ON sr.EmployeeId = emp.Id       AND sr.TenantId  = @TenantId AND sr.IsDeleted  = 0
+INNER JOIN SalaryRegisterDetails srd ON srd.SalaryRegisterId = sr.Id AND srd.TenantId = @TenantId AND srd.IsDeleted = 0 AND srd.Amount &lt;&gt; 0
+INNER JOIN WageTypes wt              ON wt.Id = srd.WageTypeId       AND wt.TenantId  = @TenantId AND wt.IsDeleted  = 0
+                                    AND wt.BillingType = 0 AND wt.Code &lt;&gt; '9000'
+OUTER APPLY (
+    SELECT TOP 1 cur.CurrencyShortFormEn
+    FROM EmployeeBasicPays ebp
+    JOIN EmployeeBasicPayDetails ebpd ON ebpd.EmployeeBasicPayId = ebp.Id AND ebpd.TenantId = @TenantId AND ebpd.IsDeleted = 0
+    JOIN WageTypes wtBasic ON wtBasic.Id = ebpd.WageTypeId AND wtBasic.Code = '1000' AND wtBasic.TenantId = @TenantId AND wtBasic.IsDeleted = 0
+    LEFT JOIN Currencies cur ON cur.Id = ebpd.CurrencyId AND cur.TenantId = @TenantId AND cur.IsDeleted = 0
+    WHERE ebp.EmployeeId = emp.Id AND ebp.TenantId = @TenantId AND ebp.IsDeleted = 0
+    ORDER BY ebp.StartDate DESC
+) basicPayCurrency
+WHERE emp.TenantId = @TenantId AND emp.IsDeleted = 0
+  AND emp.Code = @PrmEmpCode
+  AND sr.InPeriod = sr.ForPeriod
+  AND DATEPART(Month, sr.InPeriod) = @PrmMonth
+  AND DATEPART(Year,  sr.InPeriod) = @PrmYear
+  AND sr.PayrollRunType = @PrmPayrollRunType
+  AND wt.Code IN ('1052');
+</SqlCommand>
+      </LeaveEncashQuery>
+      <LeaveInfoQuery Ref="17" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>LeaveInfoQuery</Alias>
+        <Columns isList="true" count="15">
+          <value>Code,System.String</value>
+          <value>FullNameEn,System.String</value>
+          <value>FullNameAr,System.String</value>
+          <value>AbsenceTypeEn,System.String</value>
+          <value>AbsenceTypeAr,System.String</value>
+          <value>StartDate,System.DateTime</value>
+          <value>EndDate,System.DateTime</value>
+          <value>StartTime,System.DateTime</value>
+          <value>EndTime,System.DateTime</value>
+          <value>AbsenceHours,System.Double</value>
+          <value>TotalLeaveDays,System.Double</value>
+          <value>CalendarDays,System.Double</value>
+          <value>PaymentDate,System.DateTime</value>
+          <value>ReturnDate,System.DateTime</value>
+          <value>LeavePaymentType,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>ec4ef449cd4c4193aacd6f3a3c7955dc</Key>
+        <Name>LeaveInfoQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>PrmEmpCode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmEmpCode_x005D__x0029_,12,4000</value>
+          <value>PrmMonth,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmMonth_x005D__x0029_,8,0</value>
+          <value>PrmPayrollRunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmPayrollRunType_x005D__x0029_,8,0</value>
+          <value>PrmYear,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_PrmYear_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: LeaveInfoQuery (srptPayslipLeaveInfo subreport; off-cycle runs only)
+-- MECHANICAL rewrite. The "AND @PrmPayrollRunType = 1" guard at the end is legacy's way of making the
+-- subreport return nothing on a regular run; kept verbatim rather than moved into report logic.
+SELECT
+      emp.Code
+    , emp.FullNameEn
+    , emp.FullNameAr
+    , at.NameEn AS AbsenceTypeEn
+    , at.NameAr AS AbsenceTypeAr
+    , ea.StartDate
+    , ea.EndDate
+    , ea.StartTime
+    , ea.EndTime
+    , ea.AbsenceHours
+    , ea.TotalLeaveDays
+    , ea.CalendarDays
+    , ea.PaymentDate
+    , ea.ReturnDate
+    , CASE ea.LeavePaymentType
+        WHEN 0 THEN 'Pay With Payroll'
+        WHEN 1 THEN 'Pay In Advance'
+        ELSE ''
+      END AS LeavePaymentType
+FROM EmployeeAbsences ea
+LEFT JOIN Employees    emp ON emp.Id = ea.EmployeeId    AND emp.TenantId = @TenantId AND emp.IsDeleted = 0
+LEFT JOIN AbsenceTypes at  ON at.Id  = ea.AbsenceTypeId AND at.TenantId  = @TenantId AND at.IsDeleted  = 0
+WHERE ea.TenantId = @TenantId AND ea.IsDeleted = 0
+  AND ea.LeavePaymentType = 2
+  AND emp.Code = @PrmEmpCode
+  AND ea.PaymentDate &gt;= DATEFROMPARTS(@PrmYear, @PrmMonth, 1)
+  AND ea.PaymentDate &lt;= EOMONTH(DATEFROMPARTS(@PrmYear, @PrmMonth, 1))
+  AND @PrmPayrollRunType = 1;
+</SqlCommand>
+      </LeaveInfoQuery>
+      <PayslipIndemnityQuery Ref="18" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipIndemnityQuery</Alias>
+        <Columns isList="true" count="7">
+          <value>Employee_x0020_Code,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Number,System.Double</value>
+          <value>Wage_x0020_Type,System.String</value>
+          <value>OID,System.Int32</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>f0a38a34103046849105ae82d01023c3</Key>
+        <Name>PayslipIndemnityQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>InPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_InPeriod_x005D__x0029_,4,0</value>
+          <value>RunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_RunType_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayslipIndemnityQuery (srptPayslipIndemnity subreport)
+-- MECHANICAL rewrite. Wage-type Codes stay as the legacy business codes (4004..4018) -- these ARE
+-- codes, not row ids -- but must be quoted now that Code is nvarchar (see PayslipEarningQuery note).
+SELECT
+      emp.Code    AS [Employee Code]
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Number
+    , wt.NameEn   AS [Wage Type]
+    , wt.Id       AS WageTypeId
+FROM Employees emp
+INNER JOIN SalaryRegisters sr        ON sr.EmployeeId = emp.Id           AND sr.TenantId  = @TenantId AND sr.IsDeleted  = 0
+INNER JOIN SalaryRegisterDetails srd ON srd.SalaryRegisterId = sr.Id     AND srd.TenantId = @TenantId AND srd.IsDeleted = 0
+INNER JOIN WageTypes wt              ON wt.Id = srd.WageTypeId           AND wt.TenantId  = @TenantId AND wt.IsDeleted  = 0
+WHERE emp.TenantId = @TenantId AND emp.IsDeleted = 0
+  AND wt.Code IN ('4004', '4005', '4006', '4017', '4018')
+  AND emp.Code          = @empcode
+  AND sr.ForPeriod      = @ForPeriod
+  AND sr.InPeriod       = @InPeriod
+  AND sr.PayrollRunType = @RunType;
+</SqlCommand>
+      </PayslipIndemnityQuery>
+      <PayslipWorkingDayQuery Ref="19" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipWorkingDayQuery</Alias>
+        <Columns isList="true" count="6">
+          <value>Employee_x0020_Code,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Number,System.Double</value>
+          <value>Wage_x0020_Type,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>9b86d379449f4449bba3cd9cc9dc4018</Key>
+        <Name>PayslipWorkingDayQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>InPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_InPeriod_x005D__x0029_,4,0</value>
+          <value>RunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_RunType_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayslipWorkingDayQuery (srptPayslipWorkingDays subreport)
+-- MECHANICAL rewrite; see PayslipIndemnityQuery for the Code-quoting note.
+SELECT
+      emp.Code    AS [Employee Code]
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Number
+    , wt.NameEn   AS [Wage Type]
+FROM Employees emp
+INNER JOIN SalaryRegisters sr        ON sr.EmployeeId = emp.Id       AND sr.TenantId  = @TenantId AND sr.IsDeleted  = 0
+INNER JOIN SalaryRegisterDetails srd ON srd.SalaryRegisterId = sr.Id AND srd.TenantId = @TenantId AND srd.IsDeleted = 0
+INNER JOIN WageTypes wt              ON wt.Id = srd.WageTypeId       AND wt.TenantId  = @TenantId AND wt.IsDeleted  = 0
+WHERE emp.TenantId = @TenantId AND emp.IsDeleted = 0
+  AND wt.Code IN ('4007', '4008', '4009', '4011', '4014')
+  AND emp.Code          = @empcode
+  AND sr.ForPeriod      = @ForPeriod
+  AND sr.InPeriod       = @InPeriod
+  AND sr.PayrollRunType = @RunType;
+</SqlCommand>
+      </PayslipWorkingDayQuery>
+      <PayslipAttendanceQuery Ref="20" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipAttendanceQuery</Alias>
+        <Columns isList="true" count="8">
+          <value>Employee_x0020_Code,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Number,System.Double</value>
+          <value>Wage_x0020_Type,System.String</value>
+          <value>oid,System.Int32</value>
+          <value>Code,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>89665077cadb43509f10d6aa863af49a</Key>
+        <Name>PayslipAttendanceQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>InPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_InPeriod_x005D__x0029_,4,0</value>
+          <value>RunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_RunType_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayslipAttendanceQuery (srptPayslipAttendance subreport)
+-- MECHANICAL rewrite. Legacy listed code 4022 twice in the IN list -- harmless, de-duplicated here.
+SELECT
+      emp.Code    AS [Employee Code]
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Number
+    , wt.NameEn   AS [Wage Type]
+    , wt.Id       AS WageTypeId
+    , wt.Code
+FROM SalaryRegisters sr
+INNER JOIN Employees emp             ON emp.Id = sr.EmployeeId       AND emp.TenantId = @TenantId AND emp.IsDeleted = 0
+INNER JOIN SalaryRegisterDetails srd ON srd.SalaryRegisterId = sr.Id AND srd.TenantId = @TenantId AND srd.IsDeleted = 0
+INNER JOIN WageTypes wt              ON wt.Id = srd.WageTypeId       AND wt.TenantId  = @TenantId AND wt.IsDeleted  = 0
+WHERE sr.TenantId = @TenantId AND sr.IsDeleted = 0
+  AND wt.Code IN ('4021', '4022', '4000', '4002')
+  AND emp.Code          = @empcode
+  AND sr.ForPeriod      = @ForPeriod
+  AND sr.InPeriod       = @InPeriod
+  AND sr.PayrollRunType = @RunType;
+</SqlCommand>
+      </PayslipAttendanceQuery>
+      <PayslipEarningQuery Ref="21" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipEarningQuery</Alias>
+        <Columns isList="true" count="11">
+          <value>Code,System.String</value>
+          <value>FullNameEn,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Amount,System.Double</value>
+          <value>Number,System.Double</value>
+          <value>Rate,System.Double</value>
+          <value>WageType,System.String</value>
+          <value>BillingType,System.Int32</value>
+          <value>Currency,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>a4361ac3047d4e6782853a598d0904cb</Key>
+        <Name>PayslipEarningQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>InPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_InPeriod_x005D__x0029_,4,0</value>
+          <value>RunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_RunType_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayslipEarningQuery (srptPaySlipEarningEn subreport -- the earnings block)
+--
+-- MECHANICAL rewrite, except:
+--   * "wagetype.code &lt;&gt; 9000" compares an nvarchar Code to a numeric literal in the legacy schema.
+--     HCMv3 WageTypes.Code is nvarchar, so it is quoted: &lt;&gt; '9000'. Left unquoted SQL Server would
+--     implicitly convert the WHOLE column to int and throw on any non-numeric code.
+--   * EmployeeBasicPayDetail.WageType = 1 was a RAW LEGACY PRIMARY KEY meaning Code '1000'
+--     (Basic Salary). HCMv3 has an unrelated wage type whose Code is literally '1'
+--     (Employee PIFSS Ded), so the literal must NOT be carried over. See PORTING-NOTES.md.
+SELECT
+      emp.Code
+    , emp.FullNameEn
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Amount
+    , ROUND(srd.Number, 3)     AS Number
+    , ROUND(srd.Rate,   3)     AS Rate
+    , wt.NameEn                AS WageType
+    , wt.BillingType
+    , basicPayCurrency.CurrencyShortFormEn AS Currency
+FROM Employees emp
+INNER JOIN SalaryRegisters sr
+        ON sr.EmployeeId = emp.Id AND sr.TenantId = @TenantId AND sr.IsDeleted = 0
+INNER JOIN SalaryRegisterDetails srd
+        ON srd.SalaryRegisterId = sr.Id AND srd.TenantId = @TenantId AND srd.IsDeleted = 0
+       AND srd.Amount &lt;&gt; 0
+INNER JOIN WageTypes wt
+        ON wt.Id = srd.WageTypeId AND wt.TenantId = @TenantId AND wt.IsDeleted = 0
+       AND wt.BillingType = 0
+       AND ISNULL(wt.DontImpactNetPay, 0) = 0
+       AND wt.Code &lt;&gt; '9000'
+OUTER APPLY (
+    SELECT TOP 1 cur.CurrencyShortFormEn
+    FROM EmployeeBasicPays ebp
+    JOIN EmployeeBasicPayDetails ebpd ON ebpd.EmployeeBasicPayId = ebp.Id AND ebpd.TenantId = @TenantId AND ebpd.IsDeleted = 0
+    JOIN WageTypes wtBasic ON wtBasic.Id = ebpd.WageTypeId AND wtBasic.Code = '1000' AND wtBasic.TenantId = @TenantId AND wtBasic.IsDeleted = 0
+    LEFT JOIN Currencies cur ON cur.Id = ebpd.CurrencyId AND cur.TenantId = @TenantId AND cur.IsDeleted = 0
+    WHERE ebp.EmployeeId = emp.Id AND ebp.TenantId = @TenantId AND ebp.IsDeleted = 0
+    ORDER BY ebp.StartDate DESC
+) basicPayCurrency
+WHERE emp.TenantId = @TenantId AND emp.IsDeleted = 0
+  AND emp.Code = @empcode
+  AND sr.ForPeriod      = @ForPeriod
+  AND sr.InPeriod       = @InPeriod
+  AND sr.PayrollRunType = @RunType;
+</SqlCommand>
+      </PayslipEarningQuery>
+      <PayslipDeductionQuery Ref="22" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>PayslipDeductionQuery</Alias>
+        <Columns isList="true" count="11">
+          <value>Code,System.String</value>
+          <value>FullNameEn,System.String</value>
+          <value>ForPeriod,System.DateTime</value>
+          <value>InPeriod,System.DateTime</value>
+          <value>PayrollRunType,System.Int32</value>
+          <value>Amount,System.Double</value>
+          <value>Number,System.Double</value>
+          <value>Rate,System.Double</value>
+          <value>WageType,System.String</value>
+          <value>BillingType,System.Int32</value>
+          <value>Currency,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Key>071fb9a8736a44c2b0ab11ecaed7fb9c</Key>
+        <Name>PayslipDeductionQuery</Name>
+        <NameInSource>db</NameInSource>
+        <Parameters isList="true" count="5">
+          <value>empcode,_x0028_System.String_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_empcode_x005D__x0029_,12,4000</value>
+          <value>ForPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_ForPeriod_x005D__x0029_,4,0</value>
+          <value>InPeriod,_x0028_System.DateTime_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_InPeriod_x005D__x0029_,4,0</value>
+          <value>RunType,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_RunType_x005D__x0029_,8,0</value>
+          <value>TenantId,_x0028_System.Int32_x002C__x0020_mscorlib_x002C__x0020_Version_x003D_4.0.0.0_x002C__x0020_Culture_x003D_neutral_x002C__x0020_PublicKeyToken_x003D_b77a5c561934e089_x0029__x0028__x005B_TenantId_x005D__x0029_,8,0</value>
+        </Parameters>
+        <SqlCommand>-- rptPayslipEn :: PayslipDeductionQuery (srptPaySlipDeductionEn subreport -- the deductions block)
+--
+-- NON-MECHANICAL: legacy carried "SRdetail.WageType &lt;&gt; 65". 65 is a RAW LEGACY PRIMARY KEY, and in
+-- HRMS_RCF WageType OID 65 = Code '9000' (Net Pay) -- i.e. the clause means "do not print the net-pay
+-- carrier row as a deduction", exactly mirroring the earnings query's "code &lt;&gt; 9000". It is a real
+-- rule, not dead legacy noise, and is ported as a Code comparison.
+-- (The FastReport pilot in HCMv3.Application/Reports/ReportsAppService.cs dropped this filter on the
+-- grounds that 65 had "no stable meaning in HCMv3" -- worth revisiting there.)
+SELECT
+      emp.Code
+    , emp.FullNameEn
+    , sr.ForPeriod
+    , sr.InPeriod
+    , sr.PayrollRunType
+    , srd.Amount
+    , ROUND(srd.Number, 3)     AS Number
+    , ROUND(srd.Rate,   3)     AS Rate
+    , wt.NameEn                AS WageType
+    , wt.BillingType
+    , basicPayCurrency.CurrencyShortFormEn AS Currency
+FROM Employees emp
+INNER JOIN SalaryRegisters sr
+        ON sr.EmployeeId = emp.Id AND sr.TenantId = @TenantId AND sr.IsDeleted = 0
+INNER JOIN SalaryRegisterDetails srd
+        ON srd.SalaryRegisterId = sr.Id AND srd.TenantId = @TenantId AND srd.IsDeleted = 0
+       AND srd.Amount &lt;&gt; 0
+INNER JOIN WageTypes wt
+        ON wt.Id = srd.WageTypeId AND wt.TenantId = @TenantId AND wt.IsDeleted = 0
+       AND wt.BillingType = 1
+       AND ISNULL(wt.DontImpactNetPay, 0) = 0
+       AND wt.Code &lt;&gt; '9000'
+OUTER APPLY (
+    SELECT TOP 1 cur.CurrencyShortFormEn
+    FROM EmployeeBasicPays ebp
+    JOIN EmployeeBasicPayDetails ebpd ON ebpd.EmployeeBasicPayId = ebp.Id AND ebpd.TenantId = @TenantId AND ebpd.IsDeleted = 0
+    JOIN WageTypes wtBasic ON wtBasic.Id = ebpd.WageTypeId AND wtBasic.Code = '1000' AND wtBasic.TenantId = @TenantId AND wtBasic.IsDeleted = 0
+    LEFT JOIN Currencies cur ON cur.Id = ebpd.CurrencyId AND cur.TenantId = @TenantId AND cur.IsDeleted = 0
+    WHERE ebp.EmployeeId = emp.Id AND ebp.TenantId = @TenantId AND ebp.IsDeleted = 0
+    ORDER BY ebp.StartDate DESC
+) basicPayCurrency
+WHERE emp.TenantId = @TenantId AND emp.IsDeleted = 0
+  AND emp.Code = @empcode
+  AND sr.ForPeriod      = @ForPeriod
+  AND sr.InPeriod       = @InPeriod
+  AND sr.PayrollRunType = @RunType;
+</SqlCommand>
+      </PayslipDeductionQuery>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <UserFunctions isList="true" count="0" />
+    <Variables isList="true" count="13">
+      <value>,PrmYear,,,System.Int32,,False,False,True,False</value>
+      <value>,PrmEmployeeStatus,,,System.Int32,,False,False,True,False</value>
+      <value>,InPeriod,,,System.DateTime,,False,False,True,False</value>
+      <value>,RunType,,,System.Int32,,False,False,True,False</value>
+      <value>,PrmEmpCode,,,System.String,,False,False,True,False</value>
+      <value>,PrmPayrollRunType,,,System.Int32,,False,False,True,False</value>
+      <value>,PrmPayrollArea,,,System.String,,False,False,True,False</value>
+      <value>,TenantId,,,System.Int32,,False,False,True,False</value>
+      <value>,PrmEncashment,,,System.Int32,,False,False,True,False</value>
+      <value>,PrmMonth,,,System.Int32,,False,False,True,False</value>
+      <value>,ForPeriod,,,System.DateTime,,False,False,True,False</value>
+      <value>,empcode,,,System.String,,False,False,True,False</value>
+      <value>,LoggedUserName,,,System.String,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>0f200a353dad48069f1f828da460780c</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="10">
+    <Page1 Ref="23" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <ReportHeader4 Ref="24" type="ReportTitleBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,783.36,1.6</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>ReportHeader4</Name>
+          <Page isRef="23" />
+          <Parent isRef="23" />
+        </ReportHeader4>
+        <PageFooter5 Ref="25" type="PageFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,1016.64,783.36,96</ClientRectangle>
+          <Components isList="true" count="3">
+            <xrLabel5 Ref="26" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>11.6,64.32,44.92,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75</Font>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel5</Name>
+              <Page isRef="23" />
+              <Parent isRef="25" />
+              <Text>User :</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel5>
+            <LoggedUserNme Ref="27" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>56.52,64.32,133.22,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75</Font>
+              <Margins>2,2,0,0</Margins>
+              <Name>LoggedUserNme</Name>
+              <Page isRef="23" />
+              <Parent isRef="25" />
+              <Text>{LoggedUserName}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme>
+            <xrLabel3 Ref="28" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>468.42,64.32,309.18,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel3</Name>
+              <Page isRef="23" />
+              <Parent isRef="25" />
+              <Text>{Today}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel3>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>PageFooter5</Name>
+          <Page isRef="23" />
+          <Parent isRef="23" />
+        </PageFooter5>
+        <Detail1 Ref="29" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,61.6,783.36,1032.52</ClientRectangle>
+          <Components isList="true" count="37">
+            <xrLabel13 Ref="30" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,201.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel13</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Salary Profile</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel13>
+            <xrLabel14 Ref="31" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,201.29,267.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel14</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query["Salary Profile"]}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel14>
+            <xrLabel2 Ref="32" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,932.98,96,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75,Bold</Font>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel2</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Remarks :</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+            </xrLabel2>
+            <srptPaySlipOvertimeHoursEn Ref="33" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.16,556.66,384,22.72</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPaySlipOvertimeHoursEn</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>f9ac67ffc0ea4be0bb520ff5b275dd0f</SubReportPageGuid>
+            </srptPaySlipOvertimeHoursEn>
+            <xrLabel35 Ref="34" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,273.29,659.84,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel35</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query["Bank IBAN"]}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel35>
+            <PanelSignature Ref="35" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>5.83,852.65,771.77,37.6</ClientRectangle>
+              <Components isList="true" count="2">
+                <xrLabel7 Ref="36" type="Text" isKey="true">
+                  <Border>All;Black;1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>431.99,9.6,96,22.08</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Tahoma,9,Bold</Font>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>2,2,0,0</Margins>
+                  <Name>xrLabel7</Name>
+                  <Page isRef="23" />
+                  <Parent isRef="35" />
+                  <Text>Reviewed By:</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <VertAlignment>Center</VertAlignment>
+                </xrLabel7>
+                <xrLabel6 Ref="37" type="Text" isKey="true">
+                  <Border>All;Black;1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0.34,9.6,100,22.08</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Tahoma,9,Bold</Font>
+                  <Margins>2,2,0,0</Margins>
+                  <Name>xrLabel6</Name>
+                  <Page isRef="23" />
+                  <Parent isRef="35" />
+                  <Text>Approved By:</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <VertAlignment>Center</VertAlignment>
+                </xrLabel6>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>PanelSignature</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+            </PanelSignature>
+            <srptPaySlipBasicPayEn Ref="38" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.16,579.37,384,22.72</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPaySlipBasicPayEn</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>1a8e97093eba47fba9f568035e0307ae</SubReportPageGuid>
+            </srptPaySlipBasicPayEn>
+            <xrLabel32 Ref="39" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>385.51,249.29,141.36,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel32</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Passport Exp Date</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel32>
+            <xrLabel33 Ref="40" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>526.87,249.29,250.72,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel33</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{Format("{0:dd-MM-yyyy}", PayslipOrgV2Query.PassportExpiryDate)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel33>
+            <xrLabel23 Ref="41" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>526.87,201.29,250.73,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel23</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query.Jobtitle}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel23>
+            <xrLabel24 Ref="42" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>385.51,201.29,141.36,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel24</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Designation</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel24>
+            <xrLabel25 Ref="43" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>385.51,225.29,141.36,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel25</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Indemnity Start Date</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel25>
+            <xrLabel26 Ref="44" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>526.87,225.29,250.73,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel26</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{Format("{0:dd-MM-yyyy}", PayslipOrgV2Query["Joining Date"])}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel26>
+            <xrLabel21 Ref="45" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>526.87,177.29,250.73,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel21</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query.Grade}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel21>
+            <xrLabel22 Ref="46" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>385.51,177.29,141.36,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel22</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Grade</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel22>
+            <xrLabel17 Ref="47" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,249.29,267.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel17</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query["Bank Name"]}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel17>
+            <xrLabel18 Ref="48" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,249.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel18</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Bank Name</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel18>
+            <xrLabel19 Ref="49" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,273.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel19</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Bank Account</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel19>
+            <xrLabel15 Ref="50" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,225.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel15</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Joining Date</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel15>
+            <xrLabel16 Ref="51" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,225.29,267.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel16</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{Format("{0:dd-MM-yyyy}", PayslipOrgV2Query["Joining Date"])}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel16>
+            <xrLabel11 Ref="52" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,177.29,267.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel11</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{Format("{0:#0.000}", PayslipOrgV2Query["Employee Name"])}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel11>
+            <xrLabel12 Ref="53" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,177.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel12</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Employee Name</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel12>
+            <xrLabel9 Ref="54" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>385.51,153.29,141.36,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel9</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>OrgUnit</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel9>
+            <xrLabel10 Ref="55" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>526.87,153.29,250.73,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel10</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query.OrgUnit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel10>
+            <xrLabel1 Ref="56" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.16,153.29,111.6,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel1</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>Employee Code</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel1>
+            <xrLabel8 Ref="57" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>117.76,153.29,267.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel8</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query["Employee Code"]}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel8>
+            <srptPayslipLeaveEncashment Ref="58" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.16,535.17,384,21.49</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipLeaveEncashment</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>6abec73893ae4c90803a64aa66224bfc</SubReportPageGuid>
+            </srptPayslipLeaveEncashment>
+            <srptPayslipLeaveInfo Ref="59" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.16,602.09,383.89,21.49</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipLeaveInfo</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>31ce07b8c51346c28659bbb08a9d44a3</SubReportPageGuid>
+            </srptPayslipLeaveInfo>
+            <srptPayslipIndemnityDaysSummaryEn Ref="60" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>257.28,664.45,278.4,134.88</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipIndemnityDaysSummaryEn</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>33c525d062cc4cd1a3d101e60a1cc24c</SubReportPageGuid>
+            </srptPayslipIndemnityDaysSummaryEn>
+            <srptPayslipWorkingDaysSummary Ref="61" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>536.7,664.45,240.9,134.88</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipWorkingDaysSummary</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>123b0d258df24da88368ef6b21a72f3e</SubReportPageGuid>
+            </srptPayslipWorkingDaysSummary>
+            <srptPayslipAttendenceSummaryEn Ref="62" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.83,664.45,246.46,134.88</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipAttendenceSummaryEn</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>b7deb1e5e43f4760b5e90d7ae6de4c1a</SubReportPageGuid>
+            </srptPayslipAttendenceSummaryEn>
+            <lblHeader Ref="63" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>5.83,110.4,771.77,28.47</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,11.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>lblHeader</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{PayslipOrgV2Query.HeaderText}</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </lblHeader>
+            <srptPayslipEarning Ref="64" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.16,312.29,379.34,213.11</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipEarning</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>f9d89e24039c4f26afcf1b588463bde5</SubReportPageGuid>
+            </srptPayslipEarning>
+            <srptPayslipDeduction Ref="65" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>398.26,312.29,379.34,211.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>srptPayslipDeduction</Name>
+              <Page isRef="23" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="29" />
+              <SubReportPageGuid>3cc10b813b3b4d98be8bb50f9cbb53a6</SubReportPageGuid>
+            </srptPayslipDeduction>
+            <xrLabel4 Ref="66" type="Text" isKey="true">
+              <Border>Bottom;Black;2;Double;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>600.87,590.29,176.73,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,5</Margins>
+              <Name>xrLabel4</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>{Format(" {0}", PayslipOrgV2Query.Currency+' '+ Round(PayslipOrgV2Query["Net Pay"],3))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel4>
+            <xrLabel31 Ref="67" type="Text" isKey="true">
+              <Border>Bottom;Black;2;Double;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>437.82,590.29,150.44,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,5</Margins>
+              <Name>xrLabel31</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Text>NET AMOUNT PAID :</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel31>
+            <xrPictureBox1 Ref="68" type="Image" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>285.62,9.6,196.14,90.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <IconColor>68, 114, 196</IconColor>
+              <Name>xrPictureBox1</Name>
+              <Page isRef="23" />
+              <Parent isRef="29" />
+              <Stretch>True</Stretch>
+            </xrPictureBox1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipOrgV2Query</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail1</Name>
+          <Page isRef="23" />
+          <Parent isRef="23" />
+          <Sort isList="true" count="0" />
+        </Detail1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>0f322fd82ab545e19252b6e68119bbea</Guid>
+      <Margins>4.8,5.76,0,9.6</Margins>
+      <Name>Page1</Name>
+      <PageHeight>1122.24</PageHeight>
+      <PageWidth>793.92</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </Page1>
+    <sub_srptPaySlipOvertimeHoursEn Ref="69" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader19 Ref="70" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,623.04,46.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrTable1 Ref="71" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,374.4,24</ClientRectangle>
+              <Components isList="true" count="2">
+                <xrTableCell1Panel Ref="72" type="Panel" isKey="true">
+                  <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,274.74,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell1Label Ref="73" type="Text" isKey="true">
+                      <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,274.74,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>5,0,0,0</Margins>
+                      <Name>xrTableCell1Label</Name>
+                      <Page isRef="69" />
+                      <Parent isRef="72" />
+                      <Text> TYPE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell1Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell1Panel</Name>
+                  <Page isRef="69" />
+                  <Parent isRef="71" />
+                </xrTableCell1Panel>
+                <xrTableCell3Panel Ref="74" type="Panel" isKey="true">
+                  <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>274.74,0,99.66,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell3Label Ref="75" type="Text" isKey="true">
+                      <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,99.66,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell3Label</Name>
+                      <Page isRef="69" />
+                      <Parent isRef="74" />
+                      <Text>HOURS</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell3Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell3Panel</Name>
+                  <Page isRef="69" />
+                  <Parent isRef="71" />
+                </xrTableCell3Panel>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>xrTable1</Name>
+              <Page isRef="69" />
+              <Parent isRef="70" />
+            </xrTable1>
+            <xrLabel122 Ref="76" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,374.4,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel122</Name>
+              <Page isRef="69" />
+              <Parent isRef="70" />
+              <Text>OVERTIME HOURS</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel122>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader19</Name>
+          <Page isRef="69" />
+          <Parent isRef="69" />
+        </GroupHeader19>
+        <Detail6 Ref="77" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,106.08,623.04,22.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <LoggedUserNme2 Ref="78" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,274.74,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>LoggedUserNme2</Name>
+              <Page isRef="69" />
+              <Parent isRef="77" />
+              <Text>{OvertimeQuery.Type}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme2>
+            <xrLabel27 Ref="79" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>274.74,0,99.66,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel27</Name>
+              <Page isRef="69" />
+              <Parent isRef="77" />
+              <Text>{Format("{0:#0.000}", OvertimeQuery.ActualHrs)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel27>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>OvertimeQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail6</Name>
+          <Page isRef="69" />
+          <Parent isRef="69" />
+          <Sort isList="true" count="0" />
+        </Detail6>
+        <GroupFooter210 Ref="80" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,168.16,623.04,24</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrLabel34 Ref="81" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>274.74,0,99.66,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel34</Name>
+              <Page isRef="69" />
+              <Parent isRef="80" />
+              <Text>{Format("{0:#0.000}", Sum(Detail6, OvertimeQuery.ActualHrs))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel34>
+            <xrLabel42 Ref="82" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,274.74,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel42</Name>
+              <Page isRef="69" />
+              <Parent isRef="80" />
+              <Text>TOTAL</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel42>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter210</Name>
+          <Page isRef="69" />
+          <Parent isRef="69" />
+        </GroupFooter210>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>f9ac67ffc0ea4be0bb520ff5b275dd0f</Guid>
+      <Margins>0.96,0,0,0</Margins>
+      <Name>sub_srptPaySlipOvertimeHoursEn</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPaySlipOvertimeHoursEn>
+    <sub_srptPaySlipBasicPayEn Ref="83" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader114 Ref="84" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,623.04,44.16</ClientRectangle>
+          <Components isList="true" count="3">
+            <xrLabel62 Ref="85" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,276.1,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel62</Name>
+              <Page isRef="83" />
+              <Parent isRef="84" />
+              <Text> TYPE</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel62>
+            <xrLabel28 Ref="86" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>276.1,22.08,98.3,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel28</Name>
+              <Page isRef="83" />
+              <Parent isRef="84" />
+              <Text>AMOUNT</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel28>
+            <xrLabel123 Ref="87" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,374.4,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel123</Name>
+              <Page isRef="83" />
+              <Parent isRef="84" />
+              <Text>WAGE DETAIL</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel123>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader114</Name>
+          <Page isRef="83" />
+          <Parent isRef="83" />
+        </GroupHeader114>
+        <Detail11 Ref="88" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,104.16,623.04,22.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <LoggedUserNme3 Ref="89" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,276.1,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>LoggedUserNme3</Name>
+              <Page isRef="83" />
+              <Parent isRef="88" />
+              <Text>{BasicPayQuery.WageType}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme3>
+            <xrLabel110 Ref="90" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>276.1,0,98.3,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel110</Name>
+              <Page isRef="83" />
+              <Parent isRef="88" />
+              <Text>{Format("{0:#0.000}", BasicPayQuery.Amount)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel110>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>BasicPayQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail11</Name>
+          <Page isRef="83" />
+          <Parent isRef="83" />
+          <Sort isList="true" count="0" />
+        </Detail11>
+        <GroupFooter215 Ref="91" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,166.24,623.04,24</ClientRectangle>
+          <Components isList="true" count="3">
+            <xrLabel52 Ref="92" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>194.86,0,81.24,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel52</Name>
+              <Page isRef="83" />
+              <Parent isRef="91" />
+              <Text>{BasicPayQuery.Currency}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel52>
+            <xrLabel36 Ref="93" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>276.1,0,98.3,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel36</Name>
+              <Page isRef="83" />
+              <Parent isRef="91" />
+              <Text>{Format("{0:#0.000}", Sum(Detail11, BasicPayQuery.Amount))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel36>
+            <xrLabel43 Ref="94" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,194.86,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel43</Name>
+              <Page isRef="83" />
+              <Parent isRef="91" />
+              <Text>TOTAL</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel43>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter215</Name>
+          <Page isRef="83" />
+          <Parent isRef="83" />
+        </GroupFooter215>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>1a8e97093eba47fba9f568035e0307ae</Guid>
+      <Margins>0.96,0,0,0</Margins>
+      <Name>sub_srptPaySlipBasicPayEn</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPaySlipBasicPayEn>
+    <sub_srptPayslipLeaveEncashment Ref="95" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader119 Ref="96" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,623.04,46.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrTable12 Ref="97" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,365.76,24</ClientRectangle>
+              <Components isList="true" count="4">
+                <xrTableCell1Panel2 Ref="98" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,190.36,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell1Label2 Ref="99" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,190.36,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>5,0,0,0</Margins>
+                      <Name>xrTableCell1Label2</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="98" />
+                      <Text> TYPE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell1Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell1Panel2</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="97" />
+                </xrTableCell1Panel2>
+                <xrTableCell8Panel Ref="100" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>190.36,0,58.5,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell8Label Ref="101" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,58.5,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Arial,8</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Name>xrTableCell8Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="100" />
+                      <Text>No.</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell8Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell8Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="97" />
+                </xrTableCell8Panel>
+                <xrTableCell2Panel Ref="102" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>248.86,0,44.54,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell2Label Ref="103" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,44.54,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell2Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="102" />
+                      <Text>RATE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell2Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell2Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="97" />
+                </xrTableCell2Panel>
+                <xrTableCell3Panel2 Ref="104" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>293.4,0,72.36,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell3Label2 Ref="105" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,72.36,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell3Label2</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="104" />
+                      <Text>AMOUNT</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell3Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell3Panel2</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="97" />
+                </xrTableCell3Panel2>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>xrTable12</Name>
+              <Page isRef="95" />
+              <Parent isRef="96" />
+            </xrTable12>
+            <xrLabel124 Ref="106" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,365.76,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel124</Name>
+              <Page isRef="95" />
+              <Parent isRef="96" />
+              <Text>Leave Encashment</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel124>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader119</Name>
+          <Page isRef="95" />
+          <Parent isRef="95" />
+        </GroupHeader119>
+        <Detail16 Ref="107" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,106.08,623.04,22.08</ClientRectangle>
+          <Components isList="true" count="1">
+            <xrTable2 Ref="108" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,365.76,22.08</ClientRectangle>
+              <Components isList="true" count="4">
+                <xrTableCell4Panel Ref="109" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,190.36,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell4Label Ref="110" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,190.36,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <Margins>10,0,0,0</Margins>
+                      <Name>xrTableCell4Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="109" />
+                      <Text>{LeaveEncashQuery["Wage Type"]}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell4Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell4Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="108" />
+                </xrTableCell4Panel>
+                <xrTableCell9Panel Ref="111" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>190.36,0,58.5,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell9Label Ref="112" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,58.5,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,9</Font>
+                      <HorAlignment>Right</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell9Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="111" />
+                      <Text>{Format("{0:#0.000}", LeaveEncashQuery.Number)}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell9Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell9Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="108" />
+                </xrTableCell9Panel>
+                <xrTableCell6Panel Ref="113" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>248.86,0,44.54,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell6Label Ref="114" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,44.54,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,9</Font>
+                      <HorAlignment>Right</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell6Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="113" />
+                      <Text>{Format("{0:dd\/MM\/yyyy}", LeaveEncashQuery.Rate)}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell6Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell6Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="108" />
+                </xrTableCell6Panel>
+                <xrTableCell5Panel Ref="115" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>293.4,0,72.36,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell5Label Ref="116" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,72.36,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,9</Font>
+                      <HorAlignment>Right</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell5Label</Name>
+                      <Page isRef="95" />
+                      <Parent isRef="115" />
+                      <Text>{Format("{0:#0.000}", LeaveEncashQuery.Amount)}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell5Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell5Panel</Name>
+                  <Page isRef="95" />
+                  <Parent isRef="108" />
+                </xrTableCell5Panel>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>xrTable2</Name>
+              <Page isRef="95" />
+              <Parent isRef="107" />
+            </xrTable2>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>LeaveEncashQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail16</Name>
+          <Page isRef="95" />
+          <Parent isRef="95" />
+          <Sort isList="true" count="0" />
+        </Detail16>
+        <GroupFooter220 Ref="117" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,168.16,623.04,2</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter220</Name>
+          <Page isRef="95" />
+          <Parent isRef="95" />
+        </GroupFooter220>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>6abec73893ae4c90803a64aa66224bfc</Guid>
+      <Margins>0.96,0,0,0</Margins>
+      <Name>sub_srptPayslipLeaveEncashment</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipLeaveEncashment>
+    <sub_srptPayslipLeaveInfo Ref="118" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader124 Ref="119" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,366.72,46.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrTable13 Ref="120" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,365.76,24</ClientRectangle>
+              <Components isList="true" count="3">
+                <xrTableCell1Panel3 Ref="121" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,174.66,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell1Label3 Ref="122" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,174.66,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>5,0,0,0</Margins>
+                      <Name>xrTableCell1Label3</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="121" />
+                      <Text>LEAVE TYPE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell1Label3>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell1Panel3</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="120" />
+                </xrTableCell1Panel3>
+                <xrTableCell8Panel2 Ref="123" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>174.66,0,94.27,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell8Label2 Ref="124" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,94.27,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Arial,8</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>5,0,0,0</Margins>
+                      <Name>xrTableCell8Label2</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="123" />
+                      <Text>START DATE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell8Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell8Panel2</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="120" />
+                </xrTableCell8Panel2>
+                <xrTableCell2Panel2 Ref="125" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>268.93,0,96.83,24</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell2Label2 Ref="126" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,96.83,24</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell2Label2</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="125" />
+                      <Text>END DATE</Text>
+                      <TextBrush>[128:128:128]</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell2Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell2Panel2</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="120" />
+                </xrTableCell2Panel2>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>xrTable13</Name>
+              <Page isRef="118" />
+              <Parent isRef="119" />
+            </xrTable13>
+            <xrLabel125 Ref="127" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,365.76,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel125</Name>
+              <Page isRef="118" />
+              <Parent isRef="119" />
+              <Text>LEAVE DETAIL</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel125>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader124</Name>
+          <Page isRef="118" />
+          <Parent isRef="118" />
+        </GroupHeader124>
+        <Detail21 Ref="128" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,106.08,366.72,22.08</ClientRectangle>
+          <Components isList="true" count="1">
+            <xrTable22 Ref="129" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,365.76,22.08</ClientRectangle>
+              <Components isList="true" count="3">
+                <xrTableCell4Panel2 Ref="130" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,174.66,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell4Label2 Ref="131" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,174.66,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,8.25,Bold</Font>
+                      <Margins>10,0,0,0</Margins>
+                      <Name>xrTableCell4Label2</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="130" />
+                      <Text>{LeaveInfoQuery.AbsenceTypeEn}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell4Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell4Panel2</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="129" />
+                </xrTableCell4Panel2>
+                <xrTableCell6Panel2 Ref="132" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>174.66,0,94.27,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell6Label2 Ref="133" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,94.27,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,9</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell6Label2</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="132" />
+                      <Text>{LeaveInfoQuery.StartDate}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell6Label2>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell6Panel2</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="129" />
+                </xrTableCell6Panel2>
+                <xrTableCell7Panel Ref="134" type="Panel" isKey="true">
+                  <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>268.93,0,96.83,22.08</ClientRectangle>
+                  <Components isList="true" count="1">
+                    <xrTableCell7Label Ref="135" type="Text" isKey="true">
+                      <Border>All;[169:169:169];1;Solid;False;4;Black</Border>
+                      <Brush>Transparent</Brush>
+                      <CanGrow>True</CanGrow>
+                      <ClientRectangle>0,0,96.83,22.08</ClientRectangle>
+                      <Conditions isList="true" count="0" />
+                      <Expressions isList="true" count="0" />
+                      <Font>Tahoma,9</Font>
+                      <HorAlignment>Center</HorAlignment>
+                      <Margins>0,5,0,0</Margins>
+                      <Name>xrTableCell7Label</Name>
+                      <Page isRef="118" />
+                      <Parent isRef="134" />
+                      <Text>{Format("{0:dd\/MM\/yyyy}", LeaveInfoQuery.EndDate)}</Text>
+                      <TextBrush>Black</TextBrush>
+                      <VertAlignment>Center</VertAlignment>
+                    </xrTableCell7Label>
+                  </Components>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Linked>True</Linked>
+                  <Name>xrTableCell7Panel</Name>
+                  <Page isRef="118" />
+                  <Parent isRef="129" />
+                </xrTableCell7Panel>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>xrTable22</Name>
+              <Page isRef="118" />
+              <Parent isRef="128" />
+            </xrTable22>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>LeaveInfoQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail21</Name>
+          <Page isRef="118" />
+          <Parent isRef="118" />
+          <Sort isList="true" count="0" />
+        </Detail21>
+        <GroupFooter225 Ref="136" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,168.16,366.72,2</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter225</Name>
+          <Page isRef="118" />
+          <Parent isRef="118" />
+        </GroupFooter225>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>31ce07b8c51346c28659bbb08a9d44a3</Guid>
+      <Margins>0.96,256.32,0,0</Margins>
+      <Name>sub_srptPayslipLeaveInfo</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipLeaveInfo>
+    <sub_srptPayslipIndemnityDaysSummaryEn Ref="137" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <GroupHeader129 Ref="138" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,254.4,22.08</ClientRectangle>
+          <Components isList="true" count="1">
+            <xrLabel111 Ref="139" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,254.4,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel111</Name>
+              <Page isRef="137" />
+              <Parent isRef="138" />
+              <Text>INDEMNITY DAYS SUMMARY</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel111>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader129</Name>
+          <Page isRef="137" />
+          <Parent isRef="137" />
+        </GroupHeader129>
+        <Detail26 Ref="140" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,82.08,254.4,22.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrLabel37 Ref="141" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,165.33,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel37</Name>
+              <Page isRef="137" />
+              <Parent isRef="140" />
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel37>
+            <xrLabel29 Ref="142" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>165.33,0,89.07,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel29</Name>
+              <Page isRef="137" />
+              <Parent isRef="140" />
+              <Text>{Format("{0:#0.000}", PayslipIndemnityQuery.Number)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel29>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipIndemnityQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail26</Name>
+          <Page isRef="137" />
+          <Parent isRef="137" />
+          <Sort isList="true" count="0" />
+        </Detail26>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>33c525d062cc4cd1a3d101e60a1cc24c</Guid>
+      <Margins>0,561.6,0,0</Margins>
+      <Name>sub_srptPayslipIndemnityDaysSummaryEn</Name>
+      <PageHeight>1056</PageHeight>
+      <PageWidth>816</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipIndemnityDaysSummaryEn>
+    <sub_srptPayslipWorkingDaysSummary Ref="143" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <PageHeader33 Ref="144" type="PageHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,243.84,22.08</ClientRectangle>
+          <Components isList="true" count="1">
+            <xrLabel112 Ref="145" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,243.84,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel112</Name>
+              <Page isRef="143" />
+              <Parent isRef="144" />
+              <Text>WORKING DAYS SUMMARY</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel112>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>PageHeader33</Name>
+          <Page isRef="143" />
+          <Parent isRef="143" />
+        </PageHeader33>
+        <Detail30 Ref="146" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,82.08,243.84,22.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrLabel38 Ref="147" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,188.33,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel38</Name>
+              <Page isRef="143" />
+              <Parent isRef="146" />
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel38>
+            <xrLabel210 Ref="148" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>188.33,0,55.51,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel210</Name>
+              <Page isRef="143" />
+              <Parent isRef="146" />
+              <Text>{Format("{0:#0.000}", PayslipWorkingDayQuery.Number)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel210>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipWorkingDayQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail30</Name>
+          <Page isRef="143" />
+          <Parent isRef="143" />
+          <Sort isList="true" count="0" />
+        </Detail30>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>123b0d258df24da88368ef6b21a72f3e</Guid>
+      <Margins>0,572.16,0,0</Margins>
+      <Name>sub_srptPayslipWorkingDaysSummary</Name>
+      <PageHeight>1056</PageHeight>
+      <PageWidth>816</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipWorkingDaysSummary>
+    <sub_srptPayslipAttendenceSummaryEn Ref="149" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <GroupHeader137 Ref="150" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,245.76,22.08</ClientRectangle>
+          <Components isList="true" count="1">
+            <xrLabel39 Ref="151" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,245.76,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9.75,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel39</Name>
+              <Page isRef="149" />
+              <Parent isRef="150" />
+              <Text>LEAVE SUMMARY</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel39>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader137</Name>
+          <Page isRef="149" />
+          <Parent isRef="149" />
+        </GroupHeader137>
+        <Detail34 Ref="152" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,82.08,245.76,22.08</ClientRectangle>
+          <Components isList="true" count="2">
+            <xrLabel113 Ref="153" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>165.33,0,80.43,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel113</Name>
+              <Page isRef="149" />
+              <Parent isRef="152" />
+              <Text>{Format("{0:#0.000}", PayslipAttendanceQuery.Number)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel113>
+            <LoggedUserNme4 Ref="154" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,165.33,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>LoggedUserNme4</Name>
+              <Page isRef="149" />
+              <Parent isRef="152" />
+              <Text>{PayslipAttendanceQuery["Wage Type"]}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme4>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipAttendanceQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail34</Name>
+          <Page isRef="149" />
+          <Parent isRef="149" />
+          <Sort isList="true" count="0" />
+        </Detail34>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>b7deb1e5e43f4760b5e90d7ae6de4c1a</Guid>
+      <Margins>0,570.24,0,0</Margins>
+      <Name>sub_srptPayslipAttendenceSummaryEn</Name>
+      <PageHeight>1056</PageHeight>
+      <PageWidth>816</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipAttendenceSummaryEn>
+    <sub_srptPayslipEarning Ref="155" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader141 Ref="156" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,623.04,44.16</ClientRectangle>
+          <Components isList="true" count="5">
+            <xrLabel82 Ref="157" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,194.86,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel82</Name>
+              <Page isRef="155" />
+              <Parent isRef="156" />
+              <Text> TYPE</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel82>
+            <xrLabel72 Ref="158" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>304.36,22.08,71,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel72</Name>
+              <Page isRef="155" />
+              <Parent isRef="156" />
+              <Text>AMOUNT</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel72>
+            <xrLabel92 Ref="159" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>194.86,22.08,62.88,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel92</Name>
+              <Page isRef="155" />
+              <Parent isRef="156" />
+              <Text>No.</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel92>
+            <xrLabel102 Ref="160" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>257.74,22.08,46.61,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel102</Name>
+              <Page isRef="155" />
+              <Parent isRef="156" />
+              <Text>RATE</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel102>
+            <xrLabel126 Ref="161" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,375.36,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel126</Name>
+              <Page isRef="155" />
+              <Parent isRef="156" />
+              <Text>EARNINGS</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel126>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader141</Name>
+          <Page isRef="155" />
+          <Parent isRef="155" />
+        </GroupHeader141>
+        <Detail38 Ref="162" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,104.16,623.04,22.08</ClientRectangle>
+          <Components isList="true" count="4">
+            <xrLabel63 Ref="163" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>257.74,0,46.61,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel63</Name>
+              <Page isRef="155" />
+              <Parent isRef="162" />
+              <Text>{Format("{0:#0.000}", PayslipEarningQuery.Rate)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel63>
+            <xrLabel53 Ref="164" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>194.86,0,62.88,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel53</Name>
+              <Page isRef="155" />
+              <Parent isRef="162" />
+              <Text>{Format("{0:#0.000}", PayslipEarningQuery.Number)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel53>
+            <LoggedUserNme5 Ref="165" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,194.86,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>LoggedUserNme5</Name>
+              <Page isRef="155" />
+              <Parent isRef="162" />
+              <Text>{PayslipEarningQuery.WageType}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme5>
+            <xrLabel114 Ref="166" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>304.36,0,71,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel114</Name>
+              <Page isRef="155" />
+              <Parent isRef="162" />
+              <Text>{Format("{0:#0.000}", PayslipEarningQuery.Amount)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel114>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipEarningQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail38</Name>
+          <Page isRef="155" />
+          <Parent isRef="155" />
+          <Sort isList="true" count="0" />
+        </Detail38>
+        <GroupFooter242 Ref="167" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,166.24,623.04,24</ClientRectangle>
+          <Components isList="true" count="3">
+            <xrLabel211 Ref="168" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>257.74,0,117.62,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel211</Name>
+              <Page isRef="155" />
+              <Parent isRef="167" />
+              <Text>{Format("{0:#0.000}", Sum(Detail38, PayslipEarningQuery.Amount))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel211>
+            <xrLabel310 Ref="169" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>194.86,0,62.88,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel310</Name>
+              <Page isRef="155" />
+              <Parent isRef="167" />
+              <Text>{PayslipEarningQuery.Currency}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel310>
+            <xrLabel44 Ref="170" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,194.86,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel44</Name>
+              <Page isRef="155" />
+              <Parent isRef="167" />
+              <Text>TOTAL EARNINGS</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel44>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter242</Name>
+          <Page isRef="155" />
+          <Parent isRef="155" />
+        </GroupFooter242>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>f9d89e24039c4f26afcf1b588463bde5</Guid>
+      <Margins>0.96,0,0,0</Margins>
+      <Name>sub_srptPayslipEarning</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipEarning>
+    <sub_srptPayslipDeduction Ref="171" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <GroupHeader146 Ref="172" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,20,366.72,44.16</ClientRectangle>
+          <Components isList="true" count="5">
+            <xrLabel103 Ref="173" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>247.34,22.08,46.61,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel103</Name>
+              <Page isRef="171" />
+              <Parent isRef="172" />
+              <Text>RATE</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel103>
+            <xrLabel93 Ref="174" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>184.46,22.08,62.88,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel93</Name>
+              <Page isRef="171" />
+              <Parent isRef="172" />
+              <Text>No.</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel93>
+            <xrLabel73 Ref="175" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>293.96,22.08,71,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel73</Name>
+              <Page isRef="171" />
+              <Parent isRef="172" />
+              <Text>AMOUNT</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel73>
+            <xrLabel83 Ref="176" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,22.08,184.46,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel83</Name>
+              <Page isRef="171" />
+              <Parent isRef="172" />
+              <Text> TYPE</Text>
+              <TextBrush>[128:128:128]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel83>
+            <xrLabel142 Ref="177" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>[15:100:160]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,364.96,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,9,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,0,0</Margins>
+              <Name>xrLabel142</Name>
+              <Page isRef="171" />
+              <Parent isRef="172" />
+              <Text>DEDUCTIONS</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel142>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupHeader146</Name>
+          <Page isRef="171" />
+          <Parent isRef="171" />
+        </GroupHeader146>
+        <Detail43 Ref="178" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,104.16,366.72,22.08</ClientRectangle>
+          <Components isList="true" count="4">
+            <xrLabel115 Ref="179" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>184.46,0,62.88,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel115</Name>
+              <Page isRef="171" />
+              <Parent isRef="178" />
+              <Text>{Format("{0:#0.000}", PayslipDeductionQuery.Number)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel115>
+            <xrLabel64 Ref="180" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>247.34,0,46.61,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel64</Name>
+              <Page isRef="171" />
+              <Parent isRef="178" />
+              <Text>{Format("{0:#0.000}", PayslipDeductionQuery.Rate)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel64>
+            <xrLabel212 Ref="181" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>293.96,0,71,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel212</Name>
+              <Page isRef="171" />
+              <Parent isRef="178" />
+              <Text>{Format("{0:#0.000}", PayslipDeductionQuery.Amount)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel212>
+            <LoggedUserNme6 Ref="182" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,184.46,22.08</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.75</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>LoggedUserNme6</Name>
+              <Page isRef="171" />
+              <Parent isRef="178" />
+              <Text>{PayslipDeductionQuery.WageType}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </LoggedUserNme6>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>PayslipDeductionQuery</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>Detail43</Name>
+          <Page isRef="171" />
+          <Parent isRef="171" />
+          <Sort isList="true" count="0" />
+        </Detail43>
+        <GroupFooter247 Ref="183" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,166.24,366.72,24</ClientRectangle>
+          <Components isList="true" count="3">
+            <xrLabel115 Ref="184" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>247.34,0,117.62,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>5,5,0,0</Margins>
+              <Name>xrLabel115</Name>
+              <Page isRef="171" />
+              <Parent isRef="183" />
+              <Text>{Format("{0:#0.000}", Sum(Detail43, PayslipDeductionQuery.Amount))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel115>
+            <xrLabel311 Ref="185" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>184.46,0,62.88,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel311</Name>
+              <Page isRef="171" />
+              <Parent isRef="183" />
+              <Text>{PayslipDeductionQuery.Currency}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel311>
+            <xrLabel45 Ref="186" type="Text" isKey="true">
+              <Border>All;[211:211:211];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,184.46,24</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Tahoma,8.25,Bold</Font>
+              <Margins>5,2,0,0</Margins>
+              <Name>xrLabel45</Name>
+              <Page isRef="171" />
+              <Parent isRef="183" />
+              <Text>TOTAL DEDUCTIONS</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </xrLabel45>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>GroupFooter247</Name>
+          <Page isRef="171" />
+          <Parent isRef="171" />
+        </GroupFooter247>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>3cc10b813b3b4d98be8bb50f9cbb53a6</Guid>
+      <Margins>0.96,256.32,0,0</Margins>
+      <Name>sub_srptPayslipDeduction</Name>
+      <PageHeight>385.92</PageHeight>
+      <PageWidth>624</PageWidth>
+      <Report isRef="0" />
+      <TitleBeforeHeader>True</TitleBeforeHeader>
+      <UnlimitedBreakable>False</UnlimitedBreakable>
+    </sub_srptPayslipDeduction>
+  </Pages>
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>8/24/2026 2:17:09 PM</ReportChanged>
+  <ReportCreated>8/24/2026 2:17:09 PM</ReportCreated>
+  <ReportGuid>b7cf13dbec624a5889729f79708b118f</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>HundredthsOfInch</ReportUnit>
+  <ReportVersion>2026.2.4.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+        #endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="4">
+    <EngData Ref="187" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseHorAlignment>True</AllowUseHorAlignment>
+      <AllowUseVertAlignment>True</AllowUseVertAlignment>
+      <Border>All;Black;1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Conditions isList="true" count="0" />
+      <Font>Tahoma,8.25,Bold</Font>
+      <Name>EngData</Name>
+      <NegativeTextBrush>Red</NegativeTextBrush>
+      <TextBrush>Black</TextBrush>
+    </EngData>
+    <EngDataRgt Ref="188" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseHorAlignment>True</AllowUseHorAlignment>
+      <AllowUseVertAlignment>True</AllowUseVertAlignment>
+      <Border>All;Black;1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Conditions isList="true" count="0" />
+      <Font>Tahoma,8.25</Font>
+      <HorAlignment>Right</HorAlignment>
+      <Name>EngDataRgt</Name>
+      <NegativeTextBrush>Red</NegativeTextBrush>
+      <TextBrush>Black</TextBrush>
+      <VertAlignment>Center</VertAlignment>
+    </EngDataRgt>
+    <EngMainDataStyle Ref="189" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseHorAlignment>True</AllowUseHorAlignment>
+      <AllowUseVertAlignment>True</AllowUseVertAlignment>
+      <Border>All;Black;1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Conditions isList="true" count="0" />
+      <Font>Tahoma,9,Bold</Font>
+      <Name>EngMainDataStyle</Name>
+      <NegativeTextBrush>Red</NegativeTextBrush>
+      <TextBrush>Black</TextBrush>
+      <VertAlignment>Center</VertAlignment>
+    </EngMainDataStyle>
+    <ENGDataStyle Ref="190" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseHorAlignment>True</AllowUseHorAlignment>
+      <AllowUseVertAlignment>True</AllowUseVertAlignment>
+      <Border>All;Black;1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Conditions isList="true" count="0" />
+      <Font>Tahoma,9</Font>
+      <Name>ENGDataStyle</Name>
+      <NegativeTextBrush>Red</NegativeTextBrush>
+      <TextBrush>Black</TextBrush>
+      <VertAlignment>Center</VertAlignment>
+    </ENGDataStyle>
+  </Styles>
+  <UsePlatformDependentScript>False</UsePlatformDependentScript>
+</StiSerializer>

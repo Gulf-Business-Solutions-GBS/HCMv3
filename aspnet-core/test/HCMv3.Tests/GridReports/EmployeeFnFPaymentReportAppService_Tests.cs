@@ -83,8 +83,25 @@ public class EmployeeFnFPaymentReportAppService_Tests : AppTestBase
         return payment;
     }
 
+    private SeparationReason CreateSeparationReason(string code)
+    {
+        SeparationReason reason = null;
+        UsingDbContext(context =>
+        {
+            reason = context.Set<SeparationReason>().Add(new SeparationReason
+            {
+                TenantId = TenantId,
+                Code = code,
+                NameEn = code + "-En",
+                NameAr = code + "-Ar"
+            }).Entity;
+        });
+        return reason;
+    }
+
     private void CreateSeparation(Employee employee, DateTime submissionDate, SeparationType separationType)
     {
+        var reason = CreateSeparationReason("FNF-" + employee.Code);
         UsingDbContext(context =>
         {
             context.Set<EmployeeSeparation>().Add(new EmployeeSeparation
@@ -93,7 +110,8 @@ public class EmployeeFnFPaymentReportAppService_Tests : AppTestBase
                 EmployeeId = employee.Id,
                 SubmissionDate = submissionDate,
                 LastDayInService = submissionDate,
-                SeparationType = separationType
+                SeparationType = separationType,
+                SeparationReasonId = reason.Id
             });
         });
     }

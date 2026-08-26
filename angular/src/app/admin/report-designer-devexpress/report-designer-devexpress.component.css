@@ -1,0 +1,6 @@
+/* The Dx designer measures itself against its container, so the host must have a real height. */
+:host ::ng-deep .dxrd-designer-wrapper,
+:host ::ng-deep dx-report-designer {
+    display: block;
+    width: 100%;
+}

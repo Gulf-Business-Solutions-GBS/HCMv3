@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>HCMv3 DevExpress Report Designer -- rptPayslipEn</title>
+    <style>
+        html, body { height: 100%; margin: 0; font-family: Segoe UI, Arial, sans-serif; }
+    </style>
+    @*
+      UseDevExpressControls()/RenderScripts() emit the widget CONTAINER + init call, but not the
+      underlying DevExtreme/devexpress-reporting JS libraries themselves. Three things were tried:
+        (a) CDN <script>/<link> tags for everything (https://cdn3.devexpress.com/jslib/23.2.13/...) --
+            dx.all.js/dx.light.css ARE published there (200), but dx-analytics-core.min.js and
+            dx-reportdesigner.min.js 403 (AccessDenied) at every version tried -- the Reporting-specific
+            bundles simply are not on that public CDN.
+        (b) Html.DevExpress().StyleSheets()/.Scripts() + ApplicationOptions.UseIntegratedClientSideResources
+            (DevExpress's own embedded-resource middleware, served at /DXR.axd) -- builds and starts,
+            but every /DXR.axd request 500s with no exception surfacing anywhere (not even through a
+            custom exception-logging middleware wrapped around it), so this mode could not be debugged
+            further in the time available.
+        (c) What's used below: `npm install devextreme@23.2.13 devexpress-reporting@23.2.13 jquery
+            knockout` (see package.json) and copy the prebuilt dist/ bundles into wwwroot/lib -- the
+            same files the demo project's webpack build ultimately produces, minus webpack. dx.all.js /
+            dx.light.css still come from the CDN since that half genuinely works; only the
+            Reporting-specific pieces are local.
+    *@
+    <link href="https://cdn3.devexpress.com/jslib/23.2.13/css/dx.light.css" rel="stylesheet" />
+    <script src="~/lib/jquery.min.js"></script>
+    <script src="~/lib/knockout-latest.js"></script>
+    <!-- DevExtreme must load AFTER Knockout ("The DevExtreme library is included before the Knockout
+         library" console error otherwise) and jQuery must come first for the reporting widgets' DOM code. -->
+    <script src="https://cdn3.devexpress.com/jslib/23.2.13/js/dx.all.js"></script>
+    <link href="~/lib/dx-analytics.light.css" rel="stylesheet" />
+    <script src="~/lib/dx-analytics-core.min.js"></script>
+    <script src="~/lib/dx-querybuilder.min.js"></script>
+    <!-- The Report Designer bundle assumes the Web Document Viewer bundle (DevExpress.Reporting.*)
+         has already run -- Designer = Viewer + authoring UI, not a standalone superset script. -->
+    <link href="~/lib/dx-webdocumentviewer.css" rel="stylesheet" />
+    <script src="~/lib/dx-webdocumentviewer.min.js"></script>
+    <link href="~/lib/dx-reportdesigner.css" rel="stylesheet" />
+    <link href="~/lib/dx-reporting-skeleton-screen.css" rel="stylesheet" />
+    <script src="~/lib/dx-reportdesigner.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

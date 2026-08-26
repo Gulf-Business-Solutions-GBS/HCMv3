@@ -38,9 +38,17 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HCMv3.Web.Core\HCMv3.Web.Core.csproj" />
+    <!--
+      HCMv3.Reports multi-targets net8.0;net8.0-windows. This net10.0 project resolves the plain
+      net8.0 flavour; the -windows flavour exists only so Visual Studio can open the visual report
+      designer. Referencing a "-windows"-only library from here would fail with NU1201.
+    -->
+    <ProjectReference Include="..\HCMv3.Reports\HCMv3.Reports.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Abp.Castle.Log4Net" Version="11.1.0" />
+    <!-- DevExpress Web Report Designer + Web Document Viewer backends (/DXXRD, /DXXRDV, /DXXQB). -->
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="23.2.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

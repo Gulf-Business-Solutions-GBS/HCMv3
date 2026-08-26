@@ -2460,6 +2460,18 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Reports_Payslip_Email = "Pages.Reports.Payslip.Email";
 
+    /// <summary>
+    /// Internal dev-only tool that embeds the standalone Stimulsoft Report Designer (aspnet-core/tools/HCMv3.ReportDesigner)
+    /// for reviewing the DevExpress-to-Stimulsoft report migration. Not a production reporting feature.
+    /// </summary>
+    public const string Pages_Reports_Designer = "Pages.Reports.Designer";
+
+    /// <summary>
+    /// Native DevExpress Web Report Designer, served from Web.Host (/DXXRD, /DXXRDV) and hosted by the
+    /// Angular dx-report-designer component. Edits the ported XtraReport classes in HCMv3.Reports.
+    /// </summary>
+    public const string Pages_Reports_DesignerDevExpress = "Pages.Reports.DesignerDevExpress";
+
     //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis/**/usc*.ascx)
     //
     //One parent permission for the whole analysis-report family plus ONE CHILD PER REPORT, so a role can
@@ -2488,6 +2500,16 @@ public static class AppPermissions
     public const string Pages_Reports_Analysis_PayrollJVCustom016LoanFormatBmc = "Pages.Reports.Analysis.PayrollJVCustom016LoanFormatBmc";
 
     public const string Pages_Reports_Analysis_PayrollJVCustom016LoanFormatMyb = "Pages.Reports.Analysis.PayrollJVCustom016LoanFormatMyb";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016MainFormatBmc = "Pages.Reports.Analysis.PayrollJVCustom016MainFormatBmc";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016MainFormatMyb = "Pages.Reports.Analysis.PayrollJVCustom016MainFormatMyb";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016Detail = "Pages.Reports.Analysis.PayrollJVCustom016Detail";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016LeaveProvision = "Pages.Reports.Analysis.PayrollJVCustom016LeaveProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016IndemnityProvision = "Pages.Reports.Analysis.PayrollJVCustom016IndemnityProvision";
 
     public const string Pages_Reports_Analysis_PayrollJVCustom017 = "Pages.Reports.Analysis.PayrollJVCustom017";
 

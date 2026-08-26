@@ -44,6 +44,11 @@ using HCMv3.Web.OpenIddict;
 using Abp.AspNetCore.OpenIddict;
 using Microsoft.OpenApi;
 using HCMv3.Authorization.QrLogin;
+using DevExpress.AspNetCore;
+using DevExpress.AspNetCore.Reporting;
+using DevExpress.DataAccess.Wizard.Services;
+using DevExpress.XtraReports.Web.Extensions;
+using HCMv3.Web.Reporting;
 
 namespace HCMv3.Web.Startup;
 
@@ -79,6 +84,8 @@ public class Startup
 #endif
 
         services.AddSignalR();
+
+        ConfigureDevExpressReporting(services);
 
         // Enables IHttpClientFactory (used by HCMv3.TimeManagement.Services.TimeAttendanceIntegrationService
         // to call the vendor time-attendance device API) throughout the app, per the standard
@@ -196,6 +203,12 @@ public class Startup
 
         app.UseStaticFiles();
 
+        // DevExpress reporting: serves the client scripts/styles and the report backends. Must come
+        // before UseRouting so the DevExpress resource handlers are in the pipeline.
+        app.UseDevExpressControls();
+        ReportStorageWebExtension.RegisterExtensionGlobal(
+            app.ApplicationServices.GetRequiredService<ReportStorageWebExtension>());
+
 #pragma warning disable CS0162
         if (HCMv3Consts.PreventNotExistingTenantSubdomains)
         {
@@ -286,6 +299,35 @@ public class Startup
                 options.InjectBaseUrl(_appConfiguration["App:ServerRootAddress"]);
             }); //URL: /swagger
         }
+    }
+
+    /// <summary>
+    /// Registers the DevExpress Web Report Designer / Web Document Viewer / Query Builder backends
+    /// that serve the report classes in HCMv3.Reports. See DevExpressReportingControllers.cs for
+    /// the URL contract (/DXXRD, /DXXRDV, /DXXQB).
+    /// </summary>
+    private void ConfigureDevExpressReporting(IServiceCollection services)
+    {
+        services.AddDevExpressControls();
+
+        services.ConfigureReportingServices(configurator =>
+        {
+            configurator.ConfigureWebDocumentViewer(viewer =>
+            {
+                viewer.UseCachedReportSourceBuilder();
+            });
+
+            configurator.ConfigureReportDesigner(designer =>
+            {
+            });
+        });
+
+        // Report layouts are served from source-controlled report classes, not from a file store.
+        services.AddSingleton<ReportStorageWebExtension, HcmReportStorageWebExtension>();
+
+        // Resolves the connection NAME carried by report layouts into a real connection, server
+        // side, so the connection string is never serialised into the designer's client model.
+        services.AddScoped<IConnectionProviderService, HcmReportConnectionProviderService>();
     }
 
     private void ConfigureKestrel(IServiceCollection services)

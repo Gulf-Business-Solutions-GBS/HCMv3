@@ -108,6 +108,11 @@ export const SERVICE_PROXY_PROVIDERS = [
     // Customer-specific Journal Voucher variants (legacy uscRptPayrollJV_Custom0NN).
     ApiServiceProxies.PayrollJVCustom016LoanFormatBmcReportServiceProxy,
     ApiServiceProxies.PayrollJVCustom016LoanFormatMybReportServiceProxy,
+    ApiServiceProxies.PayrollJVCustom016MainFormatBmcReportServiceProxy,
+    ApiServiceProxies.PayrollJVCustom016MainFormatMybReportServiceProxy,
+    ApiServiceProxies.PayrollJVCustom016DetailReportServiceProxy,
+    ApiServiceProxies.PayrollJVCustom016LeaveProvisionReportServiceProxy,
+    ApiServiceProxies.PayrollJVCustom016IndemnityProvisionReportServiceProxy,
     ApiServiceProxies.PayrollJVCustom017ReportServiceProxy,
     ApiServiceProxies.PayrollJVCustom018ReportServiceProxy,
     ApiServiceProxies.PayrollJVCustom019ReportServiceProxy,

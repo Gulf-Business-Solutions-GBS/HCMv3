@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>HCMv3.ReportDesigner</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Arabic payslips must round-trip; invariant globalization mangles RTL text and month names. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Same version already referenced by HCMv3.Application / HCMv3.MrtRender for the engine. -->
+    <PackageReference Include="Stimulsoft.Reports.Web" Version="2026.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Reports\**\*.mrt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

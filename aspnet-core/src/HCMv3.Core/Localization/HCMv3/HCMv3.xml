@@ -4063,6 +4063,13 @@
     <text name="PayslipRecipients">Payslip Recipients</text>
     <text name="LoadRecipients">Load Recipients</text>
     <text name="SendPayslipEmails">Send Payslip Emails</text>
+    <!-- Report Designer: internal dev-only tool embedding the standalone Stimulsoft Report Designer for reviewing the DevExpress-to-Stimulsoft report migration -->
+    <text name="ReportDesigner">Report Designer</text>
+    <text name="ReportDesignerDescription">Internal migration review tool</text>
+    <text name="ReportDesignerDevToolWarning">This is an internal developer tool for reviewing the DevExpress-to-Stimulsoft report migration. It is not part of the production application: it has no authentication and requires a separate local process (aspnet-core/tools/HCMv3.ReportDesigner) to be running on your machine. If that process is not started, the panel below will show a connection error.</text>
+    <!-- Native DevExpress Web Report Designer: edits the ported XtraReport classes in HCMv3.Reports -->
+    <text name="ReportDesignerDevExpress">DevExpress Report Designer</text>
+    <text name="ReportDesignerDevExpressDescription">Design and edit DevExpress reports in the browser</text>
     <text name="PayslipEmailsSentSummary">Payslip emails: {0} sent, {1} failed, out of {2}.</text>
     <text name="ConfirmSendPayslipEmails">{0} payslip email(s) will be sent. Are you sure?</text>
     <text name="NoPayslipRecipientsFound">No employees with a payslip and an email address were found for the selected period.</text>
@@ -4406,6 +4413,21 @@
          SHARED by the whole ~140-report wave (the common filter panel); only the per-report title key is
          added per report. -->
     <text name="AnalysisReports">Analysis Reports</text>
+
+    <!-- Submenu group headers for the AnalysisReports nav restructure (grouping by backend
+         GridReports/<GroupingName> folder). These are parent menu labels only, not report titles. -->
+    <text name="EmployeeReports">Employee Reports</text>
+    <text name="PayrollReports">Payroll Reports</text>
+    <text name="TimeAttendanceReports">Time &amp; Attendance Reports</text>
+    <text name="TransactionReports">Transaction Reports</text>
+    <text name="QuotaProvisionReports">Quota &amp; Provision Reports</text>
+    <text name="StatusReports">Status Reports</text>
+    <text name="PerformanceReports">Performance Reports</text>
+    <text name="ProjectReports">Project Reports</text>
+    <text name="RecruitmentTrainingReports">Recruitment &amp; Training Reports</text>
+    <text name="AdministrationReports">Administration Reports</text>
+    <text name="OtherReports">Other Reports</text>
+
     <text name="ToDate">To Date</text>
     <text name="EmployeeStatus">Employee Status</text>
     <text name="EmployeeCodeFilterHint">One code, or several separated by commas</text>
@@ -4799,6 +4821,11 @@
     <text name="PayrollJVCustom016Report">Payroll JV (Custom 016)</text>
     <text name="PayrollJVCustom016LoanFormatBmcReport">Payroll JV (Custom 016) - Loan Format - BMC</text>
     <text name="PayrollJVCustom016LoanFormatMybReport">Payroll JV (Custom 016) - Loan Format - MYB</text>
+    <text name="PayrollJVCustom016MainFormatBmcReport">Payroll JV (Custom 016) - Main Format - BMC</text>
+    <text name="PayrollJVCustom016MainFormatMybReport">Payroll JV (Custom 016) - Main Format - MYB</text>
+    <text name="PayrollJVCustom016DetailReport">Payroll JV (Custom 016) - Detail</text>
+    <text name="PayrollJVCustom016LeaveProvisionReport">Payroll JV (Custom 016) - Leave Provision</text>
+    <text name="PayrollJVCustom016IndemnityProvisionReport">Payroll JV (Custom 016) - Indemnity Provision</text>
     <text name="PayrollJVCustom017Report">Payroll JV (Custom 017)</text>
     <text name="PayrollJVCustom018Report">Payroll JV (Custom 018)</text>
     <text name="PayrollJVCustom019Report">Payroll JV (Custom 019)</text>
@@ -5158,6 +5185,8 @@
     <text name="ArrearsBasicSalary">Basic Salary Arrears</text>
     <text name="OvertimeAmount">Overtime Amount</text>
     <text name="ActBasicSalary">Actual Basic Pay</text>
+    <text name="ActFoodAllowance">Actual Food Allowance</text>
+    <text name="Contract">Contract</text>
     <text name="TotalLeaveProvisionAmount">Total Leave Provision Amount</text>
     <text name="TotalIndemnityProvisionAmount">Total Indemnity Provision Amount</text>
     <text name="OvertimeAmountArrears">Overtime Amount Arrears</text>

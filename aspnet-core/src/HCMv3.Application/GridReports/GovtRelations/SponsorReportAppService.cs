@@ -114,7 +114,7 @@ public class SponsorReportAppService : GridReportAppServiceBase, ISponsorReportA
             new("Governorate", r => r.GovernorateName),
             new("Email", r => r.Email),
             new("Gender", r => r.Gender),
-            new("profession", r => r.Profession),
+            new("Profession", r => r.Profession),
             new("Building", r => r.Building),
             new("Street", r => r.Street),
             new("Area", r => r.Area),

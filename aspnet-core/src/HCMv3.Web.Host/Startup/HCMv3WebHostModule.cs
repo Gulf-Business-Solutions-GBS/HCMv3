@@ -25,6 +25,8 @@ using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Subscription;
 using HCMv3.TimeManagement;
 using HCMv3.Web.Startup.ExternalLoginInfoProviders;
+using Castle.MicroKernel.Registration;
+using HCMv3.Web.Controllers;
 
 namespace HCMv3.Web.Startup;
 
@@ -63,6 +65,17 @@ public class HCMv3WebHostModule : AbpModule
     public override void Initialize()
     {
         IocManager.RegisterAssemblyByConvention(typeof(HCMv3WebHostModule).GetAssembly());
+
+        // ABP replaces MVC's controller activator with one that resolves from Windsor, and the
+        // convention scan above does not pick up the DevExpress reporting controllers (they derive
+        // from DevExpress's own Controller subclass rather than from AbpController). Without these
+        // three lines every request to /DXXRD, /DXXRDV and /DXXQB routes correctly and then fails
+        // with "No component for supporting the service ... was found".
+        IocManager.IocContainer.Register(
+            Component.For<DXXRDController>().LifestyleTransient(),
+            Component.For<DXXRDVController>().LifestyleTransient(),
+            Component.For<DXXQBController>().LifestyleTransient()
+        );
     }
 
     public override void PostInitialize()

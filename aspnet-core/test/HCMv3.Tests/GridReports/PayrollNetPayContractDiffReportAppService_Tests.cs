@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GovtRelationsManagement;
 using HCMv3.GridReports.PayrollReport;
@@ -126,6 +127,39 @@ public class PayrollNetPayContractDiffReportAppService_Tests : AppTestBase
 
     private void CreateSponsor(Employee employee, DateTime start, DateTime end, double contractSalary)
     {
+        Nationality nationality = null;
+        BusinessType businessType = null;
+        Governorate governorate = null;
+        OrganizationUnit organizationUnit = null;
+        UsingDbContext(context =>
+        {
+            nationality = context.Set<Nationality>().Add(new Nationality
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "N",
+                NameAr = "N"
+            }).Entity;
+            businessType = context.Set<BusinessType>().Add(new BusinessType
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "BT",
+                NameAr = "BT"
+            }).Entity;
+            governorate = context.Set<Governorate>().Add(new Governorate
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "GOV",
+                NameAr = "GOV"
+            }).Entity;
+            organizationUnit = context.OrganizationUnits.Add(new OrganizationUnit(TenantId, "Sponsor OU")
+            {
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8)
+            }).Entity;
+        });
+
         UsingDbContext(context =>
         {
             var sponsor = context.Set<Sponsor>().Add(new Sponsor
@@ -133,7 +167,11 @@ public class PayrollNetPayContractDiffReportAppService_Tests : AppTestBase
                 TenantId = TenantId,
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = "S",
-                NameAr = "S"
+                NameAr = "S",
+                NationalityId = nationality.Id,
+                BusinessTypeId = businessType.Id,
+                GovernorateId = governorate.Id,
+                OrganizationUnitId = organizationUnit.Id
             }).Entity;
 
             var govtJobTitle = context.Set<GovtJobTitle>().Add(new GovtJobTitle

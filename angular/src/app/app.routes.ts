@@ -1373,6 +1373,22 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Payslip.Email' },
                     },
                     {
+                        path: 'report-designer',
+                        loadComponent: () =>
+                            import('./admin/report-designer/report-designer.component').then(
+                                (m) => m.ReportDesignerComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Designer' },
+                    },
+                    {
+                        path: 'report-designer-devexpress',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-designer-devexpress/report-designer-devexpress.component'
+                            ).then((m) => m.ReportDesignerDevExpressComponent),
+                        data: { permission: 'Pages.Reports.DesignerDevExpress' },
+                    },
+                    {
                         // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis).
                         // Every report in the wave adds one entry of exactly this shape.
                         path: 'reports/analysis/employee-contract',
@@ -1744,6 +1760,46 @@ export const appRoutes: Routes = [
                                 './admin/reports/analysis/payroll-jv-custom016-loan-format-myb-report/payroll-jv-custom016-loan-format-myb-report.component'
                             ).then((m) => m.PayrollJVCustom016LoanFormatMybReportComponent),
                         data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016LoanFormatMyb' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-main-format-bmc',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-main-format-bmc-report/payroll-jv-custom016-main-format-bmc-report.component'
+                            ).then((m) => m.PayrollJVCustom016MainFormatBmcReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016MainFormatBmc' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-main-format-myb',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-main-format-myb-report/payroll-jv-custom016-main-format-myb-report.component'
+                            ).then((m) => m.PayrollJVCustom016MainFormatMybReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016MainFormatMyb' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-detail',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-detail-report/payroll-jv-custom016-detail-report.component'
+                            ).then((m) => m.PayrollJVCustom016DetailReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016Detail' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-leave-provision',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-leave-provision-report/payroll-jv-custom016-leave-provision-report.component'
+                            ).then((m) => m.PayrollJVCustom016LeaveProvisionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016LeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-indemnity-provision',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-indemnity-provision-report/payroll-jv-custom016-indemnity-provision-report.component'
+                            ).then((m) => m.PayrollJVCustom016IndemnityProvisionReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016IndemnityProvision' },
                     },
                     {
                         path: 'reports/analysis/payroll-jv-custom018',

@@ -1,0 +1,21 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ReportDesigner' | localize" [description]="'ReportDesignerDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="alert alert-warning d-flex align-items-start gap-2 mb-3">
+            <i class="fa fa-exclamation-triangle mt-1"></i>
+            <div>{{ 'ReportDesignerDevToolWarning' | localize }}</div>
+        </div>
+
+        <div class="card card-custom">
+            <div class="card-body p-0">
+                <iframe
+                    [src]="designerUrl"
+                    class="report-designer-frame"
+                    title="Report Designer"
+                    referrerpolicy="no-referrer">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>

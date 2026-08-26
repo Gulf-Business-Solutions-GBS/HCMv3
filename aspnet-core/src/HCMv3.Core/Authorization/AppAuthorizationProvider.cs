@@ -2517,6 +2517,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         //REPORTS (FastReport pilot)
         var reportPreview = pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
         reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
+        pages.CreateChildPermission(AppPermissions.Pages_Reports_Designer, L("ReportDesigner"));
+        pages.CreateChildPermission(AppPermissions.Pages_Reports_DesignerDevExpress, L("ReportDesignerDevExpress"));
 
         //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis)
         var analysisReports = pages.CreateChildPermission(AppPermissions.Pages_Reports_Analysis, L("AnalysisReports"));
@@ -2554,6 +2556,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheetCustom023, L("PayrollSheetCustom023Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016LoanFormatBmc, L("PayrollJVCustom016LoanFormatBmcReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016LoanFormatMyb, L("PayrollJVCustom016LoanFormatMybReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016MainFormatBmc, L("PayrollJVCustom016MainFormatBmcReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016MainFormatMyb, L("PayrollJVCustom016MainFormatMybReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016Detail, L("PayrollJVCustom016DetailReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016LeaveProvision, L("PayrollJVCustom016LeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016IndemnityProvision, L("PayrollJVCustom016IndemnityProvisionReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom017, L("PayrollJVCustom017Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom018, L("PayrollJVCustom018Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom019, L("PayrollJVCustom019Report"));

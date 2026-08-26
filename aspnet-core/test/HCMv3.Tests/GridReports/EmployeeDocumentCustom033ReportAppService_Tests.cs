@@ -147,7 +147,7 @@ public class EmployeeDocumentCustom033ReportAppService_Tests : AppTestBase
         using var stream = new MemoryStream(bytes);
         var exported = stream.Query(useHeaderRow: true).Cast<IDictionary<string, object>>().ToList();
 
-        exported.First().Keys.ShouldContain("CivilId");
+        exported.First().Keys.ShouldContain("Civil ID");
         foreach (var header in exported.First().Keys)
         {
             header.ShouldNotStartWith("[");

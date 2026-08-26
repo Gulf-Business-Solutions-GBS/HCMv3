@@ -109,7 +109,7 @@ public class PayrollJVCustom016LoanFormatMybReportAppService
         var rlsEmployeeIds = await GetRlsEmployeeIdsAsync();
 
         var mybAreaId = await _payrollAreaRepository.GetAll()
-            .Where(a => a.Name.ToUpper().Contains(MybPayrollAreaNameFragment))
+            .Where(a => EF.Functions.Like(a.Name, "%" + MybPayrollAreaNameFragment + "%"))
             .Select(a => (int?)a.Id)
             .FirstOrDefaultAsync();
         if (mybAreaId == null)

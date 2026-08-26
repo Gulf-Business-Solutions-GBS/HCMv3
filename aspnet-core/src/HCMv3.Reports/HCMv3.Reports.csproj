@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <!--
+      MULTI-TARGETING IS LOAD-BEARING - DO NOT COLLAPSE TO A SINGLE TFM.
+
+      net8.0-windows : required by Visual Studio's *visual* XtraReport designer. DevExpress's
+                       design surrogate (DesignerRunner.exe) needs Microsoft.WindowsDesktop.App
+                       (WinForms). VS opens this flavour when you double-click a report.
+      net8.0         : the flavour HCMv3.Web.Host (net10.0) consumes. A plain net10.0 project
+                       cannot reference a "-windows"-only library (NU1201).
+
+      NOT net10.0: Visual Studio 2022 17.x cannot target net10.0 at all (that needs VS 2026),
+      and DevExpress 23.2 ships net6.0 assets which load fine on both net8.0 and net10.0.
+    -->
+    <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+    <UseWindowsForms Condition="$(TargetFramework.EndsWith('-windows'))">true</UseWindowsForms>
+    <AssemblyName>HCMv3.Reports</AssemblyName>
+    <RootNamespace>HCMv3.Reports</RootNamespace>
+    <PackageId>HCMv3.Reports</PackageId>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Reporting.Core" Version="23.2.13" />
+  </ItemGroup>
+
+</Project>

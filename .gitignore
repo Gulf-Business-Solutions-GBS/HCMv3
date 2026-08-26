@@ -43,3 +43,7 @@ webhost.log
 gridreports-tests.log
 gridreports-tests2.log
 webhost2.log
+# Local dev-server / diagnostic logs from ad-hoc runs; artefacts, never source.
+webhost*.log
+designer*.log
+gridreports-tests*.log

@@ -21,7 +21,13 @@
               "quill-delta",
               "adal-angular/lib/adal",
               "push.js",
-              "localforage"
+              "localforage",
+              "jquery",
+              "knockout",
+              "ace-builds",
+              "devextreme",
+              "devexpress-reporting",
+              "@devexpress/analytics-core"
             ],
             "outputPath": {
               "base": "dist"
@@ -51,17 +57,19 @@
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/cookieconsent/build/cookieconsent.min.css",
               "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
-
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.less",
               "src/assets/primeng/tree/css/primeng.tree.css",
               "src/assets/primeng/context-menu/css/primeng.context-menu.css",
-
               "src/assets/fonts/fonts-inter.css",
               "src/assets/metronic/common/fonts/keenthemes-icons/ki.css",
-
-                            "src/assets/metronic/vendors/global/vendors.bundle.css",
-
+              "src/assets/metronic/vendors/global/vendors.bundle.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
+              "node_modules/@devexpress/analytics-core/dist/css/dx-analytics.common.css",
+              "node_modules/@devexpress/analytics-core/dist/css/dx-analytics.light.css",
+              "node_modules/@devexpress/analytics-core/dist/css/dx-querybuilder.css",
+              "node_modules/devexpress-reporting/dist/css/dx-webdocumentviewer.css",
+              "node_modules/devexpress-reporting/dist/css/dx-reportdesigner.css",
               "src/app/shared/core.less",
               "src/app/shared/layout/layout.less",
               "src/styles.css"
@@ -69,24 +77,26 @@
             "scripts": [
               "node_modules/@microsoft/signalr/dist/browser/signalr.min.js",
               "node_modules/localforage/dist/localforage.js",
-
               "node_modules/push.js/bin/push.js",
               "node_modules/quill/dist/quill.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
               "node_modules/cookieconsent/build/cookieconsent.min.js",
-
               "src/assets/abp-web-resources/abp.js",
               "src/assets/abp-web-resources/abp.sweet-alert.js",
               "src/assets/abp-web-resources/abp.notify.js",
               "src/assets/canvas-toBlob/canvas-toBlob.js",
-
               "src/assets/metronic/vendors/global/vendors.bundle.js",
-
               "src/assets/metronic/common/js/components/menu.js",
               "src/assets/metronic/common/js/components/scrolltop.js",
               "src/assets/metronic/common/js/components/toggle.js",
               "src/assets/metronic/common/js/components/util.js",
-              "src/assets/metronic/common/js/components/app.js"
+              "src/assets/metronic/common/js/components/app.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/knockout/build/output/knockout-latest.js",
+              "node_modules/ace-builds/src-noconflict/ace.js",
+              "node_modules/ace-builds/src-noconflict/ext-language_tools.js",
+              "node_modules/ace-builds/src-noconflict/theme-dreamweaver.js",
+              "node_modules/ace-builds/src-noconflict/mode-csharp.js"
             ],
             "extractLicenses": false,
             "sourceMap": true,
@@ -189,17 +199,13 @@
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/cookieconsent/build/cookieconsent.min.css",
               "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
-
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.less",
               "src/assets/primeng/tree/css/primeng.tree.css",
               "src/assets/primeng/context-menu/css/primeng.context-menu.css",
-
               "src/assets/fonts/fonts-inter.css",
               "src/assets/metronic/common/fonts/keenthemes-icons/ki.css",
-
-                            "src/assets/metronic/vendors/global/vendors.bundle.css",
-
+              "src/assets/metronic/vendors/global/vendors.bundle.css",
               "src/app/shared/core.less",
               "src/app/shared/layout/layout.less",
               "src/styles.css"
@@ -207,19 +213,15 @@
             "scripts": [
               "node_modules/@microsoft/signalr/dist/browser/signalr.min.js",
               "node_modules/localforage/dist/localforage.js",
-
               "node_modules/push.js/bin/push.js",
               "node_modules/quill/dist/quill.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
               "node_modules/cookieconsent/build/cookieconsent.min.js",
-
               "src/assets/abp-web-resources/abp.js",
               "src/assets/abp-web-resources/abp.sweet-alert.js",
               "src/assets/abp-web-resources/abp.notify.js",
               "src/assets/canvas-toBlob/canvas-toBlob.js",
-
               "src/assets/metronic/vendors/global/vendors.bundle.js",
-
               "src/assets/metronic/common/js/components/menu.js",
               "src/assets/metronic/common/js/components/scrolltop.js",
               "src/assets/metronic/common/js/components/toggle.js",
@@ -273,4 +275,3 @@
     "analytics": false
   }
 }
-
