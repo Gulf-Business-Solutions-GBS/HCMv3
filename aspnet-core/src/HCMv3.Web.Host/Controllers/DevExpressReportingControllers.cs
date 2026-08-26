@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Web.Models;
 using DevExpress.AspNetCore.Reporting.QueryBuilder;
 using DevExpress.AspNetCore.Reporting.QueryBuilder.Native.Services;
 using DevExpress.AspNetCore.Reporting.ReportDesigner;
@@ -35,6 +36,7 @@ namespace HCMv3.Web.Controllers;
 // TODO: secure with AppPermissions.Pages_Reports_Designer before production. Wiring ABP's JWT into
 // DevExpress's AJAX handshake is a separate task; until then these endpoints are anonymous and the
 // report storage falls back to a configured tenant (see HcmReportStorageWebExtension).
+[DontWrapResult]
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]
 public class DXXRDController : ReportDesignerController
@@ -58,21 +60,37 @@ public class DXXRDController : ReportDesignerController
     // itself (which the catch-all already owns), so "DXXRD/GetDesignerModel" 404s. Verified by probe.
     [HttpGet("GetDesignerModel")]
     [HttpPost("GetDesignerModel")]
-    public async Task<object> GetDesignerModel(
+    public async Task<IActionResult> GetDesignerModel(
         string reportUrl,
         [FromServices] IReportDesignerClientSideModelGenerator modelGenerator)
     {
-        return await modelGenerator.GetModelAsync(
+        // Return DevExpress's OWN serialized JSON as raw content, and do NOT return the
+        // ReportDesignerModel object for MVC to serialize.
+        //
+        // Two distinct things corrupt the payload otherwise, and each fails differently:
+        //   1. ABP wraps every action result in {"result":..,"success":..,"__abp":true}.
+        //      DevExpress's client cannot parse that and silently falls back to a NEW blank
+        //      report -- the designer renders, but empty. Hence [DontWrapResult] on the class.
+        //   2. Even unwrapped, MVC re-serializes the model with ABP's global camelCase policy,
+        //      which mangles the property names the client reads (the response comes back with
+        //      a telltale mix of "reportUrl" and "Report"). The client then throws while
+        //      parsing and the widget renders NOTHING at all.
+        // GetJsonModelScriptAsync produces the JSON DevExpress itself expects; ContentResult
+        // passes it through byte-for-byte.
+        var modelJson = await modelGenerator.GetJsonModelScriptAsync(
             reportUrl,
             new Dictionary<string, object>(),
             "DXXRD",
             "DXXRDV",
             "DXXQB");
+
+        return Content(modelJson, "application/json");
     }
 }
 
 /// <summary>DevExpress Web Document Viewer backend.</summary>
 // TODO: secure with AppPermissions.Pages_Reports_Designer before production.
+[DontWrapResult]
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]
 public class DXXRDVController : WebDocumentViewerController
@@ -85,6 +103,7 @@ public class DXXRDVController : WebDocumentViewerController
 
 /// <summary>DevExpress Query Builder backend (used by the designer's data-source wizard).</summary>
 // TODO: secure with AppPermissions.Pages_Reports_Designer before production.
+[DontWrapResult]
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]
 public class DXXQBController : QueryBuilderController
