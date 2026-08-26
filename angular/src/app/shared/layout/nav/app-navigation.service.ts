@@ -350,6 +350,18 @@ export class AppNavigationService {
                         '/app/admin/reports/analysis/payroll-sheet-custom023'
                     ),
                     new AppMenuItem(
+                        'PayrollJVCustom016LoanFormatBmcReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom016LoanFormatBmc',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom016-loan-format-bmc'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom016LoanFormatMybReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom016LoanFormatMyb',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom016-loan-format-myb'
+                    ),
+                    new AppMenuItem(
                         'PayrollJVCustom017Report',
                         'Pages.Reports.Analysis.PayrollJVCustom017',
                         'flaticon-list-3',
@@ -396,6 +408,66 @@ export class AppNavigationService {
                         'Pages.Reports.Analysis.PayrollJVCustom051',
                         'flaticon-list-3',
                         '/app/admin/reports/analysis/payroll-jv-custom051'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042SalaryReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042Salary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-salary'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042AdvanceSalaryReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042AdvanceSalary',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-advance-salary'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042AnnualLeaveProvisionReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042AnnualLeaveProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-annual-leave-provision'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042PublicHolidayLeaveProvisionReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042PublicHolidayLeaveProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-public-holiday-leave-provision'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042RamadanTimeBackLeaveProvisionReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042RamadanTimeBackLeaveProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-ramadan-time-back-leave-provision'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042LieuDayLeaveProvisionReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042LieuDayLeaveProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-lieu-day-leave-provision'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042IndemnityProvisionReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042IndemnityProvision',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-indemnity-provision'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042OvertimeReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042Overtime',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-overtime'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042MissingAccountsReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042MissingAccounts',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-missing-accounts'
+                    ),
+                    new AppMenuItem(
+                        'PayrollJVCustom042EmployeeWiseBreakDownReport',
+                        'Pages.Reports.Analysis.PayrollJVCustom042EmployeeWiseBreakDown',
+                        'flaticon-list-3',
+                        '/app/admin/reports/analysis/payroll-jv-custom042-employee-wise-break-down'
                     ),
                     new AppMenuItem(
                         'PayrollCTCReport',

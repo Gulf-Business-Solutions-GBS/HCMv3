@@ -1,5 +1,6 @@
 import { Component, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DateTime } from 'luxon';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -87,8 +88,8 @@ export class StaffTurnoverReportComponent extends AppComponentBase {
 
     private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetStaffTurnoverReportInput {
         return new GetStaffTurnoverReportInput({
-            fromDate: this.fromDate,
-            toDate: this.toDate,
+            fromDate: this.fromDate ? DateTime.fromJSDate(this.fromDate) : undefined,
+            toDate: this.toDate ? DateTime.fromJSDate(this.toDate) : undefined,
             employeeCode: undefined,
             employeeStatus: this.employeeStatus,
             sorting: sorting,

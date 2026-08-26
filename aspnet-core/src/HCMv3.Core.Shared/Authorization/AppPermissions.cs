@@ -2482,8 +2482,13 @@ public static class AppPermissions
 
     public const string Pages_Reports_Analysis_PayrollSheetCustom023 = "Pages.Reports.Analysis.PayrollSheetCustom023";
 
-    // Customer-specific Journal Voucher variants (legacy uscRptPayrollJV_Custom0NN). Custom 016 is NOT
-    // ported yet -- see PayrollJVCustom019ReportAppService remarks for why it is a separate unit of work.
+    // Customer-specific Journal Voucher variants (legacy uscRptPayrollJV_Custom0NN). Custom 016 has ~11
+    // live cmbType format variants; only "Loan Format" (split BMC/MYB, different column sets) is ported
+    // so far -- see PayrollJVCustom016PostingLineLoader remarks for the rest.
+    public const string Pages_Reports_Analysis_PayrollJVCustom016LoanFormatBmc = "Pages.Reports.Analysis.PayrollJVCustom016LoanFormatBmc";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom016LoanFormatMyb = "Pages.Reports.Analysis.PayrollJVCustom016LoanFormatMyb";
+
     public const string Pages_Reports_Analysis_PayrollJVCustom017 = "Pages.Reports.Analysis.PayrollJVCustom017";
 
     public const string Pages_Reports_Analysis_PayrollJVCustom018 = "Pages.Reports.Analysis.PayrollJVCustom018";
@@ -2499,6 +2504,27 @@ public static class AppPermissions
     public const string Pages_Reports_Analysis_PayrollJVCustom045 = "Pages.Reports.Analysis.PayrollJVCustom045";
 
     public const string Pages_Reports_Analysis_PayrollJVCustom051 = "Pages.Reports.Analysis.PayrollJVCustom051";
+
+    // Custom 042 (legacy uscRptPayrollJV_Custom042.ascx.cs): 10 live cmbType formats, each its own report.
+    public const string Pages_Reports_Analysis_PayrollJVCustom042Salary = "Pages.Reports.Analysis.PayrollJVCustom042Salary";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042AdvanceSalary = "Pages.Reports.Analysis.PayrollJVCustom042AdvanceSalary";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042AnnualLeaveProvision = "Pages.Reports.Analysis.PayrollJVCustom042AnnualLeaveProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042PublicHolidayLeaveProvision = "Pages.Reports.Analysis.PayrollJVCustom042PublicHolidayLeaveProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042RamadanTimeBackLeaveProvision = "Pages.Reports.Analysis.PayrollJVCustom042RamadanTimeBackLeaveProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042LieuDayLeaveProvision = "Pages.Reports.Analysis.PayrollJVCustom042LieuDayLeaveProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042IndemnityProvision = "Pages.Reports.Analysis.PayrollJVCustom042IndemnityProvision";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042Overtime = "Pages.Reports.Analysis.PayrollJVCustom042Overtime";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042MissingAccounts = "Pages.Reports.Analysis.PayrollJVCustom042MissingAccounts";
+
+    public const string Pages_Reports_Analysis_PayrollJVCustom042EmployeeWiseBreakDown = "Pages.Reports.Analysis.PayrollJVCustom042EmployeeWiseBreakDown";
 
     public const string Pages_Reports_Analysis_PayrollCTC = "Pages.Reports.Analysis.PayrollCTC";
 

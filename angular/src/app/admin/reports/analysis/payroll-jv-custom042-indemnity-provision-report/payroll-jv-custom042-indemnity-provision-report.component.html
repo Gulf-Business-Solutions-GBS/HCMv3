@@ -1,0 +1,131 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PayrollJVCustom042IndemnityProvisionReport' | localize" [description]="'AnalysisReports' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <grid-report-filter
+                    [showDateRange]="false"
+                    [showEmployeeStatus]="false"
+                    [(employeeCode)]="employeeCode"
+                    [loading]="primengTableHelper.isLoading()"
+                    [exporting]="exporting()"
+                    (search)="reloadPage()"
+                    (exportExcel)="exportToExcel()">
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Month' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv042IndemnityProvisionMonth"
+                            min="1"
+                            max="12"
+                            [ngModel]="month()"
+                            (ngModelChange)="month.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">{{ 'Year' | localize }}</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="payrollJv042IndemnityProvisionYear"
+                            [ngModel]="year()"
+                            (ngModelChange)="year.set($event)"
+                            (keydown.enter)="reloadPage()" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">{{ 'RunType' | localize }}</label>
+                        <p-select
+                            [options]="runTypeOptions"
+                            [ngModel]="payrollRunType()"
+                            (ngModelChange)="payrollRunType.set($event)"
+                            name="payrollJv042IndemnityProvisionRunType"
+                            optionLabel="label"
+                            optionValue="value"
+                            [showClear]="true"
+                            [placeholder]="'RunType' | localize"
+                            styleClass="w-100" />
+                    </div>
+                </grid-report-filter>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getRecords($event)"
+                            [value]="primengTableHelper.records()"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            scrollDirection="horizontal"
+                            [tableStyle]="{ 'min-width': '80rem' }"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="min-width: 80px">{{ 'SrNo' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Main' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'MainDescription' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'Sub' | localize }}</th>
+                                    <th style="min-width: 180px">{{ 'SubDescription' | localize }}</th>
+                                    <th style="min-width: 260px">{{ 'Description' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Division' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Department' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Analysis1' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Analysis2' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Activity1' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Activity2' | localize }}</th>
+                                    <th style="min-width: 100px">{{ 'Currency' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'FcAmount' | localize }}</th>
+                                    <th style="min-width: 120px">{{ 'NetAmount' | localize }}</th>
+                                    <th style="min-width: 80px">{{ 'DrCr' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td>{{ record.lineNumber }}</td>
+                                    <td>{{ record.mainAccountCode }}</td>
+                                    <td>{{ record.mainAccountName }}</td>
+                                    <td>{{ record.subAccountCode }}</td>
+                                    <td>{{ record.subAccountName }}</td>
+                                    <td><span pTooltip="{{ record.description }}" class="hide-overflown">{{ record.description }}</span></td>
+                                    <td>{{ record.division }}</td>
+                                    <td>{{ record.department }}</td>
+                                    <td>{{ record.analysis1 }}</td>
+                                    <td>{{ record.analysis2 }}</td>
+                                    <td>{{ record.activity1 }}</td>
+                                    <td>{{ record.activity2 }}</td>
+                                    <td>{{ record.currency }}</td>
+                                    <td>{{ record.fcAmount }}</td>
+                                    <td>{{ record.netAmount }}</td>
+                                    <td>{{ record.drCr }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (primengTableHelper.totalRecordsCount() == 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getRecords($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount()"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount()
+                                " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

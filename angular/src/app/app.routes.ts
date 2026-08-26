@@ -1730,6 +1730,22 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom017' },
                     },
                     {
+                        path: 'reports/analysis/payroll-jv-custom016-loan-format-bmc',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-loan-format-bmc-report/payroll-jv-custom016-loan-format-bmc-report.component'
+                            ).then((m) => m.PayrollJVCustom016LoanFormatBmcReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016LoanFormatBmc' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom016-loan-format-myb',
+                        loadComponent: () =>
+                            import(
+                                './admin/reports/analysis/payroll-jv-custom016-loan-format-myb-report/payroll-jv-custom016-loan-format-myb-report.component'
+                            ).then((m) => m.PayrollJVCustom016LoanFormatMybReportComponent),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom016LoanFormatMyb' },
+                    },
+                    {
                         path: 'reports/analysis/payroll-jv-custom018',
                         loadComponent: () =>
                             import('./admin/reports/analysis/payroll-jv-custom018-report/payroll-jv-custom018-report.component').then(
@@ -1784,6 +1800,86 @@ export const appRoutes: Routes = [
                                 (m) => m.PayrollJVCustom051ReportComponent
                             ),
                         data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom051' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-salary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-salary-report/payroll-jv-custom042-salary-report.component').then(
+                                (m) => m.PayrollJVCustom042SalaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042Salary' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-advance-salary',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-advance-salary-report/payroll-jv-custom042-advance-salary-report.component').then(
+                                (m) => m.PayrollJVCustom042AdvanceSalaryReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042AdvanceSalary' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-annual-leave-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-annual-leave-provision-report/payroll-jv-custom042-annual-leave-provision-report.component').then(
+                                (m) => m.PayrollJVCustom042AnnualLeaveProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042AnnualLeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-public-holiday-leave-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-public-holiday-leave-provision-report/payroll-jv-custom042-public-holiday-leave-provision-report.component').then(
+                                (m) => m.PayrollJVCustom042PublicHolidayLeaveProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042PublicHolidayLeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-ramadan-time-back-leave-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-ramadan-time-back-leave-provision-report/payroll-jv-custom042-ramadan-time-back-leave-provision-report.component').then(
+                                (m) => m.PayrollJVCustom042RamadanTimeBackLeaveProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042RamadanTimeBackLeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-lieu-day-leave-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-lieu-day-leave-provision-report/payroll-jv-custom042-lieu-day-leave-provision-report.component').then(
+                                (m) => m.PayrollJVCustom042LieuDayLeaveProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042LieuDayLeaveProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-indemnity-provision',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-indemnity-provision-report/payroll-jv-custom042-indemnity-provision-report.component').then(
+                                (m) => m.PayrollJVCustom042IndemnityProvisionReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042IndemnityProvision' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-overtime',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-overtime-report/payroll-jv-custom042-overtime-report.component').then(
+                                (m) => m.PayrollJVCustom042OvertimeReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042Overtime' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-missing-accounts',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-missing-accounts-report/payroll-jv-custom042-missing-accounts-report.component').then(
+                                (m) => m.PayrollJVCustom042MissingAccountsReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042MissingAccounts' },
+                    },
+                    {
+                        path: 'reports/analysis/payroll-jv-custom042-employee-wise-break-down',
+                        loadComponent: () =>
+                            import('./admin/reports/analysis/payroll-jv-custom042-employee-wise-break-down-report/payroll-jv-custom042-employee-wise-break-down-report.component').then(
+                                (m) => m.PayrollJVCustom042EmployeeWiseBreakDownReportComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Analysis.PayrollJVCustom042EmployeeWiseBreakDown' },
                     },
                     {
                         path: 'reports/analysis/payroll-ctc',

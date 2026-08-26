@@ -1,5 +1,6 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DateTime } from 'luxon';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Table, TableModule } from 'primeng/table';
@@ -97,7 +98,7 @@ export class SalaryForecastReportComponent extends AppComponentBase {
 
     private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetSalaryForecastReportInput {
         return new GetSalaryForecastReportInput({
-            fromDate: this.fromDate,
+            fromDate: this.fromDate ? DateTime.fromJSDate(this.fromDate) : undefined,
             toDate: undefined,
             employeeCode: undefined,
             employeeStatus: undefined,

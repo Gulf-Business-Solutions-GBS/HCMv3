@@ -269,7 +269,12 @@ public class PayrollJVReportTestDataBuilder
         return payrollArea;
     }
 
-    public void CreateOrgAssignment(Employee employee, PayrollArea payrollArea, DateTime start, DateTime end)
+    public void CreateOrgAssignment(
+        Employee employee,
+        PayrollArea payrollArea,
+        DateTime start,
+        DateTime end,
+        CostCenter costCenter = null)
     {
         _usingDbContext(context =>
         {
@@ -279,7 +284,64 @@ public class PayrollJVReportTestDataBuilder
                 EmployeeId = employee.Id,
                 StartDate = start,
                 EndDate = end,
-                PayrollAreaId = payrollArea?.Id
+                PayrollAreaId = payrollArea?.Id,
+                CostCenterId = costCenter?.Id
+            });
+        });
+    }
+
+    public CostCenter CreateCostCenter(string code)
+    {
+        CostCenter costCenter = null;
+        _usingDbContext(context =>
+        {
+            costCenter = context.Set<CostCenter>().Add(new CostCenter
+            {
+                TenantId = _tenantId,
+                Code = code,
+                NameEn = "CC " + code,
+                NameAr = "CC " + code
+            }).Entity;
+        });
+
+        return costCenter;
+    }
+
+    public void CreateAbsence(
+        Employee employee,
+        DateTime startDate,
+        DateTime endDate,
+        DateTime paymentDate,
+        LeavePaymentType leavePaymentType,
+        bool isPaid = true)
+    {
+        AbsenceType absenceType = null;
+        _usingDbContext(context =>
+        {
+            absenceType = context.Set<AbsenceType>().Add(new AbsenceType
+            {
+                TenantId = _tenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "Annual Leave",
+                NameAr = "Annual Leave",
+                IsPaid = isPaid
+            }).Entity;
+        });
+
+        _usingDbContext(context =>
+        {
+            context.Set<EmployeeAbsence>().Add(new EmployeeAbsence
+            {
+                TenantId = _tenantId,
+                EmployeeId = employee.Id,
+                AbsenceTypeId = absenceType.Id,
+                StartDate = startDate,
+                EndDate = endDate,
+                PaymentDate = paymentDate,
+                LeavePaymentType = leavePaymentType,
+                HalfdayType = HalfdayType.None,
+                StartTime = startDate,
+                EndTime = endDate
             });
         });
     }

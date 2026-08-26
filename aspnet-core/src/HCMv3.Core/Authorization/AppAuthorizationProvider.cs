@@ -2552,6 +2552,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollAnalysisByDept, L("PayrollAnalysisByDeptReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheet, L("PayrollSheetReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollSheetCustom023, L("PayrollSheetCustom023Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016LoanFormatBmc, L("PayrollJVCustom016LoanFormatBmcReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom016LoanFormatMyb, L("PayrollJVCustom016LoanFormatMybReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom017, L("PayrollJVCustom017Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom018, L("PayrollJVCustom018Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom019, L("PayrollJVCustom019Report"));
@@ -2560,6 +2562,16 @@ public class AppAuthorizationProvider : AuthorizationProvider
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom035, L("PayrollJVCustom035Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom045, L("PayrollJVCustom045Report"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom051, L("PayrollJVCustom051Report"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042Salary, L("PayrollJVCustom042SalaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042AdvanceSalary, L("PayrollJVCustom042AdvanceSalaryReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042AnnualLeaveProvision, L("PayrollJVCustom042AnnualLeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042PublicHolidayLeaveProvision, L("PayrollJVCustom042PublicHolidayLeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042RamadanTimeBackLeaveProvision, L("PayrollJVCustom042RamadanTimeBackLeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042LieuDayLeaveProvision, L("PayrollJVCustom042LieuDayLeaveProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042IndemnityProvision, L("PayrollJVCustom042IndemnityProvisionReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042Overtime, L("PayrollJVCustom042OvertimeReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042MissingAccounts, L("PayrollJVCustom042MissingAccountsReport"));
+        analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollJVCustom042EmployeeWiseBreakDown, L("PayrollJVCustom042EmployeeWiseBreakDownReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollCTC, L("PayrollCTCReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PayrollNetPayContractDiff, L("PayrollNetPayContractDiffReport"));
         analysisReports.CreateChildPermission(AppPermissions.Pages_Reports_Analysis_PrePayrollReport, L("PrePayrollReportReport"));

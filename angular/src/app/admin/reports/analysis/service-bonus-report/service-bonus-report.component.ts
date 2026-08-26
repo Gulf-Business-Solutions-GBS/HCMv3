@@ -10,6 +10,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { FileDownloadService } from '@shared/utils/file-download.service';
+import { DateTime } from 'luxon';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { EmployeeStatus, GetServiceBonusReportInput, ServiceBonusReportServiceProxy } from '@shared/service-proxies/service-proxies';
 import { GridReportFilterComponent } from '../shared/grid-report-filter.component';
@@ -86,8 +87,8 @@ export class ServiceBonusReportComponent extends AppComponentBase {
 
     private buildInput(sorting: string, maxResultCount: number, skipCount: number): GetServiceBonusReportInput {
         return new GetServiceBonusReportInput({
-            fromDate: this.fromDate,
-            toDate: this.toDate,
+            fromDate: this.fromDate ? DateTime.fromJSDate(this.fromDate) : undefined,
+            toDate: this.toDate ? DateTime.fromJSDate(this.toDate) : undefined,
             employeeCode: this.employeeCode,
             employeeStatus: this.employeeStatus,
             sorting: sorting,

@@ -41,7 +41,14 @@ public enum PayrollJVWageTypeScope
 {
     EarningDeductionAndExtraCodes = 0,
 
-    AllExceptNetPay = 1
+    AllExceptNetPay = 1,
+
+    /// <summary>
+    /// Custom 042 (legacy <c>uscRptPayrollJV_Custom042.ascx.cs</c> lines 599-602): Earning, Deduction AND
+    /// every Provision line, unconditionally -- unlike <see cref="EarningDeductionAndExtraCodes"/>, which
+    /// only admits an explicit allow-list of provision wage-type CODES.
+    /// </summary>
+    EarningDeductionAndAllProvision = 2
 }
 
 public class PayrollJVPostingLineLoader : ITransientDependency
@@ -121,6 +128,10 @@ public class PayrollJVPostingLineLoader : ITransientDependency
                         && d.WageType.IncludeInFIPosting
                         && (wageTypeScope == PayrollJVWageTypeScope.AllExceptNetPay
                             ? d.WageType.Code != NetPayWageTypeCode
+                            : wageTypeScope == PayrollJVWageTypeScope.EarningDeductionAndAllProvision
+                            ? d.WageType.BillingType == BillingType.Earning
+                              || d.WageType.BillingType == BillingType.Deduction
+                              || d.WageType.BillingType == BillingType.Provision
                             : d.WageType.BillingType == BillingType.Earning
                               || d.WageType.BillingType == BillingType.Deduction
                               || provisionCodes.Contains(d.WageType.Code)))

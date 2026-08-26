@@ -4797,10 +4797,35 @@
     <text name="BackToSummary">Back to summary</text>
     <!-- Customer-specific Journal Voucher grid reports (legacy uscRptPayrollJV_Custom0NN). -->
     <text name="PayrollJVCustom016Report">Payroll JV (Custom 016)</text>
+    <text name="PayrollJVCustom016LoanFormatBmcReport">Payroll JV (Custom 016) - Loan Format - BMC</text>
+    <text name="PayrollJVCustom016LoanFormatMybReport">Payroll JV (Custom 016) - Loan Format - MYB</text>
     <text name="PayrollJVCustom017Report">Payroll JV (Custom 017)</text>
     <text name="PayrollJVCustom018Report">Payroll JV (Custom 018)</text>
     <text name="PayrollJVCustom019Report">Payroll JV (Custom 019)</text>
     <text name="PayrollJVCustom023Report">Payroll JV (Custom 023)</text>
+    <!-- Custom 042 grid reports (legacy uscRptPayrollJV_Custom042.ascx.cs), one per live cmbType format. -->
+    <text name="PayrollJVCustom042SalaryReport">Payroll JV (Custom 042) - Salary JV</text>
+    <text name="PayrollJVCustom042AdvanceSalaryReport">Payroll JV (Custom 042) - Advance Salary JV</text>
+    <text name="PayrollJVCustom042AnnualLeaveProvisionReport">Payroll JV (Custom 042) - AnnualLeave Provision JV</text>
+    <text name="PayrollJVCustom042PublicHolidayLeaveProvisionReport">Payroll JV (Custom 042) - Public Holiday Leave Provision JV</text>
+    <text name="PayrollJVCustom042RamadanTimeBackLeaveProvisionReport">Payroll JV (Custom 042) - Ramadan Time Back Leave Provision JV</text>
+    <text name="PayrollJVCustom042LieuDayLeaveProvisionReport">Payroll JV (Custom 042) - Lieu Day Leave Provision JV</text>
+    <text name="PayrollJVCustom042IndemnityProvisionReport">Payroll JV (Custom 042) - Indemnity Provision JV</text>
+    <text name="PayrollJVCustom042OvertimeReport">Payroll JV (Custom 042) - Overtime JV</text>
+    <text name="PayrollJVCustom042MissingAccountsReport">Payroll JV (Custom 042) - Missing Accounts</text>
+    <text name="PayrollJVCustom042EmployeeWiseBreakDownReport">Payroll JV (Custom 042) - EmployeeWise BreakDown</text>
+    <!-- Custom 042 voucher columns (Main/Sub/Div/Dept/Anly/Act/Currency/Fc-Net/Dr-Cr shape). -->
+    <text name="Main">Main</text>
+    <text name="MainDescription">Main Description</text>
+    <text name="Sub">Sub</text>
+    <text name="SubDescription">Sub Description</text>
+    <text name="Analysis1">Analysis 1</text>
+    <text name="Analysis2">Analysis 2</text>
+    <text name="Activity1">Activity 1</text>
+    <text name="Activity2">Activity 2</text>
+    <text name="FcAmount">Fc Amount</text>
+    <text name="NetAmount">Net Amount</text>
+    <text name="DrCr">Dr/Cr</text>
     <!-- Custom 018 voucher columns. -->
     <text name="GLAccount">G/L Account</text>
     <text name="Reference">Reference</text>
