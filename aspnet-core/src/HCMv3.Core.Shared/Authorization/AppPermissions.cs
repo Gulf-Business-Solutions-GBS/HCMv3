@@ -2472,6 +2472,14 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Reports_DesignerDevExpress = "Pages.Reports.DesignerDevExpress";
 
+    /// <summary>
+    /// The "Print Reports" launcher: the end-user list of runnable PrintReport catalog entries
+    /// (legacy HCM10's Print Reports screen). Deliberately NOT the same permission as
+    /// Pages_ReportManagement_PrintReports, which guards the ADMIN CRUD screen for the catalog --
+    /// running a report and maintaining the catalog are different jobs.
+    /// </summary>
+    public const string Pages_Reports_PrintReports = "Pages.Reports.PrintReports";
+
     //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis/**/usc*.ascx)
     //
     //One parent permission for the whole analysis-report family plus ONE CHILD PER REPORT, so a role can

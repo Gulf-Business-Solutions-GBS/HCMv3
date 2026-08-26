@@ -325,6 +325,10 @@ public class Startup
         // Report layouts are served from source-controlled report classes, not from a file store.
         services.AddSingleton<ReportStorageWebExtension, HcmReportStorageWebExtension>();
 
+        // Publish the ported report NAMES to Core.Shared so HCMv3.Application can compute
+        // PrintReport.isAvailable without referencing HCMv3.Reports. See PortedReportCatalog.
+        HcmReportFactoryRegistry.PublishToPortedReportCatalog();
+
         // Resolves the connection NAME carried by report layouts into a real connection, server
         // side, so the connection string is never serialised into the designer's client model.
         services.AddScoped<IConnectionProviderService, HcmReportConnectionProviderService>();

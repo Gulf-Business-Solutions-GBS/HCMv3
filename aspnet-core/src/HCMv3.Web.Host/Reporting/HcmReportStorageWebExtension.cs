@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Transactions;
+using Abp.Dependency;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.Extensions;
+using HCMv3.ReportManagement;
 using HCMv3.Reports;
-using HCMv3.Reports.Payroll;
 using HCMv3.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -18,49 +22,83 @@ namespace HCMv3.Web.Reporting;
 /// constructed, fully parameterised report instance.
 ///
 /// WHY THIS CLASS EXISTS AT ALL: a report is constructed by DevExpress, not by ABP's IoC container,
-/// so nothing inside <see cref="rptPayslipEn"/> can constructor-inject an ABP service. This class is
-/// the seam that does have DI, so everything the report needs from the ambient session -- the
-/// tenant, the connection string, the logged-in user name -- is resolved here and pushed in as
-/// report parameters.
+/// so nothing inside <see cref="Reports.Payroll.rptPayslipEn"/> can constructor-inject an ABP
+/// service. This class is the seam that does have DI, so everything the report needs from the
+/// ambient session -- the tenant, the connection string, the logged-in user name -- is resolved here
+/// and pushed in as report parameters.
+///
+/// CATALOG-DRIVEN LISTING. Which reports are *offered* comes from the <see cref="PrintReport"/>
+/// table (active rows in the current tenant); which reports can actually be *constructed* comes from
+/// <see cref="HcmReportFactoryRegistry"/>. The two are joined here:
+///
+///   | PrintReport row | ported class | GetUrls | IsValidUrl | GetData                            |
+///   |-----------------|--------------|---------|------------|------------------------------------|
+///   | active          | yes          | listed  | true       | renders                            |
+///   | active          | NO           | listed  | true       | throws FaultException "not yet ..."|
+///   | none            | yes          | hidden  | true       | renders (developer/direct access)  |
+///   | none            | NO           | hidden  | false      | throws FaultException "not found"  |
+///
+/// The middle row is the important one. A catalog row whose class is not ported deliberately keeps
+/// <see cref="IsValidUrl"/> TRUE so that DevExpress calls <see cref="GetData"/> and surfaces the
+/// explanatory <c>FaultException</c> message to the client. Returning false instead makes the
+/// Report Designer quietly open a NEW BLANK report -- the exact silent-blank failure mode this file
+/// already documents elsewhere -- and makes the Document Viewer render an empty document.
 /// </summary>
 public class HcmReportStorageWebExtension : ReportStorageWebExtension
 {
     private readonly IAbpSession _abpSession;
     private readonly IAppConfigurationAccessor _configurationAccessor;
+    private readonly IIocResolver _iocResolver;
     private readonly ILogger<HcmReportStorageWebExtension> _logger;
-
-    /// <summary>Report names this storage can serve, in the order the designer's Open dialog lists them.</summary>
-    private static readonly IReadOnlyDictionary<string, Func<XtraReport>> KnownReports =
-        new Dictionary<string, Func<XtraReport>>(StringComparer.OrdinalIgnoreCase)
-        {
-            [rptPayslipEn.ReportName] = () => new rptPayslipEn()
-        };
 
     public HcmReportStorageWebExtension(
         IAbpSession abpSession,
         IAppConfigurationAccessor configurationAccessor,
+        IIocResolver iocResolver,
         ILogger<HcmReportStorageWebExtension> logger)
     {
         _abpSession = abpSession;
         _configurationAccessor = configurationAccessor;
+        _iocResolver = iocResolver;
         _logger = logger;
     }
 
     public override bool CanSetData(string url) => false;
 
-    public override bool IsValidUrl(string url) => KnownReports.ContainsKey(StripParameters(url));
+    public override bool IsValidUrl(string url)
+    {
+        var name = StripParameters(url);
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return false;
+        }
+
+        // Ported class => always openable. Catalog row without a ported class => still "valid" so
+        // that GetData runs and can explain itself (see the class remarks).
+        return HcmReportFactoryRegistry.Contains(name) || IsInTenantCatalog(name);
+    }
 
     public override byte[] GetData(string url)
     {
         var name = StripParameters(url);
 
-        if (!KnownReports.TryGetValue(name, out var factory))
+        if (!HcmReportFactoryRegistry.TryCreate(name, out var report))
         {
+            if (IsInTenantCatalog(name))
+            {
+                _logger.LogWarning(
+                    "PrintReport '{ReportName}' is in the catalog but no report class is ported for it.", name);
+
+                throw new DevExpress.XtraReports.Web.ClientControls.FaultException(
+                    $"The report '{name}' is not yet available. It exists in the report catalog, but its " +
+                    "report layout has not been ported into this release.");
+            }
+
             throw new DevExpress.XtraReports.Web.ClientControls.FaultException(
                 $"Could not find report '{url}'.");
         }
 
-        var report = factory();
         Configure(report, ParseParameters(url));
 
         using var stream = new MemoryStream();
@@ -68,8 +106,43 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
         return stream.ToArray();
     }
 
-    public override Dictionary<string, string> GetUrls() =>
-        KnownReports.Keys.ToDictionary(name => name, name => name);
+    /// <summary>
+    /// The Open dialog's list. Driven by the <see cref="PrintReport"/> catalog for the current
+    /// tenant, intersected with the reports that can actually be constructed -- offering a name that
+    /// throws on open would be worse than not offering it.
+    ///
+    /// If the catalog cannot be read at all (no database, migration pending) this falls back to the
+    /// code-side registry so the designer stays usable for developers rather than showing nothing.
+    /// </summary>
+    public override Dictionary<string, string> GetUrls()
+    {
+        var catalog = TryLoadActiveCatalog();
+
+        if (catalog == null)
+        {
+            return HcmReportFactoryRegistry.ReportNames
+                .ToDictionary(name => name, name => name, StringComparer.OrdinalIgnoreCase);
+        }
+
+        var urls = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var row in catalog)
+        {
+            if (string.IsNullOrWhiteSpace(row.ReportName) || urls.ContainsKey(row.ReportName))
+            {
+                continue;
+            }
+
+            if (!HcmReportFactoryRegistry.Contains(row.ReportName))
+            {
+                continue;
+            }
+
+            urls[row.ReportName] = string.IsNullOrWhiteSpace(row.NameEn) ? row.ReportName : row.NameEn;
+        }
+
+        return urls;
+    }
 
     public override void SetData(XtraReport report, string url) =>
         throw new NotSupportedException(
@@ -124,6 +197,50 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
                 _logger.LogWarning(ex, "Ignoring report parameter {Parameter}='{Value}': not convertible to {Type}.",
                     pair.Key, pair.Value, parameter.Type);
             }
+        }
+    }
+
+    private bool IsInTenantCatalog(string reportName)
+    {
+        var catalog = TryLoadActiveCatalog();
+
+        return catalog != null &&
+               catalog.Any(r => string.Equals(r.ReportName, reportName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// Reads the active <see cref="PrintReport"/> rows for the resolved tenant. Returns null (rather
+    /// than an empty list) when the catalog could not be read at all, so callers can tell "no rows"
+    /// apart from "no database" -- they behave differently, see <see cref="GetUrls"/>.
+    ///
+    /// This class is a singleton (DevExpress registers one storage extension process-wide) so the
+    /// scoped repository/unit of work are resolved per call rather than injected.
+    /// </summary>
+    private IReadOnlyList<PrintReport> TryLoadActiveCatalog()
+    {
+        var tenantId = ResolveTenantId();
+
+        try
+        {
+            using var uowManager = _iocResolver.ResolveAsDisposable<IUnitOfWorkManager>();
+            using var repository = _iocResolver.ResolveAsDisposable<IRepository<PrintReport>>();
+            using var uow = uowManager.Object.Begin(TransactionScopeOption.Suppress);
+
+            List<PrintReport> rows;
+            using (uowManager.Object.Current.SetTenantId(tenantId))
+            {
+                rows = repository.Object.GetAllList(r => r.IsActive);
+            }
+
+            uow.Complete();
+            return rows;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex,
+                "Could not read the PrintReport catalog for tenant {TenantId}; falling back to the " +
+                "code-side report registry.", tenantId);
+            return null;
         }
     }
 

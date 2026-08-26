@@ -2519,6 +2519,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
         pages.CreateChildPermission(AppPermissions.Pages_Reports_Designer, L("ReportDesigner"));
         pages.CreateChildPermission(AppPermissions.Pages_Reports_DesignerDevExpress, L("ReportDesignerDevExpress"));
+        pages.CreateChildPermission(AppPermissions.Pages_Reports_PrintReports, L("PrintReportsLauncher"));
 
         //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis)
         var analysisReports = pages.CreateChildPermission(AppPermissions.Pages_Reports_Analysis, L("AnalysisReports"));

@@ -4070,6 +4070,13 @@
     <!-- Native DevExpress Web Report Designer: edits the ported XtraReport classes in HCMv3.Reports -->
     <text name="ReportDesignerDevExpress">DevExpress Report Designer</text>
     <text name="ReportDesignerDevExpressDescription">Design and edit DevExpress reports in the browser</text>
+    <!-- Print Reports launcher: the end-user list of runnable PrintReport catalog entries -->
+    <text name="PrintReportsLauncher">Print Reports</text>
+    <text name="PrintReportsLauncherDescription">Browse and run the printable reports available to you</text>
+    <text name="View">View</text>
+    <text name="PrintReportAvailable">Available</text>
+    <text name="PrintReportUnavailable">Not Available</text>
+    <text name="PrintReportNotYetAvailable">This report is listed in the catalog but its layout has not been ported yet.</text>
     <text name="PayslipEmailsSentSummary">Payslip emails: {0} sent, {1} failed, out of {2}.</text>
     <text name="ConfirmSendPayslipEmails">{0} payslip email(s) will be sent. Are you sure?</text>
     <text name="NoPayslipRecipientsFound">No employees with a payslip and an email address were found for the selected period.</text>

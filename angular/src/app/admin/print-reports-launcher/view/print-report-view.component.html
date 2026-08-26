@@ -1,0 +1,26 @@
+<div [@routerTransition]>
+    <sub-header [title]="reportUrl" [description]="'PrintReports' | localize">
+        <div role="actions">
+            <button (click)="back()" class="btn btn-secondary float-end">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Back' | localize }}</span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body p-0">
+                @if (reportUrl) {
+                    <dx-report-viewer [reportUrl]="reportUrl" [height]="'80vh'">
+                        <dxrv-request-options [host]="host" [invokeAction]="invokeAction" />
+                        <dxrv-tabpanel-settings [position]="'Right'" [width]="400" />
+                        <dxrv-callbacks (BeforeRender)="onBeforeRender($event)" (OnServerError)="onServerError($event)" />
+                    </dx-report-viewer>
+                } @else {
+                    <div class="p-5 text-center">{{ 'NoData' | localize }}</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

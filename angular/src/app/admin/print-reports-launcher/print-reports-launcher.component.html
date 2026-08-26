@@ -1,0 +1,110 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'PrintReports' | localize"
+        [description]="'PrintReportsLauncherDescription' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="input-group">
+                                <input
+                                    [ngModel]="filterText()"
+                                    (ngModelChange)="filterText.set($event)"
+                                    name="filterText"
+                                    autoFocus
+                                    class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')"
+                                    type="text" />
+                                <button class="btn btn-primary" (click)="loadReports()">
+                                    <i class="flaticon-refresh" aria-label="Refresh"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="isLoading()">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            [value]="filteredRecords()"
+                            [paginator]="false"
+                            [scrollable]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 170px">{{ 'Actions' | localize }}</th>
+                                    <th style="min-width: 260px" pSortableColumn="nameEn">
+                                        {{ 'DisplayName' | localize }}
+                                        <p-sortIcon field="nameEn" />
+                                    </th>
+                                    <th style="min-width: 180px" pSortableColumn="reportCategory">
+                                        {{ 'ReportCategory' | localize }}
+                                        <p-sortIcon field="reportCategory" />
+                                    </th>
+                                    <th style="min-width: 160px">{{ 'Status' | localize }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-record="$implicit">
+                                <tr>
+                                    <td style="width: 170px">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm me-1"
+                                            [disabled]="!record.isAvailable"
+                                            [pTooltip]="
+                                                record.isAvailable
+                                                    ? (l('View'))
+                                                    : (l('PrintReportNotYetAvailable'))
+                                            "
+                                            (click)="viewReport(record)">
+                                            <i class="fa fa-eye"></i>
+                                            {{ 'View' | localize }}
+                                        </button>
+                                        @if ('Pages.Reports.DesignerDevExpress' | permission) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary btn-sm"
+                                                [disabled]="!record.isAvailable"
+                                                [pTooltip]="
+                                                    record.isAvailable
+                                                        ? (l('Edit'))
+                                                        : (l('PrintReportNotYetAvailable'))
+                                                "
+                                                (click)="editReport(record)">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                    <td style="min-width: 260px">
+                                        <span [pTooltip]="record.reportName" class="hide-overflown">
+                                            {{ displayName(record) }}
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 180px">{{ record.reportCategory }}</td>
+                                    <td style="min-width: 160px">
+                                        <span [class]="record.isAvailable ? 'badge badge-success' : 'badge badge-warning'">
+                                            {{
+                                                (record.isAvailable ? 'PrintReportAvailable' : 'PrintReportUnavailable')
+                                                    | localize
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if (filteredRecords().length === 0) {
+                            <div class="primeng-no-data">
+                                {{ 'NoData' | localize }}
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

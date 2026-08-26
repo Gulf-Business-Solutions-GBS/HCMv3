@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppConsts } from '@shared/AppConsts';
@@ -26,6 +27,8 @@ import { DxReportDesignerModule } from 'devexpress-reporting-angular/dx-report-d
     imports: [SubHeaderComponent, LocalizePipe, DxReportDesignerModule],
 })
 export class ReportDesignerDevExpressComponent extends AppComponentBase {
+    private _route = inject(ActivatedRoute);
+
     /**
      * Backend origin for the DevExpress services. DevExpress concatenates `host` + action path, so it must
      * carry a trailing slash (e.g. `https://localhost:44301/`).
@@ -37,6 +40,10 @@ export class ReportDesignerDevExpressComponent extends AppComponentBase {
     /** Backend route prefix registered for the Report Designer controller. */
     readonly getDesignerModelAction: string = 'DXXRD/GetDesignerModel';
 
-    /** Name of the report the backend's report storage resolves. */
-    readonly reportUrl: string = 'PayslipEn';
+    /**
+     * Name of the report the backend's report storage resolves. Taken from the optional `:reportName`
+     * route param (used when the Print Reports launcher opens a specific report for editing); falls back
+     * to `PayslipEn` so the parameterless `/app/admin/report-designer-devexpress` route keeps working.
+     */
+    readonly reportUrl: string = this._route.snapshot.paramMap.get('reportName') || 'PayslipEn';
 }

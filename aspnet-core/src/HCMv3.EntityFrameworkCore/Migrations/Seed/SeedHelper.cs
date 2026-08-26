@@ -28,6 +28,9 @@ public static class SeedHelper
         //Default tenant seed (in host database).
         new DefaultTenantBuilder(context).Create();
         new TenantRoleAndUserBuilder(context, 1).Create();
+
+        //Print report catalog for the default tenant (rows the "Print Reports" launcher lists).
+        new PrintReportCatalogBuilder(context, 1).Create();
     }
 
     private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

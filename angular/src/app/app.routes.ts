@@ -1389,6 +1389,33 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.DesignerDevExpress' },
                     },
                     {
+                        // Same designer screen, opened on a specific report (Edit action of the Print
+                        // Reports launcher). Without the param the component falls back to 'PayslipEn'.
+                        path: 'report-designer-devexpress/:reportName',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-designer-devexpress/report-designer-devexpress.component'
+                            ).then((m) => m.ReportDesignerDevExpressComponent),
+                        data: { permission: 'Pages.Reports.DesignerDevExpress' },
+                    },
+                    {
+                        // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"): catalog list + Dx viewer.
+                        path: 'print-reports-launcher',
+                        loadComponent: () =>
+                            import(
+                                './admin/print-reports-launcher/print-reports-launcher.component'
+                            ).then((m) => m.PrintReportsLauncherComponent),
+                        data: { permission: 'Pages.Reports.PrintReports' },
+                    },
+                    {
+                        path: 'print-reports-launcher/view/:reportName',
+                        loadComponent: () =>
+                            import(
+                                './admin/print-reports-launcher/view/print-report-view.component'
+                            ).then((m) => m.PrintReportViewComponent),
+                        data: { permission: 'Pages.Reports.PrintReports' },
+                    },
+                    {
                         // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis).
                         // Every report in the wave adds one entry of exactly this shape.
                         path: 'reports/analysis/employee-contract',

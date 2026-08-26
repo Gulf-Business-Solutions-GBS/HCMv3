@@ -38,6 +38,15 @@ export class AppNavigationService {
                 'flaticon-edit',
                 '/app/admin/report-designer-devexpress'
             ),
+            // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
+            // child of AnalysisReports - that tree is for the ported grid reports.
+            new AppMenuItem(
+                'PrintReports',
+                'Pages.Reports.PrintReports',
+                'flaticon-interface-9',
+                '/app/admin/print-reports-launcher',
+                ['/app/admin/print-reports-launcher/view/{reportName}']
+            ),
             // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis). One child entry per
             // ported report; the wave adds ~139 more siblings under this same parent.
             new AppMenuItem(
