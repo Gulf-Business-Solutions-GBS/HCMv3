@@ -468,8 +468,8 @@ WHERE emp.TenantId = @TenantId
     , emp.FullNameEn
     , emp.Code                              AS [Emp_Code]
     , emp.[Status]
-    , orgUnit.DisplayName                   AS [OrgUnitAr]
-    , orgUnit.DisplayName                   AS [OrgUnitEn]
+    , orgLevel1Anc.NameAr                   AS [OrgUnitAr]
+    , orgLevel1Anc.DisplayName              AS [OrgUnitEn]
     , signatory.Id                          AS Signatory_OID
     , signatory.NameAr                      AS SignatoryNameAr
     , signatory.NameEn                      AS SignatoryNameEn
@@ -491,6 +491,21 @@ LEFT OUTER JOIN EmployeeOrgAssignments empOrg
             AND empOrg.EndDate >= GETDATE()
 LEFT OUTER JOIN AbpOrganizationUnits orgUnit
              ON orgUnit.Id = empOrg.OrganizationUnitId AND orgUnit.TenantId = @TenantId AND orgUnit.IsDeleted = 0
+
+-- Legacy rptWFPAManpower joined orgUnit.OID to empOrg.OrgLevel1 -- POSITIONAL level 1, with no
+-- unit-type filter at all (rptWFPAManpower.resx:163). ABP Codes are dot-separated 5-digit
+-- segments, so depth N is exactly LEN(Code) = 6N - 1; level 1 is LEN(Code) = 5. Do NOT add a type
+-- filter here: legacy had none, and adding one would change which unit prints. Arabic comes from
+-- OrgUnitProfiles.NameAr; ABP's table has only DisplayName.
+OUTER APPLY (
+    SELECT TOP 1 anc.DisplayName, ancp.NameAr
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp ON ancp.OrganizationUnitId = anc.Id AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND LEN(anc.Code) = 5
+) orgLevel1Anc
 LEFT OUTER JOIN EmployeeSponsors empSponsor
              ON empSponsor.EmployeeId = emp.Id AND empSponsor.TenantId = @TenantId AND empSponsor.IsDeleted = 0
             AND empSponsor.EndDate >= GETDATE()
@@ -956,7 +971,7 @@ WHERE emp.TenantId = @TenantId
     , nationality.NameAr                    AS NationalityNameAr
     , religion.NameAr                       AS ReligionNameAr
     , basicPayDetail.Amount                 AS BasicPayAmount
-    , orgUnit.DisplayName                   AS OrgUnitNameAr
+    , orgUnitProfile.NameAr                 AS OrgUnitNameAr
     , sponsor.NameAr                        AS SponsorNameAr
     , empVisa.EntryDate                     AS VisaEntryDate
     , empVisa.EndDate                       AS VisaEndDate
@@ -970,6 +985,8 @@ LEFT JOIN EmployeeOrgAssignments empOrg
       AND empOrg.StartDate <= GETDATE() AND empOrg.EndDate >= GETDATE()
 LEFT JOIN AbpOrganizationUnits orgUnit
        ON orgUnit.Id = empOrg.OrganizationUnitId AND orgUnit.TenantId = @TenantId AND orgUnit.IsDeleted = 0
+LEFT JOIN OrgUnitProfiles orgUnitProfile
+       ON orgUnitProfile.OrganizationUnitId = orgUnit.Id AND orgUnitProfile.TenantId = @TenantId AND orgUnitProfile.IsDeleted = 0
 LEFT JOIN EmployeeBasicPayDetails basicPayDetail
        ON basicPayDetail.EmployeeBasicPayId =
               (SELECT TOP (1) ebp.Id FROM EmployeeBasicPays ebp

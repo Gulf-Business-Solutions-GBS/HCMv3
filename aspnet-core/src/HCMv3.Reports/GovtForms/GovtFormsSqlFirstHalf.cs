@@ -49,10 +49,17 @@
 //     it here would change what the form prints -- flagged for a product decision rather than
 //     silently "fixed".
 //  7. AbpOrganizationUnits has DisplayName only -- no NameEn/NameAr pair and no unit-type concept.
-//     Legacy queries that picked "the OrgLevel1..7 whose OrganizationUnitType is Division" collapse
-//     to the employee's own single OrganizationUnitId, and the Arabic org name is unavailable.
-//     *** SEMANTIC DEVIATION -- needs a product decision. *** Only the two Shoun forms and
-//     rptEndorsmentForVisitVisa touch it, and only rptPayShounTerminationFormEn actually binds it.
+//     BOTH GAPS ARE FILLED BY HCMv3's OWN OrgUnitProfiles: NameAr supplies the Arabic org name and
+//     OrganizationUnitTypeId supplies the unit type, so the legacy "pick the OrgLevel1..7 whose
+//     type is Division" walks ARE expressible and are implemented below. An earlier revision of
+//     this note said they were not, collapsed them to the employee's own unit, and fed the Arabic
+//     columns DisplayName (i.e. English). Both were wrong. Per-report rules, derived from the
+//     legacy source rather than assumed:
+//       * rptEndorsmentForVisitVisa -- shallowest 'Division'-typed ancestor.
+//       * rptWFPAManpower -- POSITIONAL level 1, no type filter (legacy had none).
+//       * rptPayShounTerminationFormEn and rptVisaApplicationShounEn -- the employee's OWN unit is
+//         correct: legacy bound OrgAssignment.OrganizationUnit.NameAr, an XPO object path with no
+//         OrgLevel walk. Only the Arabic name was wrong.
 
 namespace HCMv3.Reports.GovtForms
 {
@@ -247,14 +254,30 @@ SELECT
     , empBank.AccountNum
     , bank.NameEn                  AS BankEn
     , bank.NameAr                  AS BankAr
-    , orgUnit.DisplayName          AS DivisionEn   -- rewrite note 7
-    , orgUnit.DisplayName          AS DivisionAr   -- rewrite note 7: no Arabic org name in HCMv3
+    , divisionAnc.DisplayName      AS DivisionEn   -- rewrite note 7
+    , divisionAnc.NameAr           AS DivisionAr   -- rewrite note 7
 FROM Employees emp
 LEFT JOIN EmployeeOrgAssignments orgAsg
        ON orgAsg.EmployeeId = emp.Id AND orgAsg.TenantId = @TenantId AND orgAsg.IsDeleted = 0
       AND orgAsg.StartDate <= @PrmDate AND orgAsg.EndDate >= @PrmDate
 LEFT JOIN AbpOrganizationUnits orgUnit
        ON orgUnit.Id = orgAsg.OrganizationUnitId AND orgUnit.TenantId = @TenantId AND orgUnit.IsDeleted = 0
+
+-- Legacy rptEndorsmentForVisitVisa resolved DivisionEn/DivisionAr by joining OrganizationUnit
+-- once per OrgLevel1..OrgLevel7 slot, each filtered to type 'Division', then picking with a CASE
+-- that tests OrgLevel1 first -- i.e. the SHALLOWEST Division-typed ancestor. Ascending ORDER BY
+-- reproduces that. Arabic comes from OrgUnitProfiles.NameAr; ABP's table has only DisplayName.
+OUTER APPLY (
+    SELECT TOP 1 anc.DisplayName, ancp.NameAr
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp       ON ancp.OrganizationUnitId = anc.Id      AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    INNER JOIN OrganizationUnitTypes anct ON anct.Id = ancp.OrganizationUnitTypeId AND anct.TenantId = @TenantId AND anct.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND anct.NameEn = 'Division'
+    ORDER BY LEN(anc.Code)
+) divisionAnc
 LEFT JOIN JobTitles jt
        ON jt.Id = orgAsg.JobTitleId AND jt.TenantId = @TenantId AND jt.IsDeleted = 0
 LEFT JOIN EmployeeSponsors empSponsor
@@ -386,7 +409,7 @@ SELECT
         ISNULL(emp.ThirdNameAr , '') + ' ' +
         ISNULL(emp.LastNameAr  , '')))       AS FullNameArCal
     , emp.JoiningDate
-    , orgUnit.DisplayName                    AS OrgUnitNameAr   -- rewrite note 7
+    , orgUnitProfile.NameAr                  AS OrgUnitNameAr   -- rewrite note 7
     , CONVERT(VARCHAR(10), GETDATE(), 103)   AS PrintedDate
 FROM Employees emp
 LEFT JOIN EmployeeOrgAssignments orgAsg
@@ -394,6 +417,8 @@ LEFT JOIN EmployeeOrgAssignments orgAsg
       AND orgAsg.StartDate <= GETDATE() AND orgAsg.EndDate >= GETDATE()
 LEFT JOIN AbpOrganizationUnits orgUnit
        ON orgUnit.Id = orgAsg.OrganizationUnitId AND orgUnit.TenantId = @TenantId AND orgUnit.IsDeleted = 0
+LEFT JOIN OrgUnitProfiles orgUnitProfile
+       ON orgUnitProfile.OrganizationUnitId = orgUnit.Id AND orgUnitProfile.TenantId = @TenantId AND orgUnitProfile.IsDeleted = 0
 WHERE emp.Code = @EmployeeCode
   AND emp.TenantId = @TenantId
   AND emp.IsDeleted = 0;";
