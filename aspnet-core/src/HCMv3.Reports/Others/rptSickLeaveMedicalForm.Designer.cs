@@ -705,7 +705,14 @@
             this.SickLeaveFormDS});
             this.DataMember = "SickLeaveFormQuery";
             this.DataSource = this.SickLeaveFormDS;
-            this.Margins = new System.Drawing.Printing.Margins(0, 0, 0, 0);
+            // CENTRED ON THE PAGE -- a DELIBERATE DEVIATION FROM LEGACY, requested after review.
+            // The 42 controls span x = 49.00 to 751.04 (702.04 wide) on an 827-wide A4 page, so legacy
+            // printed the block 49 from the left edge and 76 from the right. Legacy carried
+            // Margins(0,0,0,0) and those same offsets, so this asymmetry was inherited, not introduced
+            // by the port. A 13pt left margin shifts every band to start at 62, leaving 63 on the right.
+            // Done with the margin rather than by editing 42 LocationFloat values so the layout stays
+            // diffable against the legacy designer.
+            this.Margins = new System.Drawing.Printing.Margins(13, 0, 0, 0);
             this.PageHeight = 1169;
             this.PageWidth = 827;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A4;

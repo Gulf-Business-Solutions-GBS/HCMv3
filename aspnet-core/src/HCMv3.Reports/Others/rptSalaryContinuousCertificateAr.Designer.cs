@@ -495,7 +495,13 @@
             this.sqlDataSource1});
             this.DataMember = "Query";
             this.DataSource = this.sqlDataSource1;
-            this.Margins = new System.Drawing.Printing.Margins(52, 68, 10, 10);
+            // CENTRED -- deliberate deviation from legacy, requested after review. Legacy carried an
+
+            // asymmetric 52/68 left/right margin on an 827-wide page; 60/60 centres the block. The
+
+            // control positions and the 10/10 top/bottom margins are untouched.
+
+            this.Margins = new System.Drawing.Printing.Margins(60, 60, 10, 10);
             this.PageHeight = 1169;
             this.PageWidth = 827;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A4;
