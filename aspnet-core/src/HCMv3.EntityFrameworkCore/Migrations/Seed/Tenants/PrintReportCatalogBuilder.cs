@@ -100,7 +100,62 @@ public class PrintReportCatalogBuilder
         ("PR304", "EmployeeOvertime", "Employee Overtime", "العمل الإضافي للموظف", ReportCategory.Default),
         ("PR305", "EmployeeDeduction", "Employee Deduction", "استقطاعات الموظف", ReportCategory.Default),
         ("PR306", "EmployeeLeave", "Employee Leave", "إجازات الموظف", ReportCategory.Default),
-        ("PR307", "EmployeeLoan", "Employee Loan", "سلف الموظف", ReportCategory.Default)
+        ("PR307", "EmployeeLoan", "Employee Loan", "سلف الموظف", ReportCategory.Default),
+
+        // ---- WAVE TWO ------------------------------------------------------------------
+        // Others -- employee letters, certificates and HR forms.
+        ("PR400", "ExperienceCertificate", "Experience Certificate", "شهادة خبرة", ReportCategory.Default),
+        ("PR401", "SalaryContinuousCertificate", "Salary Continuous Certificate", "شهادة استمرارية راتب", ReportCategory.Default),
+        ("PR402", "SalaryContinuousCertificateAr", "Salary Continuous Certificate (Arabic)", "شهادة استمرارية راتب - عربي", ReportCategory.Default),
+        ("PR403", "WhomsoeverCertificate", "To Whom It May Concern Certificate", "شهادة لمن يهمه الأمر", ReportCategory.Default),
+        ("PR404", "EmployeeConfirmationLetter", "Employment Confirmation Letter", "خطاب تثبيت الموظف", ReportCategory.Default),
+        ("PR405", "SalaryIncrementLetter", "Salary Increment Letter", "خطاب زيادة الراتب", ReportCategory.Default),
+        ("PR406", "WarningLetter", "Warning Letter", "خطاب إنذار", ReportCategory.Default),
+        ("PR407", "ClearanceForm", "Clearance Form", "نموذج إخلاء طرف", ReportCategory.Default),
+        ("PR408", "FinalClearanceEos", "Final Clearance (End of Service)", "المخالصة النهائية لنهاية الخدمة", ReportCategory.Default),
+        ("PR409", "DisciplinaryForm", "Disciplinary Form", "نموذج جزاء", ReportCategory.Default),
+        ("PR410", "EmployeeWarningNotice", "Employee Warning Notice", "إشعار إنذار موظف", ReportCategory.Default),
+        ("PR411", "ProbationaryReportForm", "Probationary Report Form", "نموذج تقرير فترة التجربة", ReportCategory.Default),
+        ("PR412", "PayChange", "Pay Change", "تغيير الراتب", ReportCategory.Default),
+        ("PR413", "EmploymentContract", "Employment Contract", "عقد عمل", ReportCategory.Default),
+        ("PR414", "EmploymentContractAr023", "Employment Contract (Arabic)", "عقد عمل - عربي", ReportCategory.Default),
+        ("PR415", "EmploymentContractEn023", "Employment Contract (English)", "عقد عمل - إنجليزي", ReportCategory.Default),
+
+        // Others -- leave.
+        ("PR420", "AnnualLeaveSheet", "Annual Leave Sheet", "كشف الإجازة السنوية", ReportCategory.Default),
+        ("PR421", "SickLeaveForm", "Sick Leave Form", "نموذج الإجازة المرضية", ReportCategory.Default),
+        ("PR422", "SickLeaveMedicalForm", "Sick Leave Medical Form", "النموذج الطبي للإجازة المرضية", ReportCategory.Default),
+        ("PR423", "MonthlyLeaveAccrual", "Monthly Leave Accrual", "استحقاق الإجازة الشهري", ReportCategory.Default),
+        ("PR424", "MonthlyIndemnityAccrual", "Monthly Indemnity Accrual", "استحقاق المكافأة الشهري", ReportCategory.Default),
+
+        // Others -- admin / employee data.
+        ("PR430", "EmployeeProfile", "Employee Profile", "ملف الموظف", ReportCategory.Default),
+        ("PR431", "EmpWorklocation", "Employees by Work Location", "الموظفون حسب موقع العمل", ReportCategory.Default),
+        ("PR432", "LocationWiseEmp", "Location Wise Employees", "الموظفون حسب الموقع", ReportCategory.Default),
+        ("PR433", "HolidayCalendar", "Holiday Calendar", "تقويم العطلات", ReportCategory.Default),
+        ("PR434", "PassportInOut", "Passport In / Out", "تسليم واستلام جواز السفر", ReportCategory.Default),
+        ("PR435", "PassportRequestForm", "Passport Request Form", "نموذج طلب جواز السفر", ReportCategory.Default),
+        ("PR436", "BusinessTrip", "Business Trip", "رحلة عمل", ReportCategory.Default),
+
+        // Payroll -- payroll sheets.
+        ("PR440", "PayrollSheet", "Payroll Sheet", "كشف الرواتب", ReportCategory.Default),
+        ("PR441", "PayrollSheetSummary", "Payroll Sheet (Summary)", "كشف الرواتب - ملخص", ReportCategory.Default),
+        ("PR442", "PayrollSheetByCostCenter", "Payroll Sheet by Cost Center", "كشف الرواتب حسب مركز التكلفة", ReportCategory.Default),
+        ("PR443", "PayrollSheetByCostCenterPostingGroup", "Payroll Sheet by Cost Center and Posting Group", "كشف الرواتب حسب مركز التكلفة ومجموعة الترحيل", ReportCategory.Default),
+        ("PR444", "PayrollSheetByCostCenterSummary", "Payroll Sheet by Cost Center (Summary)", "كشف الرواتب حسب مركز التكلفة - ملخص", ReportCategory.Default),
+        ("PR445", "PayrollSheetBySponsor", "Payroll Sheet by Sponsor", "كشف الرواتب حسب الكفيل", ReportCategory.Default),
+        ("PR446", "SalaryByBudgetingGroup", "Salary by Budgeting Group", "الرواتب حسب مجموعة الموازنة", ReportCategory.Default),
+
+        // Payroll -- leave settlement.
+        ("PR450", "LeaveEncashment", "Leave Encashment", "صرف بدل الإجازة", ReportCategory.Default),
+        ("PR451", "LeaveSettlementEn", "Leave Settlement", "تسوية الإجازة", ReportCategory.Default),
+        ("PR452", "LeaveSettlementAr", "Leave Settlement (Arabic)", "تسوية الإجازة - عربي", ReportCategory.Default),
+
+        // Payroll -- payslip variants.
+        ("PR460", "SubordPayslipEn", "Subordinates Payslip", "كشف رواتب المرؤوسين", ReportCategory.Default),
+        ("PR461", "SubordPayslipAr", "Subordinates Payslip (Arabic)", "كشف رواتب المرؤوسين - عربي", ReportCategory.Default),
+        ("PR462", "SocialSecurity", "PIFSS Social Security Report", "تقرير التأمينات الاجتماعية", ReportCategory.Default),
+        ("PR463", "PayslipWithoutSalaryParticularsEn", "Payslip Without Salary Particulars", "كشف الراتب بدون تفاصيل", ReportCategory.Default)
     };
 
     public PrintReportCatalogBuilder(HCMv3DbContext context, int tenantId)

@@ -111,7 +111,73 @@ public static class HcmReportFactoryRegistry
             [rptEmployeeOvertime.ReportName] = () => new rptEmployeeOvertime(),
             [rptEmployeeDeduction.ReportName] = () => new rptEmployeeDeduction(),
             [rptEmployeeLeave.ReportName] = () => new rptEmployeeLeave(),
-            [rptEmployeeLoan.ReportName] = () => new rptEmployeeLoan()
+            [rptEmployeeLoan.ReportName] = () => new rptEmployeeLoan(),
+
+            // ---- WAVE TWO ----------------------------------------------------------------
+            // Others -- employee letters, certificates and HR forms.
+            [rptExperienceCertificate.ReportName] = () => new rptExperienceCertificate(),
+            [rptSalaryContinuousCertificate.ReportName] = () => new rptSalaryContinuousCertificate(),
+            [rptSalaryContinuousCertificateAr.ReportName] = () => new rptSalaryContinuousCertificateAr(),
+            [rptWhomsoeverCertificate.ReportName] = () => new rptWhomsoeverCertificate(),
+            [rptEmployeeConfirmationLetter.ReportName] = () => new rptEmployeeConfirmationLetter(),
+            [rptSalaryIncrementLetter.ReportName] = () => new rptSalaryIncrementLetter(),
+            [rptWarningLetter.ReportName] = () => new rptWarningLetter(),
+            [rptClearanceForm.ReportName] = () => new rptClearanceForm(),
+            [rptFinalClearance_EOS.ReportName] = () => new rptFinalClearance_EOS(),
+            [rptDisciplinaryForm.ReportName] = () => new rptDisciplinaryForm(),
+            [rptEmployeeWarningNotice.ReportName] = () => new rptEmployeeWarningNotice(),
+            [rptProbationaryReportForm.ReportName] = () => new rptProbationaryReportForm(),
+            [rptPayChange.ReportName] = () => new rptPayChange(),
+            [rptEmploymentContract.ReportName] = () => new rptEmploymentContract(),
+            [rptEmploymentContractAr023.ReportName] = () => new rptEmploymentContractAr023(),
+            [rptEmploymentContractEn023.ReportName] = () => new rptEmploymentContractEn023(),
+
+            // Others -- leave. rptAnnualLeaveRequest and rptLeaveForm are absent by design:
+            // both are driven by the self-service LeaveRequest entity, which HCMv3 does not
+            // have. Same gap that blocks rptTravelDeskReport and three Transaction reports.
+            [rptAnnualLeaveSheet.ReportName] = () => new rptAnnualLeaveSheet(),
+            [rptSickLeaveForm.ReportName] = () => new rptSickLeaveForm(),
+            [rptSickLeaveMedicalForm.ReportName] = () => new rptSickLeaveMedicalForm(),
+            [rptMonthlyLeaveAccrual.ReportName] = () => new rptMonthlyLeaveAccrual(),
+            [rptMonthlyIndemnityAccrual.ReportName] = () => new rptMonthlyIndemnityAccrual(),
+
+            // Others -- admin / employee data.
+            [rptEmployeeProfile.ReportName] = () => new rptEmployeeProfile(),
+            [rptEmpWorklocation.ReportName] = () => new rptEmpWorklocation(),
+            [rptLocationWiseEmp.ReportName] = () => new rptLocationWiseEmp(),
+            [rptHolidayCalendar.ReportName] = () => new rptHolidayCalendar(),
+            [rptPassportInOut.ReportName] = () => new rptPassportInOut(),
+            [rptPassportRequestForm.ReportName] = () => new rptPassportRequestForm(),
+            [rptBusinessTrip.ReportName] = () => new rptBusinessTrip(),
+
+            // Payroll -- payroll sheets. Seven legacy reports that were seven copy-pasted
+            // SQL bodies; they now compose one shared set of query fragments.
+            [rptPayrollSheet.ReportName] = () => new rptPayrollSheet(),
+            [rptPayrollSheetSummary.ReportName] = () => new rptPayrollSheetSummary(),
+            [rptPayrollSheetByCostCenter.ReportName] = () => new rptPayrollSheetByCostCenter(),
+            [rptPayrollSheetByCostCenterPostingGroup.ReportName] = () => new rptPayrollSheetByCostCenterPostingGroup(),
+            [rptPayrollSheetByCostCenterSummary.ReportName] = () => new rptPayrollSheetByCostCenterSummary(),
+            [rptPayrollSheetBySponsor.ReportName] = () => new rptPayrollSheetBySponsor(),
+            [rptSalaryByBudgetingGroup.ReportName] = () => new rptSalaryByBudgetingGroup(),
+
+            // Payroll -- leave settlement. The five srptLeaveSettlement* subreports are
+            // deliberately absent: each is instantiated by its parent's designer and is never
+            // resolved by name. srptLeaveSettlementBookingBalance was not ported at all --
+            // it exists only to print AbsenceRequest.BookingBalance, which HCMv3 has no
+            // column for.
+            [rptLeaveEncashment.ReportName] = () => new rptLeaveEncashment(),
+            [rptLeaveSettlement.ReportName] = () => new rptLeaveSettlement(),
+            [rptLeaveSettlementAr.ReportName] = () => new rptLeaveSettlementAr(),
+
+            // Payroll -- payslip variants. These REUSE the committed srptPaySlip* subreports
+            // by instantiation rather than cloning them. rptPayslip_wsp_En is absent: it and
+            // its three subreports run stored procedures (usp_rpt_payslip,
+            // usp_rpt_payslip_details) whose bodies exist only in the legacy database and
+            // are nowhere in the legacy source tree.
+            [rptSubordPayslipEn.ReportName] = () => new rptSubordPayslipEn(),
+            [rptSubordPayslipAr.ReportName] = () => new rptSubordPayslipAr(),
+            [rptSocialSecurity.ReportName] = () => new rptSocialSecurity(),
+            [rptPayslip_wosp_En.ReportName] = () => new rptPayslip_wosp_En()
         };
 
     /// <summary>Report names that can actually be constructed.</summary>

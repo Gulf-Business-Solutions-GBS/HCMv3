@@ -66,4 +66,28 @@
     <EmbeddedResource Include="EmployeeInfo\*.jpg" />
   </ItemGroup>
 
+  <!-- Wave-two Others reports. Images extracted from the legacy .resx files: a
+       System.Drawing.Bitmap .resx entry breaks the multi-targeted build, so the bytes
+       ship as embedded files and are attached in each report's constructor. Not
+       recompressed or resized; several are scans of official paper forms whose field
+       positions the report labels are aligned against. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Others\rptEmployeeProfile.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptBusinessTrip.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptPassportInOut.xrPictureBox1.jpg" />
+    <EmbeddedResource Include="Others\rptPassportRequestForm.xrPictureBox1.jpg" />
+    <EmbeddedResource Include="Others\rptSalaryContinuousCertificateLetterhead.png" />
+    <EmbeddedResource Include="Others\rptSalaryContinuousCertificateSignature.png" />
+    <EmbeddedResource Include="Others\rptWhomsoeverCertificateBackground.jpg" />
+    <EmbeddedResource Include="Others\rptWarningLetterBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsClearanceFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsProbationaryFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsDisciplinaryFormBackground.jpg" />
+    <EmbeddedResource Include="Others\OthersHrFormsDisciplinaryMark.png" />
+    <EmbeddedResource Include="Others\OthersHrFormsFinalClearanceEosLogo.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveForm.xrPictureBox1.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveMedicalForm.xrPictureBox2.png" />
+    <EmbeddedResource Include="Others\rptSickLeaveMedicalForm.xrPictureBox3.jpg" />
+  </ItemGroup>
+
 </Project>
