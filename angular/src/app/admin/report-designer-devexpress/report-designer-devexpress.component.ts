@@ -6,6 +6,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DxReportDesignerModule } from 'devexpress-reporting-angular/dx-report-designer';
+import { configureDevExpressReportingAuth } from '@app/admin/shared/devexpress-reporting-auth';
 
 /**
  * Hosts the real DevExpress Web Report Designer (the official `devexpress-reporting-angular` components,
@@ -28,6 +29,15 @@ import { DxReportDesignerModule } from 'devexpress-reporting-angular/dx-report-d
 })
 export class ReportDesignerDevExpressComponent extends AppComponentBase {
     private _route = inject(ActivatedRoute);
+
+    constructor() {
+        super();
+
+        // The DXXRD/DXXRDV/DXXQB backends require an authenticated bearer token, and the DevExpress
+        // widget issues its own requests outside Angular's HttpClient. This must run BEFORE the
+        // designer mounts, hence the constructor rather than a render callback.
+        configureDevExpressReportingAuth();
+    }
 
     /**
      * Backend origin for the DevExpress services. DevExpress concatenates `host` + action path, so it must

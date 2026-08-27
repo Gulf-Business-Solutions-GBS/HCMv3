@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Web.Models;
 using DevExpress.AspNetCore.Reporting.QueryBuilder;
 using DevExpress.AspNetCore.Reporting.QueryBuilder.Native.Services;
@@ -9,7 +10,8 @@ using DevExpress.AspNetCore.Reporting.ReportDesigner.Native.Services;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer.Native.Services;
 using DevExpress.XtraReports.Web.ReportDesigner;
-using Microsoft.AspNetCore.Authorization;
+using HCMv3.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HCMv3.Web.Controllers;
@@ -27,17 +29,33 @@ namespace HCMv3.Web.Controllers;
 // "defaultWithArea" route ({area}/{controller}/{action}, registered first) cannot swallow them.
 //
 // These are plain MVC controllers, not ABP application services, so ABP's conventions do not apply
-// to them -- but two global filters do, and both have to be opted out of:
-//   * AbpAutoValidateAntiforgeryTokenAttribute -- DevExpress's own AJAX handshake carries no ABP
-//     antiforgery token, so every POST would 400.
-//   * the default authorization policy -- see the TODO below.
+// to them. Consequences for security and for the global filters:
+//
+//   * [AbpAuthorize] is the APPLICATION-SERVICE attribute and does nothing here. The MVC equivalent
+//     is Abp.AspNetCore.Mvc.Authorization.AbpMvcAuthorize, which is what these classes use.
+//   * AuthenticationSchemes is pinned to JwtBearer. Web.Host also has Identity's cookie scheme
+//     registered, and that is the DEFAULT challenge scheme -- without the pin an unauthenticated
+//     request gets a 302 to a login page that does not exist on this host instead of a clean 401,
+//     which DevExpress's client cannot act on.
+//   * [IgnoreAntiforgeryToken] MUST STAY. AbpAutoValidateAntiforgeryTokenAttribute is applied
+//     globally and DevExpress's own AJAX handshake carries no ABP antiforgery token, so every POST
+//     would 400. Bearer-token auth does not need antiforgery protection: the token is attached
+//     explicitly by the client (see angular/src/app/admin/shared/devexpress-reporting-auth.ts) and
+//     is never sent ambiently by the browser, so there is no CSRF vector to defend against.
+//   * [DontWrapResult] MUST STAY -- see the note on GetDesignerModel below.
+//
+// The client cannot use Angular's HttpClient for these calls (the DevExpress widgets issue their own
+// jQuery/fetch requests), so ZeroTemplateHttpInterceptor never runs on them. The Authorization and
+// Abp-TenantId headers are instead installed into DevExpress's own ajaxSetup/fetchSetup by
+// configureDevExpressReportingAuth() before either widget mounts.
 
-/// <summary>DevExpress Web Report Designer backend.</summary>
-// TODO: secure with AppPermissions.Pages_Reports_Designer before production. Wiring ABP's JWT into
-// DevExpress's AJAX handshake is a separate task; until then these endpoints are anonymous and the
-// report storage falls back to a configured tenant (see HcmReportStorageWebExtension).
+/// <summary>
+/// DevExpress Web Report Designer backend. Editing report layouts is the designer page's job, so this
+/// requires the designer permission rather than the (much more widely granted) print-reports one.
+/// </summary>
 [DontWrapResult]
-[AllowAnonymous]
+[AbpMvcAuthorize(AppPermissions.Pages_Reports_DesignerDevExpress,
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [IgnoreAntiforgeryToken]
 public class DXXRDController : ReportDesignerController
 {
@@ -88,10 +106,19 @@ public class DXXRDController : ReportDesignerController
     }
 }
 
-/// <summary>DevExpress Web Document Viewer backend.</summary>
-// TODO: secure with AppPermissions.Pages_Reports_Designer before production.
+/// <summary>
+/// DevExpress Web Document Viewer backend.
+///
+/// Two screens drive this controller: the Print Reports launcher's viewer (Pages_Reports_PrintReports)
+/// and the Report Designer's Preview tab (Pages_Reports_DesignerDevExpress). RequireAllPermissions is
+/// left at its default false, so EITHER permission admits the caller -- requiring both would break
+/// preview for a designer-only role and break the launcher for everyone else.
+/// </summary>
 [DontWrapResult]
-[AllowAnonymous]
+[AbpMvcAuthorize(
+    AppPermissions.Pages_Reports_PrintReports,
+    AppPermissions.Pages_Reports_DesignerDevExpress,
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [IgnoreAntiforgeryToken]
 public class DXXRDVController : WebDocumentViewerController
 {
@@ -101,10 +128,13 @@ public class DXXRDVController : WebDocumentViewerController
     }
 }
 
-/// <summary>DevExpress Query Builder backend (used by the designer's data-source wizard).</summary>
-// TODO: secure with AppPermissions.Pages_Reports_Designer before production.
+/// <summary>
+/// DevExpress Query Builder backend (used by the designer's data-source wizard). It can enumerate and
+/// query database schema, so it is gated on the designer permission only -- never on the launcher's.
+/// </summary>
 [DontWrapResult]
-[AllowAnonymous]
+[AbpMvcAuthorize(AppPermissions.Pages_Reports_DesignerDevExpress,
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [IgnoreAntiforgeryToken]
 public class DXXQBController : QueryBuilderController
 {

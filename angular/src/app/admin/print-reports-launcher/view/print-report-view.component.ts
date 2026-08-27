@@ -7,6 +7,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppConsts } from '@shared/AppConsts';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { configureDevExpressReportingAuth } from '@app/admin/shared/devexpress-reporting-auth';
 
 /**
  * Runtime viewer for a single print report.
@@ -29,6 +30,15 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 export class PrintReportViewComponent extends AppComponentBase {
     private _route = inject(ActivatedRoute);
     private _router = inject(Router);
+
+    constructor() {
+        super();
+
+        // The DXXRDV backend requires an authenticated bearer token, and the DevExpress viewer issues
+        // its own requests outside Angular's HttpClient. This must run BEFORE the viewer mounts, hence
+        // the constructor rather than onBeforeRender.
+        configureDevExpressReportingAuth();
+    }
 
     /**
      * Backend origin for the DevExpress services. DevExpress concatenates `host` + action path, so it

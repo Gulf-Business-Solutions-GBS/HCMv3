@@ -11,8 +11,6 @@ using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.Extensions;
 using HCMv3.ReportManagement;
 using HCMv3.Reports;
-using HCMv3.Configuration;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HCMv3.Web.Reporting;
@@ -47,18 +45,15 @@ namespace HCMv3.Web.Reporting;
 public class HcmReportStorageWebExtension : ReportStorageWebExtension
 {
     private readonly IAbpSession _abpSession;
-    private readonly IAppConfigurationAccessor _configurationAccessor;
     private readonly IIocResolver _iocResolver;
     private readonly ILogger<HcmReportStorageWebExtension> _logger;
 
     public HcmReportStorageWebExtension(
         IAbpSession abpSession,
-        IAppConfigurationAccessor configurationAccessor,
         IIocResolver iocResolver,
         ILogger<HcmReportStorageWebExtension> logger)
     {
         _abpSession = abpSession;
-        _configurationAccessor = configurationAccessor;
         _iocResolver = iocResolver;
         _logger = logger;
     }
@@ -82,6 +77,15 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
     public override byte[] GetData(string url)
     {
         var name = StripParameters(url);
+
+        // Fail closed rather than guessing a tenant. Every HCMv3 report is tenant-scoped raw SQL, so
+        // a host-context caller has no tenant whose data it could legitimately be shown.
+        if (!ResolveTenantId().HasValue)
+        {
+            throw new DevExpress.XtraReports.Web.ClientControls.FaultException(
+                "Reports are tenant-scoped and cannot be run from the host context. " +
+                "Sign in to a tenant to run reports.");
+        }
 
         if (!HcmReportFactoryRegistry.TryCreate(name, out var report))
         {
@@ -245,27 +249,16 @@ public class HcmReportStorageWebExtension : ReportStorageWebExtension
     }
 
     /// <summary>
-    /// TODO: remove the fallback once the DevExpress endpoints are secured with
-    /// AppPermissions.Pages_Reports_Designer and carry the ABP JWT. While the endpoints are
-    /// [AllowAnonymous] there is no session on the designer/viewer AJAX handshake, so
-    /// AbpSession.TenantId is null and reports would refuse to run at all. The fallback is
-    /// configurable and defaults to the single development tenant.
+    /// The tenant every reporting decision in this class is scoped to. It is whatever the
+    /// authenticated caller's ABP session says and NOTHING ELSE -- there is deliberately no fallback.
+    ///
+    /// The DevExpress endpoints (DXXRD/DXXRDV/DXXQB) now require an authenticated bearer token, so a
+    /// null here means a genuine HOST user, not a missing session. Host is not tenant 1: guessing a
+    /// tenant would serve one tenant's payroll to another. Null therefore flows through unchanged and
+    /// fails closed -- <see cref="TryLoadActiveCatalog"/> queries the (empty) host-side catalog and
+    /// <see cref="GetData"/> refuses outright.
     /// </summary>
-    private int ResolveTenantId()
-    {
-        if (_abpSession.TenantId.HasValue)
-        {
-            return _abpSession.TenantId.Value;
-        }
-
-        var fallback = _configurationAccessor.Configuration.GetValue<int?>("App:Reporting:AnonymousFallbackTenantId") ?? 1;
-
-        _logger.LogWarning(
-            "No ABP tenant on the reporting request; falling back to tenant {TenantId}. " +
-            "This is only acceptable while the DevExpress endpoints are anonymous.", fallback);
-
-        return fallback;
-    }
+    private int? ResolveTenantId() => _abpSession.TenantId;
 
     private static string StripParameters(string url)
     {
