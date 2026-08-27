@@ -30,4 +30,40 @@
     <PackageReference Include="DevExpress.Reporting.Core" Version="23.2.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--
+      Full-page A4 letterheads printed behind the two salary certificates. In the legacy reports
+      these lived inside the report .resx as System.Drawing.Bitmap entries; that binds a
+      Windows-only type during resource generation, which the plain net8.0 flavour of this project
+      cannot do. Shipped as raw JPEGs instead and attached in each report's constructor; see
+      Others/SalaryCertificateBackground.cs.
+    -->
+    <EmbeddedResource Include="Others\SalaryCertificateEnBackground.jpg" />
+    <EmbeddedResource Include="Others\SalaryCertificateArBackground.jpg" />
+
+    <!--
+      Full-page scans of the official Kuwait government forms that the GovtForms reports print
+      their labels over. Same reasoning as the two letterheads above: a .resx entry typed
+      System.Drawing.Bitmap binds a Windows-only type during resource generation, which the plain
+      net8.0 flavour of this project cannot do. Shipped as raw JPEGs, byte-identical to what was
+      base64-encoded in each legacy .resx, and attached in each report's constructor; see
+      GovtForms/GovtFormsImageStore.cs. A wildcard rather than one line per file because the
+      GovtForms port lands in several batches.
+    -->
+    <EmbeddedResource Include="GovtForms\Assets\*.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Full-page A4 letterheads printed behind four of the EmployeeInfo documents (status change,
+      final clearance certificate, joining form, termination letter). Same reasoning again: a
+      .resx entry typed System.Drawing.Bitmap binds a Windows-only type during resource
+      generation, which the plain net8.0 flavour of this project cannot do. Shipped as raw JPEGs,
+      byte-identical to what was base64-encoded in each legacy .resx (mimetype bytearray.base64,
+      i.e. the file itself, not a serialised object), and attached in each report's constructor;
+      see EmployeeInfo/EmployeeInfoResources.cs.
+    -->
+    <EmbeddedResource Include="EmployeeInfo\*.jpg" />
+  </ItemGroup>
+
 </Project>

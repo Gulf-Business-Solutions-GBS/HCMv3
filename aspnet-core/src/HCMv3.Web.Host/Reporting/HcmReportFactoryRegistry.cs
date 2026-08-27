@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevExpress.XtraReports.UI;
 using HCMv3.ReportManagement;
+using HCMv3.Reports.Others;
 using HCMv3.Reports.Payroll;
 
 namespace HCMv3.Web.Reporting;
@@ -29,7 +30,14 @@ public static class HcmReportFactoryRegistry
     private static readonly IReadOnlyDictionary<string, Func<XtraReport>> Factories =
         new Dictionary<string, Func<XtraReport>>(StringComparer.OrdinalIgnoreCase)
         {
-            [rptPayslipEn.ReportName] = () => new rptPayslipEn()
+            [rptPayslipEn.ReportName] = () => new rptPayslipEn(),
+            [rptPayslipAr.ReportName] = () => new rptPayslipAr(),
+            [rptSalaryCertificateEn.ReportName] = () => new rptSalaryCertificateEn(),
+
+            // The legacy class is named rptSalaryCertificate, which reads like a shared base for the
+            // *En variant. It is not: it is the Arabic certificate (see the class remarks), so the
+            // port is named for what it is while keeping the catalog key the seed data already uses.
+            [rptSalaryCertificateAr.ReportName] = () => new rptSalaryCertificateAr()
         };
 
     /// <summary>Report names that can actually be constructed.</summary>
