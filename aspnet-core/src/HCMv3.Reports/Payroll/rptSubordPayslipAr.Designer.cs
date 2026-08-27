@@ -131,7 +131,10 @@ namespace HCMv3.Reports.Payroll
             customSqlQuery1.Name = "Query";
             customSqlQuery1.Sql = PayslipVariantSql.SubordPayslipArQuery;
             customSqlQuery2.Name = "QueryLogo";
-            customSqlQuery2.Sql = "select logo from OrganizationUnit where OrgUnitType = 1\r\n";
+            // Was the raw legacy string "select logo from OrganizationUnit where OrgUnitType = 1",
+            // which throws Invalid object name 'OrganizationUnit' against the HCMv3 schema. Uses the
+            // ported query, which keeps the column shape and the @TenantId predicate.
+            customSqlQuery2.Sql = HCMv3.Reports.Payroll.PayslipVariantSql.LogoQuery;
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1,
             customSqlQuery2});

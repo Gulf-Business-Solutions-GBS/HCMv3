@@ -107,6 +107,15 @@
             dynamicListLookUpSettings1.ValueMember = "OID";
             this.PrmDiscType.LookUpSettings = dynamicListLookUpSettings1;
             this.PrmDiscType.Name = "PrmDiscType";
+            // MUST match the subreport parameter it is bound to. Both srptWarningLetterCount.DiscType
+            // and srptWarningLetterTotalCount.DiscType declare typeof(int) with a "0" default, and the
+            // SQL consumes it as @DiscType against DisciplinaryTypes.Id. Without these two lines this
+            // parameter defaults to a STRING with value "", and the binding throws at CreateDocument():
+            //   "A parameter binding assigns a value of an incompatible type to the subreport
+            //    parameter DiscType"  <<  FormatException: The input string '' was not in a correct
+            //    format.
+            this.PrmDiscType.Type = typeof(int);
+            this.PrmDiscType.ValueInfo = "0";
             // 
             // xrSubreport1
             // 

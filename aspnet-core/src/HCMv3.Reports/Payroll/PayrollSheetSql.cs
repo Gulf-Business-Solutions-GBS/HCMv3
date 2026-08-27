@@ -85,21 +85,21 @@ namespace HCMv3.Reports.Payroll
         -- NOTE the deliberate asymmetry, faithful to legacy: the cost-centre family did NOT allow the
         -- arrear-source alternative for OT, the summary report DID. Both are represented -- OT_* has
         -- no wtSrc term, AllOT_/NormalOT_/WeekendOT_/PHOT_ do.
-        , SUM(CASE WHEN wt.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otAny.WageTypeId IS NOT NULL
                    THEN srd.Number END) AS OT_Number
-        , SUM(CASE WHEN wt.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otAny.WageTypeId IS NOT NULL
                    THEN srd.Amount END) AS OT_Amount
-        , SUM(CASE WHEN wt.Id    IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Normal Day OT') AND ot.WageTypeId IS NOT NULL)
-                     OR wtSrc.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Normal Day OT') AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otNormal.WageTypeId IS NOT NULL
+                     OR otNormalSrc.WageTypeId IS NOT NULL
                    THEN srd.Number END) AS NormalOT_Number
-        , SUM(CASE WHEN wt.Id    IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Weekend OT') AND ot.WageTypeId IS NOT NULL)
-                     OR wtSrc.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Weekend OT') AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otWeekend.WageTypeId IS NOT NULL
+                     OR otWeekendSrc.WageTypeId IS NOT NULL
                    THEN srd.Number END) AS WeekendOT_Number
-        , SUM(CASE WHEN wt.Id    IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Public Holiday OT') AND ot.WageTypeId IS NOT NULL)
-                     OR wtSrc.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Public Holiday OT') AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otPH.WageTypeId IS NOT NULL
+                     OR otPHSrc.WageTypeId IS NOT NULL
                    THEN srd.Number END) AS PHOT_Number
-        , SUM(CASE WHEN wt.Id    IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL)
-                     OR wtSrc.Id IN (SELECT ot.WageTypeId FROM OvertimeTypes ot WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN otAny.WageTypeId IS NOT NULL
+                     OR otAnySrc.WageTypeId IS NOT NULL
                    THEN srd.Amount END) AS AllOT_Amount
         , SUM(CASE WHEN wt.Code IN ('1043') OR wtSrc.Code IN ('1043') THEN srd.Amount END) AS DirectOT_Amount
 
@@ -117,8 +117,8 @@ namespace HCMv3.Reports.Payroll
         --   cost-centre family : Code IN ('1003','1061')  (arrear alternative only for '1061')
         --   summary report     : any wage type an AbsenceType points at, except '1003'/'1013'
         , SUM(CASE WHEN wt.Code IN ('1003','1061') OR wtSrc.Code IN ('1061') THEN srd.Amount END) AS OtherLeaveCostCentre_Amount
-        , SUM(CASE WHEN (wt.Id    IN (SELECT at.WageTypeId FROM AbsenceTypes at WHERE at.TenantId = @TenantId AND at.IsDeleted = 0 AND at.WageTypeId IS NOT NULL) AND wt.Code    NOT IN ('1003','1013'))
-                     OR (wtSrc.Id IN (SELECT at.WageTypeId FROM AbsenceTypes at WHERE at.TenantId = @TenantId AND at.IsDeleted = 0 AND at.WageTypeId IS NOT NULL) AND wtSrc.Code NOT IN ('1003','1013'))
+        , SUM(CASE WHEN (absAny.WageTypeId IS NOT NULL AND wt.Code    NOT IN ('1003','1013'))
+                     OR (absAnySrc.WageTypeId IS NOT NULL AND wtSrc.Code NOT IN ('1003','1013'))
                    THEN srd.Amount END) AS OtherLeaveSummary_Amount
 
         -- Other pay.
@@ -129,15 +129,26 @@ namespace HCMv3.Reports.Payroll
                      OR (wtSrc.IncludeInCalculatedPay = 1 AND wtSrc.BillingType = 0 AND wtSrc.Code NOT IN ('1043','1052','1053','1069','1070'))
                    THEN srd.Amount END) AS AllOtherPay_Amount
 
+        -- The deduction mirror of AllOtherPay: BillingType = 1 rather than 0. Legacy built it as the
+        -- SrDetail_AllOtherDed derived table (rptPayrollSheetByCostCenter.resx), whose predicate is
+        -- reproduced verbatim here, including the six excluded codes -- those are the deductions that
+        -- already have their own named bucket, so counting them here would double-count them.
+        -- This bucket was REFERENCED by the cost-centre family but never produced, which is an
+        -- Invalid column name 'AllOtherDed_Amount' at run time; it was masked until the
+        -- subquery-inside-aggregate error above was fixed, because that one failed first.
+        , SUM(CASE WHEN (wt.IncludeInCalculatedPay    = 1 AND wt.BillingType    = 1 AND wt.Code    NOT IN ('2001','2002','2014','2027','2018','2028'))
+                     OR (wtSrc.IncludeInCalculatedPay = 1 AND wtSrc.BillingType = 1 AND wtSrc.Code NOT IN ('2001','2002','2014','2027','2018','2028'))
+                   THEN srd.Amount END) AS AllOtherDed_Amount
+
         -- rptPayrollSheet's ""MiscPay"" / ""MiscDed"" -- the *calculated pay* totals. Same NAME as the
         -- cost-centre family's MiscPay above, completely different definition; kept apart on purpose.
         , SUM(CASE WHEN (wt.IncludeInCalculatedPay    = 1 AND wt.BillingType    = 0 AND wt.DontImpactNetPay    = 0)
                      OR (wtSrc.IncludeInCalculatedPay = 1 AND wtSrc.BillingType = 0 AND wtSrc.DontImpactNetPay = 0)
                    THEN srd.Amount END) AS CalcPay_Amount
         , SUM(CASE WHEN ((wt.IncludeInCalculatedPay    = 1 AND wt.BillingType    = 1 AND wt.DontImpactNetPay    = 0
-                          AND wt.Id    NOT IN (SELECT lt.WageTypeId FROM LoanTypes lt WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL))
+                          AND loanAny.WageTypeId IS NULL)
                      OR  (wtSrc.IncludeInCalculatedPay = 1 AND wtSrc.BillingType = 1 AND wtSrc.DontImpactNetPay = 0
-                          AND wtSrc.Id NOT IN (SELECT lt.WageTypeId FROM LoanTypes lt WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL)))
+                          AND loanAnySrc.WageTypeId IS NULL))
                    THEN srd.Amount END) AS CalcDed_Amount
 
         -- Gross / total earnings. Signed: a deduction line inside the gross bucket subtracts.
@@ -161,8 +172,8 @@ namespace HCMv3.Reports.Payroll
 
         -- Loan recovery, rptPayrollSheet flavour: ""any wage type a LoanType points at"" rather than
         -- the hard-coded codes 2001/2028 used by the cost-centre family.
-        , SUM(CASE WHEN (wt.Id    IN (SELECT lt.WageTypeId FROM LoanTypes lt WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL) AND wt.DontImpactNetPay = 0)
-                     OR  wtSrc.Id IN (SELECT lt.WageTypeId FROM LoanTypes lt WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL)
+        , SUM(CASE WHEN (loanAny.WageTypeId IS NOT NULL AND wt.DontImpactNetPay = 0)
+                     OR  loanAnySrc.WageTypeId IS NOT NULL
                    THEN srd.Amount END) AS LoanTypeDed_Amount
 
         , SUM(CASE WHEN (wt.BillingType = 1 OR wtSrc.BillingType = 1) AND wt.Code NOT IN ('8005')
@@ -184,6 +195,50 @@ namespace HCMv3.Reports.Payroll
             ON wt.Id = srd.WageTypeId AND wt.TenantId = @TenantId AND wt.IsDeleted = 0
     LEFT JOIN WageTypes wtSrc
            ON wtSrc.Id = wt.ArrearSourceWageTypeId AND wtSrc.TenantId = @TenantId AND wtSrc.IsDeleted = 0
+
+    -- MEMBERSHIP SETS. SQL Server rejects a subquery inside an aggregate's argument --
+    -- ""Cannot perform an aggregate function on an expression containing an aggregate or a
+    -- subquery"" -- which is exactly what SUM(CASE WHEN wt.Id IN (SELECT ...)) is. The legacy
+    -- copies got away with it because they tested the same sets OUTSIDE any aggregate. The lookups
+    -- are therefore pre-joined once here and the CASE tests become plain IS NULL / IS NOT NULL
+    -- checks. Each set is joined twice: once for the wage type itself (wt) and once for the arrear
+    -- source wage type (wtSrc), because several buckets accept either.
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL) otAny
+           ON otAny.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.WageTypeId IS NOT NULL) otAnySrc
+           ON otAnySrc.WageTypeId = wtSrc.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Normal Day OT') AND ot.WageTypeId IS NOT NULL) otNormal
+           ON otNormal.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Normal Day OT') AND ot.WageTypeId IS NOT NULL) otNormalSrc
+           ON otNormalSrc.WageTypeId = wtSrc.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Weekend OT') AND ot.WageTypeId IS NOT NULL) otWeekend
+           ON otWeekend.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Weekend OT') AND ot.WageTypeId IS NOT NULL) otWeekendSrc
+           ON otWeekendSrc.WageTypeId = wtSrc.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Public Holiday OT') AND ot.WageTypeId IS NOT NULL) otPH
+           ON otPH.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT ot.WageTypeId FROM OvertimeTypes ot
+                WHERE ot.TenantId = @TenantId AND ot.IsDeleted = 0 AND ot.NameEn IN ('Public Holiday OT') AND ot.WageTypeId IS NOT NULL) otPHSrc
+           ON otPHSrc.WageTypeId = wtSrc.Id
+    LEFT JOIN (SELECT DISTINCT at.WageTypeId FROM AbsenceTypes at
+                WHERE at.TenantId = @TenantId AND at.IsDeleted = 0 AND at.WageTypeId IS NOT NULL) absAny
+           ON absAny.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT at.WageTypeId FROM AbsenceTypes at
+                WHERE at.TenantId = @TenantId AND at.IsDeleted = 0 AND at.WageTypeId IS NOT NULL) absAnySrc
+           ON absAnySrc.WageTypeId = wtSrc.Id
+    LEFT JOIN (SELECT DISTINCT lt.WageTypeId FROM LoanTypes lt
+                WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL) loanAny
+           ON loanAny.WageTypeId = wt.Id
+    LEFT JOIN (SELECT DISTINCT lt.WageTypeId FROM LoanTypes lt
+                WHERE lt.TenantId = @TenantId AND lt.IsDeleted = 0 AND lt.WageTypeId IS NOT NULL) loanAnySrc
+           ON loanAnySrc.WageTypeId = wtSrc.Id
     WHERE srd.TenantId = @TenantId
       AND srd.IsDeleted = 0
       AND srb.InPeriod = srb.ForPeriod
