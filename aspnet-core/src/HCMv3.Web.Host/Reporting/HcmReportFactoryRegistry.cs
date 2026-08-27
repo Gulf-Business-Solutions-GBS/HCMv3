@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using DevExpress.XtraReports.UI;
 using HCMv3.ReportManagement;
+using HCMv3.Reports.Bank;
 using HCMv3.Reports.EmployeeInfo;
+using HCMv3.Reports.GovtForms;
 using HCMv3.Reports.Others;
 using HCMv3.Reports.Payroll;
+using HCMv3.Reports.QuotaProvision;
+using HCMv3.Reports.Status;
+using HCMv3.Reports.Time;
+using HCMv3.Reports.Transaction;
 
 namespace HCMv3.Web.Reporting;
 
@@ -54,7 +60,58 @@ public static class HcmReportFactoryRegistry
             [rptEmpStatusChange.ReportName] = () => new rptEmpStatusChange(),
             [rptSettlementAcknowledgement_DischargeForm.ReportName] = () => new rptSettlementAcknowledgement_DischargeForm(),
             [rptFinalSettlement.ReportName] = () => new rptFinalSettlement(),
-            [rptFinalSettlementAr.ReportName] = () => new rptFinalSettlementAr()
+            [rptFinalSettlementAr.ReportName] = () => new rptFinalSettlementAr(),
+
+            // GovtForms -- Kuwait ministry / Shoun forms. Each prints onto a scanned government form
+            // image, so the layout is fixed by the scan and only the overlaid fields differ.
+            [rptAbsenceReportCancellation.ReportName] = () => new rptAbsenceReportCancellation(),
+            [rptAbsenceReportWaiver.ReportName] = () => new rptAbsenceReportWaiver(),
+            [rptAbsenceWaiverAuthorization.ReportName] = () => new rptAbsenceWaiverAuthorization(),
+            [rptAbsenceWaiverRequest.ReportName] = () => new rptAbsenceWaiverRequest(),
+            [rptAcknowledgmentAndPledge.ReportName] = () => new rptAcknowledgmentAndPledge(),
+            [rptBusinessVisitVisaExtensionPledge.ReportName] = () => new rptBusinessVisitVisaExtensionPledge(),
+            [rptCriminalRecordCertificateDeliveryCertificate.ReportName] = () => new rptCriminalRecordCertificateDeliveryCertificate(),
+            [rptDeclarationFinRights.ReportName] = () => new rptDeclarationFinRights(),
+            [rptEndorsmentForVisitVisa.ReportName] = () => new rptEndorsmentForVisitVisa(),
+            [rptGeneralAdministrationOfResidenceAffairs.ReportName] = () => new rptGeneralAdministrationOfResidenceAffairs(),
+            [rptPayRequestShounRenewalEn.ReportName] = () => new rptPayRequestShounRenewalEn(),
+            [rptPayShounTerminationFormEn.ReportName] = () => new rptPayShounTerminationFormEn(),
+            [rptPersonalPhotoSubmissionForAction.ReportName] = () => new rptPersonalPhotoSubmissionForAction(),
+            [rptRJRequest.ReportName] = () => new rptRJRequest(),
+            [rptVisaApplicationShounEn.ReportName] = () => new rptVisaApplicationShounEn(),
+            [rptVisitVisaDeclarationAndPledge.ReportName] = () => new rptVisitVisaDeclarationAndPledge(),
+            [rptVisitorSponsorshipComplianceAcknowledgment.ReportName] = () => new rptVisitorSponsorshipComplianceAcknowledgment(),
+            [rptWFDrivingLicenseForm.ReportName] = () => new rptWFDrivingLicenseForm(),
+            [rptWFEmploymentContract.ReportName] = () => new rptWFEmploymentContract(),
+            [rptWFEndOfService.ReportName] = () => new rptWFEndOfService(),
+            [rptWFMedicalReport.ReportName] = () => new rptWFMedicalReport(),
+            [rptWFNewVisaForm.ReportName] = () => new rptWFNewVisaForm(),
+            [rptWFPAManpower.ReportName] = () => new rptWFPAManpower(),
+            [rptWFPayRequestShounEn.ReportName] = () => new rptWFPayRequestShounEn(),
+            [rptWFVisaRequestForm.ReportName] = () => new rptWFVisaRequestForm(),
+            [rptWFshounPhotoApplication.ReportName] = () => new rptWFshounPhotoApplication(),
+
+            // Bank -- salary disbursement files and transfer letters.
+            [rptBankAndCashTransfer.ReportName] = () => new rptBankAndCashTransfer(),
+            [rptBankAndCashTransferBySponsor.ReportName] = () => new rptBankAndCashTransferBySponsor(),
+            [rptBankFile.ReportName] = () => new rptBankFile(),
+            [rptBankFileAr.ReportName] = () => new rptBankFileAr(),
+            [rptBankSupporting.ReportName] = () => new rptBankSupporting(),
+            [rptBankTransfer.ReportName] = () => new rptBankTransfer(),
+            [rptBankTransferBySponsor.ReportName] = () => new rptBankTransferBySponsor(),
+            [rptCashFile.ReportName] = () => new rptCashFile(),
+
+            // QuotaProvision / Status / Time / Transaction. The srpt* classes in those folders are
+            // SUBREPORTS -- instantiated by their parent, never by name -- so they are deliberately
+            // not registered here.
+            [rptIndemnityBreakdown.ReportName] = () => new rptIndemnityBreakdown(),
+            [rptLeaveIndemnityStatement.ReportName] = () => new rptLeaveIndemnityStatement(),
+            [rptHireDeparture.ReportName] = () => new rptHireDeparture(),
+            [rptEmployeeAttendance.ReportName] = () => new rptEmployeeAttendance(),
+            [rptEmployeeOvertime.ReportName] = () => new rptEmployeeOvertime(),
+            [rptEmployeeDeduction.ReportName] = () => new rptEmployeeDeduction(),
+            [rptEmployeeLeave.ReportName] = () => new rptEmployeeLeave(),
+            [rptEmployeeLoan.ReportName] = () => new rptEmployeeLoan()
         };
 
     /// <summary>Report names that can actually be constructed.</summary>
