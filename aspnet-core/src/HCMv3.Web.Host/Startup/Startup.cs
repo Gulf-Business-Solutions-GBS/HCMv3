@@ -46,6 +46,7 @@ using Microsoft.OpenApi;
 using HCMv3.Authorization.QrLogin;
 using DevExpress.AspNetCore;
 using DevExpress.AspNetCore.Reporting;
+using DevExpress.DataAccess.Web;
 using DevExpress.DataAccess.Wizard.Services;
 using DevExpress.XtraReports.Web.Extensions;
 using HCMv3.Web.Reporting;
@@ -331,7 +332,15 @@ public class Startup
 
         // Resolves the connection NAME carried by report layouts into a real connection, server
         // side, so the connection string is never serialised into the designer's client model.
+        //
+        // BOTH registrations are required. DevExpress's viewer/designer pipeline resolves the
+        // FACTORY (DevExpress.DataAccess.Web.IConnectionProviderFactory) and calls Create(); it
+        // never resolves IConnectionProviderService (DevExpress.DataAccess.Wizard.Services)
+        // directly. Registering only the service leaves the report's connection name unresolved,
+        // and SqlDataSource.CreateConnection(name) NREs as soon as the viewer touches the data
+        // source. See HcmReportConnectionProviderFactory.
         services.AddScoped<IConnectionProviderService, HcmReportConnectionProviderService>();
+        services.AddSingleton<IConnectionProviderFactory, HcmReportConnectionProviderFactory>();
     }
 
     private void ConfigureKestrel(IServiceCollection services)
