@@ -175,7 +175,7 @@ OUTER APPLY (
            AND ancestorType.NameEn = 'Department'
     WHERE prevUnit.Id = prevOrgAssign.OrganizationUnitId
       AND prevUnit.TenantId = @TenantId AND prevUnit.IsDeleted = 0
-    ORDER BY LEN(ancestor.Code) DESC
+    ORDER BY LEN(ancestor.Code)
 ) prevDepartment
 
 -- CURRENT basic pay

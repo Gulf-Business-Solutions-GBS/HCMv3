@@ -40,11 +40,13 @@ ORDER BY Name;";
 --
 -- NON-MECHANICAL REWRITES -- see PORTING-NOTES.md for the full list. Summary:
 --   1. OrgLevel1..7 + OrganizationUnitType. Legacy EmployeeOrgAssignment carried seven flat FK
---      columns and picked the one whose OrganizationUnit had type 'Department' (or 'Company').
---      HCMv3 has a SINGLE OrganizationUnitId into AbpOrganizationUnits, which is an ABP
---      materialised-path tree (Code/ParentId) with NO unit-type concept at all. The 14 aliased
---      joins collapse to one; ""which ancestor is the Department"" is not expressible and the
---      employee's own unit is used instead.  *** SEMANTIC DEVIATION -- needs a product decision. ***
+--      columns and picked the one whose OrganizationUnit had type 'Department' (the OrgUnit column)
+--      via a CASE testing OrgLevel1 first. HCMv3 has a SINGLE OrganizationUnitId into
+--      AbpOrganizationUnits, an ABP materialised-path tree (Code/ParentId). ABP itself has no
+--      unit-type concept, but HCMv3's OrgUnitProfiles.OrganizationUnitTypeId supplies exactly that,
+--      so the 14 aliased joins collapse to an ancestor walk (see the OUTER APPLY below).
+--      RESOLVED -- an earlier revision of this note claimed ""which ancestor is the Department is
+--      not expressible"" and substituted the employee's own unit. That was wrong and is fixed.
 --   2. CompanyLogo. Sourced from OrganizationUnit.logo. AbpOrganizationUnits has no Logo column and
 --      HCMv3 has no Company entity carrying one. Returned as NULL.  *** FEATURE LOST. ***
 --   3. PayrollArea join. Legacy joined on a STRING: PayrollArea.Code = EmployeeOrgAssignment.PayrollArea.
@@ -74,7 +76,7 @@ SELECT
     , empBank.StartDate
     , empBank.IBAN                              AS [Bank IBAN]
     , empBank.AccountNum
-    , orgUnit.DisplayName                       AS OrgUnit          -- see rewrite note 1
+    , deptAnc.DisplayName                       AS OrgUnit          -- see rewrite note 1
     , emp.FullNameEn                            AS [Employee Name]
     , subGroup.NameEn                           AS Grade
     , grp.NameEn                                AS [Salary Profile]
@@ -135,6 +137,23 @@ LEFT JOIN PayrollAreas   payrollArea  ON payrollArea.Id  = eoa.PayrollAreaId    
 LEFT JOIN EmployeeGroups grp          ON grp.Id          = eoa.EmployeeGroupId   AND grp.TenantId          = @TenantId AND grp.IsDeleted          = 0
 LEFT JOIN EmployeeSubGroups subGroup  ON subGroup.Id     = eoa.EmployeeSubGroupId AND subGroup.TenantId    = @TenantId AND subGroup.IsDeleted     = 0
 LEFT JOIN AbpOrganizationUnits orgUnit ON orgUnit.Id     = eoa.OrganizationUnitId AND orgUnit.TenantId     = @TenantId AND orgUnit.IsDeleted      = 0
+
+-- The legacy payslip's OrgUnit column is NOT the employee's own unit: it is the DEPARTMENT-typed
+-- ancestor, resolved by seven LEFT JOINs on OrgLevel1..OrgLevel7 and a CASE that tests OrgLevel1
+-- first (see rptPayslipEn.resx, the End AS OrgUnit block). OrgLevel1 is the top of the tree, so
+-- yields the SHALLOWEST Department-typed ancestor -- hence ORDER BY LEN(anc.Code) ascending.
+-- Reference implementation: Bank/BankSql.cs.
+OUTER APPLY (
+    SELECT TOP 1 anc.DisplayName
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp       ON ancp.OrganizationUnitId = anc.Id      AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    INNER JOIN OrganizationUnitTypes anct ON anct.Id = ancp.OrganizationUnitTypeId AND anct.TenantId = @TenantId AND anct.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND anct.NameEn = 'Department'
+    ORDER BY LEN(anc.Code)
+) deptAnc
 
 LEFT JOIN EmployeeSponsors empSponsor
        ON empSponsor.EmployeeId = emp.Id

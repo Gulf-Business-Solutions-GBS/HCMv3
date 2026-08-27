@@ -66,8 +66,10 @@ namespace HCMv3.Reports.Others
     ///   Code is a PREFIX of the employee's unit Code (a materialised path is a prefix by
     ///   construction, so no recursive CTE -- which <c>CustomSqlQuery</c> would reject anyway --
     ///   is needed), and <c>ORDER BY LEN(Code)</c> ASCENDING takes the SHALLOWEST such ancestor.
-    ///   Ascending is what the legacy CASE did: it tested OrgLevel1 first and fell through to
-    ///   OrgLevel7, and OrgLevel1 is the top of the tree.
+    ///   Ascending is what the legacy report SQL did: it joined OrganizationUnit once per
+    ///   OrgLevel1..OrgLevel7 slot and picked with a CASE that tested OrgLevel1 first and fell
+    ///   through to OrgLevel7, and OrgLevel1 is the top of the tree. See
+    ///   EmployeeInfo/EmployeeInfoSqlFragments.cs for the full note and the legacy CASE verbatim.
     ///
     ///   <c>Bank/BankSql.cs</c> is the reference implementation of this walk and this file follows
     ///   it. The fragments are duplicated here rather than referenced so this batch stays

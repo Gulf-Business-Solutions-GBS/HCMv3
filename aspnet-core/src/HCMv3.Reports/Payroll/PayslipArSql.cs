@@ -89,7 +89,7 @@ SELECT
     , bank.Code                         AS [Bank Name]      -- see rewrite note 2
     , empBank.StartDate
     , empBank.IBAN                      AS [Bank IBAN]
-    , orgUnit.DisplayName               AS OrgUnit          -- see rewrite note 1
+    , orgLevelAnc.NameAr                AS OrgUnit          -- see rewrite note 1
     , emp.FullNameAr                    AS [Employee Name]
     , subGroup.NameAr                   AS Grade
     , grp.NameAr                        AS [Salary Profile]
@@ -133,6 +133,21 @@ LEFT JOIN PayrollAreas      payrollArea ON payrollArea.Id = eoa.PayrollAreaId   
 LEFT JOIN EmployeeGroups    grp         ON grp.Id         = eoa.EmployeeGroupId    AND grp.TenantId         = @TenantId AND grp.IsDeleted         = 0
 LEFT JOIN EmployeeSubGroups subGroup    ON subGroup.Id    = eoa.EmployeeSubGroupId AND subGroup.TenantId    = @TenantId AND subGroup.IsDeleted    = 0
 LEFT JOIN AbpOrganizationUnits orgUnit  ON orgUnit.Id     = eoa.OrganizationUnitId AND orgUnit.TenantId     = @TenantId AND orgUnit.IsDeleted     = 0
+
+-- Legacy rptPayslipAr resolves OrgUnit POSITIONALLY, not by unit type: this query used
+-- orgunit3.NameAr where orgunit3 joined EmployeeOrgAssignment.OrgLevel3 (rptPayslipAr.resx:127).
+-- ABP Codes are dot-separated 5-digit segments, so depth N is exactly LEN(Code) = 6N - 1;
+-- level 3 is LEN(Code) = 17. Arabic names come from OrgUnitProfiles.NameAr (ABP's table has only
+-- DisplayName). No type filter here -- adding one would change which unit prints.
+OUTER APPLY (
+    SELECT TOP 1 ancp.NameAr
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp ON ancp.OrganizationUnitId = anc.Id AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND LEN(anc.Code) = 17
+) orgLevelAnc
 
 LEFT JOIN EmployeeBanks empBank
        ON empBank.EmployeeId = emp.Id
@@ -182,7 +197,7 @@ ORDER BY emp.Code;";
 SELECT
       emp.Code                          AS [Employee Code]
     , emp.Status
-    , orgUnit.DisplayName               AS OrgUnit
+    , orgLevelAnc.NameAr                AS OrgUnit
     , emp.FullNameAr                    AS [Employee Name]
     , subGroup.NameAr                   AS Grade
     , grp.NameAr                        AS [Salary Profile]
@@ -211,6 +226,20 @@ LEFT JOIN PayrollAreas      payrollArea ON payrollArea.Id = eoa.PayrollAreaId   
 LEFT JOIN EmployeeSubGroups subGroup    ON subGroup.Id    = eoa.EmployeeSubGroupId AND subGroup.TenantId    = @TenantId AND subGroup.IsDeleted    = 0
 LEFT JOIN EmployeeGroups    grp         ON grp.Id         = eoa.EmployeeGroupId    AND grp.TenantId         = @TenantId AND grp.IsDeleted         = 0
 LEFT JOIN AbpOrganizationUnits orgUnit  ON orgUnit.Id     = eoa.OrganizationUnitId AND orgUnit.TenantId     = @TenantId AND orgUnit.IsDeleted     = 0
+
+-- Legacy rptPayslipAr resolves OrgUnit POSITIONALLY, not by unit type: this query used
+-- orgunit2.NameAr where orgunit2 joined EmployeeOrgAssignment.OrgLevel2 (rptPayslipAr.resx:171).
+-- ABP Codes are dot-separated 5-digit segments, so depth N is exactly LEN(Code) = 6N - 1;
+-- level 2 is LEN(Code) = 11. Arabic names come from OrgUnitProfiles.NameAr.
+OUTER APPLY (
+    SELECT TOP 1 ancp.NameAr
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp ON ancp.OrganizationUnitId = anc.Id AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND LEN(anc.Code) = 11
+) orgLevelAnc
 
 LEFT JOIN EmployeeBanks empBank
        ON empBank.EmployeeId = emp.Id

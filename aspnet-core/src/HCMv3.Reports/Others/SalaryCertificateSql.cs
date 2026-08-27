@@ -27,12 +27,16 @@ namespace HCMv3.Reports.Others
         //
         // NON-MECHANICAL REWRITES
         //   1. OrgLevel1. Legacy EmployeeOrgAssignment carried seven flat FK columns (OrgLevel1..7)
-        //      into OrganizationUnit and this report took OrgLevel1 -- by convention the Company.
-        //      HCMv3 has a SINGLE EmployeeOrgAssignments.OrganizationUnitId into AbpOrganizationUnits,
-        //      an ABP materialised-path tree (Code/ParentId) with NO unit-type concept, so "the
-        //      OrgLevel1 ancestor" is not expressible. The employee's own unit is used instead.
-        //      *** SEMANTIC DEVIATION -- same one PayslipSql.PayslipOrgV2Query carries; needs the same
-        //      product decision. ***
+        //      into OrganizationUnit and this report took OrgLevel1 -- by convention the Company --
+        //      filtering the unit type to Code = 'OrgLevel1'. HCMv3 has a SINGLE
+        //      EmployeeOrgAssignments.OrganizationUnitId into AbpOrganizationUnits, an ABP
+        //      materialised-path tree (Code/ParentId). ABP has no unit-type concept, but HCMv3's
+        //      OrgUnitProfiles.OrganizationUnitTypeId supplies one, and OrganizationUnitType.Code is
+        //      constrained to Level0..Level9 -- so 'Level1' is the exact equivalent of the legacy
+        //      filter. Resolved by the OUTER APPLY below.
+        //      RESOLVED -- an earlier revision of this note claimed the OrgLevel1 ancestor was "not
+        //      expressible" and substituted the employee's own unit. That was wrong and is fixed
+        //      here and in PayslipSql/PayslipArSql.
         //   2. The legacy "orgUnit.OID = (SELECT TOP 1 OrgLevel1 FROM EmployeeOrgAssignment WHERE
         //      Employee = emp.OID ORDER BY EndDate DESC)" correlated scalar subqueries are rewritten
         //      as OUTER APPLY: same "most recent assignment" intent, correlation visible to the
@@ -68,7 +72,7 @@ SELECT
     , emp.CivilID
     , emp.JoiningDate
     , nationality.NameAr           AS Nationality        -- legacy quirk: NameAr in the English report
-    , orgUnit.DisplayName          AS [Org Unit]         -- see rewrite note 1
+    , orgLevel1Anc.DisplayName     AS [Org Unit]         -- see rewrite note 1
     , jobTitle.NameEn              AS [Jobtitle]
     , basicPay.Amount              AS Total_Salary
     , basicPay.Amount              AS SalaryAmount
@@ -94,6 +98,22 @@ LEFT JOIN AbpOrganizationUnits orgUnit
        ON orgUnit.Id        = orgAssignment.OrganizationUnitId
       AND orgUnit.TenantId  = @TenantId
       AND orgUnit.IsDeleted = 0
+
+-- Legacy took OrgLevel1 explicitly and filtered the unit type to Code = 'OrgLevel1'
+-- (rptSalaryCertificateEn.resx:143 and :160) -- by convention the Company. HCMv3 stores
+-- OrganizationUnitType.Code is constrained to Level0..Level9, so 'Level1' is the exact
+-- equivalent and no depth arithmetic or nearest/shallowest tiebreak is needed.
+OUTER APPLY (
+    SELECT TOP 1 anc.DisplayName
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp       ON ancp.OrganizationUnitId = anc.Id      AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    INNER JOIN OrganizationUnitTypes anct ON anct.Id = ancp.OrganizationUnitTypeId AND anct.TenantId = @TenantId AND anct.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND anct.Code = 'Level1'
+    ORDER BY LEN(anc.Code)
+) orgLevel1Anc
 
 LEFT JOIN JobTitles jobTitle
        ON jobTitle.Id        = orgAssignment.JobTitleId
@@ -160,7 +180,7 @@ SELECT
     , emp.CivilID
     , emp.JoiningDate
     , nationality.NameAr           AS Nationality
-    , orgUnit.DisplayName          AS [Org Unit]         -- see rewrite note 1
+    , orgLevel1Anc.DisplayName     AS [Org Unit]         -- see rewrite note 1
     , govtJobTitle.NameAr          AS [Jobtitle]
     , basicPayDetail.Amount        AS Basic_Salary
 FROM Employees emp
@@ -182,6 +202,22 @@ LEFT JOIN AbpOrganizationUnits orgUnit
        ON orgUnit.Id        = orgAssignment.OrganizationUnitId
       AND orgUnit.TenantId  = @TenantId
       AND orgUnit.IsDeleted = 0
+
+-- Legacy took OrgLevel1 explicitly and filtered the unit type to Code = 'OrgLevel1'
+-- (rptSalaryCertificateEn.resx:143 and :160) -- by convention the Company. HCMv3 stores
+-- OrganizationUnitType.Code is constrained to Level0..Level9, so 'Level1' is the exact
+-- equivalent and no depth arithmetic or nearest/shallowest tiebreak is needed.
+OUTER APPLY (
+    SELECT TOP 1 anc.DisplayName
+    FROM AbpOrganizationUnits anc
+    INNER JOIN OrgUnitProfiles ancp       ON ancp.OrganizationUnitId = anc.Id      AND ancp.TenantId = @TenantId AND ancp.IsDeleted = 0
+    INNER JOIN OrganizationUnitTypes anct ON anct.Id = ancp.OrganizationUnitTypeId AND anct.TenantId = @TenantId AND anct.IsDeleted = 0
+    WHERE anc.TenantId  = @TenantId
+      AND anc.IsDeleted = 0
+      AND orgUnit.Code LIKE anc.Code + '%'
+      AND anct.Code = 'Level1'
+    ORDER BY LEN(anc.Code)
+) orgLevel1Anc
 
 OUTER APPLY (
     SELECT TOP 1 es.GovtJobTitleId

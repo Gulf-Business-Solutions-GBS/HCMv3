@@ -36,9 +36,28 @@ namespace HCMv3.Reports.EmployeeInfo
     /// expresses the legacy intent precisely. PayslipOrgV2Query can be tightened the same way.
     ///
     /// The walk itself: an ancestor is any unit whose Code is a PREFIX of the employee's unit Code
-    /// -- a materialised path is a prefix by construction, so no recursive CTE is needed --
-    /// and <c>ORDER BY LEN(Code) DESC</c> takes the NEAREST such ancestor, which is what the
-    /// legacy "first non-null OrgLevel" CASE effectively did.
+    /// -- a materialised path is a prefix by construction, so no recursive CTE is needed.
+    ///
+    /// ORDERING IS LOAD-BEARING, AND ASCENDING IS THE FAITHFUL CHOICE. The legacy report SQL joins
+    /// OrganizationUnit seven times, once per OrgLevel1..OrgLevel7 slot, each filtered to the wanted
+    /// type, and then picks with a seven-branch CASE that tests the SHALLOWEST slot first:
+    ///
+    ///     CASE WHEN Company_1.OID Is Not Null THEN Company_1.NameEn
+    ///          WHEN Company_2.OID Is Not Null THEN Company_2.NameEn
+    ///          ... WHEN Company_7.OID Is Not Null THEN Company_7.NameEn END
+    ///
+    /// (see HCM10.Module/Reports/Bank/rptBankAndCashTransfer.resx). OrgLevel1 is the top of the
+    /// tree, so the first non-null branch is the shallowest matching ancestor. ORDER BY LEN(Code)
+    /// ASCENDING reproduces that exactly; DESC would silently return the deepest instead and is a
+    /// real defect wherever two ancestors on one path share the type.
+    ///
+    /// Do NOT justify this from OrgService.GetCurrentOrgUnit -- that C# helper does an exact slot
+    /// SWITCH on the type's Code and is used by the XAF UI, not by the reports. The reports' own
+    /// SQL is the authority for a report port, and it fell through shallowest-first.
+    ///
+    /// This also matches the shipped grid-report equivalent,
+    /// HCMv3.Application/GridReports/Employees/EmployeeOrgLevelNameResolver, which filters ancestors
+    /// by level code and takes FirstOrDefault.
     ///
     /// NAME COLUMNS: legacy <c>OrganizationUnit</c> had NameEn/NameAr. ABP's table has only
     /// <c>DisplayName</c>, so English comes from <c>DisplayName</c> and Arabic from
@@ -72,7 +91,7 @@ OUTER APPLY (
            AND ancestorType.NameEn = 'Company'
     WHERE ownUnit.Id = orgAssign.OrganizationUnitId
       AND ownUnit.TenantId = @TenantId AND ownUnit.IsDeleted = 0
-    ORDER BY LEN(ancestor.Code) DESC
+    ORDER BY LEN(ancestor.Code)
 ) company
 ";
 
@@ -93,7 +112,7 @@ OUTER APPLY (
            AND ancestorType.NameEn = 'Department'
     WHERE ownUnit.Id = orgAssign.OrganizationUnitId
       AND ownUnit.TenantId = @TenantId AND ownUnit.IsDeleted = 0
-    ORDER BY LEN(ancestor.Code) DESC
+    ORDER BY LEN(ancestor.Code)
 ) department
 ";
 
@@ -114,7 +133,7 @@ OUTER APPLY (
            AND ancestorType.NameEn = 'Division'
     WHERE ownUnit.Id = orgAssign.OrganizationUnitId
       AND ownUnit.TenantId = @TenantId AND ownUnit.IsDeleted = 0
-    ORDER BY LEN(ancestor.Code) DESC
+    ORDER BY LEN(ancestor.Code)
 ) division
 ";
 
