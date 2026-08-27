@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevExpress.XtraReports.UI;
 using HCMv3.ReportManagement;
+using HCMv3.Reports.EmployeeInfo;
 using HCMv3.Reports.Others;
 using HCMv3.Reports.Payroll;
 
@@ -37,7 +38,23 @@ public static class HcmReportFactoryRegistry
             // The legacy class is named rptSalaryCertificate, which reads like a shared base for the
             // *En variant. It is not: it is the Arabic certificate (see the class remarks), so the
             // port is named for what it is while keeping the catalog key the seed data already uses.
-            [rptSalaryCertificateAr.ReportName] = () => new rptSalaryCertificateAr()
+            [rptSalaryCertificateAr.ReportName] = () => new rptSalaryCertificateAr(),
+
+            // EmployeeInfo -- employee-lifecycle documents. Three more reports in that legacy folder
+            // (Absence / Leave / ReturnFromLeave request forms) are NOT here and cannot be ported yet:
+            // they read the self-service request entities (LeaveRequest, AbsenceRequest,
+            // ReturnFromLeaveRequest), which do not exist in HCMv3. Same missing module that already
+            // blocks three Transaction grid reports and the Workflow LeaveRequest report.
+            [rptTerminationLetter.ReportName] = () => new rptTerminationLetter(),
+            [rptJoiningForm.ReportName] = () => new rptJoiningForm(),
+            [rptFinalClearanceCertificate.ReportName] = () => new rptFinalClearanceCertificate(),
+            [rptEmploymentNotice.ReportName] = () => new rptEmploymentNotice(),
+            [rptJobOffer.ReportName] = () => new rptJobOffer(),
+            [rptProbation_Letter.ReportName] = () => new rptProbation_Letter(),
+            [rptEmpStatusChange.ReportName] = () => new rptEmpStatusChange(),
+            [rptSettlementAcknowledgement_DischargeForm.ReportName] = () => new rptSettlementAcknowledgement_DischargeForm(),
+            [rptFinalSettlement.ReportName] = () => new rptFinalSettlement(),
+            [rptFinalSettlementAr.ReportName] = () => new rptFinalSettlementAr()
         };
 
     /// <summary>Report names that can actually be constructed.</summary>
