@@ -723,6 +723,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WorkflowRequest> WorkflowRequests { get; set; }
 
+    public virtual DbSet<WorkflowTransactionType> WorkflowTransactionTypes { get; set; }
+
     public virtual DbSet<RequestLog> RequestLogs { get; set; }
 
     public virtual DbSet<WorkFlowApprover> WorkFlowApprovers { get; set; }
@@ -782,6 +784,19 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     public virtual DbSet<ReportSetting> ReportSettings { get; set; }
 
     public virtual DbSet<ReportSettingDetail> ReportSettingDetails { get; set; }
+
+    // REPORT DISTRIBUTION / SCHEDULING. No legacy counterpart -- HCM10 had no report scheduling.
+    public virtual DbSet<ReportSchedule> ReportSchedules { get; set; }
+
+    public virtual DbSet<ReportScheduleFilter> ReportScheduleFilters { get; set; }
+
+    public virtual DbSet<ReportScheduleRecipient> ReportScheduleRecipients { get; set; }
+
+    public virtual DbSet<ReportScheduleDestination> ReportScheduleDestinations { get; set; }
+
+    public virtual DbSet<ReportScheduleRun> ReportScheduleRuns { get; set; }
+
+    public virtual DbSet<ReportScheduleRunSlice> ReportScheduleRunSlices { get; set; }
 
     public virtual DbSet<ReportInfo> ReportInfos { get; set; }
 
@@ -1123,6 +1138,31 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         // first thing every ESS screen does -- "who am I" -- becomes ambiguous. IsDeleted is in the filter
         // because Employee is soft-deleted, and a deleted employee's row would otherwise permanently block
         // its user from being linked to a replacement record (rehire, duplicate cleanup).
+        // The transaction-type catalog. Code is what WorkflowRequest.RequestType and
+        // WorkflowGroupDetail.RequestTypeName are matched against, so a duplicate would make routing
+        // ambiguous -- exactly the failure the catalog exists to remove.
+        modelBuilder.Entity<WorkflowTransactionType>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.Code })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+
+            // Restrict, not Cascade: deleting an approval configuration must not silently take the catalog
+            // row (and with it the type's ESS menu entry) down with it.
+            b.HasOne(e => e.DefaultRequestMaster)
+                .WithMany()
+                .HasForeignKey(e => e.DefaultRequestMasterId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeOrgAssignment>(b =>
+        {
+            b.HasOne(e => e.WorkflowGroup)
+                .WithMany()
+                .HasForeignKey(e => e.WorkflowGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         // Resolving "which request governs this transaction row" -- the lookup behind the Workflow History
         // button on every workflow-enabled screen. Not unique: a row legitimately accumulates several
         // requests over its life (the original submission, then later amendments).

@@ -21158,6 +21158,9 @@ namespace HCMv3.Migrations
                     b.Property<int?>("WorkLocationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowGroupId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BudgetingGroupId");
@@ -21181,6 +21184,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("PostingGroupId");
 
                     b.HasIndex("WorkLocationId");
+
+                    b.HasIndex("WorkflowGroupId");
 
                     b.ToTable("EmployeeOrgAssignments");
                 });
@@ -24615,6 +24620,430 @@ namespace HCMv3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ReportMasters");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BurstDimension")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BurstOrganizationUnitTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BurstParameterName")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndingOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FirstOccurrence")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Format")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastRunTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("NextRunTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NotificationEmails")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<bool>("NotifyOnCompletion")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NotifyOnStart")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OccurrenceType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecurringPattern")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReportKey")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("ReportKind")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportSchedules");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleDestination", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailBodyTemplate")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("EmailSubjectTemplate")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("FtpLogin")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<bool>("FtpPassiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FtpPasswordSettingName")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("HostAddress")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Method")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RemotePath")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("ReportScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StorageFolder")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("UseSftp")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportScheduleId");
+
+                    b.ToTable("ReportScheduleDestinations");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleFilter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ParameterName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ParameterValue")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("RelativeDateToken")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("ReportScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportScheduleId");
+
+                    b.ToTable("ReportScheduleFilters");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRecipient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BypassRecipientScope")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailAddress")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReportScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rule")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ScopeToBurstUnit")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportScheduleId");
+
+                    b.ToTable("ReportScheduleRecipients");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRun", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsManual")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReportScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SliceCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportScheduleId");
+
+                    b.ToTable("ReportScheduleRuns");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRunSlice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BurstKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("BurstKeyDisplay")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Method")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecipientEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<long?>("RecipientUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ReportScheduleRunId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RowCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("WasRecipientScoped")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportScheduleRunId");
+
+                    b.ToTable("ReportScheduleRunSlices");
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportSetting", b =>
@@ -32190,6 +32619,95 @@ namespace HCMv3.Migrations
                     b.ToTable("WorkflowRoles");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("DefaultRequestMasterId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EssPermissionName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EssRoute")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("IconClass")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEssEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWorkflowEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SubTypeSource")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefaultRequestMasterId");
+
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("WorkflowTransactionTypes");
+                });
+
             modelBuilder.Entity("HCMv3.Editions.SubscribableEdition", b =>
                 {
                     b.HasBaseType("Abp.Application.Editions.Edition");
@@ -36515,6 +37033,11 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("WorkLocationId");
 
+                    b.HasOne("HCMv3.Workflow.WorkflowGroup", "WorkflowGroup")
+                        .WithMany()
+                        .HasForeignKey("WorkflowGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("BudgetingGroup");
 
                     b.Navigation("CostCenter");
@@ -36536,6 +37059,8 @@ namespace HCMv3.Migrations
                     b.Navigation("PostingGroup");
 
                     b.Navigation("WorkLocation");
+
+                    b.Navigation("WorkflowGroup");
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeOvertime", b =>
@@ -37356,6 +37881,61 @@ namespace HCMv3.Migrations
                         .IsRequired();
 
                     b.Navigation("ReportInfo");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleDestination", b =>
+                {
+                    b.HasOne("HCMv3.ReportManagement.ReportSchedule", "ReportSchedule")
+                        .WithMany("Destinations")
+                        .HasForeignKey("ReportScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportSchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleFilter", b =>
+                {
+                    b.HasOne("HCMv3.ReportManagement.ReportSchedule", "ReportSchedule")
+                        .WithMany("Filters")
+                        .HasForeignKey("ReportScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportSchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRecipient", b =>
+                {
+                    b.HasOne("HCMv3.ReportManagement.ReportSchedule", "ReportSchedule")
+                        .WithMany("Recipients")
+                        .HasForeignKey("ReportScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportSchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRun", b =>
+                {
+                    b.HasOne("HCMv3.ReportManagement.ReportSchedule", "ReportSchedule")
+                        .WithMany()
+                        .HasForeignKey("ReportScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportSchedule");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRunSlice", b =>
+                {
+                    b.HasOne("HCMv3.ReportManagement.ReportScheduleRun", "ReportScheduleRun")
+                        .WithMany("Slices")
+                        .HasForeignKey("ReportScheduleRunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportScheduleRun");
                 });
 
             modelBuilder.Entity("HCMv3.ReportManagement.ReportSettingDetail", b =>
@@ -38783,6 +39363,16 @@ namespace HCMv3.Migrations
                     b.Navigation("WorkflowRoleOrg");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowTransactionType", b =>
+                {
+                    b.HasOne("HCMv3.Workflow.RequestMaster", "DefaultRequestMaster")
+                        .WithMany()
+                        .HasForeignKey("DefaultRequestMasterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("DefaultRequestMaster");
+                });
+
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
                 {
                     b.HasOne("Abp.Application.Editions.Edition", "Edition")
@@ -38869,6 +39459,20 @@ namespace HCMv3.Migrations
             modelBuilder.Entity("HCMv3.MultiTenancy.Payments.SubscriptionPayment", b =>
                 {
                     b.Navigation("SubscriptionPaymentProducts");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportSchedule", b =>
+                {
+                    b.Navigation("Destinations");
+
+                    b.Navigation("Filters");
+
+                    b.Navigation("Recipients");
+                });
+
+            modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRun", b =>
+                {
+                    b.Navigation("Slices");
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetail", b =>

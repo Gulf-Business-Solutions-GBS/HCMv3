@@ -4006,6 +4006,11 @@
     <text name="SurveyNotFound">Survey not found.</text>
     <text name="CurrentUserIsNotLinkedToAnEmployee">The current user is not linked to an employee record.</text>
     <text name="ManageUserLink">Manage User Link</text>
+    <text name="WorkflowTransactionTypes">Workflow Transaction Types</text>
+    <text name="WorkflowTransactionTypeNotRegistered">'{0}' is not registered as a workflow transaction type.</text>
+    <text name="WorkflowTransactionTypeIsInactive">The transaction type '{0}' is inactive.</text>
+    <text name="WorkflowIsNotEnabledForTransactionType">Workflow is not enabled for '{0}'.</text>
+    <text name="WorkflowEnabledTypeNeedsADefaultRequestMaster">'{0}' has workflow enabled but no default approval configuration, so requests could not be routed. Select one, or turn workflow off for this type.</text>
     <text name="UserIsAlreadyLinkedToAnotherEmployee">This user is already linked to employee {0}.</text>
     <text name="SurveyQuestionDoesNotBelongToSurvey">One of the submitted answers does not belong to the selected survey.</text>
     <text name="EmployeeSurveySubmitted">Survey submitted successfully.</text>
@@ -4071,6 +4076,9 @@
     <text name="ReportDesignerDevExpressDescription">Design and edit DevExpress reports in the browser</text>
     <!-- Print Reports launcher: the end-user list of runnable PrintReport catalog entries -->
     <text name="PrintReportsLauncher">Print Reports</text>
+    <text name="ReportDistribution">Report Distribution</text>
+    <text name="RunScheduleNow">Run schedule now</text>
+    <text name="BypassRecipientScope">Send without applying the recipient's own data scope</text>
     <text name="PrintReportsLauncherDescription">Browse and run the printable reports available to you</text>
     <text name="View">View</text>
     <text name="PrintReportAvailable">Available</text>

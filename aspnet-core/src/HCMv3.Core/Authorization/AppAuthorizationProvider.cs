@@ -1827,6 +1827,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         requestMasters.CreateChildPermission(AppPermissions.Pages_Workflow_RequestMasters_Edit, L("EditItem"));
         requestMasters.CreateChildPermission(AppPermissions.Pages_Workflow_RequestMasters_Delete, L("DeleteItem"));
 
+        var workflowTransactionTypes = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes, L("WorkflowTransactionTypes"));
+        workflowTransactionTypes.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Create, L("CreateNewItem"));
+        workflowTransactionTypes.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Edit, L("EditItem"));
+        workflowTransactionTypes.CreateChildPermission(AppPermissions.Pages_Workflow_WorkflowTransactionTypes_Delete, L("DeleteItem"));
+
         var requestDetails = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails, L("RequestDetails"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Create, L("CreateNewItem"));
         requestDetails.CreateChildPermission(AppPermissions.Pages_Workflow_RequestDetails_Edit, L("EditItem"));
@@ -2517,6 +2522,16 @@ public class AppAuthorizationProvider : AuthorizationProvider
         //REPORTS
         pages.CreateChildPermission(AppPermissions.Pages_Reports_DesignerDevExpress, L("ReportDesignerDevExpress"));
         pages.CreateChildPermission(AppPermissions.Pages_Reports_PrintReports, L("PrintReportsLauncher"));
+
+        //REPORT DISTRIBUTION (scheduling + bursting)
+        var reportDistribution = pages.CreateChildPermission(AppPermissions.Pages_Reports_Distribution, L("ReportDistribution"));
+        reportDistribution.CreateChildPermission(AppPermissions.Pages_Reports_Distribution_Create, L("CreateNewItem"));
+        reportDistribution.CreateChildPermission(AppPermissions.Pages_Reports_Distribution_Edit, L("EditItem"));
+        reportDistribution.CreateChildPermission(AppPermissions.Pages_Reports_Distribution_Delete, L("DeleteItem"));
+        reportDistribution.CreateChildPermission(AppPermissions.Pages_Reports_Distribution_RunNow, L("RunScheduleNow"));
+        reportDistribution.CreateChildPermission(
+            AppPermissions.Pages_Reports_Distribution_BypassRecipientScope,
+            L("BypassRecipientScope"));
 
         //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis)
         var analysisReports = pages.CreateChildPermission(AppPermissions.Pages_Reports_Analysis, L("AnalysisReports"));

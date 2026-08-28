@@ -1695,6 +1695,10 @@ public static class AppPermissions
     public const string Pages_Workflow_RequestMasters_Create = "Pages.Workflow.RequestMasters.Create";
     public const string Pages_Workflow_RequestMasters_Edit = "Pages.Workflow.RequestMasters.Edit";
     public const string Pages_Workflow_RequestMasters_Delete = "Pages.Workflow.RequestMasters.Delete";
+    public const string Pages_Workflow_WorkflowTransactionTypes = "Pages.Workflow.WorkflowTransactionTypes";
+    public const string Pages_Workflow_WorkflowTransactionTypes_Create = "Pages.Workflow.WorkflowTransactionTypes.Create";
+    public const string Pages_Workflow_WorkflowTransactionTypes_Edit = "Pages.Workflow.WorkflowTransactionTypes.Edit";
+    public const string Pages_Workflow_WorkflowTransactionTypes_Delete = "Pages.Workflow.WorkflowTransactionTypes.Delete";
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";
     public const string Pages_Workflow_RequestDetails_Create = "Pages.Workflow.RequestDetails.Create";
@@ -2477,6 +2481,31 @@ public static class AppPermissions
     /// running a report and maintaining the catalog are different jobs.
     /// </summary>
     public const string Pages_Reports_PrintReports = "Pages.Reports.PrintReports";
+
+    /// <summary>
+    /// Report Distribution: creating and maintaining report schedules, and viewing their run history.
+    /// </summary>
+    public const string Pages_Reports_Distribution = "Pages.Reports.Distribution";
+
+    public const string Pages_Reports_Distribution_Create = "Pages.Reports.Distribution.Create";
+
+    public const string Pages_Reports_Distribution_Edit = "Pages.Reports.Distribution.Edit";
+
+    public const string Pages_Reports_Distribution_Delete = "Pages.Reports.Distribution.Delete";
+
+    /// <summary>Triggering a schedule immediately rather than waiting for its next occurrence.</summary>
+    public const string Pages_Reports_Distribution_RunNow = "Pages.Reports.Distribution.RunNow";
+
+    /// <summary>
+    /// ELEVATED. Allows setting <c>ReportScheduleRecipient.BypassRecipientScope</c>, which sends a slice
+    /// WITHOUT filtering it to the recipient's own row-level-security scope.
+    ///
+    /// Held separately from Create/Edit precisely because it is the one setting in this module that can
+    /// hand somebody data they are not otherwise entitled to. It exists for external recipients (an
+    /// auditor with no HCMv3 account and therefore no scope), and granting it to ordinary schedule
+    /// authors defeats the point of the module's per-recipient scoping.
+    /// </summary>
+    public const string Pages_Reports_Distribution_BypassRecipientScope = "Pages.Reports.Distribution.BypassRecipientScope";
 
     //ANALYSIS GRID REPORTS (ported from legacy HCM10.Web/UserControls/Reports/Analysis/**/usc*.ascx)
     //
