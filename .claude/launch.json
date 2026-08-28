@@ -2,6 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "webhost",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "aspnet-core/src/HCMv3.Web.Host/HCMv3.Web.Host.csproj", "--urls", "https://localhost:44301"],
+      "port": 44301,
+      "url": "https://localhost:44301"
+    },
+    {
       "name": "angular",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
