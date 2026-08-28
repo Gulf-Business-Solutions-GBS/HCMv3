@@ -1,0 +1,229 @@
+{
+  "id": "kuwait",
+  "nameEn": "Kuwait reference data",
+  "nameAr": "البيانات المرجعية للكويت",
+  "description": "Kuwait-specific geography, banks and labour-law contract types. Seeded for tenants operating in Kuwait.",
+  "lookups": {
+    "Governorate": [
+      {
+        "code": "1",
+        "nameEn": "Al-Asimah",
+        "nameAr": "العاصمة"
+      },
+      {
+        "code": "2",
+        "nameEn": "Ahmadi",
+        "nameAr": "الأحمدي"
+      },
+      {
+        "code": "3",
+        "nameEn": "Farwaniya",
+        "nameAr": "الفروانية"
+      },
+      {
+        "code": "4",
+        "nameEn": "Hawalli",
+        "nameAr": "حولي"
+      },
+      {
+        "code": "5",
+        "nameEn": "Jahra",
+        "nameAr": "الجهراء"
+      },
+      {
+        "code": "6",
+        "nameEn": "Mubarak Al-Kabeer",
+        "nameAr": "مبارك الكبير"
+      }
+    ],
+    "State": [
+      {
+        "code": "1",
+        "nameEn": "Al-Asimah",
+        "nameAr": "العاصمة"
+      },
+      {
+        "code": "2",
+        "nameEn": "Ahmadi",
+        "nameAr": "الأحمدي"
+      },
+      {
+        "code": "3",
+        "nameEn": "Farwaniya",
+        "nameAr": "الفروانية"
+      },
+      {
+        "code": "4",
+        "nameEn": "Hawalli",
+        "nameAr": "حولي"
+      },
+      {
+        "code": "5",
+        "nameEn": "Jahra",
+        "nameAr": "الجهراء"
+      },
+      {
+        "code": "6",
+        "nameEn": "Mubarak Al-Kabeer",
+        "nameAr": "مبارك الكبير"
+      }
+    ],
+    "City": [
+      {
+        "code": "1",
+        "nameEn": "Ahmadi",
+        "nameAr": "الاحمدي"
+      },
+      {
+        "code": "2",
+        "nameEn": "Ardiya",
+        "nameAr": "العارضية"
+      },
+      {
+        "code": "3",
+        "nameEn": "Fahaheel",
+        "nameAr": "الفحيحيل"
+      },
+      {
+        "code": "4",
+        "nameEn": "Farwaniya",
+        "nameAr": "الفروانية"
+      },
+      {
+        "code": "5",
+        "nameEn": "Hawally",
+        "nameAr": "حولي"
+      },
+      {
+        "code": "6",
+        "nameEn": "Jabriya",
+        "nameAr": "الجابرية"
+      },
+      {
+        "code": "7",
+        "nameEn": "Kuwait City",
+        "nameAr": "مدينة الكويت"
+      },
+      {
+        "code": "8",
+        "nameEn": "Kuwait Free Trade Zone",
+        "nameAr": "منطقة التجارة الحرة بالكويت"
+      },
+      {
+        "code": "9",
+        "nameEn": "Mangaf",
+        "nameAr": "المنقف"
+      },
+      {
+        "code": "10",
+        "nameEn": "Mishref",
+        "nameAr": "مشرف"
+      },
+      {
+        "code": "11",
+        "nameEn": "Sabhan",
+        "nameAr": "صبحان"
+      },
+      {
+        "code": "12",
+        "nameEn": "Salmiya",
+        "nameAr": "السالمية"
+      },
+      {
+        "code": "13",
+        "nameEn": "Shuaiba",
+        "nameAr": "الشعيبة"
+      },
+      {
+        "code": "14",
+        "nameEn": "Shuwaikh",
+        "nameAr": "الشويخ"
+      },
+      {
+        "code": "15",
+        "nameEn": "Shuwaikh Port",
+        "nameAr": "ميناء الشويخ"
+      },
+      {
+        "code": "16",
+        "nameEn": "Sulaibiya",
+        "nameAr": "الصليبية"
+      }
+    ],
+    "Bank": [
+      {
+        "code": "1",
+        "nameEn": "National Bank of Kuwait",
+        "nameAr": "بنك الكويت الوطني"
+      },
+      {
+        "code": "2",
+        "nameEn": "Commercial Bank of Kuwait",
+        "nameAr": "البنك التجاري الكويتي"
+      },
+      {
+        "code": "3",
+        "nameEn": "Al-Ahli Bank of Kuwait",
+        "nameAr": "البنك الأهلي الكويتي"
+      },
+      {
+        "code": "4",
+        "nameEn": "Gulf Bank",
+        "nameAr": "بنك الخليج"
+      },
+      {
+        "code": "5",
+        "nameEn": "Burgan Bank",
+        "nameAr": "بنك برقان"
+      },
+      {
+        "code": "6",
+        "nameEn": "Bank of Bahrain and Kuwait",
+        "nameAr": "بنك البحرين والكويت"
+      },
+      {
+        "code": "7",
+        "nameEn": "Kuwait Finance House",
+        "nameAr": "بيت التمويل الكويتي"
+      },
+      {
+        "code": "8",
+        "nameEn": "Kuwait International Bank",
+        "nameAr": "بنك الكويت الدولي"
+      },
+      {
+        "code": "9",
+        "nameEn": "Ahli United Bank",
+        "nameAr": "البنك الأهلي المتحد"
+      },
+      {
+        "code": "10",
+        "nameEn": "Boubyan Bank",
+        "nameAr": "بنك بوبيان"
+      },
+      {
+        "code": "11",
+        "nameEn": "Warba Bank",
+        "nameAr": "بنك وربة"
+      }
+    ],
+    "ContractType": [
+      {
+        "code": "1",
+        "nameEn": "Unlimited",
+        "nameAr": "غير محدد المدة"
+      },
+      {
+        "code": "2",
+        "nameEn": "Temporary",
+        "nameAr": "مؤقت"
+      },
+      {
+        "code": "3",
+        "nameEn": "External",
+        "nameAr": "خارجي"
+      }
+    ]
+  },
+  "currencies": []
+}

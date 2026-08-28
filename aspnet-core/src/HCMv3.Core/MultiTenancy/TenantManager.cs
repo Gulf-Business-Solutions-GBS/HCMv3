@@ -30,6 +30,8 @@ using HCMv3.ExtraProperties;
 using HCMv3.MultiTenancy.Payments;
 using HCMv3.MultiTenancy.Subscription;
 
+using HCMv3.GoLiveSetup.ReferenceData;
+
 namespace HCMv3.MultiTenancy;
 
 /// <summary>
@@ -59,6 +61,7 @@ public class TenantManager :
     private readonly IPaymentManager _paymentManager;
 
     protected readonly IBackgroundJobManager _backgroundJobManager;
+    private readonly IReferenceDataSeeder _referenceDataSeeder;
 
 
     public TenantManager(
@@ -76,7 +79,9 @@ public class TenantManager :
         IRepository<SubscribableEdition> subscribableEditionRepository,
         ISubscriptionPaymentRepository subscriptionPaymentRepository,
         EditionManager editionManager,
-        IBackgroundJobManager backgroundJobManager, IPaymentManager paymentManager) : base(
+        IBackgroundJobManager backgroundJobManager,
+        IPaymentManager paymentManager,
+        IReferenceDataSeeder referenceDataSeeder) : base(
         tenantRepository,
         tenantFeatureRepository,
         editionManager,
@@ -100,6 +105,7 @@ public class TenantManager :
         _backgroundJobManager = backgroundJobManager;
         _paymentManager = paymentManager;
         _subscriptionPaymentRepository = subscriptionPaymentRepository;
+        _referenceDataSeeder = referenceDataSeeder;
     }
 
     public async Task<int> CreateWithAdminUserAsync(
@@ -202,6 +208,13 @@ public class TenantManager :
                     await _userEmailer.SendEmailActivationLinkAsync(adminUser, emailActivationLink, adminPassword);
                 }
 
+                await _unitOfWorkManager.Current.SaveChangesAsync();
+
+                // Reference data (countries, nationalities, currencies, Kuwait geography and banks).
+                // Inline rather than queued like the demo builder below: a tenant whose lookup tables are
+                // empty cannot onboard at all -- no employee can be given a nationality, no salary a
+                // currency -- so a silent job failure would leave a broken tenant looking created.
+                await _referenceDataSeeder.SeedDefaultsAsync(tenant.Id);
                 await _unitOfWorkManager.Current.SaveChangesAsync();
 
                 await _backgroundJobManager.EnqueueAsync<TenantDemoDataBuilderJob, int>(tenant.Id);

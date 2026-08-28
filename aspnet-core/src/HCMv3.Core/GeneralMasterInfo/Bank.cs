@@ -11,7 +11,7 @@ namespace HCMv3.GeneralMasterInfo;
 /// (see <see cref="City"/> for the same bespoke pattern). The legacy aggregated <c>PayeeBankDetail</c>
 /// collection is ported separately as its own entity (<see cref="PayeeBankDetail"/>).
 /// </summary>
-public class Bank : FullAuditedEntity, IMustHaveTenant
+public class Bank : FullAuditedEntity, IMustHaveTenant, IBilingualLookup
 {
     public int TenantId { get; set; }
 

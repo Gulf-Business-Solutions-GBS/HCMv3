@@ -10,7 +10,7 @@ namespace HCMv3.GeneralMasterInfo;
 /// subclasses; the shared code/name shape and validation lives here and in
 /// <see cref="SimpleLookupAppServiceBase{TEntity}"/>.
 /// </summary>
-public abstract class SimpleLookupEntity : FullAuditedEntity, IMustHaveTenant
+public abstract class SimpleLookupEntity : FullAuditedEntity, IMustHaveTenant, IBilingualLookup
 {
     public int TenantId { get; set; }
 

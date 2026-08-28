@@ -9,7 +9,7 @@ namespace HCMv3.GeneralMasterInfo;
 /// Extends the Code/NameEn/NameAr shape with decimal-count and short/denomination form fields, so it
 /// can't derive from <see cref="SimpleLookupEntity"/> (see <see cref="AccessUnit"/> for the same bespoke pattern).
 /// </summary>
-public class Currency : FullAuditedEntity, IMustHaveTenant
+public class Currency : FullAuditedEntity, IMustHaveTenant, IBilingualLookup
 {
     public int TenantId { get; set; }
 
