@@ -23,4 +23,14 @@ public interface IReferenceDataAppService : IApplicationService
 
     /// <summary>Applies a pack (or every default pack) to the current tenant. Idempotent.</summary>
     Task<SeedReferenceDataOutput> SeedReferenceData(SeedReferenceDataInput input);
+
+    /// <summary>
+    /// Every dropdown list Go-Live Setup needs, in one call.
+    ///
+    /// <para>One request rather than a dozen because the step screens need several lists at once and
+    /// the whole payload is a few kilobytes of names. Mixes seeded reference data (nationalities,
+    /// banks) with data the customer creates themselves (job titles, work locations, cost centres) --
+    /// the client does not care which is which, it just needs the values that exist right now.</para>
+    /// </summary>
+    Task<List<GoLiveLookupListDto>> GetLookupOptions();
 }

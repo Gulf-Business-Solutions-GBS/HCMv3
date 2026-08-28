@@ -13,52 +13,15 @@ import { PasteGridColumn } from './paste-grid/paste-grid.types';
  * is hard-coded here while that definition is being built.
  */
 
-// ---------------------------------------------------------------- reference data
-// Stands in for what step S2 will have created by the time the customer reaches the people sheets.
-
-const DEPARTMENTS = [
-    'Head Office',
-    'Finance',
-    'Human Resources',
-    'Operations',
-    'Spa & Wellness',
-    'Front Desk',
-    'Maintenance',
-];
-
-const JOB_TITLES = [
-    'General Manager',
-    'Accountant',
-    'HR Officer',
-    'Spa Therapist',
-    'Receptionist',
-    'Technician',
-    'Driver',
-];
-
-const NATIONALITIES = [
-    'Kuwaiti',
-    'Egyptian',
-    'Indian',
-    'Jordanian',
-    'Lebanese',
-    'Syrian',
-    'Philippine',
-    'Sri Lankan',
-    'Tunisian',
-    'Indonesian',
-    'Moroccan',
-    'Iranian',
-];
-
-const BANKS = [
-    'National Bank of Kuwait',
-    'Commercial Bank of Kuwait',
-    'Al-Ahli Bank of Kuwait',
-    'Gulf Bank',
-    'Burgan Bank',
-    'Kuwait Finance House',
-];
+// ---------------------------------------------------------------- lookups
+//
+// Choice columns and questions name a tenant lookup through `optionsFrom` rather than carrying a
+// list. The values come from what the tenant actually has -- nationalities and banks from the
+// shipped reference packs, job titles and work locations from what the customer created in step S2
+// -- so the dropdown can never offer something the rest of the system does not know about.
+//
+// Departments are deliberately absent: they are an OrganizationUnit tree rather than a flat lookup,
+// and until S2.1 is built there is nothing to read. That column stays free text.
 
 // ---------------------------------------------------------------- S1.2 worked example
 // August 2026: 31 days, weekly offs Friday and Saturday, joiner starts on the 16th.
@@ -149,12 +112,7 @@ const S1_1_COMPANY: GoLiveQuestion[] = [
         question: 'Which currency do you pay salaries in?',
         control: 'choice',
         phase: 'first-payroll',
-        options: [
-            { value: 'KWD', label: 'Kuwaiti Dinar' },
-            { value: 'SAR', label: 'Saudi Riyal' },
-            { value: 'AED', label: 'UAE Dirham' },
-            { value: 'USD', label: 'US Dollar' },
-        ],
+        optionsFrom: 'Currency',
     },
     {
         ref: 'Q1.05',
@@ -482,7 +440,7 @@ const EMPLOYEE_COLUMNS: PasteGridColumn[] = [
     { key: 'nameAr', header: 'Full name (Arabic)', width: 190, required: true },
     { key: 'gender', header: 'Gender', type: 'choice', width: 100, required: true, options: ['Male', 'Female'] },
     { key: 'birthDate', header: 'Date of birth', type: 'date', width: 125, required: true, hint: 'YYYY-MM-DD' },
-    { key: 'nationality', header: 'Nationality', type: 'choice', width: 130, required: true, options: NATIONALITIES },
+    { key: 'nationality', header: 'Nationality', width: 130, required: true, optionsFrom: 'Nationality' },
     {
         key: 'civilId',
         header: 'Civil ID',
@@ -521,8 +479,10 @@ const EMPLOYEE_COLUMNS: PasteGridColumn[] = [
             return value <= birth ? { key: 'PasteGridDemoJoinBeforeBirth' } : null;
         },
     },
-    { key: 'department', header: 'Department', type: 'choice', width: 155, required: true, options: DEPARTMENTS },
-    { key: 'jobTitle', header: 'Job title', type: 'choice', width: 155, required: true, options: JOB_TITLES },
+    // Free text until S2.1 builds the department tree; see the note above.
+    { key: 'department', header: 'Department', width: 155, required: true },
+    { key: 'jobTitle', header: 'Job title', width: 155, required: true, optionsFrom: 'JobTitle' },
+    { key: 'workLocation', header: 'Work location', width: 155, optionsFrom: 'WorkLocation' },
     {
         key: 'active',
         header: 'Still working with you?',
@@ -554,7 +514,7 @@ const BANK_COLUMNS: PasteGridColumn[] = [
         required: true,
         options: ['Bank transfer', 'Cash'],
     },
-    { key: 'bank', header: 'Bank name', type: 'choice', width: 200, options: BANKS },
+    { key: 'bank', header: 'Bank name', width: 200, optionsFrom: 'Bank' },
     {
         key: 'iban',
         header: 'IBAN',

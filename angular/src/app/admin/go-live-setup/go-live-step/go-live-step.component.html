@@ -28,7 +28,7 @@
 
                 @case ('data') {
                     <app-paste-grid
-                        [columns]="s.columns ?? []"
+                        [columns]="columns()"
                         [rows]="rows()"
                         [viewportHeight]="430"
                         (rowsChange)="onRowsChange($event)"

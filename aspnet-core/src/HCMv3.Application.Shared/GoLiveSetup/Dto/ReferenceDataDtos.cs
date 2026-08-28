@@ -55,3 +55,19 @@ public class SeedReferenceDataPackResultDto
 
     public int Skipped { get; set; }
 }
+
+/// <summary>
+/// The dropdown values behind a Go-Live Setup choice column or question, for the current tenant.
+///
+/// <para>Returned as a list keyed by lookup name rather than one property per list, so a registry entry
+/// can name its source (<c>optionsFrom: 'Nationality'</c>) and the client resolves it generically --
+/// adding a lookup then needs no client change.</para>
+/// </summary>
+public class GoLiveLookupListDto
+{
+    /// <summary>Entity short name, e.g. <c>Nationality</c>. Matches the registry's <c>optionsFrom</c>.</summary>
+    public string Lookup { get; set; }
+
+    /// <summary>English names, alphabetical. These are what the grid stores and matches on.</summary>
+    public List<string> Options { get; set; } = new();
+}

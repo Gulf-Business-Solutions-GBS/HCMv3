@@ -11,7 +11,7 @@ namespace HCMv3.OrganizationManagement;
 /// Extends the Code/NameEn/NameAr shape with a <see cref="CostCenterGroup"/> FK, so it can't derive
 /// from <see cref="SimpleLookupEntity"/> (see <see cref="City"/> for the same bespoke pattern).
 /// </summary>
-public class CostCenter : FullAuditedEntity, IMustHaveTenant
+public class CostCenter : FullAuditedEntity, IMustHaveTenant, IBilingualLookup
 {
     public int TenantId { get; set; }
 

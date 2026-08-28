@@ -27,6 +27,14 @@ export interface PasteGridColumn {
      *  value is always the canonical spelling from this list. */
     options?: string[];
 
+    /**
+     * Name of a tenant lookup whose values fill `options` at runtime, e.g. `Nationality` or `Bank`.
+     * Resolved by the step component from what the tenant actually has, so the dropdown offers the
+     * customer's own data rather than a list hard-coded in the registry. Wins over `options` when both
+     * are set; a lookup the tenant has not populated yet leaves the column as free text.
+     */
+    optionsFrom?: string;
+
     maxLength?: number;
     min?: number;
     max?: number;

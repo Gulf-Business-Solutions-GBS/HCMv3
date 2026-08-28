@@ -3,6 +3,7 @@ import { PasteGridIssue, PasteGridRow, isRowEmpty } from './paste-grid/paste-gri
 import { AnswerChange, AnswerMap, isAnswered, visibleQuestions } from './question-card/go-live-question.types';
 import { GO_LIVE_STAGES, GO_LIVE_STEPS } from './go-live-registry';
 import { GoLiveStep, CrossCheck, StepStatus } from './go-live.types';
+import { LookupOptionMap } from './lookup-options';
 
 /**
  * Everything the customer has entered, plus everything the readiness board derives from it.
@@ -21,8 +22,16 @@ export class GoLiveStateService {
     private readonly rowsSignal = signal<Record<string, PasteGridRow[]>>({});
     private readonly issuesSignal = signal<Record<string, PasteGridIssue[]>>({});
 
+    /** Dropdown values for every choice column and question, keyed by lookup name. */
+    private readonly lookupsSignal = signal<LookupOptionMap>({});
+    private readonly lookupsLoadedSignal = signal(false);
+
     readonly answers = this.answersSignal.asReadonly();
     readonly notes = this.notesSignal.asReadonly();
+    readonly lookups = this.lookupsSignal.asReadonly();
+
+    /** False until the first load returns, so a step can avoid rendering an empty dropdown. */
+    readonly lookupsLoaded = this.lookupsLoadedSignal.asReadonly();
 
     /** Status of every step, keyed by step id. Recomputed whenever anything changes. */
     readonly statuses = computed<Record<string, StepStatus>>(() => {
@@ -86,6 +95,13 @@ export class GoLiveStateService {
 
     setIssues(stepId: string, issues: PasteGridIssue[]): void {
         this.issuesSignal.update((i) => ({ ...i, [stepId]: issues }));
+    }
+
+    /** Replaces the whole map. Called once when the shell loads, and again after a reference
+     *  pack is seeded or the customer adds a job title. */
+    setLookups(lookups: LookupOptionMap): void {
+        this.lookupsSignal.set(lookups);
+        this.lookupsLoadedSignal.set(true);
     }
 
     statusOf(stepId: string): StepStatus {

@@ -37,6 +37,12 @@ export interface GoLiveQuestion {
 
     options?: QuestionOption[];
 
+    /**
+     * Name of a tenant lookup to build the options from, e.g. `Currency`. Resolved at render time so the
+     * question offers what the tenant actually has. Ignored when `options` is set.
+     */
+    optionsFrom?: string;
+
     /** Greyed placeholder for free-text and number answers. */
     example?: string;
 

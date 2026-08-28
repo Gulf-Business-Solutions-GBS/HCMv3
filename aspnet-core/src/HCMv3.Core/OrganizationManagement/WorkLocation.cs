@@ -12,7 +12,7 @@ namespace HCMv3.OrganizationManagement;
 /// <see cref="SimpleLookupEntity"/> (see <see cref="City"/> for the same bespoke pattern).
 /// The legacy <c>Sponsor</c> FK is deferred (GovtRelationsManagement module not yet ported).
 /// </summary>
-public class WorkLocation : FullAuditedEntity, IMustHaveTenant
+public class WorkLocation : FullAuditedEntity, IMustHaveTenant, IBilingualLookup
 {
     public int TenantId { get; set; }
 

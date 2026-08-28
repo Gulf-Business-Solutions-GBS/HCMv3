@@ -11,6 +11,7 @@ import { PasteGridComponent } from '../shared/paste-grid/paste-grid.component';
 import { QuestionCardComponent } from '../shared/question-card/question-card.component';
 import { PasteGridIssue, PasteGridRow } from '../shared/paste-grid/paste-grid.types';
 import { AnswerChange, visibleQuestions } from '../shared/question-card/go-live-question.types';
+import { resolveColumns, resolveQuestions } from '../shared/lookup-options';
 import { findStepByPath, nextStep, previousStep } from '../shared/go-live-registry';
 import { CrossCheck } from '../shared/go-live.types';
 
@@ -53,7 +54,17 @@ export class GoLiveStepComponent {
         if (!step || step.kind !== 'questions') {
             return [];
         }
-        return visibleQuestions(step.questions ?? [], this.state.answers());
+        const visible = visibleQuestions(step.questions ?? [], this.state.answers());
+        return resolveQuestions(visible, this.state.lookups());
+    });
+
+    /** Columns with every `optionsFrom` swapped for the values this tenant actually has. */
+    readonly columns = computed(() => {
+        const step = this.step();
+        if (!step || step.kind !== 'data') {
+            return [];
+        }
+        return resolveColumns(step.columns ?? [], this.state.lookups());
     });
 
     readonly rows = computed<PasteGridRow[]>(() => {

@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { GoLiveStateService } from './shared/go-live-state.service';
+import { GoLiveLookupsService } from './shared/go-live-lookups.service';
 import { StatusDotComponent } from './shared/status-dot.component';
 
 /**
@@ -19,6 +20,14 @@ import { StatusDotComponent } from './shared/status-dot.component';
     imports: [RouterOutlet, RouterLink, RouterLinkActive, SubHeaderComponent, StatusDotComponent, LocalizePipe],
     styleUrl: './go-live-shell.component.css',
 })
-export class GoLiveShellComponent extends AppComponentBase {
+export class GoLiveShellComponent extends AppComponentBase implements OnInit {
+    private readonly lookups = inject(GoLiveLookupsService);
+
     readonly state = inject(GoLiveStateService);
+
+    ngOnInit(): void {
+        // Loaded once for the whole feature rather than per step: the same lists back several steps,
+        // and the service collapses concurrent calls.
+        this.lookups.load();
+    }
 }
