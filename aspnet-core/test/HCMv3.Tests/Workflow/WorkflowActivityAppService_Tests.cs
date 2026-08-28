@@ -279,6 +279,24 @@ public class WorkflowActivityAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Refuse_A_Comment_From_A_User_With_No_Employee_Record()
+    {
+        // Reachable in production and missed by every other test here, all of which link the signed-in user
+        // to an employee: an admin has view access through their permission alone, with no employee link at
+        // all. A comment is authored BY an employee, so they cannot post one -- but they must be told that
+        // rather than getting a 500 from a null dereference, which is what happened before this guard.
+        var strangerId = CreateEmployee("ACT750STRANGER");
+        var requestId = CreateRequest(strangerId);
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() =>
+            _activityService.AddComment(new AddWorkflowCommentInput
+            {
+                WorkflowRequestId = requestId,
+                Body = "I have no employee record"
+            }));
+    }
+
+    [Fact]
     public async Task Should_Add_A_Comment_And_Return_It()
     {
         var meId = CreateCurrentUserEmployee("ACT800ME");

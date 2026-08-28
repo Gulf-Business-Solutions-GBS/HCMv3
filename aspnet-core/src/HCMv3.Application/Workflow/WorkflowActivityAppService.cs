@@ -96,6 +96,16 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
 
         EnsureCanView(access);
 
+        // A comment is authored BY an employee, so an unlinked user genuinely cannot post one -- but they
+        // CAN reach here, because admin permission grants view access without any employee link. Without
+        // this guard the next line dereferences a null employee id and the caller gets a 500 instead of
+        // being told what is wrong. Found by running it, not by the tests: every test linked the signed-in
+        // user to an employee, so this path was never exercised.
+        if (!access.EmployeeId.HasValue)
+        {
+            throw new UserFriendlyException(L("CurrentUserIsNotLinkedToAnEmployee"));
+        }
+
         if (input.IsInternal && !access.CanSeeInternal)
         {
             // Refused rather than silently downgraded to a public comment: the author believes they are
