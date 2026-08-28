@@ -4079,6 +4079,9 @@
     <text name="ReportDistribution">Report Distribution</text>
     <text name="RunScheduleNow">Run schedule now</text>
     <text name="BypassRecipientScope">Send without applying the recipient's own data scope</text>
+    <text name="ReportScheduleNotFound">Report schedule not found.</text>
+    <text name="BypassRecipientScopeNotPermitted">You are not permitted to send reports without applying the recipient's own data scope.</text>
+    <text name="BypassRecipientScopeOnlyForExplicitRecipients">Sending without the recipient's data scope is only allowed for explicit e-mail recipients, not for role- or org-derived ones.</text>
     <text name="PrintReportsLauncherDescription">Browse and run the printable reports available to you</text>
     <text name="View">View</text>
     <text name="PrintReportAvailable">Available</text>
