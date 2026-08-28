@@ -31,7 +31,24 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<RequestDetail>(Context),
             FakeRepository.For<EmployeeWorkflowRole>(Context),
             FakeRepository.For<EmployeeManager>(Context),
-            CreateResolver());
+            CreateResolver(),
+            CreateHandlerResolver());
+    }
+
+    /// <summary>
+    /// No handler for any type, which is a supported production state: a transaction can be catalogued and
+    /// routed for approval while having no type-specific validation or side effects. These tests then keep
+    /// asserting purely on the engine's own behaviour.
+    ///
+    /// The handler contract itself is covered by <c>LeaveWorkflowTransactionHandler_Tests</c>, and the engine's
+    /// interaction with a handler by <c>WorkflowApprovalService_Handler_Tests</c>.
+    /// </summary>
+    private static IWorkflowTransactionHandlerResolver CreateHandlerResolver()
+    {
+        var resolver = Substitute.For<IWorkflowTransactionHandlerResolver>();
+        resolver.Resolve(Arg.Any<string>()).Returns((IWorkflowTransactionHandler)null);
+
+        return resolver;
     }
 
     /// <summary>

@@ -20,6 +20,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRequestMasterResolver _requestMasterResolver;
+    private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
 
     public WorkflowApprovalService(
         IRepository<WorkflowRequest> workflowRequestRepository,
@@ -28,7 +29,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
         IRepository<EmployeeManager> employeeManagerRepository,
-        IRequestMasterResolver requestMasterResolver)
+        IRequestMasterResolver requestMasterResolver,
+        IWorkflowTransactionHandlerResolver handlerResolver)
     {
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
@@ -37,6 +39,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _employeeManagerRepository = employeeManagerRepository;
         _requestMasterResolver = requestMasterResolver;
+        _handlerResolver = handlerResolver;
     }
 
     public async Task SubmitAsync(int requestId, int actingEmployeeId)
@@ -52,6 +55,23 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         // that cannot be routed has no valid next state, so it fails here rather than sitting in limbo.
         var requestMaster = await _requestMasterResolver.ResolveAsync(request);
 
+        var context = new WorkflowTransactionContext(request, actingEmployeeId);
+        var handler = _handlerResolver.Resolve(request.RequestType);
+
+        if (handler != null)
+        {
+            // Type-specific refusals -- quota, overlap, eligibility -- happen before an approver is
+            // assigned, so a rejection here costs nobody an approval round-trip.
+            await handler.ValidateBeforeSubmitAsync(context);
+
+            var summary = await handler.BuildSummaryAsync(context);
+            if (summary != null)
+            {
+                request.SummaryEn = summary.SummaryEn;
+                request.SummaryAr = summary.SummaryAr;
+            }
+        }
+
         request.WorkflowStep = 1;
         request.RequestStatus = RequestStatus.Open;
 
@@ -60,6 +80,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         await AddLogAsync(request, actingEmployeeId, RequestActionType.Created, remark: null, workflowStep: 1);
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        // Stamps the transaction row as Open, which is what takes it out of view for payroll, quota and
+        // reports while it is in flight. Runs after the request is saved so the row can link to its id.
+        if (handler != null)
+        {
+            await handler.OnSubmittedAsync(context);
+        }
     }
 
     public async Task ApproveAsync(int requestId, int actingEmployeeId, string remark)
@@ -95,7 +122,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
 
         var totalSteps = requestMaster.WorkflowSteps;
-        if (currentStep >= totalSteps)
+        var isFinalApproval = currentStep >= totalSteps;
+
+        if (isFinalApproval)
         {
             request.RequestStatus = RequestStatus.Approved;
             request.ApprovalProcessTime = (DateTime.Now - request.LastModificationTime.GetValueOrDefault(DateTime.Now)).Days;
@@ -109,6 +138,21 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         }
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        if (isFinalApproval)
+        {
+            // Only on the LAST step. This is the once-per-request moment the transaction becomes real --
+            // the row is marked approved and the handler applies its side effects (quota deduction, payroll
+            // posting). Firing it on an intermediate step would apply them once per approver.
+            //
+            // Inside the same unit of work deliberately: if the handler throws, the approval rolls back with
+            // it. A leave that could not deduct quota must not end up recorded as approved.
+            var handler = _handlerResolver.Resolve(request.RequestType);
+            if (handler != null)
+            {
+                await handler.OnApprovedAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
+            }
+        }
     }
 
     public async Task RejectAsync(int requestId, int actingEmployeeId, string remark)
@@ -128,6 +172,14 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         await AddLogAsync(request, actingEmployeeId, RequestActionType.Rejected, remark, request.WorkflowStep);
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        // Marks the row rejected, which keeps it hidden from the rest of the system, and lets the handler
+        // release anything it reserved at submit.
+        var rejectHandler = _handlerResolver.Resolve(request.RequestType);
+        if (rejectHandler != null)
+        {
+            await rejectHandler.OnRejectedAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
+        }
     }
 
     public async Task SendBackAsync(int requestId, int actingEmployeeId, string remark)
@@ -156,6 +208,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         await AddLogAsync(request, actingEmployeeId, RequestActionType.SentBack, remark, stepBeingSentBackFrom);
 
         await _workflowRequestRepository.UpdateAsync(request);
+
+        // Back to draft: still alive and resubmittable, unlike a rejection.
+        var sendBackHandler = _handlerResolver.Resolve(request.RequestType);
+        if (sendBackHandler != null)
+        {
+            await sendBackHandler.OnSentBackAsync(new WorkflowTransactionContext(request, actingEmployeeId, remark));
+        }
     }
 
     public async Task ReassignAsync(int requestId, int actingEmployeeId, int newApproverEmployeeId, string remark)

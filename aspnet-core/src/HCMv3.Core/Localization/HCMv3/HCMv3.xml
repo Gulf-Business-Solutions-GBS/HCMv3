@@ -4010,6 +4010,8 @@
     <text name="WorkflowTransactionTypeNotRegistered">'{0}' is not registered as a workflow transaction type.</text>
     <text name="WorkflowTransactionTypeIsInactive">The transaction type '{0}' is inactive.</text>
     <text name="WorkflowIsNotEnabledForTransactionType">Workflow is not enabled for '{0}'.</text>
+    <text name="WorkflowRequestHasNoTransactionRow">Request {0} is not linked to a transaction record.</text>
+    <text name="OverlappingLeaveRequestExists">This employee already has leave covering some of these dates.</text>
     <text name="WorkflowEnabledTypeNeedsADefaultRequestMaster">'{0}' has workflow enabled but no default approval configuration, so requests could not be routed. Select one, or turn workflow off for this type.</text>
     <text name="UserIsAlreadyLinkedToAnotherEmployee">This user is already linked to employee {0}.</text>
     <text name="SurveyQuestionDoesNotBelongToSurvey">One of the submitted answers does not belong to the selected survey.</text>
