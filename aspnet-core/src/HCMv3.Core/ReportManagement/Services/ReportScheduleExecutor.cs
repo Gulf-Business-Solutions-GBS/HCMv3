@@ -187,6 +187,35 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
                 }
             }
 
+            // INTERSECT THE SLICE WITH THE RECIPIENT.
+            //
+            // This is what makes the department-wise case correct. The slice says which employees this
+            // output is ABOUT (one department); the recipient's scope says which employees this person
+            // MAY SEE. The file must contain both -- their department, restricted to what they are
+            // entitled to.
+            //
+            // Order matters for the null cases, and neither is a no-op:
+            //   slice null  -> unburst; the recipient's scope alone decides.
+            //   scope null  -> unrestricted recipient; the slice alone decides, so a burst schedule
+            //                  still bursts even with row-level security switched off tenant-wide.
+            // Taking the union, or letting either side win outright, would send one department's data
+            // to another department's head.
+            var effectiveEmployeeIds = IntersectScopes(slice.EmployeeIds, visibleEmployeeIds);
+
+            if (effectiveEmployeeIds != null && effectiveEmployeeIds.Count == 0)
+            {
+                // The recipient is entitled to nothing WITHIN this slice -- typically a central team
+                // rule that matched a department they cannot see. Legitimate, and not an error, but it
+                // must be recorded rather than silently delivered as an empty file.
+                logSlice.Status = ReportRunStatus.SkippedEmpty;
+                logSlice.RowCount = 0;
+                result.EmptyCount++;
+                await _sliceRepository.InsertAsync(logSlice);
+                return;
+            }
+
+            visibleEmployeeIds = effectiveEmployeeIds;
+
             // Publish the recipient's scope for the duration of the render. Grid reports resolve their
             // own row-level security from AbpSession, which is absent (or is the schedule author's) in a
             // scheduled run -- see IReportScopeOverride for why that would otherwise leak the whole
@@ -237,6 +266,43 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
         }
 
         await _sliceRepository.InsertAsync(logSlice);
+    }
+
+    /// <summary>
+    /// Combines the slice's employee set with the recipient's entitlement.
+    ///
+    /// Null on either side means "this side imposes no restriction", which is NOT the same as an empty
+    /// set. Empty means "nothing qualifies" and must survive the combination, because that is how a
+    /// recipient entitled to nothing within a slice stops receiving it.
+    /// </summary>
+    private static HashSet<int> IntersectScopes(HashSet<int> sliceEmployeeIds, HashSet<int> recipientEmployeeIds)
+    {
+        if (sliceEmployeeIds == null)
+        {
+            return recipientEmployeeIds;
+        }
+
+        if (recipientEmployeeIds == null)
+        {
+            return sliceEmployeeIds;
+        }
+
+        // Iterate the smaller side; a company-wide recipient scope intersected with one department
+        // should cost the department, not the company.
+        var (small, large) = sliceEmployeeIds.Count <= recipientEmployeeIds.Count
+            ? (sliceEmployeeIds, recipientEmployeeIds)
+            : (recipientEmployeeIds, sliceEmployeeIds);
+
+        var result = new HashSet<int>();
+        foreach (var id in small)
+        {
+            if (large.Contains(id))
+            {
+                result.Add(id);
+            }
+        }
+
+        return result;
     }
 
     private static string Truncate(string value, int max)

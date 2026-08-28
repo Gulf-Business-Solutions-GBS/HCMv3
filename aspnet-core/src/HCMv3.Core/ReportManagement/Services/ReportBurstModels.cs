@@ -25,6 +25,19 @@ public class ReportBurstSlice
     /// <summary>The manager this slice corresponds to, when bursting by manager.</summary>
     public int? ManagerEmployeeId { get; set; }
 
+    /// <summary>
+    /// The employees this slice covers -- the burst key expressed as a set.
+    ///
+    /// Null for an unburst schedule, meaning "the slice imposes no restriction of its own"; the
+    /// recipient's scope alone decides. For a burst slice this is what makes the department-wise case
+    /// work: the effective scope handed to the report is this set INTERSECTED with the recipient's own
+    /// entitlement, so a head receives their department's rows and only the ones they may see.
+    ///
+    /// Expressing the burst key as employees rather than as a report parameter is what keeps every one
+    /// of the ~138 grid reports usable without modification: they already filter on an employee id set.
+    /// </summary>
+    public HashSet<int> EmployeeIds { get; set; }
+
     public List<ReportSliceRecipient> Recipients { get; set; } = new List<ReportSliceRecipient>();
 }
 

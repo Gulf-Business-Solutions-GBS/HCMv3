@@ -26,6 +26,7 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
     private readonly IRepository<SysUserOrgUnitData> _sysUserOrgUnitDataRepository;
     private readonly IRepository<User, long> _userRepository;
     private readonly IRepository<UserRole, long> _userRoleRepository;
+    private readonly HCMv3.SystemSecurity.Services.IRlsService _rlsService;
 
     public ReportBurstResolver(
         IRepository<OrganizationUnit, long> organizationUnitRepository,
@@ -36,7 +37,8 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
         IRepository<Employee> employeeRepository,
         IRepository<SysUserOrgUnitData> sysUserOrgUnitDataRepository,
         IRepository<User, long> userRepository,
-        IRepository<UserRole, long> userRoleRepository)
+        IRepository<UserRole, long> userRoleRepository,
+        HCMv3.SystemSecurity.Services.IRlsService rlsService)
     {
         _organizationUnitRepository = organizationUnitRepository;
         _orgUnitProfileRepository = orgUnitProfileRepository;
@@ -47,6 +49,7 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
         _sysUserOrgUnitDataRepository = sysUserOrgUnitDataRepository;
         _userRepository = userRepository;
         _userRoleRepository = userRoleRepository;
+        _rlsService = rlsService;
     }
 
     public Task<List<ReportBurstSlice>> ResolveSlicesAsync(ReportSchedule schedule)
@@ -98,6 +101,7 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
                 Key = p.OrganizationUnitId.ToString(),
                 Display = p.DisplayName,
                 OrganizationUnitId = p.OrganizationUnitId,
+                EmployeeIds = GetEmployeeIdsInOrgUnitSubtree(p.OrganizationUnitId),
             })
             .ToList();
     }
@@ -123,6 +127,7 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
                 Key = m.Id.ToString(),
                 Display = string.IsNullOrWhiteSpace(m.FullNameEn) ? m.Code : m.FullNameEn,
                 ManagerEmployeeId = m.Id,
+                EmployeeIds = GetEmployeeIdsUnderManager(m.Id),
             })
             .ToList();
     }
@@ -140,6 +145,7 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
             {
                 Key = s.SponsorId.ToString(),
                 Display = s.NameEn,
+                EmployeeIds = GetEmployeeIdsForSponsor(s.SponsorId),
             })
             .ToList();
     }
@@ -155,8 +161,57 @@ public class ReportBurstResolver : HCMv3DomainServiceBase, IReportBurstResolver
             {
                 Key = p.PayrollAreaId.Value.ToString(),
                 Display = p.Name,
+                EmployeeIds = GetEmployeeIdsForPayrollArea(p.PayrollAreaId.Value),
             })
             .ToList();
+    }
+
+    // ---- the burst key, expressed as employees -----------------------------------------------------
+    //
+    // Each slice resolves to the SET OF EMPLOYEES it covers. That is what lets the burst key reach the
+    // report without any report knowing about scheduling: grid reports already filter on an employee id
+    // set, so the executor simply intersects this with the recipient's entitlement and publishes one
+    // set. See ReportBurstSlice.EmployeeIds.
+
+    private HashSet<int> GetEmployeeIdsInOrgUnitSubtree(long organizationUnitId)
+    {
+        // The whole SUBTREE, not just the unit itself. Bursting "by department" has to include the
+        // sections beneath it, or a head receives a file missing most of their own people.
+        var descendants = new HashSet<long>(
+            _rlsService.GetOrgUnitDescendantIdsAsync(organizationUnitId).GetAwaiter().GetResult());
+
+        return new HashSet<int>(_employeeOrgAssignmentRepository.GetAll()
+            .Where(a => a.OrganizationUnitId.HasValue && descendants.Contains(a.OrganizationUnitId.Value))
+            .Select(a => a.EmployeeId)
+            .Distinct()
+            .ToList());
+    }
+
+    private HashSet<int> GetEmployeeIdsUnderManager(int managerEmployeeId)
+    {
+        // Includes the manager themselves, matching how the interactive reports scope a manager.
+        return new HashSet<int>(
+            _rlsService.GetEmployeeIdsUnderManagerAsync(managerEmployeeId).GetAwaiter().GetResult());
+    }
+
+    private HashSet<int> GetEmployeeIdsForSponsor(int sponsorId)
+    {
+        var today = Clock.Now.Date;
+
+        return new HashSet<int>(_employeeSponsorRepository.GetAll()
+            .Where(es => es.SponsorId == sponsorId && es.StartDate <= today && es.EndDate >= today)
+            .Select(es => es.EmployeeId)
+            .Distinct()
+            .ToList());
+    }
+
+    private HashSet<int> GetEmployeeIdsForPayrollArea(int payrollAreaId)
+    {
+        return new HashSet<int>(_employeeOrgAssignmentRepository.GetAll()
+            .Where(a => a.PayrollAreaId == payrollAreaId)
+            .Select(a => a.EmployeeId)
+            .Distinct()
+            .ToList());
     }
 
     /// <summary>
