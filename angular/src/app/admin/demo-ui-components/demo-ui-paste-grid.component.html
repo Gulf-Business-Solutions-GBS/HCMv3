@@ -1,0 +1,32 @@
+<div [@routerTransition]>
+    <sub-header [title]="'PasteGridDemoTitle' | localize" [description]="'PasteGridDemoIntro' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="d-flex justify-content-end mb-4">
+                    <button type="button" class="btn btn-sm btn-light-primary" (click)="loadSample()">
+                        {{ 'PasteGridDemoLoadSample' | localize }}
+                    </button>
+                </div>
+
+                <app-paste-grid
+                    [columns]="columns"
+                    [(rows)]="rows"
+                    [viewportHeight]="440"
+                    (issuesChange)="onIssuesChange($event)" />
+
+                <div class="mt-8">
+                    <h5 class="mb-3">{{ 'PasteGridDemoWhatToTry' | localize }}</h5>
+                    <ul class="text-muted mb-0">
+                        <li>{{ 'PasteGridDemoTryPaste' | localize }}</li>
+                        <li>{{ 'PasteGridDemoTryFill' | localize }}</li>
+                        <li>{{ 'PasteGridDemoTryKeys' | localize }}</li>
+                        <li>{{ 'PasteGridDemoTryUndo' | localize }}</li>
+                        <li>{{ 'PasteGridDemoTrySample' | localize }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

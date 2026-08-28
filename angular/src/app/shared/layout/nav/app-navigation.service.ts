@@ -20,16 +20,16 @@ export class AppNavigationService {
             ),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
 
-            // IMPLEMENTATION COCKPIT. Deliberately near the top: while a tenant is being set up this is
+            // GO-LIVE SETUP. Deliberately near the top: while a tenant is being set up this is
             // the only screen that matters, and burying it under Administration is how onboarding stalls.
             // Once the configuration is locked the permission is revoked and the item disappears on its
             // own -- there is no "hide when finished" flag on AppMenuItem, and revoking the permission is
             // both less code and self-auditing.
             new AppMenuItem(
-                'ImplementationCockpit',
-                'Pages.ImplementationCockpit',
+                'GoLiveSetup',
+                'Pages.GoLiveSetup',
                 'flaticon-interface-8',
-                '/app/admin/implementation-cockpit'
+                '/app/admin/go-live-setup'
             ),
 
             // EMPLOYEE SELF SERVICE. Placed first because for most users it is the only section they can

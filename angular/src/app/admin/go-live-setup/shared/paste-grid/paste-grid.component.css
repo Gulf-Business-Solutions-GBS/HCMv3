@@ -1,0 +1,286 @@
+/* Paste grid. Deliberately self-contained: no Metronic utility classes, so the component can be
+   dropped into any Go-Live Setup step without inheriting page-level table styling. */
+
+.pg {
+    --pg-line: #dde3e8;
+    --pg-line-strong: #c3ccd4;
+    --pg-head-bg: #f4f6f8;
+    --pg-head-fg: #4a5760;
+    --pg-sel: #e6f2f6;
+    --pg-accent: #0b6e80;
+    --pg-err: #c0392b;
+    --pg-err-bg: #fdecea;
+    --pg-ro-bg: #f7f8f9;
+
+    border: 1px solid var(--pg-line-strong);
+    border-radius: 3px;
+    background: #fff;
+    font-size: 13px;
+    color: #23313a;
+}
+
+.pg-focused {
+    border-color: var(--pg-accent);
+}
+
+/* ---------- toolbar ---------- */
+.pg-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    background: var(--pg-head-bg);
+    border-bottom: 1px solid var(--pg-line);
+    flex-wrap: wrap;
+}
+
+.pg-hint {
+    color: var(--pg-head-fg);
+    font-size: 12px;
+}
+
+.pg-spacer {
+    flex: 1 1 auto;
+}
+
+.pg-stat {
+    font-size: 12px;
+    color: var(--pg-head-fg);
+    font-variant-numeric: tabular-nums;
+}
+
+.pg-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.pg-badge-ok {
+    background: #e3f4ea;
+    color: #1c7a4f;
+}
+
+.pg-badge-err {
+    background: var(--pg-err-bg);
+    color: var(--pg-err);
+}
+
+.pg-btn {
+    font-size: 12px;
+    padding: 3px 10px;
+    border: 1px solid var(--pg-line-strong);
+    background: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #23313a;
+}
+
+.pg-btn:hover:not(:disabled) {
+    border-color: var(--pg-accent);
+    color: var(--pg-accent);
+}
+
+.pg-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.pg-btn-danger:hover:not(:disabled) {
+    border-color: var(--pg-err);
+    color: var(--pg-err);
+}
+
+/* ---------- grid frame ----------
+   The header and the virtual viewport share one horizontally scrolling parent, so a sideways scroll
+   moves them together while the viewport keeps its own vertical scroll. */
+.pg-scroll-x {
+    overflow-x: auto;
+}
+
+.pg-inner {
+    min-width: 100%;
+}
+
+.pg-head,
+.pg-row {
+    display: grid;
+    align-items: stretch;
+}
+
+.pg-head {
+    background: var(--pg-head-bg);
+    border-bottom: 1px solid var(--pg-line-strong);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.pg-cell {
+    border-right: 1px solid var(--pg-line);
+    padding: 0 7px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.pg-th {
+    font-weight: 600;
+    font-size: 11.5px;
+    color: var(--pg-head-fg);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    gap: 3px;
+    cursor: default;
+}
+
+.pg-th-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pg-req-dot {
+    color: var(--pg-err);
+    font-weight: 700;
+}
+
+.pg-num {
+    justify-content: flex-end;
+    background: var(--pg-head-bg);
+    color: #8b98a2;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    border-right: 1px solid var(--pg-line-strong);
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.pg-num-active {
+    color: var(--pg-accent);
+    font-weight: 600;
+}
+
+.pg-body {
+    /* height is bound from the component */
+    background: #fff;
+}
+
+.pg-body:focus {
+    outline: none;
+}
+
+.pg-row {
+    border-bottom: 1px solid var(--pg-line);
+}
+
+.pg-td {
+    cursor: cell;
+    position: relative;
+}
+
+.pg-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.pg-text-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- state ---------- */
+.pg-sel {
+    background: var(--pg-sel);
+}
+
+.pg-active {
+    box-shadow: inset 0 0 0 2px var(--pg-accent);
+    background: #fff;
+}
+
+.pg-err {
+    background: var(--pg-err-bg);
+}
+
+.pg-err::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-width: 0 5px 5px 0;
+    border-style: solid;
+    border-color: transparent var(--pg-err) transparent transparent;
+}
+
+.pg-active.pg-err {
+    box-shadow: inset 0 0 0 2px var(--pg-err);
+}
+
+.pg-ro {
+    background: var(--pg-ro-bg);
+    color: #6d7a83;
+    cursor: default;
+}
+
+/* ---------- editor ---------- */
+.pg-input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: none;
+    background: #fff;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+}
+
+/* ---------- issue strip ---------- */
+.pg-issues {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--pg-line);
+    background: #fcfdfd;
+}
+
+.pg-issue {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 11.5px;
+    padding: 3px 9px;
+    border: 1px solid #f0c8c2;
+    background: var(--pg-err-bg);
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.pg-issue:hover {
+    border-color: var(--pg-err);
+}
+
+.pg-issue-loc {
+    font-weight: 600;
+    color: var(--pg-err);
+    white-space: nowrap;
+}
+
+.pg-issue-msg {
+    color: #6b4340;
+}
+
+.pg-issue-more {
+    font-size: 11.5px;
+    color: #8b98a2;
+    align-self: center;
+}

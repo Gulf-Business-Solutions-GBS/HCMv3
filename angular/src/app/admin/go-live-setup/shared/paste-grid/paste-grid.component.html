@@ -1,0 +1,117 @@
+<div class="pg" [class.pg-focused]="hasFocus()">
+    <div class="pg-bar">
+        <span class="pg-hint">{{ 'PasteGridHint' | localize }}</span>
+        <span class="pg-spacer"></span>
+
+        <span class="pg-stat">{{ 'PasteGridRowsEntered' | localize: filledRowCount() }}</span>
+
+        @if (issueCount() > 0) {
+            <span class="pg-badge pg-badge-err">{{ 'PasteGridCellsNeedAttention' | localize: issueCount() }}</span>
+        } @else if (filledRowCount() > 0) {
+            <span class="pg-badge pg-badge-ok">{{ 'PasteGridAllValid' | localize }}</span>
+        }
+
+        <button type="button" class="pg-btn" (click)="undo()" [disabled]="!canUndo()">
+            {{ 'PasteGridUndo' | localize }}
+        </button>
+        <button type="button" class="pg-btn" (click)="addRows(100)">
+            {{ 'PasteGridAddRows' | localize: 100 }}
+        </button>
+        <button type="button" class="pg-btn pg-btn-danger" (click)="clearAll()">
+            {{ 'PasteGridClearAll' | localize }}
+        </button>
+    </div>
+
+    <div class="pg-scroll-x">
+        <div class="pg-inner" [style.width.px]="totalWidth()">
+            <div class="pg-head" [style.grid-template-columns]="gridTemplate()">
+                <div class="pg-cell pg-th pg-num"></div>
+                @for (col of columns(); track col.key) {
+                    <div class="pg-cell pg-th" [class.pg-th-req]="col.required" [title]="col.hint ?? ''">
+                        <span class="pg-th-text">{{ col.header }}</span>
+                        @if (col.required) {
+                            <span class="pg-req-dot" aria-hidden="true">*</span>
+                        }
+                    </div>
+                }
+            </div>
+
+            <cdk-virtual-scroll-viewport
+                class="pg-body"
+                tabindex="0"
+                [itemSize]="rowHeight"
+                [style.height.px]="viewportHeight()"
+                (paste)="onPaste($event)"
+                (copy)="onCopy($event)"
+                (keydown)="onKeyDown($event)"
+                (focusin)="hasFocus.set(true)"
+                (focusout)="hasFocus.set(false)">
+                <div
+                    class="pg-row"
+                    *cdkVirtualFor="let row of rows(); let r = index; trackBy: trackByIndex"
+                    [style.grid-template-columns]="gridTemplate()"
+                    [style.height.px]="rowHeight">
+                    <div class="pg-cell pg-num" [class.pg-num-active]="active().r === r">{{ r + 1 }}</div>
+
+                    @for (col of columns(); track col.key; let c = $index) {
+                        <div
+                            class="pg-cell pg-td"
+                            [class.pg-sel]="inSelection(r, c)"
+                            [class.pg-active]="active().r === r && active().c === c"
+                            [class.pg-err]="hasIssue(r, col.key)"
+                            [class.pg-ro]="col.type === 'readonly'"
+                            [title]="issueText(r, col.key)"
+                            (mousedown)="onCellMouseDown($event, r, c)"
+                            (dblclick)="startEdit(r, c)">
+                            @if (isEditing(r, c)) {
+                                @if (col.type === 'choice') {
+                                    <select
+                                        class="pg-input"
+                                        [value]="editValue()"
+                                        (change)="onEditorInput($event)"
+                                        (blur)="commitEdit()"
+                                        (keydown)="onEditorKeyDown($event)">
+                                        <option value=""></option>
+                                        @for (option of col.options ?? []; track option) {
+                                            <option [value]="option">{{ option }}</option>
+                                        }
+                                    </select>
+                                } @else {
+                                    <input
+                                        class="pg-input"
+                                        type="text"
+                                        [value]="editValue()"
+                                        (input)="onEditorInput($event)"
+                                        (blur)="commitEdit()"
+                                        (keydown)="onEditorKeyDown($event)" />
+                                }
+                            } @else {
+                                <span class="pg-text" [class.pg-text-num]="col.type === 'number'">
+                                    {{ display(row, col) }}
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+    </div>
+
+    @if (issueCount() > 0) {
+        <div class="pg-issues">
+            @for (issue of visibleIssues(); track issue.row + '|' + issue.key) {
+                <button type="button" class="pg-issue" (click)="goToIssue(issue)">
+                    <span class="pg-issue-loc">
+                        {{ 'PasteGridIssueLocation' | localize: issue.row + 1 : issue.header }}
+                    </span>
+                    <span class="pg-issue-msg">{{ l(issue.issue.key, issue.issue.params ?? []) }}</span>
+                </button>
+            }
+            @if (issueCount() > visibleIssues().length) {
+                <span class="pg-issue-more">
+                    {{ 'PasteGridMoreIssues' | localize: issueCount() - visibleIssues().length }}
+                </span>
+            }
+        </div>
+    }
+</div>

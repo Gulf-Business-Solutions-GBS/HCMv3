@@ -13,11 +13,11 @@ public static class AppPermissions
     public const string Pages_DemoUiComponents = "Pages.DemoUiComponents";
 
     /// <summary>
-    /// Implementation Cockpit -- the guided go-live setup (questions, bulk sheets, readiness board).
+    /// Go-Live Setup -- the guided go-live setup (questions, bulk sheets, readiness board).
     /// Granted to whoever configures a tenant for its first payroll: the customer's own admin in the
     /// self-serve tier, a GBS consultant in the consultant-led tier.
     /// </summary>
-    public const string Pages_ImplementationCockpit = "Pages.ImplementationCockpit";
+    public const string Pages_GoLiveSetup = "Pages.GoLiveSetup";
 
     public const string Pages_Administration = "Pages.Administration";
 

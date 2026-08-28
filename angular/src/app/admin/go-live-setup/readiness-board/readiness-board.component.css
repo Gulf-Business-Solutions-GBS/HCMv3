@@ -1,0 +1,305 @@
+:host {
+    display: block;
+}
+
+/* ---------- the gate ---------- */
+.rb-gate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border: 1px solid #d3dee2;
+    border-left: 4px solid #9c6714;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.rb-gate-ready {
+    border-left-color: #1c7a4f;
+    background: #f3faf6;
+}
+
+.rb-gate-main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.rb-gate-head {
+    font-size: 17px;
+    font-weight: 700;
+    color: #23313a;
+    letter-spacing: -0.01em;
+}
+
+.rb-gate-ready .rb-gate-head {
+    color: #1c7a4f;
+}
+
+.rb-gate-sub {
+    font-size: 12.5px;
+    color: #667680;
+}
+
+.rb-gate-btn {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 3px;
+    border: 1px solid #0b6e80;
+    background: #0b6e80;
+    color: #fff;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.rb-gate-btn:hover:not(:disabled) {
+    background: #095866;
+}
+
+.rb-gate-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ---------- blockers ---------- */
+.rb-blockers {
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border: 1px solid #f0c8c2;
+    border-radius: 3px;
+    background: #fdf4f2;
+}
+
+.rb-blockers-head {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #a33228;
+}
+
+.rb-blockers-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rb-blocker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.rb-blocker-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a33228;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.rb-blocker-detail {
+    font-size: 12.5px;
+    color: #6b4340;
+}
+
+/* ---------- stages ---------- */
+.rb-stage {
+    margin-bottom: 18px;
+    border: 1px solid #d3dee2;
+    border-radius: 3px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.rb-stage-head {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    padding: 10px 16px;
+    background: #f4f6f8;
+    border-bottom: 1px solid #d3dee2;
+}
+
+.rb-stage-id {
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0b6e80;
+    letter-spacing: 0.05em;
+}
+
+.rb-stage-name {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #23313a;
+}
+
+.rb-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rb-step + .rb-step {
+    border-top: 1px solid #edf1f3;
+}
+
+.rb-step-link {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    text-decoration: none;
+    color: #23313a;
+}
+
+.rb-step-link:hover {
+    background: #f7fafb;
+    color: #0b6e80;
+}
+
+.rb-step-id {
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 11px;
+    color: #8797a0;
+}
+
+.rb-step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.rb-step-name {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.rb-step-intro {
+    font-size: 12px;
+    color: #667680;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rb-step-count {
+    font-size: 11.5px;
+    color: #667680;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.rb-chip {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.rb-chip-later {
+    color: #8797a0;
+    background: #f1f4f6;
+}
+
+.rb-chip-pending {
+    color: #6a4b8a;
+    background: #f1ecf7;
+}
+
+@media (max-width: 700px) {
+    .rb-step-link {
+        grid-template-columns: 42px minmax(0, 1fr);
+        row-gap: 6px;
+    }
+    .rb-step-count,
+    .rb-step-link app-status-dot {
+        grid-column: 2;
+    }
+}
+
+/* ---------- cross-checks ---------- */
+.rb-checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rb-check {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+}
+
+.rb-check + .rb-check {
+    border-top: 1px solid #edf1f3;
+}
+
+.rb-check-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #23313a;
+}
+
+.rb-check-idle .rb-check-label {
+    color: #8797a0;
+}
+
+.rb-check-detail {
+    font-size: 12.5px;
+    color: #667680;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.rb-check-bad .rb-check-detail {
+    color: #a33228;
+}
+
+.rb-check-fix {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid #a33228;
+    border-radius: 3px;
+    background: #fff;
+    color: #a33228;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.rb-check-fix:hover {
+    background: #a33228;
+    color: #fff;
+}
+
+:focus-visible {
+    outline: 2px solid #0b6e80;
+    outline-offset: 2px;
+}

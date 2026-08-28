@@ -1,0 +1,40 @@
+<div [@routerTransition]>
+    <sub-header [title]="'QuestionCardDemoTitle' | localize" [description]="'QuestionCardDemoIntro' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-6">
+                    <h4 class="mb-0">{{ 'QuestionCardDemoStepName' | localize }}</h4>
+                    <span
+                        class="badge"
+                        [class.badge-light-success]="outstanding() === 0"
+                        [class.badge-light-warning]="outstanding() > 0">
+                        {{ 'QuestionCardDemoProgress' | localize: answeredForFirstPayroll() : totalForFirstPayroll() }}
+                    </span>
+                </div>
+
+                <div class="d-flex flex-column gap-4">
+                    @for (q of visible(); track q.ref) {
+                        <app-question-card
+                            [question]="q"
+                            [answers]="answers()"
+                            [value]="valueFor(q.ref)"
+                            [note]="noteFor(q.ref)"
+                            (answered)="onAnswered($event)" />
+                    }
+                </div>
+
+                <div class="mt-8">
+                    <h5 class="mb-3">{{ 'QuestionCardDemoWhatToTry' | localize }}</h5>
+                    <ul class="text-muted mb-0">
+                        <li>{{ 'QuestionCardDemoTryPreview' | localize }}</li>
+                        <li>{{ 'QuestionCardDemoTryConditional' | localize }}</li>
+                        <li>{{ 'QuestionCardDemoTryNote' | localize }}</li>
+                        <li>{{ 'QuestionCardDemoTryPhase' | localize }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

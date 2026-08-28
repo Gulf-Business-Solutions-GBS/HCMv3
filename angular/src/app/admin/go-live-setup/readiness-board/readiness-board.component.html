@@ -1,0 +1,100 @@
+<!-- The gate. Everything else on this page exists to explain this banner. -->
+<div class="rb-gate" [class.rb-gate-ready]="state.readyForFirstPayroll()">
+    <div class="rb-gate-main">
+        <span class="rb-gate-head">
+            @if (state.readyForFirstPayroll()) {
+                {{ 'GoLiveGateReady' | localize }}
+            } @else {
+                {{ 'GoLiveGateNotReady' | localize: state.readyStepCount() : state.totalGatingSteps() }}
+            }
+        </span>
+        <span class="rb-gate-sub">
+            @if (state.readyForFirstPayroll()) {
+                {{ 'GoLiveGateReadySub' | localize }}
+            } @else {
+                {{ 'GoLiveGateNotReadySub' | localize }}
+            }
+        </span>
+    </div>
+    <button type="button" class="rb-gate-btn" [disabled]="!state.readyForFirstPayroll()" (click)="goToStep('S4.2')">
+        {{ 'GoLiveRunTrialPayroll' | localize }}
+    </button>
+</div>
+
+<!-- What is blocking, stated before the full board so nobody has to hunt. -->
+@if (state.blockingChecks().length > 0) {
+    <div class="rb-blockers">
+        <h6 class="rb-blockers-head">{{ 'GoLiveBlocking' | localize }}</h6>
+        <ul class="rb-blockers-list">
+            @for (check of state.blockingChecks(); track check.id) {
+                <li>
+                    <button type="button" class="rb-blocker" (click)="goToStep(check.stepId)">
+                        <span class="rb-blocker-label">{{ check.labelKey | localize }}</span>
+                        <span class="rb-blocker-detail">{{ detailFor(check) }}</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+<!-- The board itself -->
+@for (stage of state.stages; track stage.id) {
+    <section class="rb-stage">
+        <header class="rb-stage-head">
+            <span class="rb-stage-id">{{ stage.id }}</span>
+            <h5 class="rb-stage-name">{{ stage.nameKey | localize }}</h5>
+        </header>
+
+        <ul class="rb-steps">
+            @for (step of stage.steps; track step.id) {
+                <li class="rb-step">
+                    <a class="rb-step-link" [routerLink]="['/app/admin/go-live-setup/step', step.path]">
+                        <span class="rb-step-id">{{ step.id }}</span>
+                        <span class="rb-step-body">
+                            <span class="rb-step-name">
+                                {{ step.nameKey | localize }}
+                                @if (step.phase === 'later') {
+                                    <span class="rb-chip rb-chip-later">{{ 'GoLiveNeededLater' | localize }}</span>
+                                }
+                                @if (step.kind === 'placeholder') {
+                                    <span class="rb-chip rb-chip-pending">{{ 'GoLiveNeedsBackend' | localize }}</span>
+                                }
+                            </span>
+                            @if (step.introKey) {
+                                <span class="rb-step-intro">{{ step.introKey | localize }}</span>
+                            }
+                        </span>
+                        <span class="rb-step-count">{{ progressLabel(step) }}</span>
+                        <app-status-dot [status]="state.statusOf(step.id)" />
+                    </a>
+                </li>
+            }
+        </ul>
+    </section>
+}
+
+<!-- Cross-checks, always shown so a passing check is visible reassurance, not just an absent warning. -->
+<section class="rb-stage">
+    <header class="rb-stage-head">
+        <span class="rb-stage-id">&#8730;</span>
+        <h5 class="rb-stage-name">{{ 'GoLiveCrossChecks' | localize }}</h5>
+    </header>
+
+    <ul class="rb-checks">
+        @for (check of state.crossChecks(); track check.id) {
+            <li class="rb-check" [class.rb-check-bad]="!check.ok" [class.rb-check-idle]="check.notStarted">
+                <app-status-dot
+                    [status]="check.notStarted ? 'not-started' : check.ok ? 'ready' : 'attention'"
+                    [showLabel]="false" />
+                <span class="rb-check-label">{{ check.labelKey | localize }}</span>
+                <span class="rb-check-detail">{{ detailFor(check) }}</span>
+                @if (!check.ok && !check.notStarted && check.stepId) {
+                    <button type="button" class="rb-check-fix" (click)="goToStep(check.stepId)">
+                        {{ 'GoLiveFixIt' | localize: check.stepId }}
+                    </button>
+                }
+            </li>
+        }
+    </ul>
+</section>

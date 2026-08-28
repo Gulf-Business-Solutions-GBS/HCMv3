@@ -3624,38 +3624,38 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
-                        // Implementation Cockpit. The only feature-level nested route block in this file:
+                        // Go-Live Setup. The only feature-level nested route block in this file:
                         // the shell owns the navigation rail and overall progress, and the board and the
                         // individual steps render into its outlet. Steps are dispatched by :stepPath from
-                        // the registry (implementation-cockpit/shared/cockpit-registry.ts) rather than
+                        // the registry (go-live-setup/shared/go-live-registry.ts) rather than
                         // enumerated here, so adding a step does not touch this file.
-                        path: 'implementation-cockpit',
+                        path: 'go-live-setup',
                         loadComponent: () =>
-                            import('./admin/implementation-cockpit/cockpit-shell.component').then(
-                                (m) => m.CockpitShellComponent
+                            import('./admin/go-live-setup/go-live-shell.component').then(
+                                (m) => m.GoLiveShellComponent
                             ),
-                        data: { permission: 'Pages.ImplementationCockpit' },
+                        data: { permission: 'Pages.GoLiveSetup' },
                         children: [
                             {
                                 path: '',
                                 loadComponent: () =>
                                     import(
-                                        './admin/implementation-cockpit/readiness-board/readiness-board.component'
+                                        './admin/go-live-setup/readiness-board/readiness-board.component'
                                     ).then((m) => m.ReadinessBoardComponent),
                             },
                             {
                                 path: 'step/:stepPath',
                                 loadComponent: () =>
                                     import(
-                                        './admin/implementation-cockpit/cockpit-step/cockpit-step.component'
-                                    ).then((m) => m.CockpitStepComponent),
+                                        './admin/go-live-setup/go-live-step/go-live-step.component'
+                                    ).then((m) => m.GoLiveStepComponent),
                             },
                         ],
                     },
                     {
-                        // Prototype harness for the Implementation Cockpit paste grid. Sits in the demo
+                        // Prototype harness for the Go-Live Setup paste grid. Sits in the demo
                         // gallery (and borrows its permission) so the grid can be exercised before the
-                        // cockpit's own shell, routes and Pages.ImplementationCockpit permission exist.
+                        // Go-Live Setup shell, routes and Pages.GoLiveSetup permission exist.
                         path: 'paste-grid-demo',
                         loadComponent: () =>
                             import('./admin/demo-ui-components/demo-ui-paste-grid.component').then(
@@ -3664,7 +3664,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
-                        // Prototype harness for the Implementation Cockpit question card, using the real
+                        // Prototype harness for the Go-Live Setup question card, using the real
                         // S1.2 "How you pay" step. Same borrowed permission as the paste grid demo.
                         path: 'question-card-demo',
                         loadComponent: () =>

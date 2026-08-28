@@ -1,0 +1,92 @@
+@if (step(); as s) {
+    <div class="cs">
+        <header class="gs-head">
+            <div class="gs-head-main">
+                <span class="gs-id">{{ s.id }}</span>
+                <h4 class="gs-name">{{ s.nameKey | localize }}</h4>
+                <app-status-dot [status]="state.statusOf(s.id)" />
+            </div>
+            @if (s.introKey) {
+                <p class="gs-intro">{{ s.introKey | localize }}</p>
+            }
+        </header>
+
+        <div class="gs-body">
+            @switch (s.kind) {
+                @case ('questions') {
+                    <div class="gs-questions">
+                        @for (q of questions(); track q.ref) {
+                            <app-question-card
+                                [question]="q"
+                                [answers]="state.answers()"
+                                [value]="state.answerFor(q.ref)"
+                                [note]="state.noteFor(q.ref)"
+                                (answered)="onAnswered($event)" />
+                        }
+                    </div>
+                }
+
+                @case ('data') {
+                    <app-paste-grid
+                        [columns]="s.columns ?? []"
+                        [rows]="rows()"
+                        [viewportHeight]="430"
+                        (rowsChange)="onRowsChange($event)"
+                        (issuesChange)="onIssuesChange($event)" />
+                }
+
+                @case ('check') {
+                    <ul class="gs-checks">
+                        @for (check of state.crossChecks(); track check.id) {
+                            <li class="gs-check" [class.gs-check-bad]="!check.ok && !check.notStarted">
+                                <app-status-dot
+                                    [status]="check.notStarted ? 'not-started' : check.ok ? 'ready' : 'attention'"
+                                    [showLabel]="false" />
+                                <span class="gs-check-label">{{ check.labelKey | localize }}</span>
+                                <span class="gs-check-detail">{{ detailFor(check) }}</span>
+                                @if (!check.ok && !check.notStarted && check.stepId) {
+                                    <button type="button" class="gs-check-fix" (click)="goToStep(check.stepId)">
+                                        {{ 'GoLiveFixIt' | localize: check.stepId }}
+                                    </button>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+
+                @default {
+                    <div class="gs-pending">
+                        <p class="gs-pending-head">{{ 'GoLiveNeedsBackend' | localize }}</p>
+                        @if (s.pendingKey) {
+                            <p class="gs-pending-body">{{ s.pendingKey | localize }}</p>
+                        }
+                    </div>
+                }
+            }
+        </div>
+
+        <footer class="gs-foot">
+            <a class="gs-btn" routerLink="/app/admin/go-live-setup">
+                {{ 'GoLiveBackToBoard' | localize }}
+            </a>
+            <span class="gs-foot-spacer"></span>
+            @if (previous(); as p) {
+                <a class="gs-btn" [routerLink]="['/app/admin/go-live-setup/step', p.path]">
+                    {{ 'GoLivePreviousStep' | localize: (p.nameKey | localize) }}
+                </a>
+            }
+            @if (next(); as n) {
+                <a class="gs-btn gs-btn-primary" [routerLink]="['/app/admin/go-live-setup/step', n.path]">
+                    {{ 'GoLiveNextStep' | localize: (n.nameKey | localize) }}
+                </a>
+            }
+        </footer>
+    </div>
+} @else {
+    <div class="gs-missing">
+        <p>{{ 'GoLiveStepNotFound' | localize }}</p>
+        <a class="gs-btn" routerLink="/app/admin/go-live-setup">
+            {{ 'GoLiveBackToBoard' | localize }}
+        </a>
+    </div>
+}

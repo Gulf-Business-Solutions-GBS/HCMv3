@@ -30,7 +30,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
         pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
-        pages.CreateChildPermission(AppPermissions.Pages_ImplementationCockpit, L("ImplementationCockpit"));
+        pages.CreateChildPermission(AppPermissions.Pages_GoLiveSetup, L("GoLiveSetup"));
 
         //EMPLOYEE SELF SERVICE
         //
