@@ -19,6 +19,29 @@ export class AppNavigationService {
                 '/app/admin/hostDashboard'
             ),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
+
+            // IMPLEMENTATION COCKPIT. Deliberately near the top: while a tenant is being set up this is
+            // the only screen that matters, and burying it under Administration is how onboarding stalls.
+            // Once the configuration is locked the permission is revoked and the item disappears on its
+            // own -- there is no "hide when finished" flag on AppMenuItem, and revoking the permission is
+            // both less code and self-auditing.
+            new AppMenuItem(
+                'ImplementationCockpit',
+                'Pages.ImplementationCockpit',
+                'flaticon-interface-8',
+                '/app/admin/implementation-cockpit'
+            ),
+
+            // EMPLOYEE SELF SERVICE. Placed first because for most users it is the only section they can
+            // see at all: everything below is Pages.* and does not render for someone holding only the
+            // Employee role. That permission filtering is what removes the need for a separate ESS
+            // application like legacy HCM10.ESS -- though hiding the menu is only cosmetic, and the real
+            // guard is [AbpAuthorize(Ess_*)] plus the employee scope filter on every endpoint.
+            //
+            // One entry for now. The landing page lists the available transactions from the catalog, so
+            // per-transaction menu items are added here only as their screens are built -- a menu item
+            // pointing at a route that does not exist is worse than no menu item.
+            new AppMenuItem('EmployeeSelfService', 'Ess', 'flaticon-user-ok', '/app/main/ess'),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.
             new AppMenuItem(

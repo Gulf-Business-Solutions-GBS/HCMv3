@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using HCMv3.Authorization;
 using HCMv3.EntityFrameworkCore;
 using HCMv3.Workflow;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,7 @@ public class WorkflowTransactionTypeBuilder
     private readonly int _tenantId;
 
     /// <summary>
-    /// (Code, NameEn, NameAr, SubTypeSource, EssRoute, DisplayOrder).
+    /// (Code, NameEn, NameAr, SubTypeSource, EssRoute, EssPermissionName, DisplayOrder).
     ///
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
@@ -43,14 +44,14 @@ public class WorkflowTransactionTypeBuilder
     /// The six here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A seventh type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
-    private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, int DisplayOrder)[] Catalog =
+    private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, int DisplayOrder)[] Catalog =
     {
-        ("EmployeeAbsence", "Leave Request", "طلب إجازة", "AbsenceType", "/app/main/ess/leave", 10),
-        ("EmployeeAsset", "Asset Request", "طلب عهدة", null, "/app/main/ess/asset", 20),
-        ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", 30),
-        ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", 40),
-        ("EmployeeOvertime", "Overtime Request", "طلب عمل إضافي", null, "/app/main/ess/overtime", 50),
-        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", 60)
+        ("EmployeeAbsence", "Leave Request", "طلب إجازة", "AbsenceType", "/app/main/ess/leave", AppPermissions.Ess_MyLeave, 10),
+        ("EmployeeAsset", "Asset Request", "طلب عهدة", null, "/app/main/ess/asset", AppPermissions.Ess_MyAssets, 20),
+        ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", AppPermissions.Ess_MyDocuments, 30),
+        ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", AppPermissions.Ess_MyLoans, 40),
+        ("EmployeeOvertime", "Overtime Request", "طلب عمل إضافي", null, "/app/main/ess/overtime", AppPermissions.Ess_MyOvertime, 50),
+        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", AppPermissions.Ess_MyTickets, 60)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
@@ -85,6 +86,7 @@ public class WorkflowTransactionTypeBuilder
                 NameAr = entry.NameAr,
                 SubTypeSource = entry.SubTypeSource,
                 EssRoute = entry.EssRoute,
+                EssPermissionName = entry.EssPermissionName,
                 DisplayOrder = entry.DisplayOrder,
 
                 // Registered, but dormant -- see the class remarks. Turning these on is an admin decision.

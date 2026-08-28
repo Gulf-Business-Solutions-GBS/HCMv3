@@ -39,6 +39,16 @@ public static class AppRoleConfig
                 StaticRoleNames.Tenants.Candidate,
                 MultiTenancySides.Tenant)
             );
+
+        // Employee self service. grantAllPermissionsByDefault stays false -- the Ess.* grants are applied
+        // explicitly by EmployeeRoleBuilder, because "all permissions" would include every Pages.* admin
+        // screen. Registered here as well as in the seeder so TenantManager.CreateStaticRoles creates it
+        // for every NEW tenant too.
+        roleManagementConfig.StaticRoles.Add(
+            new StaticRoleDefinition(
+                StaticRoleNames.Tenants.Employee,
+                MultiTenancySides.Tenant)
+            );
     }
 }
 

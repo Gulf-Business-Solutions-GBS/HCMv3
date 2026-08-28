@@ -35,6 +35,10 @@ public static class SeedHelper
         //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a
         //type must not start routing live transactions through approval. See the builder's remarks.
         new WorkflowTransactionTypeBuilder(context, 1).Create();
+
+        //The "Employee" role, granted Ess.* and nothing else. This is what lets one application serve HR
+        //and employees without a separate ESS project.
+        new EmployeeRoleBuilder(context, 1).Create();
     }
 
     private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

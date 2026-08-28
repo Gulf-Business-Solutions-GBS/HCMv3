@@ -11,6 +11,14 @@ public static class AppPermissions
     public const string Pages = "Pages";
 
     public const string Pages_DemoUiComponents = "Pages.DemoUiComponents";
+
+    /// <summary>
+    /// Implementation Cockpit -- the guided go-live setup (questions, bulk sheets, readiness board).
+    /// Granted to whoever configures a tenant for its first payroll: the customer's own admin in the
+    /// self-serve tier, a GBS consultant in the consultant-led tier.
+    /// </summary>
+    public const string Pages_ImplementationCockpit = "Pages.ImplementationCockpit";
+
     public const string Pages_Administration = "Pages.Administration";
 
     //GENERAL MASTER INFO
@@ -1699,6 +1707,43 @@ public static class AppPermissions
     public const string Pages_Workflow_WorkflowTransactionTypes_Create = "Pages.Workflow.WorkflowTransactionTypes.Create";
     public const string Pages_Workflow_WorkflowTransactionTypes_Edit = "Pages.Workflow.WorkflowTransactionTypes.Edit";
     public const string Pages_Workflow_WorkflowTransactionTypes_Delete = "Pages.Workflow.WorkflowTransactionTypes.Delete";
+
+    #region Employee Self Service
+
+    // A SECOND permission tree, deliberately rooted outside "Pages".
+    //
+    // Everything under Pages.* is an administrative screen: it can read and write any employee's data. ESS
+    // is the opposite -- an employee acting on their own records, scoped by IEmployeeScopeProvider. Keeping
+    // the two trees apart is what lets an "Employee" role be granted self-service without any possibility
+    // of it inheriting an admin screen, and it is why HCMv3 needs no separate ESS application the way
+    // legacy HCM10.ESS did: the ~575-item admin menu is already permission-filtered, so an employee with no
+    // Pages.* permission simply never sees it.
+    //
+    // Hiding the menu is cosmetic. The real guarantee is [AbpAuthorize(AppPermissions.Ess_*)] plus the
+    // employee scope filter on every endpoint.
+    public const string Ess = "Ess";
+
+    /// <summary>Requests waiting on me to approve, across every transaction type.</summary>
+    public const string Ess_Inbox = "Ess.Inbox";
+
+    /// <summary>My own requests and their status.</summary>
+    public const string Ess_MyRequests = "Ess.MyRequests";
+
+    public const string Ess_MyProfile = "Ess.MyProfile";
+
+    /// <summary>Team views for a manager -- scoped to direct reports, not the whole company.</summary>
+    public const string Ess_MyTeam = "Ess.MyTeam";
+
+    // One per ESS-enabled transaction type. These strings are what WorkflowTransactionType.EssPermissionName
+    // holds, so the catalog row and the permission must agree or the menu entry silently never renders.
+    public const string Ess_MyLeave = "Ess.MyLeave";
+    public const string Ess_MyAssets = "Ess.MyAssets";
+    public const string Ess_MyDocuments = "Ess.MyDocuments";
+    public const string Ess_MyLoans = "Ess.MyLoans";
+    public const string Ess_MyOvertime = "Ess.MyOvertime";
+    public const string Ess_MyTickets = "Ess.MyTickets";
+
+    #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";
     public const string Pages_Workflow_RequestDetails_Create = "Pages.Workflow.RequestDetails.Create";

@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeSelfService' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        @if (loading()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
+        } @else if (context() && !context().isLinkedToEmployee) {
+            <!--
+                The state that must be explained rather than shown as an empty page. A user can hold every
+                ESS permission and still have no records, because an unlinked account resolves to an empty
+                employee scope -- "sees nothing", never "sees everything". Telling them to ask HR is
+                actionable; a blank list is not.
+            -->
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0">
+                        <h5 class="alert-heading">
+                            <i class="fa fa-exclamation-triangle mr-2"></i>{{ 'EmployeeSelfService' | localize }}
+                        </h5>
+                        <p class="mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
+                    </div>
+                </div>
+            </div>
+        } @else if (context()) {
+            <div class="row">
+                <div class="col-xl-4 col-lg-5 col-md-12">
+                    <div class="card card-custom gutter-b h-100">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">{{ employeeName() }}</h5>
+                            <div class="text-muted mb-3">{{ context().employeeCode }}</div>
+
+                            @if (context().isManager) {
+                                <span class="badge badge-info">{{ 'EssMyTeam' | localize }}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-8 col-lg-7 col-md-12">
+                    <div class="card card-custom gutter-b h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ 'EssInbox' | localize }}</h5>
+                            <div class="d-flex align-items-baseline">
+                                <span class="h2 mb-0 mr-2">{{ context().pendingApprovalCount }}</span>
+                                <span class="text-muted">{{ 'EssMyRequests' | localize }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <h5 class="card-title">{{ 'EmployeeSelfService' | localize }}</h5>
+
+                    @if (context().availableTransactionTypes?.length) {
+                        <div class="row">
+                            @for (type of context().availableTransactionTypes; track type.code) {
+                                <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                    <a [routerLink]="type.essRoute" class="btn btn-outline-primary btn-block text-left p-3">
+                                        <i [class]="(type.iconClass || 'flaticon-file-2') + ' mr-2'"></i>
+                                        {{ typeName(type) }}
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    } @else {
+                        <!--
+                            Every transaction type seeds with IsEssEnabled false on purpose, so this is the
+                            expected state on a fresh install rather than a fault: an admin turns each one on
+                            deliberately, after pointing it at an approval chain.
+                        -->
+                        <p class="text-muted mb-0">{{ 'NoData' | localize }}</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

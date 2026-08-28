@@ -7,6 +7,7 @@ import { ZeroTemplateHttpInterceptor } from './zero-template-http-interceptor';
 
 export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.AuditLogServiceProxy,
+    ApiServiceProxies.EssSessionServiceProxy,
     ApiServiceProxies.CachingServiceProxy,
     ApiServiceProxies.ChatServiceProxy,
     ApiServiceProxies.CommonLookupServiceProxy,

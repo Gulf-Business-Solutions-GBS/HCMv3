@@ -150,6 +150,17 @@ export const appRoutes: Routes = [
                             import('./main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
                         data: { permission: 'Pages.Tenant.Dashboard' },
                     },
+                    {
+                        // Employee Self Service. Lives under /app/main alongside the tenant dashboard, in
+                        // the same application as the admin screens -- those are permission-filtered, so an
+                        // employee holding only the Employee role never sees them. The per-transaction
+                        // screens (leave, asset, ...) are added here as each is built; the landing page
+                        // already lists them from the WorkflowTransactionType catalog.
+                        path: 'ess',
+                        loadComponent: () =>
+                            import('./main/ess/ess-home.component').then((m) => m.EssHomeComponent),
+                        data: { permission: 'Ess' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },
@@ -3613,6 +3624,35 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
+                        // Implementation Cockpit. The only feature-level nested route block in this file:
+                        // the shell owns the navigation rail and overall progress, and the board and the
+                        // individual steps render into its outlet. Steps are dispatched by :stepPath from
+                        // the registry (implementation-cockpit/shared/cockpit-registry.ts) rather than
+                        // enumerated here, so adding a step does not touch this file.
+                        path: 'implementation-cockpit',
+                        loadComponent: () =>
+                            import('./admin/implementation-cockpit/cockpit-shell.component').then(
+                                (m) => m.CockpitShellComponent
+                            ),
+                        data: { permission: 'Pages.ImplementationCockpit' },
+                        children: [
+                            {
+                                path: '',
+                                loadComponent: () =>
+                                    import(
+                                        './admin/implementation-cockpit/readiness-board/readiness-board.component'
+                                    ).then((m) => m.ReadinessBoardComponent),
+                            },
+                            {
+                                path: 'step/:stepPath',
+                                loadComponent: () =>
+                                    import(
+                                        './admin/implementation-cockpit/cockpit-step/cockpit-step.component'
+                                    ).then((m) => m.CockpitStepComponent),
+                            },
+                        ],
+                    },
+                    {
                         // Prototype harness for the Implementation Cockpit paste grid. Sits in the demo
                         // gallery (and borrows its permission) so the grid can be exercised before the
                         // cockpit's own shell, routes and Pages.ImplementationCockpit permission exist.
@@ -3620,6 +3660,16 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/demo-ui-components/demo-ui-paste-grid.component').then(
                                 (m) => m.DemoUiPasteGridComponent
+                            ),
+                        data: { permission: 'Pages.DemoUiComponents' },
+                    },
+                    {
+                        // Prototype harness for the Implementation Cockpit question card, using the real
+                        // S1.2 "How you pay" step. Same borrowed permission as the paste grid demo.
+                        path: 'question-card-demo',
+                        loadComponent: () =>
+                            import('./admin/demo-ui-components/demo-ui-question-card.component').then(
+                                (m) => m.DemoUiQuestionCardComponent
                             ),
                         data: { permission: 'Pages.DemoUiComponents' },
                     },

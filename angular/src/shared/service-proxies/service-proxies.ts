@@ -58170,6 +58170,69 @@ export class EntityChangeServiceProxy {
 }
 
 @Injectable()
+export class EssSessionServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getEssContext(): Observable<EssContextDto> {
+        let url_ = this.baseUrl + "/api/services/app/EssSession/GetEssContext";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEssContext(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEssContext(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EssContextDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EssContextDto>;
+        }));
+    }
+
+    protected processGetEssContext(response: HttpResponseBase): Observable<EssContextDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EssContextDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class ExecutionLogReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -199888,6 +199951,142 @@ export interface IEntityPropertyChangeDto {
     propertyName: string | undefined;
     propertyTypeFullName: string | undefined;
     tenantId: number | undefined;
+}
+
+export class EssContextDto implements IEssContextDto {
+    isLinkedToEmployee!: boolean;
+    employeeId!: number | undefined;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    hasPhoto!: boolean;
+    isManager!: boolean;
+    pendingApprovalCount!: number;
+    availableTransactionTypes!: EssTransactionTypeDto[] | undefined;
+
+    constructor(data?: IEssContextDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isLinkedToEmployee = _data["isLinkedToEmployee"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            this.hasPhoto = _data["hasPhoto"];
+            this.isManager = _data["isManager"];
+            this.pendingApprovalCount = _data["pendingApprovalCount"];
+            if (Array.isArray(_data["availableTransactionTypes"])) {
+                this.availableTransactionTypes = [] as any;
+                for (let item of _data["availableTransactionTypes"])
+                    this.availableTransactionTypes!.push(EssTransactionTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EssContextDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssContextDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isLinkedToEmployee"] = this.isLinkedToEmployee;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        data["hasPhoto"] = this.hasPhoto;
+        data["isManager"] = this.isManager;
+        data["pendingApprovalCount"] = this.pendingApprovalCount;
+        if (Array.isArray(this.availableTransactionTypes)) {
+            data["availableTransactionTypes"] = [];
+            for (let item of this.availableTransactionTypes)
+                data["availableTransactionTypes"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IEssContextDto {
+    isLinkedToEmployee: boolean;
+    employeeId: number | undefined;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    hasPhoto: boolean;
+    isManager: boolean;
+    pendingApprovalCount: number;
+    availableTransactionTypes: EssTransactionTypeDto[] | undefined;
+}
+
+export class EssTransactionTypeDto implements IEssTransactionTypeDto {
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    essRoute!: string | undefined;
+    iconClass!: string | undefined;
+    displayOrder!: number;
+    isWorkflowEnabled!: boolean;
+
+    constructor(data?: IEssTransactionTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.essRoute = _data["essRoute"];
+            this.iconClass = _data["iconClass"];
+            this.displayOrder = _data["displayOrder"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+        }
+    }
+
+    static fromJS(data: any): EssTransactionTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssTransactionTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["essRoute"] = this.essRoute;
+        data["iconClass"] = this.iconClass;
+        data["displayOrder"] = this.displayOrder;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        return data;
+    }
+}
+
+export interface IEssTransactionTypeDto {
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    essRoute: string | undefined;
+    iconClass: string | undefined;
+    displayOrder: number;
+    isWorkflowEnabled: boolean;
 }
 
 export enum ExceptionBenefitType {

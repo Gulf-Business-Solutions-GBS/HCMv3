@@ -30,6 +30,23 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
         pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
+        pages.CreateChildPermission(AppPermissions.Pages_ImplementationCockpit, L("ImplementationCockpit"));
+
+        //EMPLOYEE SELF SERVICE
+        //
+        //A separate root from "Pages" on purpose -- see the note on AppPermissions.Ess. Tenant-side only:
+        //ESS is an employee acting on their own records, and the host has no employees.
+        var ess = context.CreatePermission(AppPermissions.Ess, L("EmployeeSelfService"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_Inbox, L("EssInbox"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyRequests, L("EssMyRequests"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyProfile, L("EssMyProfile"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyTeam, L("EssMyTeam"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyLeave, L("EssMyLeave"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyAssets, L("EssMyAssets"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyDocuments, L("EssMyDocuments"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyLoans, L("EssMyLoans"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyOvertime, L("EssMyOvertime"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyTickets, L("EssMyTickets"), multiTenancySides: MultiTenancySides.Tenant);
 
         //GENERAL MASTER INFO
         var generalMasterInfo = pages.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo, L("GeneralMasterInfo"));
