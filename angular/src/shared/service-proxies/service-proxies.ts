@@ -145957,26 +145957,26 @@ export class WorkflowActivityServiceProxy {
     }
 
     /**
-     * @param workflowRequestId (optional) 
+     * @param body (optional) 
      * @return OK
      */
-    getActivityFeed(workflowRequestId?: number | undefined): Observable<WorkflowActivityFeedDto> {
-        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/GetActivityFeed?";
-        if (workflowRequestId === null)
-            throw new globalThis.Error("The parameter 'workflowRequestId' cannot be null.");
-        else if (workflowRequestId !== undefined)
-            url_ += "WorkflowRequestId=" + encodeURIComponent("" + workflowRequestId) + "&";
+    getActivityFeed(body?: GetWorkflowActivityFeedInput | undefined): Observable<WorkflowActivityFeedDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/GetActivityFeed";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetActivityFeed(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -246352,6 +246352,42 @@ export class GetWorkLocationForEditOutput implements IGetWorkLocationForEditOutp
 
 export interface IGetWorkLocationForEditOutput {
     workLocation: CreateOrEditWorkLocationDto;
+}
+
+export class GetWorkflowActivityFeedInput implements IGetWorkflowActivityFeedInput {
+    workflowRequestId!: number;
+
+    constructor(data?: IGetWorkflowActivityFeedInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowActivityFeedInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowActivityFeedInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        return data;
+    }
+}
+
+export interface IGetWorkflowActivityFeedInput {
+    workflowRequestId: number;
 }
 
 export class GetWorkflowGroupDetailForEditOutput implements IGetWorkflowGroupDetailForEditOutput {

@@ -1,0 +1,107 @@
+<div class="wf-activity-rail">
+    <div class="wf-activity-rail__header">
+        {{ 'Activity' | localize }}
+    </div>
+
+    @if (loading()) {
+        <div class="wf-activity-rail__empty">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    } @else {
+        <div class="wf-activity-rail__feed">
+            @for (activity of activities(); track activity.kind + '-' + activity.id) {
+                <div class="wf-activity" [class.wf-activity--internal]="activity.isInternal">
+                    <div class="wf-activity__avatar">
+                        @if (activity.actorPhotoUrl) {
+                            <img [src]="activity.actorPhotoUrl" [alt]="actorName(activity)" />
+                        } @else {
+                            <!-- Initials rather than a generic silhouette, so entries stay distinguishable
+                                 when most employees have no photo. -->
+                            <span class="wf-activity__initials">{{ initials(activity) }}</span>
+                        }
+                    </div>
+
+                    <div class="wf-activity__body">
+                        <div class="wf-activity__meta">
+                            <span class="wf-activity__actor">{{ actorName(activity) }}</span>
+
+                            @if (activity.kind === Kind.Action) {
+                                <!-- Reads as a sentence: "Approved · 31 May 2026". The legacy grid showed
+                                     the same facts as columns. -->
+                                <span class="wf-activity__action">{{ actionLabel(activity) }}</span>
+                            } @else if (activity.kind === Kind.FeedbackRequested) {
+                                <span class="wf-activity__action">{{ 'FeedbackRequestedFrom' | localize: actorName(activity) }}</span>
+                            }
+
+                            <span class="wf-activity__time">{{ activity.occurredAt | luxonFormat: 'dd MMM yyyy HH:mm' }}</span>
+
+                            @if (activity.isInternal) {
+                                <span class="badge badge-warning wf-activity__badge">{{ 'InternalComment' | localize }}</span>
+                            }
+
+                            @if (activity.isEdited) {
+                                <span class="wf-activity__edited">{{ 'Edited' | localize }}</span>
+                            }
+                        </div>
+
+                        @if (editingId() === activity.id && activity.kind === Kind.Comment) {
+                            <textarea class="form-control wf-activity__editor" rows="3" [(ngModel)]="editingBody"></textarea>
+                            <div class="wf-activity__actions">
+                                <button class="btn btn-sm btn-primary" [disabled]="saving()" (click)="saveEdit()">
+                                    {{ 'Save' | localize }}
+                                </button>
+                                <button class="btn btn-sm btn-link" (click)="cancelEdit()">{{ 'Cancel' | localize }}</button>
+                            </div>
+                        } @else if (activity.body) {
+                            <div class="wf-activity__text">{{ activity.body }}</div>
+                        }
+
+                        @if (activity.canEdit && editingId() !== activity.id && !readOnly()) {
+                            <div class="wf-activity__actions">
+                                <button class="btn btn-sm btn-link p-0 mr-3" (click)="startEdit(activity)">
+                                    {{ 'Edit' | localize }}
+                                </button>
+                                <button class="btn btn-sm btn-link p-0 text-danger" (click)="deleteComment(activity)">
+                                    {{ 'Delete' | localize }}
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            } @empty {
+                <div class="wf-activity-rail__empty text-muted">{{ 'NoData' | localize }}</div>
+            }
+        </div>
+
+        @if (canComment()) {
+            <div class="wf-activity-rail__composer">
+                <textarea
+                    class="form-control"
+                    rows="3"
+                    [placeholder]="'AddComment' | localize"
+                    [(ngModel)]="newComment"
+                ></textarea>
+
+                <div class="wf-activity-rail__composer-actions">
+                    @if (canCommentInternally()) {
+                        <!-- Only offered to approvers. The server refuses an internal comment from the
+                             requester outright rather than quietly publishing it, so this checkbox never
+                             appears for them. -->
+                        <label class="wf-activity-rail__internal-toggle">
+                            <input type="checkbox" [(ngModel)]="newCommentIsInternal" />
+                            <span>{{ 'InternalComment' | localize }}</span>
+                        </label>
+                    }
+
+                    <button
+                        class="btn btn-primary btn-sm"
+                        [disabled]="saving() || !newComment?.trim()"
+                        (click)="addComment()"
+                    >
+                        {{ 'Save' | localize }}
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>

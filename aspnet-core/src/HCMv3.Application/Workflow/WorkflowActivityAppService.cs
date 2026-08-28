@@ -6,6 +6,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
+using Microsoft.AspNetCore.Mvc;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
@@ -44,6 +45,13 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _employeeSessionService = employeeSessionService;
     }
 
+    /// <summary>
+    /// <c>[HttpPost]</c> despite being a read: ABP maps <c>Get*</c> to HTTP GET, and NSwag then emits a
+    /// custom input DTO as loose query-string parameters and never generates the DTO class at all -- the
+    /// Angular client fails to compile against a type that does not exist. Same rule the <c>GetAll</c>
+    /// methods across this codebase follow.
+    /// </summary>
+    [HttpPost]
     public async Task<WorkflowActivityFeedDto> GetActivityFeed(GetWorkflowActivityFeedInput input)
     {
         var request = await _requestRepository.GetAsync(input.WorkflowRequestId);

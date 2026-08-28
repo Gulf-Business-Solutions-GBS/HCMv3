@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeAbsenceModalComponent } from './create-or-edit-employee-absence-modal.component';
+import { WorkflowHistoryModalComponent } from '@app/shared/common/workflow-activity/workflow-history-modal.component';
 
 @Component({
     selector: 'employee-absences',
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeAbsenceModalComponent } from './create-or-edit-empl
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeAbsenceModalComponent,
+        WorkflowHistoryModalComponent,
     ],
 })
 export class EmployeeAbsencesComponent extends AppComponentBase {
@@ -34,6 +36,7 @@ export class EmployeeAbsencesComponent extends AppComponentBase {
     readonly employeeId = input<number>();
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeAbsenceModalComponent>('createOrEditModal');
+    readonly workflowHistoryModal = viewChild<WorkflowHistoryModalComponent>('workflowHistoryModal');
     readonly dataTable = viewChild<Table>('dataTable');
     readonly paginator = viewChild<Paginator>('paginator');
 
@@ -94,6 +97,17 @@ export class EmployeeAbsencesComponent extends AppComponentBase {
 
     getMenuItems(record: EmployeeAbsenceDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        // Only when the row actually went through approval. In legacy this was impossible at all: the
+        // approved leave and its approval history lived in two unlinked tables, so an HR user looking at a
+        // leave record could not see who approved it.
+        if (record.workflowRequestId) {
+            items.push({
+                label: this.l('WorkflowHistory'),
+                icon: 'pi pi-history',
+                command: () => this.workflowHistoryModal()?.show(record.workflowRequestId),
+            });
+        }
 
         if (this.permission.isGranted('Pages.PersonnelAdministration.EmployeeAbsences.Edit')) {
             items.push({

@@ -1,0 +1,38 @@
+<div
+    appBsModal
+    #workflowHistoryModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="workflowHistoryModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @if (active()) {
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ 'WorkflowHistory' | localize }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="'Close' | localize">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- readOnly: this is a history view opened from the transaction. Commenting belongs on
+                         the request itself, where the people in the conversation are looking. -->
+                    <workflow-activity-rail
+                        [workflowRequestId]="workflowRequestId()"
+                        [readOnly]="true"></workflow-activity-rail>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

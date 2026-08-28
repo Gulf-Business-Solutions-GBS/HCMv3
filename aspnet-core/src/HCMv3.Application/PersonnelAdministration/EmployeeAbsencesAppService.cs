@@ -30,30 +30,50 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
         _repository = repository;
     }
 
+    /// <summary>
+    /// Lists leave for HR, INCLUDING rows still going through approval.
+    ///
+    /// <para>
+    /// The <c>ApprovedOnly</c> filter is disabled here deliberately. That filter exists to stop pending
+    /// leave reaching payroll, quota accrual, attendance and the reports -- not to blind HR. An HR user
+    /// looking at an employee's leave needs to see "three approved, one waiting with the manager"; hiding
+    /// in-flight rows from them would lose exactly the information legacy lost by keeping requests in a
+    /// separate table. Each row carries <c>WorkflowStatus</c> so the list can badge the ones not yet
+    /// effective.
+    /// </para>
+    /// </summary>
     [HttpPost]
     public async Task<PagedResultDto<EmployeeAbsenceDto>> GetAll(GetAllEmployeeAbsencesInput input)
     {
         input.Normalize();
 
-        var query = _repository.GetAll()
-            .Include(a => a.Employee)
-            .Include(a => a.AbsenceType)
-            .Include(a => a.ExtAbsenceType)
-            .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var query = _repository.GetAll()
+                .Include(a => a.Employee)
+                .Include(a => a.AbsenceType)
+                .Include(a => a.ExtAbsenceType)
+                .WhereIf(input.EmployeeId.HasValue, a => a.EmployeeId == input.EmployeeId.Value);
 
-        var totalCount = await query.CountAsync();
+            var totalCount = await query.CountAsync();
 
-        var items = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
-            .ToListAsync();
+            var items = await query
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
 
-        return new PagedResultDto<EmployeeAbsenceDto>(totalCount, items.Select(ToDto).ToList());
+            return new PagedResultDto<EmployeeAbsenceDto>(totalCount, items.Select(ToDto).ToList());
+        }
     }
 
     public async Task<GetEmployeeAbsenceForEditOutput> GetEmployeeAbsenceForEdit(EntityDto input)
     {
-        var entity = await _repository.GetAsync(input.Id);
+        // Same reasoning as GetAll: a row listed for HR must also be openable by them.
+        EmployeeAbsence entity;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            entity = await _repository.GetAsync(input.Id);
+        }
 
         return new GetEmployeeAbsenceForEditOutput
         {
@@ -131,11 +151,24 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
-        var overlaps = await _repository.GetAll()
-            .AnyAsync(a => a.Id != entity.Id
-                           && a.EmployeeId == entity.EmployeeId
-                           && a.StartDate.Date <= entity.EndDate.Date
-                           && a.EndDate.Date >= entity.StartDate.Date);
+        // Pending leave counts as a conflict, so the filter is disabled for this check. Without it HR could
+        // book leave over a request currently sitting with the employee's manager -- the pending row is
+        // invisible to an ordinary query, so the overlap would simply not be found. Rejected and
+        // sent-back rows do not block, since neither is a claim on the employee's time.
+        bool overlaps;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            overlaps = await _repository.GetAll()
+                .AnyAsync(a => a.Id != entity.Id
+                               && a.EmployeeId == entity.EmployeeId
+                               && a.StartDate.Date <= entity.EndDate.Date
+                               && a.EndDate.Date >= entity.StartDate.Date
+                               && (a.WorkflowStatus == null
+                                   || a.WorkflowStatus == HCMv3.Workflow.RequestStatus.Approved
+                                   || a.WorkflowStatus == HCMv3.Workflow.RequestStatus.Closed
+                                   || a.WorkflowStatus == HCMv3.Workflow.RequestStatus.Open));
+        }
+
         if (overlaps)
         {
             throw new UserFriendlyException(L("OverlapConflictFound"));
@@ -204,7 +237,12 @@ public class EmployeeAbsencesAppService : HCMv3AppServiceBase, IEmployeeAbsences
             ExtAbsenceTypeName = entity.ExtAbsenceType?.NameEn,
             ExtStartDate = entity.ExtStartDate,
             ExtEndDate = entity.ExtEndDate,
-            ExtTotalLeaveDays = entity.ExtTotalLeaveDays
+            ExtTotalLeaveDays = entity.ExtTotalLeaveDays,
+
+            // Non-null WorkflowRequestId is what puts the Workflow History button on the row; WorkflowStatus
+            // badges rows that are still in flight.
+            WorkflowRequestId = entity.WorkflowRequestId,
+            WorkflowStatus = entity.WorkflowStatus
         };
     }
 }

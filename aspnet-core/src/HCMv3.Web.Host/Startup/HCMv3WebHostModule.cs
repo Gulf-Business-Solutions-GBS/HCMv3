@@ -23,6 +23,7 @@ using HCMv3.Configuration;
 using HCMv3.EntityFrameworkCore;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Subscription;
+using HCMv3.ReportManagement;
 using HCMv3.TimeManagement;
 using HCMv3.Web.Startup.ExternalLoginInfoProviders;
 using Castle.MicroKernel.Registration;
