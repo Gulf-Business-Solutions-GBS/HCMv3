@@ -110,33 +110,33 @@ SELECT emp.Code
      , department.DisplayName                            AS DepartmentEn
      , departmentProfile.NameAr                          AS DepartmentAr
 
-     , ISNULL(AL_Opening.Number, 0)                      AS AL_Opening
-     , ISNULL(AL_OpeningArrear.Number, 0)                AS AL_OpeningArrear
-     , ISNULL(AL_CurrMonthAccr.Number, 0)                AS AL_CurrMonthAccr
-     , ISNULL(AL_CurrMonthAccrArrear.Number, 0)          AS AL_CurrMonthAccrArrear
-     , ISNULL(AL_CurrMonthAdjust.Number, 0)              AS AL_CurrMonthAdjust
-     , ISNULL(AL_CurrMonthAdjustArrear.Number, 0)        AS AL_CurrMonthAdjustArrear
-     , ISNULL(AL_CurrMonthPaidDays.Number, 0)            AS AL_CurrMonthPaidDays
-     , ISNULL(AL_CurrMonthPaidDaysArrear.Number, 0)      AS AL_CurrMonthPaidDaysArrear
+     , ISNULL(alBuckets.Opening_Number, 0)                      AS AL_Opening
+     , ISNULL(alBuckets.OpeningArrear_Number, 0)                AS AL_OpeningArrear
+     , ISNULL(alBuckets.CurrMonthAccr_Number, 0)                AS AL_CurrMonthAccr
+     , ISNULL(alBuckets.CurrMonthAccrArrear_Number, 0)          AS AL_CurrMonthAccrArrear
+     , ISNULL(alBuckets.CurrMonthAdjust_Number, 0)              AS AL_CurrMonthAdjust
+     , ISNULL(alBuckets.CurrMonthAdjustArrear_Number, 0)        AS AL_CurrMonthAdjustArrear
+     , ISNULL(alBuckets.CurrMonthPaidDays_Number, 0)            AS AL_CurrMonthPaidDays
+     , ISNULL(alBuckets.CurrMonthPaidDaysArrear_Number, 0)      AS AL_CurrMonthPaidDaysArrear
 
-     , ISNULL(AL_Closing.Number, 0)                      AS AL_Closing
-     , ISNULL(AL_ClosingArrear.Number, 0)                AS AL_ClosingArrear
+     , ISNULL(alBuckets.Closing_Number, 0)                      AS AL_Closing
+     , ISNULL(alBuckets.ClosingArrear_Number, 0)                AS AL_ClosingArrear
 
      -- recomputed closing balance; see the note above. The two commented terms are inert in the
      -- legacy source and stay inert.
-     , ISNULL(AL_Opening.Number, 0)
-    -- + ISNULL(AL_OpeningArrear.Number, 0)
-       + ISNULL(AL_CurrMonthAccr.Number, 0)
-    -- + ISNULL(AL_CurrMonthAccrArrear.Number, 0)
-       - ISNULL(AL_CurrMonthAdjust.Number, 0)
-       - ISNULL(AL_CurrMonthAdjustArrear.Number, 0)
-       - ISNULL(AL_CurrMonthPaidDays.Number, 0)
-       - ISNULL(AL_CurrMonthPaidDaysArrear.Number, 0)    AS AL_Closing_2
+     , ISNULL(alBuckets.Opening_Number, 0)
+    -- + ISNULL(alBuckets.OpeningArrear_Number, 0)
+       + ISNULL(alBuckets.CurrMonthAccr_Number, 0)
+    -- + ISNULL(alBuckets.CurrMonthAccrArrear_Number, 0)
+       - ISNULL(alBuckets.CurrMonthAdjust_Number, 0)
+       - ISNULL(alBuckets.CurrMonthAdjustArrear_Number, 0)
+       - ISNULL(alBuckets.CurrMonthPaidDays_Number, 0)
+       - ISNULL(alBuckets.CurrMonthPaidDaysArrear_Number, 0)    AS AL_Closing_2
 
-     , ISNULL(AL_TotalProvision.Rate, 0)                 AS AL_TotalProvision_Rate
-     , ISNULL(AL_TotalProvision.Number, 0)               AS AL_TotalProvision_Number
-     , ISNULL(AL_TotalProvision.Amount, 0)               AS AL_TotalProvision_Amount
-     , ISNULL(AL_TotalProvisionArrear.Number, 0)         AS AL_TotalProvisionArrear
+     , ISNULL(alBuckets.TotalProvision_Rate, 0)                 AS AL_TotalProvision_Rate
+     , ISNULL(alBuckets.TotalProvision_Number, 0)               AS AL_TotalProvision_Number
+     , ISNULL(alBuckets.TotalProvision_Amount, 0)               AS AL_TotalProvision_Amount
+     , ISNULL(alBuckets.TotalProvisionArrear_Number, 0)         AS AL_TotalProvisionArrear
      , currency.CurrencyShortFormEn                      AS CurrencyEn
      , ISNULL(subGroupAbsence.TotalDays, 0)              AS TotalDaysAllowed
 FROM Employees emp
@@ -147,18 +147,43 @@ LEFT JOIN SalaryRegisters sr
       AND sr.ForPeriod = sr.InPeriod
       AND sr.PayrollRunType = 0
 
-LEFT JOIN SalaryRegisterDetails AL_Opening                  ON AL_Opening.SalaryRegisterId                  = sr.Id AND AL_Opening.TenantId                  = @TenantId AND AL_Opening.IsDeleted                  = 0 AND AL_Opening.WageTypeId                  IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '4021' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_OpeningArrear            ON AL_OpeningArrear.SalaryRegisterId            = sr.Id AND AL_OpeningArrear.TenantId            = @TenantId AND AL_OpeningArrear.IsDeleted            = 0 AND AL_OpeningArrear.WageTypeId            IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '5021' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthAccr            ON AL_CurrMonthAccr.SalaryRegisterId            = sr.Id AND AL_CurrMonthAccr.TenantId            = @TenantId AND AL_CurrMonthAccr.IsDeleted            = 0 AND AL_CurrMonthAccr.WageTypeId            IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '4010' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthAccrArrear      ON AL_CurrMonthAccrArrear.SalaryRegisterId      = sr.Id AND AL_CurrMonthAccrArrear.TenantId      = @TenantId AND AL_CurrMonthAccrArrear.IsDeleted      = 0 AND AL_CurrMonthAccrArrear.WageTypeId      IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '5010' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthPaidDays        ON AL_CurrMonthPaidDays.SalaryRegisterId        = sr.Id AND AL_CurrMonthPaidDays.TenantId        = @TenantId AND AL_CurrMonthPaidDays.IsDeleted        = 0 AND AL_CurrMonthPaidDays.WageTypeId        IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '4000' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthPaidDaysArrear  ON AL_CurrMonthPaidDaysArrear.SalaryRegisterId  = sr.Id AND AL_CurrMonthPaidDaysArrear.TenantId  = @TenantId AND AL_CurrMonthPaidDaysArrear.IsDeleted  = 0 AND AL_CurrMonthPaidDaysArrear.WageTypeId  IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '5000' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthAdjust          ON AL_CurrMonthAdjust.SalaryRegisterId          = sr.Id AND AL_CurrMonthAdjust.TenantId          = @TenantId AND AL_CurrMonthAdjust.IsDeleted          = 0 AND AL_CurrMonthAdjust.WageTypeId          IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '4030' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_CurrMonthAdjustArrear    ON AL_CurrMonthAdjustArrear.SalaryRegisterId    = sr.Id AND AL_CurrMonthAdjustArrear.TenantId    = @TenantId AND AL_CurrMonthAdjustArrear.IsDeleted    = 0 AND AL_CurrMonthAdjustArrear.WageTypeId    IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '5030' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_Closing                  ON AL_Closing.SalaryRegisterId                  = sr.Id AND AL_Closing.TenantId                  = @TenantId AND AL_Closing.IsDeleted                  = 0 AND AL_Closing.WageTypeId                  IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '4022' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_ClosingArrear            ON AL_ClosingArrear.SalaryRegisterId            = sr.Id AND AL_ClosingArrear.TenantId            = @TenantId AND AL_ClosingArrear.IsDeleted            = 0 AND AL_ClosingArrear.WageTypeId            IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '5022' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_TotalProvision           ON AL_TotalProvision.SalaryRegisterId           = sr.Id AND AL_TotalProvision.TenantId           = @TenantId AND AL_TotalProvision.IsDeleted           = 0 AND AL_TotalProvision.WageTypeId           IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '3004' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
-LEFT JOIN SalaryRegisterDetails AL_TotalProvisionArrear     ON AL_TotalProvisionArrear.SalaryRegisterId     = sr.Id AND AL_TotalProvisionArrear.TenantId     = @TenantId AND AL_TotalProvisionArrear.IsDeleted     = 0 AND AL_TotalProvisionArrear.WageTypeId     IN (SELECT wt.Id FROM WageTypes wt WHERE wt.Code = '6004' AND wt.TenantId = @TenantId AND wt.IsDeleted = 0)
+-- ONE PASS over SalaryRegisterDetails instead of twelve LEFT JOINs.
+--
+-- This query previously joined SalaryRegisterDetails twelve separate times, once per annual-leave
+-- wage-type code, each carrying its own correlated
+--     WageTypeId IN (SELECT wt.Id FROM WageTypes WHERE wt.Code = 'xxxx' ...)
+-- That cost 134 SECONDS for 1,593 employees and was why rptLeaveIndemnityStatement could not be
+-- render-tested (it exceeded a 90s guard). The twelve buckets are now produced by a single grouped
+-- pass with conditional aggregation, joined once -- the same shape PayrollSheetSql.Buckets uses.
+--
+-- SEMANTICS: identical here. Aggregating differs from twelve LEFT JOINs only if a register can hold
+-- more than one detail row for the same wage type, in which case the joins would MULTIPLY master
+-- rows while SUM adds them. Checked against live data before the change: zero (SalaryRegisterId,
+-- WageTypeId) pairs have more than one row for these twelve codes. Absent rows still yield NULL,
+-- which the ISNULL(...) wrappers in the projection already handle.
+LEFT JOIN (
+    SELECT srd.SalaryRegisterId
+         , SUM(CASE WHEN wt.Code = '4021' THEN srd.Number END) AS Opening_Number
+         , SUM(CASE WHEN wt.Code = '5021' THEN srd.Number END) AS OpeningArrear_Number
+         , SUM(CASE WHEN wt.Code = '4010' THEN srd.Number END) AS CurrMonthAccr_Number
+         , SUM(CASE WHEN wt.Code = '5010' THEN srd.Number END) AS CurrMonthAccrArrear_Number
+         , SUM(CASE WHEN wt.Code = '4000' THEN srd.Number END) AS CurrMonthPaidDays_Number
+         , SUM(CASE WHEN wt.Code = '5000' THEN srd.Number END) AS CurrMonthPaidDaysArrear_Number
+         , SUM(CASE WHEN wt.Code = '4030' THEN srd.Number END) AS CurrMonthAdjust_Number
+         , SUM(CASE WHEN wt.Code = '5030' THEN srd.Number END) AS CurrMonthAdjustArrear_Number
+         , SUM(CASE WHEN wt.Code = '4022' THEN srd.Number END) AS Closing_Number
+         , SUM(CASE WHEN wt.Code = '5022' THEN srd.Number END) AS ClosingArrear_Number
+         , SUM(CASE WHEN wt.Code = '3004' THEN srd.Number END) AS TotalProvision_Number
+         , SUM(CASE WHEN wt.Code = '6004' THEN srd.Number END) AS TotalProvisionArrear_Number
+         , SUM(CASE WHEN wt.Code = '3004' THEN srd.Amount END) AS TotalProvision_Amount
+         , SUM(CASE WHEN wt.Code = '3004' THEN srd.Rate   END) AS TotalProvision_Rate
+    FROM SalaryRegisterDetails srd
+    INNER JOIN WageTypes wt
+            ON wt.Id = srd.WageTypeId AND wt.TenantId = @TenantId AND wt.IsDeleted = 0
+    WHERE srd.TenantId = @TenantId AND srd.IsDeleted = 0
+      AND wt.Code IN ('4021','5021','4010','5010','4000','5000','4030','5030','4022','5022','3004','6004')
+    GROUP BY srd.SalaryRegisterId
+) alBuckets ON alBuckets.SalaryRegisterId = sr.Id
 
 LEFT JOIN EmployeeOrgAssignments orgAsg
        ON orgAsg.EmployeeId = emp.Id AND orgAsg.TenantId = @TenantId AND orgAsg.IsDeleted = 0
