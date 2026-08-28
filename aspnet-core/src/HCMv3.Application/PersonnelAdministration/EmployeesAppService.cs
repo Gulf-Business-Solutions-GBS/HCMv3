@@ -213,6 +213,26 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
                 throw new UserFriendlyException(L("DuplicateAccessIdFound", duplicateAccessId));
             }
         }
+
+        // LoginID identifies WHO IS SIGNED IN, so it must name exactly one employee.
+        //
+        // Deliberately NOT scoped to Status == Active, unlike the CivilID/AccessID checks above. Those
+        // answer "is this identifier in use right now"; this one answers "can this login ever resolve to
+        // two people". A resigned employee's row keeps its LoginID, and the fallback lookup in
+        // EmployeeSessionService does not filter by status either -- so allowing a leaver's LoginID to be
+        // reused would reintroduce exactly the ambiguity Employee.UserId exists to remove. To free a login
+        // for reuse, clear it on the employee who left; the error message says so.
+        if (!employee.LoginID.IsNullOrWhiteSpace())
+        {
+            var duplicateLoginId = await _employeeRepository.GetAll()
+                .Where(e => e.Id != employee.Id && e.LoginID == employee.LoginID)
+                .Select(e => e.Code)
+                .FirstOrDefaultAsync();
+            if (duplicateLoginId != null)
+            {
+                throw new UserFriendlyException(L("DuplicateLoginIdFound", employee.LoginID, duplicateLoginId));
+            }
+        }
     }
 
     private static Employee MapToEntity(CreateOrEditEmployeeDto input, Employee employee)

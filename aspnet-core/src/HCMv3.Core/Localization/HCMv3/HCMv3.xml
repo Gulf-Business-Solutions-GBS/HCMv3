@@ -1774,6 +1774,7 @@
     <text name="EmployeeVisaInfos">Employee Visa Info</text>
     <text name="DuplicateCivilIdFound">Duplicate Civil ID found for employee: {0}.</text>
     <text name="DuplicateAccessIdFound">Duplicate Access ID found for employee: {0}.</text>
+    <text name="DuplicateLoginIdFound">Login ID '{0}' is already assigned to employee {1}. A Login ID can belong to only one employee — clear it on the other employee first.</text>
     <text name="BirthDateCannotBeFutureOrCurrent">Birth date cannot be a future or current date.</text>
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
@@ -4004,6 +4005,8 @@
     <text name="EstimatedTimeToComplete">Estimated Time To Complete</text>
     <text name="SurveyNotFound">Survey not found.</text>
     <text name="CurrentUserIsNotLinkedToAnEmployee">The current user is not linked to an employee record.</text>
+    <text name="ManageUserLink">Manage User Link</text>
+    <text name="UserIsAlreadyLinkedToAnotherEmployee">This user is already linked to employee {0}.</text>
     <text name="SurveyQuestionDoesNotBelongToSurvey">One of the submitted answers does not belong to the selected survey.</text>
     <text name="EmployeeSurveySubmitted">Survey submitted successfully.</text>
     <text name="NoSurveyDataFoundToSave">No Survey data found to save.</text>

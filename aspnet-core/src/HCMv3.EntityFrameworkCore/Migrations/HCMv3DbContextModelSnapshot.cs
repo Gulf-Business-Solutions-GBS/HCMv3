@@ -18337,6 +18337,9 @@ namespace HCMv3.Migrations
                     b.Property<int?>("TitleId")
                         .HasColumnType("int");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ZipCode")
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
@@ -18360,6 +18363,14 @@ namespace HCMv3.Migrations
                     b.HasIndex("ReligionId");
 
                     b.HasIndex("TitleId");
+
+                    b.HasIndex("TenantId", "LoginID")
+                        .IsUnique()
+                        .HasFilter("[LoginID] IS NOT NULL AND [LoginID] <> '' AND [IsDeleted] = 0");
+
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
 
                     b.ToTable("Employees");
                 });
@@ -18582,6 +18593,12 @@ namespace HCMv3.Migrations
 
                     b.Property<double>("TotalLeaveDays")
                         .HasColumnType("float");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -18868,6 +18885,12 @@ namespace HCMv3.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -19918,6 +19941,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentTypeId");
@@ -20726,6 +20755,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -21202,6 +21237,12 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -22014,6 +22055,12 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TicketTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -31781,6 +31828,8 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("WorkflowRequestId");
 
+                    b.HasIndex("TenantId", "ApproverId", "IsApproved");
+
                     b.ToTable("WorkFlowApprovers");
                 });
 
@@ -32047,9 +32096,23 @@ namespace HCMv3.Migrations
                     b.Property<int>("RequestStatus")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RequestSubTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RequestType")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("SummaryAr")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("SummaryEn")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int?>("TargetEntityId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -32062,6 +32125,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("ApproverId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "RequestType", "TargetEntityId");
 
                     b.ToTable("WorkflowRequests");
                 });

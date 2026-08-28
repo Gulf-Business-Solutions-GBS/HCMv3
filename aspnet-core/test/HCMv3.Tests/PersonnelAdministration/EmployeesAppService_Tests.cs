@@ -173,4 +173,141 @@ public class EmployeesAppService_Tests : AppTestBase
             employee.IsDeleted.ShouldBeTrue();
         });
     }
+
+    [Fact]
+    public async Task Should_Throw_When_LoginID_Is_Already_Assigned_To_Another_Employee()
+    {
+        var nationality = CreateTestNationality();
+
+        var first = ValidCreateDto(nationality.Id, "E900");
+        first.LoginID = "shared.login";
+        await _employeesAppService.CreateOrEdit(first);
+
+        var second = ValidCreateDto(nationality.Id, "E901");
+        second.CivilID = 223456789012;
+        second.LoginID = "shared.login";
+
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(async () =>
+            await _employeesAppService.CreateOrEdit(second));
+
+        exception.Message.ShouldContain("shared.login");
+        exception.Message.ShouldContain("E900");
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_LoginID_Duplicates_An_Inactive_Employee()
+    {
+        // Deliberately stricter than the CivilID/AccessID checks, which only look at active employees:
+        // a leaver's row keeps its LoginID and the sign-in fallback does not filter by status, so reusing
+        // it would make one login resolve to two people.
+        var nationality = CreateTestNationality();
+
+        var leaver = ValidCreateDto(nationality.Id, "E910");
+        leaver.LoginID = "reused.login";
+        await _employeesAppService.CreateOrEdit(leaver);
+
+        var leaverId = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E910").Id);
+        UsingDbContext(context =>
+        {
+            context.Set<Employee>().Single(e => e.Id == leaverId).Status = EmployeeStatus.Inactive;
+        });
+
+        // Confirm the leaver really is inactive, so a pass here cannot be explained by the status update
+        // having silently failed.
+        UsingDbContext(context =>
+            context.Set<Employee>().Single(e => e.Id == leaverId).Status.ShouldBe(EmployeeStatus.Inactive));
+
+        var joiner = ValidCreateDto(nationality.Id, "E911");
+        joiner.CivilID = 323456789012;
+        joiner.LoginID = "reused.login";
+
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(async () =>
+            await _employeesAppService.CreateOrEdit(joiner));
+
+        // Assert on the message, not just the exception type: every other validation in ValidateAsync also
+        // throws UserFriendlyException, so a bare type assertion would pass even if the LoginID rule were
+        // deleted and something unrelated tripped instead.
+        exception.Message.ShouldContain("reused.login");
+        exception.Message.ShouldContain("E910");
+
+        UsingDbContext(context =>
+            context.Set<Employee>().Any(e => e.Code == "E911").ShouldBeFalse());
+    }
+
+    [Fact]
+    public async Task Should_Throw_When_An_Active_Employee_Takes_An_Inactive_Employees_LoginID_By_Edit()
+    {
+        // The create path is not the only way in: an existing employee can be edited onto a leaver's login.
+        var nationality = CreateTestNationality();
+
+        var leaver = ValidCreateDto(nationality.Id, "E940");
+        leaver.LoginID = "leaver.login";
+        await _employeesAppService.CreateOrEdit(leaver);
+
+        var leaverId = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E940").Id);
+        UsingDbContext(context =>
+        {
+            context.Set<Employee>().Single(e => e.Id == leaverId).Status = EmployeeStatus.Inactive;
+        });
+
+        var joiner = ValidCreateDto(nationality.Id, "E941");
+        joiner.CivilID = 523456789012;
+        await _employeesAppService.CreateOrEdit(joiner);
+
+        var joinerId = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E941").Id);
+        var forEdit = await _employeesAppService.GetEmployeeForEdit(new EntityDto(joinerId));
+        forEdit.Employee.LoginID = "leaver.login";
+
+        var exception = await Assert.ThrowsAsync<UserFriendlyException>(async () =>
+            await _employeesAppService.CreateOrEdit(forEdit.Employee));
+
+        exception.Message.ShouldContain("leaver.login");
+        exception.Message.ShouldContain("E940");
+
+        UsingDbContext(context =>
+            context.Set<Employee>().Single(e => e.Id == joinerId).LoginID.ShouldBeNull());
+    }
+
+    [Fact]
+    public async Task Should_Allow_Saving_An_Employee_Keeping_Its_Own_LoginID()
+    {
+        var nationality = CreateTestNationality();
+
+        var dto = ValidCreateDto(nationality.Id, "E920");
+        dto.LoginID = "own.login";
+        await _employeesAppService.CreateOrEdit(dto);
+
+        var forEdit = await _employeesAppService.GetEmployeeForEdit(
+            new EntityDto(UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "E920").Id)));
+
+        // The duplicate check must exclude the row being saved, or every no-op edit would reject itself.
+        forEdit.Employee.FirstNameEn = "Johnny";
+        await _employeesAppService.CreateOrEdit(forEdit.Employee);
+
+        UsingDbContext(context =>
+        {
+            var employee = context.Set<Employee>().Single(e => e.Code == "E920");
+            employee.FirstNameEn.ShouldBe("Johnny");
+            employee.LoginID.ShouldBe("own.login");
+        });
+    }
+
+    [Fact]
+    public async Task Should_Allow_Many_Employees_With_No_LoginID()
+    {
+        // Most employees have no login at all -- blank must never count as a duplicate.
+        var nationality = CreateTestNationality();
+
+        var first = ValidCreateDto(nationality.Id, "E930");
+        await _employeesAppService.CreateOrEdit(first);
+
+        var second = ValidCreateDto(nationality.Id, "E931");
+        second.CivilID = 423456789012;
+        await _employeesAppService.CreateOrEdit(second);
+
+        UsingDbContext(context =>
+        {
+            context.Set<Employee>().Count(e => e.Code == "E930" || e.Code == "E931").ShouldBe(2);
+        });
+    }
 }

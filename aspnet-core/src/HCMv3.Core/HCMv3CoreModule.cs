@@ -81,6 +81,13 @@ public class HCMv3CoreModule : AbpModule
 
         HCMv3LocalizationConfigurer.Configure(Configuration.Localization);
 
+        // Hides workflow-managed rows that are not approved yet, from every query, by default. See
+        // HCMv3DataFilters.ApprovedOnly -- this is what lets a pending leave live in EmployeeAbsences
+        // itself instead of a shadow LeaveRequest table. Registered enabled (the second argument): opting
+        // OUT has to be the deliberate act, because the failure mode of forgetting is pending data leaking
+        // into payroll and reports.
+        Configuration.UnitOfWork.RegisterFilter(HCMv3DataFilters.ApprovedOnly, true);
+
         //Adding feature providers
         Configuration.Features.Providers.Add<AppFeatureProvider>();
 

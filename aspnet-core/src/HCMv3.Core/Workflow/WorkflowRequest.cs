@@ -51,6 +51,47 @@ public class WorkflowRequest : FullAuditedEntity, IMustHaveTenant
     [StringLength(256)]
     public virtual string RequestType { get; set; }
 
+    /// <summary>
+    /// Primary key of the transaction row this request governs -- e.g. the <c>EmployeeAbsence.Id</c> for a
+    /// leave request. Together with <see cref="RequestType"/> this is a deliberate polymorphic association:
+    /// the workflow engine stays generic and knows nothing about leave, assets or loans, while each
+    /// transaction table needs only the two <c>IWorkflowEnabledEntity</c> columns pointing back.
+    ///
+    /// <para>
+    /// Not a foreign key, and it cannot be one -- it addresses rows in a different table per
+    /// <see cref="RequestType"/>. Referential integrity is the responsibility of the type's
+    /// <c>IWorkflowTransactionHandler</c>. Nullable so that a request can exist before its target row does,
+    /// and so that already-ported rows migrate cleanly.
+    /// </para>
+    /// </summary>
+    public virtual int? TargetEntityId { get; set; }
+
+    /// <summary>
+    /// The transaction's own sub-type, when its approval route depends on one -- <c>AbsenceTypeId</c> for
+    /// leave, so that annual leave can require three approvals while sick leave requires one. Matched
+    /// against <c>WorkflowGroupDetail.RequestSubTypeId</c> when resolving which <see cref="RequestMaster"/>
+    /// applies.
+    /// </summary>
+    public virtual int? RequestSubTypeId { get; set; }
+
+    /// <summary>
+    /// Human-readable one-line description of what is being requested ("Annual Leave, 5 days, 01-05 Jan
+    /// 2026"), written once by the type's handler at submit time.
+    ///
+    /// <para>
+    /// Denormalised on purpose. The approver inbox lists requests of every type at once; without this it
+    /// would have to fan out to a different table per row just to render a label -- a join across ~50 tables
+    /// to draw one list. With it the inbox is a single query over <c>WorkflowRequests</c> joined to
+    /// <c>WorkFlowApprovers</c>, and only the detail view touches the transaction table.
+    /// </para>
+    /// </summary>
+    [StringLength(512)]
+    public virtual string SummaryEn { get; set; }
+
+    /// <inheritdoc cref="SummaryEn"/>
+    [StringLength(512)]
+    public virtual string SummaryAr { get; set; }
+
     [StringLength(64)]
     public virtual string RequestNumber { get; set; }
 

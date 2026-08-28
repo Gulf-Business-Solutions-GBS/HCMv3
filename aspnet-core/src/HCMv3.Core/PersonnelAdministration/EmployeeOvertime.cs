@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -17,7 +19,7 @@ namespace HCMv3.PersonnelAdministration;
 /// wage-rate calculation -- NOT ported on the entity itself (equivalent read-time computation belongs in
 /// <c>EmployeeOvertimesAppService</c> if/when needed, not stored here).
 /// </summary>
-public class EmployeeOvertime : FullAuditedEntity, IMustHaveTenant
+public class EmployeeOvertime : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -42,4 +44,10 @@ public class EmployeeOvertime : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(500)]
     public virtual string Comments { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowStatus"/>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

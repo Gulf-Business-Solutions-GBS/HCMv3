@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.PayrollManagement;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -28,7 +30,7 @@ namespace HCMv3.PersonnelAdministration;
 /// are <c>[NonPersistent]</c> in the legacy source.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant
+public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -91,4 +93,10 @@ public class EmployeeAbsence : FullAuditedEntity, IMustHaveTenant
     public virtual DateTime? ExtEndDate { get; set; }
 
     public virtual double? ExtTotalLeaveDays { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowStatus"/>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

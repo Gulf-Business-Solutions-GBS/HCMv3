@@ -163,6 +163,24 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
 
     public virtual long CivilID { get; set; }
 
+    /// <summary>
+    /// Link to this employee's ABP <c>User</c> account -- the identity anchor for Employee Self Service.
+    /// Until this is set, the signed-in user cannot be resolved to an employee and every ESS scope
+    /// (<c>IEmployeeScopeProvider</c>) resolves to "sees nothing".
+    ///
+    /// Supersedes the legacy string match on <see cref="LoginID"/> == <c>User.UserName</c>, which
+    /// <c>EmployeeSessionService</c> still falls back to for rows not yet linked. That match was never safe
+    /// as a primary key of identity: it silently rebinds when a username is renamed, has no uniqueness
+    /// guarantee (two employees may carry the same LoginID), and is unindexed.
+    ///
+    /// Deliberately NOT an EF navigation property / FK constraint to <c>AbpUsers</c>, following the same
+    /// reasoning as <c>Recruitment.Applicant.UserId</c>: both Employee and User are soft-deleted, so a real
+    /// FK would couple delete ordering between this module and ABP identity for no integrity gain beyond
+    /// what the index already provides. Uniqueness is enforced per tenant by a filtered unique index in
+    /// <c>HCMv3DbContext.OnModelCreating</c>.
+    /// </summary>
+    public virtual long? UserId { get; set; }
+
     [StringLength(128)]
     public virtual string LoginID { get; set; }
 

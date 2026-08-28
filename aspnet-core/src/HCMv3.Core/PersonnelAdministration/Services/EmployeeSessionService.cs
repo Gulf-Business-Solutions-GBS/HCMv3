@@ -62,7 +62,20 @@ public class EmployeeSessionService : HCMv3DomainServiceBase, IEmployeeSessionSe
             return null;
         }
 
-        var currentUser = await _userRepository.FirstOrDefaultAsync(_abpSession.UserId.Value);
+        var userId = _abpSession.UserId.Value;
+
+        // Authoritative path: the explicit Employee.UserId link, unique per tenant.
+        var linkedEmployee = _employeeRepository.GetAll()
+            .FirstOrDefault(e => e.UserId == userId);
+
+        if (linkedEmployee != null)
+        {
+            return linkedEmployee;
+        }
+
+        // Fallback for employees not linked yet, so existing installations keep working while
+        // EmployeeUserLinkAppService.AutoLinkByLoginId backfills them. Remove once every tenant is linked.
+        var currentUser = await _userRepository.FirstOrDefaultAsync(userId);
         if (currentUser == null)
         {
             return null;
@@ -70,6 +83,37 @@ public class EmployeeSessionService : HCMv3DomainServiceBase, IEmployeeSessionSe
 
         return _employeeRepository.GetAll()
             .FirstOrDefault(e => e.LoginID == currentUser.UserName);
+    }
+
+    public async Task<int?> GetCurrentEmployeeIdAsync()
+    {
+        if (!_abpSession.UserId.HasValue)
+        {
+            return null;
+        }
+
+        var userId = _abpSession.UserId.Value;
+
+        var linkedEmployeeId = _employeeRepository.GetAll()
+            .Where(e => e.UserId == userId)
+            .Select(e => (int?)e.Id)
+            .FirstOrDefault();
+
+        if (linkedEmployeeId.HasValue)
+        {
+            return linkedEmployeeId;
+        }
+
+        var currentUser = await _userRepository.FirstOrDefaultAsync(userId);
+        if (currentUser == null)
+        {
+            return null;
+        }
+
+        return _employeeRepository.GetAll()
+            .Where(e => e.LoginID == currentUser.UserName)
+            .Select(e => (int?)e.Id)
+            .FirstOrDefault();
     }
 
     public async Task<string> GetSysCreatedByAsync(string sysCreator)

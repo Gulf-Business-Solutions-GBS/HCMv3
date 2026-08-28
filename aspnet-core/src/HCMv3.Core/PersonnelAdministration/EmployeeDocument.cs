@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -15,7 +17,7 @@ namespace HCMv3.PersonnelAdministration;
 /// <c>LastNotificationSentOn</c> (background-job bookkeeping) and <c>DocumentHtml</c>/<c>DocPlace</c>/
 /// <c>DocumentPlace</c> (print-form specific) are also out of Wave A scope.
 /// </summary>
-public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant
+public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -39,4 +41,10 @@ public class EmployeeDocument : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(2000)]
     public virtual string Description { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowStatus"/>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

@@ -313,6 +313,7 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_Employees_Create = "Pages.PersonnelAdministration.Employees.Create";
     public const string Pages_PersonnelAdministration_Employees_Edit = "Pages.PersonnelAdministration.Employees.Edit";
     public const string Pages_PersonnelAdministration_Employees_Delete = "Pages.PersonnelAdministration.Employees.Delete";
+    public const string Pages_PersonnelAdministration_Employees_ManageUserLink = "Pages.PersonnelAdministration.Employees.ManageUserLink";
 
     public const string Pages_PersonnelAdministration_EmployeeDates = "Pages.PersonnelAdministration.EmployeeDates";
     public const string Pages_PersonnelAdministration_EmployeeDates_Create = "Pages.PersonnelAdministration.EmployeeDates.Create";

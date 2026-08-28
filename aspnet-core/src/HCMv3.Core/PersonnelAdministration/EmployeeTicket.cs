@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.PayrollManagement;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -22,7 +24,7 @@ namespace HCMv3.PersonnelAdministration;
 /// server-recomputed.</description></item>
 /// </list>
 /// </summary>
-public class EmployeeTicket : FullAuditedEntity, IMustHaveTenant
+public class EmployeeTicket : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -50,4 +52,10 @@ public class EmployeeTicket : FullAuditedEntity, IMustHaveTenant
     public virtual string Comments { get; set; }
 
     public virtual bool OverrideAmount { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowRequestId"/>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <inheritdoc cref="IWorkflowEnabledEntity.WorkflowStatus"/>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

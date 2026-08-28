@@ -390,6 +390,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_Create, L("CreateNewItem"));
         employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_Edit, L("EditItem"));
         employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_Delete, L("DeleteItem"));
+        employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_ManageUserLink, L("ManageUserLink"));
 
         var employeeDates = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates, L("EmployeeDates"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Create, L("CreateNewItem"));

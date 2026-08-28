@@ -1,3 +1,5 @@
+using System;
+using System.Linq.Expressions;
 using Abp.Json;
 using Abp.OpenIddict.Applications;
 using Abp.OpenIddict.Authorizations;
@@ -7,6 +9,7 @@ using Abp.OpenIddict.Tokens;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using HCMv3.AccommodationManagement;
 using HCMv3.Authorization.Delegation;
 using HCMv3.Authorization.Roles;
@@ -1046,6 +1049,52 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     {
     }
 
+    /// <summary>
+    /// Whether the <c>ApprovedOnly</c> filter is currently on for this unit of work. Mirrors ABP's own
+    /// <c>IsSoftDeleteFilterEnabled</c>; EF Core turns the property read into a query parameter, so toggling
+    /// it with <c>DisableFilter</c> takes effect without invalidating the compiled query cache.
+    /// </summary>
+    protected virtual bool IsApprovedOnlyFilterEnabled =>
+        CurrentUnitOfWorkProvider?.Current?.IsFilterEnabled(HCMv3DataFilters.ApprovedOnly) == true;
+
+    protected override bool ShouldFilterEntity<TEntity>(IMutableEntityType entityType)
+    {
+        if (typeof(IWorkflowEnabledEntity).IsAssignableFrom(typeof(TEntity)))
+        {
+            return true;
+        }
+
+        return base.ShouldFilterEntity<TEntity>(entityType);
+    }
+
+    protected override Expression<Func<TEntity, bool>> CreateFilterExpression<TEntity>(ModelBuilder modelBuilder)
+    {
+        var expression = base.CreateFilterExpression<TEntity>(modelBuilder);
+
+        if (typeof(IWorkflowEnabledEntity).IsAssignableFrom(typeof(TEntity)))
+        {
+            // "Effective" = the row counts as a real transaction that the rest of the system may act on:
+            //   null      -> not workflow-managed at all. Every row that exists today, plus anything created
+            //                while its type has workflow switched off. Treated as effective, which is what
+            //                makes this whole change backward compatible.
+            //   Approved  -> the approval chain completed.
+            //   Closed    -> approved and subsequently closed out (RequestMaster.AutoClose).
+            // Everything else -- Draft, Open, Rejected, Transferred -- is in flight or dead, and stays
+            // invisible to payroll, quota, attendance, reports and every ordinary query.
+            Expression<Func<TEntity, bool>> approvedOnlyFilter =
+                e => !IsApprovedOnlyFilterEnabled
+                     || ((IWorkflowEnabledEntity)e).WorkflowStatus == null
+                     || ((IWorkflowEnabledEntity)e).WorkflowStatus == RequestStatus.Approved
+                     || ((IWorkflowEnabledEntity)e).WorkflowStatus == RequestStatus.Closed;
+
+            expression = expression == null
+                ? approvedOnlyFilter
+                : CombineExpressions(expression, approvedOnlyFilter);
+        }
+
+        return expression;
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -1066,6 +1115,49 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasIndex(e => new { e.TenantId, e.UserId })
                 .IsUnique()
                 .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
+        });
+
+        // Employee <-> ABP User link, the identity anchor for Employee Self Service. Same shape and same
+        // reasoning as the Applicant index directly above: UserId is null for every employee not yet linked
+        // (there will be many), but one login must map to at most one employee within a tenant, or the very
+        // first thing every ESS screen does -- "who am I" -- becomes ambiguous. IsDeleted is in the filter
+        // because Employee is soft-deleted, and a deleted employee's row would otherwise permanently block
+        // its user from being linked to a replacement record (rehire, duplicate cleanup).
+        // Resolving "which request governs this transaction row" -- the lookup behind the Workflow History
+        // button on every workflow-enabled screen. Not unique: a row legitimately accumulates several
+        // requests over its life (the original submission, then later amendments).
+        modelBuilder.Entity<WorkflowRequest>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.RequestType, e.TargetEntityId });
+        });
+
+        // The approver inbox: "everything waiting on me, across every request type". This index is what
+        // keeps that a single indexed seek rather than a scan, and it is the reason WorkflowRequest carries
+        // its own SummaryEn/SummaryAr -- the inbox never touches the ~50 transaction tables.
+        modelBuilder.Entity<WorkFlowApprover>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.ApproverId, e.IsApproved });
+        });
+
+        modelBuilder.Entity<Employee>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.UserId })
+                .IsUnique()
+                .HasFilter("[UserId] IS NOT NULL AND [IsDeleted] = 0");
+
+            // LoginID must also name exactly one employee: it is what EmployeeSessionService falls back to
+            // for employees not yet linked by UserId, and what BulkPasswordAppService and
+            // WorkflowAdminToolsAppService still resolve people by. A duplicate here means sign-in resolves
+            // to whichever row the database happens to return first.
+            //
+            // Enforced in EmployeesAppService.ValidateAsync as well, which catches it with a readable
+            // message; this index is the backstop for the paths that bypass that service (migration tool,
+            // bulk import, direct SQL). Empty-string LoginIDs are excluded -- there are many, and they mean
+            // "no login", not "the same login". SQL Server ignores trailing spaces when comparing strings,
+            // so whitespace-only values fall out of the index too.
+            b.HasIndex(e => new { e.TenantId, e.LoginID })
+                .IsUnique()
+                .HasFilter("[LoginID] IS NOT NULL AND [LoginID] <> '' AND [IsDeleted] = 0");
         });
 
         modelBuilder.Entity<SubscribableEdition>(b =>
