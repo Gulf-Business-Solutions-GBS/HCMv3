@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -26,10 +28,40 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<WorkflowRequest>(Context),
             FakeRepository.For<WorkFlowApprover>(Context),
             FakeRepository.For<RequestLog>(Context),
-            FakeRepository.For<RequestMaster>(Context),
             FakeRepository.For<RequestDetail>(Context),
             FakeRepository.For<EmployeeWorkflowRole>(Context),
-            FakeRepository.For<EmployeeManager>(Context));
+            FakeRepository.For<EmployeeManager>(Context),
+            CreateResolver());
+    }
+
+    /// <summary>
+    /// These tests exercise the approval ENGINE -- step advancing, approver assignment, logging -- not
+    /// routing. The resolver is stubbed to the simple <c>RequestMaster.Code == RequestType</c> lookup the
+    /// engine used to perform inline, so every scenario below keeps exactly the meaning it had before
+    /// routing moved out into <see cref="IRequestMasterResolver"/>.
+    ///
+    /// The real cascade (workflow group, sub-type, catalog default) is covered by
+    /// <c>RequestMasterResolver_Tests</c> instead. Splitting them keeps a routing bug from showing up as
+    /// eight confusing failures in the engine's tests.
+    /// </summary>
+    private IRequestMasterResolver CreateResolver()
+    {
+        var resolver = Substitute.For<IRequestMasterResolver>();
+
+        resolver.ResolveAsync(Arg.Any<WorkflowRequest>()).Returns(callInfo =>
+        {
+            var request = callInfo.Arg<WorkflowRequest>();
+            var master = Context.RequestMasters.FirstOrDefault(m => m.Code == request.RequestType);
+
+            if (master == null)
+            {
+                throw new UserFriendlyException("No workflow configuration found for " + request.RequestType);
+            }
+
+            return Task.FromResult(master);
+        });
+
+        return resolver;
     }
 
     private int CreateWorkflowRole()

@@ -16,27 +16,27 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IRepository<WorkflowRequest> _workflowRequestRepository;
     private readonly IRepository<WorkFlowApprover> _workFlowApproverRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
-    private readonly IRepository<RequestMaster> _requestMasterRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
+    private readonly IRequestMasterResolver _requestMasterResolver;
 
     public WorkflowApprovalService(
         IRepository<WorkflowRequest> workflowRequestRepository,
         IRepository<WorkFlowApprover> workFlowApproverRepository,
         IRepository<RequestLog> requestLogRepository,
-        IRepository<RequestMaster> requestMasterRepository,
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
-        IRepository<EmployeeManager> employeeManagerRepository)
+        IRepository<EmployeeManager> employeeManagerRepository,
+        IRequestMasterResolver requestMasterResolver)
     {
         _workflowRequestRepository = workflowRequestRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
         _requestLogRepository = requestLogRepository;
-        _requestMasterRepository = requestMasterRepository;
         _requestDetailRepository = requestDetailRepository;
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _employeeManagerRepository = employeeManagerRepository;
+        _requestMasterResolver = requestMasterResolver;
     }
 
     public async Task SubmitAsync(int requestId, int actingEmployeeId)
@@ -48,11 +48,9 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             throw new UserFriendlyException(L("WorkflowRequestCanOnlyBeSubmittedFromDraft"));
         }
 
-        var requestMaster = GetRequestMaster(request.RequestType);
-        if (requestMaster == null)
-        {
-            throw new UserFriendlyException(L("NoWorkflowConfigurationFoundForRequestType", request.RequestType));
-        }
+        // Throws when the type is unregistered, retired, or has no reachable configuration -- a request
+        // that cannot be routed has no valid next state, so it fails here rather than sitting in limbo.
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
 
         request.WorkflowStep = 1;
         request.RequestStatus = RequestStatus.Open;
@@ -82,8 +80,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             await _workFlowApproverRepository.UpdateAsync(approverRow);
         }
 
-        var requestMaster = GetRequestMaster(request.RequestType);
-        var requestDetail = requestMaster != null ? GetRequestDetail(requestMaster.Id, currentStep) : null;
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+        var requestDetail = GetRequestDetail(requestMaster.Id, currentStep);
 
         var stepApproved = IsStepApproved(approvers, requestDetail);
 
@@ -96,7 +94,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             return;
         }
 
-        var totalSteps = requestMaster?.WorkflowSteps ?? currentStep;
+        var totalSteps = requestMaster.WorkflowSteps;
         if (currentStep >= totalSteps)
         {
             request.RequestStatus = RequestStatus.Approved;
@@ -107,10 +105,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             var nextStep = currentStep + 1;
             request.WorkflowStep = nextStep;
 
-            if (requestMaster != null)
-            {
-                await AssignApproversForStepAsync(request, requestMaster, nextStep);
-            }
+            await AssignApproversForStepAsync(request, requestMaster, nextStep);
         }
 
         await _workflowRequestRepository.UpdateAsync(request);
@@ -121,8 +116,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         var request = await _workflowRequestRepository.GetAsync(requestId);
         EnsureOpenAndCurrentApprover(request, actingEmployeeId);
 
-        var requestMaster = GetRequestMaster(request.RequestType);
-        var requestDetail = requestMaster != null ? GetRequestDetail(requestMaster.Id, request.WorkflowStep) : null;
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+        var requestDetail = GetRequestDetail(requestMaster.Id, request.WorkflowStep);
         if (requestDetail != null && !requestDetail.CanReject)
         {
             throw new UserFriendlyException(L("RejectIsNotAllowedAtThisWorkflowStep"));
@@ -140,8 +135,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         var request = await _workflowRequestRepository.GetAsync(requestId);
         EnsureOpenAndCurrentApprover(request, actingEmployeeId);
 
-        var requestMaster = GetRequestMaster(request.RequestType);
-        var requestDetail = requestMaster != null ? GetRequestDetail(requestMaster.Id, request.WorkflowStep) : null;
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+        var requestDetail = GetRequestDetail(requestMaster.Id, request.WorkflowStep);
         if (requestDetail != null && !requestDetail.CanSendBack)
         {
             throw new UserFriendlyException(L("SendBackIsNotAllowedAtThisWorkflowStep"));
@@ -235,16 +230,6 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             ApprovalRequire.Parallel => approversAtRequest.All(a => a.IsApproved),
             _ => approversAtRequest.All(a => a.IsApproved)
         };
-    }
-
-    private RequestMaster GetRequestMaster(string requestType)
-    {
-        if (string.IsNullOrWhiteSpace(requestType))
-        {
-            return null;
-        }
-
-        return _requestMasterRepository.GetAll().FirstOrDefault(m => m.Code == requestType);
     }
 
     private RequestDetail GetRequestDetail(int requestMasterId, int step)

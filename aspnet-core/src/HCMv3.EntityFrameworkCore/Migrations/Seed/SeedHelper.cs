@@ -31,6 +31,10 @@ public static class SeedHelper
 
         //Print report catalog for the default tenant (rows the "Print Reports" launcher lists).
         new PrintReportCatalogBuilder(context, 1).Create();
+
+        //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a
+        //type must not start routing live transactions through approval. See the builder's remarks.
+        new WorkflowTransactionTypeBuilder(context, 1).Create();
     }
 
     private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

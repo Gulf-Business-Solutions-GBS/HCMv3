@@ -5,6 +5,7 @@ using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement;
+using HCMv3.Workflow;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -28,7 +29,10 @@ namespace HCMv3.PersonnelAdministration;
 /// <c>OrgUnitProfile</c>. All three are nullable so existing rows migrate cleanly; resolve them
 /// date-effectively as of the assignment, exactly as legacy did.
 ///
-/// STILL DEFERRED (see Wave B scope notes): <c>Position</c>/<c>WorkflowGroup</c> fields;
+/// ALSO NO LONGER DEFERRED: <see cref="WorkflowGroupId"/>, for the same reason -- it stopped being a gap
+/// and became a blocker the moment approval routing was implemented. See that property's own remarks.
+///
+/// STILL DEFERRED (see Wave B scope notes): the <c>Position</c> field;
 /// <c>AddBasicSalary</c>/<c>AddLocationInWageAccount</c> side effects; Position-vacancy-tracking
 /// (<c>UpdatedPositionRelation</c> family); the legacy "Check OrganizationUnitType" validation
 /// (not applicable -- collapsed to one FK); the "system generated flag to stop
@@ -105,4 +109,21 @@ public class EmployeeOrgAssignment : FullAuditedEntity, IMustHaveTenant
     public virtual int? PayrollAreaId { get; set; }
 
     public virtual PayrollArea PayrollArea { get; set; }
+
+    /// <summary>
+    /// Legacy <c>EmployeeOrgAssignment.WorkflowGroup</c>, previously listed as deferred in this class's
+    /// remarks. No longer deferrable: it is the first step of approval routing. Legacy
+    /// <c>WorkflowGeneralService.GetRequestMaster</c> reads the employee's current-dated org assignment to
+    /// find their workflow group, and only then looks up which approval chain applies -- so without this
+    /// column, group-based routing cannot work at all and every employee falls through to the same default
+    /// chain.
+    ///
+    /// <para>
+    /// Nullable, and null is normal: an employee with no group resolves to the
+    /// <c>WorkflowGroup.IsDefault</c> row, exactly as legacy did.
+    /// </para>
+    /// </summary>
+    public virtual int? WorkflowGroupId { get; set; }
+
+    public virtual WorkflowGroup WorkflowGroup { get; set; }
 }
