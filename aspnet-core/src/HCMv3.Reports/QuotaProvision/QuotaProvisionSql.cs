@@ -763,19 +763,21 @@ ORDER BY C.OID, C.ChangeYear;";
 -- ""unify"" the two: they answer different questions and the differences are the point.
 --
 --  1. AS AT TODAY, NOT AS AT A CHOSEN MONTH. Every effective-date join here uses GETDATE() and the
---     service span runs to the last contract EndDate, UNCLAMPED. There is no @PrmYear/@PrmMonth.
+--     service span runs to the last contract EndDate, NOW CLAMPED TO TODAY. There is no
+--     @PrmYear/@PrmMonth, so today is this report's as-on date.
 --
---     *** THIS PRODUCES NONSENSE AGAINST HCMv3 DATA AND NEEDS A PRODUCT DECISION BEFORE RELEASE. ***
---     HCMv3 stores an open-ended EmployeeContracts.EndDate as 9999-12-31. The sibling
---     IndemnityStatementQuery CLAMPS its EndDate to the end of the selected month; this one does not
---     clamp at all, because the legacy source does not. Verified against live data, employee 3400:
+--     WAS A RELEASE BLOCKER, NOW RESOLVED -- decided and applied deliberately, not during the port.
+--     HCMv3 stores an open-ended EmployeeContracts.EndDate as 9999-12-31, and legacy did not clamp.
+--     Verified against live data, employee 3400:
 --         EndDate = 9999-12-31  ->  TotalDays = 2,919,199 (~7,997 years)
 --         -> slab ""Above 5 Years"" fills completely -> Amount = 18,810.000 KWD
---     against a true service span of ~17 years, which should yield roughly 1,000 KWD.
---     The obvious fix is to clamp EndDate to GETDATE() the way the sibling clamps to the as-on date.
---     NOT APPLIED HERE: this is an end-of-service settlement figure handed to a leaving employee, and
---     silently changing a boundary condition during a port is exactly how a payroll defect ships.
---     Raise it, decide it, and change it deliberately.
+--     against a true service span of ~17 years, which should yield roughly 1,000 KWD. Pricing that
+--     span also overflowed outright: ""Arithmetic overflow error converting float to data type
+--     numeric"", so the report did not render at all.
+--     The EndDate is now clamped the way the sibling IndemnityStatementQuery clamps to its as-on
+--     date. This also clamps genuine FUTURE-dated contract ends, not only the 9999-12-31 sentinel,
+--     which is intended: an ""as at today"" settlement should accrue service to today, and the two
+--     reports now agree for the same employee.
 --
 --  2. TWO SERVICE SPANS, and the printed one is the OTHER one:
 --       TotalDaysCount          = TotalDays - totalOpening                 (gross of unpaid days)
@@ -1067,8 +1069,25 @@ FROM (
                      , CASE WHEN gratuityReset.EmployeeId IS NOT NULL AND gratuityReset.StartDate > contract.StartDate
                             THEN gratuityReset.StartDate
                             ELSE contract.StartDate END AS StartDate
-                     -- NOTE: unclamped, unlike the indemnity statement. See header difference 1.
-                     , contract.EndDate AS EndDate
+                     -- CLAMPED TO TODAY. See header difference 1.
+                     --
+                     -- HCMv3 stores an open-ended EmployeeContracts.EndDate as 9999-12-31, so the
+                     -- unclamped span gave TotalDays = 2,919,199 (~7,997 years). That filled the top
+                     -- indemnity slab completely and, once priced, overflowed: SqlException
+                     -- ""Arithmetic overflow error converting float to data type numeric"" -- the
+                     -- report could not render at all.
+                     --
+                     -- Clamped the way the sibling IndemnityStatementQuery clamps, to its as-on date.
+                     -- This report has no @PrmYear/@PrmMonth, so its as-on date is today.
+                     --
+                     -- CONSEQUENCE, deliberate: this also clamps genuine FUTURE-dated contract ends,
+                     -- not just the 9999-12-31 sentinel. A fixed-term contract ending next year now
+                     -- accrues service to today rather than to that future date. That is what an
+                     -- ""as at today"" settlement figure should show, and it is what the sibling
+                     -- already does, so the two reports now agree for the same employee.
+                     , CASE WHEN contract.EndDate >= CAST(GETDATE() AS DATE)
+                            THEN CAST(GETDATE() AS DATE)
+                            ELSE contract.EndDate END AS EndDate
                 FROM Employees e2
                 LEFT JOIN (
                     SELECT ec.EmployeeId, MIN(ec.StartDate) AS StartDate, MAX(ec.EndDate) AS EndDate
