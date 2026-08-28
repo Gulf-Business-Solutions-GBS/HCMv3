@@ -43,8 +43,22 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label required">{{ 'Report' | localize }}</label>
-                            <input [(ngModel)]="schedule.reportKey" name="reportKey" class="form-control" required />
-                            <small class="form-text text-muted">{{ 'ReportKeyHint' | localize }}</small>
+                            <select
+                                [(ngModel)]="schedule.reportKey"
+                                name="reportKey"
+                                class="form-select"
+                                required
+                                (ngModelChange)="onReportChanged()">
+                                <option [ngValue]="undefined">{{ 'PleaseSelect' | localize }}</option>
+                                @for (group of reportsByCategory(); track group.category) {
+                                    <optgroup [label]="group.category">
+                                        @for (report of group.reports; track report.reportKey) {
+                                            <option [ngValue]="report.reportKey">{{ report.displayName }}</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <small class="form-text text-muted">{{ 'ReportListHint' | localize }}</small>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">{{ 'ReportFormat' | localize }}</label>
@@ -130,8 +144,8 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0">{{ 'ReportParameters' | localize }}</h5>
-                        <button class="btn btn-sm btn-light-primary" type="button" (click)="addFilter()">
-                            <i class="fa fa-plus"></i> {{ 'AddParameter' | localize }}
+                        <button class="btn btn-sm btn-light-primary" type="button" (click)="resetFiltersFromReport()">
+                            <i class="fa fa-sync"></i> {{ 'ReloadReportParameters' | localize }}
                         </button>
                     </div>
 
@@ -152,13 +166,31 @@
                                             <input
                                                 [(ngModel)]="f.parameterName"
                                                 [name]="'pName' + $index"
-                                                class="form-control" />
+                                                class="form-control"
+                                                readonly />
                                         </td>
                                         <td>
-                                            <input
-                                                [(ngModel)]="f.parameterValue"
-                                                [name]="'pValue' + $index"
-                                                class="form-control" />
+                                            <!-- The control follows the parameter's DECLARED type, read off
+                                                 the report's own input DTO. An enum becomes a dropdown of its
+                                                 real values rather than a box somebody has to guess into. -->
+                                            @if (parameterFor(f)?.allowedValues?.length) {
+                                                <select
+                                                    [(ngModel)]="f.parameterValue"
+                                                    [name]="'pValue' + $index"
+                                                    class="form-select">
+                                                    <option [ngValue]="undefined">{{ 'PleaseSelect' | localize }}</option>
+                                                    @for (value of parameterFor(f).allowedValues; track value) {
+                                                        <option [ngValue]="value">{{ value }}</option>
+                                                    }
+                                                </select>
+                                            } @else {
+                                                <input
+                                                    [(ngModel)]="f.parameterValue"
+                                                    [name]="'pValue' + $index"
+                                                    class="form-control"
+                                                    [type]="parameterFor(f)?.type === 'int' ? 'number' : 'text'"
+                                                    [placeholder]="parameterFor(f)?.type ?? ''" />
+                                            }
                                         </td>
                                         <td>
                                             <input

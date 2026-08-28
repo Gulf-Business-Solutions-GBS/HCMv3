@@ -22,6 +22,8 @@ import {
     ReportDestinationMethod,
     ReportScheduleOccurrenceType,
     ReportRecurringPattern,
+    SchedulableReportDto,
+    SchedulableReportParameterDto,
     EntityDto,
 } from '@shared/service-proxies/service-proxies';
 
@@ -76,7 +78,35 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
         (this.schedule.recipients ?? []).some((r) => r.bypassRecipientScope)
     );
 
+    /** Every report that can be scheduled, discovered on the server. */
+    readonly availableReports = signal<SchedulableReportDto[]>([]);
+
+    /** Grouped for the dropdown's optgroups, so ~138 reports stay navigable. */
+    readonly reportsByCategory = computed(() => {
+        const groups = new Map<string, SchedulableReportDto[]>();
+
+        for (const report of this.availableReports()) {
+            const key = report.category || 'Reports';
+            if (!groups.has(key)) {
+                groups.set(key, []);
+            }
+            groups.get(key).push(report);
+        }
+
+        return Array.from(groups.entries())
+            .map(([category, reports]) => ({ category, reports }))
+            .sort((a, b) => a.category.localeCompare(b.category));
+    });
+
+    /** Parameters of the currently selected report, used to build the Filter step. */
+    readonly selectedReportParameters = computed(() => {
+        const selected = this.availableReports().find((r) => r.reportKey === this.schedule.reportKey);
+        return selected?.parameters ?? [];
+    });
+
     ngOnInit(): void {
+        this.loadAvailableReports();
+
         const id = this._route.snapshot.params['id'];
 
         if (id) {
@@ -85,6 +115,35 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
         } else {
             this.initNew();
         }
+    }
+
+    private loadAvailableReports(): void {
+        this._service.getSchedulableReports().subscribe((result) => {
+            this.availableReports.set(result.items ?? []);
+        });
+    }
+
+    /**
+     * Seeds the Filter rows from the newly chosen report's own parameters.
+     *
+     * Only on a real change, and only when nothing has been entered yet: silently discarding filters
+     * somebody has already filled in would be worse than leaving a stale row behind.
+     */
+    onReportChanged(): void {
+        if (this.schedule.filters.length > 0) {
+            return;
+        }
+
+        for (const parameter of this.selectedReportParameters()) {
+            const filter = new ReportScheduleFilterDto();
+            filter.parameterName = parameter.name;
+            this.schedule.filters.push(filter);
+        }
+    }
+
+    /** The declared type of a filter row's parameter, so the template can pick an input control. */
+    parameterFor(filter: ReportScheduleFilterDto): SchedulableReportParameterDto | undefined {
+        return this.selectedReportParameters().find((p) => p.name === filter.parameterName);
     }
 
     private initNew(): void {
@@ -132,8 +191,27 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
 
     // ---- filters -------------------------------------------------------------------------------
 
-    addFilter(): void {
-        this.schedule.filters.push(new ReportScheduleFilterDto());
+    /**
+     * Rebuilds the filter rows from the selected report's parameters, keeping any values already
+     * entered for parameters that still exist.
+     *
+     * Needed when the report changes after filters were entered, and when editing a schedule saved
+     * before a parameter was added to its report -- otherwise the new parameter is invisible and
+     * silently runs at its default forever.
+     */
+    resetFiltersFromReport(): void {
+        const existing = new Map(this.schedule.filters.map((f) => [f.parameterName, f]));
+
+        this.schedule.filters = this.selectedReportParameters().map((parameter) => {
+            const previous = existing.get(parameter.name);
+            if (previous) {
+                return previous;
+            }
+
+            const filter = new ReportScheduleFilterDto();
+            filter.parameterName = parameter.name;
+            return filter;
+        });
     }
 
     removeFilter(index: number): void {

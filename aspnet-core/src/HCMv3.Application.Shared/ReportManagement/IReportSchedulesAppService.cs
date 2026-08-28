@@ -12,6 +12,15 @@ public interface IReportSchedulesAppService : IApplicationService
 {
     Task<PagedResultDto<ReportScheduleListDto>> GetAll(GetAllReportSchedulesInput input);
 
+    /// <summary>
+    /// Every report that can be scheduled, with its own filter parameters.
+    ///
+    /// Discovered rather than registered, so a report added later appears here on its own -- which is
+    /// what lets the wizard offer a real list instead of asking somebody to type a report key from
+    /// memory and only finding out it was wrong when the first run fails.
+    /// </summary>
+    Task<ListResultDto<SchedulableReportDto>> GetSchedulableReports();
+
     Task<GetReportScheduleForEditOutput> GetForEdit(EntityDto input);
 
     Task CreateOrEdit(CreateOrEditReportScheduleDto input);

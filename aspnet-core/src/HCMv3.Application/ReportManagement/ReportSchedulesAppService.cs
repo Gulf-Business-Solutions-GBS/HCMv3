@@ -30,17 +30,20 @@ public class ReportSchedulesAppService : HCMv3AppServiceBase, IReportSchedulesAp
     private readonly IRepository<ReportScheduleRun, long> _runRepository;
     private readonly IRepository<ReportScheduleRunSlice, long> _sliceRepository;
     private readonly IReportScheduleExecutor _executor;
+    private readonly ISchedulableReportCatalog _catalog;
 
     public ReportSchedulesAppService(
         IRepository<ReportSchedule> scheduleRepository,
         IRepository<ReportScheduleRun, long> runRepository,
         IRepository<ReportScheduleRunSlice, long> sliceRepository,
-        IReportScheduleExecutor executor)
+        IReportScheduleExecutor executor,
+        ISchedulableReportCatalog catalog)
     {
         _scheduleRepository = scheduleRepository;
         _runRepository = runRepository;
         _sliceRepository = sliceRepository;
         _executor = executor;
+        _catalog = catalog;
     }
 
     [HttpPost]
@@ -93,6 +96,13 @@ public class ReportSchedulesAppService : HCMv3AppServiceBase, IReportSchedulesAp
         }).ToList();
 
         return new PagedResultDto<ReportScheduleListDto>(totalCount, items);
+    }
+
+    public Task<ListResultDto<SchedulableReportDto>> GetSchedulableReports()
+    {
+        // No await: discovery is reflection over an already-loaded assembly, cached after the first call.
+        return Task.FromResult(
+            new ListResultDto<SchedulableReportDto>(_catalog.GetForClient().ToList()));
     }
 
     public async Task<GetReportScheduleForEditOutput> GetForEdit(EntityDto input)

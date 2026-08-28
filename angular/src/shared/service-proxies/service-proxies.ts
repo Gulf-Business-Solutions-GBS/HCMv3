@@ -43703,6 +43703,68 @@ export class EmployeePayrollStatusesServiceProxy {
 }
 
 @Injectable()
+export class ApiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    employeePhoto(employeeId: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/employee-photo/{employeeId}";
+        if (employeeId === undefined || employeeId === null)
+            throw new globalThis.Error("The parameter 'employeeId' must be defined.");
+        url_ = url_.replace("{employeeId}", encodeURIComponent("" + employeeId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEmployeePhoto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEmployeePhoto(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processEmployeePhoto(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeePoolCarsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -110016,6 +110078,132 @@ export class RecruitmentTypesServiceProxy {
 }
 
 @Injectable()
+export class ReferenceDataServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getPacks(): Observable<ReferenceDataPackDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ReferenceData/GetPacks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPacks(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPacks(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReferenceDataPackDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReferenceDataPackDto[]>;
+        }));
+    }
+
+    protected processGetPacks(response: HttpResponseBase): Observable<ReferenceDataPackDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ReferenceDataPackDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    seedReferenceData(body?: SeedReferenceDataInput | undefined): Observable<SeedReferenceDataOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ReferenceData/SeedReferenceData";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSeedReferenceData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSeedReferenceData(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SeedReferenceDataOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SeedReferenceDataOutput>;
+        }));
+    }
+
+    protected processSeedReferenceData(response: HttpResponseBase): Observable<SeedReferenceDataOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SeedReferenceDataOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class RelationshipTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -111440,6 +111628,57 @@ export class ReportSchedulesServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PagedResultDtoOfReportScheduleListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getSchedulableReports(): Observable<ListResultDtoOfSchedulableReportDto> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/GetSchedulableReports";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSchedulableReports(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSchedulableReports(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfSchedulableReportDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfSchedulableReportDto>;
+        }));
+    }
+
+    protected processGetSchedulableReports(response: HttpResponseBase): Observable<ListResultDtoOfSchedulableReportDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfSchedulableReportDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -145707,6 +145946,238 @@ export class WFReadLogsServiceProxy {
 }
 
 @Injectable()
+export class WorkflowActivityServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param workflowRequestId (optional) 
+     * @return OK
+     */
+    getActivityFeed(workflowRequestId?: number | undefined): Observable<WorkflowActivityFeedDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/GetActivityFeed?";
+        if (workflowRequestId === null)
+            throw new globalThis.Error("The parameter 'workflowRequestId' cannot be null.");
+        else if (workflowRequestId !== undefined)
+            url_ += "WorkflowRequestId=" + encodeURIComponent("" + workflowRequestId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetActivityFeed(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetActivityFeed(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowActivityFeedDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowActivityFeedDto>;
+        }));
+    }
+
+    protected processGetActivityFeed(response: HttpResponseBase): Observable<WorkflowActivityFeedDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowActivityFeedDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addComment(body?: AddWorkflowCommentInput | undefined): Observable<WorkflowActivityDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/AddComment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddComment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowActivityDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowActivityDto>;
+        }));
+    }
+
+    protected processAddComment(response: HttpResponseBase): Observable<WorkflowActivityDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowActivityDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    editComment(body?: EditWorkflowCommentInput | undefined): Observable<WorkflowActivityDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/EditComment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditComment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowActivityDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowActivityDto>;
+        }));
+    }
+
+    protected processEditComment(response: HttpResponseBase): Observable<WorkflowActivityDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowActivityDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteComment(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowActivity/DeleteComment?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteComment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteComment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class WorkflowAdminToolsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -150985,6 +151456,54 @@ export interface IAddWidgetInput {
     width: number;
     height: number;
     application: string | undefined;
+}
+
+export class AddWorkflowCommentInput implements IAddWorkflowCommentInput {
+    workflowRequestId!: number;
+    body!: string;
+    isInternal!: boolean;
+    parentCommentId!: number | undefined;
+
+    constructor(data?: IAddWorkflowCommentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.body = _data["body"];
+            this.isInternal = _data["isInternal"];
+            this.parentCommentId = _data["parentCommentId"];
+        }
+    }
+
+    static fromJS(data: any): AddWorkflowCommentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddWorkflowCommentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["body"] = this.body;
+        data["isInternal"] = this.isInternal;
+        data["parentCommentId"] = this.parentCommentId;
+        return data;
+    }
+}
+
+export interface IAddWorkflowCommentInput {
+    workflowRequestId: number;
+    body: string;
+    isInternal: boolean;
+    parentCommentId: number | undefined;
 }
 
 export enum AdjustmentPaymentType {
@@ -184404,6 +184923,46 @@ export interface IDynamicPropertyValueDto {
     dynamicPropertyId: number;
 }
 
+export class EditWorkflowCommentInput implements IEditWorkflowCommentInput {
+    id!: number;
+    body!: string;
+
+    constructor(data?: IEditWorkflowCommentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.body = _data["body"];
+        }
+    }
+
+    static fromJS(data: any): EditWorkflowCommentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditWorkflowCommentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["body"] = this.body;
+        return data;
+    }
+}
+
+export interface IEditWorkflowCommentInput {
+    id: number;
+    body: string;
+}
+
 export class EditionCreateDto implements IEditionCreateDto {
     id!: number | undefined;
     displayName!: string;
@@ -185797,6 +186356,8 @@ export class EmployeeAbsenceDto implements IEmployeeAbsenceDto {
     extStartDate!: DateTime | undefined;
     extEndDate!: DateTime | undefined;
     extTotalLeaveDays!: number | undefined;
+    workflowRequestId!: number | undefined;
+    workflowStatus!: RequestStatus;
 
     constructor(data?: IEmployeeAbsenceDto) {
         if (data) {
@@ -185836,6 +186397,8 @@ export class EmployeeAbsenceDto implements IEmployeeAbsenceDto {
             this.extStartDate = _data["extStartDate"] ? DateTime.fromISO(_data["extStartDate"].toString()) : undefined as any;
             this.extEndDate = _data["extEndDate"] ? DateTime.fromISO(_data["extEndDate"].toString()) : undefined as any;
             this.extTotalLeaveDays = _data["extTotalLeaveDays"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.workflowStatus = _data["workflowStatus"];
         }
     }
 
@@ -185875,6 +186438,8 @@ export class EmployeeAbsenceDto implements IEmployeeAbsenceDto {
         data["extStartDate"] = this.extStartDate ? this.extStartDate.toString() : undefined as any;
         data["extEndDate"] = this.extEndDate ? this.extEndDate.toString() : undefined as any;
         data["extTotalLeaveDays"] = this.extTotalLeaveDays;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["workflowStatus"] = this.workflowStatus;
         return data;
     }
 }
@@ -185907,6 +186472,8 @@ export interface IEmployeeAbsenceDto {
     extStartDate: DateTime | undefined;
     extEndDate: DateTime | undefined;
     extTotalLeaveDays: number | undefined;
+    workflowRequestId: number | undefined;
+    workflowStatus: RequestStatus;
 }
 
 export class EmployeeAbsenceQuotaDto implements IEmployeeAbsenceQuotaDto {
@@ -252556,6 +253123,50 @@ export interface IListResultDtoOfRoleListDto {
     items: RoleListDto[] | undefined;
 }
 
+export class ListResultDtoOfSchedulableReportDto implements IListResultDtoOfSchedulableReportDto {
+    items!: SchedulableReportDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfSchedulableReportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(SchedulableReportDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfSchedulableReportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfSchedulableReportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfSchedulableReportDto {
+    items: SchedulableReportDto[] | undefined;
+}
+
 export class ListResultDtoOfSubscribableEditionComboboxItemDto implements IListResultDtoOfSubscribableEditionComboboxItemDto {
     items!: SubscribableEditionComboboxItemDto[] | undefined;
 
@@ -291666,6 +292277,114 @@ export enum RedirectAfterWFApproval {
     Dashboard = 2,
 }
 
+export class ReferenceDataPackDto implements IReferenceDataPackDto {
+    id!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    description!: string | undefined;
+    lines!: ReferenceDataPackLineDto[] | undefined;
+    totalRows!: number;
+
+    constructor(data?: IReferenceDataPackDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.description = _data["description"];
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(ReferenceDataPackLineDto.fromJS(item));
+            }
+            this.totalRows = _data["totalRows"];
+        }
+    }
+
+    static fromJS(data: any): ReferenceDataPackDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReferenceDataPackDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["description"] = this.description;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalRows"] = this.totalRows;
+        return data;
+    }
+}
+
+export interface IReferenceDataPackDto {
+    id: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    description: string | undefined;
+    lines: ReferenceDataPackLineDto[] | undefined;
+    totalRows: number;
+}
+
+export class ReferenceDataPackLineDto implements IReferenceDataPackLineDto {
+    lookup!: string | undefined;
+    available!: number;
+    alreadyPresent!: number;
+
+    constructor(data?: IReferenceDataPackLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lookup = _data["lookup"];
+            this.available = _data["available"];
+            this.alreadyPresent = _data["alreadyPresent"];
+        }
+    }
+
+    static fromJS(data: any): ReferenceDataPackLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReferenceDataPackLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lookup"] = this.lookup;
+        data["available"] = this.available;
+        data["alreadyPresent"] = this.alreadyPresent;
+        return data;
+    }
+}
+
+export interface IReferenceDataPackLineDto {
+    lookup: string | undefined;
+    available: number;
+    alreadyPresent: number;
+}
+
 export class RefreshTokenResult implements IRefreshTokenResult {
     accessToken!: string | undefined;
     encryptedAccessToken!: string | undefined;
@@ -296769,6 +297488,122 @@ export interface ISavePageInput {
     pages: Page[] | undefined;
 }
 
+export class SchedulableReportDto implements ISchedulableReportDto {
+    reportKey!: string | undefined;
+    reportKind!: ScheduledReportKind;
+    displayName!: string | undefined;
+    category!: string | undefined;
+    parameters!: SchedulableReportParameterDto[] | undefined;
+
+    constructor(data?: ISchedulableReportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reportKey = _data["reportKey"];
+            this.reportKind = _data["reportKind"];
+            this.displayName = _data["displayName"];
+            this.category = _data["category"];
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(SchedulableReportParameterDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SchedulableReportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SchedulableReportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reportKey"] = this.reportKey;
+        data["reportKind"] = this.reportKind;
+        data["displayName"] = this.displayName;
+        data["category"] = this.category;
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ISchedulableReportDto {
+    reportKey: string | undefined;
+    reportKind: ScheduledReportKind;
+    displayName: string | undefined;
+    category: string | undefined;
+    parameters: SchedulableReportParameterDto[] | undefined;
+}
+
+export class SchedulableReportParameterDto implements ISchedulableReportParameterDto {
+    name!: string | undefined;
+    type!: string | undefined;
+    isRequired!: boolean;
+    allowedValues!: string[] | undefined;
+
+    constructor(data?: ISchedulableReportParameterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.type = _data["type"];
+            this.isRequired = _data["isRequired"];
+            if (Array.isArray(_data["allowedValues"])) {
+                this.allowedValues = [] as any;
+                for (let item of _data["allowedValues"])
+                    this.allowedValues!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): SchedulableReportParameterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SchedulableReportParameterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["type"] = this.type;
+        data["isRequired"] = this.isRequired;
+        if (Array.isArray(this.allowedValues)) {
+            data["allowedValues"] = [];
+            for (let item of this.allowedValues)
+                data["allowedValues"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface ISchedulableReportParameterDto {
+    name: string | undefined;
+    type: string | undefined;
+    isRequired: boolean;
+    allowedValues: string[] | undefined;
+}
+
 export enum ScheduledReportFormat {
     Excel = 0,
     Pdf = 1,
@@ -296847,6 +297682,150 @@ export interface ISecuritySettingsEditDto {
     twoFactorLogin: TwoFactorLoginSettingsEditDto;
     userPasswordSettings: UserPasswordSettingsEditDto;
     sessionManagement: SessionManagementSettingsEditDto;
+}
+
+export class SeedReferenceDataInput implements ISeedReferenceDataInput {
+    packId!: string | undefined;
+
+    constructor(data?: ISeedReferenceDataInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.packId = _data["packId"];
+        }
+    }
+
+    static fromJS(data: any): SeedReferenceDataInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SeedReferenceDataInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["packId"] = this.packId;
+        return data;
+    }
+}
+
+export interface ISeedReferenceDataInput {
+    packId: string | undefined;
+}
+
+export class SeedReferenceDataOutput implements ISeedReferenceDataOutput {
+    packs!: SeedReferenceDataPackResultDto[] | undefined;
+    totalInserted!: number;
+    totalSkipped!: number;
+
+    constructor(data?: ISeedReferenceDataOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["packs"])) {
+                this.packs = [] as any;
+                for (let item of _data["packs"])
+                    this.packs!.push(SeedReferenceDataPackResultDto.fromJS(item));
+            }
+            this.totalInserted = _data["totalInserted"];
+            this.totalSkipped = _data["totalSkipped"];
+        }
+    }
+
+    static fromJS(data: any): SeedReferenceDataOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SeedReferenceDataOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.packs)) {
+            data["packs"] = [];
+            for (let item of this.packs)
+                data["packs"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalInserted"] = this.totalInserted;
+        data["totalSkipped"] = this.totalSkipped;
+        return data;
+    }
+}
+
+export interface ISeedReferenceDataOutput {
+    packs: SeedReferenceDataPackResultDto[] | undefined;
+    totalInserted: number;
+    totalSkipped: number;
+}
+
+export class SeedReferenceDataPackResultDto implements ISeedReferenceDataPackResultDto {
+    packId!: string | undefined;
+    lines!: ReferenceDataPackLineDto[] | undefined;
+    inserted!: number;
+    skipped!: number;
+
+    constructor(data?: ISeedReferenceDataPackResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.packId = _data["packId"];
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(ReferenceDataPackLineDto.fromJS(item));
+            }
+            this.inserted = _data["inserted"];
+            this.skipped = _data["skipped"];
+        }
+    }
+
+    static fromJS(data: any): SeedReferenceDataPackResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SeedReferenceDataPackResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["packId"] = this.packId;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["inserted"] = this.inserted;
+        data["skipped"] = this.skipped;
+        return data;
+    }
+}
+
+export interface ISeedReferenceDataPackResultDto {
+    packId: string | undefined;
+    lines: ReferenceDataPackLineDto[] | undefined;
+    inserted: number;
+    skipped: number;
 }
 
 export class SelfServiceSettingsEditDto implements ISelfServiceSettingsEditDto {
@@ -308586,6 +309565,176 @@ export interface IWorkLocationDutyPeriodDto {
     dutyPeriodName: string | undefined;
     startDate: DateTime;
     endDate: DateTime;
+}
+
+export class WorkflowActivityDto implements IWorkflowActivityDto {
+    kind!: WorkflowActivityKind;
+    id!: number;
+    actorEmployeeId!: number | undefined;
+    actorNameEn!: string | undefined;
+    actorNameAr!: string | undefined;
+    actorJobTitleEn!: string | undefined;
+    actorPhotoUrl!: string | undefined;
+    occurredAt!: DateTime;
+    actionType!: RequestActionType;
+    body!: string | undefined;
+    workflowStep!: number | undefined;
+    isInternal!: boolean;
+    isEdited!: boolean;
+    parentCommentId!: number | undefined;
+    canEdit!: boolean;
+
+    constructor(data?: IWorkflowActivityDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.id = _data["id"];
+            this.actorEmployeeId = _data["actorEmployeeId"];
+            this.actorNameEn = _data["actorNameEn"];
+            this.actorNameAr = _data["actorNameAr"];
+            this.actorJobTitleEn = _data["actorJobTitleEn"];
+            this.actorPhotoUrl = _data["actorPhotoUrl"];
+            this.occurredAt = _data["occurredAt"] ? DateTime.fromISO(_data["occurredAt"].toString()) : undefined as any;
+            this.actionType = _data["actionType"];
+            this.body = _data["body"];
+            this.workflowStep = _data["workflowStep"];
+            this.isInternal = _data["isInternal"];
+            this.isEdited = _data["isEdited"];
+            this.parentCommentId = _data["parentCommentId"];
+            this.canEdit = _data["canEdit"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowActivityDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowActivityDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["id"] = this.id;
+        data["actorEmployeeId"] = this.actorEmployeeId;
+        data["actorNameEn"] = this.actorNameEn;
+        data["actorNameAr"] = this.actorNameAr;
+        data["actorJobTitleEn"] = this.actorJobTitleEn;
+        data["actorPhotoUrl"] = this.actorPhotoUrl;
+        data["occurredAt"] = this.occurredAt ? this.occurredAt.toString() : undefined as any;
+        data["actionType"] = this.actionType;
+        data["body"] = this.body;
+        data["workflowStep"] = this.workflowStep;
+        data["isInternal"] = this.isInternal;
+        data["isEdited"] = this.isEdited;
+        data["parentCommentId"] = this.parentCommentId;
+        data["canEdit"] = this.canEdit;
+        return data;
+    }
+}
+
+export interface IWorkflowActivityDto {
+    kind: WorkflowActivityKind;
+    id: number;
+    actorEmployeeId: number | undefined;
+    actorNameEn: string | undefined;
+    actorNameAr: string | undefined;
+    actorJobTitleEn: string | undefined;
+    actorPhotoUrl: string | undefined;
+    occurredAt: DateTime;
+    actionType: RequestActionType;
+    body: string | undefined;
+    workflowStep: number | undefined;
+    isInternal: boolean;
+    isEdited: boolean;
+    parentCommentId: number | undefined;
+    canEdit: boolean;
+}
+
+export class WorkflowActivityFeedDto implements IWorkflowActivityFeedDto {
+    workflowRequestId!: number;
+    requestNumber!: string | undefined;
+    summaryEn!: string | undefined;
+    summaryAr!: string | undefined;
+    requestStatus!: RequestStatus;
+    canComment!: boolean;
+    canCommentInternally!: boolean;
+    activities!: WorkflowActivityDto[] | undefined;
+
+    constructor(data?: IWorkflowActivityFeedDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.requestNumber = _data["requestNumber"];
+            this.summaryEn = _data["summaryEn"];
+            this.summaryAr = _data["summaryAr"];
+            this.requestStatus = _data["requestStatus"];
+            this.canComment = _data["canComment"];
+            this.canCommentInternally = _data["canCommentInternally"];
+            if (Array.isArray(_data["activities"])) {
+                this.activities = [] as any;
+                for (let item of _data["activities"])
+                    this.activities!.push(WorkflowActivityDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): WorkflowActivityFeedDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowActivityFeedDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["requestNumber"] = this.requestNumber;
+        data["summaryEn"] = this.summaryEn;
+        data["summaryAr"] = this.summaryAr;
+        data["requestStatus"] = this.requestStatus;
+        data["canComment"] = this.canComment;
+        data["canCommentInternally"] = this.canCommentInternally;
+        if (Array.isArray(this.activities)) {
+            data["activities"] = [];
+            for (let item of this.activities)
+                data["activities"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IWorkflowActivityFeedDto {
+    workflowRequestId: number;
+    requestNumber: string | undefined;
+    summaryEn: string | undefined;
+    summaryAr: string | undefined;
+    requestStatus: RequestStatus;
+    canComment: boolean;
+    canCommentInternally: boolean;
+    activities: WorkflowActivityDto[] | undefined;
+}
+
+export enum WorkflowActivityKind {
+    Action = 0,
+    Comment = 1,
+    FeedbackRequested = 2,
 }
 
 export enum WorkflowApproverPersonType {

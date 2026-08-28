@@ -4036,6 +4036,19 @@
     <text name="AddComment">Add a comment</text>
     <text name="Activity">Activity</text>
     <text name="FeedbackRequestedFrom">Feedback requested from {0}</text>
+    <text name="CommentDeleteWarningMessage">Delete this comment?</text>
+    <text name="WorkflowHistory">Workflow History</text>
+    <text name="WorkflowAction_Created">submitted this request</text>
+    <text name="WorkflowAction_Approved">approved</text>
+    <text name="WorkflowAction_Rejected">rejected</text>
+    <text name="WorkflowAction_Escalated">escalated</text>
+    <text name="WorkflowAction_Read">viewed</text>
+    <text name="WorkflowAction_SentBack">sent back for correction</text>
+    <text name="WorkflowAction_Closed">closed</text>
+    <text name="WorkflowAction_Remarked">gave feedback</text>
+    <text name="WorkflowAction_Assigned">reassigned</text>
+    <text name="WorkflowAction_Transferred">transferred</text>
+    <text name="WorkflowAction_SentBackToCreator">sent back to the requester</text>
     <text name="WorkflowEnabledTypeNeedsADefaultRequestMaster">'{0}' has workflow enabled but no default approval configuration, so requests could not be routed. Select one, or turn workflow off for this type.</text>
     <text name="UserIsAlreadyLinkedToAnotherEmployee">This user is already linked to employee {0}.</text>
     <text name="SurveyQuestionDoesNotBelongToSurvey">One of the submitted answers does not belong to the selected survey.</text>
@@ -4118,6 +4131,9 @@
     <text name="ReportFamily">Report Family</text>
     <text name="ReportFormat">Report Format</text>
     <text name="ReportKeyHint">The report's key: a grid-report name, or a print report's ReportName.</text>
+    <text name="PleaseSelect">Please Select</text>
+    <text name="ReportListHint">Any report added to the system appears here automatically.</text>
+    <text name="ReloadReportParameters">Reload parameters</text>
     <text name="SendNotificationsTo">Send Notifications to</text>
     <text name="NotificationEmailsHint">These addresses are told the run started or finished. They do NOT receive the report itself.</text>
     <text name="SendNotificationOn">Send Notification On</text>
@@ -5407,5 +5423,7 @@
     <text name="GoLiveNextStep">Next: {0}</text>
     <text name="GoLiveStepNotFound">That step does not exist.</text>
     <text name="GoLiveBadIban">This does not look like a valid IBAN</text>
+    <text name="ReferenceDataPackNotFound">Reference data pack "{0}" was not found.</text>
+    <text name="ReferenceDataUnknownLookup">Reference data pack refers to an unknown lookup "{0}".</text>
   </texts>
 </localizationDictionary>
