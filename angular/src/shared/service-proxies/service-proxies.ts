@@ -55320,6 +55320,343 @@ export class EmployeeTravelReportServiceProxy {
 }
 
 @Injectable()
+export class EmployeeUserLinkServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getEmployeeUserLink(id?: number | undefined): Observable<EmployeeUserLinkDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/GetEmployeeUserLink?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeUserLink(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeUserLink(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeUserLinkDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeUserLinkDto>;
+        }));
+    }
+
+    protected processGetEmployeeUserLink(response: HttpResponseBase): Observable<EmployeeUserLinkDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeUserLinkDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    linkUser(body?: LinkEmployeeUserInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/LinkUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLinkUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLinkUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processLinkUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    unlinkUser(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/UnlinkUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUnlinkUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUnlinkUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUnlinkUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLinkableUsers(body?: GetLinkableUsersInput | undefined): Observable<PagedResultDtoOfLinkableUserDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/GetLinkableUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLinkableUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLinkableUsers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfLinkableUserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfLinkableUserDto>;
+        }));
+    }
+
+    protected processGetLinkableUsers(response: HttpResponseBase): Observable<PagedResultDtoOfLinkableUserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfLinkableUserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    autoLinkByLoginId(): Observable<AutoLinkEmployeeUsersResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/AutoLinkByLoginId";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAutoLinkByLoginId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAutoLinkByLoginId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AutoLinkEmployeeUsersResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AutoLinkEmployeeUsersResultDto>;
+        }));
+    }
+
+    protected processAutoLinkByLoginId(response: HttpResponseBase): Observable<AutoLinkEmployeeUsersResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AutoLinkEmployeeUsersResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getDuplicateLoginIds(): Observable<DuplicateLoginIdDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeUserLink/GetDuplicateLoginIds";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDuplicateLoginIds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDuplicateLoginIds(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DuplicateLoginIdDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DuplicateLoginIdDto[]>;
+        }));
+    }
+
+    protected processGetDuplicateLoginIds(response: HttpResponseBase): Observable<DuplicateLoginIdDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(DuplicateLoginIdDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeVisaInfosServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -104204,6 +104541,76 @@ export class PrePayrollReportServiceProxy {
 }
 
 @Injectable()
+export class PrintReportLauncherServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getRunnableReports(): Observable<RunnableReportDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/PrintReportLauncher/GetRunnableReports";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRunnableReports(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRunnableReports(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RunnableReportDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RunnableReportDto[]>;
+        }));
+    }
+
+    protected processGetRunnableReports(response: HttpResponseBase): Observable<RunnableReportDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(RunnableReportDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class PrintReportPermissionDetailsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -110914,7 +111321,7 @@ export class ReportMastersServiceProxy {
 }
 
 @Injectable()
-export class ReportsServiceProxy {
+export class ReportSchedulesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -110925,11 +111332,67 @@ export class ReportsServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllReportSchedulesInput | undefined): Observable<PagedResultDtoOfReportScheduleListDto> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfReportScheduleListDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfReportScheduleListDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfReportScheduleListDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfReportScheduleListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return OK
      */
-    getSalaryCertificatePdf(id?: number | undefined): Observable<ReportPdfOutput> {
-        let url_ = this.baseUrl + "/api/services/app/Reports/GetSalaryCertificatePdf?";
+    getForEdit(id?: number | undefined): Observable<GetReportScheduleForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/GetForEdit?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -110945,20 +111408,20 @@ export class ReportsServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetSalaryCertificatePdf(response_);
+            return this.processGetForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetSalaryCertificatePdf(response_ as any);
+                    return this.processGetForEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
+                    return _observableThrow(e) as any as Observable<GetReportScheduleForEditOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
+                return _observableThrow(response_) as any as Observable<GetReportScheduleForEditOutput>;
         }));
     }
 
-    protected processGetSalaryCertificatePdf(response: HttpResponseBase): Observable<ReportPdfOutput> {
+    protected processGetForEdit(response: HttpResponseBase): Observable<GetReportScheduleForEditOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -110969,7 +111432,7 @@ export class ReportsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReportPdfOutput.fromJS(resultData200);
+            result200 = GetReportScheduleForEditOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -110984,8 +111447,112 @@ export class ReportsServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getPayslipPdf(body?: PayslipInput | undefined): Observable<ReportPdfOutput> {
-        let url_ = this.baseUrl + "/api/services/app/Reports/GetPayslipPdf";
+    createOrEdit(body?: CreateOrEditReportScheduleDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    duplicate(body?: EntityDto | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/Duplicate";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -111001,20 +111568,20 @@ export class ReportsServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPayslipPdf(response_);
+            return this.processDuplicate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetPayslipPdf(response_ as any);
+                    return this.processDuplicate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processGetPayslipPdf(response: HttpResponseBase): Observable<ReportPdfOutput> {
+    protected processDuplicate(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -111025,7 +111592,8 @@ export class ReportsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReportPdfOutput.fromJS(resultData200);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -111040,8 +111608,60 @@ export class ReportsServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getPayslipRecipients(body?: GetPayslipRecipientsInput | undefined): Observable<PayslipRecipientDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Reports/GetPayslipRecipients";
+    setActive(body?: SetReportScheduleActiveInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/SetActive";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetActive(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetActive(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSetActive(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    runNow(body?: EntityDto | undefined): Observable<RunReportScheduleOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/RunNow";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -111057,20 +111677,20 @@ export class ReportsServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPayslipRecipients(response_);
+            return this.processRunNow(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetPayslipRecipients(response_ as any);
+                    return this.processRunNow(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PayslipRecipientDto[]>;
+                    return _observableThrow(e) as any as Observable<RunReportScheduleOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PayslipRecipientDto[]>;
+                return _observableThrow(response_) as any as Observable<RunReportScheduleOutput>;
         }));
     }
 
-    protected processGetPayslipRecipients(response: HttpResponseBase): Observable<PayslipRecipientDto[]> {
+    protected processRunNow(response: HttpResponseBase): Observable<RunReportScheduleOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -111081,14 +111701,7 @@ export class ReportsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(PayslipRecipientDto.fromJS(item));
-            }
-            else {
-                result200 = null as any;
-            }
+            result200 = RunReportScheduleOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -111103,8 +111716,8 @@ export class ReportsServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    sendPayslipEmails(body?: SendPayslipEmailsInput | undefined): Observable<SendPayslipEmailsOutput> {
-        let url_ = this.baseUrl + "/api/services/app/Reports/SendPayslipEmails";
+    getRuns(body?: GetReportScheduleRunsInput | undefined): Observable<PagedResultDtoOfReportScheduleRunDto> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/GetRuns";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -111120,20 +111733,20 @@ export class ReportsServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSendPayslipEmails(response_);
+            return this.processGetRuns(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processSendPayslipEmails(response_ as any);
+                    return this.processGetRuns(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<SendPayslipEmailsOutput>;
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfReportScheduleRunDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<SendPayslipEmailsOutput>;
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfReportScheduleRunDto>;
         }));
     }
 
-    protected processSendPayslipEmails(response: HttpResponseBase): Observable<SendPayslipEmailsOutput> {
+    protected processGetRuns(response: HttpResponseBase): Observable<PagedResultDtoOfReportScheduleRunDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -111144,7 +111757,63 @@ export class ReportsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SendPayslipEmailsOutput.fromJS(resultData200);
+            result200 = PagedResultDtoOfReportScheduleRunDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getRunSlices(id?: number | undefined): Observable<ListResultDtoOfReportScheduleRunSliceDto> {
+        let url_ = this.baseUrl + "/api/services/app/ReportSchedules/GetRunSlices?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRunSlices(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRunSlices(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfReportScheduleRunSliceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfReportScheduleRunSliceDto>;
+        }));
+    }
+
+    protected processGetRunSlices(response: HttpResponseBase): Observable<ListResultDtoOfReportScheduleRunSliceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfReportScheduleRunSliceDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -146955,6 +147624,292 @@ export class WorkflowRolesServiceProxy {
 }
 
 @Injectable()
+export class WorkflowTransactionTypesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllWorkflowTransactionTypesInput | undefined): Observable<PagedResultDtoOfWorkflowTransactionTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfWorkflowTransactionTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfWorkflowTransactionTypeDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfWorkflowTransactionTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfWorkflowTransactionTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getWorkflowTransactionTypeForEdit(id?: number | undefined): Observable<GetWorkflowTransactionTypeForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/GetWorkflowTransactionTypeForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWorkflowTransactionTypeForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWorkflowTransactionTypeForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetWorkflowTransactionTypeForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetWorkflowTransactionTypeForEditOutput>;
+        }));
+    }
+
+    protected processGetWorkflowTransactionTypeForEdit(response: HttpResponseBase): Observable<GetWorkflowTransactionTypeForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetWorkflowTransactionTypeForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditWorkflowTransactionTypeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getEssEnabledTypes(): Observable<WorkflowTransactionTypeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowTransactionTypes/GetEssEnabledTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEssEnabledTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEssEnabledTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowTransactionTypeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowTransactionTypeDto[]>;
+        }));
+    }
+
+    protected processGetEssEnabledTypes(response: HttpResponseBase): Observable<WorkflowTransactionTypeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkflowTransactionTypeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class WorkLocationDutyPeriodsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -151929,6 +152884,66 @@ export enum AutoFilterColumnCondition {
     BeginsWith = 0,
     Contains = 1,
     Equals = 2,
+}
+
+export class AutoLinkEmployeeUsersResultDto implements IAutoLinkEmployeeUsersResultDto {
+    linkedCount!: number;
+    noMatchingUserCount!: number;
+    userAlreadyLinkedCount!: number;
+    ambiguousLoginIdCount!: number;
+    ambiguousLoginIds!: string[] | undefined;
+
+    constructor(data?: IAutoLinkEmployeeUsersResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.linkedCount = _data["linkedCount"];
+            this.noMatchingUserCount = _data["noMatchingUserCount"];
+            this.userAlreadyLinkedCount = _data["userAlreadyLinkedCount"];
+            this.ambiguousLoginIdCount = _data["ambiguousLoginIdCount"];
+            if (Array.isArray(_data["ambiguousLoginIds"])) {
+                this.ambiguousLoginIds = [] as any;
+                for (let item of _data["ambiguousLoginIds"])
+                    this.ambiguousLoginIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): AutoLinkEmployeeUsersResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AutoLinkEmployeeUsersResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["linkedCount"] = this.linkedCount;
+        data["noMatchingUserCount"] = this.noMatchingUserCount;
+        data["userAlreadyLinkedCount"] = this.userAlreadyLinkedCount;
+        data["ambiguousLoginIdCount"] = this.ambiguousLoginIdCount;
+        if (Array.isArray(this.ambiguousLoginIds)) {
+            data["ambiguousLoginIds"] = [];
+            for (let item of this.ambiguousLoginIds)
+                data["ambiguousLoginIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IAutoLinkEmployeeUsersResultDto {
+    linkedCount: number;
+    noMatchingUserCount: number;
+    userAlreadyLinkedCount: number;
+    ambiguousLoginIdCount: number;
+    ambiguousLoginIds: string[] | undefined;
 }
 
 export class BankDto implements IBankDto {
@@ -174308,6 +175323,138 @@ export interface ICreateOrEditReportMasterDto {
     nameAr: string;
 }
 
+export class CreateOrEditReportScheduleDto implements ICreateOrEditReportScheduleDto {
+    id!: number | undefined;
+    name!: string;
+    reportKind!: ScheduledReportKind;
+    reportKey!: string;
+    format!: ScheduledReportFormat;
+    notificationEmails!: string | undefined;
+    notifyOnStart!: boolean;
+    notifyOnCompletion!: boolean;
+    isActive!: boolean;
+    burstDimension!: ReportBurstDimension;
+    burstOrganizationUnitTypeId!: number | undefined;
+    burstParameterName!: string | undefined;
+    occurrenceType!: ReportScheduleOccurrenceType;
+    recurringPattern!: ReportRecurringPattern;
+    firstOccurrence!: DateTime;
+    endingOn!: DateTime | undefined;
+    filters!: ReportScheduleFilterDto[] | undefined;
+    recipients!: ReportScheduleRecipientDto[] | undefined;
+    destinations!: ReportScheduleDestinationDto[] | undefined;
+
+    constructor(data?: ICreateOrEditReportScheduleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.reportKind = _data["reportKind"];
+            this.reportKey = _data["reportKey"];
+            this.format = _data["format"];
+            this.notificationEmails = _data["notificationEmails"];
+            this.notifyOnStart = _data["notifyOnStart"];
+            this.notifyOnCompletion = _data["notifyOnCompletion"];
+            this.isActive = _data["isActive"];
+            this.burstDimension = _data["burstDimension"];
+            this.burstOrganizationUnitTypeId = _data["burstOrganizationUnitTypeId"];
+            this.burstParameterName = _data["burstParameterName"];
+            this.occurrenceType = _data["occurrenceType"];
+            this.recurringPattern = _data["recurringPattern"];
+            this.firstOccurrence = _data["firstOccurrence"] ? DateTime.fromISO(_data["firstOccurrence"].toString()) : undefined as any;
+            this.endingOn = _data["endingOn"] ? DateTime.fromISO(_data["endingOn"].toString()) : undefined as any;
+            if (Array.isArray(_data["filters"])) {
+                this.filters = [] as any;
+                for (let item of _data["filters"])
+                    this.filters!.push(ReportScheduleFilterDto.fromJS(item));
+            }
+            if (Array.isArray(_data["recipients"])) {
+                this.recipients = [] as any;
+                for (let item of _data["recipients"])
+                    this.recipients!.push(ReportScheduleRecipientDto.fromJS(item));
+            }
+            if (Array.isArray(_data["destinations"])) {
+                this.destinations = [] as any;
+                for (let item of _data["destinations"])
+                    this.destinations!.push(ReportScheduleDestinationDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditReportScheduleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditReportScheduleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["reportKind"] = this.reportKind;
+        data["reportKey"] = this.reportKey;
+        data["format"] = this.format;
+        data["notificationEmails"] = this.notificationEmails;
+        data["notifyOnStart"] = this.notifyOnStart;
+        data["notifyOnCompletion"] = this.notifyOnCompletion;
+        data["isActive"] = this.isActive;
+        data["burstDimension"] = this.burstDimension;
+        data["burstOrganizationUnitTypeId"] = this.burstOrganizationUnitTypeId;
+        data["burstParameterName"] = this.burstParameterName;
+        data["occurrenceType"] = this.occurrenceType;
+        data["recurringPattern"] = this.recurringPattern;
+        data["firstOccurrence"] = this.firstOccurrence ? this.firstOccurrence.toString() : undefined as any;
+        data["endingOn"] = this.endingOn ? this.endingOn.toString() : undefined as any;
+        if (Array.isArray(this.filters)) {
+            data["filters"] = [];
+            for (let item of this.filters)
+                data["filters"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.recipients)) {
+            data["recipients"] = [];
+            for (let item of this.recipients)
+                data["recipients"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.destinations)) {
+            data["destinations"] = [];
+            for (let item of this.destinations)
+                data["destinations"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ICreateOrEditReportScheduleDto {
+    id: number | undefined;
+    name: string;
+    reportKind: ScheduledReportKind;
+    reportKey: string;
+    format: ScheduledReportFormat;
+    notificationEmails: string | undefined;
+    notifyOnStart: boolean;
+    notifyOnCompletion: boolean;
+    isActive: boolean;
+    burstDimension: ReportBurstDimension;
+    burstOrganizationUnitTypeId: number | undefined;
+    burstParameterName: string | undefined;
+    occurrenceType: ReportScheduleOccurrenceType;
+    recurringPattern: ReportRecurringPattern;
+    firstOccurrence: DateTime;
+    endingOn: DateTime | undefined;
+    filters: ReportScheduleFilterDto[] | undefined;
+    recipients: ReportScheduleRecipientDto[] | undefined;
+    destinations: ReportScheduleDestinationDto[] | undefined;
+}
+
 export class CreateOrEditReportSettingDetailDto implements ICreateOrEditReportSettingDetailDto {
     id!: number | undefined;
     reportSettingId!: number;
@@ -180180,6 +181327,90 @@ export interface ICreateOrEditWorkflowRoleDto {
     workflowRoleOrgId: number | undefined;
 }
 
+export class CreateOrEditWorkflowTransactionTypeDto implements ICreateOrEditWorkflowTransactionTypeDto {
+    id!: number | undefined;
+    code!: string;
+    nameEn!: string;
+    nameAr!: string;
+    isWorkflowEnabled!: boolean;
+    isEssEnabled!: boolean;
+    defaultRequestMasterId!: number | undefined;
+    essRoute!: string | undefined;
+    essPermissionName!: string | undefined;
+    subTypeSource!: string | undefined;
+    iconClass!: string | undefined;
+    displayOrder!: number;
+    isActive!: boolean;
+
+    constructor(data?: ICreateOrEditWorkflowTransactionTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+            this.isEssEnabled = _data["isEssEnabled"];
+            this.defaultRequestMasterId = _data["defaultRequestMasterId"];
+            this.essRoute = _data["essRoute"];
+            this.essPermissionName = _data["essPermissionName"];
+            this.subTypeSource = _data["subTypeSource"];
+            this.iconClass = _data["iconClass"];
+            this.displayOrder = _data["displayOrder"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditWorkflowTransactionTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditWorkflowTransactionTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        data["isEssEnabled"] = this.isEssEnabled;
+        data["defaultRequestMasterId"] = this.defaultRequestMasterId;
+        data["essRoute"] = this.essRoute;
+        data["essPermissionName"] = this.essPermissionName;
+        data["subTypeSource"] = this.subTypeSource;
+        data["iconClass"] = this.iconClass;
+        data["displayOrder"] = this.displayOrder;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface ICreateOrEditWorkflowTransactionTypeDto {
+    id: number | undefined;
+    code: string;
+    nameEn: string;
+    nameAr: string;
+    isWorkflowEnabled: boolean;
+    isEssEnabled: boolean;
+    defaultRequestMasterId: number | undefined;
+    essRoute: string | undefined;
+    essPermissionName: string | undefined;
+    subTypeSource: string | undefined;
+    iconClass: string | undefined;
+    displayOrder: number;
+    isActive: boolean;
+}
+
 export class CreateOrEditYearlyTimeRegisterDetailDto implements ICreateOrEditYearlyTimeRegisterDetailDto {
     id!: number | undefined;
     yearlyTimeRegisterId!: number;
@@ -182524,6 +183755,106 @@ export interface IDomainTypeDto {
     code: string | undefined;
     nameEn: string | undefined;
     entityType: string | undefined;
+}
+
+export class DuplicateLoginIdDto implements IDuplicateLoginIdDto {
+    loginID!: string | undefined;
+    employees!: DuplicateLoginIdEmployeeDto[] | undefined;
+
+    constructor(data?: IDuplicateLoginIdDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.loginID = _data["loginID"];
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(DuplicateLoginIdEmployeeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DuplicateLoginIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DuplicateLoginIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["loginID"] = this.loginID;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IDuplicateLoginIdDto {
+    loginID: string | undefined;
+    employees: DuplicateLoginIdEmployeeDto[] | undefined;
+}
+
+export class DuplicateLoginIdEmployeeDto implements IDuplicateLoginIdEmployeeDto {
+    employeeId!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    status!: EmployeeStatus;
+    userId!: number | undefined;
+
+    constructor(data?: IDuplicateLoginIdEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.status = _data["status"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): DuplicateLoginIdEmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DuplicateLoginIdEmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["status"] = this.status;
+        data["userId"] = this.userId;
+        return data;
+    }
+}
+
+export interface IDuplicateLoginIdEmployeeDto {
+    employeeId: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    status: EmployeeStatus;
+    userId: number | undefined;
 }
 
 export class DutyDto implements IDutyDto {
@@ -197062,6 +198393,82 @@ export interface IEmployeeTravelReportRowDto {
     orgLevel7: string | undefined;
     totalTravelCost: number;
     claimAmount: number;
+}
+
+export class EmployeeUserLinkDto implements IEmployeeUserLinkDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    employeeFullNameAr!: string | undefined;
+    loginID!: string | undefined;
+    userId!: number | undefined;
+    userName!: string | undefined;
+    userFullName!: string | undefined;
+    userEmailAddress!: string | undefined;
+    userExists!: boolean;
+    userIsActive!: boolean;
+
+    constructor(data?: IEmployeeUserLinkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.employeeFullNameAr = _data["employeeFullNameAr"];
+            this.loginID = _data["loginID"];
+            this.userId = _data["userId"];
+            this.userName = _data["userName"];
+            this.userFullName = _data["userFullName"];
+            this.userEmailAddress = _data["userEmailAddress"];
+            this.userExists = _data["userExists"];
+            this.userIsActive = _data["userIsActive"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeUserLinkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeUserLinkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["employeeFullNameAr"] = this.employeeFullNameAr;
+        data["loginID"] = this.loginID;
+        data["userId"] = this.userId;
+        data["userName"] = this.userName;
+        data["userFullName"] = this.userFullName;
+        data["userEmailAddress"] = this.userEmailAddress;
+        data["userExists"] = this.userExists;
+        data["userIsActive"] = this.userIsActive;
+        return data;
+    }
+}
+
+export interface IEmployeeUserLinkDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    employeeFullNameAr: string | undefined;
+    loginID: string | undefined;
+    userId: number | undefined;
+    userName: string | undefined;
+    userFullName: string | undefined;
+    userEmailAddress: string | undefined;
+    userExists: boolean;
+    userIsActive: boolean;
 }
 
 export class EmployeeVisaInfoDto implements IEmployeeVisaInfoDto {
@@ -215093,6 +216500,62 @@ export interface IGetAllReportMastersInput {
     filter: string | undefined;
 }
 
+export class GetAllReportSchedulesInput implements IGetAllReportSchedulesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    isActive!: boolean | undefined;
+    reportKind!: ScheduledReportKind;
+
+    constructor(data?: IGetAllReportSchedulesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.isActive = _data["isActive"];
+            this.reportKind = _data["reportKind"];
+        }
+    }
+
+    static fromJS(data: any): GetAllReportSchedulesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllReportSchedulesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["isActive"] = this.isActive;
+        data["reportKind"] = this.reportKind;
+        return data;
+    }
+}
+
+export interface IGetAllReportSchedulesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    isActive: boolean | undefined;
+    reportKind: ScheduledReportKind;
+}
+
 export class GetAllReportSettingDetailsInput implements IGetAllReportSettingDetailsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -219591,6 +221054,66 @@ export interface IGetAllWorkflowRolesInput {
     skipCount: number;
     sorting: string | undefined;
     filter: string | undefined;
+}
+
+export class GetAllWorkflowTransactionTypesInput implements IGetAllWorkflowTransactionTypesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    isWorkflowEnabled!: boolean | undefined;
+    isEssEnabled!: boolean | undefined;
+    isActive!: boolean | undefined;
+
+    constructor(data?: IGetAllWorkflowTransactionTypesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+            this.isEssEnabled = _data["isEssEnabled"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): GetAllWorkflowTransactionTypesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllWorkflowTransactionTypesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        data["isEssEnabled"] = this.isEssEnabled;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface IGetAllWorkflowTransactionTypesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    isWorkflowEnabled: boolean | undefined;
+    isEssEnabled: boolean | undefined;
+    isActive: boolean | undefined;
 }
 
 export class GetAllYearlyTimeRegisterDetailsInput implements IGetAllYearlyTimeRegisterDetailsInput {
@@ -232241,6 +233764,62 @@ export interface IGetLeaveRequestReportInput {
     approverCode: string | undefined;
 }
 
+export class GetLinkableUsersInput implements IGetLinkableUsersInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    onlyUnlinked!: boolean;
+    forEmployeeId!: number | undefined;
+
+    constructor(data?: IGetLinkableUsersInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.onlyUnlinked = _data["onlyUnlinked"];
+            this.forEmployeeId = _data["forEmployeeId"];
+        }
+    }
+
+    static fromJS(data: any): GetLinkableUsersInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLinkableUsersInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["onlyUnlinked"] = this.onlyUnlinked;
+        data["forEmployeeId"] = this.forEmployeeId;
+        return data;
+    }
+}
+
+export interface IGetLinkableUsersInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    onlyUnlinked: boolean;
+    forEmployeeId: number | undefined;
+}
+
 export class GetLoanInstallmentForEditOutput implements IGetLoanInstallmentForEditOutput {
     loanInstallment!: CreateOrEditLoanInstallmentDto;
 
@@ -237193,58 +238772,6 @@ export interface IGetPayslipConfigForEditOutput {
     payslipConfig: CreateOrEditPayslipConfigDto;
 }
 
-export class GetPayslipRecipientsInput implements IGetPayslipRecipientsInput {
-    month!: number;
-    year!: number;
-    payrollRunType!: PayrollRunType;
-    employeeStatus!: EmployeeStatus;
-    payrollAreaId!: number | undefined;
-
-    constructor(data?: IGetPayslipRecipientsInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.month = _data["month"];
-            this.year = _data["year"];
-            this.payrollRunType = _data["payrollRunType"];
-            this.employeeStatus = _data["employeeStatus"];
-            this.payrollAreaId = _data["payrollAreaId"];
-        }
-    }
-
-    static fromJS(data: any): GetPayslipRecipientsInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetPayslipRecipientsInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["month"] = this.month;
-        data["year"] = this.year;
-        data["payrollRunType"] = this.payrollRunType;
-        data["employeeStatus"] = this.employeeStatus;
-        data["payrollAreaId"] = this.payrollAreaId;
-        return data;
-    }
-}
-
-export interface IGetPayslipRecipientsInput {
-    month: number;
-    year: number;
-    payrollRunType: PayrollRunType;
-    employeeStatus: EmployeeStatus;
-    payrollAreaId: number | undefined;
-}
-
 export class GetPerformanceAppraisalDashboardInput implements IGetPerformanceAppraisalDashboardInput {
     paPeriodId!: number;
 
@@ -238931,6 +240458,94 @@ export class GetReportMasterForEditOutput implements IGetReportMasterForEditOutp
 
 export interface IGetReportMasterForEditOutput {
     reportMaster: CreateOrEditReportMasterDto;
+}
+
+export class GetReportScheduleForEditOutput implements IGetReportScheduleForEditOutput {
+    reportSchedule!: CreateOrEditReportScheduleDto;
+
+    constructor(data?: IGetReportScheduleForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reportSchedule = _data["reportSchedule"] ? CreateOrEditReportScheduleDto.fromJS(_data["reportSchedule"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetReportScheduleForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetReportScheduleForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reportSchedule"] = this.reportSchedule ? this.reportSchedule.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetReportScheduleForEditOutput {
+    reportSchedule: CreateOrEditReportScheduleDto;
+}
+
+export class GetReportScheduleRunsInput implements IGetReportScheduleRunsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    reportScheduleId!: number | undefined;
+    status!: ReportRunStatus;
+
+    constructor(data?: IGetReportScheduleRunsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.reportScheduleId = _data["reportScheduleId"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): GetReportScheduleRunsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetReportScheduleRunsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["reportScheduleId"] = this.reportScheduleId;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IGetReportScheduleRunsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    reportScheduleId: number | undefined;
+    status: ReportRunStatus;
 }
 
 export class GetReportSettingDetailForEditOutput implements IGetReportSettingDetailForEditOutput {
@@ -244187,6 +245802,42 @@ export class GetWorkflowRoleForEditOutput implements IGetWorkflowRoleForEditOutp
 
 export interface IGetWorkflowRoleForEditOutput {
     workflowRole: CreateOrEditWorkflowRoleDto;
+}
+
+export class GetWorkflowTransactionTypeForEditOutput implements IGetWorkflowTransactionTypeForEditOutput {
+    workflowTransactionType!: CreateOrEditWorkflowTransactionTypeDto;
+
+    constructor(data?: IGetWorkflowTransactionTypeForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowTransactionType = _data["workflowTransactionType"] ? CreateOrEditWorkflowTransactionTypeDto.fromJS(_data["workflowTransactionType"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetWorkflowTransactionTypeForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetWorkflowTransactionTypeForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowTransactionType"] = this.workflowTransactionType ? this.workflowTransactionType.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetWorkflowTransactionTypeForEditOutput {
+    workflowTransactionType: CreateOrEditWorkflowTransactionTypeDto;
 }
 
 export class GetYearlyLeaveIndemnityDetailReportInput implements IGetYearlyLeaveIndemnityDetailReportInput {
@@ -249586,6 +251237,46 @@ export interface ILeaveRequestReportRowDto {
     stalledDays: number;
 }
 
+export class LinkEmployeeUserInput implements ILinkEmployeeUserInput {
+    employeeId!: number;
+    userId!: number;
+
+    constructor(data?: ILinkEmployeeUserInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): LinkEmployeeUserInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new LinkEmployeeUserInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["userId"] = this.userId;
+        return data;
+    }
+}
+
+export interface ILinkEmployeeUserInput {
+    employeeId: number;
+    userId: number;
+}
+
 export class LinkToUserInput implements ILinkToUserInput {
     tenancyName!: string | undefined;
     usernameOrEmailAddress!: string;
@@ -249628,6 +251319,70 @@ export interface ILinkToUserInput {
     tenancyName: string | undefined;
     usernameOrEmailAddress: string;
     password: string;
+}
+
+export class LinkableUserDto implements ILinkableUserDto {
+    id!: number;
+    userName!: string | undefined;
+    name!: string | undefined;
+    surname!: string | undefined;
+    emailAddress!: string | undefined;
+    isActive!: boolean;
+    linkedEmployeeId!: number | undefined;
+    linkedEmployeeCode!: string | undefined;
+
+    constructor(data?: ILinkableUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.name = _data["name"];
+            this.surname = _data["surname"];
+            this.emailAddress = _data["emailAddress"];
+            this.isActive = _data["isActive"];
+            this.linkedEmployeeId = _data["linkedEmployeeId"];
+            this.linkedEmployeeCode = _data["linkedEmployeeCode"];
+        }
+    }
+
+    static fromJS(data: any): LinkableUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LinkableUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["name"] = this.name;
+        data["surname"] = this.surname;
+        data["emailAddress"] = this.emailAddress;
+        data["isActive"] = this.isActive;
+        data["linkedEmployeeId"] = this.linkedEmployeeId;
+        data["linkedEmployeeCode"] = this.linkedEmployeeCode;
+        return data;
+    }
+}
+
+export interface ILinkableUserDto {
+    id: number;
+    userName: string | undefined;
+    name: string | undefined;
+    surname: string | undefined;
+    emailAddress: string | undefined;
+    isActive: boolean;
+    linkedEmployeeId: number | undefined;
+    linkedEmployeeCode: string | undefined;
 }
 
 export class LinkedUserDto implements ILinkedUserDto {
@@ -250512,6 +252267,50 @@ export class ListResultDtoOfOrganizationUnitDto implements IListResultDtoOfOrgan
 
 export interface IListResultDtoOfOrganizationUnitDto {
     items: OrganizationUnitDto[] | undefined;
+}
+
+export class ListResultDtoOfReportScheduleRunSliceDto implements IListResultDtoOfReportScheduleRunSliceDto {
+    items!: ReportScheduleRunSliceDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfReportScheduleRunSliceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ReportScheduleRunSliceDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfReportScheduleRunSliceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfReportScheduleRunSliceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfReportScheduleRunSliceDto {
+    items: ReportScheduleRunSliceDto[] | undefined;
 }
 
 export class ListResultDtoOfRoleListDto implements IListResultDtoOfRoleListDto {
@@ -270384,6 +272183,54 @@ export interface IPagedResultDtoOfLeaveRequestReportRowDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfLinkableUserDto implements IPagedResultDtoOfLinkableUserDto {
+    items!: LinkableUserDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfLinkableUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(LinkableUserDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfLinkableUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfLinkableUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfLinkableUserDto {
+    items: LinkableUserDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfLinkedUserDto implements IPagedResultDtoOfLinkedUserDto {
     items!: LinkedUserDto[] | undefined;
     totalCount!: number;
@@ -276096,6 +277943,102 @@ export interface IPagedResultDtoOfReportMasterDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfReportScheduleListDto implements IPagedResultDtoOfReportScheduleListDto {
+    items!: ReportScheduleListDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfReportScheduleListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ReportScheduleListDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfReportScheduleListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfReportScheduleListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfReportScheduleListDto {
+    items: ReportScheduleListDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfReportScheduleRunDto implements IPagedResultDtoOfReportScheduleRunDto {
+    items!: ReportScheduleRunDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfReportScheduleRunDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ReportScheduleRunDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfReportScheduleRunDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfReportScheduleRunDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfReportScheduleRunDto {
+    items: ReportScheduleRunDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfReportSettingDetailDto implements IPagedResultDtoOfReportSettingDetailDto {
     items!: ReportSettingDetailDto[] | undefined;
     totalCount!: number;
@@ -281760,6 +283703,54 @@ export interface IPagedResultDtoOfWorkflowSettingsListDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfWorkflowTransactionTypeDto implements IPagedResultDtoOfWorkflowTransactionTypeDto {
+    items!: WorkflowTransactionTypeDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfWorkflowTransactionTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(WorkflowTransactionTypeDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfWorkflowTransactionTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfWorkflowTransactionTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfWorkflowTransactionTypeDto {
+    items: WorkflowTransactionTypeDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfYearlyLeaveIndemnityDetailReportRowDto implements IPagedResultDtoOfYearlyLeaveIndemnityDetailReportRowDto {
     items!: YearlyLeaveIndemnityDetailReportRowDto[] | undefined;
     totalCount!: number;
@@ -286338,128 +288329,6 @@ export interface IPayslipConfigDto {
     emailTemplateNameEn: string | undefined;
 }
 
-export class PayslipInput implements IPayslipInput {
-    employeeId!: number;
-    month!: number;
-    year!: number;
-    payrollRunType!: PayrollRunType;
-    employeeStatus!: EmployeeStatus;
-    payrollAreaId!: number | undefined;
-    language!: PayslipReportLanguage;
-
-    constructor(data?: IPayslipInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.employeeId = _data["employeeId"];
-            this.month = _data["month"];
-            this.year = _data["year"];
-            this.payrollRunType = _data["payrollRunType"];
-            this.employeeStatus = _data["employeeStatus"];
-            this.payrollAreaId = _data["payrollAreaId"];
-            this.language = _data["language"];
-        }
-    }
-
-    static fromJS(data: any): PayslipInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new PayslipInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["month"] = this.month;
-        data["year"] = this.year;
-        data["payrollRunType"] = this.payrollRunType;
-        data["employeeStatus"] = this.employeeStatus;
-        data["payrollAreaId"] = this.payrollAreaId;
-        data["language"] = this.language;
-        return data;
-    }
-}
-
-export interface IPayslipInput {
-    employeeId: number;
-    month: number;
-    year: number;
-    payrollRunType: PayrollRunType;
-    employeeStatus: EmployeeStatus;
-    payrollAreaId: number | undefined;
-    language: PayslipReportLanguage;
-}
-
-export class PayslipRecipientDto implements IPayslipRecipientDto {
-    employeeId!: number;
-    employeeCode!: string | undefined;
-    employeeName!: string | undefined;
-    email!: string | undefined;
-    status!: EmployeeStatus;
-    netPay!: number;
-
-    constructor(data?: IPayslipRecipientDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.employeeId = _data["employeeId"];
-            this.employeeCode = _data["employeeCode"];
-            this.employeeName = _data["employeeName"];
-            this.email = _data["email"];
-            this.status = _data["status"];
-            this.netPay = _data["netPay"];
-        }
-    }
-
-    static fromJS(data: any): PayslipRecipientDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PayslipRecipientDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["employeeCode"] = this.employeeCode;
-        data["employeeName"] = this.employeeName;
-        data["email"] = this.email;
-        data["status"] = this.status;
-        data["netPay"] = this.netPay;
-        return data;
-    }
-}
-
-export interface IPayslipRecipientDto {
-    employeeId: number;
-    employeeCode: string | undefined;
-    employeeName: string | undefined;
-    email: string | undefined;
-    status: EmployeeStatus;
-    netPay: number;
-}
-
-export enum PayslipReportLanguage {
-    English = 0,
-    Arabic = 1,
-    EnglishAndArabic = 2,
-}
-
 export class PerformanceAppraisalDashboardDto implements IPerformanceAppraisalDashboardDto {
     paPeriodId!: number;
     paPeriodName!: string | undefined;
@@ -290030,6 +291899,14 @@ export interface IRenamePageInput {
     application: string | undefined;
 }
 
+export enum ReportBurstDimension {
+    None = 0,
+    OrganizationUnit = 1,
+    Manager = 2,
+    Sponsor = 3,
+    PayrollArea = 4,
+}
+
 export enum ReportCategory {
     Default = 0,
     Custom = 1,
@@ -290047,6 +291924,12 @@ export enum ReportColumnDataType {
     String = 2,
     DateTime = 3,
     Boolean = 4,
+}
+
+export enum ReportDestinationMethod {
+    Email = 0,
+    Ftp = 1,
+    Offline = 2,
 }
 
 export class ReportDetailDto implements IReportDetailDto {
@@ -290351,6 +292234,439 @@ export class ReportPdfOutput implements IReportPdfOutput {
 export interface IReportPdfOutput {
     fileName: string | undefined;
     base64Content: string | undefined;
+}
+
+export enum ReportRecipientRule {
+    RoleScoped = 0,
+    OrgUnitHead = 1,
+    Manager = 2,
+    Explicit = 3,
+}
+
+export enum ReportRecurringPattern {
+    Daily = 0,
+    Weekly = 1,
+    Monthly = 2,
+    Quarterly = 3,
+    Yearly = 4,
+}
+
+export enum ReportRunStatus {
+    Pending = 0,
+    Running = 1,
+    Succeeded = 2,
+    PartiallySucceeded = 3,
+    Failed = 4,
+    SkippedEmpty = 5,
+}
+
+export class ReportScheduleDestinationDto implements IReportScheduleDestinationDto {
+    id!: number;
+    method!: ReportDestinationMethod;
+    emailSubjectTemplate!: string | undefined;
+    emailBodyTemplate!: string | undefined;
+    hostAddress!: string | undefined;
+    ftpLogin!: string | undefined;
+    ftpPasswordSettingName!: string | undefined;
+    useSftp!: boolean;
+    ftpPassiveMode!: boolean;
+    remotePath!: string | undefined;
+    storageFolder!: string | undefined;
+
+    constructor(data?: IReportScheduleDestinationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.method = _data["method"];
+            this.emailSubjectTemplate = _data["emailSubjectTemplate"];
+            this.emailBodyTemplate = _data["emailBodyTemplate"];
+            this.hostAddress = _data["hostAddress"];
+            this.ftpLogin = _data["ftpLogin"];
+            this.ftpPasswordSettingName = _data["ftpPasswordSettingName"];
+            this.useSftp = _data["useSftp"];
+            this.ftpPassiveMode = _data["ftpPassiveMode"];
+            this.remotePath = _data["remotePath"];
+            this.storageFolder = _data["storageFolder"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleDestinationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleDestinationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["method"] = this.method;
+        data["emailSubjectTemplate"] = this.emailSubjectTemplate;
+        data["emailBodyTemplate"] = this.emailBodyTemplate;
+        data["hostAddress"] = this.hostAddress;
+        data["ftpLogin"] = this.ftpLogin;
+        data["ftpPasswordSettingName"] = this.ftpPasswordSettingName;
+        data["useSftp"] = this.useSftp;
+        data["ftpPassiveMode"] = this.ftpPassiveMode;
+        data["remotePath"] = this.remotePath;
+        data["storageFolder"] = this.storageFolder;
+        return data;
+    }
+}
+
+export interface IReportScheduleDestinationDto {
+    id: number;
+    method: ReportDestinationMethod;
+    emailSubjectTemplate: string | undefined;
+    emailBodyTemplate: string | undefined;
+    hostAddress: string | undefined;
+    ftpLogin: string | undefined;
+    ftpPasswordSettingName: string | undefined;
+    useSftp: boolean;
+    ftpPassiveMode: boolean;
+    remotePath: string | undefined;
+    storageFolder: string | undefined;
+}
+
+export class ReportScheduleFilterDto implements IReportScheduleFilterDto {
+    id!: number;
+    parameterName!: string;
+    parameterValue!: string | undefined;
+    relativeDateToken!: string | undefined;
+
+    constructor(data?: IReportScheduleFilterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.parameterName = _data["parameterName"];
+            this.parameterValue = _data["parameterValue"];
+            this.relativeDateToken = _data["relativeDateToken"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleFilterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleFilterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["parameterName"] = this.parameterName;
+        data["parameterValue"] = this.parameterValue;
+        data["relativeDateToken"] = this.relativeDateToken;
+        return data;
+    }
+}
+
+export interface IReportScheduleFilterDto {
+    id: number;
+    parameterName: string;
+    parameterValue: string | undefined;
+    relativeDateToken: string | undefined;
+}
+
+export class ReportScheduleListDto implements IReportScheduleListDto {
+    id!: number;
+    name!: string | undefined;
+    reportKind!: ScheduledReportKind;
+    reportKey!: string | undefined;
+    format!: ScheduledReportFormat;
+    burstDimension!: ReportBurstDimension;
+    occurrenceType!: ReportScheduleOccurrenceType;
+    recurringPattern!: ReportRecurringPattern;
+    isActive!: boolean;
+    lastRunTime!: DateTime | undefined;
+    nextRunTime!: DateTime | undefined;
+    lastRunStatus!: ReportRunStatus;
+    recipientRuleCount!: number;
+
+    constructor(data?: IReportScheduleListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.reportKind = _data["reportKind"];
+            this.reportKey = _data["reportKey"];
+            this.format = _data["format"];
+            this.burstDimension = _data["burstDimension"];
+            this.occurrenceType = _data["occurrenceType"];
+            this.recurringPattern = _data["recurringPattern"];
+            this.isActive = _data["isActive"];
+            this.lastRunTime = _data["lastRunTime"] ? DateTime.fromISO(_data["lastRunTime"].toString()) : undefined as any;
+            this.nextRunTime = _data["nextRunTime"] ? DateTime.fromISO(_data["nextRunTime"].toString()) : undefined as any;
+            this.lastRunStatus = _data["lastRunStatus"];
+            this.recipientRuleCount = _data["recipientRuleCount"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["reportKind"] = this.reportKind;
+        data["reportKey"] = this.reportKey;
+        data["format"] = this.format;
+        data["burstDimension"] = this.burstDimension;
+        data["occurrenceType"] = this.occurrenceType;
+        data["recurringPattern"] = this.recurringPattern;
+        data["isActive"] = this.isActive;
+        data["lastRunTime"] = this.lastRunTime ? this.lastRunTime.toString() : undefined as any;
+        data["nextRunTime"] = this.nextRunTime ? this.nextRunTime.toString() : undefined as any;
+        data["lastRunStatus"] = this.lastRunStatus;
+        data["recipientRuleCount"] = this.recipientRuleCount;
+        return data;
+    }
+}
+
+export interface IReportScheduleListDto {
+    id: number;
+    name: string | undefined;
+    reportKind: ScheduledReportKind;
+    reportKey: string | undefined;
+    format: ScheduledReportFormat;
+    burstDimension: ReportBurstDimension;
+    occurrenceType: ReportScheduleOccurrenceType;
+    recurringPattern: ReportRecurringPattern;
+    isActive: boolean;
+    lastRunTime: DateTime | undefined;
+    nextRunTime: DateTime | undefined;
+    lastRunStatus: ReportRunStatus;
+    recipientRuleCount: number;
+}
+
+export enum ReportScheduleOccurrenceType {
+    Once = 0,
+    Recurring = 1,
+}
+
+export class ReportScheduleRecipientDto implements IReportScheduleRecipientDto {
+    id!: number;
+    rule!: ReportRecipientRule;
+    roleId!: number | undefined;
+    scopeToBurstUnit!: boolean;
+    emailAddress!: string | undefined;
+    bypassRecipientScope!: boolean;
+
+    constructor(data?: IReportScheduleRecipientDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.rule = _data["rule"];
+            this.roleId = _data["roleId"];
+            this.scopeToBurstUnit = _data["scopeToBurstUnit"];
+            this.emailAddress = _data["emailAddress"];
+            this.bypassRecipientScope = _data["bypassRecipientScope"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleRecipientDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleRecipientDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["rule"] = this.rule;
+        data["roleId"] = this.roleId;
+        data["scopeToBurstUnit"] = this.scopeToBurstUnit;
+        data["emailAddress"] = this.emailAddress;
+        data["bypassRecipientScope"] = this.bypassRecipientScope;
+        return data;
+    }
+}
+
+export interface IReportScheduleRecipientDto {
+    id: number;
+    rule: ReportRecipientRule;
+    roleId: number | undefined;
+    scopeToBurstUnit: boolean;
+    emailAddress: string | undefined;
+    bypassRecipientScope: boolean;
+}
+
+export class ReportScheduleRunDto implements IReportScheduleRunDto {
+    id!: number;
+    reportScheduleId!: number;
+    reportScheduleName!: string | undefined;
+    startedAt!: DateTime;
+    finishedAt!: DateTime | undefined;
+    status!: ReportRunStatus;
+    isManual!: boolean;
+    sliceCount!: number;
+    errorMessage!: string | undefined;
+
+    constructor(data?: IReportScheduleRunDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.reportScheduleId = _data["reportScheduleId"];
+            this.reportScheduleName = _data["reportScheduleName"];
+            this.startedAt = _data["startedAt"] ? DateTime.fromISO(_data["startedAt"].toString()) : undefined as any;
+            this.finishedAt = _data["finishedAt"] ? DateTime.fromISO(_data["finishedAt"].toString()) : undefined as any;
+            this.status = _data["status"];
+            this.isManual = _data["isManual"];
+            this.sliceCount = _data["sliceCount"];
+            this.errorMessage = _data["errorMessage"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleRunDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleRunDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["reportScheduleId"] = this.reportScheduleId;
+        data["reportScheduleName"] = this.reportScheduleName;
+        data["startedAt"] = this.startedAt ? this.startedAt.toString() : undefined as any;
+        data["finishedAt"] = this.finishedAt ? this.finishedAt.toString() : undefined as any;
+        data["status"] = this.status;
+        data["isManual"] = this.isManual;
+        data["sliceCount"] = this.sliceCount;
+        data["errorMessage"] = this.errorMessage;
+        return data;
+    }
+}
+
+export interface IReportScheduleRunDto {
+    id: number;
+    reportScheduleId: number;
+    reportScheduleName: string | undefined;
+    startedAt: DateTime;
+    finishedAt: DateTime | undefined;
+    status: ReportRunStatus;
+    isManual: boolean;
+    sliceCount: number;
+    errorMessage: string | undefined;
+}
+
+export class ReportScheduleRunSliceDto implements IReportScheduleRunSliceDto {
+    id!: number;
+    burstKey!: string | undefined;
+    burstKeyDisplay!: string | undefined;
+    recipientEmail!: string | undefined;
+    method!: ReportDestinationMethod;
+    status!: ReportRunStatus;
+    rowCount!: number;
+    wasRecipientScoped!: boolean;
+    fileName!: string | undefined;
+    errorMessage!: string | undefined;
+
+    constructor(data?: IReportScheduleRunSliceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.burstKey = _data["burstKey"];
+            this.burstKeyDisplay = _data["burstKeyDisplay"];
+            this.recipientEmail = _data["recipientEmail"];
+            this.method = _data["method"];
+            this.status = _data["status"];
+            this.rowCount = _data["rowCount"];
+            this.wasRecipientScoped = _data["wasRecipientScoped"];
+            this.fileName = _data["fileName"];
+            this.errorMessage = _data["errorMessage"];
+        }
+    }
+
+    static fromJS(data: any): ReportScheduleRunSliceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportScheduleRunSliceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["burstKey"] = this.burstKey;
+        data["burstKeyDisplay"] = this.burstKeyDisplay;
+        data["recipientEmail"] = this.recipientEmail;
+        data["method"] = this.method;
+        data["status"] = this.status;
+        data["rowCount"] = this.rowCount;
+        data["wasRecipientScoped"] = this.wasRecipientScoped;
+        data["fileName"] = this.fileName;
+        data["errorMessage"] = this.errorMessage;
+        return data;
+    }
+}
+
+export interface IReportScheduleRunSliceDto {
+    id: number;
+    burstKey: string | undefined;
+    burstKeyDisplay: string | undefined;
+    recipientEmail: string | undefined;
+    method: ReportDestinationMethod;
+    status: ReportRunStatus;
+    rowCount: number;
+    wasRecipientScoped: boolean;
+    fileName: string | undefined;
+    errorMessage: string | undefined;
 }
 
 export class ReportSettingDetailDto implements IReportSettingDetailDto {
@@ -292395,6 +294711,58 @@ export interface IRunProjectCostEngineOutput {
     queued: boolean;
 }
 
+export class RunReportScheduleOutput implements IRunReportScheduleOutput {
+    runId!: number;
+    sliceCount!: number;
+    recipientCount!: number;
+    status!: ReportRunStatus;
+    message!: string | undefined;
+
+    constructor(data?: IRunReportScheduleOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.runId = _data["runId"];
+            this.sliceCount = _data["sliceCount"];
+            this.recipientCount = _data["recipientCount"];
+            this.status = _data["status"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): RunReportScheduleOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RunReportScheduleOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["runId"] = this.runId;
+        data["sliceCount"] = this.sliceCount;
+        data["recipientCount"] = this.recipientCount;
+        data["status"] = this.status;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IRunReportScheduleOutput {
+    runId: number;
+    sliceCount: number;
+    recipientCount: number;
+    status: ReportRunStatus;
+    message: string | undefined;
+}
+
 export class RunTimeEngineInput implements IRunTimeEngineInput {
     employeeCodes!: string | undefined;
     startDate!: DateTime | undefined;
@@ -292493,6 +294861,66 @@ export class RunTimeEngineOutput implements IRunTimeEngineOutput {
 
 export interface IRunTimeEngineOutput {
     queued: boolean;
+}
+
+export class RunnableReportDto implements IRunnableReportDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    reportName!: string | undefined;
+    reportCategory!: string | undefined;
+    isAvailable!: boolean;
+
+    constructor(data?: IRunnableReportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.reportName = _data["reportName"];
+            this.reportCategory = _data["reportCategory"];
+            this.isAvailable = _data["isAvailable"];
+        }
+    }
+
+    static fromJS(data: any): RunnableReportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RunnableReportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["reportName"] = this.reportName;
+        data["reportCategory"] = this.reportCategory;
+        data["isAvailable"] = this.isAvailable;
+        return data;
+    }
+}
+
+export interface IRunnableReportDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    reportName: string | undefined;
+    reportCategory: string | undefined;
+    isAvailable: boolean;
 }
 
 export class SafetyChecklistDto implements ISafetyChecklistDto {
@@ -294142,6 +296570,17 @@ export interface ISavePageInput {
     pages: Page[] | undefined;
 }
 
+export enum ScheduledReportFormat {
+    Excel = 0,
+    Pdf = 1,
+    Csv = 2,
+}
+
+export enum ScheduledReportKind {
+    GridReport = 0,
+    PrintReport = 1,
+}
+
 export enum ScoreSource {
     Live = 0,
     Manual = 1,
@@ -294639,110 +297078,6 @@ export interface ISendPasswordlessLoginCodeInput {
     providerType: PasswordlessLoginProviderType;
 }
 
-export class SendPayslipEmailsInput implements ISendPayslipEmailsInput {
-    month!: number;
-    year!: number;
-    payrollRunType!: PayrollRunType;
-    employeeStatus!: EmployeeStatus;
-    payrollAreaId!: number | undefined;
-    employeeId!: number | undefined;
-    language!: PayslipReportLanguage;
-
-    constructor(data?: ISendPayslipEmailsInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.month = _data["month"];
-            this.year = _data["year"];
-            this.payrollRunType = _data["payrollRunType"];
-            this.employeeStatus = _data["employeeStatus"];
-            this.payrollAreaId = _data["payrollAreaId"];
-            this.employeeId = _data["employeeId"];
-            this.language = _data["language"];
-        }
-    }
-
-    static fromJS(data: any): SendPayslipEmailsInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new SendPayslipEmailsInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["month"] = this.month;
-        data["year"] = this.year;
-        data["payrollRunType"] = this.payrollRunType;
-        data["employeeStatus"] = this.employeeStatus;
-        data["payrollAreaId"] = this.payrollAreaId;
-        data["employeeId"] = this.employeeId;
-        data["language"] = this.language;
-        return data;
-    }
-}
-
-export interface ISendPayslipEmailsInput {
-    month: number;
-    year: number;
-    payrollRunType: PayrollRunType;
-    employeeStatus: EmployeeStatus;
-    payrollAreaId: number | undefined;
-    employeeId: number | undefined;
-    language: PayslipReportLanguage;
-}
-
-export class SendPayslipEmailsOutput implements ISendPayslipEmailsOutput {
-    totalCount!: number;
-    successCount!: number;
-    failureCount!: number;
-
-    constructor(data?: ISendPayslipEmailsOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalCount = _data["totalCount"];
-            this.successCount = _data["successCount"];
-            this.failureCount = _data["failureCount"];
-        }
-    }
-
-    static fromJS(data: any): SendPayslipEmailsOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new SendPayslipEmailsOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        data["successCount"] = this.successCount;
-        data["failureCount"] = this.failureCount;
-        return data;
-    }
-}
-
-export interface ISendPayslipEmailsOutput {
-    totalCount: number;
-    successCount: number;
-    failureCount: number;
-}
-
 export class SendTestEmailInput implements ISendTestEmailInput {
     emailAddress!: string;
 
@@ -295190,6 +297525,46 @@ export class SetNotificationAsReadOutput implements ISetNotificationAsReadOutput
 
 export interface ISetNotificationAsReadOutput {
     success: boolean;
+}
+
+export class SetReportScheduleActiveInput implements ISetReportScheduleActiveInput {
+    id!: number;
+    isActive!: boolean;
+
+    constructor(data?: ISetReportScheduleActiveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): SetReportScheduleActiveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetReportScheduleActiveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface ISetReportScheduleActiveInput {
+    id: number;
+    isActive: boolean;
 }
 
 export enum SettingScopes {
@@ -306541,6 +308916,98 @@ export interface IWorkflowSettingsListDto {
     dynamicWorkflowSteps: boolean;
     sendBackToCreator: boolean;
     delegateEmployeeListByOrganizationUnitTypeId: number | undefined;
+}
+
+export class WorkflowTransactionTypeDto implements IWorkflowTransactionTypeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    isWorkflowEnabled!: boolean;
+    isEssEnabled!: boolean;
+    defaultRequestMasterId!: number | undefined;
+    defaultRequestMasterNameEn!: string | undefined;
+    defaultRequestMasterSteps!: number | undefined;
+    essRoute!: string | undefined;
+    essPermissionName!: string | undefined;
+    subTypeSource!: string | undefined;
+    iconClass!: string | undefined;
+    displayOrder!: number;
+    isActive!: boolean;
+
+    constructor(data?: IWorkflowTransactionTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.isWorkflowEnabled = _data["isWorkflowEnabled"];
+            this.isEssEnabled = _data["isEssEnabled"];
+            this.defaultRequestMasterId = _data["defaultRequestMasterId"];
+            this.defaultRequestMasterNameEn = _data["defaultRequestMasterNameEn"];
+            this.defaultRequestMasterSteps = _data["defaultRequestMasterSteps"];
+            this.essRoute = _data["essRoute"];
+            this.essPermissionName = _data["essPermissionName"];
+            this.subTypeSource = _data["subTypeSource"];
+            this.iconClass = _data["iconClass"];
+            this.displayOrder = _data["displayOrder"];
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): WorkflowTransactionTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkflowTransactionTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["isWorkflowEnabled"] = this.isWorkflowEnabled;
+        data["isEssEnabled"] = this.isEssEnabled;
+        data["defaultRequestMasterId"] = this.defaultRequestMasterId;
+        data["defaultRequestMasterNameEn"] = this.defaultRequestMasterNameEn;
+        data["defaultRequestMasterSteps"] = this.defaultRequestMasterSteps;
+        data["essRoute"] = this.essRoute;
+        data["essPermissionName"] = this.essPermissionName;
+        data["subTypeSource"] = this.subTypeSource;
+        data["iconClass"] = this.iconClass;
+        data["displayOrder"] = this.displayOrder;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface IWorkflowTransactionTypeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    isWorkflowEnabled: boolean;
+    isEssEnabled: boolean;
+    defaultRequestMasterId: number | undefined;
+    defaultRequestMasterNameEn: string | undefined;
+    defaultRequestMasterSteps: number | undefined;
+    essRoute: string | undefined;
+    essPermissionName: string | undefined;
+    subTypeSource: string | undefined;
+    iconClass: string | undefined;
+    displayOrder: number;
+    isActive: boolean;
 }
 
 export class WsFederationExternalLoginProviderSettings implements IWsFederationExternalLoginProviderSettings {

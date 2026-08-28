@@ -1375,6 +1375,33 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.DesignerDevExpress' },
                     },
                     {
+                        // REPORT DISTRIBUTION: schedule list.
+                        path: 'report-distribution',
+                        loadComponent: () =>
+                            import('./admin/report-distribution/report-distribution.component').then(
+                                (m) => m.ReportDistributionComponent
+                            ),
+                        data: { permission: 'Pages.Reports.Distribution' },
+                    },
+                    {
+                        // Four-step wizard, new schedule.
+                        path: 'report-distribution/wizard',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-distribution/wizard/report-schedule-wizard.component'
+                            ).then((m) => m.ReportScheduleWizardComponent),
+                        data: { permission: 'Pages.Reports.Distribution' },
+                    },
+                    {
+                        // Same wizard, editing an existing schedule.
+                        path: 'report-distribution/wizard/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-distribution/wizard/report-schedule-wizard.component'
+                            ).then((m) => m.ReportScheduleWizardComponent),
+                        data: { permission: 'Pages.Reports.Distribution' },
+                    },
+                    {
                         // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"): catalog list + Dx viewer.
                         path: 'print-reports-launcher',
                         loadComponent: () =>
@@ -3582,6 +3609,17 @@ export const appRoutes: Routes = [
                         loadComponent: () =>
                             import('./admin/demo-ui-components/demo-ui-components.component').then(
                                 (m) => m.DemoUiComponentsComponent
+                            ),
+                        data: { permission: 'Pages.DemoUiComponents' },
+                    },
+                    {
+                        // Prototype harness for the Implementation Cockpit paste grid. Sits in the demo
+                        // gallery (and borrows its permission) so the grid can be exercised before the
+                        // cockpit's own shell, routes and Pages.ImplementationCockpit permission exist.
+                        path: 'paste-grid-demo',
+                        loadComponent: () =>
+                            import('./admin/demo-ui-components/demo-ui-paste-grid.component').then(
+                                (m) => m.DemoUiPasteGridComponent
                             ),
                         data: { permission: 'Pages.DemoUiComponents' },
                     },

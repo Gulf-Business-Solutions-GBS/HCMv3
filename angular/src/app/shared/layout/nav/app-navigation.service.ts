@@ -28,6 +28,18 @@ export class AppNavigationService {
                 '/app/admin/print-reports-launcher',
                 ['/app/admin/print-reports-launcher/view/{reportName}']
             ),
+            // REPORT DISTRIBUTION (report scheduling + bursting). Sits next to the launcher because it
+            // schedules the same reports the launcher runs by hand.
+            new AppMenuItem(
+                'ReportDistribution',
+                'Pages.Reports.Distribution',
+                'flaticon-paper-plane',
+                '/app/admin/report-distribution',
+                [
+                    '/app/admin/report-distribution/wizard',
+                    '/app/admin/report-distribution/wizard/{id}',
+                ]
+            ),
             // ANALYSIS GRID REPORTS (legacy HCM10.Web/UserControls/Reports/Analysis). One child entry per
             // ported report; the wave adds ~139 more siblings under this same parent.
             new AppMenuItem(

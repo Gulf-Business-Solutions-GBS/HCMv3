@@ -53,6 +53,15 @@ namespace HCMv3.Web.Controllers;
 /// DevExpress Web Report Designer backend. Editing report layouts is the designer page's job, so this
 /// requires the designer permission rather than the (much more widely granted) print-reports one.
 /// </summary>
+// [ApiExplorerSettings(IgnoreApi = true)] MUST STAY. The DevExpress base controllers expose a
+// catch-all Invoke action with no explicit HTTP method, which Swashbuckle cannot describe:
+//     SwaggerGeneratorException: Ambiguous HTTP method for action ... DXXQBController.Invoke
+// That makes /swagger/v1/swagger.json return HTTP 500, which in turn breaks NSwag proxy
+// generation for the whole Angular client -- angular/nswag/refresh.bat silently produces
+// nothing. These endpoints are consumed by the DevExpress widgets over their own protocol and
+// are not part of the generated client surface, so hiding them from the API explorer costs
+// nothing and restores proxy generation.
+[ApiExplorerSettings(IgnoreApi = true)]
 [DontWrapResult]
 [AbpMvcAuthorize(AppPermissions.Pages_Reports_DesignerDevExpress,
     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -114,6 +123,15 @@ public class DXXRDController : ReportDesignerController
 /// left at its default false, so EITHER permission admits the caller -- requiring both would break
 /// preview for a designer-only role and break the launcher for everyone else.
 /// </summary>
+// [ApiExplorerSettings(IgnoreApi = true)] MUST STAY. The DevExpress base controllers expose a
+// catch-all Invoke action with no explicit HTTP method, which Swashbuckle cannot describe:
+//     SwaggerGeneratorException: Ambiguous HTTP method for action ... DXXQBController.Invoke
+// That makes /swagger/v1/swagger.json return HTTP 500, which in turn breaks NSwag proxy
+// generation for the whole Angular client -- angular/nswag/refresh.bat silently produces
+// nothing. These endpoints are consumed by the DevExpress widgets over their own protocol and
+// are not part of the generated client surface, so hiding them from the API explorer costs
+// nothing and restores proxy generation.
+[ApiExplorerSettings(IgnoreApi = true)]
 [DontWrapResult]
 [AbpMvcAuthorize(
     AppPermissions.Pages_Reports_PrintReports,
@@ -132,6 +150,15 @@ public class DXXRDVController : WebDocumentViewerController
 /// DevExpress Query Builder backend (used by the designer's data-source wizard). It can enumerate and
 /// query database schema, so it is gated on the designer permission only -- never on the launcher's.
 /// </summary>
+// [ApiExplorerSettings(IgnoreApi = true)] MUST STAY. The DevExpress base controllers expose a
+// catch-all Invoke action with no explicit HTTP method, which Swashbuckle cannot describe:
+//     SwaggerGeneratorException: Ambiguous HTTP method for action ... DXXQBController.Invoke
+// That makes /swagger/v1/swagger.json return HTTP 500, which in turn breaks NSwag proxy
+// generation for the whole Angular client -- angular/nswag/refresh.bat silently produces
+// nothing. These endpoints are consumed by the DevExpress widgets over their own protocol and
+// are not part of the generated client surface, so hiding them from the API explorer costs
+// nothing and restores proxy generation.
+[ApiExplorerSettings(IgnoreApi = true)]
 [DontWrapResult]
 [AbpMvcAuthorize(AppPermissions.Pages_Reports_DesignerDevExpress,
     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

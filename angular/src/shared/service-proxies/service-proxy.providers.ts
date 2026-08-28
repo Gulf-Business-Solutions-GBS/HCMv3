@@ -530,6 +530,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.DomainTypesServiceProxy,
     ApiServiceProxies.ReportTypesServiceProxy,
     ApiServiceProxies.PrintReportsServiceProxy,
+    ApiServiceProxies.ReportSchedulesServiceProxy,
     ApiServiceProxies.PrintReportPermissionsServiceProxy,
     ApiServiceProxies.PrintReportPermissionDetailsServiceProxy,
     ApiServiceProxies.ReportMastersServiceProxy,

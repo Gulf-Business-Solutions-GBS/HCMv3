@@ -1,0 +1,137 @@
+<sub-header [title]="'ReportDistribution' | localize" [description]="'ReportDistributionDescription' | localize">
+    <div role="actions">
+        @if ('Pages.Reports.Distribution.Create' | permission) {
+            <button class="btn btn-primary" type="button" (click)="createSchedule()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'NewSchedule' | localize }}</span>
+            </button>
+        }
+    </div>
+</sub-header>
+
+<div [class]="containerClass">
+    <div class="card card-custom">
+        <div class="card-body">
+            <div class="row align-items-center mb-4">
+                <div class="col-xl-12">
+                    <div class="input-group">
+                        <input
+                            [(ngModel)]="filterText"
+                            name="filterText"
+                            class="form-control"
+                            [placeholder]="'SearchWithThreeDot' | localize"
+                            type="text"
+                            (keyup.enter)="getRecords()" />
+                        <button class="btn btn-primary" type="button" (click)="getRecords()">
+                            <i class="flaticon-search-1" aria-label="Search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div [busyIf]="isLoading()">
+                <p-table
+                    #dataTable
+                    [value]="records()"
+                    [lazy]="true"
+                    (onLazyLoad)="getRecords($event)"
+                    [paginator]="false"
+                    [scrollable]="true"
+                    [resizableColumns]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 180px">{{ 'Actions' | localize }}</th>
+                            <th>{{ 'Name' | localize }}</th>
+                            <th>{{ 'Report' | localize }}</th>
+                            <th>{{ 'BurstBy' | localize }}</th>
+                            <th>{{ 'Recipients' | localize }}</th>
+                            <th>{{ 'LastRun' | localize }}</th>
+                            <th>{{ 'Status' | localize }}</th>
+                            <th>{{ 'Active' | localize }}</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-record="$implicit">
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    @if ('Pages.Reports.Distribution.RunNow' | permission) {
+                                        <button
+                                            class="btn btn-icon btn-sm btn-light-primary"
+                                            type="button"
+                                            [pTooltip]="'RunScheduleNow' | localize"
+                                            (click)="runNow(record)">
+                                            <i class="fa fa-play"></i>
+                                        </button>
+                                    }
+                                    @if ('Pages.Reports.Distribution.Edit' | permission) {
+                                        <button
+                                            class="btn btn-icon btn-sm btn-light-primary"
+                                            type="button"
+                                            [pTooltip]="'Edit' | localize"
+                                            (click)="editSchedule(record)">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    }
+                                    <button
+                                        class="btn btn-icon btn-sm btn-light-primary"
+                                        type="button"
+                                        [pTooltip]="'RunHistory' | localize"
+                                        (click)="viewRuns(record)">
+                                        <i class="fa fa-history"></i>
+                                    </button>
+                                    @if ('Pages.Reports.Distribution.Create' | permission) {
+                                        <button
+                                            class="btn btn-icon btn-sm btn-light-primary"
+                                            type="button"
+                                            [pTooltip]="'Duplicate' | localize"
+                                            (click)="duplicateSchedule(record)">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    }
+                                    @if ('Pages.Reports.Distribution.Delete' | permission) {
+                                        <button
+                                            class="btn btn-icon btn-sm btn-light-danger"
+                                            type="button"
+                                            [pTooltip]="'Delete' | localize"
+                                            (click)="deleteSchedule(record)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                            <td>{{ record.name }}</td>
+                            <td>{{ record.reportKey }}</td>
+                            <td>{{ burstText(record.burstDimension) }}</td>
+                            <td>{{ record.recipientRuleCount }}</td>
+                            <td>{{ record.lastRunTime | date: 'short' }}</td>
+                            <td>
+                                <span [class]="statusClass(record.lastRunStatus)">
+                                    {{ statusText(record.lastRunStatus) }}
+                                </span>
+                            </td>
+                            <td>
+                                @if ('Pages.Reports.Distribution.Edit' | permission) {
+                                    <button
+                                        class="btn btn-sm"
+                                        [class.btn-light-success]="record.isActive"
+                                        [class.btn-light-secondary]="!record.isActive"
+                                        type="button"
+                                        (click)="toggleActive(record)">
+                                        {{ (record.isActive ? 'Active' : 'Inactive') | localize }}
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8" class="text-center">{{ 'NoData' | localize }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
