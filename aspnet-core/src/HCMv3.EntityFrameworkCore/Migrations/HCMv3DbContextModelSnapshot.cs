@@ -32262,6 +32262,71 @@ namespace HCMv3.Migrations
                     b.ToTable("WorkFlowApprovers");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInternal")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorEmployeeId");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("WorkflowRequestId");
+
+                    b.HasIndex("TenantId", "WorkflowRequestId", "CreationTime");
+
+                    b.ToTable("WorkflowComments");
+                });
+
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -39292,6 +39357,32 @@ namespace HCMv3.Migrations
                     b.Navigation("WorkflowRequest");
                 });
 
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowComment", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "AuthorEmployee")
+                        .WithMany()
+                        .HasForeignKey("AuthorEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.Workflow.WorkflowComment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCMv3.Workflow.WorkflowRequest", "WorkflowRequest")
+                        .WithMany()
+                        .HasForeignKey("WorkflowRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthorEmployee");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("WorkflowRequest");
+                });
+
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroupDetail", b =>
                 {
                     b.HasOne("HCMv3.Workflow.RequestMaster", "RequestMaster")
@@ -39483,6 +39574,11 @@ namespace HCMv3.Migrations
             modelBuilder.Entity("HCMv3.Workflow.RequestMaster", b =>
                 {
                     b.Navigation("RequestDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.Workflow.WorkflowComment", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.WorkflowGroup", b =>

@@ -725,6 +725,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WorkflowTransactionType> WorkflowTransactionTypes { get; set; }
 
+    public virtual DbSet<WorkflowComment> WorkflowComments { get; set; }
+
     public virtual DbSet<RequestLog> RequestLogs { get; set; }
 
     public virtual DbSet<WorkFlowApprover> WorkFlowApprovers { get; set; }
@@ -1138,6 +1140,25 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         // first thing every ESS screen does -- "who am I" -- becomes ambiguous. IsDeleted is in the filter
         // because Employee is soft-deleted, and a deleted employee's row would otherwise permanently block
         // its user from being linked to a replacement record (rehire, duplicate cleanup).
+        // The activity feed reads comments for one request in chronological order, so that is the index.
+        modelBuilder.Entity<WorkflowComment>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.WorkflowRequestId, e.CreationTime });
+
+            // Restrict on both: a reply must not silently vanish when its parent is removed (the thread
+            // would lose its context), and deleting an employee must not delete what they said -- the
+            // comment is part of the request's history.
+            b.HasOne(e => e.ParentComment)
+                .WithMany(e => e.Replies)
+                .HasForeignKey(e => e.ParentCommentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.AuthorEmployee)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorEmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         // The transaction-type catalog. Code is what WorkflowRequest.RequestType and
         // WorkflowGroupDetail.RequestTypeName are matched against, so a duplicate would make routing
         // ambiguous -- exactly the failure the catalog exists to remove.
