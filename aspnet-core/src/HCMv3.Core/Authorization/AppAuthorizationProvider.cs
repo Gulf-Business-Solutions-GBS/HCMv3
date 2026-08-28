@@ -2514,11 +2514,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Create, L("CreateNewItem"));
         sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Edit, L("EditItem"));
         sysTenantConfigs.CreateChildPermission(AppPermissions.Pages_SystemSecurity_SysTenantConfigs_Delete, L("DeleteItem"));
-
-        //REPORTS (FastReport pilot)
-        var reportPreview = pages.CreateChildPermission(AppPermissions.Pages_Reports_Preview, L("ReportPreview"));
-        reportPreview.CreateChildPermission(AppPermissions.Pages_Reports_Payslip_Email, L("EmailingPayslips"));
-        pages.CreateChildPermission(AppPermissions.Pages_Reports_Designer, L("ReportDesigner"));
+        //REPORTS
         pages.CreateChildPermission(AppPermissions.Pages_Reports_DesignerDevExpress, L("ReportDesignerDevExpress"));
         pages.CreateChildPermission(AppPermissions.Pages_Reports_PrintReports, L("PrintReportsLauncher"));
 

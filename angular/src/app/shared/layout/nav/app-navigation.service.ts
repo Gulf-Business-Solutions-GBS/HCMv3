@@ -19,25 +19,6 @@ export class AppNavigationService {
                 '/app/admin/hostDashboard'
             ),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
-            new AppMenuItem('ReportPreview', 'Pages.Reports.Preview', 'flaticon-file-2', '/app/admin/report-preview'),
-            new AppMenuItem(
-                'PayslipReport',
-                'Pages.Reports.Payslip.Email',
-                'flaticon-envelope',
-                '/app/admin/payslip-report'
-            ),
-            new AppMenuItem(
-                'ReportDesigner',
-                'Pages.Reports.Designer',
-                'flaticon-edit',
-                '/app/admin/report-designer'
-            ),
-            new AppMenuItem(
-                'ReportDesignerDevExpress',
-                'Pages.Reports.DesignerDevExpress',
-                'flaticon-edit',
-                '/app/admin/report-designer-devexpress'
-            ),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.
             new AppMenuItem(

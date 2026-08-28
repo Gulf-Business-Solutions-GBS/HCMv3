@@ -4052,22 +4052,18 @@
     <text name="EmployeesNotificationLogs">Employee Notification Logs</text>
     <text name="EmployeeWorkflowRoles">Employee Workflow Roles</text>
     <text name="IssueDateShouldBeLessOrEqualToExpiryDate">Issue date should be less than or equal to expiry date.</text>
-    <text name="ReportPreview">Report Preview</text>
     <text name="SelectEmployee">Select employee</text>
     <text name="PreviewSalaryCertificate">Preview Salary Certificate</text>
     <text name="PreviewPayslip">Preview Payslip</text>
     <text name="PleaseSelectAnEmployeeFirst">Please select an employee first.</text>
     <text name="PopupBlockedPleaseAllowPopups">Your browser blocked the popup. Please allow popups for this site and try again.</text>
     <!-- Payslip preview / payslip report (ported legacy uscPreviewPaySlip / uscRptPaySlip screens) -->
-    <text name="EmailingPayslips">Emailing payslips</text>
-    <text name="PayslipReport">Payslip Report</text>
     <text name="NoPayslipFoundForSelectedPeriod">No payslip was found for the selected employee, period and payroll run type.</text>
     <text name="PayslipLanguage">Payslip Language</text>
     <text name="PayslipRecipients">Payslip Recipients</text>
     <text name="LoadRecipients">Load Recipients</text>
     <text name="SendPayslipEmails">Send Payslip Emails</text>
     <!-- Report Designer: internal dev-only tool embedding the standalone Stimulsoft Report Designer for reviewing the DevExpress-to-Stimulsoft report migration -->
-    <text name="ReportDesigner">Report Designer</text>
     <text name="ReportDesignerDescription">Internal migration review tool</text>
     <text name="ReportDesignerDevToolWarning">This is an internal developer tool for reviewing the DevExpress-to-Stimulsoft report migration. It is not part of the production application: it has no authentication and requires a separate local process (aspnet-core/tools/HCMv3.ReportDesigner) to be running on your machine. If that process is not started, the panel below will show a connection error.</text>
     <!-- Native DevExpress Web Report Designer: edits the ported XtraReport classes in HCMv3.Reports -->

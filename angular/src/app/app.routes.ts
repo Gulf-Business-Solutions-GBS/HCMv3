@@ -1357,30 +1357,6 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PersonnelAdministration.Employees' },
                     },
                     {
-                        path: 'report-preview',
-                        loadComponent: () =>
-                            import('./admin/reports/report-preview/report-preview.component').then(
-                                (m) => m.ReportPreviewComponent
-                            ),
-                        data: { permission: 'Pages.Reports.Preview' },
-                    },
-                    {
-                        path: 'payslip-report',
-                        loadComponent: () =>
-                            import('./admin/reports/payslip-report/payslip-report.component').then(
-                                (m) => m.PayslipReportComponent
-                            ),
-                        data: { permission: 'Pages.Reports.Payslip.Email' },
-                    },
-                    {
-                        path: 'report-designer',
-                        loadComponent: () =>
-                            import('./admin/report-designer/report-designer.component').then(
-                                (m) => m.ReportDesignerComponent
-                            ),
-                        data: { permission: 'Pages.Reports.Designer' },
-                    },
-                    {
                         path: 'report-designer-devexpress',
                         loadComponent: () =>
                             import(

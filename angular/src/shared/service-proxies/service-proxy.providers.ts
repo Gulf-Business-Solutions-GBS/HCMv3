@@ -661,7 +661,6 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.ManageTimeSettingsServiceProxy,
     ApiServiceProxies.ManageWorkflowSettingsServiceProxy,
     ApiServiceProxies.PayrollDriverServiceProxy,
-    ApiServiceProxies.ReportsServiceProxy,
     // ProjectReport / Recruitment / AccommodationReport grid reports (Reports > Analysis).
     ApiServiceProxies.ProjectCostingReportServiceProxy,
     ApiServiceProxies.ProjectCostingCustom052ReportServiceProxy,

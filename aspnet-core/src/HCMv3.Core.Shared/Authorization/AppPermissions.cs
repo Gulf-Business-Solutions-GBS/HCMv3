@@ -2453,19 +2453,16 @@ public static class AppPermissions
     public const string Pages_SystemSecurity_SysTenantConfigs_Edit = "Pages.SystemSecurity.SysTenantConfigs.Edit";
     public const string Pages_SystemSecurity_SysTenantConfigs_Delete = "Pages.SystemSecurity.SysTenantConfigs.Delete";
 
-    public const string Pages_Reports_Preview = "Pages.Reports.Preview";
 
     /// <summary>
     /// Bulk payslip mailing (legacy uscRptPaySlip). Separated from the on-screen preview because it mails
     /// money documents to every employee in a payroll period.
     /// </summary>
-    public const string Pages_Reports_Payslip_Email = "Pages.Reports.Payslip.Email";
 
     /// <summary>
     /// Internal dev-only tool that embeds the standalone Stimulsoft Report Designer (aspnet-core/tools/HCMv3.ReportDesigner)
     /// for reviewing the DevExpress-to-Stimulsoft report migration. Not a production reporting feature.
     /// </summary>
-    public const string Pages_Reports_Designer = "Pages.Reports.Designer";
 
     /// <summary>
     /// Native DevExpress Web Report Designer, served from Web.Host (/DXXRD, /DXXRDV) and hosted by the
