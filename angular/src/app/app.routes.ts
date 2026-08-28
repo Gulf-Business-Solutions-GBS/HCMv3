@@ -1413,6 +1413,15 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Distribution' },
                     },
                     {
+                        // Run history for one schedule, with the per-recipient delivery breakdown.
+                        path: 'report-distribution/runs/:id',
+                        loadComponent: () =>
+                            import(
+                                './admin/report-distribution/runs/report-schedule-runs.component'
+                            ).then((m) => m.ReportScheduleRunsComponent),
+                        data: { permission: 'Pages.Reports.Distribution' },
+                    },
+                    {
                         // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"): catalog list + Dx viewer.
                         path: 'print-reports-launcher',
                         loadComponent: () =>
