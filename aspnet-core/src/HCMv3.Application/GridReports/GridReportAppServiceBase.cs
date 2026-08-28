@@ -45,6 +45,12 @@ public abstract class GridReportAppServiceBase : HCMv3AppServiceBase
 
     public HCMv3.SystemSecurity.Services.IRlsService RlsService { get; set; }
 
+    /// <summary>
+    /// Set while a report is being rendered on behalf of a report-distribution RECIPIENT rather than
+    /// the caller. See <see cref="HCMv3.ReportManagement.Services.IReportScopeOverride"/>.
+    /// </summary>
+    public HCMv3.ReportManagement.Services.IReportScopeOverride ReportScopeOverride { get; set; }
+
     public IRepository<ExecutionLog> ExecutionLogRepository { get; set; }
 
     /// <summary>
@@ -73,6 +79,33 @@ public abstract class GridReportAppServiceBase : HCMv3AppServiceBase
     /// </summary>
     protected Task<List<int>> GetRlsEmployeeIdsAsync()
     {
+        // REPORT DISTRIBUTION takes precedence over the session.
+        //
+        // A scheduled run has no AbpSession, so RlsService would find no user and return an empty list
+        // -- which by the convention documented above means NO RESTRICTION, i.e. every employee in the
+        // tenant. Delivering that to each department head is the exact failure the distribution module
+        // exists to prevent, and it is invisible: the file looks normal, only far too complete.
+        if (ReportScopeOverride?.IsActive == true)
+        {
+            var visible = ReportScopeOverride.VisibleEmployeeIds;
+
+            if (visible == null)
+            {
+                // Genuinely unrestricted: row-level security is off tenant-wide, or this recipient was
+                // deliberately exempted. Empty list == no restriction, matching the convention.
+                return Task.FromResult(new List<int>());
+            }
+
+            if (visible.Count == 0)
+            {
+                // Entitled to NOTHING. An empty list cannot express that here -- it means the opposite --
+                // so return a sentinel that matches no employee and therefore yields zero rows.
+                return Task.FromResult(new List<int> { int.MinValue });
+            }
+
+            return Task.FromResult(new List<int>(visible));
+        }
+
         return RlsService.GetRlsEmployeeIdsAsync();
     }
 

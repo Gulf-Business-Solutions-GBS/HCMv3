@@ -19,6 +19,7 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
     private readonly IReportRecipientScopeResolver _scopeResolver;
     private readonly IEnumerable<IReportSliceRenderer> _renderers;
     private readonly IEnumerable<IReportSliceDeliveryChannel> _channels;
+    private readonly IReportScopeOverride _scopeOverride;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public ReportScheduleExecutor(
@@ -29,6 +30,7 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
         IReportRecipientScopeResolver scopeResolver,
         IEnumerable<IReportSliceRenderer> renderers,
         IEnumerable<IReportSliceDeliveryChannel> channels,
+        IReportScopeOverride scopeOverride,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _scheduleRepository = scheduleRepository;
@@ -38,6 +40,7 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
         _scopeResolver = scopeResolver;
         _renderers = renderers;
         _channels = channels;
+        _scopeOverride = scopeOverride;
         _unitOfWorkManager = unitOfWorkManager;
         Logger = NullLogger.Instance;
     }
@@ -184,7 +187,15 @@ public class ReportScheduleExecutor : HCMv3DomainServiceBase, IReportScheduleExe
                 }
             }
 
-            var rendered = await renderer.RenderAsync(schedule, slice, visibleEmployeeIds);
+            // Publish the recipient's scope for the duration of the render. Grid reports resolve their
+            // own row-level security from AbpSession, which is absent (or is the schedule author's) in a
+            // scheduled run -- see IReportScopeOverride for why that would otherwise leak the whole
+            // tenant into every slice.
+            RenderedReportSlice rendered;
+            using (_scopeOverride.Begin(visibleEmployeeIds))
+            {
+                rendered = await renderer.RenderAsync(schedule, slice, visibleEmployeeIds);
+            }
             logSlice.RowCount = rendered?.RowCount ?? 0;
             logSlice.FileName = Truncate(rendered?.FileName, 512);
 
