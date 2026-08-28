@@ -109,6 +109,15 @@ public class HCMv3WebHostModule : AbpModule
         // is a per-tenant runtime setting and therefore cannot be evaluated here at host start-up.
         workManager.Add(IocManager.Resolve<TimeEngineAutorunBackgroundWorker>());
 
+        // REPORT DISTRIBUTION: fires report schedules whose next occurrence has arrived. Registered
+        // unconditionally -- it is a no-op unless a tenant has active schedules that are due, and there
+        // is no host-level setting that could be evaluated here instead.
+        //
+        // Deliberately an ABP periodic worker rather than a Hangfire recurring job: Hangfire is
+        // referenced but DISABLED here (WebConsts.HangfireDashboardEnabled is false), so a recurring job
+        // would register against storage nothing polls and silently never fire.
+        workManager.Add(IocManager.Resolve<ReportScheduleDispatcherWorker>());
+
         ConfigureExternalAuthProviders();
     }
 
