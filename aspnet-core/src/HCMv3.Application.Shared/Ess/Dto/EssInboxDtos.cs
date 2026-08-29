@@ -1,0 +1,102 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
+using Abp.Extensions;
+using Abp.Runtime.Validation;
+using HCMv3.Workflow;
+
+namespace HCMv3.Ess.Dto;
+
+/// <summary>
+/// One request waiting on the current user, whatever kind of transaction it is.
+///
+/// <para>
+/// Every field here comes from <c>WorkflowRequest</c> and <c>Employee</c> alone -- nothing is read from the
+/// transaction tables. That is what <c>SummaryEn</c>/<c>SummaryAr</c> are for, and it is why the inbox is a
+/// single indexed query rather than a fan-out across a table per type.
+/// </para>
+/// </summary>
+public class EssInboxItemDto : EntityDto<int>
+{
+    /// <summary>Catalog code, e.g. "EmployeeAbsence" -- used to pick an icon and to route to the detail.</summary>
+    public string RequestType { get; set; }
+
+    public string RequestTypeNameEn { get; set; }
+
+    public string RequestTypeNameAr { get; set; }
+
+    public string RequestNumber { get; set; }
+
+    /// <summary>The one-line description the type's handler wrote at submit time.</summary>
+    public string SummaryEn { get; set; }
+
+    public string SummaryAr { get; set; }
+
+    public int? RequesterEmployeeId { get; set; }
+
+    public string RequesterNameEn { get; set; }
+
+    public string RequesterNameAr { get; set; }
+
+    public string RequesterPhotoUrl { get; set; }
+
+    public DateTime? SubmittedOn { get; set; }
+
+    public int WorkflowStep { get; set; }
+
+    public int TotalSteps { get; set; }
+
+    /// <summary>False when the step's configuration forbids it, so the screen does not offer a button that
+    /// would be refused.</summary>
+    public bool CanReject { get; set; }
+
+    public bool CanSendBack { get; set; }
+}
+
+public class GetMyInboxInput : PagedAndSortedResultRequestDto, IShouldNormalize
+{
+    /// <summary>Optional filter to one transaction type.</summary>
+    public string RequestType { get; set; }
+
+    public void Normalize()
+    {
+        if (Sorting.IsNullOrWhiteSpace())
+        {
+            Sorting = "CreationTime";
+        }
+    }
+}
+
+public class ApproveRequestInput
+{
+    [Range(1, int.MaxValue)]
+    public int WorkflowRequestId { get; set; }
+
+    [StringLength(4000)]
+    public string Comment { get; set; }
+}
+
+public class RejectRequestInput
+{
+    [Range(1, int.MaxValue)]
+    public int WorkflowRequestId { get; set; }
+
+    /// <summary>
+    /// Required, unlike on approval. A rejection the requester cannot understand is one they will simply
+    /// resubmit unchanged.
+    /// </summary>
+    [Required]
+    [StringLength(4000, MinimumLength = 1)]
+    public string Comment { get; set; }
+}
+
+public class SendBackRequestInput
+{
+    [Range(1, int.MaxValue)]
+    public int WorkflowRequestId { get; set; }
+
+    /// <summary>Required: the requester is being asked to change something and needs to know what.</summary>
+    [Required]
+    [StringLength(4000, MinimumLength = 1)]
+    public string Comment { get; set; }
+}

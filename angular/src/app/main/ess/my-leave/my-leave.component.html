@@ -1,0 +1,154 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EssMyLeave' | localize">
+        <div role="actions">
+            @if (!notLinked()) {
+                <button class="btn btn-primary" (click)="openForm()">
+                    <i class="fa fa-plus"></i> {{ 'ApplyForLeave' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0">
+                        {{ 'CurrentUserHasNoEmployeeRecord' | localize }}
+                    </div>
+                </div>
+            </div>
+        } @else {
+            <div class="row">
+                @for (balance of balances(); track balance.absenceTypeId) {
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body">
+                                <div class="text-muted">{{ typeName(balance) }}</div>
+
+                                <!-- Bookable is the headline: it is the number an application is checked
+                                     against. Remaining is shown beneath so the difference is visible. -->
+                                <div class="d-flex align-items-baseline">
+                                    <span class="h2 mb-0 mr-2">{{ balance.bookable }}</span>
+                                    <span class="text-muted">{{ 'BookableBalance' | localize }}</span>
+                                </div>
+
+                                <div class="mt-2 small text-muted">
+                                    <div>{{ 'Remaining' | localize }}: {{ balance.remaining }}</div>
+                                    @if (balance.pending) {
+                                        <!-- Shown only when non-zero, and it is the reason bookable is lower
+                                             than the balance the employee expects. -->
+                                        <div class="text-warning">
+                                            {{ 'PendingApproval' | localize }}: {{ balance.pending }}
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                } @empty {
+                    <div class="col-12">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body text-muted">{{ 'NoLeaveQuotaConfigured' | localize }}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (showForm()) {
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ 'ApplyForLeave' | localize }}</h5>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>{{ 'AbsenceType' | localize }}</label>
+                                <select class="form-control" [(ngModel)]="form.absenceTypeId">
+                                    <option [ngValue]="null">--</option>
+                                    @for (type of absenceTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'StartDate' | localize }}</label>
+                                <input type="date" class="form-control" [(ngModel)]="form.startDate" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'EndDate' | localize }}</label>
+                                <input type="date" class="form-control" [(ngModel)]="form.endDate" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'Comments' | localize }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="form.comments" />
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="apply()">
+                            {{ 'Save' | localize }}
+                        </button>
+                        <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
+                    </div>
+                </div>
+            }
+
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+
+                    @if (loading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'AbsenceType' | localize }}</th>
+                                        <th>{{ 'StartDate' | localize }}</th>
+                                        <th>{{ 'EndDate' | localize }}</th>
+                                        <th>{{ 'Days' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (leave of leaves(); track leave.id) {
+                                        <tr>
+                                            <td>{{ leaveTypeName(leave) }}</td>
+                                            <td>{{ leave.startDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ leave.endDate | luxonFormat: 'yyyy-MM-dd' }}</td>
+                                            <td>{{ leave.totalLeaveDays }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(leave)">
+                                                    {{ statusLabel(leave) }}
+                                                </span>
+                                            </td>
+                                            <td class="text-right">
+                                                @if (leave.workflowRequestId) {
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.workflowRequestId)">
+                                                        {{ 'WorkflowHistory' | localize }}
+                                                    </button>
+                                                }
+                                                @if (leave.canCancel) {
+                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(leave)">
+                                                        {{ 'Cancel' | localize }}
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<workflowHistoryModal #history />

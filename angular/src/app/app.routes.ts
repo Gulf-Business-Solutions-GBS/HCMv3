@@ -161,6 +161,18 @@ export const appRoutes: Routes = [
                             import('./main/ess/ess-home.component').then((m) => m.EssHomeComponent),
                         data: { permission: 'Ess' },
                     },
+                    {
+                        path: 'ess/leave',
+                        loadComponent: () =>
+                            import('./main/ess/my-leave/my-leave.component').then((m) => m.MyLeaveComponent),
+                        data: { permission: 'Ess.MyLeave' },
+                    },
+                    {
+                        path: 'ess/inbox',
+                        loadComponent: () =>
+                            import('./main/ess/inbox/ess-inbox.component').then((m) => m.EssInboxComponent),
+                        data: { permission: 'Ess.Inbox' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },

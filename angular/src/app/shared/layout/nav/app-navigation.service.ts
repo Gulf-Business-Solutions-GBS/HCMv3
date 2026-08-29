@@ -38,10 +38,13 @@ export class AppNavigationService {
             // application like legacy HCM10.ESS -- though hiding the menu is only cosmetic, and the real
             // guard is [AbpAuthorize(Ess_*)] plus the employee scope filter on every endpoint.
             //
-            // One entry for now. The landing page lists the available transactions from the catalog, so
-            // per-transaction menu items are added here only as their screens are built -- a menu item
-            // pointing at a route that does not exist is worse than no menu item.
-            new AppMenuItem('EmployeeSelfService', 'Ess', 'flaticon-user-ok', '/app/main/ess'),
+            // Entries are added here only as their screens are built -- a menu item pointing at a route that
+            // does not exist is worse than no menu item. The landing page lists the rest from the catalog.
+            new AppMenuItem('EmployeeSelfService', 'Ess', 'flaticon-user-ok', '', [], [
+                new AppMenuItem('EssHome', 'Ess', 'flaticon-home', '/app/main/ess'),
+                new AppMenuItem('EssInbox', 'Ess.Inbox', 'flaticon-multimedia', '/app/main/ess/inbox'),
+                new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
+            ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.
             new AppMenuItem(

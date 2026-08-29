@@ -58232,6 +58232,282 @@ export class EntityChangeServiceProxy {
 }
 
 @Injectable()
+export class EssInboxServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyInbox(body?: GetMyInboxInput | undefined): Observable<PagedResultDtoOfEssInboxItemDto> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/GetMyInbox";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyInbox(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyInbox(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEssInboxItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEssInboxItemDto>;
+        }));
+    }
+
+    protected processGetMyInbox(response: HttpResponseBase): Observable<PagedResultDtoOfEssInboxItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEssInboxItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getMyPendingCount(): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/GetMyPendingCount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyPendingCount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyPendingCount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetMyPendingCount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    approve(body?: ApproveRequestInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/Approve";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApprove(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApprove(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processApprove(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    reject(body?: RejectRequestInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/Reject";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processReject(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReject(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processReject(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    sendBack(body?: SendBackRequestInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EssInbox/SendBack";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendBack(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendBack(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSendBack(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EssSessionServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -62447,6 +62723,120 @@ export class GatePassVendorsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class GoLiveApplyServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    preview(): Observable<GoLiveApplyResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveApply/Preview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPreview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPreview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveApplyResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveApplyResultDto>;
+        }));
+    }
+
+    protected processPreview(response: HttpResponseBase): Observable<GoLiveApplyResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveApplyResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    apply(): Observable<GoLiveApplyResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveApply/Apply";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApply(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApply(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveApplyResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveApplyResultDto>;
+        }));
+    }
+
+    protected processApply(response: HttpResponseBase): Observable<GoLiveApplyResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveApplyResultDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -153202,6 +153592,46 @@ export interface IApproveManpowerPlanningDto {
     id: number;
 }
 
+export class ApproveRequestInput implements IApproveRequestInput {
+    workflowRequestId!: number;
+    comment!: string | undefined;
+
+    constructor(data?: IApproveRequestInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): ApproveRequestInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApproveRequestInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface IApproveRequestInput {
+    workflowRequestId: number;
+    comment: string | undefined;
+}
+
 export class ApproveWorkflowRequestDto implements IApproveWorkflowRequestDto {
     requestId!: number;
     remark!: string | undefined;
@@ -201142,6 +201572,102 @@ export interface IEssContextDto {
     availableTransactionTypes: EssTransactionTypeDto[] | undefined;
 }
 
+export class EssInboxItemDto implements IEssInboxItemDto {
+    id!: number;
+    requestType!: string | undefined;
+    requestTypeNameEn!: string | undefined;
+    requestTypeNameAr!: string | undefined;
+    requestNumber!: string | undefined;
+    summaryEn!: string | undefined;
+    summaryAr!: string | undefined;
+    requesterEmployeeId!: number | undefined;
+    requesterNameEn!: string | undefined;
+    requesterNameAr!: string | undefined;
+    requesterPhotoUrl!: string | undefined;
+    submittedOn!: DateTime | undefined;
+    workflowStep!: number;
+    totalSteps!: number;
+    canReject!: boolean;
+    canSendBack!: boolean;
+
+    constructor(data?: IEssInboxItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestType = _data["requestType"];
+            this.requestTypeNameEn = _data["requestTypeNameEn"];
+            this.requestTypeNameAr = _data["requestTypeNameAr"];
+            this.requestNumber = _data["requestNumber"];
+            this.summaryEn = _data["summaryEn"];
+            this.summaryAr = _data["summaryAr"];
+            this.requesterEmployeeId = _data["requesterEmployeeId"];
+            this.requesterNameEn = _data["requesterNameEn"];
+            this.requesterNameAr = _data["requesterNameAr"];
+            this.requesterPhotoUrl = _data["requesterPhotoUrl"];
+            this.submittedOn = _data["submittedOn"] ? DateTime.fromISO(_data["submittedOn"].toString()) : undefined as any;
+            this.workflowStep = _data["workflowStep"];
+            this.totalSteps = _data["totalSteps"];
+            this.canReject = _data["canReject"];
+            this.canSendBack = _data["canSendBack"];
+        }
+    }
+
+    static fromJS(data: any): EssInboxItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssInboxItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestType"] = this.requestType;
+        data["requestTypeNameEn"] = this.requestTypeNameEn;
+        data["requestTypeNameAr"] = this.requestTypeNameAr;
+        data["requestNumber"] = this.requestNumber;
+        data["summaryEn"] = this.summaryEn;
+        data["summaryAr"] = this.summaryAr;
+        data["requesterEmployeeId"] = this.requesterEmployeeId;
+        data["requesterNameEn"] = this.requesterNameEn;
+        data["requesterNameAr"] = this.requesterNameAr;
+        data["requesterPhotoUrl"] = this.requesterPhotoUrl;
+        data["submittedOn"] = this.submittedOn ? this.submittedOn.toString() : undefined as any;
+        data["workflowStep"] = this.workflowStep;
+        data["totalSteps"] = this.totalSteps;
+        data["canReject"] = this.canReject;
+        data["canSendBack"] = this.canSendBack;
+        return data;
+    }
+}
+
+export interface IEssInboxItemDto {
+    id: number;
+    requestType: string | undefined;
+    requestTypeNameEn: string | undefined;
+    requestTypeNameAr: string | undefined;
+    requestNumber: string | undefined;
+    summaryEn: string | undefined;
+    summaryAr: string | undefined;
+    requesterEmployeeId: number | undefined;
+    requesterNameEn: string | undefined;
+    requesterNameAr: string | undefined;
+    requesterPhotoUrl: string | undefined;
+    submittedOn: DateTime | undefined;
+    workflowStep: number;
+    totalSteps: number;
+    canReject: boolean;
+    canSendBack: boolean;
+}
+
 export class EssTransactionTypeDto implements IEssTransactionTypeDto {
     code!: string | undefined;
     nameEn!: string | undefined;
@@ -235828,6 +236354,54 @@ export interface IGetMonthlyTimeRegisterForEditOutput {
     monthlyTimeRegister: CreateOrEditMonthlyTimeRegisterDto;
 }
 
+export class GetMyInboxInput implements IGetMyInboxInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    requestType!: string | undefined;
+
+    constructor(data?: IGetMyInboxInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.requestType = _data["requestType"];
+        }
+    }
+
+    static fromJS(data: any): GetMyInboxInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyInboxInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["requestType"] = this.requestType;
+        return data;
+    }
+}
+
+export interface IGetMyInboxInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    requestType: string | undefined;
+}
+
 export class GetMyLeavesInput implements IGetMyLeavesInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -247418,6 +247992,190 @@ export class GetYearlyTimeRegisterForEditOutput implements IGetYearlyTimeRegiste
 
 export interface IGetYearlyTimeRegisterForEditOutput {
     yearlyTimeRegister: CreateOrEditYearlyTimeRegisterDto;
+}
+
+export class GoLiveApplyIssueDto implements IGoLiveApplyIssueDto {
+    row!: number;
+    key!: string | undefined;
+    message!: string | undefined;
+
+    constructor(data?: IGoLiveApplyIssueDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.row = _data["row"];
+            this.key = _data["key"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveApplyIssueDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveApplyIssueDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["row"] = this.row;
+        data["key"] = this.key;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IGoLiveApplyIssueDto {
+    row: number;
+    key: string | undefined;
+    message: string | undefined;
+}
+
+export class GoLiveApplyResultDto implements IGoLiveApplyResultDto {
+    applied!: boolean;
+    stages!: GoLiveApplyStageDto[] | undefined;
+    totalCreated!: number;
+    totalUpdated!: number;
+    totalSkipped!: number;
+    totalFailed!: number;
+    readonly isClean!: boolean;
+
+    constructor(data?: IGoLiveApplyResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.applied = _data["applied"];
+            if (Array.isArray(_data["stages"])) {
+                this.stages = [] as any;
+                for (let item of _data["stages"])
+                    this.stages!.push(GoLiveApplyStageDto.fromJS(item));
+            }
+            this.totalCreated = _data["totalCreated"];
+            this.totalUpdated = _data["totalUpdated"];
+            this.totalSkipped = _data["totalSkipped"];
+            this.totalFailed = _data["totalFailed"];
+            (this as any).isClean = _data["isClean"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveApplyResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveApplyResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["applied"] = this.applied;
+        if (Array.isArray(this.stages)) {
+            data["stages"] = [];
+            for (let item of this.stages)
+                data["stages"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCreated"] = this.totalCreated;
+        data["totalUpdated"] = this.totalUpdated;
+        data["totalSkipped"] = this.totalSkipped;
+        data["totalFailed"] = this.totalFailed;
+        data["isClean"] = this.isClean;
+        return data;
+    }
+}
+
+export interface IGoLiveApplyResultDto {
+    applied: boolean;
+    stages: GoLiveApplyStageDto[] | undefined;
+    totalCreated: number;
+    totalUpdated: number;
+    totalSkipped: number;
+    totalFailed: number;
+    isClean: boolean;
+}
+
+export class GoLiveApplyStageDto implements IGoLiveApplyStageDto {
+    stepId!: string | undefined;
+    target!: string | undefined;
+    created!: number;
+    updated!: number;
+    skipped!: number;
+    failed!: number;
+    issues!: GoLiveApplyIssueDto[] | undefined;
+    issuesTruncated!: number;
+
+    constructor(data?: IGoLiveApplyStageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.stepId = _data["stepId"];
+            this.target = _data["target"];
+            this.created = _data["created"];
+            this.updated = _data["updated"];
+            this.skipped = _data["skipped"];
+            this.failed = _data["failed"];
+            if (Array.isArray(_data["issues"])) {
+                this.issues = [] as any;
+                for (let item of _data["issues"])
+                    this.issues!.push(GoLiveApplyIssueDto.fromJS(item));
+            }
+            this.issuesTruncated = _data["issuesTruncated"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveApplyStageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveApplyStageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["stepId"] = this.stepId;
+        data["target"] = this.target;
+        data["created"] = this.created;
+        data["updated"] = this.updated;
+        data["skipped"] = this.skipped;
+        data["failed"] = this.failed;
+        if (Array.isArray(this.issues)) {
+            data["issues"] = [];
+            for (let item of this.issues)
+                data["issues"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["issuesTruncated"] = this.issuesTruncated;
+        return data;
+    }
+}
+
+export interface IGoLiveApplyStageDto {
+    stepId: string | undefined;
+    target: string | undefined;
+    created: number;
+    updated: number;
+    skipped: number;
+    failed: number;
+    issues: GoLiveApplyIssueDto[] | undefined;
+    issuesTruncated: number;
 }
 
 export class GoLiveLookupListDto implements IGoLiveLookupListDto {
@@ -271119,6 +271877,54 @@ export interface IPagedResultDtoOfEntityChangeListDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfEssInboxItemDto implements IPagedResultDtoOfEssInboxItemDto {
+    items!: EssInboxItemDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfEssInboxItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EssInboxItemDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfEssInboxItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfEssInboxItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfEssInboxItemDto {
+    items: EssInboxItemDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfExecutionLogDto implements IPagedResultDtoOfExecutionLogDto {
     items!: ExecutionLogDto[] | undefined;
     totalCount!: number;
@@ -293687,6 +294493,46 @@ export interface IRegisterTenantOutput {
     paymentId: number | undefined;
 }
 
+export class RejectRequestInput implements IRejectRequestInput {
+    workflowRequestId!: number;
+    comment!: string;
+
+    constructor(data?: IRejectRequestInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): RejectRequestInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RejectRequestInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface IRejectRequestInput {
+    workflowRequestId: number;
+    comment: string;
+}
+
 export class RejectWorkflowRequestDto implements IRejectWorkflowRequestDto {
     requestId!: number;
     remark!: string | undefined;
@@ -299096,6 +299942,46 @@ export class SendAndGetDateWithTextInput implements ISendAndGetDateWithTextInput
 export interface ISendAndGetDateWithTextInput {
     text: string | undefined;
     date: DateTime;
+}
+
+export class SendBackRequestInput implements ISendBackRequestInput {
+    workflowRequestId!: number;
+    comment!: string;
+
+    constructor(data?: ISendBackRequestInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): SendBackRequestInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SendBackRequestInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["comment"] = this.comment;
+        return data;
+    }
+}
+
+export interface ISendBackRequestInput {
+    workflowRequestId: number;
+    comment: string;
 }
 
 export class SendBackWorkflowRequestDto implements ISendBackWorkflowRequestDto {
