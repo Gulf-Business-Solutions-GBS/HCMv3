@@ -241,6 +241,32 @@ public class ReportSchedulesAppService : HCMv3AppServiceBase, IReportSchedulesAp
         {
             throw new UserFriendlyException("Add at least one destination.");
         }
+
+        // Refuse the destinations no channel implements. The wizard already disables them, but the
+        // API is reachable without it, and the alternative failure is far worse: the schedule saves,
+        // looks configured, and only throws "no delivery channel registered" at delivery time -- by
+        // which point the reports are late and nobody is watching the run log.
+        var unsupported = input.Destinations
+            .Where(d => d.Method != ReportDestinationMethod.Email)
+            .Select(d => d.Method.ToString())
+            .Distinct()
+            .ToList();
+
+        if (unsupported.Any())
+        {
+            throw new UserFriendlyException(
+                string.Join(", ", unsupported) +
+                " delivery is not available yet. Only e-mail destinations can be scheduled.");
+        }
+
+        // Same reasoning for the format. The renderer calls each report's own Get*ToExcel and returns
+        // those bytes, so a schedule saved as PDF or CSV would deliver a spreadsheet under a format it
+        // never produced.
+        if (input.Format != ScheduledReportFormat.Excel)
+        {
+            throw new UserFriendlyException(
+                "Scheduled runs are delivered as Excel; other formats are not produced yet.");
+        }
     }
 
     private async Task CreateAsync(CreateOrEditReportScheduleDto input)

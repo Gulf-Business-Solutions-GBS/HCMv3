@@ -58,9 +58,8 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
 
     schedule = new CreateOrEditReportScheduleDto();
 
-    // Enums exposed for template binding.
-    readonly ReportKind = ScheduledReportKind;
-    readonly Format = ScheduledReportFormat;
+    // Enums exposed for template binding. ReportKind and Format are no longer among them: both are
+    // now decided rather than asked for.
     readonly Burst = ReportBurstDimension;
     readonly Rule = ReportRecipientRule;
     readonly Destination = ReportDestinationMethod;
@@ -130,6 +129,14 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
      * somebody has already filled in would be worse than leaving a stale row behind.
      */
     onReportChanged(): void {
+        // The family comes FROM the report rather than being asked for separately, so it cannot
+        // disagree with the report actually chosen and needs no wizard change when a new family
+        // becomes renderable.
+        const selected = this.availableReports().find((r) => r.reportKey === this.schedule.reportKey);
+        if (selected) {
+            this.schedule.reportKind = selected.reportKind;
+        }
+
         if (this.schedule.filters.length > 0) {
             return;
         }
@@ -170,6 +177,10 @@ export class ReportScheduleWizardComponent extends AppComponentBase implements O
                 this.schedule.filters = this.schedule.filters ?? [];
                 this.schedule.recipients = this.schedule.recipients ?? [];
                 this.schedule.destinations = this.schedule.destinations ?? [];
+
+                // Excel is the only format the renderer produces. Normalising here stops an edit
+                // screen from displaying a stored PDF/CSV choice that has never been honoured.
+                this.schedule.format = ScheduledReportFormat.Excel;
             });
     }
 

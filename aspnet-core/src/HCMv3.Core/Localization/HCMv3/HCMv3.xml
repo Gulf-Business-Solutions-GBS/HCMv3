@@ -4135,7 +4135,8 @@
     <text name="ScheduleDefinition">Schedule Definition</text>
     <text name="ScheduleOccurrence">Schedule Occurrence</text>
     <text name="Destination">Destination</text>
-    <text name="ReportFamily">Report Family</text>
+    <text name="NotAvailableYet">not available yet</text>
+    <text name="ExcelOnlyHint">Scheduled runs are delivered as Excel. Other formats are not yet produced.</text>
     <text name="ReportFormat">Report Format</text>
     <text name="ReportKeyHint">The report's key: a grid-report name, or a print report's ReportName.</text>
     <text name="PleaseSelect">Please Select</text>

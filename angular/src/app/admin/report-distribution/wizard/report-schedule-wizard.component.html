@@ -34,14 +34,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">{{ 'ReportFamily' | localize }}</label>
-                            <select [(ngModel)]="schedule.reportKind" name="reportKind" class="form-select">
-                                <option [ngValue]="ReportKind.GridReport">{{ 'GridReport' | localize }}</option>
-                                <option [ngValue]="ReportKind.PrintReport">{{ 'PrintReport' | localize }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
+                        <!-- No "report family" selector: the family is a property OF the chosen
+                             report, not a separate choice. Offering it as one let somebody pick a
+                             family with no reports behind it and meet an empty list with no
+                             explanation. onReportChanged() takes it from the report itself, so a
+                             family gained later needs no change here. -->
+                        <div class="col-md-8 mb-3">
                             <label class="form-label required">{{ 'Report' | localize }}</label>
                             <select
                                 [(ngModel)]="schedule.reportKey"
@@ -60,13 +58,14 @@
                             </select>
                             <small class="form-text text-muted">{{ 'ReportListHint' | localize }}</small>
                         </div>
+                        <!-- Excel only, and shown as a fact rather than a choice. The renderer
+                             invokes each report's own Get*ToExcel and returns those bytes; PDF and
+                             CSV were selectable but silently ignored, which is worse than absent
+                             because the schedule then claims a format it never produces. -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">{{ 'ReportFormat' | localize }}</label>
-                            <select [(ngModel)]="schedule.format" name="format" class="form-select">
-                                <option [ngValue]="Format.Excel">EXCEL</option>
-                                <option [ngValue]="Format.Pdf">PDF</option>
-                                <option [ngValue]="Format.Csv">CSV</option>
-                            </select>
+                            <input class="form-control" type="text" value="EXCEL" readonly disabled />
+                            <small class="form-text text-muted">{{ 'ExcelOnlyHint' | localize }}</small>
                         </div>
                     </div>
 
@@ -342,8 +341,18 @@
                                             [name]="'dMethod' + $index"
                                             class="form-select">
                                             <option [ngValue]="Destination.Email">{{ 'Email' | localize }}</option>
-                                            <option [ngValue]="Destination.Ftp">File Transfer Protocol (FTP)</option>
-                                            <option [ngValue]="Destination.Offline">{{ 'Offline' | localize }}</option>
+                                            <!-- Disabled rather than removed: the schema and the
+                                                 config panels below already model both, so they stay
+                                                 visible as planned destinations. Selectable, they
+                                                 produced a schedule that failed at delivery time with
+                                                 "no delivery channel registered" -- long after the
+                                                 person who configured it had gone. -->
+                                            <option [ngValue]="Destination.Ftp" disabled>
+                                                File Transfer Protocol (FTP) &mdash; {{ 'NotAvailableYet' | localize }}
+                                            </option>
+                                            <option [ngValue]="Destination.Offline" disabled>
+                                                {{ 'Offline' | localize }} &mdash; {{ 'NotAvailableYet' | localize }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-8 text-end">

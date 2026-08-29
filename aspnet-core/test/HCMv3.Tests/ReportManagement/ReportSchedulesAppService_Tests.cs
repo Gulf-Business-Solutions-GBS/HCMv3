@@ -127,6 +127,32 @@ public class ReportSchedulesAppService_Tests : AppTestBase
         copy.ReportSchedule.Name.ShouldEndWith("(copy)");
     }
 
+    [Theory]
+    [InlineData(ReportDestinationMethod.Ftp)]
+    [InlineData(ReportDestinationMethod.Offline)]
+    public async Task Should_Refuse_A_Destination_No_Channel_Implements(ReportDestinationMethod method)
+    {
+        // Only EmailReportSliceDeliveryChannel exists. Saved, these would look configured and then fail
+        // at delivery time with "no delivery channel registered" -- long after anyone was watching.
+        var input = NewSchedule();
+        input.Destinations[0].Method = method;
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() => _appService.CreateOrEdit(input));
+    }
+
+    [Theory]
+    [InlineData(ScheduledReportFormat.Pdf)]
+    [InlineData(ScheduledReportFormat.Csv)]
+    public async Task Should_Refuse_A_Format_The_Renderer_Does_Not_Produce(ScheduledReportFormat format)
+    {
+        // The renderer returns each report's own Get*ToExcel bytes, so a schedule saved as PDF or CSV
+        // would deliver a spreadsheet under a format it never produced -- silently, and forever.
+        var input = NewSchedule();
+        input.Format = format;
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() => _appService.CreateOrEdit(input));
+    }
+
     private static CreateOrEditReportScheduleDto NewSchedule()
     {
         return new CreateOrEditReportScheduleDto
