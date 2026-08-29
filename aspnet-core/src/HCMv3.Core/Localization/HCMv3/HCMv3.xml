@@ -4015,6 +4015,10 @@
     <text name="NotEnoughBookableLeaveBalance">Only {0} day(s) can still be booked, but {1} day(s) were requested. Leave already awaiting approval is counted.</text>
     <text name="BookableBalance">Bookable</text>
     <text name="PendingApproval">Awaiting approval</text>
+    <text name="AbsenceTypeNotFound">Leave type not found.</text>
+    <text name="LeaveRequestNotFound">Leave request not found.</text>
+    <text name="YouCanOnlyCancelYourOwnRequests">You can only cancel your own requests.</text>
+    <text name="ThisLeaveCanNoLongerBeCancelled">This leave has already been decided and can no longer be cancelled.</text>
     <text name="EmployeeSelfService">Employee Self Service</text>
     <text name="EssInbox">Pending My Approval</text>
     <text name="EssMyRequests">My Requests</text>

@@ -1,0 +1,35 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Abp.Application.Services;
+using Abp.Application.Services.Dto;
+using HCMv3.Ess.Dto;
+
+namespace HCMv3.Ess;
+
+/// <summary>
+/// Self-service leave: an employee's own balances, their own requests, and applying for leave.
+///
+/// <para>
+/// Deliberately NOT the admin <c>IEmployeeAbsencesAppService</c> with a filter bolted on. That service must
+/// let HR pick any employee, backdate, and bypass approval; this one must do none of those. Reusing it and
+/// passing a scope would mean the same endpoint enforcing two different rule sets -- which is how the
+/// legacy ESS project ended up as a parallel implementation in the first place. Both sit on the same entity
+/// and the same domain services; only the surface differs.
+/// </para>
+/// </summary>
+public interface IMyLeaveAppService : IApplicationService
+{
+    /// <summary>Balances for every type the employee holds quota for, including what is bookable.</summary>
+    Task<List<MyLeaveBalanceDto>> GetMyBalances();
+
+    Task<PagedResultDto<MyLeaveDto>> GetMyLeaves(GetMyLeavesInput input);
+
+    /// <summary>
+    /// Creates the leave and, when the type is workflow-enabled, submits it for approval in one step. The
+    /// employee never sees a draft they have to remember to submit.
+    /// </summary>
+    Task<ApplyForLeaveResultDto> ApplyForLeave(ApplyForLeaveInput input);
+
+    /// <summary>Withdraws a request the employee raised, while it is still theirs to withdraw.</summary>
+    Task CancelMyLeave(EntityDto input);
+}
