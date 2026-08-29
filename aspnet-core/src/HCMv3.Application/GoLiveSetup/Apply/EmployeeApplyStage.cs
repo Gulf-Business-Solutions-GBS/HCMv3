@@ -26,12 +26,9 @@ namespace HCMv3.GoLiveSetup.Apply;
 /// code generator -- which scans every existing code and is not safe under concurrency -- never runs.
 /// That is deliberate, not incidental.</para>
 /// </summary>
-public class EmployeeApplyStage : ITransientDependency
+public class EmployeeApplyStage : ApplyStageBase, ITransientDependency
 {
     public const string StepId = "S3.1";
-
-    /// <summary>Enough failures to diagnose the sheet without returning megabytes of them.</summary>
-    private const int MaxReportedIssues = 50;
 
     private readonly GoLiveDraftReader _reader;
     private readonly IEmployeesAppService _employees;
@@ -149,20 +146,6 @@ public class EmployeeApplyStage : ITransientDependency
         }
 
         return stage;
-    }
-
-    private static void Fail(GoLiveApplyStageDto stage, int row, string key, string message)
-    {
-        stage.Failed++;
-
-        if (stage.Issues.Count < MaxReportedIssues)
-        {
-            stage.Issues.Add(new GoLiveApplyIssueDto { Row = row, Key = key, Message = message });
-        }
-        else
-        {
-            stage.IssuesTruncated++;
-        }
     }
 
     private CreateOrEditEmployeeDto BuildDto(

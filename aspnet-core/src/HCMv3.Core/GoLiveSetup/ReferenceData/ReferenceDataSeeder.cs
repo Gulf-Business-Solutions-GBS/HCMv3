@@ -9,6 +9,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.TimeManagement;
 
 namespace HCMv3.GoLiveSetup.ReferenceData;
 
@@ -36,6 +37,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
     private readonly IRepository<Bank> _banks;
     private readonly IRepository<ContractType> _contractTypes;
     private readonly IRepository<Currency> _currencies;
+    private readonly IRepository<TimeTransferType> _timeTransferTypes;
 
     public ReferenceDataSeeder(
         IRepository<Country> countries,
@@ -49,7 +51,8 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         IRepository<City> cities,
         IRepository<Bank> banks,
         IRepository<ContractType> contractTypes,
-        IRepository<Currency> currencies)
+        IRepository<Currency> currencies,
+        IRepository<TimeTransferType> timeTransferTypes)
     {
         _countries = countries;
         _nationalities = nationalities;
@@ -63,6 +66,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         _banks = banks;
         _contractTypes = contractTypes;
         _currencies = currencies;
+        _timeTransferTypes = timeTransferTypes;
     }
 
     public IReadOnlyList<string> GetAvailablePackIds() => DefaultPackIds;
@@ -157,6 +161,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
             nameof(City) => SeedAsync(_cities, lookupName, rows, tenantId, apply),
             nameof(Bank) => SeedAsync(_banks, lookupName, rows, tenantId, apply),
             nameof(ContractType) => SeedAsync(_contractTypes, lookupName, rows, tenantId, apply),
+            nameof(TimeTransferType) => SeedAsync(_timeTransferTypes, lookupName, rows, tenantId, apply),
             _ => throw new UserFriendlyException(L("ReferenceDataUnknownLookup", lookupName)),
         };
     }

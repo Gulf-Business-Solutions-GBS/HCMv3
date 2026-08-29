@@ -2425,6 +2425,23 @@
         "nameEn": "Professional Certificate",
         "nameAr": "شهادة مهنية"
       }
+    ],
+    "TimeTransferType": [
+      {
+        "code": "1",
+        "nameEn": "Annual Leave Opening Balance",
+        "nameAr": "الرصيد الافتتاحي للإجازة السنوية"
+      },
+      {
+        "code": "2",
+        "nameEn": "Sick Leave Opening Balance",
+        "nameAr": "الرصيد الافتتاحي للإجازة المرضية"
+      },
+      {
+        "code": "3",
+        "nameEn": "Absent Unpaid Days Opening Balance",
+        "nameAr": "الرصيد الافتتاحي لأيام الغياب بدون أجر"
+      }
     ]
   },
   "currencies": [

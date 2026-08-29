@@ -53,6 +53,10 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
     private int EmployeeCount() => UsingDbContext(context => context.Employees.Count());
 
+    /// <summary>Apply runs several stages now; these tests are about the employee one.</summary>
+    private static GoLiveApplyStageDto EmployeeStage(GoLiveApplyResultDto result) =>
+        result.Stages.Single(s => s.StepId == "S3.1");
+
     // ---------------------------------------------------------------- nothing to do
 
     [Fact]
@@ -195,7 +199,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         result.TotalFailed.ShouldBe(1);
         result.IsClean.ShouldBeFalse();
 
-        var issue = result.Stages.Single().Issues.Single();
+        var issue = EmployeeStage(result).Issues.Single();
         issue.Row.ShouldBe(2);
         issue.Key.ShouldBe("1002");
         issue.Message.ShouldContain("Atlantean");
@@ -212,7 +216,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         result.TotalCreated.ShouldBe(1);
         result.TotalFailed.ShouldBe(1);
-        result.Stages.Single().Issues.Single().Message.ShouldContain("more than once");
+        EmployeeStage(result).Issues.Single().Message.ShouldContain("more than once");
     }
 
     [Fact]
@@ -223,7 +227,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         var result = await _apply.Apply();
 
         result.TotalFailed.ShouldBe(1);
-        result.Stages.Single().Issues.Single().Message.ShouldContain("code is missing");
+        EmployeeStage(result).Issues.Single().Message.ShouldContain("code is missing");
     }
 
     [Fact]
@@ -234,7 +238,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         var result = await _apply.Apply();
 
         result.TotalFailed.ShouldBe(1);
-        result.Stages.Single().Issues.Single().Message.ShouldContain("English name");
+        EmployeeStage(result).Issues.Single().Message.ShouldContain("English name");
     }
 
     [Fact]
@@ -245,7 +249,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         var result = await _apply.Apply();
 
         result.TotalFailed.ShouldBe(1);
-        result.Stages.Single().Issues.Single().Message.ShouldContain("Date of birth");
+        EmployeeStage(result).Issues.Single().Message.ShouldContain("Date of birth");
     }
 
     [Fact]
@@ -257,7 +261,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         var result = await _apply.Apply();
 
         result.TotalFailed.ShouldBe(1);
-        result.Stages.Single().Issues.ShouldNotBeEmpty();
+        EmployeeStage(result).Issues.ShouldNotBeEmpty();
         EmployeeCount().ShouldBe(0);
     }
 
