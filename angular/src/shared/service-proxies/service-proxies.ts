@@ -62458,6 +62458,168 @@ export class GatePassVendorsServiceProxy {
 }
 
 @Injectable()
+export class GoLiveStateServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getState(): Observable<GetGoLiveStateOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveState/GetState";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetState(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetState(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetGoLiveStateOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetGoLiveStateOutput>;
+        }));
+    }
+
+    protected processGetState(response: HttpResponseBase): Observable<GetGoLiveStateOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetGoLiveStateOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveStep(body?: SaveGoLiveStepInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveState/SaveStep";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveStep(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveStep(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSaveStep(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    clearState(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveState/ClearState";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processClearState(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processClearState(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processClearState(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class GovernoratesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -82576,6 +82738,240 @@ export class MonthlyTimeRegistersServiceProxy {
     }
 
     protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyLeaveServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getMyBalances(): Observable<MyLeaveBalanceDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyBalances";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyBalances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyLeaveBalanceDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyLeaveBalanceDto[]>;
+        }));
+    }
+
+    protected processGetMyBalances(response: HttpResponseBase): Observable<MyLeaveBalanceDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MyLeaveBalanceDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyLeaves(body?: GetMyLeavesInput | undefined): Observable<PagedResultDtoOfMyLeaveDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/GetMyLeaves";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyLeaves(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyLeaves(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyLeaveDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyLeaveDto>;
+        }));
+    }
+
+    protected processGetMyLeaves(response: HttpResponseBase): Observable<PagedResultDtoOfMyLeaveDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyLeaveDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    applyForLeave(body?: ApplyForLeaveInput | undefined): Observable<ApplyForLeaveResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/ApplyForLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApplyForLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApplyForLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplyForLeaveResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplyForLeaveResultDto>;
+        }));
+    }
+
+    protected processApplyForLeave(response: HttpResponseBase): Observable<ApplyForLeaveResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplyForLeaveResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyLeave(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/CancelMyLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyLeave(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -110086,6 +110482,64 @@ export class ReferenceDataServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getLookupOptions(): Observable<GoLiveLookupListDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ReferenceData/GetLookupOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLookupOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLookupOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveLookupListDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveLookupListDto[]>;
+        }));
+    }
+
+    protected processGetLookupOptions(response: HttpResponseBase): Observable<GoLiveLookupListDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GoLiveLookupListDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -152486,6 +152940,98 @@ export interface IApplicationStatusDto {
     applicantFullNameEn: string | undefined;
     appStatus: AppStatus;
     coverLetter: string | undefined;
+}
+
+export class ApplyForLeaveInput implements IApplyForLeaveInput {
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    comments!: string | undefined;
+
+    constructor(data?: IApplyForLeaveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): ApplyForLeaveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplyForLeaveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IApplyForLeaveInput {
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    comments: string | undefined;
+}
+
+export class ApplyForLeaveResultDto implements IApplyForLeaveResultDto {
+    employeeAbsenceId!: number;
+    workflowRequestId!: number | undefined;
+    submittedForApproval!: boolean;
+
+    constructor(data?: IApplyForLeaveResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.submittedForApproval = _data["submittedForApproval"];
+        }
+    }
+
+    static fromJS(data: any): ApplyForLeaveResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplyForLeaveResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["submittedForApproval"] = this.submittedForApproval;
+        return data;
+    }
+}
+
+export interface IApplyForLeaveResultDto {
+    employeeAbsenceId: number;
+    workflowRequestId: number | undefined;
+    submittedForApproval: boolean;
 }
 
 export enum AppraisalCycle {
@@ -232454,6 +233000,54 @@ export interface IGetGeneralStatsOutput {
     bouncePercent: number;
 }
 
+export class GetGoLiveStateOutput implements IGetGoLiveStateOutput {
+    steps!: GoLiveStepStateDto[] | undefined;
+    lastSavedUtc!: DateTime | undefined;
+
+    constructor(data?: IGetGoLiveStateOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["steps"])) {
+                this.steps = [] as any;
+                for (let item of _data["steps"])
+                    this.steps!.push(GoLiveStepStateDto.fromJS(item));
+            }
+            this.lastSavedUtc = _data["lastSavedUtc"] ? DateTime.fromISO(_data["lastSavedUtc"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetGoLiveStateOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetGoLiveStateOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.steps)) {
+            data["steps"] = [];
+            for (let item of this.steps)
+                data["steps"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["lastSavedUtc"] = this.lastSavedUtc ? this.lastSavedUtc.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetGoLiveStateOutput {
+    steps: GoLiveStepStateDto[] | undefined;
+    lastSavedUtc: DateTime | undefined;
+}
+
 export class GetGovtJobTitleForEditOutput implements IGetGovtJobTitleForEditOutput {
     govtJobTitle!: CreateOrEditGovtJobTitleDto;
 
@@ -235232,6 +235826,54 @@ export class GetMonthlyTimeRegisterForEditOutput implements IGetMonthlyTimeRegis
 
 export interface IGetMonthlyTimeRegisterForEditOutput {
     monthlyTimeRegister: CreateOrEditMonthlyTimeRegisterDto;
+}
+
+export class GetMyLeavesInput implements IGetMyLeavesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    includeHistory!: boolean;
+
+    constructor(data?: IGetMyLeavesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.includeHistory = _data["includeHistory"];
+        }
+    }
+
+    static fromJS(data: any): GetMyLeavesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMyLeavesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["includeHistory"] = this.includeHistory;
+        return data;
+    }
+}
+
+export interface IGetMyLeavesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    includeHistory: boolean;
 }
 
 export class GetNationalityForEditOutput implements IGetNationalityForEditOutput {
@@ -246778,6 +247420,98 @@ export interface IGetYearlyTimeRegisterForEditOutput {
     yearlyTimeRegister: CreateOrEditYearlyTimeRegisterDto;
 }
 
+export class GoLiveLookupListDto implements IGoLiveLookupListDto {
+    lookup!: string | undefined;
+    options!: string[] | undefined;
+
+    constructor(data?: IGoLiveLookupListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lookup = _data["lookup"];
+            if (Array.isArray(_data["options"])) {
+                this.options = [] as any;
+                for (let item of _data["options"])
+                    this.options!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveLookupListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveLookupListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lookup"] = this.lookup;
+        if (Array.isArray(this.options)) {
+            data["options"] = [];
+            for (let item of this.options)
+                data["options"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveLookupListDto {
+    lookup: string | undefined;
+    options: string[] | undefined;
+}
+
+export class GoLiveStepStateDto implements IGoLiveStepStateDto {
+    stepId!: string | undefined;
+    payload!: string | undefined;
+    lastSavedUtc!: DateTime;
+
+    constructor(data?: IGoLiveStepStateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.stepId = _data["stepId"];
+            this.payload = _data["payload"];
+            this.lastSavedUtc = _data["lastSavedUtc"] ? DateTime.fromISO(_data["lastSavedUtc"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GoLiveStepStateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveStepStateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["stepId"] = this.stepId;
+        data["payload"] = this.payload;
+        data["lastSavedUtc"] = this.lastSavedUtc ? this.lastSavedUtc.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGoLiveStepStateDto {
+    stepId: string | undefined;
+    payload: string | undefined;
+    lastSavedUtc: DateTime;
+}
+
 export class GoogleExternalLoginProviderSettings implements IGoogleExternalLoginProviderSettings {
     clientId!: string | undefined;
     clientSecret!: string | undefined;
@@ -255028,6 +255762,146 @@ export class MoveTenantsToAnotherEditionDto implements IMoveTenantsToAnotherEdit
 export interface IMoveTenantsToAnotherEditionDto {
     sourceEditionId: number;
     targetEditionId: number;
+}
+
+export class MyLeaveBalanceDto implements IMyLeaveBalanceDto {
+    absenceTypeId!: number;
+    absenceTypeNameEn!: string | undefined;
+    absenceTypeNameAr!: string | undefined;
+    accrued!: number;
+    used!: number;
+    pending!: number;
+    remaining!: number;
+    bookable!: number;
+
+    constructor(data?: IMyLeaveBalanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.absenceTypeNameEn = _data["absenceTypeNameEn"];
+            this.absenceTypeNameAr = _data["absenceTypeNameAr"];
+            this.accrued = _data["accrued"];
+            this.used = _data["used"];
+            this.pending = _data["pending"];
+            this.remaining = _data["remaining"];
+            this.bookable = _data["bookable"];
+        }
+    }
+
+    static fromJS(data: any): MyLeaveBalanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyLeaveBalanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["absenceTypeNameEn"] = this.absenceTypeNameEn;
+        data["absenceTypeNameAr"] = this.absenceTypeNameAr;
+        data["accrued"] = this.accrued;
+        data["used"] = this.used;
+        data["pending"] = this.pending;
+        data["remaining"] = this.remaining;
+        data["bookable"] = this.bookable;
+        return data;
+    }
+}
+
+export interface IMyLeaveBalanceDto {
+    absenceTypeId: number;
+    absenceTypeNameEn: string | undefined;
+    absenceTypeNameAr: string | undefined;
+    accrued: number;
+    used: number;
+    pending: number;
+    remaining: number;
+    bookable: number;
+}
+
+export class MyLeaveDto implements IMyLeaveDto {
+    id!: number;
+    absenceTypeId!: number;
+    absenceTypeNameEn!: string | undefined;
+    absenceTypeNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    totalLeaveDays!: number;
+    comments!: string | undefined;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+
+    constructor(data?: IMyLeaveDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.absenceTypeNameEn = _data["absenceTypeNameEn"];
+            this.absenceTypeNameAr = _data["absenceTypeNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.totalLeaveDays = _data["totalLeaveDays"];
+            this.comments = _data["comments"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+        }
+    }
+
+    static fromJS(data: any): MyLeaveDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyLeaveDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["absenceTypeNameEn"] = this.absenceTypeNameEn;
+        data["absenceTypeNameAr"] = this.absenceTypeNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["totalLeaveDays"] = this.totalLeaveDays;
+        data["comments"] = this.comments;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        return data;
+    }
+}
+
+export interface IMyLeaveDto {
+    id: number;
+    absenceTypeId: number;
+    absenceTypeNameEn: string | undefined;
+    absenceTypeNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    totalLeaveDays: number;
+    comments: string | undefined;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
 }
 
 export class NameValue implements INameValue {
@@ -273938,6 +274812,54 @@ export class PagedResultDtoOfMonthlyTimeRegisterDto implements IPagedResultDtoOf
 
 export interface IPagedResultDtoOfMonthlyTimeRegisterDto {
     items: MonthlyTimeRegisterDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyLeaveDto implements IPagedResultDtoOfMyLeaveDto {
+    items!: MyLeaveDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyLeaveDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyLeaveDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyLeaveDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyLeaveDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyLeaveDto {
+    items: MyLeaveDto[] | undefined;
     totalCount: number;
 }
 
@@ -297470,6 +298392,46 @@ export enum SalesSummaryDatePeriod {
     Daily = 1,
     Weekly = 2,
     Monthly = 3,
+}
+
+export class SaveGoLiveStepInput implements ISaveGoLiveStepInput {
+    stepId!: string;
+    payload!: string | undefined;
+
+    constructor(data?: ISaveGoLiveStepInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.stepId = _data["stepId"];
+            this.payload = _data["payload"];
+        }
+    }
+
+    static fromJS(data: any): SaveGoLiveStepInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveGoLiveStepInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["stepId"] = this.stepId;
+        data["payload"] = this.payload;
+        return data;
+    }
+}
+
+export interface ISaveGoLiveStepInput {
+    stepId: string;
+    payload: string | undefined;
 }
 
 export class SavePageInput implements ISavePageInput {

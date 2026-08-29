@@ -664,6 +664,11 @@ export function findStepByPath(path: string): GoLiveStep | undefined {
     return GO_LIVE_STEPS.find((s) => s.path === path);
 }
 
+/** The step a question belongs to. Persistence saves per step, so an answer has to be attributed. */
+export function findStepByQuestionRef(ref: string): GoLiveStep | undefined {
+    return GO_LIVE_STEPS.find((s) => (s.questions ?? []).some((q) => q.ref === ref));
+}
+
 export function findStepById(id: string): GoLiveStep | undefined {
     return GO_LIVE_STEPS.find((s) => s.id === id);
 }

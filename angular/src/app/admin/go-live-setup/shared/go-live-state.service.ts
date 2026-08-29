@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { PasteGridIssue, PasteGridRow, isRowEmpty } from './paste-grid/paste-grid.types';
 import { AnswerChange, AnswerMap, isAnswered, visibleQuestions } from './question-card/go-live-question.types';
-import { GO_LIVE_STAGES, GO_LIVE_STEPS } from './go-live-registry';
+import { GO_LIVE_STAGES, GO_LIVE_STEPS, findStepByQuestionRef } from './go-live-registry';
 import { GoLiveStep, CrossCheck, StepStatus } from './go-live.types';
 import { LookupOptionMap } from './lookup-options';
 
@@ -26,12 +26,19 @@ export class GoLiveStateService {
     private readonly lookupsSignal = signal<LookupOptionMap>({});
     private readonly lookupsLoadedSignal = signal(false);
 
+    /** Steps changed since the last successful save. The persistence service drains this. */
+    private readonly dirtyStepsSignal = signal<ReadonlySet<string>>(new Set());
+
+    /** True while hydrating, so restoring a draft does not look like the customer editing it. */
+    private hydrating = false;
+
     readonly answers = this.answersSignal.asReadonly();
     readonly notes = this.notesSignal.asReadonly();
     readonly lookups = this.lookupsSignal.asReadonly();
 
     /** False until the first load returns, so a step can avoid rendering an empty dropdown. */
     readonly lookupsLoaded = this.lookupsLoadedSignal.asReadonly();
+    readonly dirtySteps = this.dirtyStepsSignal.asReadonly();
 
     /** Status of every step, keyed by step id. Recomputed whenever anything changes. */
     readonly statuses = computed<Record<string, StepStatus>>(() => {
@@ -87,10 +94,12 @@ export class GoLiveStateService {
     setAnswer(change: AnswerChange): void {
         this.answersSignal.update((a) => ({ ...a, [change.ref]: change.value }));
         this.notesSignal.update((n) => ({ ...n, [change.ref]: change.note }));
+        this.markDirty(findStepByQuestionRef(change.ref)?.id);
     }
 
     setRows(stepId: string, rows: PasteGridRow[]): void {
         this.rowsSignal.update((r) => ({ ...r, [stepId]: rows }));
+        this.markDirty(stepId);
     }
 
     setIssues(stepId: string, issues: PasteGridIssue[]): void {
@@ -124,11 +133,99 @@ export class GoLiveStateService {
         return { done: 0, total: 0 };
     }
 
+    /**
+     * Restores a saved draft. Runs with dirty tracking suppressed so hydrating does not
+     * immediately queue a save of everything it just loaded.
+     */
+    hydrate(steps: { stepId: string; payload: string }[]): void {
+        this.hydrating = true;
+        try {
+            const answers: AnswerMap = {};
+            const notes: Record<string, string> = {};
+            const rows: Record<string, PasteGridRow[]> = {};
+
+            for (const step of steps) {
+                const parsed = this.parse(step.payload);
+                if (!parsed) {
+                    continue;
+                }
+                Object.assign(answers, parsed.answers ?? {});
+                Object.assign(notes, parsed.notes ?? {});
+                if (parsed.rows) {
+                    rows[step.stepId] = parsed.rows;
+                }
+            }
+
+            this.answersSignal.set(answers);
+            this.notesSignal.set(notes);
+            this.rowsSignal.set(rows);
+            this.dirtyStepsSignal.set(new Set());
+        } finally {
+            this.hydrating = false;
+        }
+    }
+
+    /** The JSON a step should be saved as, or null when the step holds nothing worth saving. */
+    payloadFor(stepId: string): string | null {
+        const step = GO_LIVE_STEPS.find((s) => s.id === stepId);
+        if (!step) {
+            return null;
+        }
+
+        if (step.kind === 'data') {
+            const rows = this.rowsFor(stepId).filter((r) => !isRowEmpty(r));
+            return rows.length ? JSON.stringify({ rows }) : null;
+        }
+
+        const answers: AnswerMap = {};
+        const notes: Record<string, string> = {};
+        for (const question of step.questions ?? []) {
+            const value = this.answerFor(question.ref);
+            if (value !== null && value !== '') {
+                answers[question.ref] = value;
+            }
+            const note = this.noteFor(question.ref);
+            if (note) {
+                notes[question.ref] = note;
+            }
+        }
+
+        return Object.keys(answers).length || Object.keys(notes).length ? JSON.stringify({ answers, notes }) : null;
+    }
+
+    clearDirty(stepIds: string[]): void {
+        this.dirtyStepsSignal.update((current) => {
+            const next = new Set(current);
+            stepIds.forEach((id) => next.delete(id));
+            return next;
+        });
+    }
+
     reset(): void {
         this.answersSignal.set({});
         this.notesSignal.set({});
         this.rowsSignal.set({});
         this.issuesSignal.set({});
+        this.dirtyStepsSignal.set(new Set());
+    }
+
+    private markDirty(stepId: string | undefined): void {
+        if (!stepId || this.hydrating) {
+            return;
+        }
+        this.dirtyStepsSignal.update((current) => new Set(current).add(stepId));
+    }
+
+    private parse(
+        payload: string
+    ): { answers?: AnswerMap; notes?: Record<string, string>; rows?: PasteGridRow[] } | null {
+        try {
+            return payload ? JSON.parse(payload) : null;
+        } catch {
+            // A payload we cannot read is a draft we cannot restore. Dropping it beats refusing
+            // to open the screen at all; the customer re-enters that step.
+            return null;
+        }
     }
 
     private computeStatus(step: GoLiveStep): StepStatus {

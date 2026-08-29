@@ -6,6 +6,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { GoLiveStateService } from './shared/go-live-state.service';
 import { GoLiveLookupsService } from './shared/go-live-lookups.service';
+import { GoLivePersistenceService } from './shared/go-live-persistence.service';
 import { StatusDotComponent } from './shared/status-dot.component';
 
 /**
@@ -22,6 +23,7 @@ import { StatusDotComponent } from './shared/status-dot.component';
 })
 export class GoLiveShellComponent extends AppComponentBase implements OnInit {
     private readonly lookups = inject(GoLiveLookupsService);
+    private readonly persistence = inject(GoLivePersistenceService);
 
     readonly state = inject(GoLiveStateService);
 
@@ -29,5 +31,6 @@ export class GoLiveShellComponent extends AppComponentBase implements OnInit {
         // Loaded once for the whole feature rather than per step: the same lists back several steps,
         // and the service collapses concurrent calls.
         this.lookups.load();
+        this.persistence.start();
     }
 }
