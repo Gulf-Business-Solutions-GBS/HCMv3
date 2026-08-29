@@ -380,6 +380,82 @@ public class MyLeaveAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task A_Two_Step_Chain_Should_Not_Complete_On_The_First_Approval()
+    {
+        // Regression test for a bug that shipped because the Workflow tests' bespoke FakeRepository flushes
+        // inside InsertAsync while the real ABP repository defers. RequestDetailsAppService counted steps
+        // with a SQL COUNT straight after inserting one, so WorkflowSteps came back one short -- and
+        // WorkflowApprovalService reads it as the total. On a two-step chain that meant the request was
+        // marked fully approved the moment the FIRST approver acted and the second was never asked.
+        //
+        // Written here rather than in the Workflow tests deliberately: this file uses the REAL repositories,
+        // which is the only place the deferred-write behaviour is visible.
+        var meId = CreateCurrentUserEmployee("MYL1400");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 20);
+
+        var firstApproverId = CreateEmployee("MYL1400APP1");
+        var secondApproverId = CreateEmployee("MYL1400APP2");
+
+        var detailsService = Resolve<HCMv3.Workflow.IRequestDetailsAppService>();
+        var mastersService = Resolve<HCMv3.Workflow.IRequestMastersAppService>();
+
+        int masterId = 0, role1Id = 0, role2Id = 0;
+        UsingDbContext(context =>
+        {
+            var r1 = context.Set<WorkflowRole>().Add(new WorkflowRole { TenantId = TenantId, Code = "R1" + Guid.NewGuid().ToString("N").Substring(0, 4), NameEn = "A1", NameAr = "A1" }).Entity;
+            var r2 = context.Set<WorkflowRole>().Add(new WorkflowRole { TenantId = TenantId, Code = "R2" + Guid.NewGuid().ToString("N").Substring(0, 4), NameEn = "A2", NameAr = "A2" }).Entity;
+            var m = context.Set<RequestMaster>().Add(new RequestMaster { TenantId = TenantId, Code = "LEAVE-2STEP", NameEn = "Two Step", NameAr = "Two Step", WorkflowSteps = 0 }).Entity;
+            context.SaveChanges();
+            masterId = m.Id; role1Id = r1.Id; role2Id = r2.Id;
+
+            context.Set<EmployeeWorkflowRole>().AddRange(
+                new EmployeeWorkflowRole { TenantId = TenantId, EmployeeId = firstApproverId, WorkflowRoleId = r1.Id, StartDate = DateTime.Today.AddYears(-1), EndDate = DateTime.Today.AddYears(1) },
+                new EmployeeWorkflowRole { TenantId = TenantId, EmployeeId = secondApproverId, WorkflowRoleId = r2.Id, StartDate = DateTime.Today.AddYears(-1), EndDate = DateTime.Today.AddYears(1) });
+
+            var type = context.Set<WorkflowTransactionType>().First(t => t.Code == "EmployeeAbsence");
+            type.IsWorkflowEnabled = true;
+            type.IsEssEnabled = true;
+            type.IsActive = true;
+            type.DefaultRequestMasterId = m.Id;
+        });
+
+        // Added through the app service, so the step-count recalculation runs exactly as it does in the UI.
+        foreach (var (step, roleId) in new[] { (1, role1Id), (2, role2Id) })
+        {
+            await detailsService.CreateOrEdit(new HCMv3.Workflow.Dto.CreateOrEditRequestDetailDto
+            {
+                RequestMasterId = masterId,
+                Step = step,
+                WorkflowRoleId = roleId,
+                ApproverPerson = WorkflowApproverPersonType.Person,
+                ApprovalRequire = ApprovalRequire.Single,
+                CanReject = true,
+                CanSendBack = true
+            });
+        }
+
+        var master = await mastersService.GetRequestMasterForEdit(new EntityDto(masterId));
+        var stepsRecorded = UsingDbContext(c => c.Set<RequestMaster>().Single(m => m.Id == masterId).WorkflowSteps);
+        stepsRecorded.ShouldBe(2, "both steps must be counted, or the chain ends early");
+
+        var result = await _myLeaveAppService.ApplyForLeave(Apply(typeId, DateTime.Today.AddDays(10), 2));
+
+        var approvalService = Resolve<HCMv3.Workflow.Services.IWorkflowApprovalService>();
+        await approvalService.ApproveAsync(result.WorkflowRequestId.Value, firstApproverId, "step 1 ok");
+
+        var request = UsingDbContext(c => c.Set<WorkflowRequest>().Single(r => r.Id == result.WorkflowRequestId.Value));
+
+        // Still open, now waiting on the SECOND approver.
+        request.RequestStatus.ShouldBe(RequestStatus.Open);
+        request.WorkflowStep.ShouldBe(2);
+        request.ApproverId.ShouldBe(secondApproverId);
+
+        // And the leave is still hidden from payroll, because it is not approved.
+        StatusOf(result.EmployeeAbsenceId).ShouldBe(RequestStatus.Open);
+    }
+
+    [Fact]
     public async Task Should_Only_List_My_Own_Leave()
     {
         var meId = CreateCurrentUserEmployee("MYL1000");

@@ -121,6 +121,15 @@ public class RequestDetailsAppService : HCMv3AppServiceBase, IRequestDetailsAppS
 
     private async Task RecalculateWorkflowStepsAsync(int requestMasterId)
     {
+        // The pending insert/delete MUST be flushed first. CountAsync issues a SQL COUNT, which does not see
+        // rows EF Core is still holding in the change tracker, so without this the count is always one
+        // behind: zero after the first step is added, one after the second, and so on.
+        //
+        // That is not cosmetic. WorkflowApprovalService reads WorkflowSteps as the total number of steps, so
+        // an undercount ends the approval chain early -- on a two-step chain the request would be marked
+        // fully approved the moment the FIRST approver acted, and the second approver would never be asked.
+        await CurrentUnitOfWork.SaveChangesAsync();
+
         var requestMaster = await _requestMasterRepository.GetAsync(requestMasterId);
         requestMaster.WorkflowSteps = await _repository.GetAll().CountAsync(d => d.RequestMasterId == requestMasterId);
         await _requestMasterRepository.UpdateAsync(requestMaster);
