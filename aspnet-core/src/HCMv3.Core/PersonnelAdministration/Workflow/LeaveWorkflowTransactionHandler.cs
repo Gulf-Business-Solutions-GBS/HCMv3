@@ -5,6 +5,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
 using HCMv3.PayrollManagement;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Workflow;
 using HCMv3.Workflow.Services;
 
@@ -28,12 +29,12 @@ namespace HCMv3.PersonnelAdministration.Workflow;
 /// </para>
 ///
 /// <para>
-/// <b>Quota is deliberately NOT deducted here yet.</b> Whether a pending leave should reserve quota is one
-/// of the open business decisions on this project: today <c>EmployeeAbsenceQuota</c> has QuotaUsed but no
-/// reserved bucket, so there is no correct place to record a reservation, and inventing one would guess at a
-/// rule nobody has settled. Approval currently records the leave and lets the existing accrual path see it,
-/// which is the pre-workflow behaviour. <see cref="OnApprovedAsync"/> is where a reservation would be
-/// converted once that decision is made.
+/// <b>Pending leave does not reserve quota -- it reserves BOOKABLE.</b> <c>QuotaUsed</c> is touched only on
+/// approval, so payroll, accrual and every report keep seeing exactly what they saw before workflow existed.
+/// What a pending request does consume is the employee's ability to book those days again, and that is a
+/// computed number (<see cref="ILeaveBalanceService"/>), not a stored one. The consequence is that there is
+/// no reservation to leak when a request is abandoned and nothing to reconcile: the pending row IS the
+/// reservation, which only works because it lives in <c>EmployeeAbsences</c> next to the approved leave.
 /// </para>
 /// </summary>
 public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<EmployeeAbsence>
@@ -43,15 +44,18 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
 
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly ILeaveBalanceService _leaveBalanceService;
 
     public LeaveWorkflowTransactionHandler(
         IRepository<EmployeeAbsence> repository,
         IRepository<AbsenceType> absenceTypeRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        ILeaveBalanceService leaveBalanceService)
         : base(repository, unitOfWorkManager)
     {
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
+        _leaveBalanceService = leaveBalanceService;
     }
 
     public override string RequestType => LeaveRequestType;
@@ -99,6 +103,46 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             {
                 throw new UserFriendlyException(L("OverlappingLeaveRequestExists"));
             }
+        }
+
+        await EnsureWithinBookableBalanceAsync(leave);
+    }
+
+    /// <summary>
+    /// Refuses a request for more days than the employee can still book.
+    ///
+    /// <para>
+    /// Checked against BOOKABLE, not against the quota balance. The quota balance ignores leave already
+    /// awaiting approval, so an employee with ten days left could submit three separate week-long requests
+    /// and each would pass on its own. Bookable subtracts what is already in flight, so the second
+    /// application sees the first.
+    /// </para>
+    /// <para>
+    /// Skipped when the employee holds no quota row for the type at all: some absence types (unpaid,
+    /// compassionate) are deliberately not quota-controlled, and refusing those would block legitimate
+    /// requests rather than catch a mistake.
+    /// </para>
+    /// </summary>
+    private async Task EnsureWithinBookableBalanceAsync(EmployeeAbsence leave)
+    {
+        var balances = await _leaveBalanceService.GetBalancesAsync(leave.EmployeeId, leave.StartDate);
+
+        var balance = balances.FirstOrDefault(b => b.AbsenceTypeId == leave.AbsenceTypeId);
+        if (balance == null)
+        {
+            return;
+        }
+
+        // The row being submitted is itself still a Draft, so it is not in Pending yet and does not need
+        // excluding from the comparison.
+        var requestedDays = leave.TotalLeaveDays > 0
+            ? leave.TotalLeaveDays
+            : (leave.EndDate.Date - leave.StartDate.Date).TotalDays + 1;
+
+        if (requestedDays > balance.Bookable)
+        {
+            throw new UserFriendlyException(
+                L("NotEnoughBookableLeaveBalance", $"{balance.Bookable:0.##}", $"{requestedDays:0.##}"));
         }
     }
 

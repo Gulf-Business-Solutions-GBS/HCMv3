@@ -4012,6 +4012,9 @@
     <text name="WorkflowIsNotEnabledForTransactionType">Workflow is not enabled for '{0}'.</text>
     <text name="WorkflowRequestHasNoTransactionRow">Request {0} is not linked to a transaction record.</text>
     <text name="OverlappingLeaveRequestExists">This employee already has leave covering some of these dates.</text>
+    <text name="NotEnoughBookableLeaveBalance">Only {0} day(s) can still be booked, but {1} day(s) were requested. Leave already awaiting approval is counted.</text>
+    <text name="BookableBalance">Bookable</text>
+    <text name="PendingApproval">Awaiting approval</text>
     <text name="EmployeeSelfService">Employee Self Service</text>
     <text name="EssInbox">Pending My Approval</text>
     <text name="EssMyRequests">My Requests</text>
