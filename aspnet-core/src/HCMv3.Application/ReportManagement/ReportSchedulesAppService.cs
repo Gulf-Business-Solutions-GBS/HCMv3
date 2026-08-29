@@ -242,12 +242,14 @@ public class ReportSchedulesAppService : HCMv3AppServiceBase, IReportSchedulesAp
             throw new UserFriendlyException("Add at least one destination.");
         }
 
-        // Refuse the destinations no channel implements. The wizard already disables them, but the
-        // API is reachable without it, and the alternative failure is far worse: the schedule saves,
-        // looks configured, and only throws "no delivery channel registered" at delivery time -- by
-        // which point the reports are late and nobody is watching the run log.
+        // Refuse the destinations no channel implements. Email and Offline (file drop) both have one;
+        // FTP does not. The wizard already disables it, but the API is reachable without the wizard,
+        // and the alternative failure is far worse: the schedule saves, looks configured, and only
+        // throws "no delivery channel registered" at delivery time -- by which point the reports are
+        // late and nobody is watching the run log.
         var unsupported = input.Destinations
-            .Where(d => d.Method != ReportDestinationMethod.Email)
+            .Where(d => d.Method != ReportDestinationMethod.Email &&
+                        d.Method != ReportDestinationMethod.Offline)
             .Select(d => d.Method.ToString())
             .Distinct()
             .ToList();
@@ -256,7 +258,7 @@ public class ReportSchedulesAppService : HCMv3AppServiceBase, IReportSchedulesAp
         {
             throw new UserFriendlyException(
                 string.Join(", ", unsupported) +
-                " delivery is not available yet. Only e-mail destinations can be scheduled.");
+                " delivery is not available yet. Choose e-mail or offline file drop.");
         }
 
         // Same reasoning for the format. The renderer calls each report's own Get*ToExcel and returns

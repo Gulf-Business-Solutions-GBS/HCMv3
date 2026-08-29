@@ -341,18 +341,16 @@
                                             [name]="'dMethod' + $index"
                                             class="form-select">
                                             <option [ngValue]="Destination.Email">{{ 'Email' | localize }}</option>
-                                            <!-- Disabled rather than removed: the schema and the
-                                                 config panels below already model both, so they stay
-                                                 visible as planned destinations. Selectable, they
-                                                 produced a schedule that failed at delivery time with
-                                                 "no delivery channel registered" -- long after the
-                                                 person who configured it had gone. -->
+                                            <!-- FTP is disabled rather than removed: the schema and
+                                                 its config panel below already model it, so it stays
+                                                 visible as planned work. Selectable, it produced a
+                                                 schedule that failed at delivery time with "no
+                                                 delivery channel registered" -- long after the person
+                                                 who configured it had gone. -->
                                             <option [ngValue]="Destination.Ftp" disabled>
                                                 File Transfer Protocol (FTP) &mdash; {{ 'NotAvailableYet' | localize }}
                                             </option>
-                                            <option [ngValue]="Destination.Offline" disabled>
-                                                {{ 'Offline' | localize }} &mdash; {{ 'NotAvailableYet' | localize }}
-                                            </option>
+                                            <option [ngValue]="Destination.Offline">{{ 'Offline' | localize }}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-8 text-end">
@@ -459,7 +457,9 @@
                                         <input
                                             [(ngModel)]="d.storageFolder"
                                             [name]="'dFolder' + $index"
-                                            class="form-control" />
+                                            class="form-control"
+                                            placeholder="attendance/monthly" />
+                                        <small class="form-text text-muted">{{ 'StorageFolderHint' | localize }}</small>
                                     </div>
                                 }
                             </div>

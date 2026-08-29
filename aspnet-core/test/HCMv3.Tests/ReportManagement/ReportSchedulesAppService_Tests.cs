@@ -127,17 +127,30 @@ public class ReportSchedulesAppService_Tests : AppTestBase
         copy.ReportSchedule.Name.ShouldEndWith("(copy)");
     }
 
-    [Theory]
-    [InlineData(ReportDestinationMethod.Ftp)]
-    [InlineData(ReportDestinationMethod.Offline)]
-    public async Task Should_Refuse_A_Destination_No_Channel_Implements(ReportDestinationMethod method)
+    [Fact]
+    public async Task Should_Refuse_A_Destination_No_Channel_Implements()
     {
-        // Only EmailReportSliceDeliveryChannel exists. Saved, these would look configured and then fail
-        // at delivery time with "no delivery channel registered" -- long after anyone was watching.
+        // FTP has no channel. Saved, it would look configured and then fail at delivery time with
+        // "no delivery channel registered" -- long after anyone was watching.
         var input = NewSchedule();
-        input.Destinations[0].Method = method;
+        input.Destinations[0].Method = ReportDestinationMethod.Ftp;
 
         await Assert.ThrowsAsync<UserFriendlyException>(() => _appService.CreateOrEdit(input));
+    }
+
+    [Fact]
+    public async Task Should_Accept_An_Offline_File_Drop_Destination()
+    {
+        // FileDropReportSliceDeliveryChannel implements Offline, so it must no longer be refused --
+        // it is the destination that lets bursting be verified without a mail server.
+        var input = NewSchedule();
+        input.Destinations[0].Method = ReportDestinationMethod.Offline;
+        input.Destinations[0].StorageFolder = "attendance/monthly";
+
+        await _appService.CreateOrEdit(input);
+
+        var list = await _appService.GetAll(new GetAllReportSchedulesInput { MaxResultCount = 10 });
+        list.Items.Count.ShouldBe(1);
     }
 
     [Theory]

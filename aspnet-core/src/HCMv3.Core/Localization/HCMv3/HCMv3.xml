@@ -4135,6 +4135,7 @@
     <text name="ScheduleDefinition">Schedule Definition</text>
     <text name="ScheduleOccurrence">Schedule Occurrence</text>
     <text name="Destination">Destination</text>
+    <text name="StorageFolderHint">A folder beneath the server's report drop root. Relative paths only.</text>
     <text name="NotAvailableYet">not available yet</text>
     <text name="ExcelOnlyHint">Scheduled runs are delivered as Excel. Other formats are not yet produced.</text>
     <text name="ReportFormat">Report Format</text>
