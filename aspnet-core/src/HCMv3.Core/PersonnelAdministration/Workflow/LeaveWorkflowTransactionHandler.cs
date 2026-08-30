@@ -31,7 +31,8 @@ namespace HCMv3.PersonnelAdministration.Workflow;
 ///
 /// <para>
 /// <b>Pending leave does not reserve quota -- it reserves BOOKABLE.</b> <c>QuotaUsed</c> is touched only on
-/// approval, so payroll, accrual and every report keep seeing exactly what they saw before workflow existed.
+/// APPROVAL (see <c>OnApprovedAsync</c>), so payroll, accrual and every report keep seeing exactly what they
+/// saw before workflow existed.
 /// What a pending request does consume is the employee's ability to book those days again, and that is a
 /// computed number (<see cref="ILeaveBalanceService"/>), not a stored one. The consequence is that there is
 /// no reservation to leak when a request is abandoned and nothing to reconcile: the pending row IS the
@@ -46,17 +47,20 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly ILeaveBalanceService _leaveBalanceService;
+    private readonly IRepository<EmployeeAbsenceQuota> _quotaRepository;
 
     public LeaveWorkflowTransactionHandler(
         IRepository<EmployeeAbsence> repository,
         IRepository<AbsenceType> absenceTypeRepository,
         IUnitOfWorkManager unitOfWorkManager,
-        ILeaveBalanceService leaveBalanceService)
+        ILeaveBalanceService leaveBalanceService,
+        IRepository<EmployeeAbsenceQuota> quotaRepository)
         : base(repository, unitOfWorkManager)
     {
         _absenceTypeRepository = absenceTypeRepository;
         _unitOfWorkManager = unitOfWorkManager;
         _leaveBalanceService = leaveBalanceService;
+        _quotaRepository = quotaRepository;
     }
 
     public override string RequestType => LeaveRequestType;
@@ -144,8 +148,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         var leave = await GetRequiredTargetAsync(context);
         var proposed = ReadAmendment(context);
 
+        var previousDays = DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate);
+        var previousAbsenceTypeId = leave.AbsenceTypeId;
+
         var daysAlreadyCounted = leave.AbsenceTypeId == proposed.AbsenceTypeId
-            ? DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate)
+            ? previousDays
             : 0;
 
         await ValidateLeaveValuesAsync(
@@ -169,6 +176,89 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         {
             await Repository.UpdateAsync(leave);
         }
+
+        // The quota already carries the ORIGINAL days, because this leave was approved before it was
+        // amended. Give those back and take the new figure, rather than adding the difference -- a change of
+        // absence type moves days between two different quota rows, and a single delta cannot express that.
+        await ReleaseQuotaAsync(leave.EmployeeId, previousAbsenceTypeId, previousDays, leave.StartDate);
+        await ConsumeQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, proposed.TotalLeaveDays, leave.StartDate);
+    }
+
+    /// <summary>
+    /// Takes the approved days out of the employee's quota. This is the moment leave stops being a claim on
+    /// the balance and becomes a deduction from it.
+    ///
+    /// <para>
+    /// Runs ONLY on final approval, inside the approving unit of work. If anything downstream throws, the
+    /// deduction rolls back with the approval -- leave recorded as approved with the balance untouched, or
+    /// the other way round, would be a discrepancy nobody could explain from the screens.
+    /// </para>
+    /// <para>
+    /// Silent when the employee holds no quota row for the type on that date. Some absence types (unpaid,
+    /// compassionate) are deliberately not quota-controlled, and inventing a row to deduct from would create
+    /// an entitlement that HR never granted.
+    /// </para>
+    /// </summary>
+    private async Task ConsumeQuotaAsync(int employeeId, int absenceTypeId, double days, DateTime asOf)
+    {
+        if (days <= 0)
+        {
+            return;
+        }
+
+        var quota = FindQuota(employeeId, absenceTypeId, asOf);
+        if (quota == null)
+        {
+            return;
+        }
+
+        quota.QuotaUsed = Math.Round(quota.QuotaUsed + days, 6);
+
+        await _quotaRepository.UpdateAsync(quota);
+    }
+
+    /// <summary>
+    /// Puts days back, for when an amendment replaces what was previously approved.
+    ///
+    /// <para>
+    /// Floored at zero. A negative QuotaUsed would read as extra entitlement the employee never had, and if
+    /// the stored figure has drifted for any reason the safe direction to fail is "no free days".
+    /// </para>
+    /// </summary>
+    private async Task ReleaseQuotaAsync(int employeeId, int absenceTypeId, double days, DateTime asOf)
+    {
+        if (days <= 0)
+        {
+            return;
+        }
+
+        var quota = FindQuota(employeeId, absenceTypeId, asOf);
+        if (quota == null)
+        {
+            return;
+        }
+
+        quota.QuotaUsed = Math.Round(Math.Max(0, quota.QuotaUsed - days), 6);
+
+        await _quotaRepository.UpdateAsync(quota);
+    }
+
+    /// <summary>
+    /// The quota row whose entitlement period covers the leave's start date -- the same row
+    /// <see cref="ILeaveBalanceService"/> reads, so the balance shown and the balance deducted cannot
+    /// disagree about which year they mean.
+    /// </summary>
+    private EmployeeAbsenceQuota FindQuota(int employeeId, int absenceTypeId, DateTime asOf)
+    {
+        var effectiveDate = asOf.Date;
+
+        return _quotaRepository.GetAll()
+            .Where(q => q.EmployeeId == employeeId
+                        && q.AbsenceTypeId == absenceTypeId
+                        && q.EntitlementFrom <= effectiveDate
+                        && q.EntitlementTo >= effectiveDate)
+            .OrderBy(q => q.EntitlementFrom)
+            .FirstOrDefault();
     }
 
     private static LeaveAmendment ReadAmendment(WorkflowTransactionContext context)
@@ -270,6 +360,40 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             throw new UserFriendlyException(
                 L("NotEnoughBookableLeaveBalance", $"{available:0.##}", $"{requestedDays:0.##}"));
         }
+    }
+
+    /// <summary>
+    /// Applies the approval, then takes the days out of the quota.
+    ///
+    /// <para>
+    /// The base class stamps the row Approved, which is what makes it visible to payroll again; this adds the
+    /// deduction. Both happen in the approving unit of work, so the row and the balance can never disagree.
+    /// </para>
+    /// <para>
+    /// Returns early for an AMENDMENT. The base routes those into <see cref="ApplyAmendmentAsync"/>, which
+    /// already does its own release-and-reconsume -- deducting again here would take the days twice, so an
+    /// employee extending 3 days to 7 would lose 14. Caught by the tests rather than by review, because the
+    /// dispatch happens in the base class and is invisible from this method.
+    /// </para>
+    /// </summary>
+    public override async Task OnApprovedAsync(WorkflowTransactionContext context)
+    {
+        await base.OnApprovedAsync(context);
+
+        if (context.IsAmendment)
+        {
+            return;
+        }
+
+        var leave = await GetTargetAsync(context);
+        if (leave == null)
+        {
+            return;
+        }
+
+        var days = DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate);
+
+        await ConsumeQuotaAsync(leave.EmployeeId, leave.AbsenceTypeId, days, leave.StartDate);
     }
 
     /// <summary>

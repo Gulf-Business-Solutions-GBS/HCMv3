@@ -131,21 +131,6 @@ public class WorkflowAmendment_Tests : AppTestBase
         });
     }
 
-    /// <summary>
-    /// Posts an approved leave into the quota, which is what makes QuotaUsed reflect it. Done explicitly
-    /// because approval itself does not write that column today -- see the class remarks on this file.
-    /// </summary>
-    private void SetQuotaUsed(int employeeId, int absenceTypeId, double used)
-    {
-        UsingDbContext(context =>
-        {
-            var quota = context.Set<EmployeeAbsenceQuota>()
-                .Single(q => q.EmployeeId == employeeId && q.AbsenceTypeId == absenceTypeId);
-
-            quota.QuotaUsed = used;
-        });
-    }
-
     /// <summary>A one-step leave chain with a named approver, and the catalog row switched on.</summary>
     private int EnableLeaveWorkflowWithApprover(string approverCode)
     {
@@ -503,9 +488,9 @@ public class WorkflowAmendment_Tests : AppTestBase
     [Fact]
     public async Task Shortening_An_Approved_Leave_Should_Not_Be_Refused_For_Balance()
     {
-        // Set up as the contract on ILeaveBalanceService describes it: an approved leave's days sit in the
-        // quota's QuotaUsed. Without crediting those days back, an amendment that ASKS FOR LESS would be
-        // refused for insufficient balance -- the most confusing rejection this system could produce.
+        // Approving the leave puts its days into QuotaUsed, so the whole entitlement is consumed. Without
+        // crediting those days back, an amendment that ASKS FOR LESS would be refused for insufficient
+        // balance -- the most confusing rejection this system could produce.
         var meId = CreateCurrentUserEmployee("AMD210");
         var approverId = EnableLeaveWorkflowWithApprover("AMD210APP");
         var typeId = CreateAbsenceType();
@@ -515,9 +500,6 @@ public class WorkflowAmendment_Tests : AppTestBase
 
         var start = DateTime.Today.AddDays(30);
         var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
-
-        // Posted: the approved leave now sits in QuotaUsed, leaving nothing free.
-        SetQuotaUsed(meId, typeId, 5);
 
         var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 3));
 
@@ -529,8 +511,9 @@ public class WorkflowAmendment_Tests : AppTestBase
     [Fact]
     public async Task An_Amendment_Beyond_The_Balance_Should_Still_Be_Refused()
     {
-        // Same set-up as above, so the credit-back is exercised rather than bypassed: 5 accrued, 5 used by
-        // this very leave. Crediting its own days back gives 5 available -- eight is still three too many.
+        // Same set-up as above, so the credit-back is exercised rather than bypassed: 5 accrued, all 5 used
+        // by this very leave once approved. Crediting its own days back gives 5 available -- eight is still
+        // three too many.
         var meId = CreateCurrentUserEmployee("AMD220");
         var approverId = EnableLeaveWorkflowWithApprover("AMD220APP");
         var typeId = CreateAbsenceType();
@@ -539,9 +522,6 @@ public class WorkflowAmendment_Tests : AppTestBase
         var start = DateTime.Today.AddDays(30);
         var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
 
-        // Posted: the approved leave now sits in QuotaUsed, leaving nothing free.
-        SetQuotaUsed(meId, typeId, 5);
-
         await Assert.ThrowsAsync<UserFriendlyException>(() =>
             _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 8)));
     }
@@ -549,8 +529,8 @@ public class WorkflowAmendment_Tests : AppTestBase
     [Fact]
     public async Task Extending_An_Approved_Leave_Within_The_Balance_Should_Be_Allowed()
     {
-        // The other side of the credit-back. 10 accrued with 5 used by this leave leaves 5 free; asking for
-        // 8 means 3 more than the current 5, which fits.
+        // The other side of the credit-back. 10 accrued, 5 used by this leave once approved, leaving 5 free;
+        // asking for 8 means 3 more than the current 5, which fits.
         var meId = CreateCurrentUserEmployee("AMD225");
         var approverId = EnableLeaveWorkflowWithApprover("AMD225APP");
         var typeId = CreateAbsenceType();
@@ -558,9 +538,6 @@ public class WorkflowAmendment_Tests : AppTestBase
 
         var start = DateTime.Today.AddDays(30);
         var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
-
-        // Posted: 5 of the 10 are now used by this leave, leaving 5 free.
-        SetQuotaUsed(meId, typeId, 5);
 
         var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 8));
         await _approvalService.ApproveAsync(requestId, approverId, "ok");
@@ -671,5 +648,140 @@ public class WorkflowAmendment_Tests : AppTestBase
 
             await uow.CompleteAsync();
         }
+    }
+
+    private double QuotaUsedOf(int employeeId, int absenceTypeId) =>
+        UsingDbContext(c => c.Set<EmployeeAbsenceQuota>()
+            .Single(q => q.EmployeeId == employeeId && q.AbsenceTypeId == absenceTypeId).QuotaUsed);
+
+    [Fact]
+    public async Task Approving_Leave_Should_Take_The_Days_Out_Of_The_Quota()
+    {
+        // The moment leave stops being a claim on the balance and becomes a deduction from it.
+        var meId = CreateCurrentUserEmployee("QTA100");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA100APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        QuotaUsedOf(meId, typeId).ShouldBe(0);
+
+        await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 5, approverId);
+
+        QuotaUsedOf(meId, typeId).ShouldBe(5);
+    }
+
+    [Fact]
+    public async Task Leave_Awaiting_Approval_Should_Not_Touch_The_Quota()
+    {
+        // Only bookable moves while a request is pending. Deducting on submit would take days from somebody
+        // whose request is then rejected.
+        var meId = CreateCurrentUserEmployee("QTA110");
+        EnableLeaveWorkflowWithApprover("QTA110APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        await _myLeaveAppService.ApplyForLeave(new ApplyForLeaveInput
+        {
+            AbsenceTypeId = typeId,
+            StartDate = DateTime.Today.AddDays(30),
+            EndDate = DateTime.Today.AddDays(34),
+            Comments = "pending"
+        });
+
+        QuotaUsedOf(meId, typeId).ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Shortening_An_Approved_Leave_Should_Give_The_Difference_Back()
+    {
+        var meId = CreateCurrentUserEmployee("QTA120");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA120APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var start = DateTime.Today.AddDays(30);
+        var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
+
+        QuotaUsedOf(meId, typeId).ShouldBe(5);
+
+        var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 3));
+        await _approvalService.ApproveAsync(requestId, approverId, "ok");
+
+        // Three, not eight. The original five are released before the new figure is taken.
+        QuotaUsedOf(meId, typeId).ShouldBe(3);
+    }
+
+    [Fact]
+    public async Task Extending_An_Approved_Leave_Should_Take_The_Difference()
+    {
+        var meId = CreateCurrentUserEmployee("QTA130");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA130APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var start = DateTime.Today.AddDays(30);
+        var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 3, approverId);
+
+        var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 7));
+        await _approvalService.ApproveAsync(requestId, approverId, "ok");
+
+        QuotaUsedOf(meId, typeId).ShouldBe(7);
+    }
+
+    [Fact]
+    public async Task Changing_The_Absence_Type_Should_Move_The_Days_Between_Quotas()
+    {
+        // A single delta cannot express this, which is why the amendment releases and re-consumes rather
+        // than adding a difference: the days leave one quota row and arrive in another.
+        var meId = CreateCurrentUserEmployee("QTA140");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA140APP");
+        var annualId = CreateAbsenceType("Annual");
+        var sickId = CreateAbsenceType("Sick");
+        CreateQuota(meId, annualId, accrued: 30);
+        CreateQuota(meId, sickId, accrued: 15);
+
+        var start = DateTime.Today.AddDays(30);
+        var leaveId = await CreateApprovedLeaveAsync(annualId, start, days: 4, approverId);
+
+        QuotaUsedOf(meId, annualId).ShouldBe(4);
+        QuotaUsedOf(meId, sickId).ShouldBe(0);
+
+        var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, sickId, start, days: 4));
+        await _approvalService.ApproveAsync(requestId, approverId, "ok");
+
+        QuotaUsedOf(meId, annualId).ShouldBe(0);
+        QuotaUsedOf(meId, sickId).ShouldBe(4);
+    }
+
+    [Fact]
+    public async Task A_Rejected_Amendment_Should_Leave_The_Quota_As_It_Was()
+    {
+        // The same rule as the leave row itself: declining a change must not alter what was already granted.
+        var meId = CreateCurrentUserEmployee("QTA150");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA150APP");
+        var typeId = CreateAbsenceType();
+        CreateQuota(meId, typeId, accrued: 30);
+
+        var start = DateTime.Today.AddDays(30);
+        var leaveId = await CreateApprovedLeaveAsync(typeId, start, days: 5, approverId);
+
+        var requestId = await _myLeaveAppService.AmendMyLeave(Amend(leaveId, typeId, start, days: 2));
+        await _approvalService.RejectAsync(requestId, approverId, "no");
+
+        QuotaUsedOf(meId, typeId).ShouldBe(5);
+    }
+
+    [Fact]
+    public async Task Approving_Leave_With_No_Quota_Row_Should_Not_Fail()
+    {
+        // Unpaid and compassionate types are deliberately not quota-controlled. Inventing a row to deduct
+        // from would create an entitlement HR never granted.
+        var meId = CreateCurrentUserEmployee("QTA160");
+        var approverId = EnableLeaveWorkflowWithApprover("QTA160APP");
+        var typeId = CreateAbsenceType("Unpaid");
+
+        var leaveId = await CreateApprovedLeaveAsync(typeId, DateTime.Today.AddDays(30), days: 3, approverId);
+
+        LeaveRow(leaveId).WorkflowStatus.ShouldBe(RequestStatus.Approved);
     }
 }
