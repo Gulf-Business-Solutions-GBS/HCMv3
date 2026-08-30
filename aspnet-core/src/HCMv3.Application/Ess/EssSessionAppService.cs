@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
@@ -22,19 +23,22 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRepository<WorkflowTransactionType> _transactionTypeRepository;
     private readonly IRepository<WorkFlowApprover> _workFlowApproverRepository;
+    private readonly IRepository<WorkflowRequest> _workflowRequestRepository;
 
     public EssSessionAppService(
         IEmployeeSessionService employeeSessionService,
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<WorkflowTransactionType> transactionTypeRepository,
-        IRepository<WorkFlowApprover> workFlowApproverRepository)
+        IRepository<WorkFlowApprover> workFlowApproverRepository,
+        IRepository<WorkflowRequest> workflowRequestRepository)
     {
         _employeeSessionService = employeeSessionService;
         _employeeRepository = employeeRepository;
         _employeeManagerRepository = employeeManagerRepository;
         _transactionTypeRepository = transactionTypeRepository;
         _workFlowApproverRepository = workFlowApproverRepository;
+        _workflowRequestRepository = workflowRequestRepository;
     }
 
     public async Task<EssContextDto> GetEssContext()
@@ -91,14 +95,79 @@ public class EssSessionAppService : HCMv3AppServiceBase, IEssSessionAppService
 
         result.AvailableTransactionTypes = await GetAvailableTransactionTypesAsync();
 
+        // The other side of the workflow: what this employee is waiting on somebody else for. Most people
+        // are on both sides, so the landing page has to distinguish the two counts rather than show one
+        // number labelled "pending".
+        result.MyPendingRequestCount = await _workflowRequestRepository.GetAll()
+            .CountAsync(r => r.EmployeeId == employeeId.Value
+                             && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft));
+
+        result.RecentRequests = await GetRecentRequestsAsync(employeeId.Value);
+
         return result;
     }
+
+    /// <summary>
+    /// The employee's last few requests of ANY type, newest first.
+    ///
+    /// <para>
+    /// One query over <c>WorkflowRequests</c>, joined only to the catalog for a type name. The label comes
+    /// from the summary each handler wrote at submit, so mixing leave, assets and loans in one list costs
+    /// nothing -- no transaction table is touched. That is the same property the approver inbox relies on,
+    /// seen from the requester's side.
+    /// </para>
+    /// </summary>
+    private async Task<List<EssRecentRequestDto>> GetRecentRequestsAsync(int employeeId)
+    {
+        var requests = await _workflowRequestRepository.GetAll()
+            .Where(r => r.EmployeeId == employeeId)
+            .OrderByDescending(r => r.Id)
+            .Take(RecentRequestCount)
+            .Select(r => new EssRecentRequestDto
+            {
+                Id = r.Id,
+                RequestType = r.RequestType,
+                RequestNumber = r.RequestNumber,
+                SummaryEn = r.SummaryEn,
+                SummaryAr = r.SummaryAr,
+                RequestStatus = r.RequestStatus,
+                SubmittedOn = r.CreationTime,
+                IsAmendment = r.IsAmendment
+            })
+            .ToListAsync();
+
+        if (requests.Count == 0)
+        {
+            return requests;
+        }
+
+        var codes = requests.Select(r => r.RequestType).Distinct().ToList();
+
+        var typeNames = (await _transactionTypeRepository.GetAll()
+            .Where(t => codes.Contains(t.Code))
+            .Select(t => new { t.Code, t.NameEn, t.NameAr })
+            .ToListAsync())
+            .ToDictionary(t => t.Code, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var request in requests)
+        {
+            if (!request.RequestType.IsNullOrWhiteSpace() && typeNames.TryGetValue(request.RequestType, out var type))
+            {
+                request.RequestTypeNameEn = type.NameEn;
+                request.RequestTypeNameAr = type.NameAr;
+            }
+        }
+
+        return requests;
+    }
+
+    private const int RecentRequestCount = 8;
 
     /// <summary>
     /// ESS-enabled, active, and permitted to this user. The permission check happens here rather than in
     /// the client so a type the user cannot raise never reaches the browser at all.
     /// </summary>
-    private async Task<System.Collections.Generic.List<EssTransactionTypeDto>> GetAvailableTransactionTypesAsync()
+    private async Task<List<EssTransactionTypeDto>> GetAvailableTransactionTypesAsync()
     {
         var types = await _transactionTypeRepository.GetAll()
             .Where(t => t.IsEssEnabled && t.IsActive)

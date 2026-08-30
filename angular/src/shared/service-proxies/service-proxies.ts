@@ -83276,6 +83276,63 @@ export class MyLeaveServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    amendMyLeave(body?: AmendMyLeaveInput | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/MyLeave/AmendMyLeave";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAmendMyLeave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAmendMyLeave(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processAmendMyLeave(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     applyForLeave(body?: ApplyForLeaveInput | undefined): Observable<ApplyForLeaveResultDto> {
         let url_ = this.baseUrl + "/api/services/app/MyLeave/ApplyForLeave";
         url_ = url_.replace(/[?&]$/, "");
@@ -152534,6 +152591,58 @@ export interface IAirTicketQuotaBalanceReportRowDto {
     comment: string | undefined;
 }
 
+export class AmendMyLeaveInput implements IAmendMyLeaveInput {
+    employeeAbsenceId!: number;
+    absenceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    reason!: string;
+
+    constructor(data?: IAmendMyLeaveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeAbsenceId = _data["employeeAbsenceId"];
+            this.absenceTypeId = _data["absenceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): AmendMyLeaveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AmendMyLeaveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeAbsenceId"] = this.employeeAbsenceId;
+        data["absenceTypeId"] = this.absenceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IAmendMyLeaveInput {
+    employeeAbsenceId: number;
+    absenceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    reason: string;
+}
+
 export class AnnualLeaveSheetReportRowDto implements IAnnualLeaveSheetReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -201505,6 +201614,8 @@ export class EssContextDto implements IEssContextDto {
     hasPhoto!: boolean;
     isManager!: boolean;
     pendingApprovalCount!: number;
+    myPendingRequestCount!: number;
+    recentRequests!: EssRecentRequestDto[] | undefined;
     availableTransactionTypes!: EssTransactionTypeDto[] | undefined;
 
     constructor(data?: IEssContextDto) {
@@ -201526,6 +201637,12 @@ export class EssContextDto implements IEssContextDto {
             this.hasPhoto = _data["hasPhoto"];
             this.isManager = _data["isManager"];
             this.pendingApprovalCount = _data["pendingApprovalCount"];
+            this.myPendingRequestCount = _data["myPendingRequestCount"];
+            if (Array.isArray(_data["recentRequests"])) {
+                this.recentRequests = [] as any;
+                for (let item of _data["recentRequests"])
+                    this.recentRequests!.push(EssRecentRequestDto.fromJS(item));
+            }
             if (Array.isArray(_data["availableTransactionTypes"])) {
                 this.availableTransactionTypes = [] as any;
                 for (let item of _data["availableTransactionTypes"])
@@ -201551,6 +201668,12 @@ export class EssContextDto implements IEssContextDto {
         data["hasPhoto"] = this.hasPhoto;
         data["isManager"] = this.isManager;
         data["pendingApprovalCount"] = this.pendingApprovalCount;
+        data["myPendingRequestCount"] = this.myPendingRequestCount;
+        if (Array.isArray(this.recentRequests)) {
+            data["recentRequests"] = [];
+            for (let item of this.recentRequests)
+                data["recentRequests"].push(item ? item.toJSON() : undefined as any);
+        }
         if (Array.isArray(this.availableTransactionTypes)) {
             data["availableTransactionTypes"] = [];
             for (let item of this.availableTransactionTypes)
@@ -201569,6 +201692,8 @@ export interface IEssContextDto {
     hasPhoto: boolean;
     isManager: boolean;
     pendingApprovalCount: number;
+    myPendingRequestCount: number;
+    recentRequests: EssRecentRequestDto[] | undefined;
     availableTransactionTypes: EssTransactionTypeDto[] | undefined;
 }
 
@@ -201666,6 +201791,78 @@ export interface IEssInboxItemDto {
     totalSteps: number;
     canReject: boolean;
     canSendBack: boolean;
+}
+
+export class EssRecentRequestDto implements IEssRecentRequestDto {
+    id!: number;
+    requestType!: string | undefined;
+    requestTypeNameEn!: string | undefined;
+    requestTypeNameAr!: string | undefined;
+    requestNumber!: string | undefined;
+    summaryEn!: string | undefined;
+    summaryAr!: string | undefined;
+    requestStatus!: RequestStatus;
+    submittedOn!: DateTime;
+    isAmendment!: boolean;
+
+    constructor(data?: IEssRecentRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.requestType = _data["requestType"];
+            this.requestTypeNameEn = _data["requestTypeNameEn"];
+            this.requestTypeNameAr = _data["requestTypeNameAr"];
+            this.requestNumber = _data["requestNumber"];
+            this.summaryEn = _data["summaryEn"];
+            this.summaryAr = _data["summaryAr"];
+            this.requestStatus = _data["requestStatus"];
+            this.submittedOn = _data["submittedOn"] ? DateTime.fromISO(_data["submittedOn"].toString()) : undefined as any;
+            this.isAmendment = _data["isAmendment"];
+        }
+    }
+
+    static fromJS(data: any): EssRecentRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EssRecentRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["requestType"] = this.requestType;
+        data["requestTypeNameEn"] = this.requestTypeNameEn;
+        data["requestTypeNameAr"] = this.requestTypeNameAr;
+        data["requestNumber"] = this.requestNumber;
+        data["summaryEn"] = this.summaryEn;
+        data["summaryAr"] = this.summaryAr;
+        data["requestStatus"] = this.requestStatus;
+        data["submittedOn"] = this.submittedOn ? this.submittedOn.toString() : undefined as any;
+        data["isAmendment"] = this.isAmendment;
+        return data;
+    }
+}
+
+export interface IEssRecentRequestDto {
+    id: number;
+    requestType: string | undefined;
+    requestTypeNameEn: string | undefined;
+    requestTypeNameAr: string | undefined;
+    requestNumber: string | undefined;
+    summaryEn: string | undefined;
+    summaryAr: string | undefined;
+    requestStatus: RequestStatus;
+    submittedOn: DateTime;
+    isAmendment: boolean;
 }
 
 export class EssTransactionTypeDto implements IEssTransactionTypeDto {
@@ -256598,6 +256795,9 @@ export class MyLeaveDto implements IMyLeaveDto {
     workflowStatus!: RequestStatus;
     workflowRequestId!: number | undefined;
     canCancel!: boolean;
+    canAmend!: boolean;
+    hasPendingAmendment!: boolean;
+    pendingAmendmentRequestId!: number | undefined;
 
     constructor(data?: IMyLeaveDto) {
         if (data) {
@@ -256621,6 +256821,9 @@ export class MyLeaveDto implements IMyLeaveDto {
             this.workflowStatus = _data["workflowStatus"];
             this.workflowRequestId = _data["workflowRequestId"];
             this.canCancel = _data["canCancel"];
+            this.canAmend = _data["canAmend"];
+            this.hasPendingAmendment = _data["hasPendingAmendment"];
+            this.pendingAmendmentRequestId = _data["pendingAmendmentRequestId"];
         }
     }
 
@@ -256644,6 +256847,9 @@ export class MyLeaveDto implements IMyLeaveDto {
         data["workflowStatus"] = this.workflowStatus;
         data["workflowRequestId"] = this.workflowRequestId;
         data["canCancel"] = this.canCancel;
+        data["canAmend"] = this.canAmend;
+        data["hasPendingAmendment"] = this.hasPendingAmendment;
+        data["pendingAmendmentRequestId"] = this.pendingAmendmentRequestId;
         return data;
     }
 }
@@ -256660,6 +256866,9 @@ export interface IMyLeaveDto {
     workflowStatus: RequestStatus;
     workflowRequestId: number | undefined;
     canCancel: boolean;
+    canAmend: boolean;
+    hasPendingAmendment: boolean;
+    pendingAmendmentRequestId: number | undefined;
 }
 
 export class NameValue implements INameValue {

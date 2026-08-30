@@ -1779,6 +1779,13 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="WaitingOnMe">Waiting on me</text>
+    <text name="MyRequestsAwaitingApproval">My requests awaiting approval</text>
+    <text name="WhatWouldYouLikeToDo">What would you like to do?</text>
+    <text name="NoApprovalNeeded">No approval needed</text>
+    <text name="NoSelfServiceTransactionsEnabledYet">Nothing has been switched on for self service yet. An administrator enables each request type once it has an approval route.</text>
+    <text name="MyRecentRequests">My recent requests</text>
+    <text name="YouHaveNotRaisedAnyRequestsYet">You have not raised any requests yet.</text>
     <text name="AmendmentsAreNotSupportedForThisTransactionType">Changes cannot be requested for {0}.</text>
     <text name="AnAmendmentIsAlreadyAwaitingApprovalForThisRecord">A change to this record is already awaiting approval.</text>
     <text name="OnlyAnApprovedLeaveCanBeAmended">Only an approved leave can be changed. Withdraw this one and apply again.</text>

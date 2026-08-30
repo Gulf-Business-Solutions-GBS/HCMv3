@@ -7,6 +7,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     AbsenceTypeDto,
+    AmendMyLeaveInput,
     AbsenceTypesServiceProxy,
     ApplyForLeaveInput,
     EntityDto,
@@ -50,7 +51,12 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     readonly showForm = signal(false);
 
+    /** The approved leave a change is being requested for, or undefined when not amending. */
+    readonly amending = signal<MyLeaveDto | undefined>(undefined);
+
     form = { absenceTypeId: null as number | null, startDate: '', endDate: '', comments: '' };
+
+    amendForm = { absenceTypeId: null as number | null, startDate: '', endDate: '', reason: '' };
 
     readonly Status = RequestStatus;
 
@@ -86,6 +92,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     openForm(): void {
         this.form = { absenceTypeId: null, startDate: '', endDate: '', comments: '' };
+        this.amending.set(undefined);
         this.showForm.set(true);
     }
 
@@ -117,6 +124,62 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
                 );
 
                 this.closeForm();
+                this.reload();
+            });
+    }
+
+    /**
+     * Pre-filled with what the leave says today, so the form is an edit of the current state rather than a
+     * blank one the employee has to retype from memory.
+     */
+    openAmendForm(leave: MyLeaveDto): void {
+        this.amendForm = {
+            absenceTypeId: leave.absenceTypeId,
+            startDate: leave.startDate?.toISODate() ?? '',
+            endDate: leave.endDate?.toISODate() ?? '',
+            reason: '',
+        };
+
+        this.showForm.set(false);
+        this.amending.set(leave);
+    }
+
+    closeAmendForm(): void {
+        this.amending.set(undefined);
+    }
+
+    submitAmendment(): void {
+        const target = this.amending();
+        if (!target || this.saving()) {
+            return;
+        }
+
+        if (!this.amendForm.absenceTypeId || !this.amendForm.startDate || !this.amendForm.endDate) {
+            return;
+        }
+
+        // Required, not merely encouraged. An approver deciding on a change to something they already
+        // granted needs to know what prompted it.
+        if (!this.amendForm.reason?.trim()) {
+            this.message.warn(this.l('AReasonIsRequiredForAChange'));
+            return;
+        }
+
+        const input = new AmendMyLeaveInput();
+        input.employeeAbsenceId = target.id;
+        input.absenceTypeId = this.amendForm.absenceTypeId;
+        input.startDate = DateTime.fromISO(this.amendForm.startDate);
+        input.endDate = DateTime.fromISO(this.amendForm.endDate);
+        input.reason = this.amendForm.reason.trim();
+
+        this.saving.set(true);
+
+        this._myLeaveService
+            .amendMyLeave(input)
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe(() => {
+                this.notify.success(this.l('AmendmentSubmittedForApproval'));
+                this.closeAmendForm();
                 this.reload();
             });
     }

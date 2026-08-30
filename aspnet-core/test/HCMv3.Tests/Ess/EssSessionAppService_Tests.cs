@@ -289,4 +289,114 @@ public class EssSessionAppService_Tests : AppTestBase
         // Only the first: mine, not yet approved, on a request still Open.
         essContext.PendingApprovalCount.ShouldBe(1);
     }
+
+    private int CreateRequest(int employeeId, string requestType, RequestStatus status, string summary, bool isAmendment = false)
+    {
+        WorkflowRequest request = null;
+        UsingDbContext(context =>
+        {
+            request = context.Set<WorkflowRequest>().Add(new WorkflowRequest
+            {
+                TenantId = TenantId,
+                EmployeeId = employeeId,
+                RequestType = requestType,
+                RequestNumber = "REQ-" + Guid.NewGuid().ToString("N").Substring(0, 6),
+                RequestStatus = status,
+                WorkflowStep = 1,
+                SummaryEn = summary,
+                SummaryAr = summary,
+                IsAmendment = isAmendment
+            }).Entity;
+        });
+
+        return request.Id;
+    }
+
+    /// <summary>
+    /// The two counts on the landing page mean opposite things and are the easiest thing here to get
+    /// backwards: one is what somebody else is waiting on this employee for, the other is what they are
+    /// waiting on somebody else for. The fixture deliberately makes them different numbers.
+    /// </summary>
+    [Fact]
+    public async Task Should_Count_My_Own_Pending_Requests_Separately_From_What_Awaits_My_Approval()
+    {
+        var meId = CreateCurrentUserEmployee("SESS900");
+        var otherId = CreateEmployee("SESS900OTHER");
+
+        // Mine, still awaiting somebody's decision.
+        CreateRequest(meId, "EmployeeAbsence", RequestStatus.Open, "My leave");
+        CreateRequest(meId, "EmployeeAsset", RequestStatus.Draft, "My laptop");
+
+        // Mine, already decided -- not pending.
+        CreateRequest(meId, "EmployeeLoan", RequestStatus.Approved, "My loan");
+
+        // Somebody else's, waiting on me.
+        var theirRequestId = CreateRequest(otherId, "EmployeeAbsence", RequestStatus.Open, "Their leave");
+        UsingDbContext(context =>
+        {
+            context.Set<WorkFlowApprover>().Add(new WorkFlowApprover
+            {
+                TenantId = TenantId,
+                WorkflowRequestId = theirRequestId,
+                ApproverId = meId,
+                IsApproved = false
+            });
+        });
+
+        var context2 = await _essSessionAppService.GetEssContext();
+
+        context2.MyPendingRequestCount.ShouldBe(2);
+        context2.PendingApprovalCount.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Should_List_My_Recent_Requests_Across_Every_Type()
+    {
+        // One list mixing leave, assets and loans, built from the summaries the handlers wrote at submit.
+        // No transaction table is read to produce it -- the same property the approver inbox relies on.
+        var meId = CreateCurrentUserEmployee("SESS910");
+
+        CreateRequest(meId, "EmployeeAbsence", RequestStatus.Approved, "Annual Leave, 3 day(s)");
+        CreateRequest(meId, "EmployeeAsset", RequestStatus.Open, "Laptop");
+        CreateRequest(meId, "EmployeeLoan", RequestStatus.Rejected, "Housing loan");
+
+        var context = await _essSessionAppService.GetEssContext();
+
+        context.RecentRequests.Count.ShouldBe(3);
+        context.RecentRequests.Select(r => r.RequestType).ShouldContain("EmployeeAsset");
+
+        // Newest first, so the most recent thing the employee did is at the top.
+        context.RecentRequests.First().SummaryEn.ShouldBe("Housing loan");
+
+        // Type names come from the catalog, so a row can be labelled without touching its own table.
+        context.RecentRequests.Single(r => r.RequestType == "EmployeeLoan").RequestTypeNameEn.ShouldBe("Loan Request");
+    }
+
+    [Fact]
+    public async Task Should_Not_List_Somebody_Elses_Requests_Among_Mine()
+    {
+        var meId = CreateCurrentUserEmployee("SESS920");
+        var otherId = CreateEmployee("SESS920OTHER");
+
+        CreateRequest(meId, "EmployeeAbsence", RequestStatus.Open, "Mine");
+        CreateRequest(otherId, "EmployeeAbsence", RequestStatus.Open, "Theirs");
+
+        var context = await _essSessionAppService.GetEssContext();
+
+        context.RecentRequests.Select(r => r.SummaryEn).ShouldNotContain("Theirs");
+    }
+
+    [Fact]
+    public async Task Should_Mark_Which_Recent_Requests_Are_Changes_Rather_Than_New_Ones()
+    {
+        var meId = CreateCurrentUserEmployee("SESS930");
+
+        CreateRequest(meId, "EmployeeAbsence", RequestStatus.Approved, "Annual Leave, 5 day(s)");
+        CreateRequest(meId, "EmployeeAbsence", RequestStatus.Open, "Change: 5 day(s) to 3 day(s)", isAmendment: true);
+
+        var context = await _essSessionAppService.GetEssContext();
+
+        context.RecentRequests.Count(r => r.IsAmendment).ShouldBe(1);
+        context.RecentRequests.Single(r => r.IsAmendment).SummaryEn.ShouldStartWith("Change:");
+    }
 }

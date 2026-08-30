@@ -43,6 +43,20 @@ public class EssContextDto
     public int PendingApprovalCount { get; set; }
 
     /// <summary>
+    /// The employee's own requests still awaiting a decision, across every type.
+    ///
+    /// <para>
+    /// Distinct from <see cref="PendingApprovalCount"/> and easily confused with it: this is what the
+    /// employee is waiting on somebody else for, that one is what somebody else is waiting on them for.
+    /// Most people are on both sides of the workflow, so the landing page has to say which is which.
+    /// </para>
+    /// </summary>
+    public int MyPendingRequestCount { get; set; }
+
+    /// <summary>The employee's most recent requests, newest first -- the landing page's activity list.</summary>
+    public List<EssRecentRequestDto> RecentRequests { get; set; } = new List<EssRecentRequestDto>();
+
+    /// <summary>
     /// The transaction types this user may raise: ESS-enabled and active in the catalog, and permitted to
     /// them. Ordered for display. The menu is built from this rather than hardcoded, so enabling a seventh
     /// transaction type is a catalog row, not a menu code change.
@@ -69,4 +83,38 @@ public class EssTransactionTypeDto
     /// effect immediately instead of implying an approval that will never come.
     /// </summary>
     public bool IsWorkflowEnabled { get; set; }
+}
+
+/// <summary>
+/// One of the employee's own recent requests, as the landing page lists them.
+///
+/// <para>
+/// Built entirely from <c>WorkflowRequest</c> -- the summary its handler wrote at submit, and the catalog's
+/// name for the type. Nothing here reaches into a transaction table, which is what lets one list mix leave,
+/// assets and loans without a join per row.
+/// </para>
+/// </summary>
+public class EssRecentRequestDto
+{
+    public int Id { get; set; }
+
+    public string RequestType { get; set; }
+
+    public string RequestTypeNameEn { get; set; }
+
+    public string RequestTypeNameAr { get; set; }
+
+    public string RequestNumber { get; set; }
+
+    public string SummaryEn { get; set; }
+
+    public string SummaryAr { get; set; }
+
+    public HCMv3.Workflow.RequestStatus RequestStatus { get; set; }
+
+    public System.DateTime SubmittedOn { get; set; }
+
+    /// <summary>True when this request is a change to an already-approved transaction rather than a new
+    /// one, so the list can label it as such.</summary>
+    public bool IsAmendment { get; set; }
 }

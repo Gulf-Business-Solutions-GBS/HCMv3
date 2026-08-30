@@ -55,6 +55,51 @@
                 }
             </div>
 
+            @if (amending(); as target) {
+                <div class="card card-custom gutter-b border-info">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ 'RequestAChange' | localize }}</h5>
+
+                        <!--
+                            Said before the form rather than after submitting: the leave row does not change
+                            when a change is requested, so without this the employee fills the form in, sees
+                            their leave exactly as it was, and assumes it failed.
+                        -->
+                        <p class="text-muted">
+                            {{ 'AmendmentSubmittedForApproval' | localize }}
+                        </p>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>{{ 'AbsenceType' | localize }}</label>
+                                <select class="form-control" [(ngModel)]="amendForm.absenceTypeId">
+                                    @for (type of absenceTypes(); track type.id) {
+                                        <option [ngValue]="type.id">{{ type.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'StartDate' | localize }}</label>
+                                <input type="date" class="form-control" [(ngModel)]="amendForm.startDate" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'EndDate' | localize }}</label>
+                                <input type="date" class="form-control" [(ngModel)]="amendForm.endDate" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>{{ 'ReasonForTheChange' | localize }} *</label>
+                                <input type="text" class="form-control" [(ngModel)]="amendForm.reason" />
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submitAmendment()">
+                            {{ 'Save' | localize }}
+                        </button>
+                        <button class="btn btn-light" (click)="closeAmendForm()">{{ 'Cancel' | localize }}</button>
+                    </div>
+                </div>
+            }
+
             @if (showForm()) {
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
@@ -122,11 +167,32 @@
                                                 <span class="badge" [ngClass]="statusClass(leave)">
                                                     {{ statusLabel(leave) }}
                                                 </span>
+
+                                                <!--
+                                                    The dates in this row are still the APPROVED ones -- an
+                                                    amendment does not touch the leave until it is granted.
+                                                    Without this badge the row would look untouched and the
+                                                    employee would think their request went nowhere.
+                                                -->
+                                                @if (leave.hasPendingAmendment) {
+                                                    <span class="badge badge-light-info ml-1">
+                                                        {{ 'ChangePending' | localize }}
+                                                    </span>
+                                                }
                                             </td>
                                             <td class="text-right">
-                                                @if (leave.workflowRequestId) {
+                                                @if (leave.hasPendingAmendment && leave.pendingAmendmentRequestId) {
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(leave.pendingAmendmentRequestId)">
+                                                        {{ 'ChangePending' | localize }}
+                                                    </button>
+                                                } @else if (leave.workflowRequestId) {
                                                     <button class="btn btn-sm btn-link" (click)="history.show(leave.workflowRequestId)">
                                                         {{ 'WorkflowHistory' | localize }}
+                                                    </button>
+                                                }
+                                                @if (leave.canAmend) {
+                                                    <button class="btn btn-sm btn-link" (click)="openAmendForm(leave)">
+                                                        {{ 'RequestAChange' | localize }}
                                                     </button>
                                                 }
                                                 @if (leave.canCancel) {
