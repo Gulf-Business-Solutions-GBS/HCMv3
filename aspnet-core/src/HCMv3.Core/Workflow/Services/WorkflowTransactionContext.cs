@@ -32,6 +32,19 @@ public class WorkflowTransactionContext
 
     /// <summary>The comment attached to the current action, if any.</summary>
     public string Remark { get; }
+
+    /// <summary>
+    /// True when this request proposes a change to an already-approved transaction rather than a new one.
+    /// Handlers must not touch the transaction row's status in this mode -- see
+    /// <see cref="WorkflowRequest.IsAmendment"/>.
+    /// </summary>
+    public bool IsAmendment => Request?.IsAmendment == true;
+
+    /// <summary>The proposed values for an amendment, as JSON. Shape is the handler's own business.</summary>
+    public string AmendmentJson => Request?.AmendmentJson;
+
+    /// <summary>The transaction row as it stood when the amendment was raised, as JSON.</summary>
+    public string SnapshotJson => Request?.SnapshotJson;
 }
 
 /// <summary>

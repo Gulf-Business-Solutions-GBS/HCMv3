@@ -99,6 +99,49 @@ public class WorkflowRequest : FullAuditedEntity, IMustHaveTenant
 
     public virtual int ApprovalProcessTime { get; set; }
 
+    /// <summary>
+    /// True when this request proposes a CHANGE to a transaction that has already been approved, rather than
+    /// asking for a new one.
+    ///
+    /// <para>
+    /// This exists because the single-table design has one genuine gap. Everywhere else, an in-flight row is
+    /// simply hidden until approved -- but an amendment targets a row that is already live, and hiding that
+    /// row would take an approved leave away from payroll for as long as someone is thinking about the
+    /// change. So an amendment does the opposite of a normal request: it leaves the transaction row entirely
+    /// alone and carries the proposed values here instead, applying them only if it is approved.
+    /// </para>
+    ///
+    /// <para>
+    /// The practical consequence is that handlers must not run their usual status bookkeeping for an
+    /// amendment. Marking the row Rejected because an amendment was refused would delete a leave the
+    /// employee is still entitled to. <c>WorkflowTransactionHandlerBase</c> enforces this, so a handler
+    /// gets it right by doing nothing.
+    /// </para>
+    /// </summary>
+    public virtual bool IsAmendment { get; set; }
+
+    /// <summary>
+    /// The PROPOSED values, as JSON, for an amendment -- what the transaction row should look like if this
+    /// is approved. Shape is defined by the type's handler; nothing generic reads it.
+    ///
+    /// <para>
+    /// Deliberately not applied to the row at submit time. Until an approver says yes, the row on file is
+    /// still the truth for payroll and quota.
+    /// </para>
+    /// </summary>
+    public virtual string AmendmentJson { get; set; }
+
+    /// <summary>
+    /// The transaction row as it stood when the amendment was raised, as JSON.
+    ///
+    /// <para>
+    /// Kept for the approver, who needs to see what is changing and not merely what is being asked for --
+    /// "5 days becomes 3" is a different decision from "3 days". It is also the audit record of what the
+    /// row looked like before, which the row itself no longer carries once the change is applied.
+    /// </para>
+    /// </summary>
+    public virtual string SnapshotJson { get; set; }
+
     public virtual ICollection<RequestLog> RequestLogs { get; set; }
 
     public virtual ICollection<WorkFlowApprover> WorkFlowApprovers { get; set; }

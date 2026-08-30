@@ -81,4 +81,32 @@ public interface IWorkflowTransactionHandler : IDomainService
 
     /// <summary>The request was submitted into the approval chain; the row is no longer a draft.</summary>
     Task OnSubmittedAsync(WorkflowTransactionContext context);
+
+    /// <summary>
+    /// Whether this transaction type can be CHANGED through workflow after it has already been approved.
+    ///
+    /// <para>
+    /// False by default, and that is the honest default rather than a cautious one: applying an amendment
+    /// means writing specific fields onto a live row, which only the type's own handler can do correctly.
+    /// A type that has not implemented <see cref="ApplyAmendmentAsync"/> refuses the amendment when it is
+    /// raised, rather than accepting it and doing nothing when it is approved.
+    /// </para>
+    /// </summary>
+    bool SupportsAmendment { get; }
+
+    /// <summary>
+    /// Captures the transaction row as it currently stands, for the approver to compare against what is
+    /// being proposed. Returns null when there is nothing to snapshot.
+    /// </summary>
+    Task<string> BuildSnapshotAsync(WorkflowTransactionContext context);
+
+    /// <summary>
+    /// Writes an approved amendment's proposed values onto the transaction row.
+    ///
+    /// <para>
+    /// Called instead of the usual approval bookkeeping, inside the approving unit of work, once. The row is
+    /// already live and already Approved -- this changes what it says, not whether it counts.
+    /// </para>
+    /// </summary>
+    Task ApplyAmendmentAsync(WorkflowTransactionContext context);
 }

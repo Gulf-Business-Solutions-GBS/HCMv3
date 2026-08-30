@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
@@ -34,6 +35,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowApprovalService _workflowApprovalService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IWorkflowAmendmentService _workflowAmendmentService;
 
     public MyLeaveAppService(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -43,7 +45,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IEmployeeScopeProvider employeeScopeProvider,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApprovalService workflowApprovalService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IWorkflowAmendmentService workflowAmendmentService)
     {
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -53,6 +56,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         _requestMasterResolver = requestMasterResolver;
         _workflowApprovalService = workflowApprovalService;
         _unitOfWorkManager = unitOfWorkManager;
+        _workflowAmendmentService = workflowAmendmentService;
     }
 
     public async Task<List<MyLeaveBalanceDto>> GetMyBalances()
@@ -99,8 +103,120 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
                 .PageBy(input)
                 .ToListAsync();
 
-            return new PagedResultDto<MyLeaveDto>(totalCount, items.Select(ToDto).ToList());
+            var dtos = items.Select(ToDto).ToList();
+
+            await FillAmendmentStateAsync(dtos);
+
+            return new PagedResultDto<MyLeaveDto>(totalCount, dtos);
         }
+    }
+
+    /// <summary>
+    /// Marks which rows can be changed and which already have a change in flight.
+    ///
+    /// <para>
+    /// Needed as a separate pass because an amendment deliberately leaves the leave row untouched -- the row
+    /// looks exactly the same before and after asking for the change. Without this the employee would submit
+    /// an amendment, see nothing happen, and submit it again.
+    /// </para>
+    /// </summary>
+    private async Task FillAmendmentStateAsync(List<MyLeaveDto> leaves)
+    {
+        var approved = leaves.Where(l => l.WorkflowStatus == RequestStatus.Approved).ToList();
+        if (approved.Count == 0)
+        {
+            return;
+        }
+
+        var amendable = await _workflowAmendmentService.IsAmendmentEnabledAsync(
+            LeaveWorkflowTransactionHandler.LeaveRequestType);
+
+        var leaveIds = approved.Select(l => l.Id).ToList();
+
+        var inFlight = (await _requestRepository.GetAll()
+            .Where(r => r.IsAmendment
+                        && r.RequestType == LeaveWorkflowTransactionHandler.LeaveRequestType
+                        && r.TargetEntityId.HasValue
+                        && leaveIds.Contains(r.TargetEntityId.Value)
+                        && (r.RequestStatus == RequestStatus.Open || r.RequestStatus == RequestStatus.Draft))
+            .Select(r => new { TargetId = r.TargetEntityId.Value, r.Id })
+            .ToListAsync())
+            .GroupBy(r => r.TargetId)
+            .ToDictionary(g => g.Key, g => g.First().Id);
+
+        foreach (var leave in approved)
+        {
+            if (inFlight.TryGetValue(leave.Id, out var requestId))
+            {
+                leave.HasPendingAmendment = true;
+                leave.PendingAmendmentRequestId = requestId;
+                continue;
+            }
+
+            leave.CanAmend = amendable;
+        }
+    }
+
+    public async Task<int> AmendMyLeave(AmendMyLeaveInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        if (input.EndDate.Date < input.StartDate.Date)
+        {
+            throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
+        }
+
+        var absenceTypeExists = await _absenceTypeRepository.GetAll()
+            .AnyAsync(t => t.Id == input.AbsenceTypeId);
+
+        if (!absenceTypeExists)
+        {
+            throw new UserFriendlyException(L("AbsenceTypeNotFound"));
+        }
+
+        EmployeeAbsence leave;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            leave = await _absenceRepository.FirstOrDefaultAsync(a => a.Id == input.EmployeeAbsenceId);
+        }
+
+        if (leave == null)
+        {
+            throw new UserFriendlyException(L("LeaveRequestNotFound"));
+        }
+
+        // Ownership re-checked on the write, exactly as in CancelMyLeave: a scoped list paired with an
+        // unscoped write is how one employee ends up amending another's leave.
+        if (leave.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        // Only an approved leave is worth amending. While it is still Open the employee can withdraw and
+        // re-apply, which costs nobody an approval round-trip; and changing something no one has agreed to
+        // yet is editing a request, not amending a fact.
+        if (leave.WorkflowStatus != RequestStatus.Approved)
+        {
+            throw new UserFriendlyException(L("OnlyAnApprovedLeaveCanBeAmended"));
+        }
+
+        var amendment = new LeaveAmendment
+        {
+            AbsenceTypeId = input.AbsenceTypeId,
+            StartDate = input.StartDate.Date,
+            EndDate = input.EndDate.Date,
+            TotalLeaveDays = (input.EndDate.Date - input.StartDate.Date).TotalDays + 1,
+            Comments = input.Reason
+        };
+
+        return await _workflowAmendmentService.CreateAndSubmitAsync(
+            LeaveWorkflowTransactionHandler.LeaveRequestType,
+            leave.Id,
+            leave.EmployeeId,
+            JsonSerializer.Serialize(amendment),
+            employeeId,
+            input.AbsenceTypeId);
     }
 
     public async Task<ApplyForLeaveResultDto> ApplyForLeave(ApplyForLeaveInput input)

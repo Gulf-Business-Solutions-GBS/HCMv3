@@ -32,4 +32,17 @@ public interface IMyLeaveAppService : IApplicationService
 
     /// <summary>Withdraws a request the employee raised, while it is still theirs to withdraw.</summary>
     Task CancelMyLeave(EntityDto input);
+
+    /// <summary>
+    /// Asks for a change to a leave that has already been approved, routing it through the same approval
+    /// chain the original went through.
+    ///
+    /// <para>
+    /// This is the path that exists so nobody needs the other one. Without it, changing an approved leave
+    /// means editing the row directly -- which takes effect immediately, with no approval and no record that
+    /// anyone agreed. The approved leave stays exactly as it is until this request is granted.
+    /// </para>
+    /// </summary>
+    /// <returns>Id of the amendment's <c>WorkflowRequest</c>.</returns>
+    Task<int> AmendMyLeave(AmendMyLeaveInput input);
 }

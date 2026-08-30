@@ -25,6 +25,16 @@ namespace HCMv3.Workflow.Services;
 /// <see cref="BuildSummaryAsync"/>; override the lifecycle hooks (calling <c>base</c>) to add side effects
 /// such as deducting quota on approval.
 /// </para>
+///
+/// <para>
+/// <b>The amendment rule.</b> When <c>context.IsAmendment</c> is true, every lifecycle hook here leaves the
+/// transaction row completely untouched except on approval, where the proposed values are applied. That
+/// asymmetry is deliberate and it is the whole reason amendments are handled in the base rather than left to
+/// each handler. An amendment targets a row that is already live: stamping it Open at submit would take an
+/// approved leave away from payroll while somebody thinks about the change, and stamping it Rejected when the
+/// change is declined would destroy a leave the employee is still entitled to. Refusing an edit must never
+/// delete the thing being edited. Handlers get this right by inheriting it.
+/// </para>
 /// </summary>
 /// <typeparam name="TEntity">The transaction entity this handler governs, e.g. <c>EmployeeAbsence</c>.</typeparam>
 public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServiceBase, IWorkflowTransactionHandler, ITransientDependency
@@ -55,27 +65,58 @@ public abstract class WorkflowTransactionHandlerBase<TEntity> : HCMv3DomainServi
     }
 
     /// <inheritdoc/>
+    public virtual bool SupportsAmendment => false;
+
+    /// <inheritdoc/>
+    public virtual Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
+    {
+        return Task.FromResult<string>(null);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task ApplyAmendmentAsync(WorkflowTransactionContext context)
+    {
+        // Reached only if a handler declares SupportsAmendment without implementing this. Loud rather than
+        // silent: an amendment that approves and changes nothing is worse than one that fails, because the
+        // employee and the approver both believe the change took effect.
+        throw new UserFriendlyException(L("AmendmentsAreNotSupportedForThisTransactionType", RequestType));
+    }
+
+    /// <inheritdoc/>
     public virtual Task OnSubmittedAsync(WorkflowTransactionContext context)
     {
-        return SetWorkflowStatusAsync(context, RequestStatus.Open);
+        // An amendment leaves the row alone -- see the class remarks on the amendment rule.
+        return context.IsAmendment
+            ? Task.CompletedTask
+            : SetWorkflowStatusAsync(context, RequestStatus.Open);
     }
 
     /// <inheritdoc/>
     public virtual Task OnApprovedAsync(WorkflowTransactionContext context)
     {
-        return SetWorkflowStatusAsync(context, RequestStatus.Approved);
+        // The row is already approved and live; what changes is what it says.
+        return context.IsAmendment
+            ? ApplyAmendmentAsync(context)
+            : SetWorkflowStatusAsync(context, RequestStatus.Approved);
     }
 
     /// <inheritdoc/>
     public virtual Task OnRejectedAsync(WorkflowTransactionContext context)
     {
-        return SetWorkflowStatusAsync(context, RequestStatus.Rejected);
+        // THE important one. Marking the row Rejected here would take an approved leave away from the
+        // employee because somebody declined a change to it -- destroying a valid transaction as a side
+        // effect of refusing an edit. A refused amendment simply leaves the row as it was.
+        return context.IsAmendment
+            ? Task.CompletedTask
+            : SetWorkflowStatusAsync(context, RequestStatus.Rejected);
     }
 
     /// <inheritdoc/>
     public virtual Task OnSentBackAsync(WorkflowTransactionContext context)
     {
-        return SetWorkflowStatusAsync(context, RequestStatus.Draft);
+        return context.IsAmendment
+            ? Task.CompletedTask
+            : SetWorkflowStatusAsync(context, RequestStatus.Draft);
     }
 
     /// <summary>

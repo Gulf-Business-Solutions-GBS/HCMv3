@@ -1779,6 +1779,14 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="AmendmentsAreNotSupportedForThisTransactionType">Changes cannot be requested for {0}.</text>
+    <text name="AnAmendmentIsAlreadyAwaitingApprovalForThisRecord">A change to this record is already awaiting approval.</text>
+    <text name="OnlyAnApprovedLeaveCanBeAmended">Only an approved leave can be changed. Withdraw this one and apply again.</text>
+    <text name="RequestAChange">Request a change</text>
+    <text name="AmendmentSubmittedForApproval">Your change has been sent for approval. The leave stays as it is until it is approved.</text>
+    <text name="ChangePending">Change pending</text>
+    <text name="ReasonForTheChange">Reason for the change</text>
+    <text name="AReasonIsRequiredForAChange">Say why the change is needed, so the approver knows what prompted it.</text>
     <text name="AssetIsAlreadyIssuedForThisPeriod">This asset is already issued to someone over these dates.</text>
     <text name="ExpiryDateCannotBeEarlierThanIssueDate">Expiry date cannot be earlier than the issue date.</text>
     <text name="DocumentNumberIsRequired">Document number is required.</text>

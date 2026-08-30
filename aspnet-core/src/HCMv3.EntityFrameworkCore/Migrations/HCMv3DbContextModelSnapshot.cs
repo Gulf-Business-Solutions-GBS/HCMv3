@@ -32602,6 +32602,9 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AmendmentJson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ApprovalProcessTime")
                         .HasColumnType("int");
 
@@ -32622,6 +32625,9 @@ namespace HCMv3.Migrations
 
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAmendment")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -32645,6 +32651,9 @@ namespace HCMv3.Migrations
                     b.Property<string>("RequestType")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("SnapshotJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SummaryAr")
                         .HasMaxLength(512)

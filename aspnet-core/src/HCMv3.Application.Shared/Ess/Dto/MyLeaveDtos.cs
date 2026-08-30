@@ -55,6 +55,23 @@ public class MyLeaveDto : EntityDto<int>
     /// <summary>Whether the employee may still withdraw it -- false once it is approved or already
     /// decided.</summary>
     public bool CanCancel { get; set; }
+
+    /// <summary>
+    /// Whether a CHANGE can be requested to this leave. True only once it is approved: before that the
+    /// employee should withdraw and re-apply, which costs nobody an approval, and an amendment to something
+    /// nobody has agreed to yet is a change to a request rather than to a fact.
+    /// </summary>
+    public bool CanAmend { get; set; }
+
+    /// <summary>
+    /// True while a change to this leave is itself awaiting approval. The dates shown are still the approved
+    /// ones -- an amendment does not touch the row until it is granted -- so without this the screen would
+    /// look identical before and after asking for the change.
+    /// </summary>
+    public bool HasPendingAmendment { get; set; }
+
+    /// <summary>The in-flight amendment request, so the screen can open its activity thread.</summary>
+    public int? PendingAmendmentRequestId { get; set; }
 }
 
 public class GetMyLeavesInput : PagedAndSortedResultRequestDto, IShouldNormalize
@@ -103,4 +120,34 @@ public class ApplyForLeaveResultDto
     /// an approval that will never come.
     /// </summary>
     public bool SubmittedForApproval { get; set; }
+}
+
+/// <summary>
+/// A request to CHANGE a leave that has already been approved.
+///
+/// <para>
+/// The values here are what the leave should BECOME. They are not written to the leave until an approver
+/// agrees -- until then the approved leave stands, and payroll and quota keep seeing it unchanged. This is
+/// what stops an employee shortening their own approved leave, or quietly extending it, by editing a record
+/// somebody already signed off.
+/// </para>
+/// </summary>
+public class AmendMyLeaveInput
+{
+    /// <summary>The approved leave being changed.</summary>
+    [Range(1, int.MaxValue)]
+    public int EmployeeAbsenceId { get; set; }
+
+    [Range(1, int.MaxValue)]
+    public int AbsenceTypeId { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
+
+    /// <summary>Why the change is being asked for. Required -- an approver deciding on a change to something
+    /// they already granted needs to know what prompted it.</summary>
+    [Required]
+    [StringLength(2000, MinimumLength = 1)]
+    public string Reason { get; set; }
 }

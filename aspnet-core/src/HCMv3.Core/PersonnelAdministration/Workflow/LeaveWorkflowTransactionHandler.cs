@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -80,7 +81,125 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             return;
         }
 
-        if (leave.EndDate.Date < leave.StartDate.Date)
+        // For an amendment the row still holds the OLD values -- the proposed ones live on the request until
+        // approval. Validating the row would check dates nobody is asking for and pass an amendment that is
+        // in fact impossible.
+        var proposed = context.IsAmendment ? ReadAmendment(context) : null;
+
+        var absenceTypeId = proposed?.AbsenceTypeId ?? leave.AbsenceTypeId;
+        var startDate = proposed?.StartDate ?? leave.StartDate;
+        var endDate = proposed?.EndDate ?? leave.EndDate;
+        var totalDays = proposed?.TotalLeaveDays ?? leave.TotalLeaveDays;
+
+        // An approved leave being amended already sits in the quota's Used, so its own days have to be
+        // credited back before comparing -- otherwise shortening a leave from 5 days to 3 could be refused
+        // for insufficient balance.
+        var daysAlreadyCounted = context.IsAmendment && leave.AbsenceTypeId == absenceTypeId
+            ? DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate)
+            : 0;
+
+        await ValidateLeaveValuesAsync(
+            leave.EmployeeId,
+            absenceTypeId,
+            startDate,
+            endDate,
+            totalDays,
+            excludeLeaveId: leave.Id,
+            daysAlreadyCounted: daysAlreadyCounted);
+    }
+
+    /// <inheritdoc/>
+    public override bool SupportsAmendment => true;
+
+    /// <inheritdoc/>
+    public override async Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
+    {
+        var leave = await GetTargetAsync(context);
+        if (leave == null)
+        {
+            return null;
+        }
+
+        return JsonSerializer.Serialize(new LeaveAmendment
+        {
+            AbsenceTypeId = leave.AbsenceTypeId,
+            StartDate = leave.StartDate,
+            EndDate = leave.EndDate,
+            TotalLeaveDays = leave.TotalLeaveDays,
+            Comments = leave.Comments
+        });
+    }
+
+    /// <summary>
+    /// Writes an approved amendment onto the live leave row.
+    ///
+    /// <para>
+    /// Re-validated here, not only at submit. Between raising the change and approving it the employee may
+    /// have booked other leave, or their quota may have been adjusted, so the approver could otherwise be
+    /// granting something that is no longer possible. Throwing rolls the approval back with it.
+    /// </para>
+    /// </summary>
+    public override async Task ApplyAmendmentAsync(WorkflowTransactionContext context)
+    {
+        var leave = await GetRequiredTargetAsync(context);
+        var proposed = ReadAmendment(context);
+
+        var daysAlreadyCounted = leave.AbsenceTypeId == proposed.AbsenceTypeId
+            ? DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate)
+            : 0;
+
+        await ValidateLeaveValuesAsync(
+            leave.EmployeeId,
+            proposed.AbsenceTypeId,
+            proposed.StartDate,
+            proposed.EndDate,
+            proposed.TotalLeaveDays,
+            excludeLeaveId: leave.Id,
+            daysAlreadyCounted: daysAlreadyCounted);
+
+        leave.AbsenceTypeId = proposed.AbsenceTypeId;
+        leave.StartDate = proposed.StartDate;
+        leave.EndDate = proposed.EndDate;
+        leave.TotalLeaveDays = proposed.TotalLeaveDays;
+        leave.Comments = proposed.Comments;
+
+        // Status is untouched on purpose: the leave was approved before the amendment and stays approved.
+        // The filter must not so much as blink, or the leave would vanish from payroll mid-change.
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.UpdateAsync(leave);
+        }
+    }
+
+    private static LeaveAmendment ReadAmendment(WorkflowTransactionContext context)
+    {
+        if (string.IsNullOrWhiteSpace(context.AmendmentJson))
+        {
+            throw new UserFriendlyException("This amendment carries no proposed values.");
+        }
+
+        return JsonSerializer.Deserialize<LeaveAmendment>(context.AmendmentJson);
+    }
+
+    private static double DaysOf(double totalDays, DateTime start, DateTime end)
+    {
+        return totalDays > 0 ? totalDays : (end.Date - start.Date).TotalDays + 1;
+    }
+
+    /// <summary>
+    /// The leave rules, applied to a set of values rather than to a row -- so the same checks serve a new
+    /// request (values from the row) and an amendment (values from the request).
+    /// </summary>
+    private async Task ValidateLeaveValuesAsync(
+        int employeeId,
+        int absenceTypeId,
+        DateTime startDate,
+        DateTime endDate,
+        double totalDays,
+        int excludeLeaveId,
+        double daysAlreadyCounted)
+    {
+        if (endDate.Date < startDate.Date)
         {
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
@@ -88,10 +207,10 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
             var overlapping = Repository.GetAll()
-                .Where(a => a.Id != leave.Id
-                            && a.EmployeeId == leave.EmployeeId
-                            && a.StartDate <= leave.EndDate
-                            && a.EndDate >= leave.StartDate
+                .Where(a => a.Id != excludeLeaveId
+                            && a.EmployeeId == employeeId
+                            && a.StartDate <= endDate
+                            && a.EndDate >= startDate
                             && (a.WorkflowStatus == null
                                 || a.WorkflowStatus == RequestStatus.Approved
                                 || a.WorkflowStatus == RequestStatus.Closed
@@ -105,7 +224,8 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             }
         }
 
-        await EnsureWithinBookableBalanceAsync(leave);
+        await EnsureWithinBookableBalanceAsync(
+            employeeId, absenceTypeId, startDate, endDate, totalDays, daysAlreadyCounted);
     }
 
     /// <summary>
@@ -123,26 +243,32 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
     /// requests rather than catch a mistake.
     /// </para>
     /// </summary>
-    private async Task EnsureWithinBookableBalanceAsync(EmployeeAbsence leave)
+    private async Task EnsureWithinBookableBalanceAsync(
+        int employeeId,
+        int absenceTypeId,
+        DateTime startDate,
+        DateTime endDate,
+        double totalDays,
+        double daysAlreadyCounted)
     {
-        var balances = await _leaveBalanceService.GetBalancesAsync(leave.EmployeeId, leave.StartDate);
+        var balances = await _leaveBalanceService.GetBalancesAsync(employeeId, startDate);
 
-        var balance = balances.FirstOrDefault(b => b.AbsenceTypeId == leave.AbsenceTypeId);
+        var balance = balances.FirstOrDefault(b => b.AbsenceTypeId == absenceTypeId);
         if (balance == null)
         {
             return;
         }
 
         // The row being submitted is itself still a Draft, so it is not in Pending yet and does not need
-        // excluding from the comparison.
-        var requestedDays = leave.TotalLeaveDays > 0
-            ? leave.TotalLeaveDays
-            : (leave.EndDate.Date - leave.StartDate.Date).TotalDays + 1;
+        // excluding from the comparison. An amendment is the exception: its row is already approved and
+        // therefore already in Used, so those days are credited back through daysAlreadyCounted.
+        var requestedDays = DaysOf(totalDays, startDate, endDate);
+        var available = balance.Bookable + daysAlreadyCounted;
 
-        if (requestedDays > balance.Bookable)
+        if (requestedDays > available)
         {
             throw new UserFriendlyException(
-                L("NotEnoughBookableLeaveBalance", $"{balance.Bookable:0.##}", $"{requestedDays:0.##}"));
+                L("NotEnoughBookableLeaveBalance", $"{available:0.##}", $"{requestedDays:0.##}"));
         }
     }
 
@@ -158,17 +284,32 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             return null;
         }
 
-        var absenceType = _absenceTypeRepository.GetAll()
-            .FirstOrDefault(t => t.Id == leave.AbsenceTypeId);
+        if (context.IsAmendment)
+        {
+            // An amendment reads as a change, not as a request. "5 days becomes 3" is a different decision
+            // from "3 days", and an approver shown only the latter is deciding on the wrong question.
+            var proposed = ReadAmendment(context);
 
-        var days = leave.TotalLeaveDays > 0
-            ? leave.TotalLeaveDays
-            : (leave.EndDate.Date - leave.StartDate.Date).TotalDays + 1;
-
-        var range = leave.StartDate.ToString("dd MMM yyyy") + " - " + leave.EndDate.ToString("dd MMM yyyy");
+            return new WorkflowSummary(
+                "Change: " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: false) +
+                " to " + DescribeLeave(proposed.AbsenceTypeId, proposed.StartDate, proposed.EndDate, proposed.TotalLeaveDays, arabic: false),
+                "تعديل: " + DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: true) +
+                " إلى " + DescribeLeave(proposed.AbsenceTypeId, proposed.StartDate, proposed.EndDate, proposed.TotalLeaveDays, arabic: true));
+        }
 
         return new WorkflowSummary(
-            $"{absenceType?.NameEn ?? "Leave"}, {days:0.##} day(s), {range}",
-            $"{absenceType?.NameAr ?? "إجازة"}، {days:0.##} يوم، {range}");
+            DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: false),
+            DescribeLeave(leave.AbsenceTypeId, leave.StartDate, leave.EndDate, leave.TotalLeaveDays, arabic: true));
+    }
+
+    private string DescribeLeave(int absenceTypeId, DateTime startDate, DateTime endDate, double totalDays, bool arabic)
+    {
+        var absenceType = _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Id == absenceTypeId);
+        var days = DaysOf(totalDays, startDate, endDate);
+        var range = startDate.ToString("dd MMM yyyy") + " - " + endDate.ToString("dd MMM yyyy");
+
+        return arabic
+            ? $"{absenceType?.NameAr ?? "إجازة"}، {days:0.##} يوم، {range}"
+            : $"{absenceType?.NameEn ?? "Leave"}, {days:0.##} day(s), {range}";
     }
 }
