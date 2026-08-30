@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
 
@@ -17,8 +18,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IRepository<WorkFlowApprover> _workFlowApproverRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
-    private readonly IRepository<EmployeeWorkflowRole> _employeeWorkflowRoleRepository;
-    private readonly IRepository<EmployeeManager> _employeeManagerRepository;
+    private readonly IRepository<WFReadLog> _readLogRepository;
+    private readonly IWorkflowApproverResolver _approverResolver;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
 
@@ -27,8 +28,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IRepository<WorkFlowApprover> workFlowApproverRepository,
         IRepository<RequestLog> requestLogRepository,
         IRepository<RequestDetail> requestDetailRepository,
-        IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
-        IRepository<EmployeeManager> employeeManagerRepository,
+        IRepository<WFReadLog> readLogRepository,
+        IWorkflowApproverResolver approverResolver,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowTransactionHandlerResolver handlerResolver)
     {
@@ -36,8 +37,8 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         _workFlowApproverRepository = workFlowApproverRepository;
         _requestLogRepository = requestLogRepository;
         _requestDetailRepository = requestDetailRepository;
-        _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
-        _employeeManagerRepository = employeeManagerRepository;
+        _readLogRepository = readLogRepository;
+        _approverResolver = approverResolver;
         _requestMasterResolver = requestMasterResolver;
         _handlerResolver = handlerResolver;
     }
@@ -96,6 +97,20 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         var currentStep = request.WorkflowStep;
 
+        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+        var requestDetail = GetRequestDetail(requestMaster.Id, currentStep);
+
+        // A step can demand that its approver say something. Checked BEFORE any approver row is marked --
+        // refusing afterwards would leave the step half-approved, with this employee recorded as having
+        // acted on a request that did not move.
+        //
+        // Enforced here rather than in the screen so it holds for every caller: the inbox, a mobile client,
+        // an integration. The screen can still ask first; it just is not what makes the rule true.
+        if (requestDetail != null && requestDetail.IsCommentRequire && remark.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException(L("ACommentIsRequiredToApproveAtThisWorkflowStep"));
+        }
+
         // Mark this employee's pending approver row(s) at the current step as approved.
         var approvers = _workFlowApproverRepository.GetAll()
             .Where(a => a.WorkflowRequestId == request.Id)
@@ -106,9 +121,6 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             approverRow.IsApproved = true;
             await _workFlowApproverRepository.UpdateAsync(approverRow);
         }
-
-        var requestMaster = await _requestMasterResolver.ResolveAsync(request);
-        var requestDetail = GetRequestDetail(requestMaster.Id, currentStep);
 
         var stepApproved = IsStepApproved(approvers, requestDetail);
 
@@ -237,9 +249,77 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             request.ApproverId = newApproverEmployeeId;
         }
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Assigned, remark, request.WorkflowStep);
+        // Transferred, not Assigned. The two are different events and legacy had both: Assigned is an ad-hoc
+        // feedback request that leaves the approver in place, Transferred is this -- handing the decision
+        // itself to somebody else. Logging them alike would make the history unable to answer who was
+        // actually responsible for the step.
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Transferred, remark, request.WorkflowStep);
 
         await _workflowRequestRepository.UpdateAsync(request);
+    }
+
+    /// <summary>
+    /// Records that an approver opened the request, when the step is configured to track it.
+    ///
+    /// <para>
+    /// Deliberately not a general audit trail: it writes only where <c>RequestDetail.EnableReadLog</c> is on,
+    /// because the point is to answer "did they even look at it" for the steps where somebody cared enough to
+    /// ask. Logging every view of every request would bury that answer in noise and grow a table nobody reads.
+    /// </para>
+    /// <para>
+    /// Silent by design. This is a side effect of viewing, so a failure here must never stop the request
+    /// being displayed -- and one read row per approver per step is enough to answer the question, so repeat
+    /// views are not recorded again.
+    /// </para>
+    /// </summary>
+    public async Task MarkAsReadAsync(int requestId, int actingEmployeeId)
+    {
+        var request = await _workflowRequestRepository.FirstOrDefaultAsync(r => r.Id == requestId);
+        if (request == null)
+        {
+            return;
+        }
+
+        RequestDetail requestDetail;
+        try
+        {
+            var requestMaster = await _requestMasterResolver.ResolveAsync(request);
+            requestDetail = GetRequestDetail(requestMaster.Id, request.WorkflowStep);
+        }
+        catch (UserFriendlyException)
+        {
+            // An unroutable request still has to be readable -- refusing to show it would hide the very
+            // thing an administrator needs to see to fix the configuration.
+            return;
+        }
+
+        if (requestDetail == null || !requestDetail.EnableReadLog)
+        {
+            return;
+        }
+
+        var alreadyLogged = _requestLogRepository.GetAll()
+            .Any(l => l.WorkflowRequestId == request.Id
+                      && l.ActionById == actingEmployeeId
+                      && l.WorkflowStep == request.WorkflowStep
+                      && l.ActionType == RequestActionType.Read);
+
+        if (alreadyLogged)
+        {
+            return;
+        }
+
+        await _readLogRepository.InsertAsync(new WFReadLog
+        {
+            TenantId = request.TenantId,
+            WorkflowRequestId = request.Id,
+            ReadDateTime = DateTime.Now,
+            User = actingEmployeeId.ToString()
+        });
+
+        // Also on the action log, so the activity feed shows it in sequence with everything else rather than
+        // in a separate place nobody thinks to look.
+        await AddLogAsync(request, actingEmployeeId, RequestActionType.Read, remark: null, workflowStep: request.WorkflowStep);
     }
 
     /// <summary>
@@ -336,46 +416,10 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
     private List<int> ResolveApproversForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
     {
-        if (requestDetail != null && requestDetail.ApproverPerson == WorkflowApproverPersonType.Person
-            && requestDetail.WorkflowRoleId.HasValue)
-        {
-            var today = DateTime.Now.Date;
-            var ids = _employeeWorkflowRoleRepository.GetAll()
-                .Where(r => r.WorkflowRoleId == requestDetail.WorkflowRoleId.Value
-                            && r.StartDate.Date <= today && r.EndDate.Date >= today)
-                .Select(r => r.EmployeeId)
-                .Distinct()
-                .ToList();
-
-            if (ids.Count > 0)
-            {
-                return ids;
-            }
-        }
-
-        if (requestDetail != null && requestDetail.ApproverPerson == WorkflowApproverPersonType.PersonManager
-            && request.EmployeeId.HasValue)
-        {
-            var today = DateTime.Now.Date;
-            var managerId = _employeeManagerRepository.GetAll()
-                .Where(m => m.EmployeeId == request.EmployeeId.Value
-                            && m.StartDate.Date <= today && m.EndDate.Date >= today)
-                .Select(m => (int?)m.ManagerId)
-                .FirstOrDefault();
-
-            if (managerId.HasValue)
-            {
-                return new List<int> { managerId.Value };
-            }
-        }
-
-        // Fallback: RequestMaster.DefaultApprover (mirrors legacy's own last-resort behaviour).
-        if (requestMaster.DefaultApproverId.HasValue)
-        {
-            return new List<int> { requestMaster.DefaultApproverId.Value };
-        }
-
-        return new List<int>();
+        // Delegated: role holders narrowed by org scope, manager chains walked to the configured level, and
+        // signatories excluded from later signatory steps all live in one place, so escalation resolves
+        // approvers exactly the way a normal step does.
+        return _approverResolver.ResolveForStep(request, requestMaster, requestDetail);
     }
 
     private async Task AddLogAsync(WorkflowRequest request, int actingEmployeeId, RequestActionType actionType, string remark, int workflowStep)

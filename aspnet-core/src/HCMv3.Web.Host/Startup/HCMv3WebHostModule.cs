@@ -25,6 +25,7 @@ using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Subscription;
 using HCMv3.ReportManagement;
 using HCMv3.TimeManagement;
+using HCMv3.Workflow;
 using HCMv3.Web.Startup.ExternalLoginInfoProviders;
 using Castle.MicroKernel.Registration;
 using HCMv3.Web.Controllers;
@@ -118,6 +119,14 @@ public class HCMv3WebHostModule : AbpModule
         // referenced but DISABLED here (WebConsts.HangfireDashboardEnabled is false), so a recurring job
         // would register against storage nothing polls and silently never fire.
         workManager.Add(IocManager.Resolve<ReportScheduleDispatcherWorker>());
+
+        // WORKFLOW ESCALATION AND REMINDERS. Registered unconditionally -- it is a no-op unless a tenant has
+        // steps configured with ShouldEscalate or ReminderDays, and there is no host-level setting that
+        // could be evaluated here instead.
+        //
+        // Without this worker those columns are configurable and unread: the setup screen says escalation is
+        // on and nothing ever escalates, which is harder to notice than the feature being absent.
+        workManager.Add(IocManager.Resolve<WorkflowEscalationWorker>());
 
         ConfigureExternalAuthProviders();
     }

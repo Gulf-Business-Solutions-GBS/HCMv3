@@ -1779,6 +1779,9 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
+    <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
+    <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>
     <text name="RequestNotFound">That request could not be found.</text>
     <text name="ThisRequestCanNoLongerBeCancelled">This can no longer be withdrawn. Once approved it is a real record others may have acted on -- ask for a change instead.</text>
     <text name="RequestAsset">Request an asset</text>

@@ -29,10 +29,28 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<WorkFlowApprover>(Context),
             FakeRepository.For<RequestLog>(Context),
             FakeRepository.For<RequestDetail>(Context),
-            FakeRepository.For<EmployeeWorkflowRole>(Context),
-            FakeRepository.For<EmployeeManager>(Context),
+            FakeRepository.For<WFReadLog>(Context),
+            CreateApproverResolver(),
             CreateResolver(),
             CreateHandlerResolver());
+    }
+
+    /// <summary>
+    /// The REAL approver resolver, on the same fake repositories.
+    ///
+    /// <para>
+    /// Substituting it would be easier and wrong: these tests assert that a step lands on the right person,
+    /// which is precisely what the resolver decides. A stub would make them pass whatever routing did.
+    /// </para>
+    /// </summary>
+    private IWorkflowApproverResolver CreateApproverResolver()
+    {
+        return new WorkflowApproverResolver(
+            FakeRepository.For<EmployeeWorkflowRole>(Context),
+            FakeRepository.For<EmployeeManager>(Context),
+            FakeRepository.For<EmployeeOrgAssignment>(Context),
+            FakeRepository.For<RequestDetail>(Context),
+            FakeRepository.For<RequestLog>(Context));
     }
 
     /// <summary>

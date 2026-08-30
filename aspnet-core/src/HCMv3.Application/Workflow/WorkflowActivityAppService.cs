@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
+using HCMv3.Workflow.Services;
 using HCMv3.Workflow.Dto;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
     private readonly IRepository<WorkFlowApprover> _approverRepository;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeSessionService _employeeSessionService;
+    private readonly IWorkflowApprovalService _workflowApprovalService;
 
     public WorkflowActivityAppService(
         IRepository<WorkflowRequest> requestRepository,
@@ -34,7 +36,8 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         IRepository<WorkflowRemark> remarkRepository,
         IRepository<WorkFlowApprover> approverRepository,
         IRepository<Employee> employeeRepository,
-        IEmployeeSessionService employeeSessionService)
+        IEmployeeSessionService employeeSessionService,
+        IWorkflowApprovalService workflowApprovalService)
     {
         _requestRepository = requestRepository;
         _requestLogRepository = requestLogRepository;
@@ -43,6 +46,7 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
         _approverRepository = approverRepository;
         _employeeRepository = employeeRepository;
         _employeeSessionService = employeeSessionService;
+        _workflowApprovalService = workflowApprovalService;
     }
 
     /// <summary>
@@ -69,6 +73,14 @@ public class WorkflowActivityAppService : HCMv3AppServiceBase, IWorkflowActivity
             CanComment = true,
             CanCommentInternally = access.CanSeeInternal
         };
+
+        // Records that this approver looked at the request, for steps configured to track it. Placed here
+        // because opening the activity feed IS how an approver reads a request -- there is no separate
+        // "view" action to hang it off. A no-op for everyone else and for steps that do not ask for it.
+        if (access.IsApprover && access.EmployeeId.HasValue)
+        {
+            await _workflowApprovalService.MarkAsReadAsync(request.Id, access.EmployeeId.Value);
+        }
 
         var activities = new List<WorkflowActivityDto>();
 

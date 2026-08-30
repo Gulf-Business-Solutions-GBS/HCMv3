@@ -79,4 +79,11 @@ public interface IWorkflowApprovalService
     /// <c>RequestActionService.AssignNewApprover</c>.
     /// </summary>
     Task ReassignAsync(int requestId, int actingEmployeeId, int newApproverEmployeeId, string remark);
+
+    /// <summary>
+    /// Records that this employee opened the request, for steps whose configuration asks for it
+    /// (<c>RequestDetail.EnableReadLog</c>). A no-op otherwise, and never throws -- viewing must not fail
+    /// because logging the view failed.
+    /// </summary>
+    Task MarkAsReadAsync(int requestId, int actingEmployeeId);
 }
