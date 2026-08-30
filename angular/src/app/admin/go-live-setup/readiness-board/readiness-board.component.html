@@ -98,3 +98,88 @@
         }
     </ul>
 </section>
+
+<!-- Provisioning. Two steps on purpose: a preview must be seen, and be clean, before the real run
+     is offered. Nothing here decides what is legal -- the server runs the same code either way. -->
+<section class="rb-stage rb-apply">
+    <header class="rb-stage-head">
+        <span class="rb-stage-id">&#9654;</span>
+        <h5 class="rb-stage-name">{{ 'GoLiveApplyTitle' | localize }}</h5>
+    </header>
+
+    <div class="rb-apply-body">
+        <p class="rb-apply-intro">{{ 'GoLiveApplyIntro' | localize }}</p>
+
+        <div class="rb-apply-actions">
+            <button type="button" class="rb-btn" [disabled]="applyService.busy()" (click)="applyService.preview()">
+                {{ (applyService.phase() === 'previewing' ? 'GoLiveApplyChecking' : 'GoLiveApplyCheck') | localize }}
+            </button>
+
+            <button
+                type="button"
+                class="rb-btn rb-btn-primary"
+                [disabled]="!applyService.canApply() || applyService.busy()"
+                (click)="applyService.apply()">
+                {{ (applyService.phase() === 'applying' ? 'GoLiveApplyRunning' : 'GoLiveApplyRun') | localize }}
+            </button>
+
+            @if (applyService.phase() === 'applied') {
+                <span class="rb-apply-done">{{ 'GoLiveApplyDone' | localize }}</span>
+            }
+        </div>
+
+        @if (applyService.error()) {
+            <p class="rb-apply-error">{{ 'GoLiveApplyFailed' | localize }}</p>
+        }
+
+        @if (applyService.result(); as result) {
+            <div class="scroll-x">
+                <table class="rb-apply-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'GoLiveApplyStage' | localize }}</th>
+                            <th class="num">{{ 'GoLiveApplyCreated' | localize }}</th>
+                            <th class="num">{{ 'GoLiveApplyUpdated' | localize }}</th>
+                            <th class="num">{{ 'GoLiveApplySkipped' | localize }}</th>
+                            <th class="num">{{ 'GoLiveApplyFailed' | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (stage of result.stages ?? []; track stage.stepId) {
+                            <tr [class.rb-apply-bad]="stage.failed > 0">
+                                <td>{{ stageLabel(stage) }}</td>
+                                <td class="num">{{ stage.created }}</td>
+                                <td class="num">{{ stage.updated }}</td>
+                                <td class="num">{{ stage.skipped }}</td>
+                                <td class="num">{{ stage.failed }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (applyService.hasFailures()) {
+                <div class="rb-apply-issues">
+                    <h6 class="rb-apply-issues-head">{{ 'GoLiveApplyProblems' | localize }}</h6>
+                    @for (stage of result.stages ?? []; track stage.stepId) {
+                        @for (issue of stage.issues ?? []; track issue.row + (issue.key ?? '')) {
+                            <p class="rb-apply-issue">
+                                <span class="rb-apply-issue-loc">
+                                    {{ 'GoLiveApplyIssueRow' | localize: stage.stepId : issue.row : issue.key ?? '' }}
+                                </span>
+                                <span>{{ issue.message }}</span>
+                            </p>
+                        }
+                        @if (stage.issuesTruncated > 0) {
+                            <p class="rb-apply-issue-more">
+                                {{ 'GoLiveApplyMoreProblems' | localize: stage.issuesTruncated }}
+                            </p>
+                        }
+                    }
+                </div>
+            } @else if (applyService.phase() === 'previewed') {
+                <p class="rb-apply-clean">{{ 'GoLiveApplyClean' | localize }}</p>
+            }
+        }
+    </div>
+</section>

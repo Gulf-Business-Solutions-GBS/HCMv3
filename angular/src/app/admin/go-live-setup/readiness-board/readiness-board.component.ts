@@ -4,6 +4,7 @@ import { LocalizationService } from 'abp-ng2-module';
 import { AppConsts } from '@shared/AppConsts';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { GoLiveStateService } from '../shared/go-live-state.service';
+import { GoLiveApplyService } from '../shared/go-live-apply.service';
 import { StatusDotComponent } from '../shared/status-dot.component';
 import { findStepById } from '../shared/go-live-registry';
 import { GoLiveStep, CrossCheck } from '../shared/go-live.types';
@@ -25,6 +26,7 @@ export class ReadinessBoardComponent {
     private readonly source = AppConsts.localization.defaultLocalizationSourceName;
 
     readonly state = inject(GoLiveStateService);
+    readonly applyService = inject(GoLiveApplyService);
 
     progressLabel(step: GoLiveStep): string {
         const { done, total } = this.state.progressOf(step);
@@ -35,6 +37,11 @@ export class ReadinessBoardComponent {
             return this.l('GoLiveAnsweredOf', done, total);
         }
         return '';
+    }
+
+    /** Row label for the results table: "S3.1 Employee". */
+    stageLabel(stage: { stepId?: string; target?: string }): string {
+        return [stage.stepId, stage.target].filter((p) => !!p).join(' ');
     }
 
     detailFor(check: CrossCheck): string {
