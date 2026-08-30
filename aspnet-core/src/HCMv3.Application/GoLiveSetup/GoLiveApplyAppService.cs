@@ -12,23 +12,29 @@ namespace HCMv3.GoLiveSetup;
 [AbpAuthorize(AppPermissions.Pages_GoLiveSetup)]
 public class GoLiveApplyAppService : HCMv3AppServiceBase, IGoLiveApplyAppService
 {
+    private readonly ConfigApplyStage _config;
     private readonly WageTypeApplyStage _wageTypes;
     private readonly EmployeeApplyStage _employees;
+    private readonly OrgAssignmentApplyStage _assignments;
     private readonly SalaryApplyStage _salaries;
     private readonly BankApplyStage _banks;
     private readonly OpeningBalanceApplyStage _balances;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public GoLiveApplyAppService(
+        ConfigApplyStage config,
         WageTypeApplyStage wageTypes,
         EmployeeApplyStage employees,
+        OrgAssignmentApplyStage assignments,
         SalaryApplyStage salaries,
         BankApplyStage banks,
         OpeningBalanceApplyStage balances,
         IUnitOfWorkManager unitOfWorkManager)
     {
+        _config = config;
         _wageTypes = wageTypes;
         _employees = employees;
+        _assignments = assignments;
         _salaries = salaries;
         _banks = banks;
         _balances = balances;
@@ -48,13 +54,19 @@ public class GoLiveApplyAppService : HCMv3AppServiceBase, IGoLiveApplyAppService
     {
         var result = new GoLiveApplyResultDto { Applied = apply };
 
-        // Wage types first: a salary detail row cannot exist without one.
+        // Configuration first: the org assignment below points at the payroll area it creates.
+        result.Stages.Add(await _config.RunAsync(apply));
+        await FlushAsync(apply);
+
+        // Wage types next: a salary detail row cannot exist without one.
         result.Stages.Add(await _wageTypes.RunAsync(apply));
         await FlushAsync(apply);
 
         result.Stages.Add(await _employees.RunAsync(apply));
         await FlushAsync(apply);
 
+        // An employee with no assignment has no payroll area, so the engine never sees them.
+        result.Stages.Add(await _assignments.RunAsync(apply));
         result.Stages.Add(await _salaries.RunAsync(apply));
         result.Stages.Add(await _banks.RunAsync(apply));
         result.Stages.Add(await _balances.RunAsync(apply));

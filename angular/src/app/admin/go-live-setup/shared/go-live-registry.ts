@@ -136,6 +136,19 @@ const S1_1_COMPANY: GoLiveQuestion[] = [
             { value: 'Other', label: 'Something else - described in the notes' },
         ],
     },
+    {
+        ref: 'Q1.07',
+        question: 'Which month does your financial year start in?',
+        help: 'Leave entitlements that reset "at the start of our financial year" reset in this month.',
+        control: 'choice',
+        phase: 'first-payroll',
+        options: [
+            { value: 'January', label: 'January - same as the calendar year' },
+            { value: 'April', label: 'April' },
+            { value: 'July', label: 'July' },
+            { value: 'October', label: 'October' },
+        ],
+    },
 ];
 
 const S1_2_PAY_RULES: GoLiveQuestion[] = [
@@ -519,8 +532,10 @@ const EMPLOYEE_COLUMNS: PasteGridColumn[] = [
             return value <= birth ? { key: 'PasteGridDemoJoinBeforeBirth' } : null;
         },
     },
-    // Free text until S2.1 builds the department tree; see the note above.
-    { key: 'department', header: 'Department', width: 155, required: true },
+    // Free text until S2.1 builds the department tree; see the note above. Deliberately NOT required:
+    // nothing provisions it yet, so demanding it would block go-live on data that goes nowhere. It is
+    // still saved with the draft, ready for the org-structure step.
+    { key: 'department', header: 'Department', width: 155 },
     { key: 'jobTitle', header: 'Job title', width: 155, required: true, optionsFrom: 'JobTitle' },
     { key: 'workLocation', header: 'Work location', width: 155, optionsFrom: 'WorkLocation' },
     {

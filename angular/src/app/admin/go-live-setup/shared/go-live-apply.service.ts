@@ -1,6 +1,7 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { GoLiveApplyResultDto, GoLiveApplyServiceProxy } from '@shared/service-proxies/service-proxies';
 import { GoLivePersistenceService } from './go-live-persistence.service';
+import { GoLiveStateService } from './go-live-state.service';
 
 export type ApplyPhase = 'idle' | 'previewing' | 'previewed' | 'applying' | 'applied' | 'failed';
 
@@ -15,6 +16,7 @@ export type ApplyPhase = 'idle' | 'previewing' | 'previewed' | 'applying' | 'app
 export class GoLiveApplyService {
     private readonly proxy = inject(GoLiveApplyServiceProxy);
     private readonly persistence = inject(GoLivePersistenceService);
+    private readonly state = inject(GoLiveStateService);
 
     private readonly phaseSignal = signal<ApplyPhase>('idle');
     private readonly resultSignal = signal<GoLiveApplyResultDto | null>(null);
@@ -33,6 +35,24 @@ export class GoLiveApplyService {
     });
 
     readonly hasFailures = computed(() => (this.result()?.totalFailed ?? 0) > 0);
+
+    constructor() {
+        // A preview describes the draft as it was when the preview ran. The moment any step is edited
+        // that description is stale, so the result is dropped and Apply goes back behind another check.
+        // Without this the customer could change a salary and then apply against a preview that never
+        // saw it.
+        effect(() => {
+            if (this.state.dirtySteps().size === 0) {
+                return;
+            }
+
+            untracked(() => {
+                if (this.phase() === 'previewed' || this.phase() === 'applied' || this.phase() === 'failed') {
+                    this.reset();
+                }
+            });
+        });
+    }
 
     preview(): void {
         this.run(false);

@@ -269,7 +269,11 @@ public class GoLiveApplySalaries_Tests : AppTestBase
         var result = await _apply.Apply();
 
         result.IsClean.ShouldBeTrue();
-        result.Stages.Select(s => s.StepId).ShouldBe(new[] { "S1.3", "S3.1", "S3.2", "S3.3", "S3.4" });
+        result.Stages.Select(s => s.Target).ShouldBe(new[]
+        {
+            "Configuration", "WageType", "Employee", "EmployeeOrgAssignment",
+            "EmployeeBasicPay", "EmployeeBank", "OpeningBalance",
+        });
     }
 
     [Fact]
@@ -282,7 +286,7 @@ public class GoLiveApplySalaries_Tests : AppTestBase
 
         var preview = await _apply.Preview();
 
-        preview.TotalCreated.ShouldBe(4);
+        preview.TotalCreated.ShouldBe(5); // + the org assignment
         UsingDbContext(context =>
         {
             context.WageTypes.ShouldBeEmpty();

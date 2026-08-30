@@ -53,9 +53,12 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
     private int EmployeeCount() => UsingDbContext(context => context.Employees.Count());
 
-    /// <summary>Apply runs several stages now; these tests are about the employee one.</summary>
+    /// <summary>
+    /// Apply runs several stages now, and two of them read S3.1 -- the employee itself and its org
+    /// assignment -- so the target is what identifies a stage, not the step it reads.
+    /// </summary>
     private static GoLiveApplyStageDto EmployeeStage(GoLiveApplyResultDto result) =>
-        result.Stages.Single(s => s.StepId == "S3.1");
+        result.Stages.Single(s => s.Target == nameof(Employee));
 
     // ---------------------------------------------------------------- nothing to do
 
@@ -76,7 +79,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         var result = await _apply.Apply();
 
-        result.TotalCreated.ShouldBe(1);
+        EmployeeStage(result).Created.ShouldBe(1);
         result.TotalFailed.ShouldBe(0);
     }
 
@@ -91,7 +94,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
         var result = await _apply.Preview();
 
         result.Applied.ShouldBeFalse();
-        result.TotalCreated.ShouldBe(2);
+        EmployeeStage(result).Created.ShouldBe(2);
         EmployeeCount().ShouldBe(before);
     }
 
@@ -116,7 +119,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         var result = await _apply.Apply();
 
-        result.TotalCreated.ShouldBe(2);
+        EmployeeStage(result).Created.ShouldBe(2);
         result.IsClean.ShouldBeTrue();
 
         UsingDbContext(context =>
@@ -165,8 +168,8 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         var second = await _apply.Apply();
 
-        second.TotalCreated.ShouldBe(0);
-        second.TotalUpdated.ShouldBe(1);
+        EmployeeStage(second).Created.ShouldBe(0);
+        EmployeeStage(second).Updated.ShouldBe(1);
         EmployeeCount().ShouldBe(1);
     }
 
@@ -195,7 +198,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         var result = await _apply.Apply();
 
-        result.TotalCreated.ShouldBe(2);
+        EmployeeStage(result).Created.ShouldBe(2);
         result.TotalFailed.ShouldBe(1);
         result.IsClean.ShouldBeFalse();
 
@@ -214,7 +217,7 @@ public class GoLiveApplyAppService_Tests : AppTestBase
 
         var result = await _apply.Apply();
 
-        result.TotalCreated.ShouldBe(1);
+        EmployeeStage(result).Created.ShouldBe(1);
         result.TotalFailed.ShouldBe(1);
         EmployeeStage(result).Issues.Single().Message.ShouldContain("more than once");
     }

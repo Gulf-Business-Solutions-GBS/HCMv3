@@ -3,6 +3,7 @@ import { Subject, throwError } from 'rxjs';
 import { GoLiveApplyResultDto, GoLiveApplyServiceProxy } from '@shared/service-proxies/service-proxies';
 import { GoLiveApplyService } from './go-live-apply.service';
 import { GoLivePersistenceService } from './go-live-persistence.service';
+import { GoLiveStateService } from './go-live-state.service';
 
 /**
  * The gating rule: Apply is only offered after a preview that came back clean. The server enforces
@@ -132,6 +133,21 @@ describe('GoLiveApplyService', () => {
 
         expect(service.phase()).toBe('idle');
         expect(service.result()).toBeNull();
+        expect(service.canApply()).toBe(false);
+    });
+
+    it('should withdraw Apply as soon as a step is edited', () => {
+        // The preview described the draft as it was. Editing anything makes that description stale, so
+        // the customer has to check again rather than apply a plan that never saw the change.
+        const state = TestBed.inject(GoLiveStateService);
+        service.preview();
+        preview$.next(result(3, 0));
+        expect(service.canApply()).toBe(true);
+
+        state.setRows('S3.1', [{ code: '1001' }] as never);
+        TestBed.tick();
+
+        expect(service.phase()).toBe('idle');
         expect(service.canApply()).toBe(false);
     });
 });

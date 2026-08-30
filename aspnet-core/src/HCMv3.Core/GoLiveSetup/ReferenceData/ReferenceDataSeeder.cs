@@ -9,6 +9,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.PayrollManagement;
 using HCMv3.TimeManagement;
 
 namespace HCMv3.GoLiveSetup.ReferenceData;
@@ -38,6 +39,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
     private readonly IRepository<ContractType> _contractTypes;
     private readonly IRepository<Currency> _currencies;
     private readonly IRepository<TimeTransferType> _timeTransferTypes;
+    private readonly IRepository<PayrollPeriod> _payrollPeriods;
 
     public ReferenceDataSeeder(
         IRepository<Country> countries,
@@ -52,7 +54,8 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         IRepository<Bank> banks,
         IRepository<ContractType> contractTypes,
         IRepository<Currency> currencies,
-        IRepository<TimeTransferType> timeTransferTypes)
+        IRepository<TimeTransferType> timeTransferTypes,
+        IRepository<PayrollPeriod> payrollPeriods)
     {
         _countries = countries;
         _nationalities = nationalities;
@@ -67,6 +70,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         _contractTypes = contractTypes;
         _currencies = currencies;
         _timeTransferTypes = timeTransferTypes;
+        _payrollPeriods = payrollPeriods;
     }
 
     public IReadOnlyList<string> GetAvailablePackIds() => DefaultPackIds;
@@ -162,6 +166,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
             nameof(Bank) => SeedAsync(_banks, lookupName, rows, tenantId, apply),
             nameof(ContractType) => SeedAsync(_contractTypes, lookupName, rows, tenantId, apply),
             nameof(TimeTransferType) => SeedAsync(_timeTransferTypes, lookupName, rows, tenantId, apply),
+            nameof(PayrollPeriod) => SeedAsync(_payrollPeriods, lookupName, rows, tenantId, apply),
             _ => throw new UserFriendlyException(L("ReferenceDataUnknownLookup", lookupName)),
         };
     }

@@ -2442,6 +2442,28 @@
         "nameEn": "Absent Unpaid Days Opening Balance",
         "nameAr": "الرصيد الافتتاحي لأيام الغياب بدون أجر"
       }
+    ],
+    "PayrollPeriod": [
+      {
+        "code": "Jan-Dec",
+        "nameEn": "January - December",
+        "nameAr": "يناير - ديسمبر"
+      },
+      {
+        "code": "Apr-Mar",
+        "nameEn": "April - March",
+        "nameAr": "أبريل - مارس"
+      },
+      {
+        "code": "Jul-Jun",
+        "nameEn": "July - June",
+        "nameAr": "يوليو - يونيو"
+      },
+      {
+        "code": "Oct-Sep",
+        "nameEn": "October - September",
+        "nameAr": "أكتوبر - سبتمبر"
+      }
     ]
   },
   "currencies": [
