@@ -306,7 +306,7 @@ public class GoLiveApplyBankAndBalances_Tests : AppTestBase
 
         result.IsClean.ShouldBeTrue();
         result.TotalCreated.ShouldBe(3);
-        result.Stages.Select(s => s.StepId).ShouldBe(new[] { "S3.1", "S3.3", "S3.4" });
+        result.Stages.Select(s => s.StepId).ShouldBe(new[] { "S1.3", "S3.1", "S3.2", "S3.3", "S3.4" });
     }
 
     [Fact]

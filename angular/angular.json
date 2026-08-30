@@ -189,7 +189,9 @@
             "tsConfig": "src/tsconfig.spec.json",
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.cjs",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "styles": [
               "node_modules/animate.css/animate.min.css",
               "node_modules/quill/dist/quill.core.css",

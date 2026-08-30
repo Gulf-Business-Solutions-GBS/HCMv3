@@ -188,6 +188,7 @@ describe('GoLiveStateService', () => {
                 answerEveryQuestionIn(step.id);
             }
         }
+        state.setRows('S1.3', [{ name: 'Basic Salary', kind: 'Earning' }]);
         state.setRows('S3.1', employees('1001'));
         state.setRows('S3.2', [{ code: '1001' }]);
         state.setRows('S3.3', [{ code: '1001' }]);

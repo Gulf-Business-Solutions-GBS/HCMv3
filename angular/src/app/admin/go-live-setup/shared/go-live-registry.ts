@@ -434,6 +434,46 @@ const S1_6_END_OF_SERVICE: GoLiveQuestion[] = [
 
 // ---------------------------------------------------------------- data sheets
 
+/**
+ * Every line that can appear on a payslip. Drives the wage types Apply creates, and the salary
+ * sheet's columns are matched to these by name -- so "Basic Salary" here and "Basic Salary" there
+ * have to agree.
+ */
+const PAY_ELEMENT_COLUMNS: PasteGridColumn[] = [
+    { key: 'name', header: 'Pay element', width: 200, required: true, hint: 'As it should read on the payslip' },
+    { key: 'nameAr', header: 'Name in Arabic', width: 180, required: true },
+    {
+        key: 'kind',
+        header: 'Earning or deduction',
+        type: 'choice',
+        width: 160,
+        required: true,
+        options: ['Earning', 'Deduction'],
+    },
+    {
+        key: 'basicPay',
+        header: 'Part of monthly salary?',
+        type: 'choice',
+        width: 170,
+        options: ['Yes', 'No'],
+        hint: 'Yes for anything you enter an amount for on the salary sheet',
+    },
+    {
+        key: 'indemnity',
+        header: 'Counts towards indemnity?',
+        type: 'choice',
+        width: 185,
+        options: ['Yes', 'No'],
+    },
+    {
+        key: 'leaveSalary',
+        header: 'Counts towards leave salary?',
+        type: 'choice',
+        width: 195,
+        options: ['Yes', 'No'],
+    },
+];
+
 const EMPLOYEE_COLUMNS: PasteGridColumn[] = [
     { key: 'code', header: 'Employee code', width: 120, required: true, hint: 'Their payroll number. Must be unique.' },
     { key: 'nameEn', header: 'Full name (English)', width: 210, required: true },
@@ -558,6 +598,15 @@ export const GO_LIVE_STAGES: GoLiveStage[] = [
                 phase: 'first-payroll',
                 effortKey: 'GoLiveEffort10Min',
                 questions: S1_2_PAY_RULES,
+            },
+            {
+                id: 'S1.3',
+                path: 'pay-elements',
+                nameKey: 'GoLiveStepPayElements',
+                introKey: 'GoLiveStepPayElementsIntro',
+                kind: 'data',
+                phase: 'first-payroll',
+                columns: PAY_ELEMENT_COLUMNS,
             },
             {
                 id: 'S1.4',

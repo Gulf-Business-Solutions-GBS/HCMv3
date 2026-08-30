@@ -12,18 +12,24 @@ namespace HCMv3.GoLiveSetup;
 [AbpAuthorize(AppPermissions.Pages_GoLiveSetup)]
 public class GoLiveApplyAppService : HCMv3AppServiceBase, IGoLiveApplyAppService
 {
+    private readonly WageTypeApplyStage _wageTypes;
     private readonly EmployeeApplyStage _employees;
+    private readonly SalaryApplyStage _salaries;
     private readonly BankApplyStage _banks;
     private readonly OpeningBalanceApplyStage _balances;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public GoLiveApplyAppService(
+        WageTypeApplyStage wageTypes,
         EmployeeApplyStage employees,
+        SalaryApplyStage salaries,
         BankApplyStage banks,
         OpeningBalanceApplyStage balances,
         IUnitOfWorkManager unitOfWorkManager)
     {
+        _wageTypes = wageTypes;
         _employees = employees;
+        _salaries = salaries;
         _banks = banks;
         _balances = balances;
         _unitOfWorkManager = unitOfWorkManager;
@@ -34,17 +40,22 @@ public class GoLiveApplyAppService : HCMv3AppServiceBase, IGoLiveApplyAppService
     public Task<GoLiveApplyResultDto> Apply() => RunAsync(apply: true);
 
     /// <summary>
-    /// Stages run in dependency order: employees first, because bank details and opening balances both
-    /// key off an employee that must already exist. Salaries are still missing -- they need a wage type,
-    /// and the registry has no pay-elements step to source one from yet.
+    /// Stages run in dependency order, which is not the order the customer fills the steps in: wage
+    /// types before salaries because a salary line needs one, employees before everything in S3 because
+    /// each of those sheets keys off an employee.
     /// </summary>
     private async Task<GoLiveApplyResultDto> RunAsync(bool apply)
     {
         var result = new GoLiveApplyResultDto { Applied = apply };
 
+        // Wage types first: a salary detail row cannot exist without one.
+        result.Stages.Add(await _wageTypes.RunAsync(apply));
+        await FlushAsync(apply);
+
         result.Stages.Add(await _employees.RunAsync(apply));
         await FlushAsync(apply);
 
+        result.Stages.Add(await _salaries.RunAsync(apply));
         result.Stages.Add(await _banks.RunAsync(apply));
         result.Stages.Add(await _balances.RunAsync(apply));
 

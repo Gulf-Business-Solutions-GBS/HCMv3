@@ -5428,6 +5428,8 @@
     <text name="GoLiveStepCompanyIntro">The basics: who you are, what you pay in, and when we start.</text>
     <text name="GoLiveStepPayRules">How you pay</text>
     <text name="GoLiveStepPayRulesIntro">The rules that decide what lands on a payslip. Q2.04 is the one that most often causes a wrong first payroll.</text>
+    <text name="GoLiveStepPayElements">Pay elements</text>
+    <text name="GoLiveStepPayElementsIntro">Every line that can appear on a payslip. The salary sheet asks for an amount against each one you mark as part of the monthly salary.</text>
     <text name="GoLiveStepWorkingTime">Working hours</text>
     <text name="GoLiveStepWorkingTimeIntro">Answer the first question with "we do not track daily attendance" and the rest of this step disappears.</text>
     <text name="GoLiveStepLeave">Leave</text>
