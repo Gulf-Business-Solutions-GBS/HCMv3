@@ -44,14 +44,14 @@ public class WorkflowTransactionTypeBuilder
     /// The six here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A seventh type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
-    private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, int DisplayOrder)[] Catalog =
+    private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
     {
-        ("EmployeeAbsence", "Leave Request", "طلب إجازة", "AbsenceType", "/app/main/ess/leave", AppPermissions.Ess_MyLeave, 10),
-        ("EmployeeAsset", "Asset Request", "طلب عهدة", null, "/app/main/ess/asset", AppPermissions.Ess_MyAssets, 20),
-        ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", AppPermissions.Ess_MyDocuments, 30),
-        ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", AppPermissions.Ess_MyLoans, 40),
-        ("EmployeeOvertime", "Overtime Request", "طلب عمل إضافي", null, "/app/main/ess/overtime", AppPermissions.Ess_MyOvertime, 50),
-        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", AppPermissions.Ess_MyTickets, 60)
+        ("EmployeeAbsence", "Leave Request", "طلب إجازة", "AbsenceType", "/app/main/ess/leave", AppPermissions.Ess_MyLeave, "flaticon-calendar-3", 10),
+        ("EmployeeAsset", "Asset Request", "طلب عهدة", null, "/app/main/ess/asset", AppPermissions.Ess_MyAssets, "flaticon-app", 20),
+        ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", AppPermissions.Ess_MyDocuments, "flaticon-notepad", 30),
+        ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", AppPermissions.Ess_MyLoans, "flaticon-piggy-bank", 40),
+        ("EmployeeOvertime", "Overtime Request", "طلب عمل إضافي", null, "/app/main/ess/overtime", AppPermissions.Ess_MyOvertime, "flaticon-alarm", 50),
+        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", AppPermissions.Ess_MyTickets, "flaticon-airplane", 60)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
@@ -87,6 +87,7 @@ public class WorkflowTransactionTypeBuilder
                 SubTypeSource = entry.SubTypeSource,
                 EssRoute = entry.EssRoute,
                 EssPermissionName = entry.EssPermissionName,
+                IconClass = entry.IconClass,
                 DisplayOrder = entry.DisplayOrder,
 
                 // Registered, but dormant -- see the class remarks. Turning these on is an admin decision.

@@ -1779,6 +1779,17 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="AssetIsAlreadyIssuedForThisPeriod">This asset is already issued to someone over these dates.</text>
+    <text name="ExpiryDateCannotBeEarlierThanIssueDate">Expiry date cannot be earlier than the issue date.</text>
+    <text name="DocumentNumberIsRequired">Document number is required.</text>
+    <text name="LoanAmountMustBeGreaterThanZero">Loan amount must be greater than zero.</text>
+    <text name="RecoveryStartDateCannotBeEarlierThanLoanStartDate">Recovery cannot start before the loan itself starts.</text>
+    <text name="AnOutstandingLoanOfThisTypeAlreadyExists">There is already an outstanding loan of this type.</text>
+    <text name="OvertimeHoursMustBeGreaterThanZero">Overtime hours must be greater than zero.</text>
+    <text name="OvertimeHoursCannotExceedTwentyFourInADay">Overtime hours cannot exceed 24 in a single day.</text>
+    <text name="OvertimeForThisDateIsAlreadyClaimed">Overtime for this date has already been claimed.</text>
+    <text name="TicketAmountCannotBeNegative">Ticket amount cannot be negative.</text>
+    <text name="ATicketOfThisTypeHasAlreadyBeenTakenThisYear">A ticket of this type has already been taken this year.</text>
     <text name="StartDateAlreadyExists">A record with start date '{0}' already exists.</text>
     <text name="OverlapConflictFound">Record already exists. Please check that start date / end date do not overlap for this employee.</text>
     <text name="EmployeeNotFound">Employee not found.</text>

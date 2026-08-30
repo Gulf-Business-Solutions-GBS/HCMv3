@@ -88,4 +88,61 @@ public class WorkflowTransactionHandlerRegistration_Tests : AppTestBase
         resolver.Resolve("SomethingWithNoHandler").ShouldBeNull();
         resolver.Resolve(null).ShouldBeNull();
     }
+
+    /// <summary>
+    /// The invariant that ties the two halves of the design together: every transaction type registered in
+    /// the catalog has a handler, and every handler has a catalog row.
+    ///
+    /// <para>
+    /// A catalog row without a handler is the dangerous direction. Such a type routes for approval and gets
+    /// approved, but nothing ever stamps <c>WorkflowStatus</c> on its transaction row -- so the row stays
+    /// invisible to the <c>ApprovedOnly</c> filter forever, approved in the workflow tables and absent
+    /// everywhere else. No error is raised at any point.
+    /// </para>
+    /// </summary>
+    [Fact]
+    public void Every_Seeded_Transaction_Type_Should_Have_A_Handler_And_Vice_Versa()
+    {
+        var seededCodes = UsingDbContext(context => context
+            .Set<HCMv3.Workflow.WorkflowTransactionType>()
+            .Select(t => t.Code)
+            .ToList());
+
+        seededCodes.ShouldNotBeEmpty("The transaction-type catalog seed did not run.");
+
+        var handlerTypes = LocalIocManager.ResolveAll<IWorkflowTransactionHandler>()
+            .Select(h => h.RequestType)
+            .ToList();
+
+        var withoutHandler = seededCodes
+            .Where(c => !handlerTypes.Contains(c, StringComparer.OrdinalIgnoreCase))
+            .ToList();
+
+        withoutHandler.ShouldBeEmpty(
+            "Catalogued but unhandled: " + string.Join(", ", withoutHandler) +
+            ". These would approve without ever being marked approved on their own row.");
+
+        var withoutCatalogRow = handlerTypes
+            .Where(t => !seededCodes.Contains(t, StringComparer.OrdinalIgnoreCase))
+            .ToList();
+
+        withoutCatalogRow.ShouldBeEmpty(
+            "Handled but not catalogued: " + string.Join(", ", withoutCatalogRow) +
+            ". Nothing can route to these, because routing starts from the catalog.");
+    }
+
+    [Fact]
+    public void The_Resolver_Should_Find_A_Handler_For_Each_Of_The_Six_Types()
+    {
+        var resolver = Resolve<IWorkflowTransactionHandlerResolver>();
+
+        foreach (var code in new[]
+                 {
+                     "EmployeeAbsence", "EmployeeAsset", "EmployeeDocument",
+                     "EmployeeLoan", "EmployeeOvertime", "EmployeeTicket"
+                 })
+        {
+            resolver.Resolve(code).ShouldNotBeNull(code + " has no handler.");
+        }
+    }
 }
