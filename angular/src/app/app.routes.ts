@@ -173,6 +173,38 @@ export const appRoutes: Routes = [
                             import('./main/ess/inbox/ess-inbox.component').then((m) => m.EssInboxComponent),
                         data: { permission: 'Ess.Inbox' },
                     },
+                    // The paths here must match WorkflowTransactionType.EssRoute in the catalog seed, since
+                    // the landing tiles route from that column rather than from anything declared here.
+                    {
+                        path: 'ess/asset',
+                        loadComponent: () =>
+                            import('./main/ess/my-asset/my-asset.component').then((m) => m.MyAssetComponent),
+                        data: { permission: 'Ess.MyAssets' },
+                    },
+                    {
+                        path: 'ess/document',
+                        loadComponent: () =>
+                            import('./main/ess/my-document/my-document.component').then((m) => m.MyDocumentComponent),
+                        data: { permission: 'Ess.MyDocuments' },
+                    },
+                    {
+                        path: 'ess/loan',
+                        loadComponent: () =>
+                            import('./main/ess/my-loan/my-loan.component').then((m) => m.MyLoanComponent),
+                        data: { permission: 'Ess.MyLoans' },
+                    },
+                    {
+                        path: 'ess/overtime',
+                        loadComponent: () =>
+                            import('./main/ess/my-overtime/my-overtime.component').then((m) => m.MyOvertimeComponent),
+                        data: { permission: 'Ess.MyOvertime' },
+                    },
+                    {
+                        path: 'ess/ticket',
+                        loadComponent: () =>
+                            import('./main/ess/my-ticket/my-ticket.component').then((m) => m.MyTicketComponent),
+                        data: { permission: 'Ess.MyTickets' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },
