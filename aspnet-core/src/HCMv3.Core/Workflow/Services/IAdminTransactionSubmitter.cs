@@ -1,0 +1,44 @@
+using System.Threading.Tasks;
+using Abp.Domain.Entities;
+using Abp.Domain.Repositories;
+using HCMv3.PersonnelAdministration;
+
+namespace HCMv3.Workflow.Services;
+
+/// <summary>
+/// Creates and submits a transaction that an ADMIN raises on somebody else's behalf -- a personnel action,
+/// a disciplinary record, anything HR initiates about an employee rather than the employee requesting it.
+///
+/// <para>
+/// The counterpart to <c>MyTransactionAppServiceBase</c>, and separate from it for one reason: who the
+/// request is about. Self-service takes the employee from the session, and must, or a form could raise a
+/// request against somebody else. Here the employee comes from the ENTITY, because the whole point is that
+/// HR is acting for them -- and the admin doing it is frequently not an employee at all.
+/// </para>
+///
+/// <para>
+/// Everything after that is identical, and deliberately shares the same engine: the row is created hidden,
+/// the request is raised and submitted in one step, and a handler that refuses it rolls the half-created row
+/// back. A second implementation of those steps is how the two paths would drift.
+/// </para>
+/// </summary>
+public interface IAdminTransactionSubmitter
+{
+    /// <summary>
+    /// Inserts the row and, when the type is workflow-enabled, submits it for approval.
+    /// </summary>
+    /// <param name="repository">The caller's own repository for the entity -- passed in rather than
+    /// resolved here, so this stays a plain collaborator instead of reaching into the container.</param>
+    /// <param name="entity">Fully populated, including its employee. Not yet inserted.</param>
+    /// <param name="requestType">The type's <c>WorkflowTransactionType.Code</c>.</param>
+    /// <param name="requestNumberPrefix">Short prefix for the generated request number, e.g. "PA".</param>
+    /// <param name="subTypeId">What the routing rules match against -- the personal action, the loan type.</param>
+    /// <returns>The id of the inserted transaction row.</returns>
+    Task<int> CreateAndSubmitAsync<TEntity>(
+        IRepository<TEntity> repository,
+        TEntity entity,
+        string requestType,
+        string requestNumberPrefix,
+        int? subTypeId = null)
+        where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity;
+}

@@ -1779,6 +1779,8 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="DuplicateEmployeeActionExists">This employee already has that action recorded for the same date.</text>
+    <text name="EssEnabledTypeNeedsARoute">{0} has no self-service screen, so it cannot be shown in Employee Self Service. It can still be routed for approval.</text>
     <text name="EssMyAttendance">My Attendance</text>
     <text name="EssMyBank">My Bank Details</text>
     <text name="EssMyTravelClaims">My Travel Claims</text>

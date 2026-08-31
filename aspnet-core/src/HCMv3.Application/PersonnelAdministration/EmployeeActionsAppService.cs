@@ -8,6 +8,8 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Workflow;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,15 +30,18 @@ public class EmployeeActionsAppService : HCMv3AppServiceBase, IEmployeeActionsAp
     private readonly IRepository<EmployeeAction> _repository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRepository<EmployeeContract> _contractRepository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
     public EmployeeActionsAppService(
         IRepository<EmployeeAction> repository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
-        IRepository<EmployeeContract> contractRepository)
+        IRepository<EmployeeContract> contractRepository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
         _repository = repository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _contractRepository = contractRepository;
+        _transactionSubmitter = transactionSubmitter;
     }
 
     [HttpPost]
@@ -98,7 +103,16 @@ public class EmployeeActionsAppService : HCMv3AppServiceBase, IEmployeeActionsAp
         entity.TenantId = AbpSession.TenantId ?? 0;
 
         await ValidateAsync(entity);
-        await _repository.InsertAsync(entity);
+
+        // Routed for approval when the catalog says so, and simply recorded when it does not -- the
+        // pre-workflow behaviour. HR raises this, so submission belongs here rather than in an ESS service:
+        // there is no self-service screen for a personnel action and there should not be one.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            EmployeeActionWorkflowTransactionHandler.EmployeeActionRequestType,
+            "PA",
+            entity.PersonalActionId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeActions_Edit)]

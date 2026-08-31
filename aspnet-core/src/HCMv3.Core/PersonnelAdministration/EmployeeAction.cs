@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -21,7 +23,7 @@ namespace HCMv3.PersonnelAdministration;
 /// this wave); only the <see cref="EmployeeOrgAssignment"/>/<see cref="EmployeeContract"/> cascade
 /// branches are ported, in <c>EmployeeActionsAppService.Delete</c>.
 /// </summary>
-public class EmployeeAction : FullAuditedEntity, IMustHaveTenant
+public class EmployeeAction : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -44,4 +46,14 @@ public class EmployeeAction : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(1000)]
     public virtual string Comments { get; set; }
+
+    /// <summary>The approval request that governs this action, when the type is workflow-enabled.</summary>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <summary>
+    /// Null when the action was entered directly and the type is not routed. Read by the ApprovedOnly filter,
+    /// which is what keeps an unapproved promotion or transfer out of org assignments, contracts and payroll
+    /// until somebody has agreed to it.
+    /// </summary>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

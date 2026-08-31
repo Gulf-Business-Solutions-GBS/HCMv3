@@ -162,6 +162,15 @@ public class WorkflowTransactionTypesAppService : HCMv3AppServiceBase, IWorkflow
         {
             throw new UserFriendlyException(L("WorkflowEnabledTypeNeedsADefaultRequestMaster", entity.NameEn));
         }
+
+        // Some types are routed for approval but are NOT self-service -- a personnel action is raised by HR,
+        // never by the employee it concerns, so it has no ESS route at all. Switching ESS on for one of
+        // those would put a tile on the landing page leading to a 404, which an admin would discover only
+        // after employees started clicking it.
+        if (entity.IsEssEnabled && entity.EssRoute.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException(L("EssEnabledTypeNeedsARoute", entity.NameEn));
+        }
     }
 
     private static void MapToEntity(CreateOrEditWorkflowTransactionTypeDto input, WorkflowTransactionType entity)
