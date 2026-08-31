@@ -219,8 +219,9 @@ public partial class ProjectCostEngineService
                 {
                     #region << WageType = Overtime (legacy 808-819) >>
 
-                    // Unreachable while IProjectCostOvertimeWageTypeResolver is the null implementation --
-                    // see that file (REPORTED GAP).
+                    // LIVE since wave P8 restored OvertimeType.WageTypeId. (This branch was unreachable
+                    // while the resolver was the null implementation; it no longer is, and
+                    // ProjectCostEngineService_Tests covers both the mapped and the null-WageTypeId case.)
                     var overTimeType = await _overtimeWageTypeResolver
                         .GetOvertimeTypeForWageTypeAsync(projWageType.WageTypeId);
 

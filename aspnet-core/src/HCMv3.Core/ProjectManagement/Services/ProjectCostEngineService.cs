@@ -160,14 +160,18 @@ public partial class ProjectCostEngineService : HCMv3DomainServiceBase, IProject
         // Legacy line 228: GetInitialVariables.
         var settings = await LoadSettingsAsync();
 
+        // NOT a reported gap. Wave P8 restored OvertimeType.WageTypeId and
+        // ProjectCostOvertimeWageTypeResolver hardcodes IsAvailable => true, so this cannot fire in
+        // production. It survives only to catch a TEST DOUBLE that reports the mapping as unavailable,
+        // because such a run silently pro-rates overtime wage types by working days instead of costing
+        // them by hours -- right-looking numbers that are wrong, which is the worst way to be wrong.
         if (!_overtimeWageTypeResolver.IsAvailable)
         {
-            // See IProjectCostOvertimeWageTypeResolver -- REPORTED GAP.
             Logger.Warn(
-                "ProjectCostEngine: overtime wage types cannot be identified (OvertimeType->WageType FK is "
-                + "not ported). Wage types legacy would cost by overtime hours "
-                + "(uscProjectCosting.ascx.cs lines 809-818) will instead be pro-rated by working days. "
-                + "See HCMv3.Core/ProjectManagement/Services/IProjectCostOvertimeWageTypeResolver.cs.");
+                "ProjectCostEngine: the OvertimeType->WageType mapping is unavailable from this resolver, "
+                + "so wage types legacy costs by overtime hours (uscProjectCosting.ascx.cs lines 809-818) "
+                + "are being pro-rated by working days instead. In production this indicates a container "
+                + "misconfiguration, not a porting gap -- the real resolver is always available.");
         }
 
         // Legacy line 235.
