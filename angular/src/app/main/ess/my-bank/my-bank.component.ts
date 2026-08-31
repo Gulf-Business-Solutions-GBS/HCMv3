@@ -1,0 +1,95 @@
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
+import {
+    BankDto,
+    BanksServiceProxy,
+    EntityDto,
+    GetAllBanksInput,
+    GetMyRequestsInput,
+    MyBankRequestDto,
+    MyBankServiceProxy,
+    RequestBankChangeInput,
+} from '@shared/service-proxies/service-proxies';
+import { DateTime } from 'luxon';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
+import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
+import { MyRequestComponentBase } from '../my-request-component-base';
+
+/**
+ * Self-service bank detail changes.
+ *
+ * <p>The list shows masked account numbers because that is all the server sends. An employee already knows
+ * their own number, and a list screen is the easiest place for one to end up in a screenshot or a support
+ * ticket.</p>
+ */
+@Component({
+    templateUrl: './my-bank.component.html',
+    animations: [appModuleAnimation()],
+    imports: [CommonModule, FormsModule, SubHeaderComponent, LocalizePipe, LuxonFormatPipe, WorkflowHistoryModalComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MyBankComponent extends MyRequestComponentBase<MyBankRequestDto> implements OnInit {
+    private readonly _service = inject(MyBankServiceProxy);
+    private readonly _banksService = inject(BanksServiceProxy);
+
+    readonly banks = signal<BankDto[]>([]);
+
+    form = { bankId: null as number | null, accountNum: '', iban: '', bankBranch: '', startDate: '' };
+
+    ngOnInit(): void {
+        this._banksService
+            .getAll(new GetAllBanksInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
+            .subscribe((result) => this.banks.set(result.items));
+
+        this.reload();
+    }
+
+    protected fetch(input: GetMyRequestsInput): Observable<{ items: MyBankRequestDto[] }> {
+        return this._service.getMyBanks(input);
+    }
+
+    protected cancelRequest(input: EntityDto): Observable<void> {
+        return this._service.cancelMyBank(input);
+    }
+
+    protected resetForm(): void {
+        this.form = { bankId: null, accountNum: '', iban: '', bankBranch: '', startDate: '' };
+    }
+
+    submit(): void {
+        if (!this.form.startDate || this.saving()) {
+            return;
+        }
+
+        // One or the other. Some countries pay on an account number, others on IBAN; requiring both would
+        // block legitimate changes, requiring neither would send a payment nowhere.
+        if (!this.form.accountNum?.trim() && !this.form.iban?.trim()) {
+            this.message.warn(this.l('AccountNumberOrIbanIsRequired'));
+            return;
+        }
+
+        const input = new RequestBankChangeInput();
+        input.bankId = this.form.bankId ?? undefined;
+        input.accountNum = this.form.accountNum?.trim();
+        input.iban = this.form.iban?.trim();
+        input.bankBranch = this.form.bankBranch;
+        input.startDate = DateTime.fromISO(this.form.startDate);
+
+        this.saving.set(true);
+
+        this._service
+            .requestBankChange(input)
+            .pipe(finalize(() => this.saving.set(false)))
+            .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
+    }
+
+    bankName(row: MyBankRequestDto): string {
+        return this.pick(row.bankNameEn, row.bankNameAr);
+    }
+}

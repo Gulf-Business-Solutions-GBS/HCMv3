@@ -1779,6 +1779,17 @@
     <text name="JoiningDateCannotBeEarlierThanBirthDate">Joining date cannot be earlier than or equal to birth date.</text>
     <text name="ProbationDaysCannotBeNegative">Probation days cannot be less than 0.</text>
     <text name="EndDateCannotBeEarlierThanStartDate">End date cannot be earlier than start date.</text>
+    <text name="EssMyAttendance">My Attendance</text>
+    <text name="EssMyBank">My Bank Details</text>
+    <text name="EssMyTravelClaims">My Travel Claims</text>
+    <text name="RequestAttendanceCorrection">Request a correction</text>
+    <text name="RequestBankChange">Change my bank details</text>
+    <text name="RequestTravelClaim">Claim travel expenses</text>
+    <text name="ClaimAmountMustBeGreaterThanZero">Enter the amount you are claiming.</text>
+    <text name="AccountNumberOrIbanIsRequired">Enter an account number or IBAN.</text>
+    <text name="EndTimeCannotBeEarlierThanStartTime">The end time cannot be before the start time.</text>
+    <text name="OverlappingAttendanceRequestExists">You already have an attendance record covering those dates.</text>
+    <text name="ATravelClaimAlreadyExistsForThisTrip">You have already claimed for this trip.</text>
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>

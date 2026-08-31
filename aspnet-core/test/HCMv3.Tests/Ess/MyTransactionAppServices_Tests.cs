@@ -3,12 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Runtime.Validation;
 using Abp.UI;
 using HCMv3.Ess;
 using HCMv3.Ess.Dto;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.TravelManagement;
 using HCMv3.Workflow;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
@@ -594,5 +596,191 @@ public class MyTransactionAppServices_Tests : AppTestBase
         var listed = await _loans.GetMyLoans(ListInput());
 
         listed.Items.Single().LoanTypeNameEn.ShouldBe("Housing");
+    }
+
+    // ---------------------------------------------------------------- attendance, bank, travel claim
+
+    private int CreateAttendanceType()
+    {
+        HCMv3.PayrollManagement.AttendanceType type = null;
+        UsingDbContext(context =>
+        {
+            type = context.Set<HCMv3.PayrollManagement.AttendanceType>().Add(new HCMv3.PayrollManagement.AttendanceType
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "Late",
+                NameAr = "Late"
+            }).Entity;
+        });
+
+        return type.Id;
+    }
+
+    private int CreateBank()
+    {
+        Bank bank = null;
+        UsingDbContext(context =>
+        {
+            bank = context.Set<Bank>().Add(new Bank
+            {
+                TenantId = TenantId,
+                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
+                NameEn = "NBK",
+                NameAr = "NBK"
+            }).Entity;
+        });
+
+        return bank.Id;
+    }
+
+    [Fact]
+    public async Task An_Attendance_Correction_Should_Require_A_Reason()
+    {
+        // An approver cannot check a claim about a day that has already passed without being told what
+        // went wrong.
+        //
+        // AbpValidationException, not UserFriendlyException: the [Required] annotation on the DTO refuses
+        // this before the service is even entered. The service-level check behind it is defence in depth
+        // for any caller that bypasses DTO validation, not the gate that normally fires.
+        CreateCurrentUserEmployee("MTX300");
+        var typeId = CreateAttendanceType();
+
+        await Assert.ThrowsAsync<AbpValidationException>(() =>
+            Resolve<IMyAttendanceAppService>().RequestAttendanceCorrection(new RequestAttendanceCorrectionInput
+            {
+                AttendanceTypeId = typeId,
+                StartDate = DateTime.Today.AddDays(-2),
+                EndDate = DateTime.Today.AddDays(-2),
+                StartTime = DateTime.Today.AddHours(9),
+                EndTime = DateTime.Today.AddHours(17),
+                AttendanceHours = 8,
+                Comments = "   "
+            }));
+    }
+
+    [Fact]
+    public async Task An_Attendance_Correction_Should_Be_Recorded_Against_Me()
+    {
+        var meId = CreateCurrentUserEmployee("MTX310");
+        var typeId = CreateAttendanceType();
+
+        var result = await Resolve<IMyAttendanceAppService>().RequestAttendanceCorrection(new RequestAttendanceCorrectionInput
+        {
+            AttendanceTypeId = typeId,
+            StartDate = DateTime.Today.AddDays(-2),
+            EndDate = DateTime.Today.AddDays(-2),
+            StartTime = DateTime.Today.AddHours(9),
+            EndTime = DateTime.Today.AddHours(17),
+            AttendanceHours = 8,
+            Comments = "Badge reader was down"
+        });
+
+        var row = UsingDbContext(c => c.Set<EmployeeAttendance>().IgnoreQueryFilters()
+            .Single(a => a.Id == result.TransactionId));
+
+        row.EmployeeId.ShouldBe(meId);
+        row.Comments.ShouldBe("Badge reader was down");
+    }
+
+    [Fact]
+    public async Task A_Bank_Change_With_Neither_Account_Nor_Iban_Should_Be_Refused()
+    {
+        // Requiring both would block legitimate changes; requiring neither would send a payment nowhere.
+        CreateCurrentUserEmployee("MTX320");
+        var bankId = CreateBank();
+
+        await Assert.ThrowsAsync<UserFriendlyException>(() =>
+            Resolve<IMyBankAppService>().RequestBankChange(new RequestBankChangeInput
+            {
+                BankId = bankId,
+                AccountNum = "",
+                IBAN = null,
+                StartDate = DateTime.Today
+            }));
+    }
+
+    [Fact]
+    public async Task A_Bank_Change_Should_Never_Return_The_Full_Account_Number()
+    {
+        // A list endpoint is the easiest place for a full account number to leak into a log, a screenshot
+        // or a support ticket. The employee already knows their own number.
+        CreateCurrentUserEmployee("MTX330");
+        var bankId = CreateBank();
+
+        await Resolve<IMyBankAppService>().RequestBankChange(new RequestBankChangeInput
+        {
+            BankId = bankId,
+            AccountNum = "1234567890123",
+            StartDate = DateTime.Today
+        });
+
+        var listed = await Resolve<IMyBankAppService>().GetMyBanks(ListInput());
+        var row = listed.Items.Single();
+
+        row.AccountNumMasked.ShouldEndWith("0123");
+        row.AccountNumMasked.ShouldNotContain("1234567890");
+        row.AccountNumMasked.ShouldStartWith("*");
+    }
+
+    [Fact]
+    public async Task A_Bank_Change_Should_Be_Open_Ended_Rather_Than_Stopping_Pay()
+    {
+        // An end date would silently stop paying the employee on that day, which nobody asked for.
+        CreateCurrentUserEmployee("MTX340");
+        var bankId = CreateBank();
+
+        var result = await Resolve<IMyBankAppService>().RequestBankChange(new RequestBankChangeInput
+        {
+            BankId = bankId,
+            IBAN = "KW81CBKU0000000000001234560101",
+            StartDate = DateTime.Today
+        });
+
+        var row = UsingDbContext(c => c.Set<EmployeeBank>().IgnoreQueryFilters().Single(b => b.Id == result.TransactionId));
+
+        row.EndDate.Year.ShouldBe(9999);
+    }
+
+    [Fact]
+    public async Task A_Travel_Claim_For_Nothing_Should_Be_Refused()
+    {
+        // Refused by the DTO's [Range] annotation before the service runs -- see the note on the attendance
+        // test above. The service check remains as the backstop.
+        CreateCurrentUserEmployee("MTX350");
+
+        await Assert.ThrowsAsync<AbpValidationException>(() =>
+            Resolve<IMyTravelClaimAppService>().RequestTravelClaim(new RequestTravelClaimInput
+            {
+                ClaimDate = DateTime.Today,
+                ClaimAmount = 0
+            }));
+    }
+
+    [Fact]
+    public async Task A_Travel_Claim_Should_Be_Listed_Back_To_Me()
+    {
+        var meId = CreateCurrentUserEmployee("MTX360");
+
+        await Resolve<IMyTravelClaimAppService>().RequestTravelClaim(new RequestTravelClaimInput
+        {
+            ClaimDate = DateTime.Today,
+            ClaimAmount = 125.50,
+            Comments = "Taxi and hotel"
+        });
+
+        var listed = await Resolve<IMyTravelClaimAppService>().GetMyTravelClaims(ListInput());
+
+        listed.Items.Single().ClaimAmount.ShouldBe(125.50);
+    }
+
+    [Fact]
+    public async Task The_Three_New_Types_Should_Refuse_An_Unlinked_User_Too()
+    {
+        // Same contract as the other six: admin accounts are never linked, so this is the state the shell
+        // must handle rather than an edge case.
+        await Assert.ThrowsAsync<UserFriendlyException>(() => Resolve<IMyAttendanceAppService>().GetMyAttendances(ListInput()));
+        await Assert.ThrowsAsync<UserFriendlyException>(() => Resolve<IMyBankAppService>().GetMyBanks(ListInput()));
+        await Assert.ThrowsAsync<UserFriendlyException>(() => Resolve<IMyTravelClaimAppService>().GetMyTravelClaims(ListInput()));
     }
 }

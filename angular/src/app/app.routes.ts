@@ -205,6 +205,24 @@ export const appRoutes: Routes = [
                             import('./main/ess/my-ticket/my-ticket.component').then((m) => m.MyTicketComponent),
                         data: { permission: 'Ess.MyTickets' },
                     },
+                    {
+                        path: 'ess/attendance',
+                        loadComponent: () =>
+                            import('./main/ess/my-attendance/my-attendance.component').then((m) => m.MyAttendanceComponent),
+                        data: { permission: 'Ess.MyAttendance' },
+                    },
+                    {
+                        path: 'ess/bank',
+                        loadComponent: () =>
+                            import('./main/ess/my-bank/my-bank.component').then((m) => m.MyBankComponent),
+                        data: { permission: 'Ess.MyBank' },
+                    },
+                    {
+                        path: 'ess/travel-claim',
+                        loadComponent: () =>
+                            import('./main/ess/my-travel-claim/my-travel-claim.component').then((m) => m.MyTravelClaimComponent),
+                        data: { permission: 'Ess.MyTravelClaims' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },

@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.PayrollManagement;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -17,7 +19,7 @@ namespace HCMv3.PersonnelAdministration;
 /// simplified form, not on the entity. The legacy <c>prevXxx</c> change-tracking fields are
 /// <c>[NonPersistent]</c> and not re-ported as columns.
 /// </summary>
-public class EmployeeAttendance : FullAuditedEntity, IMustHaveTenant
+public class EmployeeAttendance : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -46,4 +48,11 @@ public class EmployeeAttendance : FullAuditedEntity, IMustHaveTenant
 
     [StringLength(4000)]
     public virtual string Comments { get; set; }
+
+    /// <summary>The approval request that governs this row, when it was raised through self service.</summary>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <summary>Null when entered directly by HR rather than requested. Read by the ApprovedOnly filter, which
+    /// is what keeps a pending row out of payroll and reports.</summary>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

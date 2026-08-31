@@ -49,6 +49,9 @@ export class AppNavigationService {
                 new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan'),
                 new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime'),
                 new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket'),
+                new AppMenuItem('EssMyAttendance', 'Ess.MyAttendance', 'flaticon-time-3', '/app/main/ess/attendance'),
+                new AppMenuItem('EssMyBank', 'Ess.MyBank', 'flaticon-coins', '/app/main/ess/bank'),
+                new AppMenuItem('EssMyTravelClaims', 'Ess.MyTravelClaims', 'flaticon-map', '/app/main/ess/travel-claim'),
             ]),
             // PRINT REPORTS LAUNCHER (legacy HRMS "Print Reports"). Deliberately a top-level item, not a
             // child of AnalysisReports - that tree is for the ported grid reports.

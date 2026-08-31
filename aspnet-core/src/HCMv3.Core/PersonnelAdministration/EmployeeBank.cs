@@ -4,6 +4,8 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 
+using HCMv3.Workflow;
+
 namespace HCMv3.PersonnelAdministration;
 
 /// <summary>
@@ -27,7 +29,7 @@ namespace HCMv3.PersonnelAdministration;
 /// no-duplicate-StartDate-per-employee validation is (see <c>EmployeeBanksAppService</c>, same
 /// cross-record-cascade omission approach as every other ledger entity in this port).
 /// </summary>
-public class EmployeeBank : FullAuditedEntity, IMustHaveTenant
+public class EmployeeBank : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -70,4 +72,11 @@ public class EmployeeBank : FullAuditedEntity, IMustHaveTenant
     public virtual int? PayerBankId { get; set; }
 
     public virtual Bank PayerBank { get; set; }
+
+    /// <summary>The approval request that governs this row, when it was raised through self service.</summary>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <summary>Null when entered directly by HR rather than requested. Read by the ApprovedOnly filter, which
+    /// is what keeps a pending row out of payroll and reports.</summary>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
@@ -218,6 +219,108 @@ public class RequestTicketInput
     /// <summary>Left at zero when the employee is claiming the entitlement rather than a specific sum;
     /// payroll prices it. Negative is refused by the handler.</summary>
     public double Amount { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class MyAttendanceRequestDto : MyRequestDtoBase
+{
+    public int AttendanceTypeId { get; set; }
+
+    public string AttendanceTypeNameEn { get; set; }
+
+    public string AttendanceTypeNameAr { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
+
+    public DateTime StartTime { get; set; }
+
+    public DateTime EndTime { get; set; }
+
+    public double AttendanceHours { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class RequestAttendanceCorrectionInput
+{
+    public int AttendanceTypeId { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
+
+    public DateTime StartTime { get; set; }
+
+    public DateTime EndTime { get; set; }
+
+    public double AttendanceHours { get; set; }
+
+    /// <summary>Why the correction is needed. An approver cannot check a claim about a day that has already
+    /// passed without being told what went wrong.</summary>
+    [Required]
+    [StringLength(4000, MinimumLength = 1)]
+    public string Comments { get; set; }
+}
+
+public class MyBankRequestDto : MyRequestDtoBase
+{
+    public int? BankId { get; set; }
+
+    public string BankNameEn { get; set; }
+
+    public string BankNameAr { get; set; }
+
+    /// <summary>Masked to the last four characters. The full value is never sent to a list screen.</summary>
+    public string AccountNumMasked { get; set; }
+
+    /// <summary>Masked to the last four characters.</summary>
+    public string IbanMasked { get; set; }
+
+    public string BankBranch { get; set; }
+
+    public DateTime StartDate { get; set; }
+}
+
+public class RequestBankChangeInput
+{
+    public int? BankId { get; set; }
+
+    public string AccountNum { get; set; }
+
+    public string IBAN { get; set; }
+
+    public string BankBranch { get; set; }
+
+    /// <summary>When the new details should take effect -- never before approval, whatever this says.</summary>
+    public DateTime StartDate { get; set; }
+}
+
+public class MyTravelClaimDto : MyRequestDtoBase
+{
+    public int? TravelId { get; set; }
+
+    public DateTime ClaimDate { get; set; }
+
+    public double ClaimAmount { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class RequestTravelClaimInput
+{
+    /// <summary>The trip being claimed against. Optional, because not every claim has a recorded trip.</summary>
+    public int? TravelId { get; set; }
+
+    public DateTime ClaimDate { get; set; }
+
+    // A finite upper bound on purpose. double.MaxValue serialises into the OpenAPI document as
+    // 1.797E+308, which NSwag cannot parse as a decimal, and proxy generation fails for the whole API --
+    // the rule CLAUDE.md states as "do not use double.Max as a max attribute".
+    [Range(0.01, 1_000_000_000)]
+    public double ClaimAmount { get; set; }
 
     public string Comments { get; set; }
 }

@@ -41,7 +41,7 @@ public class WorkflowTransactionTypeBuilder
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
     ///
-    /// The six here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A seventh type
+    /// The nine here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A tenth type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
@@ -51,7 +51,10 @@ public class WorkflowTransactionTypeBuilder
         ("EmployeeDocument", "Document Request", "طلب مستند", "DocumentType", "/app/main/ess/document", AppPermissions.Ess_MyDocuments, "flaticon-notepad", 30),
         ("EmployeeLoan", "Loan Request", "طلب قرض", "LoanType", "/app/main/ess/loan", AppPermissions.Ess_MyLoans, "flaticon-piggy-bank", 40),
         ("EmployeeOvertime", "Overtime Request", "طلب عمل إضافي", null, "/app/main/ess/overtime", AppPermissions.Ess_MyOvertime, "flaticon-alarm", 50),
-        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", AppPermissions.Ess_MyTickets, "flaticon-airplane", 60)
+        ("EmployeeTicket", "Air Ticket Request", "طلب تذكرة", null, "/app/main/ess/ticket", AppPermissions.Ess_MyTickets, "flaticon-airplane", 60),
+        ("EmployeeAttendance", "Attendance Correction", "تصحيح الحضور", "AttendanceType", "/app/main/ess/attendance", AppPermissions.Ess_MyAttendance, "flaticon-time-3", 70),
+        ("EmployeeBank", "Bank Detail Change", "تغيير بيانات البنك", null, "/app/main/ess/bank", AppPermissions.Ess_MyBank, "flaticon-coins", 80),
+        ("TravelFeedback", "Travel Expense Claim", "مطالبة مصاريف السفر", null, "/app/main/ess/travel-claim", AppPermissions.Ess_MyTravelClaims, "flaticon-map", 90)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

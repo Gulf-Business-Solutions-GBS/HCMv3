@@ -48,7 +48,10 @@ public class EmployeeRoleBuilder
         AppPermissions.Ess_MyDocuments,
         AppPermissions.Ess_MyLoans,
         AppPermissions.Ess_MyOvertime,
-        AppPermissions.Ess_MyTickets
+        AppPermissions.Ess_MyTickets,
+        AppPermissions.Ess_MyAttendance,
+        AppPermissions.Ess_MyBank,
+        AppPermissions.Ess_MyTravelClaims
     };
 
     public EmployeeRoleBuilder(HCMv3DbContext context, int tenantId)

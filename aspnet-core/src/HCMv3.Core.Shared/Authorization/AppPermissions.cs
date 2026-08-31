@@ -1742,6 +1742,9 @@ public static class AppPermissions
     public const string Ess_MyLoans = "Ess.MyLoans";
     public const string Ess_MyOvertime = "Ess.MyOvertime";
     public const string Ess_MyTickets = "Ess.MyTickets";
+    public const string Ess_MyAttendance = "Ess.MyAttendance";
+    public const string Ess_MyBank = "Ess.MyBank";
+    public const string Ess_MyTravelClaims = "Ess.MyTravelClaims";
 
     #endregion
 

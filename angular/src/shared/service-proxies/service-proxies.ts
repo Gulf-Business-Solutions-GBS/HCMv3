@@ -83324,6 +83324,358 @@ export class MyAssetServiceProxy {
 }
 
 @Injectable()
+export class MyAttendanceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyAttendances(body?: GetMyRequestsInput | undefined): Observable<PagedResultDtoOfMyAttendanceRequestDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAttendance/GetMyAttendances";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyAttendances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyAttendances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyAttendanceRequestDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyAttendanceRequestDto>;
+        }));
+    }
+
+    protected processGetMyAttendances(response: HttpResponseBase): Observable<PagedResultDtoOfMyAttendanceRequestDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyAttendanceRequestDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestAttendanceCorrection(body?: RequestAttendanceCorrectionInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyAttendance/RequestAttendanceCorrection";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestAttendanceCorrection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestAttendanceCorrection(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processRequestAttendanceCorrection(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyAttendance(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyAttendance/CancelMyAttendance";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyAttendance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyAttendance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyAttendance(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyBankServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyBanks(body?: GetMyRequestsInput | undefined): Observable<PagedResultDtoOfMyBankRequestDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyBank/GetMyBanks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyBanks(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyBanks(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyBankRequestDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyBankRequestDto>;
+        }));
+    }
+
+    protected processGetMyBanks(response: HttpResponseBase): Observable<PagedResultDtoOfMyBankRequestDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyBankRequestDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestBankChange(body?: RequestBankChangeInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyBank/RequestBankChange";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestBankChange(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestBankChange(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processRequestBankChange(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyBank(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyBank/CancelMyBank";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyBank(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyBank(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyBank(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class MyDocumentServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -84299,6 +84651,182 @@ export class MyTicketServiceProxy {
     }
 
     protected processCancelMyTicket(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyTravelClaimServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyTravelClaims(body?: GetMyRequestsInput | undefined): Observable<PagedResultDtoOfMyTravelClaimDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravelClaim/GetMyTravelClaims";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyTravelClaims(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyTravelClaims(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyTravelClaimDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyTravelClaimDto>;
+        }));
+    }
+
+    protected processGetMyTravelClaims(response: HttpResponseBase): Observable<PagedResultDtoOfMyTravelClaimDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyTravelClaimDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestTravelClaim(body?: RequestTravelClaimInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravelClaim/RequestTravelClaim";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestTravelClaim(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestTravelClaim(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processRequestTravelClaim(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyTravelClaim(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravelClaim/CancelMyTravelClaim";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyTravelClaim(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyTravelClaim(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyTravelClaim(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -257719,6 +258247,166 @@ export interface IMyAssetRequestDto {
     comments: string | undefined;
 }
 
+export class MyAttendanceRequestDto implements IMyAttendanceRequestDto {
+    id!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+    attendanceTypeId!: number;
+    attendanceTypeNameEn!: string | undefined;
+    attendanceTypeNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    startTime!: DateTime;
+    endTime!: DateTime;
+    attendanceHours!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IMyAttendanceRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+            this.attendanceTypeId = _data["attendanceTypeId"];
+            this.attendanceTypeNameEn = _data["attendanceTypeNameEn"];
+            this.attendanceTypeNameAr = _data["attendanceTypeNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : undefined as any;
+            this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
+            this.attendanceHours = _data["attendanceHours"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): MyAttendanceRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyAttendanceRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        data["attendanceTypeId"] = this.attendanceTypeId;
+        data["attendanceTypeNameEn"] = this.attendanceTypeNameEn;
+        data["attendanceTypeNameAr"] = this.attendanceTypeNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["startTime"] = this.startTime ? this.startTime.toString() : undefined as any;
+        data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
+        data["attendanceHours"] = this.attendanceHours;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IMyAttendanceRequestDto {
+    id: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
+    attendanceTypeId: number;
+    attendanceTypeNameEn: string | undefined;
+    attendanceTypeNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    startTime: DateTime;
+    endTime: DateTime;
+    attendanceHours: number;
+    comments: string | undefined;
+}
+
+export class MyBankRequestDto implements IMyBankRequestDto {
+    id!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+    bankId!: number | undefined;
+    bankNameEn!: string | undefined;
+    bankNameAr!: string | undefined;
+    accountNumMasked!: string | undefined;
+    ibanMasked!: string | undefined;
+    bankBranch!: string | undefined;
+    startDate!: DateTime;
+
+    constructor(data?: IMyBankRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+            this.bankId = _data["bankId"];
+            this.bankNameEn = _data["bankNameEn"];
+            this.bankNameAr = _data["bankNameAr"];
+            this.accountNumMasked = _data["accountNumMasked"];
+            this.ibanMasked = _data["ibanMasked"];
+            this.bankBranch = _data["bankBranch"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyBankRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyBankRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        data["bankId"] = this.bankId;
+        data["bankNameEn"] = this.bankNameEn;
+        data["bankNameAr"] = this.bankNameAr;
+        data["accountNumMasked"] = this.accountNumMasked;
+        data["ibanMasked"] = this.ibanMasked;
+        data["bankBranch"] = this.bankBranch;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyBankRequestDto {
+    id: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
+    bankId: number | undefined;
+    bankNameEn: string | undefined;
+    bankNameAr: string | undefined;
+    accountNumMasked: string | undefined;
+    ibanMasked: string | undefined;
+    bankBranch: string | undefined;
+    startDate: DateTime;
+}
+
 export class MyDocumentRequestDto implements IMyDocumentRequestDto {
     id!: number;
     workflowStatus!: RequestStatus;
@@ -258220,6 +258908,70 @@ export interface IMyTicketRequestDto {
     ticketTypeNameAr: string | undefined;
     ticketDate: DateTime;
     amount: number;
+    comments: string | undefined;
+}
+
+export class MyTravelClaimDto implements IMyTravelClaimDto {
+    id!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+    travelId!: number | undefined;
+    claimDate!: DateTime;
+    claimAmount!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IMyTravelClaimDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+            this.travelId = _data["travelId"];
+            this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
+            this.claimAmount = _data["claimAmount"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): MyTravelClaimDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyTravelClaimDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        data["travelId"] = this.travelId;
+        data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
+        data["claimAmount"] = this.claimAmount;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IMyTravelClaimDto {
+    id: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
+    travelId: number | undefined;
+    claimDate: DateTime;
+    claimAmount: number;
     comments: string | undefined;
 }
 
@@ -277230,6 +277982,102 @@ export interface IPagedResultDtoOfMyAssetRequestDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfMyAttendanceRequestDto implements IPagedResultDtoOfMyAttendanceRequestDto {
+    items!: MyAttendanceRequestDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyAttendanceRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyAttendanceRequestDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyAttendanceRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyAttendanceRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyAttendanceRequestDto {
+    items: MyAttendanceRequestDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyBankRequestDto implements IPagedResultDtoOfMyBankRequestDto {
+    items!: MyBankRequestDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyBankRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyBankRequestDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyBankRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyBankRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyBankRequestDto {
+    items: MyBankRequestDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfMyDocumentRequestDto implements IPagedResultDtoOfMyDocumentRequestDto {
     items!: MyDocumentRequestDto[] | undefined;
     totalCount!: number;
@@ -277467,6 +278315,54 @@ export class PagedResultDtoOfMyTicketRequestDto implements IPagedResultDtoOfMyTi
 
 export interface IPagedResultDtoOfMyTicketRequestDto {
     items: MyTicketRequestDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyTravelClaimDto implements IPagedResultDtoOfMyTravelClaimDto {
+    items!: MyTravelClaimDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyTravelClaimDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyTravelClaimDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyTravelClaimDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyTravelClaimDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyTravelClaimDto {
+    items: MyTravelClaimDto[] | undefined;
     totalCount: number;
 }
 
@@ -297602,6 +298498,118 @@ export interface IRequestAssetInput {
     comments: string | undefined;
 }
 
+export class RequestAttendanceCorrectionInput implements IRequestAttendanceCorrectionInput {
+    attendanceTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    startTime!: DateTime;
+    endTime!: DateTime;
+    attendanceHours!: number;
+    comments!: string;
+
+    constructor(data?: IRequestAttendanceCorrectionInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.attendanceTypeId = _data["attendanceTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : undefined as any;
+            this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : undefined as any;
+            this.attendanceHours = _data["attendanceHours"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): RequestAttendanceCorrectionInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestAttendanceCorrectionInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["attendanceTypeId"] = this.attendanceTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["startTime"] = this.startTime ? this.startTime.toString() : undefined as any;
+        data["endTime"] = this.endTime ? this.endTime.toString() : undefined as any;
+        data["attendanceHours"] = this.attendanceHours;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IRequestAttendanceCorrectionInput {
+    attendanceTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    startTime: DateTime;
+    endTime: DateTime;
+    attendanceHours: number;
+    comments: string;
+}
+
+export class RequestBankChangeInput implements IRequestBankChangeInput {
+    bankId!: number | undefined;
+    accountNum!: string | undefined;
+    iban!: string | undefined;
+    bankBranch!: string | undefined;
+    startDate!: DateTime;
+
+    constructor(data?: IRequestBankChangeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankId = _data["bankId"];
+            this.accountNum = _data["accountNum"];
+            this.iban = _data["iban"];
+            this.bankBranch = _data["bankBranch"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): RequestBankChangeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestBankChangeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankId"] = this.bankId;
+        data["accountNum"] = this.accountNum;
+        data["iban"] = this.iban;
+        data["bankBranch"] = this.bankBranch;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IRequestBankChangeInput {
+    bankId: number | undefined;
+    accountNum: string | undefined;
+    iban: string | undefined;
+    bankBranch: string | undefined;
+    startDate: DateTime;
+}
+
 export class RequestDetailDto implements IRequestDetailDto {
     id!: number;
     requestMasterId!: number;
@@ -298144,6 +299152,54 @@ export interface IRequestTicketInput {
     ticketTypeId: number;
     ticketDate: DateTime;
     amount: number;
+    comments: string | undefined;
+}
+
+export class RequestTravelClaimInput implements IRequestTravelClaimInput {
+    travelId!: number | undefined;
+    claimDate!: DateTime;
+    claimAmount!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IRequestTravelClaimInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.travelId = _data["travelId"];
+            this.claimDate = _data["claimDate"] ? DateTime.fromISO(_data["claimDate"].toString()) : undefined as any;
+            this.claimAmount = _data["claimAmount"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): RequestTravelClaimInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestTravelClaimInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["travelId"] = this.travelId;
+        data["claimDate"] = this.claimDate ? this.claimDate.toString() : undefined as any;
+        data["claimAmount"] = this.claimAmount;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IRequestTravelClaimInput {
+    travelId: number | undefined;
+    claimDate: DateTime;
+    claimAmount: number;
     comments: string | undefined;
 }
 

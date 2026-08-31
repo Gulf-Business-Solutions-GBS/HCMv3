@@ -19079,6 +19079,12 @@ namespace HCMv3.Migrations
                     b.Property<double>("TotalAttendDays")
                         .HasColumnType("float");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AttendanceTypeId");
@@ -19214,6 +19220,12 @@ namespace HCMv3.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -31728,6 +31740,12 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("TravelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
