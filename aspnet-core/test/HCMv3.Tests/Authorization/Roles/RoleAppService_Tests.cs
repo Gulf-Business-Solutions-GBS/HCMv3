@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Linq;
+using System.Threading.Tasks;
 using HCMv3.Authorization.Roles;
 using HCMv3.Authorization.Roles.Dto;
 using HCMv3.Test.Base;

@@ -30385,6 +30385,12 @@ namespace HCMv3.Migrations
                     b.Property<int?>("WorkLocationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccessUnitId");
