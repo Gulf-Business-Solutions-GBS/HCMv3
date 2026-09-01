@@ -93,7 +93,14 @@ public class WorkflowTransactionTypeBuilder
         // NOT self-service either, and on the same kind of evidence: legacy HCM10.ESS contains no view,
         // controller or model for an IT service -- only a back-office screen. It is raised on the employee's
         // behalf, so it is routed for approval without ever appearing on a tile list.
-        ("EmployeeITService", "IT Service Request", "طلب خدمة تقنية المعلومات", "ITServiceType", null, null, "flaticon-computer", 130)
+        ("EmployeeITService", "IT Service Request", "طلب خدمة تقنية المعلومات", "ITServiceType", null, null, "flaticon-computer", 130),
+
+        // NOT self-service, on structural evidence: legacy auto-filled the REPORTER with the logged-in
+        // employee while the SUBJECT was picked separately, so the two are never the same person. Nobody
+        // raises a disciplinary record about themselves. Sub-type is the offence type, so a safety
+        // violation can be routed differently from a late arrival -- and approving one is what decides the
+        // penalty, not merely whether the record is filed.
+        ("EmployeeDisciplinary", "Disciplinary Record", "إجراء تأديبي", "DisciplinaryType", null, null, "flaticon-warning", 160)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

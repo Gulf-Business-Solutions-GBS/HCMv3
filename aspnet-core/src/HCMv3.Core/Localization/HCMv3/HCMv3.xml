@@ -1798,6 +1798,10 @@
     <text name="EmployeeIsRequired">Select the employee this is for.</text>
     <text name="ServiceTypeIsRequired">Select the service type.</text>
     <text name="ServiceDateIsRequired">Enter the service date.</text>
+    <text name="WorkLocationIsRequired">Select the work location where this happened.</text>
+    <text name="DisciplinaryDateIsRequired">Enter the date of the incident.</text>
+    <text name="ReportedByIsRequired">Say who reported this.</text>
+    <text name="DisciplinaryTypeIsRequired">Select what kind of violation this is.</text>
     <text name="RequestAttendanceCorrection">Request a correction</text>
     <text name="RequestBankChange">Change my bank details</text>
     <text name="RequestTravelClaim">Claim travel expenses</text>
