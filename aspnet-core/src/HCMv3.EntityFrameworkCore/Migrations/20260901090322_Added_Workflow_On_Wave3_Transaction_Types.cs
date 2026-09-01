@@ -85,12 +85,19 @@ namespace HCMv3.Migrations
             //
             // The value is not guessed: a movement is always a movement OF a document, and that document
             // already knows whose it is.
+            // Wrapped in EXEC() so the column reference is resolved at execution
+            // time rather than batch-compile time. Without this, an idempotent
+            // script (dotnet ef migrations script --idempotent) fails with
+            // "Invalid column name 'EmployeeId'": SQL Server compiles the whole
+            // batch up front, and EmployeeId is added by this same migration.
             migrationBuilder.Sql(@"
-                UPDATE m
-                SET m.EmployeeId = d.EmployeeId
-                FROM EmployeeDocumentMvmts m
-                INNER JOIN EmployeeDocuments d ON d.Id = m.EmployeeDocumentId
-                WHERE m.EmployeeId = 0;");
+                EXEC(N'
+                    UPDATE m
+                    SET m.EmployeeId = d.EmployeeId
+                    FROM EmployeeDocumentMvmts m
+                    INNER JOIN EmployeeDocuments d ON d.Id = m.EmployeeDocumentId
+                    WHERE m.EmployeeId = 0;
+                ');");
 
             migrationBuilder.CreateTable(
                 name: "EmployeeExitPermits",

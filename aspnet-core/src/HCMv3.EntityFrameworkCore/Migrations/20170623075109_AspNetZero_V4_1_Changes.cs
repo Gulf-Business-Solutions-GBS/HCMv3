@@ -156,7 +156,11 @@ public partial class AspNetZero_V4_1_Changes : Migration
             principalColumn: "Id",
             onDelete: ReferentialAction.Cascade);
 
-        migrationBuilder.Sql("UPDATE AbpEditions SET Discriminator = 'SubscribableEdition'");
+        // Wrapped in EXEC() so the column reference resolves at execution time.
+        // Discriminator is added by this same migration, and SQL Server compiles
+        // the whole batch before running it, so an idempotent script would fail
+        // with "Invalid column name 'Discriminator'".
+        migrationBuilder.Sql("EXEC(N'UPDATE AbpEditions SET Discriminator = ''SubscribableEdition''')");
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
