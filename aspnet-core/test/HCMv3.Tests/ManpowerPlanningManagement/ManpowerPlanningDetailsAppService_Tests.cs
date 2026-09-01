@@ -40,7 +40,10 @@ public class ManpowerPlanningDetailsAppService_Tests : ManpowerPlanningManagemen
             EmployeeId = employeeId,
             OrganizationUnitId = orgUnitId,
             PeriodId = period.Id,
-            Status = ManpowerPlanningStatus.Draft
+
+            // Status is derived from WorkflowStatus and has no setter -- null means "not routed", which
+            // reads as Draft.
+            WorkflowStatus = null
         };
         Context.ManpowerPlannings.Add(manpowerPlanning);
         Context.SaveChanges();

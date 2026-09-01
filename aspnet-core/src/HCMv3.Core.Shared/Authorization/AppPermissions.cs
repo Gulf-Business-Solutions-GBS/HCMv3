@@ -1655,7 +1655,10 @@ public static class AppPermissions
     public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Create = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Create";
     public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Edit = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Edit";
     public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Delete = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Delete";
-    public const string Pages_ManpowerPlanningManagement_ManpowerPlannings_Approve = "Pages.ManpowerPlanningManagement.ManpowerPlannings.Approve";
+
+    // No ...ManpowerPlannings.Approve permission. Approving a manpower plan is a workflow act now: who may
+    // do it is decided by the plan's approval chain (RequestMaster/WorkflowRole), not by a page permission,
+    // and the app-service methods it used to guard no longer exist.
 
     public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails";
     public const string Pages_ManpowerPlanningManagement_ManpowerPlanningDetails_Create = "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Create";

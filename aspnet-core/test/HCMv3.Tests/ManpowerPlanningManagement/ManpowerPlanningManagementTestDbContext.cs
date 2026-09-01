@@ -44,6 +44,10 @@ public class ManpowerPlanningManagementTestDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // ManpowerPlanningStatus is derived from WorkflowStatus and has no column -- same as the real
+        // HCMv3DbContext.
+        modelBuilder.Entity<HCMv3.ManpowerPlanningManagement.ManpowerPlanning>(b => b.Ignore(e => e.Status));
+
         modelBuilder.Ignore<Abp.Authorization.Users.UserPermissionSetting>();
         modelBuilder.Ignore<Abp.Authorization.Roles.RolePermissionSetting>();
         modelBuilder.Ignore<Abp.Authorization.Users.UserLogin>();

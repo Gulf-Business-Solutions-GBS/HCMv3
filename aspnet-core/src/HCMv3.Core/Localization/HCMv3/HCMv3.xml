@@ -3244,6 +3244,7 @@
     <text name="PositionFTELimitExceeded">This position's FTE limit ({0}) would be exceeded for the given date range.</text>
     <text name="SalaryOutOfPositionRange">The amount for {0} must be between the position's minimum ({1}) and maximum ({2}) salary.</text>
     <text name="ManpowerPlanningRequestAlreadyProcessed">This manpower planning request has already been approved or rejected.</text>
+    <text name="ManpowerPlanningMustHaveAtLeastOneLine">A manpower plan must have at least one planned line before it can be submitted for approval.</text>
     <text name="Vacant">Vacant</text>
     <text name="IsBudgeted">Is Budgeted</text>
     <text name="FTELimit">FTE Limit</text>

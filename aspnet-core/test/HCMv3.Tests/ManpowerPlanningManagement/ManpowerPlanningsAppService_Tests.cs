@@ -1,24 +1,54 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Entities;
+using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.ManpowerPlanningManagement;
 using HCMv3.ManpowerPlanningManagement.Dto;
+using HCMv3.PersonnelAdministration;
+using HCMv3.Workflow;
+using HCMv3.Workflow.Services;
 using Shouldly;
 using Xunit;
 
 namespace HCMv3.Tests.ManpowerPlanningManagement;
 
+/// <summary>
+/// The app service's own logic, with workflow switched off for the type -- the seeded default. Routing,
+/// approval and the derived status are covered against the real engine in
+/// <c>HCMv3.Tests.Workflow.ManpowerPlanningWorkflow_Tests</c>.
+/// </summary>
 // ReSharper disable once InconsistentNaming
 public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppServiceTestBase
 {
+    /// <summary>
+    /// Stands in for the real submitter with the transaction type NOT workflow-enabled: the row is inserted
+    /// and left with a null <c>WorkflowStatus</c>, which is exactly what
+    /// <c>AdminTransactionSubmitter</c> does when the catalog row is off.
+    /// </summary>
+    private sealed class NotRoutedSubmitter : IAdminTransactionSubmitter
+    {
+        public async Task<int> CreateAndSubmitAsync<TEntity>(
+            IRepository<TEntity> repository,
+            TEntity entity,
+            string requestType,
+            string requestNumberPrefix,
+            int? subTypeId = null)
+            where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity
+        {
+            entity.WorkflowStatus = null;
+            await repository.InsertAsync(entity);
+            return entity.Id;
+        }
+    }
+
     private HCMv3.ManpowerPlanningManagement.ManpowerPlanningsAppService CreateAppService()
     {
         return CreateService(() => new HCMv3.ManpowerPlanningManagement.ManpowerPlanningsAppService(
             FakeRepository.For<HCMv3.ManpowerPlanningManagement.ManpowerPlanning>(Context),
-            FakeRepository.For<ManpowerPlanningDetail>(Context),
-            FakeRepository.For<ManpowerPlanningPeriod>(Context),
-            FakeRepository.For<Position>(Context)));
+            new NotRoutedSubmitter()));
     }
 
     private int CreatePeriod(string name)
@@ -54,7 +84,36 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
 
         var result = await service.GetAll(new GetAllManpowerPlanningsInput());
         result.TotalCount.ShouldBe(1);
+
+        // Not routed -> WorkflowStatus null -> the projection reads Draft.
         result.Items[0].Status.ShouldBe(ManpowerPlanningStatus.Draft);
+    }
+
+    [Fact]
+    public async Task Should_Carry_Detail_Lines_Sent_With_The_Header()
+    {
+        // The lines have to be insertable in the same call, because once the type is routed the plan is
+        // submitted the instant the header exists and the handler refuses an empty one.
+        var employeeId = CreateEmployee("M1D");
+        var orgUnitId = CreateOrganizationUnit("Dept1D");
+        var periodId = CreatePeriod("2026-Lines");
+        var jobTitleId = CreateJobTitle("JTLines");
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(new CreateOrEditManpowerPlanningDto
+        {
+            EmployeeId = employeeId,
+            OrganizationUnitId = orgUnitId,
+            PeriodId = periodId,
+            Details = new List<CreateOrEditManpowerPlanningDetailDto>
+            {
+                new CreateOrEditManpowerPlanningDetailDto { JobTitleId = jobTitleId, January = 1000, February = 500 }
+            }
+        });
+
+        var plan = Context.ManpowerPlannings.Single(m => m.PeriodId == periodId);
+        Context.ManpowerPlanningDetails.Count(d => d.ManpowerPlanningId == plan.Id).ShouldBe(1);
+        plan.GrandTotalAmount.ShouldBe(1500);
     }
 
     [Fact]
@@ -82,12 +141,13 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
     }
 
     [Fact]
-    public async Task Should_Create_Position_For_Detail_Without_One_On_Approve()
+    public async Task A_Rejected_Plan_Should_Not_Block_A_Fresh_One_For_The_Same_Period()
     {
-        var employeeId = CreateEmployee("M3");
-        var orgUnitId = CreateOrganizationUnit("Dept3");
-        var periodId = CreatePeriod("2026-C");
-        var jobTitleId = CreateJobTitle("JTApprove");
+        // A department whose plan was declined must be able to raise a revised one, or a single rejection
+        // locks that department out of the period permanently.
+        var employeeId = CreateEmployee("M5");
+        var orgUnitId = CreateOrganizationUnit("Dept5");
+        var periodId = CreatePeriod("2026-E");
         var service = CreateAppService();
 
         await service.CreateOrEdit(new CreateOrEditManpowerPlanningDto
@@ -97,54 +157,30 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
             PeriodId = periodId
         });
 
-        var manpowerPlanning = Context.ManpowerPlannings.Single(m => m.PeriodId == periodId);
-
-        var detail = new ManpowerPlanningDetail
-        {
-            TenantId = AbpSession.TenantId ?? 1,
-            ManpowerPlanningId = manpowerPlanning.Id,
-            JobTitleId = jobTitleId,
-            January = 3000
-        };
-        Context.ManpowerPlanningDetails.Add(detail);
+        var rejected = Context.ManpowerPlannings.Single(m => m.PeriodId == periodId);
+        rejected.WorkflowStatus = RequestStatus.Rejected;
         Context.SaveChanges();
 
-        await service.Approve(new ApproveManpowerPlanningDto { Id = manpowerPlanning.Id });
+        await service.CreateOrEdit(new CreateOrEditManpowerPlanningDto
+        {
+            EmployeeId = employeeId,
+            OrganizationUnitId = orgUnitId,
+            PeriodId = periodId
+        });
 
-        var updatedPlanning = await Context.ManpowerPlannings.FindAsync(manpowerPlanning.Id);
-        updatedPlanning.Status.ShouldBe(ManpowerPlanningStatus.Approved);
-
-        var updatedDetail = await Context.ManpowerPlanningDetails.FindAsync(detail.Id);
-        updatedDetail.PositionId.ShouldNotBeNull();
-
-        var position = await Context.Positions.FindAsync(updatedDetail.PositionId.Value);
-        position.ShouldNotBeNull();
-        position.JobTitleId.ShouldBe(jobTitleId);
-        position.MinSalary.ShouldBe(3000);
-        position.Vacant.ShouldBeTrue();
-        position.FTELimit.ShouldBe(1);
+        Context.ManpowerPlannings.Count(m => m.PeriodId == periodId).ShouldBe(2);
     }
 
     [Fact]
-    public async Task Should_Throw_When_Approving_Already_Processed_Request()
+    public void The_Derived_Status_Should_Follow_The_Engine_And_Nothing_Else()
     {
-        var employeeId = CreateEmployee("M4");
-        var orgUnitId = CreateOrganizationUnit("Dept4");
-        var periodId = CreatePeriod("2026-D");
-        var service = CreateAppService();
-
-        await service.CreateOrEdit(new CreateOrEditManpowerPlanningDto
-        {
-            EmployeeId = employeeId,
-            OrganizationUnitId = orgUnitId,
-            PeriodId = periodId
-        });
-
-        var manpowerPlanning = Context.ManpowerPlannings.Single(m => m.PeriodId == periodId);
-
-        await service.Approve(new ApproveManpowerPlanningDto { Id = manpowerPlanning.Id });
-
-        await Should.ThrowAsync<UserFriendlyException>(() =>
-            service.Approve(new ApproveManpowerPlanningDto { Id = manpowerPlanning.Id }));
+        // The mapping in one place, asserted directly: there is no setter, so there is nothing else that
+        // could produce a different answer.
+        ManpowerPlanning.FromWorkflowStatus(null).ShouldBe(ManpowerPlanningStatus.Draft);
+        ManpowerPlanning.FromWorkflowStatus(RequestStatus.Draft).ShouldBe(ManpowerPlanningStatus.Draft);
+        ManpowerPlanning.FromWorkflowStatus(RequestStatus.Open).ShouldBe(ManpowerPlanningStatus.Submitted);
+        ManpowerPlanning.FromWorkflowStatus(RequestStatus.Approved).ShouldBe(ManpowerPlanningStatus.Approved);
+        ManpowerPlanning.FromWorkflowStatus(RequestStatus.Closed).ShouldBe(ManpowerPlanningStatus.Approved);
+        ManpowerPlanning.FromWorkflowStatus(RequestStatus.Rejected).ShouldBe(ManpowerPlanningStatus.Rejected);
     }
 }
