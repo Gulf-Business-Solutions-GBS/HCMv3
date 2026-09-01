@@ -68,4 +68,52 @@ public interface IEmployeeAbsenceCalculationService : IDomainService
 
     /// <summary>Convenience overload of <see cref="CalculateTotalLeaveDaysAsync(int,int,DateTime,DateTime,double)"/> taking the fields directly off an <see cref="EmployeeAbsence"/>.</summary>
     Task<double> CalculateTotalLeaveDaysAsync(EmployeeAbsence employeeAbsence);
+
+    /// <summary>
+    /// Ported from legacy <c>EmployeeAbsence.CalcLeaveEndDate(DateTime endDate, DateTime rejoindate, double
+    /// dQuota, Employee emp, AbsenceType abstype, Session session)</c>. Walks forward from the day after
+    /// <paramref name="endDate"/> and returns the date on which the <paramref name="quotaDays"/>-th
+    /// COUNTABLE day falls -- skipping public holidays, and skipping weekly-offs/rest-days unless the day's
+    /// duty allows a transaction to end on one (<c>Duty.AllowTransEnd</c>), and skipping any day on which
+    /// another of the employee's absences starts.
+    ///
+    /// <para>
+    /// This is the date PROJECTOR the rest of this service was missing: everything else here counts days
+    /// within a window the caller already knows, while this answers "given N days of leave starting here,
+    /// which calendar date does it end on". Useful well beyond return-from-leave -- extending a leave,
+    /// converting excess days to unpaid, and any screen that offers an end date from a day count all need it.
+    /// </para>
+    /// <para>
+    /// Returns <c>null</c> when no such date can be reached (legacy returned <c>default(DateTime)</c>), which
+    /// includes <paramref name="quotaDays"/> being zero or negative -- legacy's <c>while (cnt &lt; dQuota)</c>
+    /// never entered its loop in that case either.
+    /// </para>
+    /// <para>
+    /// The legacy <c>rejoindate</c> parameter is not ported: it is accepted and then never read anywhere in
+    /// the legacy body. Legacy also had no bound on its loop, so a configuration in which no day is ever
+    /// countable would hang the request forever; this port gives up after ten years of calendar and returns
+    /// <c>null</c>.
+    /// </para>
+    /// </summary>
+    /// <param name="excludeEmployeeAbsenceId">An absence to ignore when checking whether another leave already starts on a candidate day -- normally the one being extended or shortened.</param>
+    Task<DateTime?> CalcLeaveEndDateAsync(int employeeId, int? absenceTypeId, DateTime endDate, double quotaDays, int excludeEmployeeAbsenceId = 0);
+
+    /// <summary>
+    /// Ported from legacy <c>EmployeeAbsence.GetRegularDate(DateTime RejoinDate, double Quota, Employee
+    /// Employee, AbsenceType AbsType, Session Session, Int32 _Oid, ref string message)</c>. Returns the last
+    /// day of leave implied by an employee rejoining on <paramref name="rejoinDate"/> -- the day before it --
+    /// or <c>null</c> when another of the employee's absences already starts on that day, which would make
+    /// the rejoining date impossible.
+    ///
+    /// <para>
+    /// NOT PORTED: legacy's <c>Quota</c> and <c>AbsType</c> parameters, and its <c>ref string message</c>.
+    /// The holiday/weekend/rest-day branches that were the only readers of <c>AbsType</c> are commented out
+    /// in the legacy source, and <c>Quota</c> is never read at all; what survives is the overlap check. The
+    /// single message legacy could produce said the end date overlapped, which is exactly what <c>null</c>
+    /// now says -- the caller owns the wording, since a domain service has no business composing a
+    /// user-facing string in one language.
+    /// </para>
+    /// </summary>
+    /// <param name="excludeEmployeeAbsenceId">The absence being returned from, which must not count as its own overlap.</param>
+    Task<DateTime?> GetRegularDateAsync(int employeeId, DateTime rejoinDate, int excludeEmployeeAbsenceId = 0);
 }

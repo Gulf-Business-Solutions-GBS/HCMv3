@@ -102,6 +102,11 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             ? DaysOf(leave.TotalLeaveDays, leave.StartDate, leave.EndDate)
             : 0;
 
+        if (proposed != null)
+        {
+            EnsureEarlyReturnIsAllowed(leave, proposed);
+        }
+
         await ValidateLeaveValuesAsync(
             leave.EmployeeId,
             absenceTypeId,
@@ -110,6 +115,39 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             totalDays,
             excludeLeaveId: leave.Id,
             daysAlreadyCounted: daysAlreadyCounted);
+    }
+
+    /// <summary>
+    /// Refuses an amendment that pulls the leave's end date IN, for an absence type flagged as not returnable
+    /// early.
+    ///
+    /// <para>
+    /// Checked for ANY shortening amendment, not only for one raised through the return-from-leave screen.
+    /// Some types must be taken in full -- maternity is the usual example -- and a rule enforced only on the
+    /// return path would be bypassed by raising a plain amendment instead, which produces exactly the same
+    /// result on the row. Extending or moving a leave is untouched by this: the rule is about cutting a leave
+    /// short, not about changing when it falls.
+    /// </para>
+    /// <para>
+    /// Judged against the type the leave was GRANTED under, not the proposed one. "This leave must be taken in
+    /// full" is a property of what was approved; reading the proposed type instead would let an amendment that
+    /// also switches type escape the rule it is subject to.
+    /// </para>
+    /// </summary>
+    private void EnsureEarlyReturnIsAllowed(EmployeeAbsence leave, LeaveAmendment proposed)
+    {
+        if (proposed.EndDate.Date >= leave.EndDate.Date)
+        {
+            return;
+        }
+
+        var absenceType = _absenceTypeRepository.GetAll().FirstOrDefault(t => t.Id == leave.AbsenceTypeId);
+        if (absenceType == null || absenceType.AllowToReturnEarly)
+        {
+            return;
+        }
+
+        throw new UserFriendlyException(L("EarlyReturnNotAllowedForLeaveType", absenceType.NameEn));
     }
 
     /// <inheritdoc/>
@@ -130,7 +168,16 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             StartDate = leave.StartDate,
             EndDate = leave.EndDate,
             TotalLeaveDays = leave.TotalLeaveDays,
-            Comments = leave.Comments
+            Comments = leave.Comments,
+
+            // Captured so a REJECTED return leaves no trace. These three fields are the whole of what a
+            // return writes, and without them in the snapshot the record of "what this leave looked like
+            // before" would be missing precisely the part the change was about.
+            // default(DateTime) is how an unset DateTime column reads on this entity; it is stored as null so
+            // the snapshot says "there was no return" rather than "the employee returned in year 1".
+            ReturnDate = leave.ReturnDate == default ? (DateTime?)null : leave.ReturnDate,
+            IsReturned = leave.IsReturned,
+            InitialEndDate = leave.InitialEndDate == default ? (DateTime?)null : leave.InitialEndDate
         });
     }
 
@@ -155,6 +202,10 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
             ? previousDays
             : 0;
 
+        // Re-checked at approval as well as at submit, for the same reason the balance is: the absence type's
+        // configuration may have changed while the request sat in an inbox.
+        EnsureEarlyReturnIsAllowed(leave, proposed);
+
         await ValidateLeaveValuesAsync(
             leave.EmployeeId,
             proposed.AbsenceTypeId,
@@ -169,6 +220,24 @@ public class LeaveWorkflowTransactionHandler : WorkflowTransactionHandlerBase<Em
         leave.EndDate = proposed.EndDate;
         leave.TotalLeaveDays = proposed.TotalLeaveDays;
         leave.Comments = proposed.Comments;
+
+        // The return stamp, when this amendment is a return. Written only when the amendment actually carries
+        // one: an ordinary amendment leaves these null/false, and treating that as "clear the return" would
+        // quietly un-return an employee who is already back, every time they moved an unrelated date.
+        if (proposed.ReturnDate.HasValue)
+        {
+            leave.ReturnDate = proposed.ReturnDate.Value;
+        }
+
+        if (proposed.IsReturned)
+        {
+            leave.IsReturned = true;
+        }
+
+        if (proposed.InitialEndDate.HasValue)
+        {
+            leave.InitialEndDate = proposed.InitialEndDate.Value;
+        }
 
         // Status is untouched on purpose: the leave was approved before the amendment and stays approved.
         // The filter must not so much as blink, or the leave would vanish from payroll mid-change.

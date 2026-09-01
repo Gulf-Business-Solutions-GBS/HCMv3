@@ -1838,6 +1838,12 @@
     <text name="AmendmentsAreNotSupportedForThisTransactionType">Changes cannot be requested for {0}.</text>
     <text name="AnAmendmentIsAlreadyAwaitingApprovalForThisRecord">A change to this record is already awaiting approval.</text>
     <text name="OnlyAnApprovedLeaveCanBeAmended">Only an approved leave can be changed. Withdraw this one and apply again.</text>
+    <text name="OnlyAnApprovedLeaveCanBeReturnedFrom">Only an approved leave can be returned from.</text>
+    <text name="ThisLeaveHasAlreadyBeenReturnedFrom">A return has already been recorded for this leave.</text>
+    <text name="RejoiningDateMustBeAfterTheLeaveStartDate">Your rejoining date must be after the leave starts. If you did not take the leave at all, cancel it instead.</text>
+    <text name="RejoiningDateConflictsWithAnotherLeave">Another leave of yours already starts on {0}, so the leave cannot end on that day. Please check your rejoining date.</text>
+    <text name="ReturningLateRequiresAnAdditionalLeaveRequest">Your leave was approved to {0}, so returning on this date means {1} extra day(s). Please apply for those days as leave — they cannot be added here.</text>
+    <text name="EarlyReturnNotAllowedForLeaveType">{0} must be taken in full, so it cannot be shortened or returned from early.</text>
     <text name="RequestAChange">Request a change</text>
     <text name="AmendmentSubmittedForApproval">Your change has been sent for approval. The leave stays as it is until it is approved.</text>
     <text name="ChangePending">Change pending</text>
