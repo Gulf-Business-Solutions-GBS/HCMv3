@@ -5,6 +5,7 @@ using Abp.Domain.Entities.Auditing;
 using Abp.Organizations;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
+using HCMv3.Workflow;
 
 namespace HCMv3.PersonnelAdministration;
 
@@ -38,8 +39,19 @@ namespace HCMv3.PersonnelAdministration;
 /// <c>LastDisciplinaryDate</c>/<c>RepeatDurationInDays</c>/<c>CurrentDeductionCount</c>/
 /// <c>ViolationDeductionType</c> computed properties are NOT ported on the entity -- equivalent read-time
 /// lookups belong in <c>EmployeeDisciplinariesAppService</c> if/when needed, not stored here.
+///
+/// <para>
+/// <b>WORKFLOW.</b> This row IS the disciplinary request. Legacy carried a separate
+/// <c>DisciplinaryRequest</c> table that copied all of these fields onto a freshly constructed
+/// <c>EmployeeDisciplinary</c> whenever it saved while its status was Approved -- with no already-created
+/// check, so every subsequent save inserted ANOTHER disciplinary record against the same employee, and the
+/// escalation ladder that counts prior offences would have counted those phantoms. Implementing
+/// <see cref="IWorkflowEnabledEntity"/> here removes both the duplicate table and that bug: the record is
+/// created hidden, the <c>ApprovedOnly</c> filter keeps it out of everyone else's sight until it is agreed,
+/// and there is nothing to copy on approval because there is only ever one row.
+/// </para>
 /// </summary>
-public class EmployeeDisciplinary : FullAuditedEntity, IMustHaveTenant
+public class EmployeeDisciplinary : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -82,5 +94,16 @@ public class EmployeeDisciplinary : FullAuditedEntity, IMustHaveTenant
 
     public virtual int? DisciplinaryDeductionTypeId { get; set; }
 
+    /// <summary>
+    /// The penalty. Left alone on a routed record until approval, where
+    /// <c>DisciplinaryWorkflowTransactionHandler</c> stamps whichever <c>DisciplinaryTypeDetail</c> tier the
+    /// employee's offence count inside the repeat window has reached.
+    /// </summary>
     public virtual DisciplinaryDeductionType DisciplinaryDeductionType { get; set; }
+
+    /// <inheritdoc/>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <inheritdoc/>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }
