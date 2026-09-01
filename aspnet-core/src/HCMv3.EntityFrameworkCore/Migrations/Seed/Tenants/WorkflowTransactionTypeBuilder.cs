@@ -41,7 +41,7 @@ public class WorkflowTransactionTypeBuilder
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
     ///
-    /// The ten here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A tenth type
+    /// The eleven here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A twelfth type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
@@ -58,7 +58,14 @@ public class WorkflowTransactionTypeBuilder
         
         // NOT self-service: HR raises a personnel action, never the employee. EssRoute and EssPermissionName
         // are deliberately null, so it can be routed for approval while never appearing on a tile list.
-        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100)
+        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100),
+
+        // Also not self-service. An appraisal is opened FOR an employee -- by HR for a cycle, or by a
+        // manager for their team -- so it is submitted from the admin service. The employee's own part is
+        // their self-rating, which is recorded on PAEmployeeReviewer/PAEmployeeRating rather than on the
+        // appraisal row that routes. Sub-type is the FORM TYPE, matching legacy: a 360 form is approved by
+        // different people from a probation form, whereas the cycle is only a period.
+        ("PAEmployee", "Performance Appraisal", "تقييم الأداء", "FormType", null, null, "flaticon-star", 110)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

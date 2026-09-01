@@ -7,6 +7,8 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.PerformanceManagement.Dto;
+using HCMv3.PerformanceManagement.Workflow;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +16,29 @@ namespace HCMv3.PerformanceManagement;
 
 /// <summary>
 /// Application service for the newer appraisal model's aggregate root, <see cref="PAEmployee"/>. See
-/// <see cref="PAEmployee"/> remarks for the WorkflowRequest-derivation simplification.
+/// <see cref="PAEmployee"/> remarks for how approval routing works now.
+///
+/// <para>
+/// An appraisal is opened FOR an employee -- by HR for a cycle, or by a manager for their team -- so the
+/// subject comes from the form and submission belongs here rather than in an ESS service. That is also what
+/// legacy did: its ESS entry point took the appraisee's code as a parameter separate from the signed-in
+/// user, which is what let a manager or a bulk org-unit launch open appraisals for other people. The
+/// employee's own contribution is their self-rating, and that is recorded on
+/// <see cref="PAEmployeeReviewer"/>/<see cref="PAEmployeeRating"/>, not on this row.
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PerformanceManagement_PAEmployees)]
 public class PAEmployeesAppService : HCMv3AppServiceBase, IPAEmployeesAppService
 {
     private readonly IRepository<PAEmployee> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
-    public PAEmployeesAppService(IRepository<PAEmployee> repository)
+    public PAEmployeesAppService(
+        IRepository<PAEmployee> repository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
         _repository = repository;
+        _transactionSubmitter = transactionSubmitter;
     }
 
     [HttpPost]
@@ -78,7 +93,16 @@ public class PAEmployeesAppService : HCMv3AppServiceBase, IPAEmployeesAppService
         var entity = MapToEntity(input, new PAEmployee());
         entity.TenantId = AbpSession.TenantId ?? 0;
 
-        await _repository.InsertAsync(entity);
+        // Routed for approval when the catalog says so, and simply recorded when it does not -- the
+        // pre-workflow behaviour, which is what makes leaving appraisals unrouted a real option. The form
+        // type is the sub-type, because that is the axis a 360 review routes differently from a probation
+        // form on; the cycle is only a period.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            AppraisalWorkflowTransactionHandler.AppraisalRequestType,
+            "APR",
+            entity.FormTypeId);
     }
 
     [AbpAuthorize(AppPermissions.Pages_PerformanceManagement_PAEmployees_Edit)]
@@ -95,8 +119,11 @@ public class PAEmployeesAppService : HCMv3AppServiceBase, IPAEmployeesAppService
         entity.EmployeeId = input.EmployeeId;
         entity.PACycleId = input.PACycleId;
         entity.FormTypeId = input.FormTypeId;
-        entity.RequestComments = input.RequestComments;
-        entity.WorkflowComments = input.WorkflowComments;
+
+        // RequestComments and WorkflowComments are deliberately NOT assigned, and not left off by accident:
+        // they are legacy columns kept only so migrated appraisals keep their old approval text. Not writing
+        // them here is also what stops an edit from wiping that text, since the edit DTO no longer carries
+        // it. New comments belong to the WorkflowComment thread on the governing request.
         entity.ProposedIncrement = input.ProposedIncrement;
         entity.ProposedJobTitle = input.ProposedJobTitle;
         entity.AreaOfImprovement = input.AreaOfImprovement;
@@ -137,8 +164,6 @@ public class PAEmployeesAppService : HCMv3AppServiceBase, IPAEmployeesAppService
             EmployeeId = entity.EmployeeId,
             PACycleId = entity.PACycleId,
             FormTypeId = entity.FormTypeId,
-            RequestComments = entity.RequestComments,
-            WorkflowComments = entity.WorkflowComments,
             ProposedIncrement = entity.ProposedIncrement,
             ProposedJobTitle = entity.ProposedJobTitle,
             AreaOfImprovement = entity.AreaOfImprovement
