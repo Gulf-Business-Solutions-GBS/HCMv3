@@ -95,7 +95,14 @@ public class WorkflowAmendment_Tests : AppTestBase
 
     private int CreateCurrentUserEmployee(string code) => CreateEmployee(code, AbpSession.UserId);
 
-    private int CreateAbsenceType(string nameEn = "Annual")
+    /// <summary>
+    /// An ordinary leave type. <c>AllowToReturnEarly</c> is set explicitly rather than left at its
+    /// <c>false</c> default, because the handler now refuses any amendment that pulls a leave's end date in
+    /// for a type that must be taken in full -- and most of the amendments in this file do exactly that while
+    /// testing something else entirely (balance, snapshot, summary). The types that forbid it are the special
+    /// case, covered on its own in <c>ReturnFromLeave_Tests</c>.
+    /// </summary>
+    private int CreateAbsenceType(string nameEn = "Annual", bool allowToReturnEarly = true)
     {
         AbsenceType absenceType = null;
         UsingDbContext(context =>
@@ -105,7 +112,8 @@ public class WorkflowAmendment_Tests : AppTestBase
                 TenantId = TenantId,
                 Code = Guid.NewGuid().ToString("N").Substring(0, 8),
                 NameEn = nameEn,
-                NameAr = nameEn
+                NameAr = nameEn,
+                AllowToReturnEarly = allowToReturnEarly
             }).Entity;
         });
 

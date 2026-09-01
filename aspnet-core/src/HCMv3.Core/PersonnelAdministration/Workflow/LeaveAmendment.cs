@@ -27,4 +27,29 @@ public class LeaveAmendment
     public double TotalLeaveDays { get; set; }
 
     public string Comments { get; set; }
+
+    /// <summary>
+    /// The day the employee actually rejoined, when this amendment is a RETURN FROM LEAVE.
+    ///
+    /// <para>
+    /// Nullable, and null means "do not touch what the leave already has". A return is an amendment like any
+    /// other -- it shortens the leave and stamps the return in one approved change -- so it needs no entity,
+    /// no table and no catalog row of its own. An ordinary amendment leaves this null and the leave's
+    /// existing return stamp is left alone.
+    /// </para>
+    /// </summary>
+    public DateTime? ReturnDate { get; set; }
+
+    /// <summary>
+    /// Set true only by a return. False means "leave the flag as it is", NOT "clear it" -- a return cannot be
+    /// un-stamped through an amendment, which is the safe direction: an employee who is back at their desk
+    /// stays back at their desk.
+    /// </summary>
+    public bool IsReturned { get; set; }
+
+    /// <summary>
+    /// The leave's EndDate BEFORE an early return pulled it in, so the days that were granted but not taken
+    /// stay visible after the fact. Null on an ordinary amendment, which leaves the stored value alone.
+    /// </summary>
+    public DateTime? InitialEndDate { get; set; }
 }

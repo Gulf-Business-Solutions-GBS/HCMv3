@@ -59,6 +59,7 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
 {
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<AbsenceType> _absenceTypeRepository;
+    private readonly IRepository<EmployeeAbsence> _employeeAbsenceRepository;
     private readonly IRepository<EmployeeSubstituteDuty> _employeeSubstituteDutyRepository;
     private readonly IRepository<EmployeeDutyPeriod> _employeeDutyPeriodRepository;
     private readonly IRepository<DutyPeriod> _dutyPeriodRepository;
@@ -71,6 +72,7 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
     public EmployeeAbsenceCalculationService(
         IRepository<Employee> employeeRepository,
         IRepository<AbsenceType> absenceTypeRepository,
+        IRepository<EmployeeAbsence> employeeAbsenceRepository,
         IRepository<EmployeeSubstituteDuty> employeeSubstituteDutyRepository,
         IRepository<EmployeeDutyPeriod> employeeDutyPeriodRepository,
         IRepository<DutyPeriod> dutyPeriodRepository,
@@ -82,6 +84,7 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
     {
         _employeeRepository = employeeRepository;
         _absenceTypeRepository = absenceTypeRepository;
+        _employeeAbsenceRepository = employeeAbsenceRepository;
         _employeeSubstituteDutyRepository = employeeSubstituteDutyRepository;
         _employeeDutyPeriodRepository = employeeDutyPeriodRepository;
         _dutyPeriodRepository = dutyPeriodRepository;
@@ -278,6 +281,25 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
     public async Task<Duty> GetEmployeeDutyAsync(int employeeId, DateTime leaveDayDate)
     {
         var employee = GetEmployeeOrThrow(employeeId);
+
+        var duty = await TryGetEmployeeDutyAsync(employeeId, leaveDayDate);
+
+        if (duty == null)
+        {
+            throw new InvalidOperationException($"Duty not found for Employee '{employee.Code}' for Date '{leaveDayDate:dd/MM/yyyy}'.");
+        }
+
+        return duty;
+    }
+
+    /// <summary>
+    /// The duty resolution of <see cref="GetEmployeeDutyAsync"/> WITHOUT its throw-on-null ending -- legacy's
+    /// <c>EmployeeDutyPeriod.GetDuty</c>, which simply returned null and whose callers tested for it
+    /// (<c>duty != null &amp;&amp; duty.AllowTransEnd == false</c>). The date projectors below need that
+    /// tolerance: a day with no duty configured is a day they walk past, not a day that fails the request.
+    /// </summary>
+    private async Task<Duty> TryGetEmployeeDutyAsync(int employeeId, DateTime leaveDayDate)
+    {
         var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
 
         Duty duty;
@@ -299,7 +321,11 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
             }
             else
             {
-                var dutyPeriod = await GetEmployeeDutyPeriodAsync(employeeId, leaveDayDate);
+                var dutyPeriod = await TryGetEmployeeDutyPeriodAsync(employeeId, leaveDayDate);
+                if (dutyPeriod == null)
+                {
+                    return null;
+                }
 
                 var dutyId = leaveDayDate.DayOfWeek switch
                 {
@@ -316,17 +342,26 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
             }
         }
 
-        if (duty == null)
-        {
-            throw new InvalidOperationException($"Duty not found for Employee '{employee.Code}' for Date '{leaveDayDate:dd/MM/yyyy}'.");
-        }
-
         return duty;
     }
 
     public async Task<DutyPeriod> GetEmployeeDutyPeriodAsync(int employeeId, DateTime leaveDayDate)
     {
         var employee = GetEmployeeOrThrow(employeeId);
+
+        var dutyPeriod = await TryGetEmployeeDutyPeriodAsync(employeeId, leaveDayDate);
+
+        if (dutyPeriod == null)
+        {
+            throw new InvalidOperationException($"Duty Period not found for Employee '{employee.Code}' for Date '{leaveDayDate:dd/MM/yyyy}'.");
+        }
+
+        return dutyPeriod;
+    }
+
+    /// <summary>Null-tolerant counterpart of <see cref="GetEmployeeDutyPeriodAsync"/>; see <see cref="TryGetEmployeeDutyAsync"/>.</summary>
+    private async Task<DutyPeriod> TryGetEmployeeDutyPeriodAsync(int employeeId, DateTime leaveDayDate)
+    {
         var timeSettings = await _sysSettingsAccessor.GetTimeSettingsAsync();
 
         DutyPeriod dutyPeriod;
@@ -343,11 +378,6 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
                 .FirstOrDefault();
 
             dutyPeriod = dutyPeriodId == null ? null : _dutyPeriodRepository.GetAll().FirstOrDefault(dp => dp.Id == dutyPeriodId.Value);
-        }
-
-        if (dutyPeriod == null)
-        {
-            throw new InvalidOperationException($"Duty Period not found for Employee '{employee.Code}' for Date '{leaveDayDate:dd/MM/yyyy}'.");
         }
 
         return dutyPeriod;
@@ -397,6 +427,106 @@ public class EmployeeAbsenceCalculationService : HCMv3DomainServiceBase, IEmploy
         }
 
         return CalculateTotalLeaveDaysAsync(employeeAbsence.EmployeeId, employeeAbsence.AbsenceTypeId, employeeAbsence.StartDate, employeeAbsence.EndDate, employeeAbsence.AbsenceHours);
+    }
+
+    #endregion
+
+    #region << Date projectors: CalcLeaveEndDate / GetRegularDate >>
+
+    /// <summary>
+    /// Hard stop on <see cref="CalcLeaveEndDateAsync"/>'s walk. Legacy's loop had no bound at all, so a
+    /// calendar in which no day is ever countable -- a duty that forbids ending on a weekly-off combined with
+    /// a full-week weekend, say -- span forever and took the request with it. Ten years is far past any
+    /// leave anybody books, so hitting it means the data is wrong, and the honest answer is "no such date".
+    /// </summary>
+    private const int MaxProjectionDays = 3650;
+
+    public async Task<DateTime?> CalcLeaveEndDateAsync(int employeeId, int? absenceTypeId, DateTime endDate, double quotaDays, int excludeEmployeeAbsenceId = 0)
+    {
+        var employee = GetEmployeeOrThrow(employeeId);
+        var absenceType = absenceTypeId.HasValue ? GetAbsenceTypeOrThrow(absenceTypeId.Value) : null;
+
+        var counted = 0;
+        DateTime? foundDate = null;
+        var candidate = endDate.Date.AddDays(1);
+        var walked = 0;
+
+        while (counted < quotaDays)
+        {
+            if (walked++ > MaxProjectionDays)
+            {
+                return null;
+            }
+
+            var duty = await TryGetEmployeeDutyAsync(employeeId, candidate);
+
+            if (await _timeDataService.IsHolidayAsync(candidate, absenceType, employee))
+            {
+                // A public holiday is never countable, whatever the duty says -- legacy checks it first and
+                // without the AllowTransEnd escape the other two branches have.
+                foundDate = null;
+            }
+            else if (await _timeDataService.IsWeekEndAsync(candidate, absenceType, employee) && duty != null && !duty.AllowTransEnd)
+            {
+                foundDate = null;
+            }
+            else if (await _timeDataService.IsRestDayAsync(candidate, absenceType, employee) && duty != null && !duty.AllowTransEnd)
+            {
+                foundDate = null;
+            }
+            else if (LeaveQuotaOnDay(employeeId, candidate, excludeEmployeeAbsenceId) > 0)
+            {
+                // Another absence already starts here, so this day is spoken for.
+                foundDate = null;
+            }
+            else
+            {
+                foundDate = candidate;
+                counted++;
+            }
+
+            candidate = candidate.AddDays(1);
+        }
+
+        return foundDate;
+    }
+
+    public Task<DateTime?> GetRegularDateAsync(int employeeId, DateTime rejoinDate, int excludeEmployeeAbsenceId = 0)
+    {
+        var lastDate = rejoinDate.Date.AddDays(-1);
+
+        if (LeaveQuotaOnDay(employeeId, lastDate, excludeEmployeeAbsenceId) > 0)
+        {
+            return Task.FromResult<DateTime?>(null);
+        }
+
+        return Task.FromResult<DateTime?>(lastDate);
+    }
+
+    /// <summary>
+    /// Ported from legacy <c>EmployeeAbsence.LeaveQuota(Session, StartDate, EndDate, Employee, _Oid)</c>,
+    /// narrowed to the single-day window every live caller passes: the leave days belonging to absences of
+    /// this employee that START on <paramref name="day"/>.
+    ///
+    /// <para>
+    /// Legacy's predicate was <c>((StartDate &lt;= r.StartDate &amp;&amp; r.StartDate &lt;= EndDate) ||
+    /// (r.StartDate &gt;= StartDate &amp;&amp; r.StartDate &lt;= EndDate))</c> -- two spellings of the same
+    /// condition OR'd together, so only one is kept here. Note it tests the START date only: a long leave
+    /// running THROUGH the day does not register. That is legacy behaviour and is left alone, since this
+    /// exists to catch a second leave beginning where the first would end, and the overlap check proper
+    /// lives in <c>LeaveWorkflowTransactionHandler</c>.
+    /// </para>
+    /// </summary>
+    private double LeaveQuotaOnDay(int employeeId, DateTime day, int excludeEmployeeAbsenceId)
+    {
+        var date = day.Date;
+
+        return _employeeAbsenceRepository.GetAll()
+            .Where(r => r.EmployeeId == employeeId
+                        && r.Id != excludeEmployeeAbsenceId
+                        && r.StartDate >= date
+                        && r.StartDate < date.AddDays(1))
+            .Sum(r => (double?)r.TotalLeaveDays) ?? 0;
     }
 
     #endregion

@@ -45,4 +45,20 @@ public interface IMyLeaveAppService : IApplicationService
     /// </summary>
     /// <returns>Id of the amendment's <c>WorkflowRequest</c>.</returns>
     Task<int> AmendMyLeave(AmendMyLeaveInput input);
+
+    /// <summary>
+    /// Reports the day the employee actually came back, and raises whatever that implies.
+    ///
+    /// <para>
+    /// Coming back ON TIME stamps the return; coming back EARLY additionally pulls the end date in and keeps
+    /// the original as <c>InitialEndDate</c>. Both go out as an amendment on the leave, through the same
+    /// approval chain the leave itself went through, and neither touches the leave until it is granted.
+    /// </para>
+    /// <para>
+    /// Coming back LATE is REFUSED, deliberately. Returning after the approved end date means more absence
+    /// than anyone agreed to, and booking it here would take days out of a quota on nobody's authority. The
+    /// employee is told to apply for the extra days as leave, which is the path that asks an approver.
+    /// </para>
+    /// </summary>
+    Task<ReturnFromLeaveResultDto> ReturnFromMyLeave(ReturnFromLeaveInput input);
 }

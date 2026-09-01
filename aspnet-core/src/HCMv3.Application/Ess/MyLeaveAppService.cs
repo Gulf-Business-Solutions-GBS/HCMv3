@@ -36,6 +36,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
     private readonly IWorkflowApprovalService _workflowApprovalService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
     private readonly IWorkflowAmendmentService _workflowAmendmentService;
+    private readonly IEmployeeAbsenceCalculationService _absenceCalculationService;
 
     public MyLeaveAppService(
         IRepository<EmployeeAbsence> absenceRepository,
@@ -46,7 +47,8 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         IRequestMasterResolver requestMasterResolver,
         IWorkflowApprovalService workflowApprovalService,
         IUnitOfWorkManager unitOfWorkManager,
-        IWorkflowAmendmentService workflowAmendmentService)
+        IWorkflowAmendmentService workflowAmendmentService,
+        IEmployeeAbsenceCalculationService absenceCalculationService)
     {
         _absenceRepository = absenceRepository;
         _absenceTypeRepository = absenceTypeRepository;
@@ -57,6 +59,7 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
         _workflowApprovalService = workflowApprovalService;
         _unitOfWorkManager = unitOfWorkManager;
         _workflowAmendmentService = workflowAmendmentService;
+        _absenceCalculationService = absenceCalculationService;
     }
 
     public async Task<List<MyLeaveBalanceDto>> GetMyBalances()
@@ -217,6 +220,128 @@ public class MyLeaveAppService : HCMv3AppServiceBase, IMyLeaveAppService
             JsonSerializer.Serialize(amendment),
             employeeId,
             input.AbsenceTypeId);
+    }
+
+    public async Task<ReturnFromLeaveResultDto> ReturnFromMyLeave(ReturnFromLeaveInput input)
+    {
+        var employeeId = await _employeeScopeProvider.GetRequiredCurrentEmployeeIdAsync();
+
+        var leave = await GetMyApprovedLeaveForReturnAsync(input.EmployeeAbsenceId, employeeId);
+
+        var rejoiningDate = input.RejoiningDate.Date;
+
+        // The rejoining date is the first day BACK, so the last day of leave is the day before it. A rejoining
+        // date on or before the start would mean the leave never happened, which is a cancellation, not a
+        // return -- legacy refused it here too.
+        if (rejoiningDate <= leave.StartDate.Date)
+        {
+            throw new UserFriendlyException(L("RejoiningDateMustBeAfterTheLeaveStartDate"));
+        }
+
+        var newEndDate = rejoiningDate.AddDays(-1);
+
+        // LATE. Refused rather than absorbed: the extra days are absence nobody approved, and quietly
+        // extending the leave to cover them would spend quota on the employee's own say-so. Applying for them
+        // is the path that asks somebody.
+        if (newEndDate > leave.EndDate.Date)
+        {
+            var extraDays = (newEndDate - leave.EndDate.Date).TotalDays;
+
+            throw new UserFriendlyException(L(
+                "ReturningLateRequiresAnAdditionalLeaveRequest",
+                leave.EndDate.ToString("dd MMM yyyy"),
+                $"{extraDays:0.##}"));
+        }
+
+        // Legacy ran the same check through GetRegularDate before letting an early return through: if another
+        // absence already starts on the day this leave would now end, the rejoining date cannot be right.
+        var regularDate = await _absenceCalculationService.GetRegularDateAsync(
+            leave.EmployeeId, rejoiningDate, excludeEmployeeAbsenceId: leave.Id);
+
+        if (regularDate == null)
+        {
+            throw new UserFriendlyException(L("RejoiningDateConflictsWithAnotherLeave", newEndDate.ToString("dd MMM yyyy")));
+        }
+
+        var isEarlyReturn = newEndDate < leave.EndDate.Date;
+
+        // Unchanged dates keep the stored figure rather than recomputing it: an HR-entered leave may carry a
+        // day count that is not simply its calendar span, and an on-time return has no business revising it.
+        // A shortened one is measured the same way AmendMyLeave and ApplyForLeave measure, so the three agree.
+        var totalLeaveDays = isEarlyReturn
+            ? (newEndDate - leave.StartDate.Date).TotalDays + 1
+            : leave.TotalLeaveDays;
+
+        var amendment = new LeaveAmendment
+        {
+            AbsenceTypeId = leave.AbsenceTypeId,
+            StartDate = leave.StartDate.Date,
+            EndDate = newEndDate,
+            TotalLeaveDays = totalLeaveDays,
+            Comments = leave.Comments,
+            ReturnDate = rejoiningDate,
+            IsReturned = true,
+
+            // Only on an early return, and only the ORIGINAL end date -- the days granted but not taken stay
+            // visible after the change. An on-time return has nothing to preserve.
+            InitialEndDate = isEarlyReturn ? leave.EndDate.Date : (DateTime?)null
+        };
+
+        // The absence type's AllowToReturnEarly rule is enforced inside the leave handler, not here, so it
+        // applies to every route that shortens a leave rather than only to this screen.
+        var requestId = await _workflowAmendmentService.CreateAndSubmitAsync(
+            LeaveWorkflowTransactionHandler.LeaveRequestType,
+            leave.Id,
+            leave.EmployeeId,
+            JsonSerializer.Serialize(amendment),
+            employeeId,
+            leave.AbsenceTypeId);
+
+        return new ReturnFromLeaveResultDto
+        {
+            EmployeeAbsenceId = leave.Id,
+            WorkflowRequestId = requestId,
+            NewEndDate = newEndDate,
+            IsEarlyReturn = isEarlyReturn,
+            DaysReturned = isEarlyReturn ? Math.Round(leave.TotalLeaveDays - totalLeaveDays, 6) : 0
+        };
+    }
+
+    /// <summary>
+    /// The leave a return may be raised against: the employee's own, approved, and not already returned from.
+    /// </summary>
+    private async Task<EmployeeAbsence> GetMyApprovedLeaveForReturnAsync(int leaveId, int employeeId)
+    {
+        EmployeeAbsence leave;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            leave = await _absenceRepository.FirstOrDefaultAsync(a => a.Id == leaveId);
+        }
+
+        if (leave == null)
+        {
+            throw new UserFriendlyException(L("LeaveRequestNotFound"));
+        }
+
+        // Re-checked on the write, as everywhere else here: a scoped list paired with an unscoped write is
+        // how one employee ends up reporting a return against another's leave.
+        if (leave.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        if (leave.WorkflowStatus != RequestStatus.Approved)
+        {
+            throw new UserFriendlyException(L("OnlyAnApprovedLeaveCanBeReturnedFrom"));
+        }
+
+        if (leave.IsReturned)
+        {
+            throw new UserFriendlyException(L("ThisLeaveHasAlreadyBeenReturnedFrom"));
+        }
+
+        return leave;
     }
 
     public async Task<ApplyForLeaveResultDto> ApplyForLeave(ApplyForLeaveInput input)
