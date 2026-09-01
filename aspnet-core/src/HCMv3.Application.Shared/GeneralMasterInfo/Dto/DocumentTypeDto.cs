@@ -24,4 +24,11 @@ public class DocumentTypeDto : EntityDto<int>
     public int NotificationCountLimit { get; set; }
 
     public DocumentBelongsTo DocumentBelongsTo { get; set; }
+
+    /// <summary>
+    /// Whether this type is one the company issues as a LETTER (salary certificate, experience certificate)
+    /// rather than a document it merely records (passport, civil ID). Drives the letter-request dropdown.
+    /// See <see cref="DocumentType.IsLetterType"/> for why this is the inverse of legacy's AllowUpdate.
+    /// </summary>
+    public bool IsLetterType { get; set; }
 }

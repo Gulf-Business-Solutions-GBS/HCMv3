@@ -36,6 +36,9 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
 
         var query = _repository.GetAll()
             .Include(d => d.NotificationConfig)
+            // How the letter-request screen fills its "what letter do you need" dropdown. Legacy expressed
+            // the same rule as AllowUpdate == false; see DocumentType.IsLetterType.
+            .WhereIf(input.OnlyLetterTypes, d => d.IsLetterType)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), d =>
                 d.Code.Contains(input.Filter) ||
                 d.NameEn.Contains(input.Filter) ||
@@ -88,6 +91,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationFrequency = input.NotificationFrequency,
             NotificationCountLimit = input.NotificationCountLimit,
             DocumentBelongsTo = input.DocumentBelongsTo,
+            IsLetterType = input.IsLetterType,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -110,6 +114,7 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
         entity.NotificationFrequency = input.NotificationFrequency;
         entity.NotificationCountLimit = input.NotificationCountLimit;
         entity.DocumentBelongsTo = input.DocumentBelongsTo;
+        entity.IsLetterType = input.IsLetterType;
 
         await AssignCodeIfEmptyAsync(entity);
         await ValidateUniquenessAsync(entity);
@@ -174,7 +179,8 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationConfigName = entity.NotificationConfig?.Name,
             NotificationFrequency = entity.NotificationFrequency,
             NotificationCountLimit = entity.NotificationCountLimit,
-            DocumentBelongsTo = entity.DocumentBelongsTo
+            DocumentBelongsTo = entity.DocumentBelongsTo,
+            IsLetterType = entity.IsLetterType
         };
     }
 
@@ -190,7 +196,8 @@ public class DocumentTypesAppService : HCMv3AppServiceBase, IDocumentTypesAppSer
             NotificationConfigId = entity.NotificationConfigId,
             NotificationFrequency = entity.NotificationFrequency,
             NotificationCountLimit = entity.NotificationCountLimit,
-            DocumentBelongsTo = entity.DocumentBelongsTo
+            DocumentBelongsTo = entity.DocumentBelongsTo,
+            IsLetterType = entity.IsLetterType
         };
     }
 }

@@ -614,6 +614,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeHRService> EmployeeHRServices { get; set; }
 
+    public virtual DbSet<EmployeeLetterRequest> EmployeeLetterRequests { get; set; }
+
     public virtual DbSet<EmployeeITService> EmployeeITServices { get; set; }
 
     public virtual DbSet<EmployeeDisciplinary> EmployeeDisciplinaries { get; set; }
@@ -1540,6 +1542,16 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
+        modelBuilder.Entity<EmployeeLetterRequest>(b =>
+        {
+            // Same two-FK shape as EmployeeDocument (Employee + DocumentType, both required), which needs no
+            // explicit relationship configuration, so only the index is stated here. Self-service lists these
+            // rows by employee and the ApprovedOnly filter reads WorkflowStatus on the same pass -- and for
+            // this type WorkflowStatus is also what the CanPrint flag is computed from, so it is on the hot
+            // path twice.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
         });
 

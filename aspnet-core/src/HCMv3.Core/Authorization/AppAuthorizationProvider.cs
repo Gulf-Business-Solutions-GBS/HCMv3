@@ -53,6 +53,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyPassportWithdrawals, L("EssMyPassportWithdrawals"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyExitPermits, L("EssMyExitPermits"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyHRServices, L("EssMyHRServices"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyLetterRequests, L("EssMyLetterRequests"), multiTenancySides: MultiTenancySides.Tenant);
 
         //GENERAL MASTER INFO
         var generalMasterInfo = pages.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo, L("GeneralMasterInfo"));
@@ -654,6 +655,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Create, L("CreateNewItem"));
         employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Edit, L("EditItem"));
         employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Delete, L("DeleteItem"));
+
+        var employeeLetterRequests = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests, L("EmployeeLetterRequests"));
+        employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Create, L("CreateNewItem"));
+        employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Edit, L("EditItem"));
+        employeeLetterRequests.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeLetterRequests_Delete, L("DeleteItem"));
 
         var employeeITServices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices, L("EmployeeITServices"));
         employeeITServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices_Create, L("CreateNewItem"));

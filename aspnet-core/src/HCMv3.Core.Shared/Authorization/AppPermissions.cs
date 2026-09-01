@@ -565,6 +565,11 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeeHRServices_Edit = "Pages.PersonnelAdministration.EmployeeHRServices.Edit";
     public const string Pages_PersonnelAdministration_EmployeeHRServices_Delete = "Pages.PersonnelAdministration.EmployeeHRServices.Delete";
 
+    public const string Pages_PersonnelAdministration_EmployeeLetterRequests = "Pages.PersonnelAdministration.EmployeeLetterRequests";
+    public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Create = "Pages.PersonnelAdministration.EmployeeLetterRequests.Create";
+    public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Edit = "Pages.PersonnelAdministration.EmployeeLetterRequests.Edit";
+    public const string Pages_PersonnelAdministration_EmployeeLetterRequests_Delete = "Pages.PersonnelAdministration.EmployeeLetterRequests.Delete";
+
     public const string Pages_PersonnelAdministration_EmployeeITServices = "Pages.PersonnelAdministration.EmployeeITServices";
     public const string Pages_PersonnelAdministration_EmployeeITServices_Create = "Pages.PersonnelAdministration.EmployeeITServices.Create";
     public const string Pages_PersonnelAdministration_EmployeeITServices_Edit = "Pages.PersonnelAdministration.EmployeeITServices.Edit";
@@ -1769,6 +1774,14 @@ public static class AppPermissions
     /// <summary>Certificates, letters and card replacements the employee asks for. There is deliberately no
     /// Ess.MyITServices: an IT service is raised on the employee's behalf and has no self-service screen.</summary>
     public const string Ess_MyHRServices = "Ess.MyHRServices";
+
+    /// <summary>
+    /// Employment letters the employee asks for -- salary certificate, experience certificate,
+    /// salary-continuity letter. Distinct from Ess.MyHRServices, which is the fee-bearing service catalogue
+    /// (card replacements and the like); a letter is a document the company writes and stamps, and approval
+    /// on it grants nothing except the right to print it.
+    /// </summary>
+    public const string Ess_MyLetterRequests = "Ess.MyLetterRequests";
 
     #endregion
 

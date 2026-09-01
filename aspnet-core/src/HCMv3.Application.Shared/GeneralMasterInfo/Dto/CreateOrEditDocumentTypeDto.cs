@@ -32,4 +32,10 @@ public class CreateOrEditDocumentTypeDto
     public int NotificationCountLimit { get; set; }
 
     public DocumentBelongsTo DocumentBelongsTo { get; set; }
+
+    /// <summary>
+    /// Tick to offer this type on the letter-request screen. Defaults to false, so a newly created document
+    /// type is not silently requestable as a letter until somebody says it is.
+    /// </summary>
+    public bool IsLetterType { get; set; }
 }

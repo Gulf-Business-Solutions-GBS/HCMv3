@@ -84,6 +84,12 @@ public class WorkflowTransactionTypeBuilder
         // Self-service: an employee asks for their own certificate, letter or card replacement.
         ("EmployeeHRService", "HR Service Request", "طلب خدمة موارد بشرية", "HRServiceType", "/app/main/ess/hr-service", AppPermissions.Ess_MyHRServices, "flaticon-notepad", 98),
 
+        // Self-service: a salary certificate for a bank, an experience certificate for an embassy. The
+        // sub-type is the DocumentType, because a salary certificate and a to-whom-it-may-concern letter are
+        // not necessarily signed off by the same person. Note what approval buys here -- nothing is written
+        // anywhere else; it is what unlocks printing the letter.
+        ("EmployeeLetterRequest", "Letter Request", "طلب خطاب", "DocumentType", "/app/main/ess/letter", AppPermissions.Ess_MyLetterRequests, "flaticon-envelope", 140),
+
         // NOT self-service either, and on the same kind of evidence: legacy HCM10.ESS contains no view,
         // controller or model for an IT service -- only a back-office screen. It is raised on the employee's
         // behalf, so it is routed for approval without ever appearing on a tile list.

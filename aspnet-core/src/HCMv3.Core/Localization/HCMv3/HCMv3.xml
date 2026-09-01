@@ -5563,6 +5563,15 @@
     <text name="GoLiveNextStep">Next: {0}</text>
     <text name="GoLiveStepNotFound">That step does not exist.</text>
     <text name="GoLiveBadIban">This does not look like a valid IBAN</text>
+    <text name="EssMyLetterRequests">My Letters</text>
+    <text name="EmployeeLetterRequests">Employee Letter Requests</text>
+    <text name="RequestLetter">Request a letter</text>
+    <text name="EffectiveDateIsRequired">Enter the effective date.</text>
+    <text name="DocumentTypeIsRequired">Select the kind of letter you need.</text>
+    <text name="AddressToEnIsRequired">Say who the letter should be addressed to, in English.</text>
+    <text name="AddressToArIsRequired">Say who the letter should be addressed to, in Arabic.</text>
+    <text name="ALetterCanOnlyBePrintedOnceApproved">This letter cannot be printed until it has been approved.</text>
+    <text name="ThatDocumentTypeIsNotIssuedAsALetter">That document type is not one the company issues as a letter.</text>
     <text name="ReferenceDataPackNotFound">Reference data pack "{0}" was not found.</text>
     <text name="ReferenceDataUnknownLookup">Reference data pack refers to an unknown lookup "{0}".</text>
   </texts>
