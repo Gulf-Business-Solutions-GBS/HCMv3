@@ -5,6 +5,7 @@ using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.OrganizationManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.Workflow;
 
 namespace HCMv3.TimeManagement;
 
@@ -31,8 +32,18 @@ namespace HCMv3.TimeManagement;
 ///  - The legacy <c>Locked</c>/<c>SysCreator</c>/<c>SysCreatedOn</c>/<c>SysModifier</c>/<c>SysModifiedOn</c>/
 ///    <c>SysTenant</c> "Sys fields" are superseded by <see cref="FullAuditedEntity"/> + <see cref="TenantId"/>.
 ///    The legacy <c>IExcelImport</c> marker is an XAF UI concept and is not ported.
+///
+/// <para>
+/// <b>Workflow.</b> A punch is also the transaction behind a missing-punch request (legacy
+/// <c>SkipPunchRequest</c>): the employee asks for a clock event that was never recorded, and if it is
+/// granted the row here IS that punch -- there is no second request table shadowing this one. Hence
+/// <see cref="IWorkflowEnabledEntity"/>. Until the request is granted the row's
+/// <see cref="WorkflowStatus"/> keeps it behind the <c>ApprovedOnly</c> filter and therefore out of the
+/// Time Engine's punch load, so a punch nobody has agreed to cannot quietly recompute an attendance day.
+/// See <c>TimeEventWorkflowTransactionHandler</c>.
+/// </para>
 /// </summary>
-public class TimeEvent : FullAuditedEntity, IMustHaveTenant
+public class TimeEvent : FullAuditedEntity, IMustHaveTenant, IHasEmployeeId, IWorkflowEnabledEntity
 {
     public int TenantId { get; set; }
 
@@ -100,4 +111,13 @@ public class TimeEvent : FullAuditedEntity, IMustHaveTenant
     /// </summary>
     [StringLength(1000)]
     public virtual string GeoSelfiePath { get; set; }
+
+    /// <summary>The approval request that governs this punch, when it was asked for through self service.</summary>
+    public virtual int? WorkflowRequestId { get; set; }
+
+    /// <summary>Null for an ordinary punch -- one that came off a device, an import or an HR screen -- which
+    /// is every row that exists today, and which therefore keeps behaving exactly as it does now. Read by the
+    /// ApprovedOnly filter, which is what keeps a requested-but-not-yet-granted punch out of the Time
+    /// Engine.</summary>
+    public virtual RequestStatus? WorkflowStatus { get; set; }
 }

@@ -1770,6 +1770,11 @@ public static class AppPermissions
     /// Ess.MyITServices: an IT service is raised on the employee's behalf and has no self-service screen.</summary>
     public const string Ess_MyHRServices = "Ess.MyHRServices";
 
+    /// <summary>Missing clock punches (legacy "skip punch"). Separate from Ess.MyAttendance on purpose: this
+    /// one adds a raw clock event and lets the Time Engine recompute the day, whereas an attendance
+    /// correction states a paid attendance type outright.</summary>
+    public const string Ess_MyPunches = "Ess.MyPunches";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";

@@ -1793,6 +1793,12 @@
     <text name="EmployeeDocumentNotFound">That document could not be found.</text>
     <text name="EssMyHRServices">My HR Services</text>
     <text name="RequestHRService">Request an HR service</text>
+    <text name="EssMyPunches">My Missing Punches</text>
+    <text name="RequestMissingPunch">Request a missing punch</text>
+    <text name="PunchDateIsRequired">Enter the day the punch is missing from.</text>
+    <text name="APunchOfThisTypeAlreadyExistsForThatDay">A punch of this type is already recorded for {0}.</text>
+    <text name="NoDutyIsScheduledForThatDay">You were not scheduled to work on {0}, so there is no shift for this punch to belong to.</text>
+    <text name="APunchCannotBeRequestedForAFutureDate">A missing punch can only be requested for a day that has already happened.</text>
     <text name="EmployeeHRServices">Employee HR Services</text>
     <text name="EmployeeITServices">Employee IT Services</text>
     <text name="EmployeeIsRequired">Select the employee this is for.</text>

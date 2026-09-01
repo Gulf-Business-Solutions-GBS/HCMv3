@@ -84,6 +84,12 @@ public class WorkflowTransactionTypeBuilder
         // Self-service: an employee asks for their own certificate, letter or card replacement.
         ("EmployeeHRService", "HR Service Request", "طلب خدمة موارد بشرية", "HRServiceType", "/app/main/ess/hr-service", AppPermissions.Ess_MyHRServices, "flaticon-notepad", 98),
 
+        // The missing-punch request (legacy SkipPunchRequest). Sub-type is the PUNCH TYPE, so a missing
+        // arrival can be routed differently from a missing departure. Note the Code is TimeEvent: what is
+        // approved is the clock event itself, and once granted the Time Engine recomputes the day from it --
+        // there is no SkipPunchRequest table here.
+        ("TimeEvent", "Missing Punch Request", "طلب بصمة مفقودة", "TransType", "/app/main/ess/punch", AppPermissions.Ess_MyPunches, "flaticon-clock", 150),
+
         // NOT self-service either, and on the same kind of evidence: legacy HCM10.ESS contains no view,
         // controller or model for an IT service -- only a back-office screen. It is raised on the employee's
         // behalf, so it is routed for approval without ever appearing on a tile list.
