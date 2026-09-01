@@ -79,7 +79,8 @@ public class WorkflowTransactionTypeBuilder
         // their self-rating, which is recorded on PAEmployeeReviewer/PAEmployeeRating rather than on the
         // appraisal row that routes. Sub-type is the FORM TYPE, matching legacy: a 360 form is approved by
         // different people from a probation form, whereas the cycle is only a period.
-        ("PAEmployee", "Performance Appraisal", "تقييم الأداء", "FormType", null, null, "flaticon-star", 120)
+        ("PAEmployee", "Performance Appraisal", "تقييم الأداء", "FormType", null, null, "flaticon-star", 120),
+
         // Self-service: an employee asks for their own certificate, letter or card replacement.
         ("EmployeeHRService", "HR Service Request", "طلب خدمة موارد بشرية", "HRServiceType", "/app/main/ess/hr-service", AppPermissions.Ess_MyHRServices, "flaticon-notepad", 98),
 

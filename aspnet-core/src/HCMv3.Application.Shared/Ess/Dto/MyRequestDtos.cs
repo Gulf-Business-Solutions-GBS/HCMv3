@@ -320,6 +320,10 @@ public class MyExitPermitDto : MyRequestDtoBase
     public DateTime ExitDate { get; set; }
 
     public DateTime StartDate { get; set; }
+
+    public string Comments { get; set; }
+}
+
 public class MyHRServiceRequestDto : MyRequestDtoBase
 {
     public int HRServiceTypeId { get; set; }
@@ -353,6 +357,10 @@ public class RequestExitPermitInput
 
     /// <summary>When the permit takes effect for the company's own records.</summary>
     public DateTime StartDate { get; set; }
+
+    public string Comments { get; set; }
+}
+
 public class RequestHRServiceInput
 {
     public int HRServiceTypeId { get; set; }
