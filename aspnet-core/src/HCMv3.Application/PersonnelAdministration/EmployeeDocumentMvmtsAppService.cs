@@ -22,34 +22,57 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDocumentMvmtsAppService
 {
     private readonly IRepository<EmployeeDocumentMvmt> _repository;
+    private readonly IRepository<EmployeeDocument> _documentRepository;
 
-    public EmployeeDocumentMvmtsAppService(IRepository<EmployeeDocumentMvmt> repository)
+    public EmployeeDocumentMvmtsAppService(
+        IRepository<EmployeeDocumentMvmt> repository,
+        IRepository<EmployeeDocument> documentRepository)
     {
         _repository = repository;
+        _documentRepository = documentRepository;
     }
 
+    /// <summary>
+    /// HR's view of the movement log.
+    ///
+    /// <para>
+    /// The <c>ApprovedOnly</c> filter is disabled here, following <c>EmployeeAbsencesAppService</c>. Since a
+    /// self-service withdrawal request IS a row in this table, leaving the filter on would hide every
+    /// pending request from the very people who have to physically hand the document over -- the exact
+    /// information legacy lost by keeping requests in a separate table. Each row carries
+    /// <c>WorkflowStatus</c>, so the list can badge the ones not yet approved.
+    /// </para>
+    /// </summary>
     [HttpPost]
     public async Task<PagedResultDto<EmployeeDocumentMvmtDto>> GetAll(GetAllEmployeeDocumentMvmtsInput input)
     {
         input.Normalize();
 
-        var query = _repository.GetAll()
-            .Include(m => m.EmployeeDocument)
-            .WhereIf(input.EmployeeDocumentId.HasValue, m => m.EmployeeDocumentId == input.EmployeeDocumentId.Value);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var query = _repository.GetAll()
+                .Include(m => m.EmployeeDocument)
+                .WhereIf(input.EmployeeDocumentId.HasValue, m => m.EmployeeDocumentId == input.EmployeeDocumentId.Value);
 
-        var totalCount = await query.CountAsync();
+            var totalCount = await query.CountAsync();
 
-        var items = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
-            .ToListAsync();
+            var items = await query
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
 
-        return new PagedResultDto<EmployeeDocumentMvmtDto>(totalCount, items.Select(ToDto).ToList());
+            return new PagedResultDto<EmployeeDocumentMvmtDto>(totalCount, items.Select(ToDto).ToList());
+        }
     }
 
     public async Task<GetEmployeeDocumentMvmtForEditOutput> GetEmployeeDocumentMvmtForEdit(EntityDto input)
     {
-        var entity = await _repository.GetAsync(input.Id);
+        // Same reasoning as GetAll: a row listed for HR must also be openable by them.
+        EmployeeDocumentMvmt entity;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            entity = await _repository.GetAsync(input.Id);
+        }
 
         return new GetEmployeeDocumentMvmtForEditOutput
         {
@@ -60,6 +83,8 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
                 WithdrawDate = entity.WithdrawDate,
                 ReturnDate = entity.ReturnDate,
                 ActualReturnDate = entity.ActualReturnDate == default ? null : entity.ActualReturnDate,
+                GuarantorId = entity.GuarantorId,
+                WithdrawalReason = entity.WithdrawalReason,
                 Comments = entity.Comments
             }
         };
@@ -82,6 +107,7 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
     {
         var entity = MapToEntity(input, new EmployeeDocumentMvmt());
         entity.TenantId = AbpSession.TenantId ?? 0;
+        entity.EmployeeId = await GetDocumentOwnerIdAsync(input.EmployeeDocumentId);
 
         ValidateDates(entity);
         await _repository.InsertAsync(entity);
@@ -92,9 +118,31 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
     {
         var entity = await _repository.GetAsync(input.Id.Value);
         MapToEntity(input, entity);
+        entity.EmployeeId = await GetDocumentOwnerIdAsync(input.EmployeeDocumentId);
 
         ValidateDates(entity);
         await _repository.UpdateAsync(entity);
+    }
+
+    /// <summary>
+    /// The movement's own <c>EmployeeId</c> is always the document's owner -- never a value the caller
+    /// supplies. It is stored on the row rather than reached through the document because self-service
+    /// scoping filters on it (see <c>EmployeeDocumentMvmt.EmployeeId</c>), and a scoping column that a
+    /// client could set is not a scoping column.
+    /// </summary>
+    private async Task<int> GetDocumentOwnerIdAsync(int employeeDocumentId)
+    {
+        var ownerId = await _documentRepository.GetAll()
+            .Where(d => d.Id == employeeDocumentId)
+            .Select(d => (int?)d.EmployeeId)
+            .FirstOrDefaultAsync();
+
+        if (!ownerId.HasValue)
+        {
+            throw new UserFriendlyException(L("EmployeeDocumentNotFound"));
+        }
+
+        return ownerId.Value;
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDocumentMvmts_Delete)]
@@ -122,6 +170,8 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
         entity.WithdrawDate = input.WithdrawDate.Date;
         entity.ReturnDate = input.ReturnDate.Date;
         entity.ActualReturnDate = input.ActualReturnDate?.Date ?? default;
+        entity.GuarantorId = input.GuarantorId;
+        entity.WithdrawalReason = input.WithdrawalReason;
         entity.Comments = input.Comments;
         return entity;
     }
@@ -131,12 +181,16 @@ public class EmployeeDocumentMvmtsAppService : HCMv3AppServiceBase, IEmployeeDoc
         return new EmployeeDocumentMvmtDto
         {
             Id = entity.Id,
+            EmployeeId = entity.EmployeeId,
             EmployeeDocumentId = entity.EmployeeDocumentId,
             EmployeeDocumentNum = entity.EmployeeDocument?.DocumentNum,
             WithdrawDate = entity.WithdrawDate,
             ReturnDate = entity.ReturnDate,
             ActualReturnDate = entity.ActualReturnDate,
-            Comments = entity.Comments
+            GuarantorId = entity.GuarantorId,
+            WithdrawalReason = entity.WithdrawalReason,
+            Comments = entity.Comments,
+            WorkflowStatus = entity.WorkflowStatus
         };
     }
 }

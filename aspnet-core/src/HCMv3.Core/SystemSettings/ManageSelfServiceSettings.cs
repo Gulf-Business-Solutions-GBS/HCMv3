@@ -52,4 +52,22 @@ public class ManageSelfServiceSettings : FullAuditedEntity, IMustHaveTenant
     public virtual bool IsPassportWithdrawalRequired { get; set; }
 
     public virtual int PassportWithdrawalSubmissionStep { get; set; }
+
+    /// <summary>
+    /// Whether an employee must say why they need a document withdrawn.
+    ///
+    /// <para>
+    /// Legacy kept this outside the settings table entirely, in an ESS-side JSON file
+    /// (<c>App_Data/ModuleSettings.json</c>, read by
+    /// <c>PassportWithdrawalReqRepository.GetPassportWithdrawalRequestsSettings</c>), which meant it could
+    /// not differ per tenant and could not be changed without touching the server. It is a per-tenant
+    /// self-service policy, so it is stored as one here alongside the other passport-withdrawal settings.
+    /// </para>
+    /// <para>
+    /// Defaults to false where legacy's hard-coded fallback was true. A bool column added to existing rows
+    /// is false either way, and quietly making a previously optional field mandatory on upgrade would start
+    /// refusing requests that used to go through. Tenants that want it switch it on.
+    /// </para>
+    /// </summary>
+    public virtual bool IsWithdrawalReasonMandatory { get; set; }
 }

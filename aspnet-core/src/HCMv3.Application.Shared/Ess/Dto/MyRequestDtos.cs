@@ -324,3 +324,70 @@ public class RequestTravelClaimInput
 
     public string Comments { get; set; }
 }
+
+/// <summary>
+/// A passport (or other document) withdrawal, as the employee sees it.
+///
+/// <para>
+/// One DTO for the request and for the movement, because there is one row. What legacy showed on the
+/// <c>PassportWithdrawalRequest</c> screen and what it showed on the document movement log were the same
+/// facts held in two tables; here <see cref="ActualReturnDate"/> is simply null until the document actually
+/// comes back.
+/// </para>
+/// </summary>
+public class MyPassportWithdrawalDto : MyRequestDtoBase
+{
+    public int EmployeeDocumentId { get; set; }
+
+    public string DocumentNum { get; set; }
+
+    public int? DocumentTypeId { get; set; }
+
+    public string DocumentTypeNameEn { get; set; }
+
+    public string DocumentTypeNameAr { get; set; }
+
+    public DateTime WithdrawDate { get; set; }
+
+    public DateTime ReturnDate { get; set; }
+
+    /// <summary>Null while the document is still out; set only once it has been handed back.</summary>
+    public DateTime? ActualReturnDate { get; set; }
+
+    public int? GuarantorId { get; set; }
+
+    public string GuarantorNameEn { get; set; }
+
+    public string GuarantorNameAr { get; set; }
+
+    public string WithdrawalReason { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class RequestPassportWithdrawalInput
+{
+    /// <summary>The employee's own document row. Ownership is re-checked on the server: a document
+    /// belonging to somebody else is refused rather than quietly withdrawn on their behalf.</summary>
+    [Required]
+    public int EmployeeDocumentId { get; set; }
+
+    public DateTime WithdrawDate { get; set; }
+
+    public DateTime ReturnDate { get; set; }
+
+    /// <summary>Who vouches for the document coming back. Optional -- not every tenant asks for one.</summary>
+    public int? GuarantorId { get; set; }
+
+    /// <summary>
+    /// Why the document is needed. Whether it may be left blank is a tenant setting
+    /// (<c>ManageSelfServiceSettings.IsWithdrawalReasonMandatory</c>), which is why it is deliberately NOT
+    /// annotated <c>[Required]</c>: an annotation cannot read a setting, and adding one would make the field
+    /// mandatory for every tenant including those that never asked for it.
+    /// </summary>
+    [StringLength(500)]
+    public string WithdrawalReason { get; set; }
+
+    [StringLength(500)]
+    public string Comments { get; set; }
+}

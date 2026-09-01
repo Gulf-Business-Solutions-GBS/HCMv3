@@ -43,6 +43,8 @@ public class SelfServiceSettingsListDto : EntityDto
     public bool IsPassportWithdrawalRequired { get; set; }
 
     public int PassportWithdrawalSubmissionStep { get; set; }
+
+    public bool IsWithdrawalReasonMandatory { get; set; }
 }
 
 public class SelfServiceSettingsEditDto : EntityDto
@@ -86,4 +88,6 @@ public class SelfServiceSettingsEditDto : EntityDto
     public bool IsPassportWithdrawalRequired { get; set; }
 
     public int PassportWithdrawalSubmissionStep { get; set; }
+
+    public bool IsWithdrawalReasonMandatory { get; set; }
 }

@@ -1515,6 +1515,28 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<EmployeeDocumentMvmt>(b =>
+        {
+            // Two FKs into Employee (EmployeeId required, GuarantorId nullable) on a table that Employees
+            // already reaches by a second path via EmployeeDocuments -- the multiple-cascade-paths shape
+            // handled the same way as WageTypeException and PAEmployeeReviewer. Restrict is also the right
+            // behaviour on its own terms: deleting an employee record must not silently erase the log of
+            // whose passport is currently out of the safe.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Guarantor)
+                .WithMany()
+                .HasForeignKey(e => e.GuarantorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
+            // WorkflowStatus on the same pass.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
         modelBuilder.Entity<EmployeeAccommodation>(b =>
         {
             // Location/Building/Floor/Flat/Room/Bed form a cascading hierarchy chain (Location->Building->

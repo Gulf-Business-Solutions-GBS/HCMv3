@@ -1745,6 +1745,7 @@ public static class AppPermissions
     public const string Ess_MyAttendance = "Ess.MyAttendance";
     public const string Ess_MyBank = "Ess.MyBank";
     public const string Ess_MyTravelClaims = "Ess.MyTravelClaims";
+    public const string Ess_MyPassportWithdrawals = "Ess.MyPassportWithdrawals";
 
     #endregion
 

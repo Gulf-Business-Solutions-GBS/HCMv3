@@ -107,6 +107,7 @@ public class ManageSelfServiceSettingsAppService : HCMv3AppServiceBase, IManageS
         entity.EnablePayInAdvance = input.EnablePayInAdvance;
         entity.IsPassportWithdrawalRequired = input.IsPassportWithdrawalRequired;
         entity.PassportWithdrawalSubmissionStep = input.PassportWithdrawalSubmissionStep;
+        entity.IsWithdrawalReasonMandatory = input.IsWithdrawalReasonMandatory;
 
         return entity;
     }
@@ -135,7 +136,8 @@ public class ManageSelfServiceSettingsAppService : HCMv3AppServiceBase, IManageS
             EnablePayWithPayroll = entity.EnablePayWithPayroll,
             EnablePayInAdvance = entity.EnablePayInAdvance,
             IsPassportWithdrawalRequired = entity.IsPassportWithdrawalRequired,
-            PassportWithdrawalSubmissionStep = entity.PassportWithdrawalSubmissionStep
+            PassportWithdrawalSubmissionStep = entity.PassportWithdrawalSubmissionStep,
+            IsWithdrawalReasonMandatory = entity.IsWithdrawalReasonMandatory
         };
     }
 
@@ -163,7 +165,8 @@ public class ManageSelfServiceSettingsAppService : HCMv3AppServiceBase, IManageS
             EnablePayWithPayroll = entity.EnablePayWithPayroll,
             EnablePayInAdvance = entity.EnablePayInAdvance,
             IsPassportWithdrawalRequired = entity.IsPassportWithdrawalRequired,
-            PassportWithdrawalSubmissionStep = entity.PassportWithdrawalSubmissionStep
+            PassportWithdrawalSubmissionStep = entity.PassportWithdrawalSubmissionStep,
+            IsWithdrawalReasonMandatory = entity.IsWithdrawalReasonMandatory
         };
     }
 }

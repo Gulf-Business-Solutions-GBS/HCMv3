@@ -1784,6 +1784,11 @@
     <text name="EssMyAttendance">My Attendance</text>
     <text name="EssMyBank">My Bank Details</text>
     <text name="EssMyTravelClaims">My Travel Claims</text>
+    <text name="EssMyPassportWithdrawals">My Passport Withdrawals</text>
+    <text name="RequestPassportWithdrawal">Request my passport</text>
+    <text name="ReturnDateCannotBeEarlierThanWithdrawDate">The return date cannot be before the withdrawal date.</text>
+    <text name="WithdrawalReasonIsRequired">Say why you need the document, so the approver knows what it is for.</text>
+    <text name="EmployeeDocumentNotFound">That document could not be found.</text>
     <text name="RequestAttendanceCorrection">Request a correction</text>
     <text name="RequestBankChange">Change my bank details</text>
     <text name="RequestTravelClaim">Claim travel expenses</text>
