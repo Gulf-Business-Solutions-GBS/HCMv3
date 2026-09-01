@@ -560,6 +560,16 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeeAssets_Edit = "Pages.PersonnelAdministration.EmployeeAssets.Edit";
     public const string Pages_PersonnelAdministration_EmployeeAssets_Delete = "Pages.PersonnelAdministration.EmployeeAssets.Delete";
 
+    public const string Pages_PersonnelAdministration_EmployeeHRServices = "Pages.PersonnelAdministration.EmployeeHRServices";
+    public const string Pages_PersonnelAdministration_EmployeeHRServices_Create = "Pages.PersonnelAdministration.EmployeeHRServices.Create";
+    public const string Pages_PersonnelAdministration_EmployeeHRServices_Edit = "Pages.PersonnelAdministration.EmployeeHRServices.Edit";
+    public const string Pages_PersonnelAdministration_EmployeeHRServices_Delete = "Pages.PersonnelAdministration.EmployeeHRServices.Delete";
+
+    public const string Pages_PersonnelAdministration_EmployeeITServices = "Pages.PersonnelAdministration.EmployeeITServices";
+    public const string Pages_PersonnelAdministration_EmployeeITServices_Create = "Pages.PersonnelAdministration.EmployeeITServices.Create";
+    public const string Pages_PersonnelAdministration_EmployeeITServices_Edit = "Pages.PersonnelAdministration.EmployeeITServices.Edit";
+    public const string Pages_PersonnelAdministration_EmployeeITServices_Delete = "Pages.PersonnelAdministration.EmployeeITServices.Delete";
+
     public const string Pages_PersonnelAdministration_EmployeeAssetInvoices = "Pages.PersonnelAdministration.EmployeeAssetInvoices";
     public const string Pages_PersonnelAdministration_EmployeeAssetInvoices_Create = "Pages.PersonnelAdministration.EmployeeAssetInvoices.Create";
     public const string Pages_PersonnelAdministration_EmployeeAssetInvoices_Edit = "Pages.PersonnelAdministration.EmployeeAssetInvoices.Edit";
@@ -1745,6 +1755,10 @@ public static class AppPermissions
     public const string Ess_MyAttendance = "Ess.MyAttendance";
     public const string Ess_MyBank = "Ess.MyBank";
     public const string Ess_MyTravelClaims = "Ess.MyTravelClaims";
+
+    /// <summary>Certificates, letters and card replacements the employee asks for. There is deliberately no
+    /// Ess.MyITServices: an IT service is raised on the employee's behalf and has no self-service screen.</summary>
+    public const string Ess_MyHRServices = "Ess.MyHRServices";
 
     #endregion
 

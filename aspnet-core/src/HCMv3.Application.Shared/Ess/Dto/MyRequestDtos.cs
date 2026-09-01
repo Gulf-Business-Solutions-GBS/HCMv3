@@ -309,6 +309,36 @@ public class MyTravelClaimDto : MyRequestDtoBase
     public string Comments { get; set; }
 }
 
+public class MyHRServiceRequestDto : MyRequestDtoBase
+{
+    public int HRServiceTypeId { get; set; }
+
+    public string HRServiceTypeNameEn { get; set; }
+
+    public string HRServiceTypeNameAr { get; set; }
+
+    public DateTime ServiceDate { get; set; }
+
+    public double Amount { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class RequestHRServiceInput
+{
+    public int HRServiceTypeId { get; set; }
+
+    /// <summary>When the employee needs it by. Defaults to today on the screen, as legacy did.</summary>
+    public DateTime ServiceDate { get; set; }
+
+    /// <summary>Optional -- most HR services carry no charge at all, so zero is a real answer rather than a
+    /// missing one, and there is no minimum to enforce.</summary>
+    [Range(0, 1_000_000_000)]
+    public double Amount { get; set; }
+
+    public string Comments { get; set; }
+}
+
 public class RequestTravelClaimInput
 {
     /// <summary>The trip being claimed against. Optional, because not every claim has a recorded trip.</summary>

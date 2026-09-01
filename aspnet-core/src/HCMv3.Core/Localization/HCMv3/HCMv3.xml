@@ -1784,6 +1784,13 @@
     <text name="EssMyAttendance">My Attendance</text>
     <text name="EssMyBank">My Bank Details</text>
     <text name="EssMyTravelClaims">My Travel Claims</text>
+    <text name="EssMyHRServices">My HR Services</text>
+    <text name="RequestHRService">Request an HR service</text>
+    <text name="EmployeeHRServices">Employee HR Services</text>
+    <text name="EmployeeITServices">Employee IT Services</text>
+    <text name="EmployeeIsRequired">Select the employee this is for.</text>
+    <text name="ServiceTypeIsRequired">Select the service type.</text>
+    <text name="ServiceDateIsRequired">Enter the service date.</text>
     <text name="RequestAttendanceCorrection">Request a correction</text>
     <text name="RequestBankChange">Change my bank details</text>
     <text name="RequestTravelClaim">Claim travel expenses</text>

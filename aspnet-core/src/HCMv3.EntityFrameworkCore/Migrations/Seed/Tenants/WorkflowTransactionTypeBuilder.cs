@@ -41,7 +41,7 @@ public class WorkflowTransactionTypeBuilder
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
     ///
-    /// The ten here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A tenth type
+    /// The twelve here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A further type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
@@ -55,10 +55,18 @@ public class WorkflowTransactionTypeBuilder
         ("EmployeeAttendance", "Attendance Correction", "تصحيح الحضور", "AttendanceType", "/app/main/ess/attendance", AppPermissions.Ess_MyAttendance, "flaticon-time-3", 70),
         ("EmployeeBank", "Bank Detail Change", "تغيير بيانات البنك", null, "/app/main/ess/bank", AppPermissions.Ess_MyBank, "flaticon-coins", 80),
         ("TravelFeedback", "Travel Expense Claim", "مطالبة مصاريف السفر", null, "/app/main/ess/travel-claim", AppPermissions.Ess_MyTravelClaims, "flaticon-map", 90),
-        
+
         // NOT self-service: HR raises a personnel action, never the employee. EssRoute and EssPermissionName
         // are deliberately null, so it can be routed for approval while never appearing on a tile list.
-        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100)
+        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100),
+
+        // Self-service: an employee asks for their own certificate, letter or card replacement.
+        ("EmployeeHRService", "HR Service Request", "طلب خدمة موارد بشرية", "HRServiceType", "/app/main/ess/hr-service", AppPermissions.Ess_MyHRServices, "flaticon-notepad", 110),
+
+        // NOT self-service either, and on the same kind of evidence: legacy HCM10.ESS contains no view,
+        // controller or model for an IT service -- only a back-office screen. It is raised on the employee's
+        // behalf, so it is routed for approval without ever appearing on a tile list.
+        ("EmployeeITService", "IT Service Request", "طلب خدمة تقنية المعلومات", "ITServiceType", null, null, "flaticon-computer", 120)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
