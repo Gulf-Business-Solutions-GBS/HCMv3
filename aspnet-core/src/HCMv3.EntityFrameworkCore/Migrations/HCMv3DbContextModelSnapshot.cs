@@ -5299,9 +5299,16 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkflowRoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClearanceRequestFieldId");
+
+                    b.HasIndex("WorkflowRoleId");
+
+                    b.HasIndex("TenantId", "WorkflowRoleId");
 
                     b.ToTable("ClearanceRequestFieldDetails");
                 });
@@ -5329,6 +5336,9 @@ namespace HCMv3.Migrations
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IncludeInWorkflow")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -19583,6 +19593,130 @@ namespace HCMv3.Migrations
                     b.ToTable("EmployeeCertifications");
                 });
 
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClearanceRequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClearanceRequestTypeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
+
+                    b.ToTable("EmployeeClearances");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearanceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApproverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClearanceRequestFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeClearanceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("ClearanceRequestFieldId");
+
+                    b.HasIndex("EmployeeClearanceId");
+
+                    b.HasIndex("TenantId", "EmployeeClearanceId", "ClearanceRequestFieldId");
+
+                    b.ToTable("EmployeeClearanceDetails");
+                });
+
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeContract", b =>
                 {
                     b.Property<int>("Id")
@@ -20915,9 +21049,17 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "PaymentDate", "WorkflowStatus");
 
                     b.ToTable("EmployeeHealthReimburses");
                 });
@@ -29229,6 +29371,12 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DutyId");
@@ -33981,7 +34129,15 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("ClearanceRequestFieldId");
 
+                    b.HasOne("HCMv3.Workflow.WorkflowRole", "WorkflowRole")
+                        .WithMany()
+                        .HasForeignKey("WorkflowRoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("ClearanceRequestField");
+
+                    b.Navigation("WorkflowRole");
                 });
 
             modelBuilder.Entity("HCMv3.GeneralMasterInfo.CurrencyConvertor", b =>
@@ -36960,6 +37116,52 @@ namespace HCMv3.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearance", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.ClearanceRequestType", "ClearanceRequestType")
+                        .WithMany()
+                        .HasForeignKey("ClearanceRequestTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClearanceRequestType");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeClearanceDetail", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.GeneralMasterInfo.ClearanceRequestField", "ClearanceRequestField")
+                        .WithMany()
+                        .HasForeignKey("ClearanceRequestFieldId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.EmployeeClearance", "EmployeeClearance")
+                        .WithMany()
+                        .HasForeignKey("EmployeeClearanceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Approver");
+
+                    b.Navigation("ClearanceRequestField");
+
+                    b.Navigation("EmployeeClearance");
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeContract", b =>
