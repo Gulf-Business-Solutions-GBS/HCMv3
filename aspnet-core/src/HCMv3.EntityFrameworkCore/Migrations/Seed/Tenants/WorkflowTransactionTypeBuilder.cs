@@ -67,7 +67,12 @@ public class WorkflowTransactionTypeBuilder
 
         // NOT self-service: HR raises a personnel action, never the employee. EssRoute and EssPermissionName
         // are deliberately null, so it can be routed for approval while never appearing on a tile list.
-        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100)
+        ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100),
+
+        // Also NOT self-service: a manager or HR plans a department's headcount; an employee does not
+        // request headcount about themselves. Routed because approval is what mints budgeted vacant
+        // positions that recruitment then hires against.
+        ("ManpowerPlanning", "Manpower Plan", "خطة القوى العاملة", null, null, null, "flaticon-network", 110)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

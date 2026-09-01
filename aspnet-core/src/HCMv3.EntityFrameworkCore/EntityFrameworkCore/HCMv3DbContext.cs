@@ -1680,6 +1680,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ManpowerPlanningStatus is DERIVED from WorkflowStatus and has no column: the workflow engine
+            // is the single writer of a plan's approval state. The old stored Status column is dropped by
+            // the migration generated from this model -- keeping it would leave a second, writable copy of
+            // the same fact, which is exactly what routing this type was meant to end.
+            b.Ignore(e => e.Status);
         });
 
         modelBuilder.Entity<PositionRelationship>(b =>

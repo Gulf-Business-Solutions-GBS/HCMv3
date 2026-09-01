@@ -33,9 +33,11 @@ public class ManpowerPlanningDetail : FullAuditedEntity, IMustHaveTenant
     public virtual JobTitle JobTitle { get; set; }
 
     /// <summary>
-    /// Set once the request is approved (see <c>ManpowerPlanningsAppService.Approve</c>), matching the
-    /// legacy final-approval <c>OnSaving</c> block that creates a new <see cref="Position"/> for every
-    /// detail line without one.
+    /// Set once the plan is approved -- by the workflow engine, in
+    /// <c>ManpowerPlanningWorkflowTransactionHandler.OnApprovedAsync</c>, which is the only code path that
+    /// mints these positions since the bespoke Approve method was deleted. Matches the legacy
+    /// final-approval <c>OnSaving</c> block that created a new <see cref="Position"/> for every detail line
+    /// without one.
     /// </summary>
     public virtual int? PositionId { get; set; }
 

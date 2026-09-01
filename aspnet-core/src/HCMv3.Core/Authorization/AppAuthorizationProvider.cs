@@ -1805,7 +1805,6 @@ public class AppAuthorizationProvider : AuthorizationProvider
         manpowerPlannings.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Create, L("CreateNewItem"));
         manpowerPlannings.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Edit, L("EditItem"));
         manpowerPlannings.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Delete, L("DeleteItem"));
-        manpowerPlannings.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Approve, L("ApproveManpowerPlanning"));
 
         var manpowerPlanningDetails = manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlanningDetails, L("ManpowerPlanningDetails"));
         manpowerPlanningDetails.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlanningDetails_Create, L("CreateNewItem"));

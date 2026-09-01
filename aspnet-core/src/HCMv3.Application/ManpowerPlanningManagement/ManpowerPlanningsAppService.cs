@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -9,6 +9,9 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.ManpowerPlanningManagement.Dto;
+using HCMv3.ManpowerPlanningManagement.Workflow;
+using HCMv3.Workflow;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,64 +20,89 @@ namespace HCMv3.ManpowerPlanningManagement;
 /// <summary>
 /// Application service for <see cref="ManpowerPlanning"/> (ported from legacy XAF
 /// <c>HCM10.Module.BusinessObjects.ManpowerPlanningManagement.ManpowerPlanning</c>, which inherited from
-/// the unported <c>Workflow.WorkflowRequest</c> -- see class remarks on <see cref="ManpowerPlanning"/> for
-/// what was dropped). Legacy <c>PerformValidation</c> (required Employee/OrganizationUnit/Period, no
-/// duplicate OrganizationUnit+Period combination) and the "Entry On Final Approval" <c>OnSaving</c> block
-/// (create a <see cref="Position"/> for every detail line without one, once approved) are ported here.
+/// <c>Workflow.WorkflowRequest</c>). Legacy <c>PerformValidation</c> (no duplicate OrganizationUnit+Period
+/// combination) is ported here.
+///
+/// <para>
+/// APPROVAL LIVES IN THE ENGINE. The bespoke <c>Approve</c>/<c>Reject</c> pair this service used to expose
+/// -- which wrote a stored status column and created the planned positions -- is deleted. A plan is now
+/// raised through <see cref="IAdminTransactionSubmitter"/> and decided in the approver inbox through
+/// <c>IWorkflowApprovalService</c>; the position-creation side effect moved with it, into
+/// <see cref="ManpowerPlanningWorkflowTransactionHandler"/>. Nothing here writes approval state.
+/// </para>
+///
+/// <para>
+/// Raised by a manager or HR about a department, never by an employee about themselves, so submission
+/// belongs in this admin service and the type has no ESS screen.
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings)]
 public class ManpowerPlanningsAppService : HCMv3AppServiceBase, IManpowerPlanningsAppService
 {
     private readonly IRepository<ManpowerPlanning> _manpowerPlanningRepository;
-    private readonly IRepository<ManpowerPlanningDetail> _detailRepository;
-    private readonly IRepository<ManpowerPlanningPeriod> _periodRepository;
-    private readonly IRepository<Position> _positionRepository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
     public ManpowerPlanningsAppService(
         IRepository<ManpowerPlanning> manpowerPlanningRepository,
-        IRepository<ManpowerPlanningDetail> detailRepository,
-        IRepository<ManpowerPlanningPeriod> periodRepository,
-        IRepository<Position> positionRepository)
+        IAdminTransactionSubmitter transactionSubmitter)
     {
         _manpowerPlanningRepository = manpowerPlanningRepository;
-        _detailRepository = detailRepository;
-        _periodRepository = periodRepository;
-        _positionRepository = positionRepository;
+        _transactionSubmitter = transactionSubmitter;
     }
 
+    /// <summary>
+    /// The plan register. The <c>ApprovedOnly</c> filter is disabled here deliberately: this is the screen
+    /// that OWNS the transaction, and a manpower plan has no self-service counterpart to show it anywhere
+    /// else. Without the opt-out a plan would disappear from the only list in the product the moment it was
+    /// submitted, and the person who raised it could never see what became of it.
+    ///
+    /// <para>
+    /// Filtering by <see cref="ManpowerPlanningStatus"/> is translated into the stored
+    /// <see cref="RequestStatus"/> values it projects from, because the status itself is computed and has no
+    /// column to query.
+    /// </para>
+    /// </summary>
     [HttpPost]
     public async Task<PagedResultDto<ManpowerPlanningDto>> GetAll(GetAllManpowerPlanningsInput input)
     {
         input.Normalize();
 
-        var query = _manpowerPlanningRepository.GetAll()
-            .Include(m => m.Employee)
-            .Include(m => m.OrganizationUnit)
-            .Include(m => m.Period)
-            .WhereIf(input.OrganizationUnitId.HasValue, m => m.OrganizationUnitId == input.OrganizationUnitId)
-            .WhereIf(input.PeriodId.HasValue, m => m.PeriodId == input.PeriodId)
-            .WhereIf(input.Status.HasValue, m => m.Status == input.Status);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var query = _manpowerPlanningRepository.GetAll()
+                .Include(m => m.Employee)
+                .Include(m => m.OrganizationUnit)
+                .Include(m => m.Period)
+                .WhereIf(input.OrganizationUnitId.HasValue, m => m.OrganizationUnitId == input.OrganizationUnitId)
+                .WhereIf(input.PeriodId.HasValue, m => m.PeriodId == input.PeriodId);
 
-        var totalCount = await query.CountAsync();
+            query = ApplyStatusFilter(query, input.Status);
 
-        var items = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
-            .ToListAsync();
+            var totalCount = await query.CountAsync();
 
-        return new PagedResultDto<ManpowerPlanningDto>(
-            totalCount,
-            items.Select(ToDto).ToList());
+            var items = await query
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<ManpowerPlanningDto>(
+                totalCount,
+                items.Select(ToDto).ToList());
+        }
     }
 
     public async Task<GetManpowerPlanningForEditOutput> GetManpowerPlanningForEdit(EntityDto input)
     {
-        var entity = await _manpowerPlanningRepository.GetAsync(input.Id);
-
-        return new GetManpowerPlanningForEditOutput
+        // Same reason as GetAll: an in-flight plan is still the owning screen's business.
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
-            ManpowerPlanning = ToCreateOrEditDto(entity)
-        };
+            var entity = await _manpowerPlanningRepository.GetAsync(input.Id);
+
+            return new GetManpowerPlanningForEditOutput
+            {
+                ManpowerPlanning = ToCreateOrEditDto(entity)
+            };
+        }
     }
 
     public async Task CreateOrEdit(CreateOrEditManpowerPlanningDto input)
@@ -92,137 +120,85 @@ public class ManpowerPlanningsAppService : HCMv3AppServiceBase, IManpowerPlannin
     [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Delete)]
     public async Task Delete(EntityDto input)
     {
-        await _manpowerPlanningRepository.DeleteAsync(input.Id);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await _manpowerPlanningRepository.DeleteAsync(input.Id);
+        }
     }
 
+    /// <summary>
+    /// Routed for approval when the catalog says so, and simply recorded when it does not -- the
+    /// pre-workflow behaviour. The status the plan starts in is the engine's to decide, which is why nothing
+    /// here assigns one.
+    /// </summary>
     [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Create)]
     protected virtual async Task CreateAsync(CreateOrEditManpowerPlanningDto input)
     {
         var entity = MapToEntity(input, new ManpowerPlanning());
         entity.TenantId = AbpSession.TenantId ?? 0;
-        entity.Status = ManpowerPlanningStatus.Draft;
+        entity.ManpowerPlanningDetails = BuildDetails(input, entity.TenantId);
+        entity.GrandTotalAmount = entity.ManpowerPlanningDetails?.Sum(d => d.TotalAmount) ?? 0;
 
         await ValidateUniquenessAsync(entity);
 
-        await _manpowerPlanningRepository.InsertAsync(entity);
+        // Lines travel with the header so that they exist by the time the handler validates the submission
+        // -- EF inserts the graph, and the submitter saves before it submits.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _manpowerPlanningRepository,
+            entity,
+            ManpowerPlanningWorkflowTransactionHandler.ManpowerPlanningRequestType,
+            "MP");
     }
 
     [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditManpowerPlanningDto input)
     {
-        var entity = await _manpowerPlanningRepository.GetAsync(input.Id.Value);
-        entity = MapToEntity(input, entity);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var entity = await _manpowerPlanningRepository.GetAsync(input.Id.Value);
+            entity = MapToEntity(input, entity);
 
-        await ValidateUniquenessAsync(entity);
+            await ValidateUniquenessAsync(entity);
 
-        await _manpowerPlanningRepository.UpdateAsync(entity);
+            await _manpowerPlanningRepository.UpdateAsync(entity);
+        }
     }
 
-    /// <summary>
-    /// Legacy "Entry On Final Approval" parity: marks the request Approved and, for every
-    /// <see cref="ManpowerPlanningDetail"/> without a linked <see cref="Position"/> yet, creates one using
-    /// the detail's JobTitle and the period's StartDate, exactly matching the legacy field assignments
-    /// (<c>NameEn</c>/<c>NameAr</c> from JobTitle, <c>EndDate</c> = 9999-12-31, <c>Vacant</c>/<c>Active</c>/
-    /// <c>IsBudgeted</c> = true, <c>FTELimit</c> = 1, Min/Mid/MaxSalary all set to the detail's January
-    /// amount).
-    /// </summary>
-    [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Approve)]
-    public async Task Approve(ApproveManpowerPlanningDto input)
+    private IQueryable<ManpowerPlanning> ApplyStatusFilter(IQueryable<ManpowerPlanning> query, ManpowerPlanningStatus? status)
     {
-        var manpowerPlanning = await _manpowerPlanningRepository.GetAsync(input.Id);
-
-        if (manpowerPlanning.Status == ManpowerPlanningStatus.Approved || manpowerPlanning.Status == ManpowerPlanningStatus.Rejected)
+        if (!status.HasValue)
         {
-            throw new UserFriendlyException(L("ManpowerPlanningRequestAlreadyProcessed"));
+            return query;
         }
 
-        var period = await _periodRepository.GetAsync(manpowerPlanning.PeriodId);
+        var wanted = ManpowerPlanning.ToWorkflowStatuses(status.Value);
+        var includesNotRouted = wanted.Any(s => !s.HasValue);
+        var stored = wanted.Where(s => s.HasValue).Select(s => s.Value).ToArray();
 
-        var detailsWithoutPosition = await _detailRepository.GetAll()
-            .Include(d => d.JobTitle)
-            .Where(d => d.ManpowerPlanningId == manpowerPlanning.Id && d.PositionId == null)
-            .ToListAsync();
-
-        foreach (var detail in detailsWithoutPosition)
-        {
-            var newPosition = new Position
-            {
-                TenantId = manpowerPlanning.TenantId,
-                NameEn = detail.JobTitle?.NameEn,
-                NameAr = detail.JobTitle?.NameAr,
-                StartDate = period.StartDate,
-                EndDate = new DateTime(9999, 12, 31),
-                Vacant = true,
-                Active = true,
-                JobTitleId = detail.JobTitleId,
-                MinSalary = detail.January,
-                MidSalary = detail.January,
-                MaxSalary = detail.January,
-                IsBudgeted = true,
-                FTELimit = 1
-            };
-
-            newPosition = await AssignCodeAsync(newPosition);
-
-            await _positionRepository.InsertAsync(newPosition);
-
-            detail.PositionId = newPosition.Id;
-            await _detailRepository.UpdateAsync(detail);
-        }
-
-        manpowerPlanning.Status = ManpowerPlanningStatus.Approved;
-        await _manpowerPlanningRepository.UpdateAsync(manpowerPlanning);
-    }
-
-    [AbpAuthorize(AppPermissions.Pages_ManpowerPlanningManagement_ManpowerPlannings_Approve)]
-    public async Task Reject(ApproveManpowerPlanningDto input)
-    {
-        var manpowerPlanning = await _manpowerPlanningRepository.GetAsync(input.Id);
-
-        if (manpowerPlanning.Status == ManpowerPlanningStatus.Approved || manpowerPlanning.Status == ManpowerPlanningStatus.Rejected)
-        {
-            throw new UserFriendlyException(L("ManpowerPlanningRequestAlreadyProcessed"));
-        }
-
-        manpowerPlanning.Status = ManpowerPlanningStatus.Rejected;
-        await _manpowerPlanningRepository.UpdateAsync(manpowerPlanning);
-    }
-
-    /// <summary>
-    /// Legacy <c>Position.PerformValidation</c> auto-Code parity (max existing numeric code + 1), reused
-    /// here since approval creates positions directly rather than through <c>PositionsAppService</c>.
-    /// </summary>
-    private async Task<Position> AssignCodeAsync(Position position)
-    {
-        var numericCodes = await _positionRepository.GetAll()
-            .Where(p => p.Code != null && p.Code != "")
-            .Select(p => p.Code)
-            .ToListAsync();
-
-        var maxCode = numericCodes
-            .Select(c => int.TryParse(c, out var n) ? n : 0)
-            .DefaultIfEmpty(0)
-            .Max();
-
-        position.Code = (maxCode + 1).ToString();
-
-        return position;
+        return query.Where(m =>
+            (includesNotRouted && m.WorkflowStatus == null)
+            || (m.WorkflowStatus != null && stored.Contains(m.WorkflowStatus.Value)));
     }
 
     /// <summary>
     /// Legacy <c>PerformValidation</c> parity: no duplicate ManpowerPlanning for the same
-    /// OrganizationUnit + Period combination.
+    /// OrganizationUnit + Period combination. In-flight plans count -- with the filter on, a pending plan
+    /// would be invisible to this check and the same department/period could be raised twice over.
     /// </summary>
     private async Task ValidateUniquenessAsync(ManpowerPlanning entity)
     {
-        var duplicate = await _manpowerPlanningRepository.GetAll()
-            .AnyAsync(m => m.Id != entity.Id
-                           && m.OrganizationUnitId == entity.OrganizationUnitId
-                           && m.PeriodId == entity.PeriodId);
-
-        if (duplicate)
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
         {
-            throw new UserFriendlyException(L("ManpowerPlanningAlreadyExistsForPeriod"));
+            var duplicate = await _manpowerPlanningRepository.GetAll()
+                .AnyAsync(m => m.Id != entity.Id
+                               && m.OrganizationUnitId == entity.OrganizationUnitId
+                               && m.PeriodId == entity.PeriodId
+                               && m.WorkflowStatus != RequestStatus.Rejected);
+
+            if (duplicate)
+            {
+                throw new UserFriendlyException(L("ManpowerPlanningAlreadyExistsForPeriod"));
+            }
         }
     }
 
@@ -234,6 +210,37 @@ public class ManpowerPlanningsAppService : HCMv3AppServiceBase, IManpowerPlannin
         entity.RequestComments = input.RequestComments;
 
         return entity;
+    }
+
+    private static List<ManpowerPlanningDetail> BuildDetails(CreateOrEditManpowerPlanningDto input, int tenantId)
+    {
+        if (input.Details == null || input.Details.Count == 0)
+        {
+            return null;
+        }
+
+        return input.Details.Select(line => new ManpowerPlanningDetail
+        {
+            TenantId = tenantId,
+            JobTitleId = line.JobTitleId,
+            HolderId = line.HolderId,
+            January = line.January,
+            February = line.February,
+            March = line.March,
+            April = line.April,
+            May = line.May,
+            June = line.June,
+            July = line.July,
+            August = line.August,
+            September = line.September,
+            October = line.October,
+            November = line.November,
+            December = line.December,
+            TotalAmount = line.January + line.February + line.March
+                          + line.April + line.May + line.June
+                          + line.July + line.August + line.September
+                          + line.October + line.November + line.December
+        }).ToList();
     }
 
     private static ManpowerPlanningDto ToDto(ManpowerPlanning entity)
@@ -249,6 +256,9 @@ public class ManpowerPlanningsAppService : HCMv3AppServiceBase, IManpowerPlannin
             PeriodName = entity.Period?.Name,
             GrandTotalAmount = entity.GrandTotalAmount,
             RequestComments = entity.RequestComments,
+
+            // Projected from WorkflowStatus by the entity -- read-only, and the engine is the only writer of
+            // what it is projected from.
             Status = entity.Status
         };
     }
