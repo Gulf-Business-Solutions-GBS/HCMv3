@@ -620,6 +620,10 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeDisciplinary> EmployeeDisciplinaries { get; set; }
 
+    public virtual DbSet<EmployeeClearance> EmployeeClearances { get; set; }
+
+    public virtual DbSet<EmployeeClearanceDetail> EmployeeClearanceDetails { get; set; }
+
     public virtual DbSet<EmployeeGrievance> EmployeeGrievances { get; set; }
 
     public virtual DbSet<EmployeeHealthReimburse> EmployeeHealthReimburses { get; set; }
@@ -1543,6 +1547,62 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
+        modelBuilder.Entity<EmployeeClearance>(b =>
+        {
+            // Self-service lists these by employee and the ApprovedOnly filter reads WorkflowStatus on the
+            // same pass, so both belong in the one index.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ClearanceRequestType)
+                .WithMany()
+                .HasForeignKey(e => e.ClearanceRequestTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeClearanceDetail>(b =>
+        {
+            // One answer per line per clearance -- the shape the checklist upsert relies on.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeClearanceId, e.ClearanceRequestFieldId });
+
+            // Two FKs reach Employee here (the clearance's own employee, and the approver who answered the
+            // line), which is the multiple-cascade-paths error SQL Server rejects at migration time. Restrict
+            // is right on its own merits too: who signed a line off is audit history, and deleting the
+            // approver's employee record must not quietly erase it.
+            b.HasOne(e => e.EmployeeClearance)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeClearanceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Approver)
+                .WithMany()
+                .HasForeignKey(e => e.ApproverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.ClearanceRequestField)
+                .WithMany()
+                .HasForeignKey(e => e.ClearanceRequestFieldId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ClearanceRequestFieldDetail>(b =>
+        {
+            // The role FK is what makes a checklist line belong to a department. Restrict: deleting a
+            // workflow role must not silently take the checklist lines it owns with it -- the clearance
+            // form would lose questions rather than fail loudly.
+            b.HasOne(e => e.WorkflowRole)
+                .WithMany()
+                .HasForeignKey(e => e.WorkflowRoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Rendering reads every detail row for a set of roles, on every clearance an approver opens.
+            b.HasIndex(e => new { e.TenantId, e.WorkflowRoleId });
         });
 
         modelBuilder.Entity<EmployeeLetterRequest>(b =>

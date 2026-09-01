@@ -1787,6 +1787,13 @@ public static class AppPermissions
     /// correction states a paid attendance type outright.</summary>
     public const string Ess_MyPunches = "Ess.MyPunches";
 
+    /// <summary>
+    /// Exit clearance -- the checklist IT, Finance and HR sign off before somebody leaves. Held by the
+    /// leaving employee AND by the approvers, because the same service serves both: the employee raises the
+    /// clearance, and each department's approver answers their own lines of it.
+    /// </summary>
+    public const string Ess_MyClearances = "Ess.MyClearances";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";

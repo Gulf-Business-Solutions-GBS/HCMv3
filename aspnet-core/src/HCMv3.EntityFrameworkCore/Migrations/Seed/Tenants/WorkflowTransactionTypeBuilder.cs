@@ -106,7 +106,14 @@ public class WorkflowTransactionTypeBuilder
         // raises a disciplinary record about themselves. Sub-type is the offence type, so a safety
         // violation can be routed differently from a late arrival -- and approving one is what decides the
         // penalty, not merely whether the record is filed.
-        ("EmployeeDisciplinary", "Disciplinary Record", "إجراء تأديبي", "DisciplinaryType", null, null, "flaticon-warning", 160)
+        ("EmployeeDisciplinary", "Disciplinary Record", "إجراء تأديبي", "DisciplinaryType", null, null, "flaticon-warning", 160),
+
+        // Exit clearance. Sub-type is the CLEARANCE TYPE, because a resignation clearance and an
+        // end-of-contract one need not be signed by the same departments. The "IT, Finance and HR each sign
+        // off" behaviour is nothing more than configuring this type's step as ApprovalRequire.Parallel --
+        // there is no bespoke sign-off mechanism, and which checklist lines each approver is shown comes from
+        // ClearanceRequestFieldDetail.WorkflowRoleId at render time.
+        ("EmployeeClearance", "Exit Clearance", "إخلاء طرف", "ClearanceRequestType", "/app/main/ess/clearance", AppPermissions.Ess_MyClearances, "flaticon-list-3", 170)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

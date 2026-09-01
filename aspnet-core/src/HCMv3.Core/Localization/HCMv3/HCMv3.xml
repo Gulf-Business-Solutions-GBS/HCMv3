@@ -1794,6 +1794,13 @@
     <text name="EssMyHRServices">My HR Services</text>
     <text name="RequestHRService">Request an HR service</text>
     <text name="EssMyPunches">My Missing Punches</text>
+    <text name="EssMyClearances">My Exit Clearance</text>
+    <text name="RequestClearance">Request exit clearance</text>
+    <text name="EndDateIsRequired">Enter the end date.</text>
+    <text name="ThisClearanceTypeIsNotAvailableForSelfService">That clearance type cannot be requested here.</text>
+    <text name="ThisClearanceIsNotAwaitingApproval">This clearance is not waiting on an approver, so its checklist cannot be changed.</text>
+    <text name="ClearanceAnswersCanOnlyBeRecordedOnAParallelStep">The checklist can only be filled in while the clearance is with the departments that sign it off.</text>
+    <text name="ThisClearanceLineBelongsToAnotherDepartment">That checklist line belongs to another department.</text>
     <text name="RequestMissingPunch">Request a missing punch</text>
     <text name="PunchDateIsRequired">Enter the day the punch is missing from.</text>
     <text name="APunchOfThisTypeAlreadyExistsForThatDay">A punch of this type is already recorded for {0}.</text>

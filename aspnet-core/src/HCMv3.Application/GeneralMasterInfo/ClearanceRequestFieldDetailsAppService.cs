@@ -13,9 +13,9 @@ using Microsoft.EntityFrameworkCore;
 namespace HCMv3.GeneralMasterInfo;
 
 /// <summary>
-/// Application service for the ClearanceRequestFieldDetail detail record (ported from legacy XAF
-/// ClearanceRequestFieldDetail). Pure detail record (no Code/NameEn/NameAr): plain CRUD without
-/// auto-code or duplicate validation. The legacy <c>WorkflowRole</c> FK is not ported.
+/// Application service for the ClearanceRequestFieldDetail record (ported from legacy XAF
+/// ClearanceRequestFieldDetail): which department owns a given clearance checklist line. No
+/// Code/NameEn/NameAr, so plain CRUD without auto-code or duplicate validation.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_GeneralMasterInfo_ClearanceRequestFieldDetails)]
 public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClearanceRequestFieldDetailsAppService
@@ -33,7 +33,8 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
         input.Normalize();
 
         var query = _repository.GetAll()
-            .Include(d => d.ClearanceRequestField);
+            .Include(d => d.ClearanceRequestField)
+            .Include(d => d.WorkflowRole);
 
         var totalCount = await query.CountAsync();
 
@@ -75,6 +76,7 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
         var entity = new ClearanceRequestFieldDetail
         {
             ClearanceRequestFieldId = input.ClearanceRequestFieldId,
+            WorkflowRoleId = input.WorkflowRoleId,
             TenantId = AbpSession.TenantId ?? 0
         };
 
@@ -87,6 +89,7 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
         var entity = await _repository.GetAsync(input.Id.Value);
 
         entity.ClearanceRequestFieldId = input.ClearanceRequestFieldId;
+        entity.WorkflowRoleId = input.WorkflowRoleId;
 
         await _repository.UpdateAsync(entity);
     }
@@ -103,7 +106,9 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
         {
             Id = entity.Id,
             ClearanceRequestFieldId = entity.ClearanceRequestFieldId,
-            ClearanceRequestFieldName = entity.ClearanceRequestField?.NameEn
+            ClearanceRequestFieldName = entity.ClearanceRequestField?.NameEn,
+            WorkflowRoleId = entity.WorkflowRoleId,
+            WorkflowRoleName = entity.WorkflowRole?.NameEn
         };
     }
 
@@ -112,7 +117,8 @@ public class ClearanceRequestFieldDetailsAppService : HCMv3AppServiceBase, IClea
         return new CreateOrEditClearanceRequestFieldDetailDto
         {
             Id = entity.Id,
-            ClearanceRequestFieldId = entity.ClearanceRequestFieldId
+            ClearanceRequestFieldId = entity.ClearanceRequestFieldId,
+            WorkflowRoleId = entity.WorkflowRoleId
         };
     }
 }
