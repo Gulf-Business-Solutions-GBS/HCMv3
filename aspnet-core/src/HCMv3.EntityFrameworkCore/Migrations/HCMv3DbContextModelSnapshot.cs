@@ -5974,6 +5974,9 @@ namespace HCMv3.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLetterType")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
@@ -20010,6 +20013,12 @@ namespace HCMv3.Migrations
                     b.Property<int?>("WorkLocationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DisciplinaryDeductionTypeId");
@@ -20971,6 +20980,78 @@ namespace HCMv3.Migrations
                     b.HasIndex("ITServiceTypeId");
 
                     b.ToTable("EmployeeITServices");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLetterRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressToAr")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("AddressToEn")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
+
+                    b.ToTable("EmployeeLetterRequests");
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoan", b =>
@@ -37310,6 +37391,25 @@ namespace HCMv3.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("ITServiceType");
+                });
+
+            modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLetterRequest", b =>
+                {
+                    b.HasOne("HCMv3.GeneralMasterInfo.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoan", b =>

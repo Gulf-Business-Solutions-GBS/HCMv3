@@ -1782,6 +1782,10 @@ public static class AppPermissions
     /// on it grants nothing except the right to print it.
     /// </summary>
     public const string Ess_MyLetterRequests = "Ess.MyLetterRequests";
+    /// <summary>Missing clock punches (legacy "skip punch"). Separate from Ess.MyAttendance on purpose: this
+    /// one adds a raw clock event and lets the Time Engine recompute the day, whereas an attendance
+    /// correction states a paid attendance type outright.</summary>
+    public const string Ess_MyPunches = "Ess.MyPunches";
 
     #endregion
 

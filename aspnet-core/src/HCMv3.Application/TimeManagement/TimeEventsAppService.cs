@@ -149,12 +149,20 @@ public class TimeEventsAppService : HCMv3AppServiceBase, ITimeEventsAppService
             throw new UserFriendlyException(L("TransTypeCannotBeBlank"));
         }
 
+        // NOTE: this check runs with the ApprovedOnly filter ON, so it does not see a punch an employee has
+        // requested but nobody has granted yet. That is the deliberate reading everywhere else on this
+        // screen -- HR should not be shown, or blocked by, a row that is not a punch yet -- but it does
+        // leave one narrow window: HR enters the same punch while the request is pending, both pass, and
+        // approving the request then leaves the day with two identical events. Closing it here needs a
+        // filter opt-out, which needs a unit of work, which this service's tests do not give it; the
+        // employee-facing half of the race IS closed, in TimeEventWorkflowTransactionHandler.
         var duplicateEvent = await _repository.GetAll()
             .AnyAsync(e => e.Id != entity.Id
                            && e.EmployeeId == entity.EmployeeId
                            && e.TransTypeId == entity.TransTypeId
                            && e.TransDate == entity.TransDate
                            && e.TransTime == entity.TransTime);
+
         if (duplicateEvent)
         {
             throw new UserFriendlyException(L("TimeEventAlreadyExists",
