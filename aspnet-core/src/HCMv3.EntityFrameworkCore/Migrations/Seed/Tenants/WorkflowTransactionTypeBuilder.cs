@@ -130,7 +130,17 @@ public class WorkflowTransactionTypeBuilder
         // medical claim the same way regardless of what it was for. Note what approval buys -- until it is
         // granted the claim is invisible to payroll AND counts only against what the employee may still
         // claim, never against what they have spent.
-        ("EmployeeHealthReimburse", "Health Reimbursement Claim", "مطالبة تعويض طبي", null, "/app/main/ess/health-reimburse", AppPermissions.Ess_MyHealthReimburses, "flaticon-medical", 190)
+        ("EmployeeHealthReimburse", "Health Reimbursement Claim", "مطالبة تعويض طبي", null, "/app/main/ess/health-reimburse", AppPermissions.Ess_MyHealthReimburses, "flaticon-medical", 190),
+
+        // Personal data update (legacy PersonalDataUpdateRequest). The ONE type in this catalog whose Code is
+        // not the row that ends up changed: approving it writes to the EMPLOYEE MASTER RECORD, and the
+        // proposal lives in its own EmployeePersonalDataChange table rather than on the employee row. That is
+        // the deliberate exception to the single-row rule -- Employee is not IWorkflowEnabledEntity, because a
+        // WorkflowStatus on it would hide a serving employee from payroll for as long as somebody's phone
+        // number edit sat in an inbox. Reuses the existing Ess_MyProfile permission: this screen IS my
+        // profile, and a new permission would have to be granted by every tenant before self service worked.
+        // No sub-type -- legacy routed every personal data update the same way whatever was being changed.
+        ("EmployeePersonalDataChange", "Personal Data Update", "تحديث البيانات الشخصية", null, "/app/main/ess/my-details", AppPermissions.Ess_MyProfile, "flaticon-user", 200)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

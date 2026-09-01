@@ -1830,6 +1830,11 @@
     <text name="ExitDateIsRequired">Enter the exit date.</text>
     <text name="StartDateIsRequired">Enter the start date.</text>
     <text name="AnExitPermitAlreadyExistsForThisExitDate">An exit permit is already recorded for that exit date.</text>
+    <text name="FirstNameEnIsRequired">First name (English) cannot be left blank.</text>
+    <text name="FirstNameArIsRequired">First name (Arabic) cannot be left blank.</text>
+    <text name="LastNameEnIsRequired">Last name (English) cannot be left blank.</text>
+    <text name="LastNameArIsRequired">Last name (Arabic) cannot be left blank.</text>
+    <text name="RequestPersonalDataChange">Update my personal details</text>
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>

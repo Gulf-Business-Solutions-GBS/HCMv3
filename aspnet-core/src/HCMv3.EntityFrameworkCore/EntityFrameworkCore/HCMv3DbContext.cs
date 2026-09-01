@@ -249,6 +249,13 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeDocumentMvmt> EmployeeDocumentMvmts { get; set; }
 
+    /// <summary>
+    /// Proposed changes to an employee's own personnel file, awaiting approval. A separate table on purpose:
+    /// see <see cref="EmployeePersonalDataChange"/> for why Employee itself is deliberately NOT
+    /// workflow-enabled.
+    /// </summary>
+    public virtual DbSet<EmployeePersonalDataChange> EmployeePersonalDataChanges { get; set; }
+
     public virtual DbSet<EmployeeVisaInfo> EmployeeVisaInfos { get; set; }
 
     public virtual DbSet<EmployeeOrgAssignment> EmployeeOrgAssignments { get; set; }
@@ -1546,6 +1553,59 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
+        modelBuilder.Entity<EmployeePersonalDataChange>(b =>
+        {
+            // Every FK on this table is Restrict. Employee is already reachable by several cascade paths
+            // through the rest of the graph, and the lookups reach one another as well (City -> Governorate
+            // -> Country), so anything but Restrict produces "multiple cascade paths" at migration time --
+            // handled the same way as EmployeeDocumentMvmt and SponsorGovtRepresentative above. Restrict is
+            // right on its own terms too: an approved change is the audit trail of who altered somebody's
+            // identity and when, so deleting a lookup row must not take it with them.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Title)
+                .WithMany()
+                .HasForeignKey(e => e.TitleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Nationality)
+                .WithMany()
+                .HasForeignKey(e => e.NationalityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Religion)
+                .WithMany()
+                .HasForeignKey(e => e.ReligionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.MaritalStatus)
+                .WithMany()
+                .HasForeignKey(e => e.MaritalStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Governorate)
+                .WithMany()
+                .HasForeignKey(e => e.GovernorateId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Country)
+                .WithMany()
+                .HasForeignKey(e => e.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.BirthPlace)
+                .WithMany()
+                .HasForeignKey(e => e.BirthPlaceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Self-service lists these by employee and the ApprovedOnly filter reads WorkflowStatus on the
+            // same pass.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
         });
 
