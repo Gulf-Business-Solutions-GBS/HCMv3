@@ -5598,5 +5598,10 @@
     <text name="ThatDocumentTypeIsNotIssuedAsALetter">That document type is not one the company issues as a letter.</text>
     <text name="ReferenceDataPackNotFound">Reference data pack "{0}" was not found.</text>
     <text name="ReferenceDataUnknownLookup">Reference data pack refers to an unknown lookup "{0}".</text>
+    <text name="EssMyHealthReimburses">My Health Reimbursement</text>
+    <text name="PaymentDateIsRequired">Say which date the expense was paid on.</text>
+    <text name="DuplicateHealthReimburseClaimForDate">A health reimbursement claim already exists for {0}. Withdraw or amend that one instead of filing a second.</text>
+    <text name="NoHealthReimburseEntitlementAssigned">No health reimbursement entitlement is assigned for this date. Please check the organization assignment and the salary profile.</text>
+    <text name="NotEnoughHealthReimburseBalance">Not enough health reimbursement balance. You can still claim {0} but asked for {1}. Entitlement period {2} to {3}: allowance {4}, already used {5}, awaiting approval {6}.</text>
   </texts>
 </localizationDictionary>
