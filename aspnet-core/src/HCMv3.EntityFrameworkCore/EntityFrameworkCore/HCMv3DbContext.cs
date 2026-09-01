@@ -497,6 +497,8 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<OrganizationDocument> OrganizationDocuments { get; set; }
 
+    public virtual DbSet<EmployeeExitPermit> EmployeeExitPermits { get; set; }
+
     public virtual DbSet<Location> Locations { get; set; }
 
     public virtual DbSet<Building> Buildings { get; set; }

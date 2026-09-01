@@ -51,6 +51,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyBank, L("EssMyBank"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyTravelClaims, L("EssMyTravelClaims"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyPassportWithdrawals, L("EssMyPassportWithdrawals"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyExitPermits, L("EssMyExitPermits"), multiTenancySides: MultiTenancySides.Tenant);
 
         //GENERAL MASTER INFO
         var generalMasterInfo = pages.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo, L("GeneralMasterInfo"));
@@ -1519,6 +1520,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Create, L("CreateNewItem"));
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Edit, L("EditItem"));
         organizationDocuments.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_OrganizationDocuments_Delete, L("DeleteItem"));
+
+        var employeeExitPermits = govtRelationsManagement.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits, L("EmployeeExitPermits"));
+        employeeExitPermits.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits_Create, L("CreateNewItem"));
+        employeeExitPermits.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits_Edit, L("EditItem"));
+        employeeExitPermits.CreateChildPermission(AppPermissions.Pages_GovtRelationsManagement_EmployeeExitPermits_Delete, L("DeleteItem"));
 
         var accommodationManagement = pages.CreateChildPermission(AppPermissions.Pages_AccommodationManagement, L("AccommodationManagement"));
 

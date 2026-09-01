@@ -1797,6 +1797,13 @@
     <text name="EndTimeCannotBeEarlierThanStartTime">The end time cannot be before the start time.</text>
     <text name="OverlappingAttendanceRequestExists">You already have an attendance record covering those dates.</text>
     <text name="ATravelClaimAlreadyExistsForThisTrip">You have already claimed for this trip.</text>
+    <text name="EmployeeExitPermits">Exit Permits</text>
+    <text name="EssMyExitPermits">My Exit Permits</text>
+    <text name="RequestExitPermit">Record an exit permit</text>
+    <text name="ExitPermitNumberIsRequired">Enter the exit permit number issued by the government.</text>
+    <text name="ExitDateIsRequired">Enter the exit date.</text>
+    <text name="StartDateIsRequired">Enter the start date.</text>
+    <text name="AnExitPermitAlreadyExistsForThisExitDate">An exit permit is already recorded for that exit date.</text>
     <text name="ACommentIsRequiredToApproveAtThisWorkflowStep">This step needs a comment before you can approve.</text>
     <text name="EscalatedAutomaticallyAfterNoAction">Escalated automatically after no action.</text>
     <text name="WorkflowRequestHasBeenAwaitingYourApprovalForDays">{0} ({1}) has been waiting for your approval for {2} day(s).</text>

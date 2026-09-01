@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Extensions;
 using Abp.Runtime.Validation;
+using HCMv3.GovtRelationsManagement;
 using HCMv3.Workflow;
 
 namespace HCMv3.Ess.Dto;
@@ -305,6 +306,42 @@ public class MyTravelClaimDto : MyRequestDtoBase
     public DateTime ClaimDate { get; set; }
 
     public double ClaimAmount { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class MyExitPermitDto : MyRequestDtoBase
+{
+    /// <summary>The number on the permit the government issued.</summary>
+    public string ExternalRequestNumber { get; set; }
+
+    public TravelReason TravelReason { get; set; }
+
+    public DateTime ExitDate { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public string Comments { get; set; }
+}
+
+public class RequestExitPermitInput
+{
+    /// <summary>
+    /// The government's permit number. Keyed in rather than generated: the permit is obtained outside this
+    /// system and the employee already has it in hand. Required by the handler as well; validated in both
+    /// places because the handler is the rule and this is the early, friendlier failure.
+    /// </summary>
+    [Required]
+    [StringLength(100, MinimumLength = 1)]
+    public string ExternalRequestNumber { get; set; }
+
+    public TravelReason TravelReason { get; set; }
+
+    /// <summary>The date the employee leaves the country, as printed on the permit.</summary>
+    public DateTime ExitDate { get; set; }
+
+    /// <summary>When the permit takes effect for the company's own records.</summary>
+    public DateTime StartDate { get; set; }
 
     public string Comments { get; set; }
 }

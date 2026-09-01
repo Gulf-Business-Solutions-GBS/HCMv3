@@ -41,7 +41,7 @@ public class WorkflowTransactionTypeBuilder
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
     ///
-    /// The eleven here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A further type
+    /// The rows here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A further type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
@@ -60,6 +60,10 @@ public class WorkflowTransactionTypeBuilder
         // withdrawing a certificate. Note the Code is the transaction entity's name as always -- there is no
         // PassportWithdrawalRequest table here; the movement row IS the request.
         ("EmployeeDocumentMvmt", "Passport Withdrawal", "طلب سحب جواز السفر", "DocumentType", "/app/main/ess/passport-withdrawal", AppPermissions.Ess_MyPassportWithdrawals, "flaticon-suitcase", 95),
+
+        // The permit itself is issued by the government, outside this system. What is routed here is the
+        // company's own sign-off on the absence, which is why approving one writes nothing anywhere else.
+        ("EmployeeExitPermit", "Exit Permit", "إذن خروج", null, "/app/main/ess/exit-permit", AppPermissions.Ess_MyExitPermits, "flaticon-interface-11", 97),
 
         // NOT self-service: HR raises a personnel action, never the employee. EssRoute and EssPermissionName
         // are deliberately null, so it can be routed for approval while never appearing on a tile list.
