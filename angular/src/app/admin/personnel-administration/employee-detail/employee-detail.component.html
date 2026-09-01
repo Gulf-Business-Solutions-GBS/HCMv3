@@ -1,217 +1,142 @@
 <div [@routerTransition]>
     <sub-header [title]="'Employees' | localize" [description]="'PersonnelAdministration' | localize" />
+
     <div [class]="containerClass">
-        <div class="card card-custom gutter-b">
-            <div class="card-header align-items-center border-0">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="fw-bolder text-gray-900">
-                        @if (employee()) {
-                            <span>{{ employee().code }} - {{ employee().firstNameEn }} {{ employee().lastNameEn }}</span>
-                        }
-                    </span>
-                </h3>
+        <!-- Identity header. Who this record belongs to should be readable without looking at the URL
+             or remembering which row was clicked, and it stays put while sections change. -->
+        <div class="emp-identity">
+            <div class="emp-identity-avatar" aria-hidden="true">
+                {{ displayName() ? displayName().charAt(0) : '?' }}
             </div>
-            <div class="card-body">
-                @if (employeeId()) {
-                    <tabset class="tab-container">
-                        <tab heading="{{ 'Dates' | localize }}" [active]="true">
-                            <employee-dates [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeManagers' | localize }}">
-                            <employee-managers [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDottedLineManagers' | localize }}">
-                            <employee-dotted-line-managers [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDelegations' | localize }}">
-                            <employee-delegations [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeRelationships' | localize }}">
-                            <employee-relationships [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeEducations' | localize }}">
-                            <employee-educations [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeCertifications' | localize }}">
-                            <employee-certifications [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeWorkExperiences' | localize }}">
-                            <employee-work-experiences [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDocuments' | localize }}">
-                            <employee-documents [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'Signature' | localize }}">
-                            <employee-signature [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeVisaInfos' | localize }}">
-                            <employee-visa-info [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeOrgAssignments' | localize }}">
-                            <employee-org-assignments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeContracts' | localize }}">
-                            <employee-contracts [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeActions' | localize }}">
-                            <employee-actions [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeSeparations' | localize }}">
-                            <employee-separations [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeRejoins' | localize }}">
-                            <employee-rejoins [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDutyPeriods' | localize }}">
-                            <employee-duty-periods [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTimePolicies' | localize }}">
-                            <employee-time-policies [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeSubstituteDuties' | localize }}">
-                            <employee-substitute-duties [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDutySchedules' | localize }}">
-                            <employee-duty-schedules [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTimesheets' | localize }}">
-                            <employee-timesheets [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeWageAccGroups' | localize }}">
-                            <employee-wage-acc-groups [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeWageAccounts' | localize }}">
-                            <employee-wage-accounts [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeePayrollStatuses' | localize }}">
-                            <employee-payroll-status [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAbsences' | localize }}">
-                            <employee-absences [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAbsenceQuotas' | localize }}">
-                            <employee-absence-quotas [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAbsAdjustments' | localize }}">
-                            <employee-abs-adjustments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAbsQuotaForfeits' | localize }}">
-                            <employee-abs-quota-forfeits [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAttendances' | localize }}">
-                            <employee-attendances [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAttendanceQuotas' | localize }}">
-                            <employee-attendance-quotas [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeBasicPays' | localize }}">
-                            <employee-basic-pays [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeOnHolds' | localize }}">
-                            <employee-on-holds [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeGratuities' | localize }}">
-                            <employee-gratuities [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeGratuityQuotas' | localize }}">
-                            <employee-gratuity-quotas [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeLoans' | localize }}">
-                            <employee-loans [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeInsurances' | localize }}">
-                            <employee-insurances [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeFunds' | localize }}">
-                            <employee-funds [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTickets' | localize }}">
-                            <employee-tickets [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTicketQuotas' | localize }}">
-                            <employee-ticket-quotas [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTicketRoutes' | localize }}">
-                            <employee-ticket-routes [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTktAdjustments' | localize }}">
-                            <employee-tkt-adjustments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeSocialSecurities' | localize }}">
-                            <employee-social-securities [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeSocialSecurityClaims' | localize }}">
-                            <employee-social-security-claims [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDependants' | localize }}">
-                            <employee-dependants [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeSponsors' | localize }}">
-                            <employee-sponsors [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeFnFPayments' | localize }}">
-                            <employee-fnf-payments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeBanks' | localize }}">
-                            <employee-banks [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAssets' | localize }}">
-                            <employee-assets [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeDisciplinaries' | localize }}">
-                            <employee-disciplinaries [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeGrievances' | localize }}">
-                            <employee-grievances [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeHealthReimburses' | localize }}">
-                            <employee-health-reimburses [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeOvertimes' | localize }}">
-                            <employee-overtimes [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeePayments' | localize }}">
-                            <employee-payments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeRemunerations' | localize }}">
-                            <employee-remunerations [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeRewards' | localize }}">
-                            <employee-rewards [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeCostDistributions' | localize }}">
-                            <employee-cost-distributions [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeAccountAssignments' | localize }}">
-                            <employee-account-assignments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeExtdWorkLocations' | localize }}">
-                            <employee-extd-work-locations [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeBenefitExceptions' | localize }}">
-                            <employee-benefit-exceptions [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeNonPayrollTrans' | localize }}">
-                            <employee-non-payroll-trans [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTasks' | localize }}">
-                            <employee-tasks [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmpPerformanceHistories' | localize }}">
-                            <employee-performance-histories [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmpPotentialAssessments' | localize }}">
-                            <employee-potential-assessments [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmpTalentMatrixDatas' | localize }}">
-                            <employee-talent-matrix [employeeId]="employeeId()" />
-                        </tab>
-                        <tab heading="{{ 'EmployeeTalentFlags' | localize }}">
-                            <employee-talent-flags [employeeId]="employeeId()" />
-                        </tab>
-                    </tabset>
+            <div class="emp-identity-text">
+                <h2 class="emp-identity-name">
+                    {{ displayName() || ('Employees' | localize) }}
+                </h2>
+                @if (employee()?.code) {
+                    <div class="emp-identity-meta">
+                        <span class="emp-identity-code">{{ employee().code }}</span>
+                    </div>
                 }
             </div>
+        </div>
+
+        <div class="emp-layout" [class.emp-layout-collapsed]="isRailCollapsed()">
+            <!-- Section rail -->
+            <nav class="emp-rail" [attr.aria-label]="'Employees' | localize">
+                <div class="emp-rail-top">
+                    <!-- Collapsed, this button is the ONLY thing left in the rail, which is why the rail
+                         keeps a narrow strip instead of disappearing: a rail that vanishes entirely
+                         leaves no way back to it except the browser's back button. -->
+                    <button
+                        type="button"
+                        class="emp-rail-toggle"
+                        (click)="toggleRail()"
+                        [attr.aria-expanded]="!isRailCollapsed()"
+                        [attr.aria-label]="(isRailCollapsed() ? 'Expand' : 'Collapse') | localize"
+                        [title]="(isRailCollapsed() ? 'Expand' : 'Collapse') | localize">
+                        <i
+                            class="fa"
+                            [class.fa-angle-double-left]="!isRailCollapsed()"
+                            [class.fa-angle-double-right]="isRailCollapsed()"
+                            aria-hidden="true"></i>
+                    </button>
+
+                    @if (!isRailCollapsed()) {
+                        <div class="emp-search">
+                            <i class="fa fa-search emp-search-icon" aria-hidden="true"></i>
+                            <input
+                                type="search"
+                                class="emp-search-input"
+                                [ngModel]="searchTerm()"
+                                (ngModelChange)="searchTerm.set($event)"
+                                [attr.aria-label]="'EmpSectionSearch' | localize"
+                                [placeholder]="'EmpSectionSearch' | localize" />
+                            @if (searchTerm()) {
+                                <button
+                                    type="button"
+                                    class="emp-search-clear"
+                                    (click)="clearSearch()"
+                                    [attr.aria-label]="'Clear' | localize">
+                                    &times;
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (isRailCollapsed()) {
+                    <!-- Collapsed: category icons, in the same flaticon family as the main application
+                         rail so this reads as the same kind of control. They reopen the rail at that
+                         category rather than navigating -- one icon cannot say which of Personal's ten
+                         sections you meant. -->
+                    <ul class="emp-rail-icons">
+                        @for (category of allCategories; track category.id) {
+                            <li>
+                                <button
+                                    type="button"
+                                    class="emp-rail-icon"
+                                    (click)="expandTo(category)"
+                                    [title]="category.labelKey | localize"
+                                    [attr.aria-label]="category.labelKey | localize">
+                                    <i [class]="category.icon" aria-hidden="true"></i>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class="emp-rail-scroll" [hidden]="isRailCollapsed()">
+                    @for (category of visibleCategories(); track category.id) {
+                        <!-- Same icon as the collapsed strip, so which icon means what is learned here
+                             rather than guessed there. -->
+                        <div class="emp-rail-category" [id]="'emp-cat-' + category.id">
+                            <i [class]="category.icon + ' emp-rail-category-icon'" aria-hidden="true"></i>
+                            {{ category.labelKey | localize }}
+                        </div>
+                        <ul class="emp-rail-sections">
+                            @for (section of category.sections; track section.id) {
+                                <li>
+                                    <button
+                                        type="button"
+                                        class="emp-rail-section"
+                                        [class.emp-rail-on]="activeSectionId() === section.id"
+                                        [attr.aria-current]="activeSectionId() === section.id ? 'true' : null"
+                                        (click)="selectSection(section)">
+                                        {{ section.labelKey | localize }}
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                    @if (!hasSearchResults()) {
+                        <!-- Said plainly rather than left as an empty rail, which reads as a broken
+                             screen rather than as a search that matched nothing. -->
+                        <p class="emp-rail-empty">{{ 'EmpSectionSearchNoMatch' | localize }}</p>
+                    }
+                </div>
+            </nav>
+
+            <!-- The section in view -->
+            <main class="emp-main">
+                <div class="emp-main-head">
+                    <h3 class="emp-main-title">{{ activeSection()?.labelKey | localize }}</h3>
+                </div>
+
+                <div class="emp-main-body">
+                    @if (employeeId() && activeComponent()) {
+                        <!-- One section is built at a time. The previous screen mounted all 65 grids
+                             on load, with their paging state and lookup calls, to show one of them. -->
+                        <ng-container
+                            *ngComponentOutlet="activeComponent(); inputs: sectionInputs()"></ng-container>
+                    } @else if (isSectionLoading()) {
+                        <div class="emp-main-loading">
+                            <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                            {{ 'LoadingWithThreeDot' | localize }}
+                        </div>
+                    }
+                </div>
+            </main>
         </div>
     </div>
 </div>
