@@ -28,8 +28,16 @@ public class PAEmployeeDto : EntityDto<int>
 
     public double EmployeeAverageScore { get; set; }
 
+    /// <summary>
+    /// LEGACY, read-only. Returned so text captured before HCMv3's workflow engine stays visible; it is
+    /// never written back. See <see cref="CreateOrEditPAEmployeeDto"/>.
+    /// </summary>
     public string RequestComments { get; set; }
 
+    /// <summary>
+    /// LEGACY, read-only. The old concatenated approval conversation, kept visible for migrated appraisals.
+    /// New comments live in the <c>WorkflowComment</c> thread on the governing request.
+    /// </summary>
     public string WorkflowComments { get; set; }
 
     public string ProposedIncrement { get; set; }

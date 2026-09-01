@@ -72,7 +72,14 @@ public class WorkflowTransactionTypeBuilder
         // Also NOT self-service: a manager or HR plans a department's headcount; an employee does not
         // request headcount about themselves. Routed because approval is what mints budgeted vacant
         // positions that recruitment then hires against.
-        ("ManpowerPlanning", "Manpower Plan", "خطة القوى العاملة", null, null, null, "flaticon-network", 110)
+        ("ManpowerPlanning", "Manpower Plan", "خطة القوى العاملة", null, null, null, "flaticon-network", 110),
+
+        // Also not self-service. An appraisal is opened FOR an employee -- by HR for a cycle, or by a
+        // manager for their team -- so it is submitted from the admin service. The employee's own part is
+        // their self-rating, which is recorded on PAEmployeeReviewer/PAEmployeeRating rather than on the
+        // appraisal row that routes. Sub-type is the FORM TYPE, matching legacy: a 360 form is approved by
+        // different people from a probation form, whereas the cycle is only a period.
+        ("PAEmployee", "Performance Appraisal", "تقييم الأداء", "FormType", null, null, "flaticon-star", 120)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
