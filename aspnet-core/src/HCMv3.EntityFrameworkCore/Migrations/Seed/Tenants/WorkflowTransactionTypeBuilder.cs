@@ -41,7 +41,7 @@ public class WorkflowTransactionTypeBuilder
     /// Code MUST equal the entity's own type name -- it is matched against
     /// <c>WorkflowRequest.RequestType</c> and <c>WorkflowGroupDetail.RequestTypeName</c>.
     ///
-    /// The ten here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A tenth type
+    /// The rows here are the entities that implement <c>IWorkflowEnabledEntity</c> today. A further type
     /// needs: the interface on the entity, a row here, and a handler -- no engine change.
     /// </summary>
     private static readonly (string Code, string NameEn, string NameAr, string SubTypeSource, string EssRoute, string EssPermissionName, string IconClass, int DisplayOrder)[] Catalog =
@@ -55,7 +55,11 @@ public class WorkflowTransactionTypeBuilder
         ("EmployeeAttendance", "Attendance Correction", "تصحيح الحضور", "AttendanceType", "/app/main/ess/attendance", AppPermissions.Ess_MyAttendance, "flaticon-time-3", 70),
         ("EmployeeBank", "Bank Detail Change", "تغيير بيانات البنك", null, "/app/main/ess/bank", AppPermissions.Ess_MyBank, "flaticon-coins", 80),
         ("TravelFeedback", "Travel Expense Claim", "مطالبة مصاريف السفر", null, "/app/main/ess/travel-claim", AppPermissions.Ess_MyTravelClaims, "flaticon-map", 90),
-        
+
+        // The permit itself is issued by the government, outside this system. What is routed here is the
+        // company's own sign-off on the absence, which is why approving one writes nothing anywhere else.
+        ("EmployeeExitPermit", "Exit Permit", "إذن خروج", null, "/app/main/ess/exit-permit", AppPermissions.Ess_MyExitPermits, "flaticon-interface-11", 95),
+
         // NOT self-service: HR raises a personnel action, never the employee. EssRoute and EssPermissionName
         // are deliberately null, so it can be routed for approval while never appearing on a tile list.
         ("EmployeeAction", "Personnel Action", "إجراء شخصي", "PersonalAction", null, null, "flaticon-users", 100)

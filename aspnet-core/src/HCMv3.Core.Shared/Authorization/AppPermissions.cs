@@ -1448,6 +1448,11 @@ public static class AppPermissions
     public const string Pages_GovtRelationsManagement_OrganizationDocuments_Edit = "Pages.GovtRelationsManagement.OrganizationDocuments.Edit";
     public const string Pages_GovtRelationsManagement_OrganizationDocuments_Delete = "Pages.GovtRelationsManagement.OrganizationDocuments.Delete";
 
+    public const string Pages_GovtRelationsManagement_EmployeeExitPermits = "Pages.GovtRelationsManagement.EmployeeExitPermits";
+    public const string Pages_GovtRelationsManagement_EmployeeExitPermits_Create = "Pages.GovtRelationsManagement.EmployeeExitPermits.Create";
+    public const string Pages_GovtRelationsManagement_EmployeeExitPermits_Edit = "Pages.GovtRelationsManagement.EmployeeExitPermits.Edit";
+    public const string Pages_GovtRelationsManagement_EmployeeExitPermits_Delete = "Pages.GovtRelationsManagement.EmployeeExitPermits.Delete";
+
     public const string Pages_AccommodationManagement = "Pages.AccommodationManagement";
 
     public const string Pages_AccommodationManagement_Locations = "Pages.AccommodationManagement.Locations";
@@ -1745,6 +1750,7 @@ public static class AppPermissions
     public const string Ess_MyAttendance = "Ess.MyAttendance";
     public const string Ess_MyBank = "Ess.MyBank";
     public const string Ess_MyTravelClaims = "Ess.MyTravelClaims";
+    public const string Ess_MyExitPermits = "Ess.MyExitPermits";
 
     #endregion
 
