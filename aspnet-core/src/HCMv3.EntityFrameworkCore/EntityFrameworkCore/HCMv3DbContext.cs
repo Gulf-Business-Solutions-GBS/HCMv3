@@ -1615,6 +1615,14 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
         });
 
+        modelBuilder.Entity<EmployeeHealthReimburse>(b =>
+        {
+            // Self-service lists these by employee and the ApprovedOnly filter reads WorkflowStatus on the
+            // same pass. PaymentDate is in the index too, because it is on the hot path twice over: the
+            // balance calculation sums a date window, and the duplicate guard looks up a single date.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.PaymentDate, e.WorkflowStatus });
+        });
+
         modelBuilder.Entity<EmployeeAccommodation>(b =>
         {
             // Location/Building/Floor/Flat/Room/Bed form a cascading hierarchy chain (Location->Building->

@@ -122,7 +122,15 @@ public class WorkflowTransactionTypeBuilder
         // override row IS the request. Sub-type is the DUTY, so moving somebody onto nights can take a
         // longer chain than swapping one day shift for another. Note what approval buys -- until it is
         // granted the override is invisible to the roster, so nobody's calculated shift changes.
-        ("EmployeeSubstituteDuty", "Shift Override", "تغيير الوردية", "Duty", null, null, "flaticon-calendar", 180)
+        ("EmployeeSubstituteDuty", "Shift Override", "تغيير الوردية", "Duty", null, null, "flaticon-calendar", 180),
+
+        // Health reimbursement. Self-service: the employee paid the doctor and is claiming it back. The Code
+        // is the transaction entity's name as always -- there is no HealthReimburseRequest table here, the
+        // claim row IS the request, and nothing is created on approval. No sub-type: legacy routed every
+        // medical claim the same way regardless of what it was for. Note what approval buys -- until it is
+        // granted the claim is invisible to payroll AND counts only against what the employee may still
+        // claim, never against what they have spent.
+        ("EmployeeHealthReimburse", "Health Reimbursement Claim", "مطالبة تعويض طبي", null, "/app/main/ess/health-reimburse", AppPermissions.Ess_MyHealthReimburses, "flaticon-medical", 190)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

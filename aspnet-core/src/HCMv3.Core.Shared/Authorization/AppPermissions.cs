@@ -1794,6 +1794,13 @@ public static class AppPermissions
     /// </summary>
     public const string Ess_MyClearances = "Ess.MyClearances";
 
+    /// <summary>
+    /// Health reimbursement -- claiming a medical expense back against the employee's own entitlement. Held
+    /// by the claiming employee. Note it also gates the balance endpoint, which is why an employee who cannot
+    /// claim cannot read their entitlement figures either.
+    /// </summary>
+    public const string Ess_MyHealthReimburses = "Ess.MyHealthReimburses";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";
