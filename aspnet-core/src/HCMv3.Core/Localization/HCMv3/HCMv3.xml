@@ -2424,6 +2424,7 @@
     <text name="TimePolicyCannotBeBlank">Time policy cannot be blank.</text>
     <text name="WorkLocationCannotBeBlank">Work location cannot be blank.</text>
     <text name="SubstituteDateAlreadyExists">A substitute duty for this employee with date '{0}' already exists.</text>
+    <text name="SubstituteDateIsRequired">Enter the date the shift override applies to.</text>
     <text name="TimesheetAlreadyExists">A timesheet for this employee with date '{0}' already exists.</text>
     <text name="SubstituteDate">Substitute Date</text>
     <text name="TransDate">Trans Date</text>

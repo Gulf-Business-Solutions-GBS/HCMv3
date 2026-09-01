@@ -4,6 +4,7 @@ using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Dto;
+using HCMv3.Tests.PerformanceManagement;
 using Shouldly;
 using Xunit;
 
@@ -12,9 +13,18 @@ namespace HCMv3.Tests.TimeManagement;
 // ReSharper disable once InconsistentNaming
 public class EmployeeSubstituteDutiesAppService_Tests : TimeManagementAppServiceTestBase
 {
+    /// <summary>
+    /// The submitter is faked here: this harness runs against a private Sqlite context with no workflow
+    /// catalog and no approval engine, so the fake reproduces the only part these tests care about -- the
+    /// row is inserted, with a null WorkflowStatus, which is exactly what the real submitter does when the
+    /// type is not workflow-enabled. The routing itself is covered end to end against the real engine in
+    /// <c>HCMv3.Tests.Workflow.SubstituteDutyWorkflow_Tests</c>.
+    /// </summary>
     private EmployeeSubstituteDutiesAppService CreateAppService()
     {
-        return CreateService(() => new EmployeeSubstituteDutiesAppService(FakeRepository.For<EmployeeSubstituteDuty>(Context)));
+        return CreateService(() => new EmployeeSubstituteDutiesAppService(
+            FakeRepository.For<EmployeeSubstituteDuty>(Context),
+            new FakeAdminTransactionSubmitter()));
     }
 
     private int CreateNationality()

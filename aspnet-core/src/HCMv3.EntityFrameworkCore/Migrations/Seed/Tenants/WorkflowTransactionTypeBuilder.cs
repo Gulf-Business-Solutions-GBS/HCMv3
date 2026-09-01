@@ -113,7 +113,16 @@ public class WorkflowTransactionTypeBuilder
         // off" behaviour is nothing more than configuring this type's step as ApprovalRequire.Parallel --
         // there is no bespoke sign-off mechanism, and which checklist lines each approver is shown comes from
         // ClearanceRequestFieldDetail.WorkflowRoleId at render time.
-        ("EmployeeClearance", "Exit Clearance", "إخلاء طرف", "ClearanceRequestType", "/app/main/ess/clearance", AppPermissions.Ess_MyClearances, "flaticon-list-3", 170)
+        ("EmployeeClearance", "Exit Clearance", "إخلاء طرف", "ClearanceRequestType", "/app/main/ess/clearance", AppPermissions.Ess_MyClearances, "flaticon-list-3", 170),
+
+        // The shift override (legacy RosterPlannerRequest). NOT self-service: a manager plans who works
+        // which shift, and an employee does not request a change to somebody else's roster -- so EssRoute
+        // and EssPermissionName are deliberately null, exactly as for EmployeeAction. The Code is the
+        // transaction entity's name as always: there is no RosterPlannerRequest header/detail pair here, the
+        // override row IS the request. Sub-type is the DUTY, so moving somebody onto nights can take a
+        // longer chain than swapping one day shift for another. Note what approval buys -- until it is
+        // granted the override is invisible to the roster, so nobody's calculated shift changes.
+        ("EmployeeSubstituteDuty", "Shift Override", "تغيير الوردية", "Duty", null, null, "flaticon-calendar", 180)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
