@@ -80,6 +80,13 @@ public class WorkflowTransactionTypeBuilder
         // appraisal row that routes. Sub-type is the FORM TYPE, matching legacy: a 360 form is approved by
         // different people from a probation form, whereas the cycle is only a period.
         ("PAEmployee", "Performance Appraisal", "تقييم الأداء", "FormType", null, null, "flaticon-star", 120)
+        // Self-service: an employee asks for their own certificate, letter or card replacement.
+        ("EmployeeHRService", "HR Service Request", "طلب خدمة موارد بشرية", "HRServiceType", "/app/main/ess/hr-service", AppPermissions.Ess_MyHRServices, "flaticon-notepad", 98),
+
+        // NOT self-service either, and on the same kind of evidence: legacy HCM10.ESS contains no view,
+        // controller or model for an IT service -- only a back-office screen. It is raised on the employee's
+        // behalf, so it is routed for approval without ever appearing on a tile list.
+        ("EmployeeITService", "IT Service Request", "طلب خدمة تقنية المعلومات", "ITServiceType", null, null, "flaticon-computer", 130)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

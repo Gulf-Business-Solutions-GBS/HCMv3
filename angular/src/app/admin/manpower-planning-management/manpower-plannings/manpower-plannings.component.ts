@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
-    ApproveManpowerPlanningDto,
     GetAllManpowerPlanningsInput,
     ManpowerPlanningDto,
     ManpowerPlanningsServiceProxy,
@@ -124,10 +123,6 @@ export class ManpowerPlanningsComponent extends AppComponentBase implements OnIn
         }
     }
 
-    canProcess(record: ManpowerPlanningDto): boolean {
-        return record.status === ManpowerPlanningStatus.Draft || record.status === ManpowerPlanningStatus.Submitted;
-    }
-
     showMenu(event: Event, record: ManpowerPlanningDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -150,19 +145,6 @@ export class ManpowerPlanningsComponent extends AppComponentBase implements OnIn
             });
         }
 
-        if (this.permission.isGranted('Pages.ManpowerPlanningManagement.ManpowerPlannings.Approve') && this.canProcess(record)) {
-            items.push({
-                label: this.l('Approve'),
-                icon: 'pi pi-check',
-                command: () => this.approveManpowerPlanning(record),
-            });
-            items.push({
-                label: this.l('Reject'),
-                icon: 'pi pi-times',
-                command: () => this.rejectManpowerPlanning(record),
-            });
-        }
-
         if (this.permission.isGranted('Pages.ManpowerPlanningManagement.ManpowerPlannings.Delete')) {
             items.push({
                 label: this.l('Delete'),
@@ -174,27 +156,12 @@ export class ManpowerPlanningsComponent extends AppComponentBase implements OnIn
         return items;
     }
 
-    approveManpowerPlanning(record: ManpowerPlanningDto): void {
-        this.message.confirm(this.l('AreYouSure'), this.l('ApproveManpowerPlanning'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.approve(new ApproveManpowerPlanningDto({ id: record.id })).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyApproved'));
-                });
-            }
-        });
-    }
-
-    rejectManpowerPlanning(record: ManpowerPlanningDto): void {
-        this.message.confirm(this.l('AreYouSure'), this.l('Reject'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._service.reject(new ApproveManpowerPlanningDto({ id: record.id })).subscribe(() => {
-                    this.reloadPage();
-                    this.notify.success(this.l('SuccessfullyRejected'));
-                });
-            }
-        });
-    }
+    // Approve and Reject were removed here on purpose. Manpower plans are now decided through the workflow
+    // engine, so approving one happens in Self Service > Inbox alongside every other request type -- with a
+    // comment thread, a history and an approval chain, none of which these two buttons had.
+    //
+    // Leaving them would have meant two ways to approve the same plan, which is the divergence this whole
+    // design exists to prevent.
 
     deleteManpowerPlanning(record: ManpowerPlanningDto): void {
         this.message.confirm(

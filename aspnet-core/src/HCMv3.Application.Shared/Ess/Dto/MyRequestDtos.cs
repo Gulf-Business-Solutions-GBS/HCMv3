@@ -320,6 +320,17 @@ public class MyExitPermitDto : MyRequestDtoBase
     public DateTime ExitDate { get; set; }
 
     public DateTime StartDate { get; set; }
+public class MyHRServiceRequestDto : MyRequestDtoBase
+{
+    public int HRServiceTypeId { get; set; }
+
+    public string HRServiceTypeNameEn { get; set; }
+
+    public string HRServiceTypeNameAr { get; set; }
+
+    public DateTime ServiceDate { get; set; }
+
+    public double Amount { get; set; }
 
     public string Comments { get; set; }
 }
@@ -342,6 +353,17 @@ public class RequestExitPermitInput
 
     /// <summary>When the permit takes effect for the company's own records.</summary>
     public DateTime StartDate { get; set; }
+public class RequestHRServiceInput
+{
+    public int HRServiceTypeId { get; set; }
+
+    /// <summary>When the employee needs it by. Defaults to today on the screen, as legacy did.</summary>
+    public DateTime ServiceDate { get; set; }
+
+    /// <summary>Optional -- most HR services carry no charge at all, so zero is a real answer rather than a
+    /// missing one, and there is no minimum to enforce.</summary>
+    [Range(0, 1_000_000_000)]
+    public double Amount { get; set; }
 
     public string Comments { get; set; }
 }

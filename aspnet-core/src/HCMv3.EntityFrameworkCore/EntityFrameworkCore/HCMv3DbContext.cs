@@ -612,6 +612,10 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeAssetInvoice> EmployeeAssetInvoices { get; set; }
 
+    public virtual DbSet<EmployeeHRService> EmployeeHRServices { get; set; }
+
+    public virtual DbSet<EmployeeITService> EmployeeITServices { get; set; }
+
     public virtual DbSet<EmployeeDisciplinary> EmployeeDisciplinaries { get; set; }
 
     public virtual DbSet<EmployeeGrievance> EmployeeGrievances { get; set; }

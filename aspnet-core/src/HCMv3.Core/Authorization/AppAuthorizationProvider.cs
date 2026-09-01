@@ -52,6 +52,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyTravelClaims, L("EssMyTravelClaims"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyPassportWithdrawals, L("EssMyPassportWithdrawals"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyExitPermits, L("EssMyExitPermits"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyHRServices, L("EssMyHRServices"), multiTenancySides: MultiTenancySides.Tenant);
 
         //GENERAL MASTER INFO
         var generalMasterInfo = pages.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo, L("GeneralMasterInfo"));
@@ -648,6 +649,16 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Create, L("CreateNewItem"));
         employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Edit, L("EditItem"));
         employeeAssets.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssets_Delete, L("DeleteItem"));
+
+        var employeeHRServices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices, L("EmployeeHRServices"));
+        employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Create, L("CreateNewItem"));
+        employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Edit, L("EditItem"));
+        employeeHRServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeHRServices_Delete, L("DeleteItem"));
+
+        var employeeITServices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices, L("EmployeeITServices"));
+        employeeITServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices_Create, L("CreateNewItem"));
+        employeeITServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices_Edit, L("EditItem"));
+        employeeITServices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeITServices_Delete, L("DeleteItem"));
 
         var employeeAssetInvoices = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices, L("EmployeeAssetInvoices"));
         employeeAssetInvoices.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssetInvoices_Create, L("CreateNewItem"));
