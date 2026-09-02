@@ -56,23 +56,21 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
         return this._screenNavigation.showScreenCodes();
     }
 
-    favoriteScreens(): ScreenDto[] {
-        return this._screenNavigation.favoriteScreens();
-    }
+    /**
+     * COMPUTED, not a method. As a method this returned a NEW ARRAY on every change-detection pass, and
+     * it is read from an @for in the template -- so every keystroke anywhere on the page handed @for a
+     * fresh array identity and it re-rendered the shortcut list. That is the flicker, and the churn was
+     * enough to close the Quick Nav overlay mid-type. A computed returns the SAME array until its inputs
+     * actually change.
+     */
+    readonly favoriteScreens = computed<ScreenDto[]>(() => this._screenNavigation.favoriteScreens());
 
     /**
      * The five most recent, minus anything already pinned above -- showing a screen twice in two lists
      * eight pixels apart wastes the space both lists are competing for.
      */
-    recentScreens(): ScreenDto[] {
-        const pinned = new Set(this._screenNavigation.favorites().map((f) => f.screenKey));
-
-        return this._screenNavigation
-            .recent()
-            .filter((r) => !pinned.has(r.screenKey))
-            .map((r) => this._screenNavigation.screenForKey(r.screenKey))
-            .filter((s): s is ScreenDto => !!s);
-    }
+    /** Shared with the dashboard tile, so the two never disagree about what is recent. */
+    readonly recentScreens = computed<ScreenDto[]>(() => this._screenNavigation.recentScreens());
 
     /**
      * Stops the click reaching the anchor. Without this, starring a screen also navigates to it -- the

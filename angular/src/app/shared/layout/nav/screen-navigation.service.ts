@@ -93,12 +93,43 @@ export class ScreenNavigationService {
         return this.favoriteKeys().has(screenKey);
     }
 
-    /** The screens behind the user's favourites, resolved and in the order the server ranked them. */
-    favoriteScreens(): ScreenDto[] {
-        return this.favorites()
+    /**
+     * The screens behind the user's favourites, resolved and in the order the server ranked them.
+     *
+     * A COMPUTED, not a method. Read from an @for in two templates; as a method it returned a fresh
+     * array on every change-detection pass, so @for saw a new identity on every keystroke and rebuilt
+     * the list continuously.
+     */
+    readonly favoriteScreens = computed<ScreenDto[]>(() =>
+        this.favorites()
             .map((f) => this.byKey().get(f.screenKey))
+            .filter((s): s is ScreenDto => !!s)
+    );
+
+    /**
+     * Only the screens the user ACTUALLY pinned.
+     *
+     * The server pads `favorites` with most-visited screens when someone has pinned nothing, so the
+     * dashboard tile is not empty on day one. Those arrive with isFavorite false. Now that Recently
+     * Visited is a section in its own right that padding would be the same list twice, so anywhere a
+     * section is headed "Favorites" it must use this, not favoriteScreens.
+     */
+    readonly pinnedScreens = computed<ScreenDto[]>(() =>
+        this.favorites()
+            .filter((f) => f.isFavorite)
+            .map((f) => this.byKey().get(f.screenKey))
+            .filter((s): s is ScreenDto => !!s)
+    );
+
+    /** Recents, minus anything pinned: the same screen in two adjacent lists helps nobody. */
+    readonly recentScreens = computed<ScreenDto[]>(() => {
+        const pinned = new Set(this.favorites().filter((f) => f.isFavorite).map((f) => f.screenKey));
+
+        return this.recent()
+            .filter((r) => !pinned.has(r.screenKey))
+            .map((r) => this.byKey().get(r.screenKey))
             .filter((s): s is ScreenDto => !!s);
-    }
+    });
 
     toggleFavorite(screen: ScreenDto): void {
         const wasFavorite = this.isFavorite(screen.screenKey);

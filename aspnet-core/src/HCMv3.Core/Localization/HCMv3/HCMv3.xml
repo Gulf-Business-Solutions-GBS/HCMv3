@@ -5754,5 +5754,6 @@
     <text name="QuickLinkScreenMissing">This screen no longer exists</text>
     <text name="QuickLinksCapNote">Only the first {0} appear on the dashboard. Reorder to change which.</text>
 
+    <text name="Shortcuts">Shortcuts</text>
   </texts>
 </localizationDictionary>

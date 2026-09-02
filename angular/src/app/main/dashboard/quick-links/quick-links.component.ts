@@ -26,20 +26,24 @@ import { ScreenDto } from '@shared/service-proxies/service-proxies';
 export class QuickLinksComponent extends AppComponentBase implements OnInit {
     private _screenNavigation = inject(ScreenNavigationService);
 
+    /** Published by an administrator for the whole tenant. */
     readonly shared = computed<ScreenDto[]>(() => this._screenNavigation.sharedQuickLinks());
-    readonly mine = computed<ScreenDto[]>(() => this._screenNavigation.favoriteScreens());
-    readonly showScreenCodes = computed<boolean>(() => this._screenNavigation.showScreenCodes());
 
     /**
-     * Whether the user has actually pinned anything, as opposed to the server standing in their
-     * most-visited. Drives the heading: calling a suggestion "My Links" would claim a choice they never
-     * made, and they would go looking for how to unpin it.
+     * Only what the user actually starred -- NOT the server's most-visited padding. With Recently
+     * Visited now a section of its own, that padding would print the same screens twice under two
+     * different headings, one of which would be lying about how they got there.
      */
-    readonly hasOwnFavorites = computed<boolean>(() =>
-        this._screenNavigation.favorites().some((f) => f.isFavorite)
-    );
+    readonly favorites = computed<ScreenDto[]>(() => this._screenNavigation.pinnedScreens());
 
-    readonly isEmpty = computed<boolean>(() => this.shared().length === 0 && this.mine().length === 0);
+    /** Recents, already excluding anything starred above. */
+    readonly recent = computed<ScreenDto[]>(() => this._screenNavigation.recentScreens());
+
+    readonly showScreenCodes = computed<boolean>(() => this._screenNavigation.showScreenCodes());
+
+    readonly isEmpty = computed<boolean>(
+        () => this.shared().length === 0 && this.favorites().length === 0 && this.recent().length === 0
+    );
 
     ngOnInit(): void {
         // The sidebar normally loads this first; the guard is for a dashboard reached before it renders.

@@ -87,3 +87,10 @@
 .ql-manage {
     margin-top: 8px;
 }
+
+/* Recents are where you happened to be, not where you chose to go -- lighter than the two sections
+   above so the eye lands on the deliberate lists first. */
+.ql-link-quiet {
+    background: #fff;
+    border-style: dashed;
+}
