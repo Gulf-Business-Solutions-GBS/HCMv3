@@ -30831,6 +30831,197 @@ namespace HCMv3.Migrations
                     b.ToTable("TimeLogs");
                 });
 
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("OrganizationUnitId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
+
+                    b.ToTable("TimeLogApprovals");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApprovalDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("ProposedAbsentDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ProposedActualWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ProposedDedLateInEarlyOutMins")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeLogApprovalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TimeLogApprovalId");
+
+                    b.HasIndex("TimeRegisterId");
+
+                    b.HasIndex("TenantId", "TimeRegisterId");
+
+                    b.ToTable("TimeLogApprovalDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("AbsentDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ActualWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedAbsentDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedActualWorkingDay")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ApprovedDedLateInEarlyOutMins")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateOfAction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DedLateInEarlyOutMins")
+                        .HasColumnType("float");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeLogApprovalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeRegisterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TimeLogApprovalId");
+
+                    b.HasIndex("TimeRegisterId");
+
+                    b.HasIndex("TenantId", "TimeRegisterId");
+
+                    b.ToTable("TimeLogHistories");
+                });
+
             modelBuilder.Entity("HCMv3.TimeManagement.TimePolicy", b =>
                 {
                     b.Property<int>("Id")
@@ -31200,6 +31391,9 @@ namespace HCMv3.Migrations
                     b.Property<double>("TicketAccrualPerDay")
                         .HasColumnType("float");
 
+                    b.Property<int?>("TimeLogApprovalId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TimePolicyId")
                         .HasColumnType("int");
 
@@ -31221,6 +31415,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("OvertimeTypeId");
+
+                    b.HasIndex("TimeLogApprovalId");
 
                     b.HasIndex("TimePolicyId");
 
@@ -39882,6 +40078,55 @@ namespace HCMv3.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApproval", b =>
+                {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApprovalDetail", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.TimeLogApproval", "TimeLogApproval")
+                        .WithMany("Details")
+                        .HasForeignKey("TimeLogApprovalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimeRegister", "TimeRegister")
+                        .WithMany()
+                        .HasForeignKey("TimeRegisterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TimeLogApproval");
+
+                    b.Navigation("TimeRegister");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogHistory", b =>
+                {
+                    b.HasOne("HCMv3.TimeManagement.TimeLogApproval", "TimeLogApproval")
+                        .WithMany()
+                        .HasForeignKey("TimeLogApprovalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HCMv3.TimeManagement.TimeRegister", "TimeRegister")
+                        .WithMany()
+                        .HasForeignKey("TimeRegisterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TimeLogApproval");
+
+                    b.Navigation("TimeRegister");
+                });
+
             modelBuilder.Entity("HCMv3.TimeManagement.TimeRegister", b =>
                 {
                     b.HasOne("HCMv3.TimeManagement.Duty", "Duty")
@@ -39901,6 +40146,11 @@ namespace HCMv3.Migrations
                     b.HasOne("HCMv3.GeneralMasterInfo.OvertimeType", "OvertimeType")
                         .WithMany()
                         .HasForeignKey("OvertimeTypeId");
+
+                    b.HasOne("HCMv3.TimeManagement.TimeLogApproval", null)
+                        .WithMany()
+                        .HasForeignKey("TimeLogApprovalId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HCMv3.TimeManagement.TimePolicy", "TimePolicy")
                         .WithMany()
@@ -40518,6 +40768,11 @@ namespace HCMv3.Migrations
             modelBuilder.Entity("HCMv3.ReportManagement.ReportScheduleRun", b =>
                 {
                     b.Navigation("Slices");
+                });
+
+            modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApproval", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetail", b =>
