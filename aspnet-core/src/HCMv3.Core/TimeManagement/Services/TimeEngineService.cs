@@ -41,13 +41,14 @@ namespace HCMv3.TimeManagement.Services;
 /// <item><description><b>RetroReasonLog NOT ported</b> (legacy lines ~1549-1577, <c>SysService.AddRetroReasonLog</c>).
 /// No <c>RetroReasonLog</c> entity exists in this solution. The <c>EarliestMasterDataChange</c> update it
 /// accompanied IS ported.</description></item>
-/// <item><description><b>TimeRegister approval "Reopened vs Opened" branch is collapsed</b> (legacy lines
-/// ~1473-1511). Legacy distinguished the two by whether <c>TimeRegister.WfRequest</c> was non-null, and wrote a
-/// <c>TimeLogHistory</c> row in the Reopened case. This port's <see cref="TimeRegister"/> has NO
-/// <c>WfRequest</c> FK and there is NO <c>TimeLogHistory</c> entity, so neither the discriminator nor the
-/// history row can be reproduced. A previously-Approved row whose AbsentDay/ActualWorkingDay/
-/// DedLateInEarlyOutMins changed is set to <see cref="TimeRegisterStatus.Reopened"/> -- the status this port's
-/// enum exists to express for exactly this case. <b>This is a judgement call, not a faithful port.</b></description></item>
+/// <item><description><b>TimeRegister approval "Reopened vs Opened" branch -- NOW FULLY PORTED</b> (legacy
+/// lines ~1473-1511). This entry previously recorded a deviation: with no <c>WfRequest</c> FK and no
+/// <c>TimeLogHistory</c> entity, neither the discriminator nor the history row could be reproduced, so the
+/// branch was collapsed to an unconditional <see cref="TimeRegisterStatus.Reopened"/>. Both now exist
+/// (<see cref="TimeRegister.TimeLogApprovalId"/> and <see cref="TimeLogHistory"/>), and
+/// <c>ApplyApprovalFieldsAsync</c> reproduces legacy exactly: history row + Reopened + FK cleared when an
+/// approval batch is behind the day, plain <see cref="TimeRegisterStatus.Opened"/> when it was
+/// auto-approved.</description></item>
 /// <item><description><b>"ProbationDate Update" block NOT ported</b> (legacy lines ~1655-1672). It runs only
 /// when <c>ProbationDaysCalculation == WorkingDays</c> and calls <c>emp.GetProbationEndDate(null, null)</c>.
 /// This port's <see cref="Employee.ProbationEndDate"/> is documented as carrying the legacy CalendarDays branch
@@ -108,6 +109,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     private readonly IRepository<EmployeePayrollStatus> _employeePayrollStatusRepository;
     private readonly IRepository<TimeRegister> _timeRegisterRepository;
     private readonly IRepository<TimeLog> _timeLogRepository;
+    private readonly IRepository<TimeLogHistory> _timeLogHistoryRepository;
     private readonly IRepository<ExecutionLog> _executionLogRepository;
     private readonly IRepository<EmployeeDutyPeriod> _employeeDutyPeriodRepository;
     private readonly IRepository<EmployeeTimePolicy> _employeeTimePolicyRepository;
@@ -176,6 +178,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         IRepository<EmployeePayrollStatus> employeePayrollStatusRepository,
         IRepository<TimeRegister> timeRegisterRepository,
         IRepository<TimeLog> timeLogRepository,
+        IRepository<TimeLogHistory> timeLogHistoryRepository,
         IRepository<ExecutionLog> executionLogRepository,
         IRepository<EmployeeDutyPeriod> employeeDutyPeriodRepository,
         IRepository<EmployeeTimePolicy> employeeTimePolicyRepository,
@@ -223,6 +226,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
         _employeePayrollStatusRepository = employeePayrollStatusRepository;
         _timeRegisterRepository = timeRegisterRepository;
         _timeLogRepository = timeLogRepository;
+        _timeLogHistoryRepository = timeLogHistoryRepository;
         _executionLogRepository = executionLogRepository;
         _employeeDutyPeriodRepository = employeeDutyPeriodRepository;
         _employeeTimePolicyRepository = employeeTimePolicyRepository;

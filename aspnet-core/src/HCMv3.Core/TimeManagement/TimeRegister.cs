@@ -17,8 +17,10 @@ namespace HCMv3.TimeManagement;
 /// exists in the legacy source).
 ///
 /// NOT PORTED (deliberate simplifications):
-///  - <c>WfRequest</c> FK to <c>WorkflowRequest</c> -- the Workflow module is not ported at all in this
-///    solution.
+///  - <c>WfRequest</c> FK to <c>WorkflowRequest</c> -- NO LONGER TRUE. Now ported as
+///    <see cref="TimeLogApprovalId"/>, pointing at the <see cref="TimeLogApproval"/> batch rather than at the
+///    request directly (the request is reachable from the batch). See that property for why the reopen path
+///    needs it.
 ///  - The legacy <c>OnDeleting</c> logic that reverses <c>AnnualLeaveAccrualPerDay</c> from the matching
 ///    <c>EmployeeAbsenceQuota.QuotaAccrued</c> row -- <c>EmployeeAbsenceQuota</c> does not exist in this
 ///    port (LeaveManagement module not yet ported).
@@ -185,6 +187,22 @@ public class TimeRegister : FullAuditedEntity, IMustHaveTenant
     public virtual double ApprovedDedLateInEarlyOutMins { get; set; }
 
     public virtual TimeRegisterStatus Status { get; set; }
+
+    /// <summary>
+    /// The <see cref="TimeLogApproval"/> whose approval produced the <c>Approved*</c> figures above, or
+    /// <c>null</c> when nothing has approved this day (or when an approval has since been invalidated by a
+    /// recalculation).
+    ///
+    /// <para>
+    /// Replaces legacy's <c>WfRequest</c> FK, and it exists for one reason: the reopen path. When the engine
+    /// recalculates a day and the raw figures move, it needs to find the approval that no longer describes
+    /// the day, write a <see cref="TimeLogHistory"/> row and CLEAR this column -- without which an approved
+    /// day could never be corrected again, because it would never become eligible for a new request. Bare id
+    /// with no navigation property on purpose: <c>TimeLogApproval -&gt; TimeLogApprovalDetail -&gt;
+    /// TimeRegister</c> already exists, and a navigation back would close that loop for no gain.
+    /// </para>
+    /// </summary>
+    public virtual int? TimeLogApprovalId { get; set; }
 
     [StringLength(1000)]
     public virtual string Remarks { get; set; }

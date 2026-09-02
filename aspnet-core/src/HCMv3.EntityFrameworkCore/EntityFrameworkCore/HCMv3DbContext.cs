@@ -326,6 +326,17 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TimeRegister> TimeRegisters { get; set; }
 
+    /// <summary>
+    /// Batch approval of calculated timesheet days. The one header/detail pair in the workflow wave -- see
+    /// <see cref="TimeLogApproval"/> for why a rectangle of employees-by-days cannot be addressed by
+    /// <c>WorkflowRequest.TargetEntityId</c> on its own.
+    /// </summary>
+    public virtual DbSet<TimeLogApproval> TimeLogApprovals { get; set; }
+
+    public virtual DbSet<TimeLogApprovalDetail> TimeLogApprovalDetails { get; set; }
+
+    public virtual DbSet<TimeLogHistory> TimeLogHistories { get; set; }
+
     public virtual DbSet<MonthlyTimeRegister> MonthlyTimeRegisters { get; set; }
 
     public virtual DbSet<MonthlyTimeRegisterDetail> MonthlyTimeRegisterDetails { get; set; }
@@ -1554,6 +1565,64 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // Self-service lists every one of these rows by employee, and the ApprovedOnly filter reads
             // WorkflowStatus on the same pass.
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
+        modelBuilder.Entity<TimeLogApproval>(b =>
+        {
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // The approver inbox and the admin grid both list these by employee, and the ApprovedOnly filter
+            // reads WorkflowStatus on the same pass.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
+        modelBuilder.Entity<TimeLogApprovalDetail>(b =>
+        {
+            b.HasOne(e => e.TimeLogApproval)
+                .WithMany(e => e.Details)
+                .HasForeignKey(e => e.TimeLogApprovalId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Restrict, not Cascade: TimeRegister is already reachable from TimeLogApproval through Employee,
+            // so a second cascade path would fail the migration -- and a detail row is the record of what was
+            // proposed for a day, which must not vanish with the day.
+            b.HasOne(e => e.TimeRegister)
+                .WithMany()
+                .HasForeignKey(e => e.TimeRegisterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // The handler's "is this day already in another in-flight batch?" check queries by TimeRegisterId.
+            b.HasIndex(e => new { e.TenantId, e.TimeRegisterId });
+        });
+
+        modelBuilder.Entity<TimeLogHistory>(b =>
+        {
+            // Restrict on both, for the same reason: this row exists precisely to outlive the approval it
+            // records, so that "somebody approved a different set of figures" survives.
+            b.HasOne(e => e.TimeLogApproval)
+                .WithMany()
+                .HasForeignKey(e => e.TimeLogApprovalId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.TimeRegister)
+                .WithMany()
+                .HasForeignKey(e => e.TimeRegisterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasIndex(e => new { e.TenantId, e.TimeRegisterId });
+        });
+
+        modelBuilder.Entity<TimeRegister>(b =>
+        {
+            // Bare FK, no navigation on TimeRegister -- see TimeRegister.TimeLogApprovalId. Restrict because
+            // deleting an approval must not take the calculated days with it.
+            b.HasOne<TimeLogApproval>()
+                .WithMany()
+                .HasForeignKey(e => e.TimeLogApprovalId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<EmployeePersonalDataChange>(b =>

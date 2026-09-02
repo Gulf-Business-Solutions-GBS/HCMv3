@@ -140,7 +140,16 @@ public class WorkflowTransactionTypeBuilder
         // number edit sat in an inbox. Reuses the existing Ess_MyProfile permission: this screen IS my
         // profile, and a new permission would have to be granted by every tenant before self service worked.
         // No sub-type -- legacy routed every personal data update the same way whatever was being changed.
-        ("EmployeePersonalDataChange", "Personal Data Update", "تحديث البيانات الشخصية", null, "/app/main/ess/my-details", AppPermissions.Ess_MyProfile, "flaticon-user", 200)
+        ("EmployeePersonalDataChange", "Personal Data Update", "تحديث البيانات الشخصية", null, "/app/main/ess/my-details", AppPermissions.Ess_MyProfile, "flaticon-user", 200),
+
+        // Batch approval of calculated timesheet days (legacy TimeLogRequest). NOT self-service: a manager or
+        // HR reviews the time engine's output for their people and proposes corrections -- an employee does
+        // not approve their own attendance -- so EssRoute and EssPermissionName are null, as for
+        // EmployeeAction. The ONLY type in this catalog with a header/detail pair behind it: what is approved
+        // is a rectangle of employees by days, and WorkflowRequest.TargetEntityId addresses a single row, so
+        // TimeLogApproval exists to BE that row (see the entity for the full argument). No sub-type: legacy
+        // routed every time log request the same way.
+        ("TimeLogApproval", "Time Log Approval", "اعتماد سجل الوقت", null, null, null, "flaticon-time-2", 210)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

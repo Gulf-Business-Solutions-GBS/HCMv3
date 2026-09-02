@@ -190,7 +190,7 @@ public partial class TimeEngineService
 
         if (settings.EnableTimeRegisterApproval)
         {
-            ApplyApprovalFields(context);
+            await ApplyApprovalFieldsAsync(context);
         }
 
         #endregion

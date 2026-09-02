@@ -881,6 +881,11 @@ public static class AppPermissions
     public const string Pages_TimeManagement_TimeRegisters_Edit = "Pages.TimeManagement.TimeRegisters.Edit";
     public const string Pages_TimeManagement_TimeRegisters_Delete = "Pages.TimeManagement.TimeRegisters.Delete";
 
+    // Batch approval of calculated timesheet days (legacy TimeLogRequest). A manager/HR grid, not self
+    // service -- there is deliberately no Ess_* counterpart, exactly as for personnel actions.
+    public const string Pages_TimeManagement_TimeLogApprovals = "Pages.TimeManagement.TimeLogApprovals";
+    public const string Pages_TimeManagement_TimeLogApprovals_Create = "Pages.TimeManagement.TimeLogApprovals.Create";
+
     public const string Pages_TimeManagement_MonthlyTimeRegisters = "Pages.TimeManagement.MonthlyTimeRegisters";
     public const string Pages_TimeManagement_MonthlyTimeRegisters_Create = "Pages.TimeManagement.MonthlyTimeRegisters.Create";
     public const string Pages_TimeManagement_MonthlyTimeRegisters_Edit = "Pages.TimeManagement.MonthlyTimeRegisters.Edit";

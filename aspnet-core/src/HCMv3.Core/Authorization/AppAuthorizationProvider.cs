@@ -969,6 +969,9 @@ public class AppAuthorizationProvider : AuthorizationProvider
         timeRegisters.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeRegisters_Edit, L("EditItem"));
         timeRegisters.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeRegisters_Delete, L("DeleteItem"));
 
+        var timeLogApprovals = timeManagement.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeLogApprovals, L("TimeLogApprovals"));
+        timeLogApprovals.CreateChildPermission(AppPermissions.Pages_TimeManagement_TimeLogApprovals_Create, L("CreateNewItem"));
+
         var monthlyTimeRegisters = timeManagement.CreateChildPermission(AppPermissions.Pages_TimeManagement_MonthlyTimeRegisters, L("MonthlyTimeRegisters"));
         monthlyTimeRegisters.CreateChildPermission(AppPermissions.Pages_TimeManagement_MonthlyTimeRegisters_Create, L("CreateNewItem"));
         monthlyTimeRegisters.CreateChildPermission(AppPermissions.Pages_TimeManagement_MonthlyTimeRegisters_Edit, L("EditItem"));

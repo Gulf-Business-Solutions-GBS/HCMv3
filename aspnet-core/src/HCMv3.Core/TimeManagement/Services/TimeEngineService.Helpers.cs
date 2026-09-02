@@ -500,12 +500,22 @@ public partial class TimeEngineService
     /// Legacy <c>TimeLogHistory</c> mirrors the same three (lines 1490-1495). This port is therefore NOT
     /// missing a column; no entity or migration change is required.</para>
     ///
-    /// <para>DEVIATION (carried from T1, see class remarks): legacy discriminated Reopened vs Opened by
-    /// whether <c>TimeRegister.WfRequest</c> was non-null and wrote a <c>TimeLogHistory</c> row in the
-    /// Reopened case. This port has neither the FK nor the entity, so the branch is collapsed to
-    /// <see cref="TimeRegisterStatus.Reopened"/> and no history row is written.</para>
+    /// <para><b>THE REOPEN PATH (completed here).</b> The T1/T4 version of this method collapsed legacy's
+    /// Reopened-vs-Opened branch to an unconditional <see cref="TimeRegisterStatus.Reopened"/> and wrote no
+    /// history, because this port had neither the <c>WfRequest</c> FK nor the <c>TimeLogHistory</c> entity.
+    /// Both now exist (<see cref="TimeRegister.TimeLogApprovalId"/> and <see cref="TimeLogHistory"/>), so the
+    /// branch is restored in full: an approved day whose figures move records what was approved, is set back
+    /// to Reopened, has its approval link CLEARED, and has its Approved* triple reset to the freshly
+    /// calculated raw figures. The clear is the load-bearing part -- without it the day stays permanently
+    /// attached to a stale approval and can never be corrected again, because
+    /// <c>TimeLogApprovalWorkflowTransactionHandler</c> refuses days that are still settled.</para>
+    ///
+    /// <para>A day that reached Approved WITHOUT an approval batch behind it -- the
+    /// <see cref="TimeEngineSettings.AutoApproveTimeLog"/> shortcut above -- goes back to
+    /// <see cref="TimeRegisterStatus.Opened"/> instead and writes no history, since there is no human
+    /// decision to record. Legacy did the same (<c>Program.cs</c> lines 1503-1507).</para>
     /// </summary>
-    private void ApplyApprovalFields(TimeRegisterDayContext context)
+    private async Task ApplyApprovalFieldsAsync(TimeRegisterDayContext context)
     {
         var timeRegister = context.TimeRegister;
         var previous = context.PreviousValues;
@@ -532,7 +542,35 @@ public partial class TimeEngineService
                      || previous.ActualWorkingDay != timeRegister.ActualWorkingDay
                      || previous.DedLateInEarlyOutMins != timeRegister.DedLateInEarlyOutMins))
         {
-            timeRegister.Status = TimeRegisterStatus.Reopened;
+            if (timeRegister.TimeLogApprovalId.HasValue)
+            {
+                timeRegister.Status = TimeRegisterStatus.Reopened;
+
+                // Both triples, captured BEFORE anything below overwrites them: the raw figures as they stood
+                // when the approval was granted, and the approved figures that are about to be discarded.
+                await _timeLogHistoryRepository.InsertAsync(new TimeLogHistory
+                {
+                    TenantId = timeRegister.TenantId,
+                    TimeLogApprovalId = timeRegister.TimeLogApprovalId.Value,
+                    TimeRegisterId = timeRegister.Id,
+                    DateOfAction = DateTime.Now,
+
+                    AbsentDay = previous.AbsentDay,
+                    ActualWorkingDay = previous.ActualWorkingDay,
+                    DedLateInEarlyOutMins = previous.DedLateInEarlyOutMins,
+
+                    ApprovedAbsentDay = timeRegister.ApprovedAbsentDay,
+                    ApprovedActualWorkingDay = timeRegister.ApprovedActualWorkingDay,
+                    ApprovedDedLateInEarlyOutMins = timeRegister.ApprovedDedLateInEarlyOutMins
+                });
+
+                // Released, so the day is eligible for a fresh TimeLogApproval.
+                timeRegister.TimeLogApprovalId = null;
+            }
+            else
+            {
+                timeRegister.Status = TimeRegisterStatus.Opened;
+            }
 
             timeRegister.ApprovedAbsentDay = timeRegister.AbsentDay;
             timeRegister.ApprovedActualWorkingDay = timeRegister.ActualWorkingDay;
