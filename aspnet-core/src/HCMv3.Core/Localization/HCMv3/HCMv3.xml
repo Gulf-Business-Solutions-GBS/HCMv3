@@ -1827,6 +1827,11 @@
     <text name="AccountNumberOrIbanIsRequired">Enter an account number or IBAN.</text>
     <text name="EndTimeCannotBeEarlierThanStartTime">The end time cannot be before the start time.</text>
     <text name="OverlappingAttendanceRequestExists">You already have an attendance record covering those dates.</text>
+    <text name="OverlappingDelegationExists">You already have a delegation covering those dates.</text>
+    <text name="DelegateToIsRequired">Select the colleague who will cover for you.</text>
+    <text name="CannotDelegateToYourself">You cannot delegate your duties to yourself.</text>
+    <text name="StartDateAndEndDateAreRequired">Enter a start date and an end date.</text>
+    <text name="EssMyDelegations">My Delegations</text>
     <text name="ATravelClaimAlreadyExistsForThisTrip">You have already claimed for this trip.</text>
     <text name="EmployeeExitPermits">Exit Permits</text>
     <text name="EssMyExitPermits">My Exit Permits</text>

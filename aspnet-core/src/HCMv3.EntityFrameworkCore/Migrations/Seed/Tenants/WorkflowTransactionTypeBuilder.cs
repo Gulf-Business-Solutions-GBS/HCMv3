@@ -149,7 +149,17 @@ public class WorkflowTransactionTypeBuilder
         // is a rectangle of employees by days, and WorkflowRequest.TargetEntityId addresses a single row, so
         // TimeLogApproval exists to BE that row (see the entity for the full argument). No sub-type: legacy
         // routed every time log request the same way.
-        ("TimeLogApproval", "Time Log Approval", "اعتماد سجل الوقت", null, null, null, "flaticon-time-2", 210)
+        ("TimeLogApproval", "Time Log Approval", "اعتماد سجل الوقت", null, null, null, "flaticon-time-2", 210),
+
+        // Delegation of duties (legacy DelegationRequest). Self-service: the employee going away asks a
+        // colleague to cover. The Code is the transaction entity's name as always -- there is no
+        // DelegationRequest table here, the delegation row IS the request, and legacy's request existed only
+        // to copy itself onto an EmployeeDelegation on approval. No sub-type: legacy routed every delegation
+        // the same way. Note what approval buys, and it is unlike every other row in this catalog: the
+        // delegation is read BY the approval system itself (notification CC today, approver substitution
+        // next), so until it is granted the cover simply does not exist as far as the engine is concerned --
+        // which is what makes "asking for cover" and "having cover" two distinct states for the first time.
+        ("EmployeeDelegation", "Delegation Request", "طلب تفويض", null, "/app/main/ess/delegation", AppPermissions.Ess_MyDelegations, "flaticon-users", 220)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

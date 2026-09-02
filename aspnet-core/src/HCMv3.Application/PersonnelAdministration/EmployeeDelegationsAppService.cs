@@ -8,6 +8,9 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Workflow;
+using HCMv3.Workflow;
+using HCMv3.Workflow.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,15 +20,28 @@ namespace HCMv3.PersonnelAdministration;
 /// Application service for <see cref="EmployeeDelegation"/> (ported from legacy XAF
 /// EmployeeDelegation business object). Legacy <c>PerformValidation</c> parity: blank checks,
 /// EndDate &gt;= StartDate, and an overlap/duplicate check per employee.
+///
+/// <para>
+/// Creates go through <see cref="IAdminTransactionSubmitter"/>, because HR legitimately sets up cover on
+/// somebody's behalf -- the employee is on the entity, not in the session. While the transaction type is
+/// dormant the delegation is simply filed, exactly as before; once an admin routes it, the row stays
+/// invisible until an approver agrees to it, and that invisibility is what stops the notification and
+/// substitution lookups treating an unapproved delegation as real cover
+/// (see <see cref="DelegationWorkflowTransactionHandler"/>).
+/// </para>
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDelegations)]
 public class EmployeeDelegationsAppService : HCMv3AppServiceBase, IEmployeeDelegationsAppService
 {
     private readonly IRepository<EmployeeDelegation> _repository;
+    private readonly IAdminTransactionSubmitter _transactionSubmitter;
 
-    public EmployeeDelegationsAppService(IRepository<EmployeeDelegation> repository)
+    public EmployeeDelegationsAppService(
+        IRepository<EmployeeDelegation> repository,
+        IAdminTransactionSubmitter transactionSubmitter)
     {
         _repository = repository;
+        _transactionSubmitter = transactionSubmitter;
     }
 
     [HttpPost]
@@ -50,7 +66,13 @@ public class EmployeeDelegationsAppService : HCMv3AppServiceBase, IEmployeeDeleg
 
     public async Task<GetEmployeeDelegationForEditOutput> GetEmployeeDelegationForEdit(EntityDto input)
     {
-        var entity = await _repository.GetAsync(input.Id);
+        // The delegation being edited may itself still be awaiting approval, and whoever raised it has to be
+        // able to open the thing they just raised.
+        EmployeeDelegation entity;
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            entity = await _repository.GetAsync(input.Id);
+        }
 
         return new GetEmployeeDelegationForEditOutput
         {
@@ -91,22 +113,37 @@ public class EmployeeDelegationsAppService : HCMv3AppServiceBase, IEmployeeDeleg
             Comments = input.Comments
         };
 
+        // Kept as the early failure even though the handler repeats every one of these. With the type
+        // dormant the handler never runs at all, so dropping them here would silently lose the legacy
+        // validation for every tenant that has not switched routing on.
         await ValidateAsync(entity);
-        await _repository.InsertAsync(entity);
+
+        // Routed for approval when the catalog says so, and simply filed when it does not -- the
+        // pre-workflow behaviour. No sub-type: a delegation routes the same way whoever is covering.
+        await _transactionSubmitter.CreateAndSubmitAsync(
+            _repository,
+            entity,
+            DelegationWorkflowTransactionHandler.DelegationRequestType,
+            "DEL");
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDelegations_Edit)]
     protected virtual async Task UpdateAsync(CreateOrEditEmployeeDelegationDto input)
     {
-        var entity = await _repository.GetAsync(input.Id.Value);
-        entity.EmployeeId = input.EmployeeId;
-        entity.DelegateToId = input.DelegateToId;
-        entity.StartDate = input.StartDate.Date;
-        entity.EndDate = input.EndDate.Date;
-        entity.Comments = input.Comments;
+        // An in-flight delegation is hidden from ordinary queries, so editing one has to opt out of the
+        // filter the same way opening it does.
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var entity = await _repository.GetAsync(input.Id.Value);
+            entity.EmployeeId = input.EmployeeId;
+            entity.DelegateToId = input.DelegateToId;
+            entity.StartDate = input.StartDate.Date;
+            entity.EndDate = input.EndDate.Date;
+            entity.Comments = input.Comments;
 
-        await ValidateAsync(entity);
-        await _repository.UpdateAsync(entity);
+            await ValidateAsync(entity);
+            await _repository.UpdateAsync(entity);
+        }
     }
 
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeDelegations_Delete)]
@@ -122,14 +159,32 @@ public class EmployeeDelegationsAppService : HCMv3AppServiceBase, IEmployeeDeleg
             throw new UserFriendlyException(L("EndDateCannotBeEarlierThanStartDate"));
         }
 
-        var overlapping = await _repository.GetAll()
-            .AnyAsync(d => d.Id != entity.Id
-                           && d.EmployeeId == entity.EmployeeId
-                           && d.StartDate <= entity.EndDate
-                           && d.EndDate >= entity.StartDate);
-        if (overlapping)
+        // Not in legacy, which allowed it. The row would look like cover to everything downstream while
+        // handing the delegator's authority back to the delegator, leaving requests waiting on somebody who
+        // is away -- an outage disguised as cover.
+        if (entity.DelegateToId == entity.EmployeeId)
         {
-            throw new UserFriendlyException(L("OverlapConflictFound"));
+            throw new UserFriendlyException(L("CannotDelegateToYourself"));
+        }
+
+        // The opt-out matters here for the same reason it does in the handler: a delegation awaiting
+        // approval is Draft/Open, which the ApprovedOnly filter hides, so without it HR could set up a
+        // second cover for dates already spoken for by a request sitting in an inbox.
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var overlapping = await _repository.GetAll()
+                .AnyAsync(d => d.Id != entity.Id
+                               && d.EmployeeId == entity.EmployeeId
+                               && d.StartDate <= entity.EndDate
+                               && d.EndDate >= entity.StartDate
+                               && (d.WorkflowStatus == null
+                                   || d.WorkflowStatus == RequestStatus.Approved
+                                   || d.WorkflowStatus == RequestStatus.Closed
+                                   || d.WorkflowStatus == RequestStatus.Open));
+            if (overlapping)
+            {
+                throw new UserFriendlyException(L("OverlapConflictFound"));
+            }
         }
     }
 

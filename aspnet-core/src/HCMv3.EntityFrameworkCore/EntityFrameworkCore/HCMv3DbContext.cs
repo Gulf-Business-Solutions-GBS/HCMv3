@@ -1458,6 +1458,11 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .HasForeignKey(e => e.DelegateToId)
                 .HasConstraintName("FK_EmployeeDelegations_Employees_DelegateToId")
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Read on the hot path twice over: self-service lists a delegator's own rows by employee, and
+            // the notification/substitution lookups ask "who is covering for this employee today" on every
+            // routed request -- both with the ApprovedOnly filter reading WorkflowStatus on the same pass.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
         });
 
         modelBuilder.Entity<EmployeeRelationship>(b =>

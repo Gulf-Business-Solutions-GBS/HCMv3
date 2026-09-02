@@ -1806,6 +1806,13 @@ public static class AppPermissions
     /// </summary>
     public const string Ess_MyHealthReimburses = "Ess.MyHealthReimburses";
 
+    /// <summary>
+    /// Delegation of duties -- asking a colleague to cover the employee's approvals and notifications while
+    /// they are away. Held by the employee going away, not by the person covering: the delegator is the one
+    /// giving authority up.
+    /// </summary>
+    public const string Ess_MyDelegations = "Ess.MyDelegations";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";

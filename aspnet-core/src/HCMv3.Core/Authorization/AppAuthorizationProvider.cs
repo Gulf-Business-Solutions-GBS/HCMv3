@@ -57,6 +57,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyPunches, L("EssMyPunches"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyClearances, L("EssMyClearances"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyHealthReimburses, L("EssMyHealthReimburses"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyDelegations, L("EssMyDelegations"), multiTenancySides: MultiTenancySides.Tenant);
 
         //GENERAL MASTER INFO
         var generalMasterInfo = pages.CreateChildPermission(AppPermissions.Pages_GeneralMasterInfo, L("GeneralMasterInfo"));
