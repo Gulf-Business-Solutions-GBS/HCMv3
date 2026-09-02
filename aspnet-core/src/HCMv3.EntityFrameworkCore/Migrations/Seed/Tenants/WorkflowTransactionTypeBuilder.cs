@@ -159,7 +159,17 @@ public class WorkflowTransactionTypeBuilder
         // delegation is read BY the approval system itself (notification CC today, approver substitution
         // next), so until it is granted the cover simply does not exist as far as the engine is concerned --
         // which is what makes "asking for cover" and "having cover" two distinct states for the first time.
-        ("EmployeeDelegation", "Delegation Request", "طلب تفويض", null, "/app/main/ess/delegation", AppPermissions.Ess_MyDelegations, "flaticon-users", 220)
+        ("EmployeeDelegation", "Delegation Request", "طلب تفويض", null, "/app/main/ess/delegation", AppPermissions.Ess_MyDelegations, "flaticon-users", 220),
+
+        // Loan recovery exemption (legacy LoanExemptionRequest): skipping one month's instalment on a loan
+        // already being repaid. The Code is the transaction entity's name as always -- there is no
+        // LoanExemptionRequest table here, the exemption row IS the request, and legacy's request existed
+        // only to copy itself onto an EmployeeLoanExemption on approval. Sub-type is the LOAN TYPE, as for
+        // the loan itself, so deferring a month of a housing loan can need a longer chain than deferring a
+        // month of a small advance. Note what approval buys, and it is money rather than paperwork: granting
+        // an exemption pushes the loan's recovery end date out by the month skipped, so the instalment is
+        // deferred rather than forgiven. Until it is granted the row is invisible and the schedule unchanged.
+        ("EmployeeLoanExemption", "Loan Exemption Request", "طلب إعفاء من قسط القرض", "LoanType", "/app/main/ess/loan-exemption", AppPermissions.Ess_MyLoanExemptions, "flaticon-piggy-bank", 230)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

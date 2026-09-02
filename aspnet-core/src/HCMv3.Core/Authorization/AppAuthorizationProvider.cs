@@ -45,6 +45,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         ess.CreateChildPermission(AppPermissions.Ess_MyAssets, L("EssMyAssets"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyDocuments, L("EssMyDocuments"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyLoans, L("EssMyLoans"), multiTenancySides: MultiTenancySides.Tenant);
+        ess.CreateChildPermission(AppPermissions.Ess_MyLoanExemptions, L("EssMyLoanExemptions"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyOvertime, L("EssMyOvertime"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyTickets, L("EssMyTickets"), multiTenancySides: MultiTenancySides.Tenant);
         ess.CreateChildPermission(AppPermissions.Ess_MyAttendance, L("EssMyAttendance"), multiTenancySides: MultiTenancySides.Tenant);
