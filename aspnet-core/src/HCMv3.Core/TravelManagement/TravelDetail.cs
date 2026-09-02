@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
@@ -64,6 +65,31 @@ public class TravelDetail : FullAuditedEntity, IMustHaveTenant
     /// <summary>Legacy display name "Total Amount". See class remarks -- not client-editable.</summary>
     public virtual double TotalAmount { get; set; }
 
+    /// <summary>
+    /// Does this leg need a visa arranged? Carried on the legacy <c>TravelDeskDetailRequest</c> and never
+    /// copied onto <c>TravelDetail</c>, so the one instruction the travel desk actually had to act on
+    /// disappeared the moment the request was approved. Now that the leg IS the request, it lives here.
+    /// </summary>
+    public virtual bool IsVisaRequired { get; set; }
+
+    [StringLength(500)]
+    public virtual string VisaComments { get; set; }
+
+    /// <summary>Does this leg need a hotel booked? Same provenance as <see cref="IsVisaRequired"/>.</summary>
+    public virtual bool IsHotelRequired { get; set; }
+
+    [StringLength(500)]
+    public virtual string HotelComments { get; set; }
+
+    /// <summary>Anything else to be arranged or reimbursed. Same provenance as <see cref="IsVisaRequired"/>.</summary>
+    public virtual bool AnyOtherExpense { get; set; }
+
+    [StringLength(500)]
+    public virtual string OtherComments { get; set; }
+
     [StringLength(500)]
     public virtual string Comments { get; set; }
+
+    /// <summary>The cost lines for this leg, so a whole trip inserts as one graph.</summary>
+    public virtual ICollection<TravelDetailCost> TravelDetailCosts { get; set; }
 }

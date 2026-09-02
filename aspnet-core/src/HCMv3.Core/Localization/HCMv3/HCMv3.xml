@@ -1785,7 +1785,10 @@
     <text name="EssEnabledTypeNeedsARoute">{0} has no self-service screen, so it cannot be shown in Employee Self Service. It can still be routed for approval.</text>
     <text name="EssMyAttendance">My Attendance</text>
     <text name="EssMyBank">My Bank Details</text>
+    <text name="EssMyTravel">My Travel</text>
     <text name="EssMyTravelClaims">My Travel Claims</text>
+    <text name="ATravelRequestMustHaveAtLeastOneLeg">Add at least one leg -- a travel request with nowhere to go cannot be approved.</text>
+    <text name="YouAlreadyHaveATripThatOverlapsTheseDates">You already have a trip that overlaps these dates.</text>
     <text name="EssMyPassportWithdrawals">My Passport Withdrawals</text>
     <text name="RequestPassportWithdrawal">Request my passport</text>
     <text name="ReturnDateCannotBeEarlierThanWithdrawDate">The return date cannot be before the withdrawal date.</text>

@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.TravelManagement.Dto;
+using HCMv3.Workflow;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,39 +29,64 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
     private readonly IRepository<TravelDetail> _repository;
     private readonly IRepository<TravelDetailCost> _travelDetailCostRepository;
     private readonly IRepository<TravelPerDiem> _travelPerDiemRepository;
+    private readonly IRepository<Travel> _travelRepository;
 
     public TravelDetailsAppService(
         IRepository<TravelDetail> repository,
         IRepository<TravelDetailCost> travelDetailCostRepository,
-        IRepository<TravelPerDiem> travelPerDiemRepository)
+        IRepository<TravelPerDiem> travelPerDiemRepository,
+        IRepository<Travel> travelRepository)
     {
         _repository = repository;
         _travelDetailCostRepository = travelDetailCostRepository;
         _travelPerDiemRepository = travelPerDiemRepository;
+        _travelRepository = travelRepository;
     }
 
+    /// <summary>
+    /// The legs, scoped to trips the caller can see.
+    ///
+    /// <para>
+    /// That semi-join against the Travel query is what makes a leg hide with its trip. <c>TravelDetail</c>
+    /// deliberately carries no <c>WorkflowStatus</c> of its own -- it is not a request, it hangs off one --
+    /// so the <c>ApprovedOnly</c> filter never touches it directly. It applies to <see cref="Travel"/>, and
+    /// asking only for legs of a visible trip is what carries that decision down. Without it, the itinerary
+    /// of a trip nobody has approved yet would be listed here in full.
+    /// </para>
+    /// <para>
+    /// The filter is then disabled for the travel desk's own drill-down, exactly as on the Travel register
+    /// above: this screen owns the transaction, so an in-flight trip's legs are its business. Every other
+    /// caller keeps the filter and gets neither the header nor the legs.
+    /// </para>
+    /// </summary>
     [HttpPost]
     public async Task<PagedResultDto<TravelDetailDto>> GetAll(GetAllTravelDetailsInput input)
     {
         input.Normalize();
 
-        var query = _repository.GetAll()
-            .Include(d => d.Departure)
-            .Include(d => d.Arrival)
-            .Include(d => d.Hotel)
-            .Include(d => d.TravelAirline)
-            .WhereIf(input.TravelId.HasValue, d => d.TravelId == input.TravelId);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var visibleTravelIds = _travelRepository.GetAll().Select(t => t.Id);
 
-        var totalCount = await query.CountAsync();
+            var query = _repository.GetAll()
+                .Include(d => d.Departure)
+                .Include(d => d.Arrival)
+                .Include(d => d.Hotel)
+                .Include(d => d.TravelAirline)
+                .Where(d => visibleTravelIds.Contains(d.TravelId))
+                .WhereIf(input.TravelId.HasValue, d => d.TravelId == input.TravelId);
 
-        var items = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
-            .ToListAsync();
+            var totalCount = await query.CountAsync();
 
-        return new PagedResultDto<TravelDetailDto>(
-            totalCount,
-            items.Select(ToDto).ToList());
+            var items = await query
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<TravelDetailDto>(
+                totalCount,
+                items.Select(ToDto).ToList());
+        }
     }
 
     public async Task<GetTravelDetailForEditOutput> GetTravelDetailForEdit(EntityDto input)
@@ -171,6 +197,12 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
         entity.TravelAirlineId = input.TravelAirlineId;
         entity.NightStay = input.NightStay;
         entity.TotalNights = input.TotalNights;
+        entity.IsVisaRequired = input.IsVisaRequired;
+        entity.VisaComments = input.VisaComments;
+        entity.IsHotelRequired = input.IsHotelRequired;
+        entity.HotelComments = input.HotelComments;
+        entity.AnyOtherExpense = input.AnyOtherExpense;
+        entity.OtherComments = input.OtherComments;
         entity.Comments = input.Comments;
 
         return entity;
@@ -197,6 +229,12 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             NightStay = entity.NightStay,
             TotalNights = entity.TotalNights,
             TotalAmount = entity.TotalAmount,
+            IsVisaRequired = entity.IsVisaRequired,
+            VisaComments = entity.VisaComments,
+            IsHotelRequired = entity.IsHotelRequired,
+            HotelComments = entity.HotelComments,
+            AnyOtherExpense = entity.AnyOtherExpense,
+            OtherComments = entity.OtherComments,
             Comments = entity.Comments
         };
     }
@@ -217,6 +255,12 @@ public class TravelDetailsAppService : HCMv3AppServiceBase, ITravelDetailsAppSer
             TravelAirlineId = entity.TravelAirlineId,
             NightStay = entity.NightStay,
             TotalNights = entity.TotalNights,
+            IsVisaRequired = entity.IsVisaRequired,
+            VisaComments = entity.VisaComments,
+            IsHotelRequired = entity.IsHotelRequired,
+            HotelComments = entity.HotelComments,
+            AnyOtherExpense = entity.AnyOtherExpense,
+            OtherComments = entity.OtherComments,
             Comments = entity.Comments
         };
     }

@@ -13,6 +13,8 @@ public class TravelDetailCostDto : EntityDto<int>
 
     public string ExpenseTypeNameEn { get; set; }
 
+    public int? CurrencyId { get; set; }
+
     public double Amount { get; set; }
 
     public string Comments { get; set; }

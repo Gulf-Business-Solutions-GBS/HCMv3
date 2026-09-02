@@ -7,6 +7,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using HCMv3.Authorization;
 using HCMv3.TravelManagement.Dto;
+using HCMv3.Workflow;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,31 +23,54 @@ namespace HCMv3.TravelManagement;
 public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCostsAppService
 {
     private readonly IRepository<TravelDetailCost> _repository;
+    private readonly IRepository<TravelDetail> _travelDetailRepository;
+    private readonly IRepository<Travel> _travelRepository;
 
-    public TravelDetailCostsAppService(IRepository<TravelDetailCost> repository)
+    public TravelDetailCostsAppService(
+        IRepository<TravelDetailCost> repository,
+        IRepository<TravelDetail> travelDetailRepository,
+        IRepository<Travel> travelRepository)
     {
         _repository = repository;
+        _travelDetailRepository = travelDetailRepository;
+        _travelRepository = travelRepository;
     }
 
+    /// <summary>
+    /// The cost lines, scoped to legs of trips the caller can see -- the same two-hop semi-join, and for the
+    /// same reason, as <c>TravelDetailsAppService.GetAll</c>. A cost line is two levels below the row that
+    /// carries the approval status, and it hides when that row does because it is only ever reached through
+    /// it.
+    /// </summary>
     [HttpPost]
     public async Task<PagedResultDto<TravelDetailCostDto>> GetAll(GetAllTravelDetailCostsInput input)
     {
         input.Normalize();
 
-        var query = _repository.GetAll()
-            .Include(c => c.ExpenseType)
-            .WhereIf(input.TravelDetailId.HasValue, c => c.TravelDetailId == input.TravelDetailId);
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            var visibleTravelIds = _travelRepository.GetAll().Select(t => t.Id);
 
-        var totalCount = await query.CountAsync();
+            var visibleDetailIds = _travelDetailRepository.GetAll()
+                .Where(d => visibleTravelIds.Contains(d.TravelId))
+                .Select(d => d.Id);
 
-        var items = await query
-            .OrderBy(input.Sorting)
-            .PageBy(input)
-            .ToListAsync();
+            var query = _repository.GetAll()
+                .Include(c => c.ExpenseType)
+                .Where(c => visibleDetailIds.Contains(c.TravelDetailId))
+                .WhereIf(input.TravelDetailId.HasValue, c => c.TravelDetailId == input.TravelDetailId);
 
-        return new PagedResultDto<TravelDetailCostDto>(
-            totalCount,
-            items.Select(ToDto).ToList());
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<TravelDetailCostDto>(
+                totalCount,
+                items.Select(ToDto).ToList());
+        }
     }
 
     public async Task<GetTravelDetailCostForEditOutput> GetTravelDetailCostForEdit(EntityDto input)
@@ -99,6 +123,7 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
     {
         entity.TravelDetailId = input.TravelDetailId;
         entity.ExpenseTypeId = input.ExpenseTypeId;
+        entity.CurrencyId = input.CurrencyId;
         entity.Amount = input.Amount;
         entity.Comments = input.Comments;
 
@@ -113,6 +138,7 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
             TravelDetailId = entity.TravelDetailId,
             ExpenseTypeId = entity.ExpenseTypeId,
             ExpenseTypeNameEn = entity.ExpenseType?.NameEn,
+            CurrencyId = entity.CurrencyId,
             Amount = entity.Amount,
             Comments = entity.Comments
         };
@@ -125,6 +151,7 @@ public class TravelDetailCostsAppService : HCMv3AppServiceBase, ITravelDetailCos
             Id = entity.Id,
             TravelDetailId = entity.TravelDetailId,
             ExpenseTypeId = entity.ExpenseTypeId,
+            CurrencyId = entity.CurrencyId,
             Amount = entity.Amount,
             Comments = entity.Comments
         };
