@@ -67,6 +67,7 @@ export class DocumentTypesComponent extends AppComponentBase implements OnInit {
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
+                    onlyLetterTypes: false,
                 })
             )
             .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))

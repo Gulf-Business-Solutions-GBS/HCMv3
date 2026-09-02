@@ -112,7 +112,8 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
         // keep listening so browser back/forward moves between sections rather than off the record.
         this._route.fragment.subscribe((fragment) => {
             const requested = EMPLOYEE_SECTIONS.find((s) => s.id === fragment);
-            this.selectSection(requested ?? EMPLOYEE_SECTIONS[0], { updateUrl: false });
+            const fallback = EMPLOYEE_SECTIONS.find((s) => s.id === DEFAULT_EMPLOYEE_SECTION_ID);
+            this.selectSection(requested ?? fallback ?? EMPLOYEE_SECTIONS[0], { updateUrl: false });
         });
     }
 

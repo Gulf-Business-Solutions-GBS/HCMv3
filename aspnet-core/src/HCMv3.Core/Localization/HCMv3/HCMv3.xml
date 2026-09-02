@@ -5687,5 +5687,13 @@
     <text name="EmpSection_Grievances">Grievances</text>
     <text name="EmpSection_Tasks">Tasks</text>
     <text name="EmpSection_Assets">Assets</text>
+    <text name="EmpSection_PersonalInformation">Personal Information</text>
+    <text name="EmpCard_Identity">Identity</text>
+    <text name="EmpCard_Personal">Personal</text>
+    <text name="EmpCard_Employment">Employment</text>
+    <text name="EmpCard_Contact">Contact</text>
+    <text name="EmpCard_Address">Address</text>
+    <text name="EmpCard_Emergency">Emergency Contact</text>
+    <text name="PACINumber">PACI Number</text>
   </texts>
 </localizationDictionary>

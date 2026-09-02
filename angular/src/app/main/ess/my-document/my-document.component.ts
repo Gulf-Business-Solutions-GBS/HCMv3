@@ -38,7 +38,7 @@ export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentReques
 
     ngOnInit(): void {
         this._typesService
-            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: false }))
             .subscribe((result) => this.documentTypes.set(result.items));
 
         this.reload();

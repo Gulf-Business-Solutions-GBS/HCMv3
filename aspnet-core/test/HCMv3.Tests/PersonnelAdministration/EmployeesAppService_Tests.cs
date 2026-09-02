@@ -56,6 +56,72 @@ public class EmployeesAppService_Tests : AppTestBase
         };
     }
 
+    // ---- GetEmployeeProfile ---------------------------------------------------------------------
+
+    [Fact]
+    public async Task GetEmployeeProfile_Should_Resolve_Lookups_To_Names()
+    {
+        // The whole reason this endpoint exists: a read screen has no dropdowns to translate ids with,
+        // so the ids must arrive already resolved.
+        var nationality = CreateTestNationality("Kuwaiti");
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, "P100"));
+
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "P100").Id);
+
+        var profile = await _employeesAppService.GetEmployeeProfile(new EntityDto(id));
+
+        profile.Code.ShouldBe("P100");
+        profile.NationalityName.ShouldBe("Kuwaiti");
+        profile.FullNameEn.ShouldBe("John Doe");
+    }
+
+    [Fact]
+    public async Task GetEmployeeProfile_Should_Return_Blank_Names_For_Unset_Optional_Lookups()
+    {
+        // Eight of the nine lookups are nullable. An employee with no religion or birth place recorded
+        // is an ordinary state -- it must render blank, not throw a null reference.
+        var nationality = CreateTestNationality();
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, "P101"));
+
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "P101").Id);
+
+        var profile = await _employeesAppService.GetEmployeeProfile(new EntityDto(id));
+
+        profile.ReligionName.ShouldBeNull();
+        profile.MaritalStatusName.ShouldBeNull();
+        profile.QualificationName.ShouldBeNull();
+        profile.BirthPlaceName.ShouldBeNull();
+        profile.TitleName.ShouldBeNull();
+        profile.GovernorateName.ShouldBeNull();
+        profile.CountryName.ShouldBeNull();
+        profile.RecruitmentTypeName.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task GetEmployeeProfile_Should_Carry_The_Computed_Fields()
+    {
+        // FullName and ProbationEndDate are computed on save, and the profile screen is where anyone
+        // would notice them being stale or absent.
+        var nationality = CreateTestNationality();
+        await _employeesAppService.CreateOrEdit(ValidCreateDto(nationality.Id, "P102"));
+
+        var id = UsingDbContext(context => context.Set<Employee>().Single(e => e.Code == "P102").Id);
+
+        var profile = await _employeesAppService.GetEmployeeProfile(new EntityDto(id));
+
+        profile.FullNameAr.ShouldBe("جون دو");
+        profile.ProbationEndDate.ShouldBe(new DateTime(2020, 1, 1).AddDays(90));
+        profile.JoiningDate.ShouldBe(new DateTime(2020, 1, 1));
+    }
+
+    [Fact]
+    public async Task GetEmployeeProfile_Should_Refuse_An_Unknown_Employee()
+    {
+        // Reachable by editing the URL. A friendly refusal beats an unhandled null reference.
+        await Assert.ThrowsAsync<UserFriendlyException>(() =>
+            _employeesAppService.GetEmployeeProfile(new EntityDto(987654)));
+    }
+
     [Fact]
     public async Task Should_Create_Employee_And_Compute_FullName_And_ProbationEndDate()
     {

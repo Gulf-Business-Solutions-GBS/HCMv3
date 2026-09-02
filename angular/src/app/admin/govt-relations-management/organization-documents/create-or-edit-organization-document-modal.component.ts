@@ -61,7 +61,7 @@ export class CreateOrEditOrganizationDocumentModalComponent extends AppComponent
 
     private loadLookups(): void {
         this._documentTypesService
-            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
+            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: false }))
             .subscribe((result) => this.documentTypes.set(result.items));
 
         this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));

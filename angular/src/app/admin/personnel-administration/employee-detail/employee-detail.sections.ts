@@ -51,6 +51,18 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
         icon: 'flaticon-user',
         sections: [
             {
+                // First in the catalog, and the default section: opening a record should answer "who is
+                // this" before it answers anything else. Management's complaint was that this was the
+                // one thing the record did not show -- a name or nationality meant leaving for the
+                // edit form and losing your place.
+                id: 'personal-info',
+                labelKey: 'EmpSection_PersonalInformation',
+                load: () =>
+                    import('./personal-info/employee-personal-info.component').then(
+                        (m) => m.EmployeePersonalInfoComponent
+                    ),
+            },
+            {
                 id: 'dates',
                 labelKey: 'EmpSection_Dates',
                 load: () => import('./dates/employee-dates.component').then((m) => m.EmployeeDatesComponent),
@@ -544,4 +556,4 @@ export const EMPLOYEE_SECTION_CATEGORIES: EmployeeSectionCategory[] = [
 /** Flat view, for lookup by id and for counting. */
 export const EMPLOYEE_SECTIONS: EmployeeSection[] = EMPLOYEE_SECTION_CATEGORIES.flatMap((c) => c.sections);
 
-export const DEFAULT_EMPLOYEE_SECTION_ID = 'dates';
+export const DEFAULT_EMPLOYEE_SECTION_ID = 'personal-info';

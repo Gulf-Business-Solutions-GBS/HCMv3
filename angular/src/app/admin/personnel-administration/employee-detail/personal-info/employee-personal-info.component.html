@@ -1,0 +1,172 @@
+<div [busyIf]="isLoading()">
+    @if (profile(); as p) {
+        <div class="epi-actions">
+            @if ('Pages.PersonnelAdministration.Employees.Edit' | permission) {
+                <!-- The point of the whole section: changing a name no longer costs you your place on
+                     the record. Opens the existing form rather than a second one. -->
+                <button class="btn btn-primary btn-sm" type="button" (click)="edit()">
+                    <i class="fa fa-edit"></i> {{ 'Edit' | localize }}
+                </button>
+            }
+        </div>
+
+        <div class="epi-cards">
+            <!-- Identity -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Identity' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'Code' | localize }}</dt>
+                    <dd>{{ p.code }}</dd>
+
+                    <dt>{{ 'FullNameEn' | localize }}</dt>
+                    <dd>{{ p.fullNameEn }}</dd>
+
+                    <dt>{{ 'FullNameAr' | localize }}</dt>
+                    <dd dir="rtl">{{ p.fullNameAr }}</dd>
+
+                    <dt>{{ 'Title' | localize }}</dt>
+                    <dd>{{ p.titleName }}</dd>
+
+                    <dt>{{ 'Status' | localize }}</dt>
+                    <dd>{{ statusText() }}</dd>
+
+                    <dt>{{ 'EmploymentType' | localize }}</dt>
+                    <dd>{{ employmentTypeText() }}</dd>
+                </dl>
+            </section>
+
+            <!-- Personal -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Personal' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'Gender' | localize }}</dt>
+                    <dd>{{ genderText() }}</dd>
+
+                    <dt>{{ 'BirthDate' | localize }}</dt>
+                    <dd>{{ p.birthDate ? (p.birthDate.toJSDate() | date: 'mediumDate') : '' }}</dd>
+
+                    <dt>{{ 'BirthPlace' | localize }}</dt>
+                    <dd>{{ p.birthPlaceName }}</dd>
+
+                    <dt>{{ 'Nationality' | localize }}</dt>
+                    <dd>{{ p.nationalityName }}</dd>
+
+                    <dt>{{ 'Religion' | localize }}</dt>
+                    <dd>{{ p.religionName }}</dd>
+
+                    <dt>{{ 'MaritalStatus' | localize }}</dt>
+                    <dd>{{ p.maritalStatusName }}</dd>
+
+                    <dt>{{ 'Qualification' | localize }}</dt>
+                    <dd>{{ p.qualificationName }}</dd>
+
+                    <dt>{{ 'BloodGroup' | localize }}</dt>
+                    <dd>{{ p.bloodGroup }}</dd>
+
+                    <dt>{{ 'CivilID' | localize }}</dt>
+                    <dd>{{ idNumber(p.civilID) }}</dd>
+
+                    <dt>{{ 'PACINumber' | localize }}</dt>
+                    <dd>{{ p.pacinumber }}</dd>
+                </dl>
+            </section>
+
+            <!-- Employment -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Employment' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'JoiningDate' | localize }}</dt>
+                    <dd>{{ p.joiningDate ? (p.joiningDate.toJSDate() | date: 'mediumDate') : '' }}</dd>
+
+                    <dt>{{ 'ProbationDays' | localize }}</dt>
+                    <dd>{{ p.probationDays }}</dd>
+
+                    <dt>{{ 'ProbationEndDate' | localize }}</dt>
+                    <dd>
+                        {{ p.probationEndDate ? (p.probationEndDate.toJSDate() | date: 'mediumDate') : '' }}
+                    </dd>
+
+                    <dt>{{ 'RecruitmentType' | localize }}</dt>
+                    <dd>{{ p.recruitmentTypeName }}</dd>
+
+                    <dt>{{ 'PreviousEmpCode' | localize }}</dt>
+                    <dd>{{ p.previousEmpCode }}</dd>
+
+                    <dt>{{ 'ReferenceCode' | localize }}</dt>
+                    <dd>{{ p.referenceCode }}</dd>
+                </dl>
+            </section>
+
+            <!-- Contact -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Contact' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'Email' | localize }}</dt>
+                    <dd>{{ p.email }}</dd>
+
+                    <dt>{{ 'AlternateEmail' | localize }}</dt>
+                    <dd>{{ p.alternateEmail }}</dd>
+
+                    <dt>{{ 'Mobile' | localize }}</dt>
+                    <dd>{{ phone(p.mobile) }}</dd>
+
+                    <dt>{{ 'Telephone' | localize }}</dt>
+                    <dd>{{ phone(p.telephone) }}</dd>
+
+                    <dt>{{ 'BusinessLandline' | localize }}</dt>
+                    <dd>{{ p.businessLandline }}</dd>
+
+                    <dt>{{ 'BusinessExtension' | localize }}</dt>
+                    <dd>{{ p.businessExtension }}</dd>
+                </dl>
+            </section>
+
+            <!-- Address -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Address' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'CurrentAddress' | localize }}</dt>
+                    <dd>{{ p.currentAddress }}</dd>
+
+                    <dt>{{ 'PermanentAddress' | localize }}</dt>
+                    <dd>{{ p.permanentAddress }}</dd>
+
+                    <dt>{{ 'City' | localize }}</dt>
+                    <dd>{{ p.city }}</dd>
+
+                    <dt>{{ 'Governorate' | localize }}</dt>
+                    <dd>{{ p.governorateName }}</dd>
+
+                    <dt>{{ 'Country' | localize }}</dt>
+                    <dd>{{ p.countryName }}</dd>
+
+                    <dt>{{ 'ZipCode' | localize }}</dt>
+                    <dd>{{ p.zipCode }}</dd>
+                </dl>
+            </section>
+
+            <!-- Emergency -->
+            <section class="epi-card">
+                <h4 class="epi-card-title">{{ 'EmpCard_Emergency' | localize }}</h4>
+                <dl class="epi-fields">
+                    <dt>{{ 'EmergencyContact' | localize }}</dt>
+                    <dd>{{ p.emergencyContact }}</dd>
+
+                    <dt>{{ 'EmergencyRelation' | localize }}</dt>
+                    <dd>{{ p.emergencyRelation }}</dd>
+
+                    <dt>{{ 'EmergencyNumber' | localize }}</dt>
+                    <dd>{{ p.emergencyNumber }}</dd>
+
+                    <dt>{{ 'EmergencyContactAddress' | localize }}</dt>
+                    <dd>{{ p.emergencyContactAddress }}</dd>
+
+                    <dt>{{ 'CriticalIllness' | localize }}</dt>
+                    <dd>{{ p.criticalIllness }}</dd>
+                </dl>
+            </section>
+        </div>
+    }
+</div>
+
+<createOrEditEmployeeModal #createOrEditModal (modalSave)="onSaved()" />

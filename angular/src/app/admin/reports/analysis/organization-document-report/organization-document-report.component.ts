@@ -78,6 +78,7 @@ export class OrganizationDocumentReportComponent extends AppComponentBase implem
                     skipCount: 0,
                     sorting: undefined,
                     filter: undefined,
+                    onlyLetterTypes: false,
                 })
             )
             .subscribe((result) => {

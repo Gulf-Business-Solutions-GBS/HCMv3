@@ -1,0 +1,66 @@
+/*
+ * Personal information: cards of label/value pairs.
+ *
+ * Cards rather than one long two-column list because the groups answer different questions -- "who is
+ * this person" and "how do I reach them" are looked up on different occasions, and a single list makes
+ * you read past one to find the other.
+ */
+
+.epi-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.epi-cards {
+    display: grid;
+    /* auto-fit rather than a fixed count: this section sits inside a panel whose width changes when the
+       rail collapses, so the card count has to follow the space rather than a breakpoint. */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.epi-card {
+    border: 1px solid #e3e9ec;
+    border-radius: 3px;
+    padding: 12px 14px;
+    background: #fff;
+}
+
+.epi-card-title {
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eef2f4;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #55666f;
+}
+
+.epi-fields {
+    display: grid;
+    grid-template-columns: minmax(96px, 40%) minmax(0, 1fr);
+    gap: 6px 12px;
+    margin: 0;
+    font-size: 13px;
+}
+
+.epi-fields dt {
+    font-weight: 400;
+    color: #6b7c85;
+    /* Labels wrap rather than truncate: a clipped field name is a field nobody can identify. */
+    overflow-wrap: anywhere;
+}
+
+.epi-fields dd {
+    margin: 0;
+    color: #23313a;
+    overflow-wrap: anywhere;
+}
+
+/* An empty dd would collapse the row and misalign every label after it. */
+.epi-fields dd:empty::before {
+    content: '\2014';
+    color: #b6c2c9;
+}

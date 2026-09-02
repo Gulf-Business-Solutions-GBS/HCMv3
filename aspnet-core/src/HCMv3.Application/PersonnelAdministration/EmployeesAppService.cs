@@ -67,6 +67,30 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         };
     }
 
+    public async Task<EmployeeProfileDto> GetEmployeeProfile(EntityDto input)
+    {
+        // Nine Includes, one round trip. The alternative -- returning ids and letting the client fetch
+        // nine lookup lists to translate them -- is nine round trips to draw one record.
+        var employee = await _employeeRepository.GetAll()
+            .Include(e => e.Title)
+            .Include(e => e.Nationality)
+            .Include(e => e.Religion)
+            .Include(e => e.MaritalStatus)
+            .Include(e => e.Qualification)
+            .Include(e => e.BirthPlace)
+            .Include(e => e.Governorate)
+            .Include(e => e.Country)
+            .Include(e => e.RecruitmentType)
+            .FirstOrDefaultAsync(e => e.Id == input.Id);
+
+        if (employee == null)
+        {
+            throw new UserFriendlyException(L("EmployeeNotFound"));
+        }
+
+        return ToProfileDto(employee);
+    }
+
     public async Task CreateOrEdit(CreateOrEditEmployeeDto input)
     {
         if (input.Id.HasValue)
@@ -323,6 +347,83 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
             NationalityName = employee.Nationality?.NameEn,
             TitleId = employee.TitleId,
             TitleName = employee.Title?.NameEn
+        };
+    }
+
+    /// <summary>
+    /// Read-shaped projection: lookups become names. Every `?.` is load-bearing -- eight of the nine
+    /// lookup FKs are nullable on Employee, so a record with no religion or no birth place recorded is
+    /// an ordinary state, not a broken one, and must render as blank rather than throw.
+    /// </summary>
+    private static EmployeeProfileDto ToProfileDto(Employee employee)
+    {
+        return new EmployeeProfileDto
+        {
+            Id = employee.Id,
+            Code = employee.Code,
+
+            FullNameEn = employee.FullNameEn,
+            FullNameAr = employee.FullNameAr,
+            FirstNameEn = employee.FirstNameEn,
+            SecondNameEn = employee.SecondNameEn,
+            ThirdNameEn = employee.ThirdNameEn,
+            LastNameEn = employee.LastNameEn,
+            FirstNameAr = employee.FirstNameAr,
+            SecondNameAr = employee.SecondNameAr,
+            ThirdNameAr = employee.ThirdNameAr,
+            LastNameAr = employee.LastNameAr,
+            TitleName = employee.Title?.NameEn,
+
+            Status = employee.Status,
+            EmploymentType = employee.EmploymentType,
+            Gender = employee.Gender,
+            BirthDate = employee.BirthDate,
+            BirthPlaceName = employee.BirthPlace?.NameEn,
+            NationalityName = employee.Nationality?.NameEn,
+            ReligionName = employee.Religion?.NameEn,
+            MaritalStatusName = employee.MaritalStatus?.NameEn,
+            QualificationName = employee.Qualification?.NameEn,
+            BloodGroup = employee.BloodGroup,
+            CivilID = employee.CivilID,
+            PACINumber = employee.PACINumber,
+            FatherNameEn = employee.FatherNameEn,
+            MotherNameEn = employee.MotherNameEn,
+            CriticalIllness = employee.CriticalIllness,
+
+            JoiningDate = employee.JoiningDate,
+            ProbationDays = employee.ProbationDays,
+            ProbationEndDate = employee.ProbationEndDate,
+            RecruitmentTypeName = employee.RecruitmentType?.NameEn,
+            PreviousEmpCode = employee.PreviousEmpCode,
+            ReferenceCode = employee.ReferenceCode,
+            LoginID = employee.LoginID,
+            AccessID = employee.AccessID,
+
+            Email = employee.Email,
+            AlternateEmail = employee.AlternateEmail,
+            Mobile = employee.Mobile,
+            Telephone = employee.Telephone,
+            BusinessLandline = employee.BusinessLandline,
+            BusinessExtension = employee.BusinessExtension,
+
+            CurrentAddress = employee.CurrentAddress,
+            PermanentAddress = employee.PermanentAddress,
+            PermanentTelephone = employee.PermanentTelephone,
+            FlatNumn = employee.FlatNumn,
+            FloorNum = employee.FloorNum,
+            BuildingNum = employee.BuildingNum,
+            StreetNum = employee.StreetNum,
+            BlockNum = employee.BlockNum,
+            LaneNumber = employee.LaneNumber,
+            City = employee.City,
+            GovernorateName = employee.Governorate?.NameEn,
+            CountryName = employee.Country?.NameEn,
+            ZipCode = employee.ZipCode,
+
+            EmergencyContact = employee.EmergencyContact,
+            EmergencyNumber = employee.EmergencyNumber,
+            EmergencyRelation = employee.EmergencyRelation,
+            EmergencyContactAddress = employee.EmergencyContactAddress,
         };
     }
 
