@@ -32,6 +32,7 @@ using HCMv3.ManpowerPlanningManagement;
 using HCMv3.MultiTenancy;
 using HCMv3.MultiTenancy.Accounting;
 using HCMv3.MultiTenancy.Payments;
+using HCMv3.Navigation;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement;
 using HCMv3.PerformanceManagement;
@@ -1092,6 +1093,9 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     public virtual DbSet<EmployeesNotificationLog> EmployeesNotificationLogs { get; set; }
 
     public virtual DbSet<EmployeeWorkflowRole> EmployeeWorkflowRoles { get; set; }
+
+    /// <summary>Per-user screen favourites and visit history. See <see cref="UserScreenUsage"/>.</summary>
+    public virtual DbSet<UserScreenUsage> UserScreenUsages { get; set; }
 
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)

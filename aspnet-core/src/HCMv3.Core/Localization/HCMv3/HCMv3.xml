@@ -5704,5 +5704,6 @@
     <text name="SelectAnEmployeeOrAnOrganizationUnit">Select an employee or an organization unit.</text>
     <text name="EmpFormSectionIncomplete">Fields in this section still need a value.</text>
     <text name="EmpFormIncompleteHint">Still needed in:</text>
+    <text name="YouAreNotLoggedIn">You are not logged in.</text>
   </texts>
 </localizationDictionary>
