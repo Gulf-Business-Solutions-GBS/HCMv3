@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
@@ -22,6 +24,14 @@ namespace HCMv3.PersonnelAdministration.Workflow;
 /// movement or add a new one. Here the request IS the movement row; it is simply hidden by the
 /// <c>ApprovedOnly</c> filter until approved, so there is no copy step to get wrong and no window where the
 /// two tables disagree about who is holding whose passport.
+/// </para>
+///
+/// <para>
+/// The RETURN leg lives here too, as an amendment (<see cref="DocumentMvmtAmendment"/>). Legacy expressed it
+/// as a second <c>MovementType</c> on the same request object; here it is what it actually is -- a change to
+/// one field of a row that is already live and approved -- so it needs no entity, no table and no catalog row
+/// of its own, and it inherits the amendment rule that a REFUSED return leaves the movement exactly as it
+/// was.
 /// </para>
 /// </summary>
 public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionHandlerBase<EmployeeDocumentMvmt>
@@ -72,6 +82,15 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
             return;
         }
 
+        // An amendment here is a RETURN, and none of the withdrawal checks below apply to it: the row still
+        // holds the values that were already approved, so re-running them would re-validate a decision
+        // nobody is asking about and could refuse a return because of a setting that changed since.
+        if (context.IsAmendment)
+        {
+            ValidateReturn(movement, ReadAmendment(context));
+            return;
+        }
+
         if (movement.ReturnDate.Date < movement.WithdrawDate.Date)
         {
             throw new UserFriendlyException(L("ReturnDateCannotBeEarlierThanWithdrawDate"));
@@ -104,6 +123,102 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
                 throw new UserFriendlyException(L("WithdrawalReasonIsRequired"));
             }
         }
+    }
+
+    /// <summary>
+    /// The rules for a RETURN, applied to a set of values rather than to the row -- so the same checks serve
+    /// the submit (where the return is only proposed) and the approval (where it is about to be written).
+    ///
+    /// <para>
+    /// The already-returned check is the one legacy did not have. Legacy looked up the movement row with no
+    /// actual return date and, finding none, saved the request and silently stamped nothing -- so a document
+    /// returned twice produced an approved request that changed no data at all, and nobody could tell from
+    /// the screens which of the two returns was the real one. Refusing is louder and safer.
+    /// </para>
+    /// </summary>
+    private void ValidateReturn(EmployeeDocumentMvmt movement, DocumentMvmtAmendment proposed)
+    {
+        if (!proposed.ActualReturnDate.HasValue)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateIsRequired"));
+        }
+
+        if (movement.ActualReturnDate != default)
+        {
+            throw new UserFriendlyException(L("ThisDocumentHasAlreadyBeenReturned"));
+        }
+
+        if (proposed.ActualReturnDate.Value.Date < movement.WithdrawDate.Date)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateCannotBeEarlierThanWithdrawDate"));
+        }
+    }
+
+    /// <inheritdoc/>
+    public override bool SupportsAmendment => true;
+
+    /// <summary>
+    /// Captures what the movement said before the return was asked for.
+    ///
+    /// <para>
+    /// It is a single field, and that is exactly the field the change is about: without it the record of
+    /// "what this movement looked like before" would be missing the whole point of the change. Stored as
+    /// null when the row carries <c>default(DateTime)</c>, so the snapshot says "the document was still out"
+    /// rather than "it came back in year one".
+    /// </para>
+    /// </summary>
+    public override async Task<string> BuildSnapshotAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetTargetAsync(context);
+        if (movement == null)
+        {
+            return null;
+        }
+
+        return JsonSerializer.Serialize(new DocumentMvmtAmendment
+        {
+            ActualReturnDate = movement.ActualReturnDate == default
+                ? (DateTime?)null
+                : movement.ActualReturnDate
+        });
+    }
+
+    /// <summary>
+    /// Stamps an approved return onto the live movement row.
+    ///
+    /// <para>
+    /// Re-validated here, not only at submit. Between raising the return and approving it somebody else may
+    /// have recorded the document as back -- an HR clerk taking it at the counter, say -- and stamping a
+    /// second date over the first would silently rewrite the custody record. Throwing rolls the approval
+    /// back with it.
+    /// </para>
+    /// </summary>
+    public override async Task ApplyAmendmentAsync(WorkflowTransactionContext context)
+    {
+        var movement = await GetRequiredTargetAsync(context);
+        var proposed = ReadAmendment(context);
+
+        ValidateReturn(movement, proposed);
+
+        movement.ActualReturnDate = proposed.ActualReturnDate.Value.Date;
+
+        // Status is untouched on purpose: the withdrawal was approved before the return and stays approved.
+        // The filter must not so much as blink, or the movement would vanish from the log mid-change and the
+        // document would read as never having been withdrawn at all.
+        using (_unitOfWorkManager.Current.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            await Repository.UpdateAsync(movement);
+        }
+    }
+
+    private static DocumentMvmtAmendment ReadAmendment(WorkflowTransactionContext context)
+    {
+        if (context.AmendmentJson.IsNullOrWhiteSpace())
+        {
+            throw new UserFriendlyException("This amendment carries no proposed values.");
+        }
+
+        return JsonSerializer.Deserialize<DocumentMvmtAmendment>(context.AmendmentJson);
     }
 
     /// <summary>
@@ -152,6 +267,23 @@ public class PassportWithdrawalWorkflowTransactionHandler : WorkflowTransactionH
         var labelAr = documentNum.IsNullOrWhiteSpace()
             ? documentType?.NameAr ?? "مستند"
             : (documentType?.NameAr ?? "مستند") + " " + documentNum;
+
+        if (context.IsAmendment)
+        {
+            // A return reads as a return, not as a generic change. "Change: ... to ..." is the right shape
+            // for an amendment that moves dates about, but here the approver is being asked to confirm that
+            // a physical document is back in the safe, and a summary that made them work that out from two
+            // dates would be a summary of the wrong decision.
+            var proposed = ReadAmendment(context);
+
+            var handedBack = proposed.ActualReturnDate.HasValue
+                ? proposed.ActualReturnDate.Value.ToString("dd MMM yyyy")
+                : "-";
+
+            return new WorkflowSummary(
+                $"{labelEn} returned {handedBack} (out {withdrawn})",
+                $"إرجاع {labelAr} بتاريخ {handedBack} (الاستلام {withdrawn})");
+        }
 
         return new WorkflowSummary(
             $"{labelEn}, out {withdrawn}, back {returned}",

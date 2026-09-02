@@ -430,6 +430,14 @@ public class MyPassportWithdrawalDto : MyRequestDtoBase
     public string WithdrawalReason { get; set; }
 
     public string Comments { get; set; }
+
+    /// <summary>
+    /// Whether the employee can report this document as handed back. True only once the withdrawal is
+    /// approved and the document is not already recorded as returned: offering the button before approval
+    /// would be offering to return a document that was never released, and offering it twice is how the
+    /// custody record ends up with two different return dates for one movement.
+    /// </summary>
+    public bool CanReturn { get; set; }
 }
 
 public class RequestPassportWithdrawalInput

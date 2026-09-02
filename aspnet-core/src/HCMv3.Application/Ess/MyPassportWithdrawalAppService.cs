@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
@@ -43,6 +44,7 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
     private readonly IRepository<EmployeeDocument> _documentRepository;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IWorkflowAmendmentService _workflowAmendmentService;
 
     public MyPassportWithdrawalAppService(
         IRepository<EmployeeDocumentMvmt> repository,
@@ -52,12 +54,14 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
         IWorkflowApprovalService workflowApprovalService,
         IRepository<EmployeeDocument> documentRepository,
         IRepository<Employee> employeeRepository,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        IWorkflowAmendmentService workflowAmendmentService)
         : base(repository, requestRepository, employeeScopeProvider, requestMasterResolver, workflowApprovalService)
     {
         _documentRepository = documentRepository;
         _employeeRepository = employeeRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _workflowAmendmentService = workflowAmendmentService;
     }
 
     protected override string RequestType => PassportWithdrawalWorkflowTransactionHandler.PassportWithdrawalRequestType;
@@ -164,6 +168,88 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
 
     public Task CancelMyPassportWithdrawal(EntityDto input) => CancelAsync(input.Id);
 
+    /// <summary>
+    /// The RETURN leg. Raises an amendment against the approved movement rather than creating anything:
+    /// stamping the actual return date is a change to a row that is already live, and routing it through the
+    /// same chain the withdrawal went through means a refused return leaves the movement exactly as it was
+    /// -- the document simply stays recorded as out, which is the safe reading when nobody has confirmed it
+    /// is back.
+    /// </summary>
+    public async Task<ReturnDocumentResultDto> ReturnMyDocument(ReturnDocumentInput input)
+    {
+        var employeeId = await GetMyEmployeeIdAsync();
+
+        EmployeeDocumentMvmt movement;
+
+        using (CurrentUnitOfWork.DisableFilter(HCMv3DataFilters.ApprovedOnly))
+        {
+            movement = await Repository.FirstOrDefaultAsync(m => m.Id == input.EmployeeDocumentMvmtId);
+        }
+
+        if (movement == null)
+        {
+            throw new UserFriendlyException(L("RequestNotFound"));
+        }
+
+        // Ownership re-checked on the write, exactly as CancelAsync and AmendMyLeave do: a scoped list
+        // paired with an unscoped write is how one employee ends up returning another's passport on paper
+        // while it is still in their drawer.
+        if (movement.EmployeeId != employeeId)
+        {
+            throw new AbpAuthorizationException(L("YouCanOnlyCancelYourOwnRequests"));
+        }
+
+        // Only an approved withdrawal can be returned from. While it is still Open the document was never
+        // released, so there is nothing to hand back; the employee should withdraw the request instead.
+        if (movement.WorkflowStatus != RequestStatus.Approved)
+        {
+            throw new UserFriendlyException(L("OnlyAnApprovedWithdrawalCanBeReturned"));
+        }
+
+        // Checked here as well as in the handler. The handler is the rule -- it applies to an HR-raised
+        // return too -- but failing here means the employee is told before a request is created and rolled
+        // back.
+        if (movement.ActualReturnDate != default)
+        {
+            throw new UserFriendlyException(L("ThisDocumentHasAlreadyBeenReturned"));
+        }
+
+        var actualReturnDate = input.ActualReturnDate.Date;
+
+        if (actualReturnDate < movement.WithdrawDate.Date)
+        {
+            throw new UserFriendlyException(L("ActualReturnDateCannotBeEarlierThanWithdrawDate"));
+        }
+
+        var documentTypeId = await _documentRepository.GetAll()
+            .Where(d => d.Id == movement.EmployeeDocumentId)
+            .Select(d => (int?)d.DocumentTypeId)
+            .FirstOrDefaultAsync();
+
+        var amendment = new DocumentMvmtAmendment
+        {
+            ActualReturnDate = actualReturnDate
+        };
+
+        var requestId = await _workflowAmendmentService.CreateAndSubmitAsync(
+            PassportWithdrawalWorkflowTransactionHandler.PassportWithdrawalRequestType,
+            movement.Id,
+            movement.EmployeeId,
+            JsonSerializer.Serialize(amendment),
+            employeeId,
+            // Routed by document type, as the withdrawal was, so a return of a passport can follow the same
+            // chain the withdrawal of that passport followed.
+            documentTypeId);
+
+        return new ReturnDocumentResultDto
+        {
+            EmployeeDocumentMvmtId = movement.Id,
+            WorkflowRequestId = requestId,
+            ActualReturnDate = actualReturnDate,
+            IsLate = actualReturnDate > movement.ReturnDate.Date
+        };
+    }
+
     private static MyPassportWithdrawalDto ToDto(EmployeeDocumentMvmt entity)
     {
         return new MyPassportWithdrawalDto
@@ -184,7 +270,12 @@ public class MyPassportWithdrawalAppService : MyTransactionAppServiceBase<Employ
             Comments = entity.Comments,
             WorkflowStatus = entity.WorkflowStatus,
             WorkflowRequestId = entity.WorkflowRequestId,
-            CanCancel = CanCancel(entity)
+            CanCancel = CanCancel(entity),
+
+            // Only an approved withdrawal that has not already been handed back. Anything else and the
+            // button would either be offering to return a document that was never released, or inviting a
+            // second return date over the first.
+            CanReturn = entity.WorkflowStatus == RequestStatus.Approved && entity.ActualReturnDate == default
         };
     }
 }

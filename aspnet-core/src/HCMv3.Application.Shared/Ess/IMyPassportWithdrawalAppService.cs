@@ -25,4 +25,11 @@ public interface IMyPassportWithdrawalAppService : IApplicationService
 
     /// <summary>Withdraws the request while it is still theirs to withdraw.</summary>
     Task CancelMyPassportWithdrawal(EntityDto input);
+
+    /// <summary>
+    /// Reports the document as handed back -- the RETURN leg of the legacy <c>EmployeeDocMvmtRequest</c>.
+    /// Raised as an amendment to the approved movement rather than as a request of its own, so the movement
+    /// keeps reading "still out" until somebody confirms it is back.
+    /// </summary>
+    Task<ReturnDocumentResultDto> ReturnMyDocument(ReturnDocumentInput input);
 }

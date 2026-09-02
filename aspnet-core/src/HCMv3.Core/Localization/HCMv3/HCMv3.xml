@@ -1791,6 +1791,11 @@
     <text name="ReturnDateCannotBeEarlierThanWithdrawDate">The return date cannot be before the withdrawal date.</text>
     <text name="WithdrawalReasonIsRequired">Say why you need the document, so the approver knows what it is for.</text>
     <text name="EmployeeDocumentNotFound">That document could not be found.</text>
+    <text name="ReturnMyDocument">Return my document</text>
+    <text name="ActualReturnDateIsRequired">Say which day the document was handed back.</text>
+    <text name="ActualReturnDateCannotBeEarlierThanWithdrawDate">The document cannot come back before the day it went out.</text>
+    <text name="ThisDocumentHasAlreadyBeenReturned">This document is already recorded as returned.</text>
+    <text name="OnlyAnApprovedWithdrawalCanBeReturned">Only an approved withdrawal can be returned. Withdraw the request instead.</text>
     <text name="EssMyHRServices">My HR Services</text>
     <text name="RequestHRService">Request an HR service</text>
     <text name="EssMyPunches">My Missing Punches</text>
