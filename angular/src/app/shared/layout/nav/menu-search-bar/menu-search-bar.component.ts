@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppNavigationService } from '../app-navigation.service';
+import { ScreenNavigationService } from '../screen-navigation.service';
 import { Router } from '@angular/router';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -15,6 +16,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 })
 export class MenuSearchBarComponent extends AppComponentBase {
     private _appNavigationService = inject(AppNavigationService);
+    private _screenNavigation = inject(ScreenNavigationService);
     private router = inject(Router);
 
     allMenuItems: any[];
@@ -34,21 +36,36 @@ export class MenuSearchBarComponent extends AppComponentBase {
         return this._appNavigationService.showMenuItem(menuItem);
     }
 
+    /**
+     * Matches on name, route AND Screen Code, in the SAME box -- no second search field. Somebody who
+     * knows a screen is SPY007 should be able to type it where they already type its name, and somebody
+     * who does not should never notice codes exist here.
+     */
     searchMenuItem(event) {
+        const query = (event.query || '').toLowerCase();
+
         this.searchMenuResults = this.allMenuItems
+            .map((item) => ({ ...item, code: this._screenNavigation.codeForRoute(item.route) }))
             .filter(
                 (item) =>
-                    item.name.toLowerCase().includes(event.query.toLowerCase()) ||
-                    item.route.toLowerCase().includes(event.query.toLowerCase())
+                    item.name.toLowerCase().includes(query) ||
+                    item.route.toLowerCase().includes(query) ||
+                    (item.code && item.code.toLowerCase().includes(query))
             )
             .map((menuItem) => {
                 return {
-                    name: menuItem.name,
+                    // The code rides in the label so a result is identifiable at a glance and the person
+                    // learns the code of a screen they reached by name.
+                    name: this.labelFor(menuItem.name, menuItem.code),
                     route: menuItem.route,
                     external: menuItem.external,
                     parameters: menuItem.parameters,
                 };
             });
+    }
+
+    private labelFor(name: string, code: string | undefined): string {
+        return code && this._screenNavigation.showScreenCodes() ? name + ' (' + code + ')' : name;
     }
 
     selectMenuItem(event: any): void {

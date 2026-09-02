@@ -3,6 +3,8 @@ import { Component, OnInit, ViewEncapsulation, AfterViewInit, inject, input, com
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppMenu } from './app-menu';
 import { AppNavigationService } from './app-navigation.service';
+import { ScreenNavigationService } from './screen-navigation.service';
+import { ScreenDto } from '@shared/service-proxies/service-proxies';
 import { NavigationEnd, NavigationCancel, Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { FormattedStringValueExtracter } from '@shared/helpers/FormattedStringValueExtracter';
@@ -17,12 +19,14 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 @Component({
     templateUrl: './side-bar-menu.component.html',
     selector: 'side-bar-menu',
+    styleUrl: './side-bar-menu.component.css',
     encapsulation: ViewEncapsulation.None,
     imports: [MenuSearchBarComponent, NgTemplateOutlet, NgClass, RouterLinkActive, Tooltip, RouterLink, LocalizePipe],
 })
 export class SideBarMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
     private router = inject(Router);
     private _appNavigationService = inject(AppNavigationService);
+    private _screenNavigation = inject(ScreenNavigationService);
 
     permission = inject(PermissionCheckerService);
 
@@ -30,6 +34,56 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
     readonly menuClass = input('menu menu-column menu-rounded menu-sub-indention px-3');
 
     menu: AppMenu = null;
+
+    /**
+     * The catalogued screen behind a menu item, or undefined for a group header -- a group is not a
+     * screen, so it has neither a code nor anything to favourite.
+     */
+    screenFor(item: AppMenuItem): ScreenDto | undefined {
+        return item?.route ? this._screenNavigation.screenForRoute(item.route) : undefined;
+    }
+
+    /** The code to suffix, or undefined when the user has codes switched off. */
+    screenCodeFor(item: AppMenuItem): string | undefined {
+        return this._screenNavigation.showScreenCodes() ? this.screenFor(item)?.code : undefined;
+    }
+
+    isFavorite(screenKey: string): boolean {
+        return this._screenNavigation.isFavorite(screenKey);
+    }
+
+    showScreenCodes(): boolean {
+        return this._screenNavigation.showScreenCodes();
+    }
+
+    favoriteScreens(): ScreenDto[] {
+        return this._screenNavigation.favoriteScreens();
+    }
+
+    /**
+     * The five most recent, minus anything already pinned above -- showing a screen twice in two lists
+     * eight pixels apart wastes the space both lists are competing for.
+     */
+    recentScreens(): ScreenDto[] {
+        const pinned = new Set(this._screenNavigation.favorites().map((f) => f.screenKey));
+
+        return this._screenNavigation
+            .recent()
+            .filter((r) => !pinned.has(r.screenKey))
+            .map((r) => this._screenNavigation.screenForKey(r.screenKey))
+            .filter((s): s is ScreenDto => !!s);
+    }
+
+    /**
+     * Stops the click reaching the anchor. Without this, starring a screen also navigates to it -- the
+     * star sits inside the link, and pinning something is not a request to go there.
+     */
+    toggleFavorite(event: MouseEvent, screen: ScreenDto): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this._screenNavigation.toggleFavorite(screen);
+    }
+
     currentRouteUrl = '';
     insideTm: any;
     outsideTm: any;
@@ -42,9 +96,21 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
         this.menu = this._appNavigationService.getMenu();
         this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 
+        // The sidebar is on every authenticated page and is the first thing that needs codes, so it is
+        // where the catalogue is fetched. Guarded because the shell can rebuild this component.
+        if (!this._screenNavigation.isLoaded()) {
+            this._screenNavigation.load();
+        }
+
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((event) => (this.currentRouteUrl = this.router.url.split(/[?#]/)[0]));
+            .subscribe((event) => {
+                this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
+
+                // Recorded on arrival rather than on click, so a screen reached by URL, bookmark or
+                // quick link counts the same as one reached from the menu.
+                this._screenNavigation.recordVisit(this.currentRouteUrl);
+            });
 
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd || event instanceof NavigationCancel))

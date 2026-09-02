@@ -1,0 +1,50 @@
+<div class="card card-custom ql-card">
+    <div class="card-header ql-head">
+        <h3 class="card-title ql-title">{{ 'QuickLinks' | localize }}</h3>
+    </div>
+
+    <div class="card-body ql-body">
+        @if (isEmpty()) {
+            <!-- Said plainly rather than left as an empty card. A blank tile reads as something that
+                 failed to load; this reads as something waiting to be used. -->
+            <p class="ql-empty">{{ 'QuickLinksEmptyHint' | localize }}</p>
+        }
+
+        @if (shared().length) {
+            <div class="ql-band">
+                <div class="ql-band-head">{{ 'QuickLinksShared' | localize }}</div>
+                <div class="ql-grid">
+                    @for (screen of shared(); track screen.screenKey) {
+                        <a class="ql-link" [routerLink]="[screen.route]">
+                            @if (showScreenCodes()) {
+                                <span class="ql-code">{{ screen.code }}</span>
+                            }
+                            <span class="ql-name">{{ screen.nameKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (mine().length) {
+            <div class="ql-band">
+                <!-- "Suggested" when the server stood in most-visited: calling an unpinned screen
+                     "mine" claims a choice the user never made, and they would hunt for how to undo it. -->
+                <div class="ql-band-head">
+                    {{ (hasOwnFavorites() ? 'QuickLinksMine' : 'QuickLinksSuggested') | localize }}
+                </div>
+                <div class="ql-grid">
+                    @for (screen of mine(); track screen.screenKey) {
+                        <a class="ql-link" [routerLink]="[screen.route]">
+                            @if (showScreenCodes()) {
+                                <span class="ql-code">{{ screen.code }}</span>
+                            }
+                            <span class="ql-name">{{ screen.nameKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+                <p class="ql-manage">{{ 'QuickLinksManageHint' | localize }}</p>
+            </div>
+        }
+    </div>
+</div>

@@ -6,6 +6,10 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateOrEditEmployeeDto, EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
+import {
+    RecordBreadcrumbComponent,
+    BreadcrumbStep,
+} from '@app/shared/common/breadcrumb/record-breadcrumb.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
     DEFAULT_EMPLOYEE_SECTION_ID,
@@ -39,7 +43,7 @@ import {
     templateUrl: './employee-detail.component.html',
     styleUrl: './employee-detail.component.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, LocalizePipe, FormsModule, NgComponentOutlet],
+    imports: [SubHeaderComponent, LocalizePipe, FormsModule, NgComponentOutlet, RecordBreadcrumbComponent],
 })
 export class EmployeeDetailComponent extends AppComponentBase implements OnInit {
     private _route = inject(ActivatedRoute);
@@ -66,6 +70,31 @@ export class EmployeeDetailComponent extends AppComponentBase implements OnInit 
 
     /** Inputs handed to whichever section component is mounted. Every section takes exactly this. */
     readonly sectionInputs = computed(() => ({ employeeId: this.employeeId() }));
+
+    /**
+     * Module > employee > section. This is exactly the case a breadcrumb is for: three levels deep,
+     * where the page title alone ("Loans") cannot say whose loans, and the section rail shows where you
+     * are within the record but not how you got into it.
+     */
+    readonly breadcrumb = computed<BreadcrumbStep[]>(() => {
+        const steps: BreadcrumbStep[] = [
+            { label: 'PersonnelAdministration', isKey: true, route: '/app/admin/employees' },
+        ];
+
+        const name = this.displayName();
+        if (name) {
+            // No route on the employee step: it would lead back to this same record, which is where the
+            // reader already is.
+            steps.push({ label: name });
+        }
+
+        const section = this.activeSection();
+        if (section) {
+            steps.push({ label: section.labelKey, isKey: true });
+        }
+
+        return steps;
+    });
 
     readonly activeSection = computed(() =>
         EMPLOYEE_SECTIONS.find((s) => s.id === this.activeSectionId())

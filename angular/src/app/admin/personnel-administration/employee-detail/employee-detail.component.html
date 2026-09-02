@@ -2,6 +2,8 @@
     <sub-header [title]="'Employees' | localize" [description]="'PersonnelAdministration' | localize" />
 
     <div [class]="containerClass">
+        <record-breadcrumb [steps]="breadcrumb()" />
+
         <!-- Identity header. Who this record belongs to should be readable without looking at the URL
              or remembering which row was clicked, and it stays put while sections change. -->
         <div class="emp-identity">

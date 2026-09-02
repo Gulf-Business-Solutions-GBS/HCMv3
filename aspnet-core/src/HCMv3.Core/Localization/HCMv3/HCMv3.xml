@@ -5726,5 +5726,16 @@
     <text name="ScreenCodeAlreadyUsed">Screen code {0} is already used by another screen.</text>
     <text name="ScreenNotFound">That screen no longer exists.</text>
     <text name="ShowScreenCodes">Show screen codes in the menu</text>
+    <text name="Favorites">Favorites</text>
+    <text name="RecentlyVisited">Recently Visited</text>
+    <text name="AddToFavorites">Add to favorites</text>
+    <text name="RemoveFromFavorites">Remove from favorites</text>
+    <text name="QuickLinks">Quick Links</text>
+    <text name="QuickLinksShared">Shared</text>
+    <text name="QuickLinksMine">Mine</text>
+    <text name="QuickLinksSuggested">Suggested</text>
+    <text name="QuickLinksManageHint">Star a screen in the menu to keep it here.</text>
+    <text name="QuickLinksEmptyHint">Star a screen in the menu and it will appear here.</text>
+    <text name="Breadcrumb">Breadcrumb</text>
   </texts>
 </localizationDictionary>
