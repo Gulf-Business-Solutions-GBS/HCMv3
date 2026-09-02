@@ -6,6 +6,8 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
 import { ZeroTemplateHttpInterceptor } from './zero-template-http-interceptor';
 
 export const SERVICE_PROXY_PROVIDERS = [
+    ApiServiceProxies.ScreensServiceProxy,
+    ApiServiceProxies.MyScreenShortcutsServiceProxy,
     ApiServiceProxies.AuditLogServiceProxy,
     ApiServiceProxies.EssSessionServiceProxy,
     ApiServiceProxies.WorkflowActivityServiceProxy,
