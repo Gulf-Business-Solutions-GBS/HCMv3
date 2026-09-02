@@ -4163,6 +4163,11 @@
     <text name="EssMyAssets">My Assets</text>
     <text name="EssMyDocuments">My Documents</text>
     <text name="EssMyLoans">My Loans</text>
+    <text name="EssMyLoanExemptions">My Loan Exemptions</text>
+    <text name="ALoanExemptionAlreadyExistsForThatMonth">An exemption has already been requested or granted on this loan for {0}.</text>
+    <text name="ExemptionDateIsRequired">The month to be exempted must be specified.</text>
+    <text name="TheLoanForThisExemptionWasNotFound">The loan this exemption is for could not be found.</text>
+    <text name="TheExemptionDateMustFallWithinTheLoanRecoveryPeriod">The exemption must fall within the loan's recovery period, {0} to {1}.</text>
     <text name="EssMyOvertime">My Overtime</text>
     <text name="EssMyTickets">My Air Tickets</text>
     <text name="CurrentUserHasNoEmployeeRecord">Your user account is not linked to an employee record. Ask HR to link it before using self service.</text>

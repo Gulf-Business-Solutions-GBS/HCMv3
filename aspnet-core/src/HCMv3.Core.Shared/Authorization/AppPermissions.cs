@@ -1768,6 +1768,11 @@ public static class AppPermissions
     public const string Ess_MyAssets = "Ess.MyAssets";
     public const string Ess_MyDocuments = "Ess.MyDocuments";
     public const string Ess_MyLoans = "Ess.MyLoans";
+
+    // Separate from Ess_MyLoans on purpose: asking to skip a month's recovery is a different act from
+    // borrowing, and a company may well let everyone see their loans while letting nobody request an
+    // exemption without HR raising it.
+    public const string Ess_MyLoanExemptions = "Ess.MyLoanExemptions";
     public const string Ess_MyOvertime = "Ess.MyOvertime";
     public const string Ess_MyTickets = "Ess.MyTickets";
     public const string Ess_MyAttendance = "Ess.MyAttendance";
