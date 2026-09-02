@@ -1097,6 +1097,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     /// <summary>Per-user screen favourites and visit history. See <see cref="UserScreenUsage"/>.</summary>
     public virtual DbSet<UserScreenUsage> UserScreenUsages { get; set; }
 
+    /// <summary>The screen catalogue and its Screen Codes. See <see cref="Screen"/>.</summary>
+    public virtual DbSet<Screen> Screens { get; set; }
+
+    /// <summary>Tenant-wide quick links published by an administrator.</summary>
+    public virtual DbSet<SharedQuickLink> SharedQuickLinks { get; set; }
+
 
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
@@ -1194,6 +1200,35 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.AuthorEmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // The screen catalogue. Both uniques are enforced HERE and not only in the app service: the
+        // service checks for a clashing code before writing, which is check-then-act and races with
+        // itself under concurrent edits. The index is what actually makes a duplicate impossible.
+        modelBuilder.Entity<Screen>(b =>
+        {
+            // Identity. Two rows for one screen would split a user's favourites across both.
+            b.HasIndex(e => new { e.TenantId, e.ScreenKey })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+
+            // Codes are how people refer to screens to each other; two screens answering to one code
+            // makes every such reference ambiguous.
+            b.HasIndex(e => new { e.TenantId, e.Code })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+        });
+
+        modelBuilder.Entity<UserScreenUsage>(b =>
+        {
+            // One row per user per screen -- the service reads it with FirstOrDefault and updates in
+            // place, so a second row would be silently ignored and its visits lost.
+            b.HasIndex(e => new { e.TenantId, e.UserId, e.ScreenKey }).IsUnique();
+        });
+
+        modelBuilder.Entity<SharedQuickLink>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.DisplayOrder });
         });
 
         // The transaction-type catalog. Code is what WorkflowRequest.RequestType and

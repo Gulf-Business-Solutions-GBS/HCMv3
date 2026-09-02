@@ -99,6 +99,20 @@ public static class AppSettings
         public const string IsRestrictedEmailDomainEnabled = "App.TenantManagement.IsRestrictedEmailDomainEnabled";
     }
 
+
+    /// <summary>
+    /// Navigation shell: Screen Codes, favourites and quick links.
+    /// </summary>
+    public static class Navigation
+    {
+        /// <summary>
+        /// Whether this user sees the Screen Code after each menu name, e.g. "Employee Leave (STM007)".
+        /// Per USER, defaulting on: codes are how people are meant to refer to screens to each other, so
+        /// they have to be visible before anyone learns them -- but somebody who never uses them should
+        /// be able to quieten the menu.
+        /// </summary>
+        public const string ShowScreenCodes = "App.Navigation.ShowScreenCodes";
+    }
     public static class UserManagement
     {
         public static class TwoFactorLogin

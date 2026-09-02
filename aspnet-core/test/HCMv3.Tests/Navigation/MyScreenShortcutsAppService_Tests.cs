@@ -37,13 +37,13 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Record_A_Visit_And_Count_Repeats()
     {
-        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-PA-EMP" });
-        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-PA-EMP" });
+        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-PA-EMP" });
+        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-PA-EMP" });
 
         var shortcuts = await _appService.GetMyShortcuts();
 
         shortcuts.Recent.Length.ShouldBe(1);
-        shortcuts.Recent[0].ScreenCode.ShouldBe("S-PA-EMP");
+        shortcuts.Recent[0].ScreenKey.ShouldBe("S-PA-EMP");
         shortcuts.Recent[0].VisitCount.ShouldBe(2);
         shortcuts.Recent[0].LastVisitedAt.ShouldNotBeNull();
     }
@@ -55,13 +55,13 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
         // just the menu again.
         for (var i = 1; i <= 7; i++)
         {
-            await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-" + i });
+            await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-" + i });
         }
 
         var shortcuts = await _appService.GetMyShortcuts();
 
         shortcuts.Recent.Length.ShouldBe(5);
-        shortcuts.Recent.Select(r => r.ScreenCode).ShouldNotContain("S-1");
+        shortcuts.Recent.Select(r => r.ScreenKey).ShouldNotContain("S-1");
     }
 
     [Fact]
@@ -69,12 +69,12 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
     {
         // Pinning something you are about to start using is legitimate. The row exists with no visit,
         // which is exactly the case the recent list has to exclude.
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-NEW", IsFavorite = true });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-NEW", IsFavorite = true });
 
         var shortcuts = await _appService.GetMyShortcuts();
 
         shortcuts.Favorites.Length.ShouldBe(1);
-        shortcuts.Favorites[0].ScreenCode.ShouldBe("S-NEW");
+        shortcuts.Favorites[0].ScreenKey.ShouldBe("S-NEW");
         shortcuts.Favorites[0].LastVisitedAt.ShouldBeNull();
 
         // Never visited, so it is not a recent -- not merely sorted last.
@@ -85,27 +85,27 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
     public async Task Should_Order_Favourites_By_Use_Not_By_When_They_Were_Pinned()
     {
         // Pinned first, used once.
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-RARE", IsFavorite = true });
-        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-RARE" });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-RARE", IsFavorite = true });
+        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-RARE" });
 
         // Pinned second, used daily. This is the one that must come first.
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-DAILY", IsFavorite = true });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-DAILY", IsFavorite = true });
         for (var i = 0; i < 5; i++)
         {
-            await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-DAILY" });
+            await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-DAILY" });
         }
 
         var shortcuts = await _appService.GetMyShortcuts();
 
-        shortcuts.Favorites[0].ScreenCode.ShouldBe("S-DAILY");
+        shortcuts.Favorites[0].ScreenKey.ShouldBe("S-DAILY");
     }
 
     [Fact]
     public async Task Should_Unfavourite_Without_Losing_The_Visit_History()
     {
-        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-PA-EMP" });
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-PA-EMP", IsFavorite = true });
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-PA-EMP", IsFavorite = false });
+        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-PA-EMP" });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-PA-EMP", IsFavorite = true });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-PA-EMP", IsFavorite = false });
 
         var shortcuts = await _appService.GetMyShortcuts();
 
@@ -121,7 +121,7 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
     {
         // A stale click from a screen removed since. Creating a row to say "not a favourite" would be
         // storing the absence of a fact.
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-GONE", IsFavorite = false });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-GONE", IsFavorite = false });
 
         var shortcuts = await _appService.GetMyShortcuts();
 
@@ -134,8 +134,8 @@ public class MyScreenShortcutsAppService_Tests : AppTestBase
     {
         // Which screens somebody uses says what they work on -- payroll, disciplinaries, terminations.
         // One user reading another's rail would be a real disclosure, not a cosmetic one.
-        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenCode = "S-ADMIN-ONLY" });
-        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenCode = "S-ADMIN-ONLY", IsFavorite = true });
+        await _appService.RecordVisit(new RecordScreenVisitInput { ScreenKey = "S-ADMIN-ONLY" });
+        await _appService.SetFavorite(new SetScreenFavoriteInput { ScreenKey = "S-ADMIN-ONLY", IsFavorite = true });
 
         // Same tenant, different person. The rows are scoped by user, not by tenant, so a colleague in
         // the same tenant is exactly the case that would leak if the filter were wrong.

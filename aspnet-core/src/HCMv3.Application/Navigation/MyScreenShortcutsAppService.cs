@@ -69,7 +69,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
     public async Task SetFavorite(SetScreenFavoriteInput input)
     {
         var userId = GetCurrentUserIdOrFail();
-        var row = await FindAsync(userId, input.ScreenCode);
+        var row = await FindAsync(userId, input.ScreenKey);
 
         if (row == null)
         {
@@ -84,7 +84,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
             {
                 TenantId = AbpSession.TenantId ?? 0,
                 UserId = userId,
-                ScreenCode = input.ScreenCode.Trim(),
+                ScreenKey = input.ScreenKey.Trim(),
                 IsFavorite = true,
             });
 
@@ -98,7 +98,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
     public async Task RecordVisit(RecordScreenVisitInput input)
     {
         var userId = GetCurrentUserIdOrFail();
-        var row = await FindAsync(userId, input.ScreenCode);
+        var row = await FindAsync(userId, input.ScreenKey);
         var now = Clock.Now;
 
         if (row == null)
@@ -107,7 +107,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
             {
                 TenantId = AbpSession.TenantId ?? 0,
                 UserId = userId,
-                ScreenCode = input.ScreenCode.Trim(),
+                ScreenKey = input.ScreenKey.Trim(),
                 IsFavorite = false,
                 LastVisitedAt = now,
                 VisitCount = 1,
@@ -126,7 +126,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
         var code = screenCode?.Trim();
 
         return _repository.GetAll()
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.ScreenCode == code);
+            .FirstOrDefaultAsync(r => r.UserId == userId && r.ScreenKey == code);
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
 
     private static ScreenUsageDto Map(UserScreenUsage row) => new ScreenUsageDto
     {
-        ScreenCode = row.ScreenCode,
+        ScreenKey = row.ScreenKey,
         IsFavorite = row.IsFavorite,
         LastVisitedAt = row.LastVisitedAt,
         VisitCount = row.VisitCount,

@@ -782,6 +782,8 @@ public class AppAuthorizationProvider : AuthorizationProvider
         organizationUnits.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits_ManageRoles, L("ManagingRoles"));
 
         administration.CreateChildPermission(AppPermissions.Pages_Administration_UiCustomization, L("VisualSettings"));
+        administration.CreateChildPermission(AppPermissions.Pages_Administration_Navigation_ManageScreenCodes, L("ManageScreenCodes"));
+        administration.CreateChildPermission(AppPermissions.Pages_Administration_Navigation_ManageQuickLinks, L("ManageQuickLinks"));
 
         var webhooks = administration.CreateChildPermission(AppPermissions.Pages_Administration_WebhookSubscription, L("Webhooks"));
         webhooks.CreateChildPermission(AppPermissions.Pages_Administration_WebhookSubscription_Create, L("CreatingWebhooks"));

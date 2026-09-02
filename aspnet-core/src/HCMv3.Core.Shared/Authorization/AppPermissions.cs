@@ -689,6 +689,15 @@ public static class AppPermissions
 
     public const string Pages_Administration_UiCustomization = "Pages.Administration.UiCustomization";
 
+    /// <summary>
+    /// Re-map a Screen Code. Codes are how people refer to screens to each other, so changing one
+    /// changes shared vocabulary -- an administrator's decision, not a personal preference.
+    /// </summary>
+    public const string Pages_Administration_Navigation_ManageScreenCodes = "Pages.Administration.Navigation.ManageScreenCodes";
+
+    /// <summary>Publish tenant-wide quick links onto everyone's dashboard.</summary>
+    public const string Pages_Administration_Navigation_ManageQuickLinks = "Pages.Administration.Navigation.ManageQuickLinks";
+
     public const string Pages_Administration_WebhookSubscription = "Pages.Administration.WebhookSubscription";
     public const string Pages_Administration_WebhookSubscription_Create = "Pages.Administration.WebhookSubscription.Create";
     public const string Pages_Administration_WebhookSubscription_Edit = "Pages.Administration.WebhookSubscription.Edit";

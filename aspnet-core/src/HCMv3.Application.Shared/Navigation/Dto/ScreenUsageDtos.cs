@@ -6,7 +6,7 @@ namespace HCMv3.Navigation.Dto;
 /// <summary>One screen in the user's rail, favourites list or quick links.</summary>
 public class ScreenUsageDto
 {
-    public string ScreenCode { get; set; }
+    public string ScreenKey { get; set; }
 
     public bool IsFavorite { get; set; }
 
@@ -32,8 +32,8 @@ public class MyScreenShortcutsDto
 public class SetScreenFavoriteInput
 {
     [Required]
-    [StringLength(ScreenCodeConsts.MaxCodeLength)]
-    public string ScreenCode { get; set; }
+    [StringLength(ScreenCodeConsts.MaxKeyLength)]
+    public string ScreenKey { get; set; }
 
     public bool IsFavorite { get; set; }
 }
@@ -41,6 +41,6 @@ public class SetScreenFavoriteInput
 public class RecordScreenVisitInput
 {
     [Required]
-    [StringLength(ScreenCodeConsts.MaxCodeLength)]
-    public string ScreenCode { get; set; }
+    [StringLength(ScreenCodeConsts.MaxKeyLength)]
+    public string ScreenKey { get; set; }
 }

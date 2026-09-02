@@ -155,6 +155,12 @@ public class AppSettingProvider : SettingProvider
     {
         return new[]
         {
+                // Screen Codes after menu names. Per USER and default ON: codes only become the shared
+                // vocabulary they are meant to be if people see them, but anyone who never uses them can
+                // quieten their own menu without affecting colleagues.
+                new SettingDefinition(AppSettings.Navigation.ShowScreenCodes, "true",
+                    scopes: SettingScopes.Application | SettingScopes.Tenant | SettingScopes.User,
+                    clientVisibilityProvider: _visibleSettingClientVisibilityProvider),
                 new SettingDefinition(AppSettings.UserManagement.AllowSelfRegistration,
                     GetFromAppSettings(AppSettings.UserManagement.AllowSelfRegistration, "true"),
                     scopes: SettingScopes.Tenant, clientVisibilityProvider: _visibleSettingClientVisibilityProvider),

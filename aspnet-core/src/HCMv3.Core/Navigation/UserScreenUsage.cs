@@ -13,10 +13,11 @@ namespace HCMv3.Navigation;
 /// than getting a table each. Three tables would need three writes on every navigation and would drift:
 /// a screen renamed in one and not the others, a favourite that no longer appears in recents.
 ///
-/// KEYED BY SCREEN CODE, NOT ROUTE. Routes change when a feature moves; a code is a promise not to. The
-/// code is also what the S-code lookup resolves, so a favourite and a typed code name the same thing.
-/// An unknown code is therefore possible -- a screen removed between visits -- and reading code MUST
-/// tolerate it rather than assume every stored row still resolves.
+/// KEYED BY THE IMMUTABLE SCREEN KEY, NOT THE CODE. Screen Codes are re-mappable by an administrator,
+/// so keying favourites by code would mean a rename silently orphaned everyone's pinned screens -- a
+/// failure that surfaces weeks later as "my favourites disappeared" with nothing to connect it to the
+/// rename. The key never changes. A key with no matching Screen row is still possible -- a screen
+/// removed between visits -- so reading code MUST tolerate it rather than assume every row resolves.
 /// </summary>
 public class UserScreenUsage : CreationAuditedEntity, IMustHaveTenant
 {
@@ -26,11 +27,11 @@ public class UserScreenUsage : CreationAuditedEntity, IMustHaveTenant
     public virtual long UserId { get; set; }
 
     /// <summary>
-    /// Stable screen code (the S-code), e.g. <c>S-PA-EMP</c>. Not a route: routes move.
+    /// Points at <c>Screen.ScreenKey</c>. Immutable, unlike the code shown on screen.
     /// </summary>
     [Required]
-    [StringLength(ScreenCodeConsts.MaxCodeLength)]
-    public virtual string ScreenCode { get; set; }
+    [StringLength(ScreenCodeConsts.MaxKeyLength)]
+    public virtual string ScreenKey { get; set; }
 
     /// <summary>Pinned by the user. Favourites and quick links both read this.</summary>
     public virtual bool IsFavorite { get; set; }

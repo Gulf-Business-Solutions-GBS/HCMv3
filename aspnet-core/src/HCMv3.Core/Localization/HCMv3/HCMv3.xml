@@ -5715,5 +5715,11 @@
     <text name="EmpFormSectionIncomplete">Fields in this section still need a value.</text>
     <text name="EmpFormIncompleteHint">Still needed in:</text>
     <text name="YouAreNotLoggedIn">You are not logged in.</text>
+    <text name="ManageScreenCodes">Manage Screen Codes</text>
+    <text name="ManageQuickLinks">Manage Quick Links</text>
+    <text name="ScreenCodeRequired">A screen code is required.</text>
+    <text name="ScreenCodeAlreadyUsed">Screen code {0} is already used by another screen.</text>
+    <text name="ScreenNotFound">That screen no longer exists.</text>
+    <text name="ShowScreenCodes">Show screen codes in the menu</text>
   </texts>
 </localizationDictionary>
