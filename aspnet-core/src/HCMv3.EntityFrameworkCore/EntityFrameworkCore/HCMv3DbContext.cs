@@ -1722,6 +1722,23 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
         });
 
+        modelBuilder.Entity<EmployeeLoanExemption>(b =>
+        {
+            // Self-service lists an employee's exemptions and the ApprovedOnly filter reads WorkflowStatus
+            // on the same pass, so both belong in the one index.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            // Restrict, not the convention's Cascade. Two paths reach Employee from this row -- directly via
+            // EmployeeId, and again through the parent EmployeeLoan -- and SQL Server refuses to create the
+            // second cascading one ("may cause cycles or multiple cascade paths"). Restrict is right on the
+            // merits too: a skipped instalment is part of a loan's repayment history, and deleting an
+            // employee record must not quietly rewrite what was repaid.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<EmployeeClearance>(b =>
         {
             // Self-service lists these by employee and the ApprovedOnly filter reads WorkflowStatus on the

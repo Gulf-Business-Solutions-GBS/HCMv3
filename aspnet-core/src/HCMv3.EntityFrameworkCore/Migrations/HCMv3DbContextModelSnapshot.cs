@@ -21474,6 +21474,9 @@ namespace HCMv3.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmployeeLoanId")
                         .HasColumnType("int");
 
@@ -21492,9 +21495,19 @@ namespace HCMv3.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("EmployeeLoanId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
                     b.ToTable("EmployeeLoanExemptions");
                 });
@@ -32435,7 +32448,17 @@ namespace HCMv3.Migrations
                     b.Property<double>("TotalTravelCost")
                         .HasColumnType("float");
 
+                    b.Property<string>("TravelPurpose")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
                     b.Property<int>("TravelTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -32443,6 +32466,8 @@ namespace HCMv3.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("TravelTypeId");
+
+                    b.HasIndex("TenantId", "EmployeeId", "WorkflowStatus");
 
                     b.ToTable("Travels");
                 });
@@ -32608,6 +32633,9 @@ namespace HCMv3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AnyOtherExpense")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
@@ -32642,10 +32670,20 @@ namespace HCMv3.Migrations
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HotelComments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int?>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHotelRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisaRequired")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -32656,6 +32694,10 @@ namespace HCMv3.Migrations
 
                     b.Property<bool>("NightStay")
                         .HasColumnType("bit");
+
+                    b.Property<string>("OtherComments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -32671,6 +32713,10 @@ namespace HCMv3.Migrations
 
                     b.Property<int>("TravelId")
                         .HasColumnType("int");
+
+                    b.Property<string>("VisaComments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -32708,6 +32754,9 @@ namespace HCMv3.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<long?>("DeleterUserId")
                         .HasColumnType("bigint");
 
@@ -32733,6 +32782,8 @@ namespace HCMv3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("ExpenseTypeId");
 
@@ -38224,11 +38275,19 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.PersonnelAdministration.EmployeeLoanExemption", b =>
                 {
+                    b.HasOne("HCMv3.PersonnelAdministration.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("HCMv3.PersonnelAdministration.EmployeeLoan", "EmployeeLoan")
                         .WithMany()
                         .HasForeignKey("EmployeeLoanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("EmployeeLoan");
                 });
@@ -40504,7 +40563,7 @@ namespace HCMv3.Migrations
                         .HasForeignKey("TravelAirlineId");
 
                     b.HasOne("HCMv3.TravelManagement.Travel", "Travel")
-                        .WithMany()
+                        .WithMany("TravelDetails")
                         .HasForeignKey("TravelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -40522,6 +40581,10 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.TravelManagement.TravelDetailCost", b =>
                 {
+                    b.HasOne("HCMv3.GeneralMasterInfo.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
+
                     b.HasOne("HCMv3.TravelManagement.ExpenseType", "ExpenseType")
                         .WithMany()
                         .HasForeignKey("ExpenseTypeId")
@@ -40529,10 +40592,12 @@ namespace HCMv3.Migrations
                         .IsRequired();
 
                     b.HasOne("HCMv3.TravelManagement.TravelDetail", "TravelDetail")
-                        .WithMany()
+                        .WithMany("TravelDetailCosts")
                         .HasForeignKey("TravelDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Currency");
 
                     b.Navigation("ExpenseType");
 
@@ -40943,6 +41008,16 @@ namespace HCMv3.Migrations
             modelBuilder.Entity("HCMv3.TimeManagement.TimeLogApproval", b =>
                 {
                     b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("HCMv3.TravelManagement.Travel", b =>
+                {
+                    b.Navigation("TravelDetails");
+                });
+
+            modelBuilder.Entity("HCMv3.TravelManagement.TravelDetail", b =>
+                {
+                    b.Navigation("TravelDetailCosts");
                 });
 
             modelBuilder.Entity("HCMv3.Workflow.RequestDetail", b =>
