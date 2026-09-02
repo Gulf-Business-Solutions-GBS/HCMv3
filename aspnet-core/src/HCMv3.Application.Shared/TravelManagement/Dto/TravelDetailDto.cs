@@ -40,5 +40,17 @@ public class TravelDetailDto : EntityDto<int>
 
     public double TotalAmount { get; set; }
 
+    public bool IsVisaRequired { get; set; }
+
+    public string VisaComments { get; set; }
+
+    public bool IsHotelRequired { get; set; }
+
+    public string HotelComments { get; set; }
+
+    public bool AnyOtherExpense { get; set; }
+
+    public string OtherComments { get; set; }
+
     public string Comments { get; set; }
 }

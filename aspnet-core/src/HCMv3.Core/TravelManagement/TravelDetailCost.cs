@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HCMv3.GeneralMasterInfo;
 
 namespace HCMv3.TravelManagement;
 
@@ -25,6 +26,17 @@ public class TravelDetailCost : FullAuditedEntity, IMustHaveTenant
     public virtual int ExpenseTypeId { get; set; }
 
     public virtual ExpenseType ExpenseType { get; set; }
+
+    /// <summary>
+    /// What currency <see cref="Amount"/> is in. Present on the legacy <c>TravelDeskDetailCostRequest</c>
+    /// and simply never copied across when the request was turned into a <c>TravelDetailCost</c> -- a plain
+    /// bug rather than a design decision, and one that silently reinterpreted every foreign-currency line as
+    /// company currency. Nullable, because every row that exists today predates the column and there is no
+    /// honest value to backfill.
+    /// </summary>
+    public virtual int? CurrencyId { get; set; }
+
+    public virtual Currency Currency { get; set; }
 
     public virtual double Amount { get; set; }
 

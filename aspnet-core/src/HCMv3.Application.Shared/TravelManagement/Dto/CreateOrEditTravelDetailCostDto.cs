@@ -16,6 +16,9 @@ public class CreateOrEditTravelDetailCostDto
     [Required]
     public int ExpenseTypeId { get; set; }
 
+    /// <summary>What <see cref="Amount"/> is in. See <c>TravelDetailCost.CurrencyId</c>.</summary>
+    public int? CurrencyId { get; set; }
+
     public double Amount { get; set; }
 
     [StringLength(500)]

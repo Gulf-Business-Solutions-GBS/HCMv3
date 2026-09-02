@@ -1894,6 +1894,14 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<Travel>(b =>
+        {
+            // Self-service lists an employee's own trips and the ApprovedOnly filter reads WorkflowStatus on
+            // the same pass -- and it is this row's status alone that decides whether the trip's legs and
+            // cost lines are reachable, since neither of those carries a status of its own.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+        });
+
         modelBuilder.Entity<TravelDetail>(b =>
         {
             // Two required FKs to the same TravelDestinations table (DepartureId/ArrivalId).

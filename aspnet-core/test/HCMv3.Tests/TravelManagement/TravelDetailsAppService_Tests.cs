@@ -13,10 +13,13 @@ public class TravelDetailsAppService_Tests : TravelManagementAppServiceTestBase
 {
     private TravelDetailsAppService CreateAppService()
     {
+        // The travel repository is what scopes a leg to a trip the caller can see -- see
+        // TravelDetailsAppService.GetAll.
         return CreateService(() => new TravelDetailsAppService(
             FakeRepository.For<TravelDetail>(Context),
             FakeRepository.For<TravelDetailCost>(Context),
-            FakeRepository.For<TravelPerDiem>(Context)));
+            FakeRepository.For<TravelPerDiem>(Context),
+            FakeRepository.For<Travel>(Context)));
     }
 
     private (int travelId, int departureId, int arrivalId) CreateTravelWithDestinations()

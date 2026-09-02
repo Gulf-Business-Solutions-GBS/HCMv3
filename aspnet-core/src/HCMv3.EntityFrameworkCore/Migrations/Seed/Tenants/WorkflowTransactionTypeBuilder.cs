@@ -169,7 +169,18 @@ public class WorkflowTransactionTypeBuilder
         // month of a small advance. Note what approval buys, and it is money rather than paperwork: granting
         // an exemption pushes the loan's recovery end date out by the month skipped, so the instalment is
         // deferred rather than forgiven. Until it is granted the row is invisible and the schedule unchanged.
-        ("EmployeeLoanExemption", "Loan Exemption Request", "طلب إعفاء من قسط القرض", "LoanType", "/app/main/ess/loan-exemption", AppPermissions.Ess_MyLoanExemptions, "flaticon-piggy-bank", 230)
+        ("EmployeeLoanExemption", "Loan Exemption Request", "طلب إعفاء من قسط القرض", "LoanType", "/app/main/ess/loan-exemption", AppPermissions.Ess_MyLoanExemptions, "flaticon-piggy-bank", 230),
+
+        // The travel request (legacy TravelDeskRequest). Self-service: the employee asks to make the trip.
+        // The Code is the transaction entity's name as always -- there is no TravelDeskRequest header,
+        // detail and cost triple here, the Travel row IS the request and its legs and cost lines are created
+        // with it, hidden by ApprovedOnly until the chain completes. Sub-type is the TRAVEL TYPE, so an
+        // overseas trip can need a longer chain than a local one. Note what approval buys, and it is the
+        // reason this type exists at all: TravelFeedback (the travel expense CLAIM, above) points at a
+        // Travel row, and until now the only way one could exist was for an administrator to key it in --
+        // an employee could claim for a trip nobody could request. Approving this writes nothing anywhere
+        // else; the trip becoming visible is the trip being approved.
+        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

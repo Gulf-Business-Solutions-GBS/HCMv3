@@ -12,7 +12,12 @@ public class TravelDetailCostsAppService_Tests : TravelManagementAppServiceTestB
 {
     private TravelDetailCostsAppService CreateAppService()
     {
-        return CreateService(() => new TravelDetailCostsAppService(FakeRepository.For<TravelDetailCost>(Context)));
+        // The leg and travel repositories are what scope a cost line to a trip the caller can see -- see
+        // TravelDetailCostsAppService.GetAll.
+        return CreateService(() => new TravelDetailCostsAppService(
+            FakeRepository.For<TravelDetailCost>(Context),
+            FakeRepository.For<TravelDetail>(Context),
+            FakeRepository.For<Travel>(Context)));
     }
 
     private int CreateTravelDetail()

@@ -13,7 +13,14 @@ public class TravelsAppService_Tests : TravelManagementAppServiceTestBase
 {
     private TravelsAppService CreateAppService()
     {
-        return CreateService(() => new TravelsAppService(FakeRepository.For<Travel>(Context)));
+        // A trip booked by the travel desk is raised through IAdminTransactionSubmitter, exactly as a
+        // self-service request is. With no workflow catalog behind this private context the fake does what
+        // the real submitter does for a type that is not routed: insert, and leave WorkflowStatus null.
+        // The routing itself is covered end to end against the real engine in
+        // HCMv3.Tests.Workflow.TravelWorkflow_Tests.
+        return CreateService(() => new TravelsAppService(
+            FakeRepository.For<Travel>(Context),
+            new HCMv3.Tests.PerformanceManagement.FakeAdminTransactionSubmitter()));
     }
 
     [Fact]

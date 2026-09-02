@@ -1786,6 +1786,12 @@ public static class AppPermissions
     public const string Ess_MyTickets = "Ess.MyTickets";
     public const string Ess_MyAttendance = "Ess.MyAttendance";
     public const string Ess_MyBank = "Ess.MyBank";
+    /// <summary>
+    /// Asking to GO on a trip. Separate from Ess.MyTravelClaims, which is claiming back what a trip cost:
+    /// requesting travel commits the company to the expense, claiming it back merely reports one, and a
+    /// company may well let everyone claim while letting only some people request.
+    /// </summary>
+    public const string Ess_MyTravel = "Ess.MyTravel";
     public const string Ess_MyTravelClaims = "Ess.MyTravelClaims";
     public const string Ess_MyPassportWithdrawals = "Ess.MyPassportWithdrawals";
     public const string Ess_MyExitPermits = "Ess.MyExitPermits";
