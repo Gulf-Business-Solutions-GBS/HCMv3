@@ -3346,6 +3346,18 @@ export class AppNavigationService {
                         '/app/admin/ui-customization'
                     ),
                     new AppMenuItem(
+                        'ManageScreenCodes',
+                        'Pages.Administration.Navigation.ManageScreenCodes',
+                        'flaticon-tabs',
+                        '/app/admin/screen-codes'
+                    ),
+                    new AppMenuItem(
+                        'ManageQuickLinks',
+                        'Pages.Administration.Navigation.ManageQuickLinks',
+                        'flaticon-share',
+                        '/app/admin/quick-links'
+                    ),
+                    new AppMenuItem(
                         'WebhookSubscriptions',
                         'Pages.Administration.WebhookSubscription',
                         'flaticon2-world',

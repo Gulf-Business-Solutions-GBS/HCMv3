@@ -5740,5 +5740,19 @@
     <text name="QuickLinksManageHint">Star a screen in the menu to keep it here.</text>
     <text name="QuickLinksEmptyHint">Star a screen in the menu and it will appear here.</text>
     <text name="Breadcrumb">Breadcrumb</text>
+    <text name="ScreenCodesIntro">Rename the code a screen answers to. Codes are how people refer to screens to each other, so a change here affects everyone.</text>
+    <text name="ScreenCodeSearchHint">Search by code, name or route</text>
+    <text name="AllModules">All modules</text>
+    <text name="Screen">Screen</text>
+    <text name="Route">Route</text>
+    <text name="QuickLinksAdminIntro">Links published here appear in the Shared band of everyone's dashboard, for those allowed to open them.</text>
+    <text name="PublishedQuickLinks">Published Quick Links</text>
+    <text name="AddQuickLink">Add a Quick Link</text>
+    <text name="NoQuickLinksPublished">Nothing published yet. Search for a screen to add the first one.</text>
+    <text name="QuickLinkAlreadyPublished">That screen is already published.</text>
+    <text name="QuickLinkDeleteWarning">This link will disappear from everyone's dashboard.</text>
+    <text name="QuickLinkScreenMissing">This screen no longer exists</text>
+    <text name="QuickLinksCapNote">Only the first {0} appear on the dashboard. Reorder to change which.</text>
+
   </texts>
 </localizationDictionary>

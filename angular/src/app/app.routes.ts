@@ -3745,6 +3745,22 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
+                        path: 'screen-codes',
+                        loadComponent: () =>
+                            import('./admin/navigation/screen-codes/screen-codes.component').then(
+                                (m) => m.ScreenCodesComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Navigation.ManageScreenCodes' },
+                    },
+                    {
+                        path: 'quick-links',
+                        loadComponent: () =>
+                            import('./admin/navigation/quick-links-admin/quick-links-admin.component').then(
+                                (m) => m.QuickLinksAdminComponent
+                            ),
+                        data: { permission: 'Pages.Administration.Navigation.ManageQuickLinks' },
+                    },
+                    {
                         path: 'ui-customization',
                         loadComponent: () =>
                             import('./admin/ui-customization/ui-customization.component').then(

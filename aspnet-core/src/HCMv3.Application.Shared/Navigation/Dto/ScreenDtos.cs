@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Abp.Runtime.Validation;
 
 namespace HCMv3.Navigation.Dto;
 
@@ -66,4 +67,42 @@ public class UpdateScreenCodeInput
     [Required]
     [StringLength(ScreenCodeConsts.MaxCodeLength)]
     public string Code { get; set; }
+}
+
+/// <summary>
+/// Admin listing filter. Deliberately searches code, name key and module together: an administrator
+/// looking for a screen may remember any one of the three, and making them choose which field they are
+/// searching is a question the screen should answer for them.
+/// </summary>
+public class GetAllScreensInput : Abp.Application.Services.Dto.PagedAndSortedResultRequestDto, IShouldNormalize
+{
+    public string Filter { get; set; }
+
+    public string Module { get; set; }
+
+    public void Normalize()
+    {
+        if (string.IsNullOrWhiteSpace(Sorting))
+        {
+            Sorting = "Code";
+        }
+
+        if (MaxResultCount == 0)
+        {
+            MaxResultCount = 20;
+        }
+    }
+}
+
+/// <summary>A published quick link with the screen it points at, resolved for display.</summary>
+public class SharedQuickLinkDto
+{
+    public int Id { get; set; }
+
+    public string ScreenKey { get; set; }
+
+    public int DisplayOrder { get; set; }
+
+    /// <summary>Null when the link points at a screen no longer in the catalogue.</summary>
+    public ScreenDto Screen { get; set; }
 }

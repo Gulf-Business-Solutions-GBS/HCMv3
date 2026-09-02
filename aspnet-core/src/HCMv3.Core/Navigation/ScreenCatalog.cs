@@ -30,7 +30,7 @@ public static class ScreenCatalog
         string Route,
         string PermissionName);
 
-    /// <summary>545 screens as of the initial assignment.</summary>
+    /// <summary>547 screens as of the initial assignment.</summary>
     public static readonly IReadOnlyList<ScreenSeed> All = new List<ScreenSeed>
     {
         new("app.admin.accommodation-service-types", "SAC001", "AccommodationManagement", "AccommodationServiceTypes", "/app/admin/accommodation-service-types", "Pages.AccommodationManagement.AccommodationServiceTypes"),
@@ -62,6 +62,8 @@ public static class ScreenCatalog
         new("app.admin.system-admin-tools", "SAD016", "Administration", "SystemAdminTools", "/app/admin/system-admin-tools", "Pages.Administration.Tools"),
         new("app.admin.tenantsettings", "SAD017", "Administration", "Settings", "/app/admin/tenantSettings", "Pages.Administration.Tenant.Settings"),
         new("app.admin.transfer-approvals", "SAD018", "Administration", "TransferApprovals", "/app/admin/transfer-approvals", "Pages.Administration.Tools.TransferApprovals"),
+        new("app.admin.screen-codes", "SAD022", "Administration", "ManageScreenCodes", "/app/admin/screen-codes", "Pages.Administration.Navigation.ManageScreenCodes"),
+        new("app.admin.quick-links", "SAD023", "Administration", "ManageQuickLinks", "/app/admin/quick-links", "Pages.Administration.Navigation.ManageQuickLinks"),
         new("app.admin.ui-customization", "SAD019", "Administration", "VisualSettings", "/app/admin/ui-customization", "Pages.Administration.UiCustomization"),
         new("app.admin.users", "SAD020", "Administration", "Users", "/app/admin/users", "Pages.Administration.Users"),
         new("app.admin.webhook-subscriptions", "SAD021", "Administration", "WebhookSubscriptions", "/app/admin/webhook-subscriptions", "Pages.Administration.WebhookSubscription"),

@@ -125485,6 +125485,178 @@ export class ScreensServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAllScreens(body?: GetAllScreensInput | undefined): Observable<PagedResultDtoOfScreenDto> {
+        let url_ = this.baseUrl + "/api/services/app/Screens/GetAllScreens";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllScreens(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllScreens(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfScreenDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfScreenDto>;
+        }));
+    }
+
+    protected processGetAllScreens(response: HttpResponseBase): Observable<PagedResultDtoOfScreenDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfScreenDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getScreenModules(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Screens/GetScreenModules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetScreenModules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetScreenModules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetScreenModules(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getSharedQuickLinks(): Observable<SharedQuickLinkDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Screens/GetSharedQuickLinks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSharedQuickLinks(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSharedQuickLinks(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SharedQuickLinkDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SharedQuickLinkDto[]>;
+        }));
+    }
+
+    protected processGetSharedQuickLinks(response: HttpResponseBase): Observable<SharedQuickLinkDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SharedQuickLinkDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -226191,6 +226363,58 @@ export interface IGetAllSalaryRegistersInput {
     employeeId: number | undefined;
 }
 
+export class GetAllScreensInput implements IGetAllScreensInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    module!: string | undefined;
+
+    constructor(data?: IGetAllScreensInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.module = _data["module"];
+        }
+    }
+
+    static fromJS(data: any): GetAllScreensInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllScreensInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["module"] = this.module;
+        return data;
+    }
+}
+
+export interface IGetAllScreensInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    module: string | undefined;
+}
+
 export class GetAllSendAttemptsOfWebhookEventOutput implements IGetAllSendAttemptsOfWebhookEventOutput {
     id!: string;
     webhookUri!: string | undefined;
@@ -291754,6 +291978,54 @@ export interface IPagedResultDtoOfSalaryRetroResultReportRowDto {
     totalCount: number;
 }
 
+export class PagedResultDtoOfScreenDto implements IPagedResultDtoOfScreenDto {
+    items!: ScreenDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfScreenDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ScreenDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfScreenDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfScreenDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfScreenDto {
+    items: ScreenDto[] | undefined;
+    totalCount: number;
+}
+
 export class PagedResultDtoOfSelfServiceSettingsListDto implements IPagedResultDtoOfSelfServiceSettingsListDto {
     items!: SelfServiceSettingsListDto[] | undefined;
     totalCount!: number;
@@ -312236,6 +312508,54 @@ export enum SettingScopes {
 export enum Severity {
     Low = 0,
     High = 1,
+}
+
+export class SharedQuickLinkDto implements ISharedQuickLinkDto {
+    id!: number;
+    screenKey!: string | undefined;
+    displayOrder!: number;
+    screen!: ScreenDto;
+
+    constructor(data?: ISharedQuickLinkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.screenKey = _data["screenKey"];
+            this.displayOrder = _data["displayOrder"];
+            this.screen = _data["screen"] ? ScreenDto.fromJS(_data["screen"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): SharedQuickLinkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SharedQuickLinkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["screenKey"] = this.screenKey;
+        data["displayOrder"] = this.displayOrder;
+        data["screen"] = this.screen ? this.screen.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface ISharedQuickLinkDto {
+    id: number;
+    screenKey: string | undefined;
+    displayOrder: number;
+    screen: ScreenDto;
 }
 
 export class SignatoryDto implements ISignatoryDto {

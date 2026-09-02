@@ -4,7 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Configuration;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq.Dynamic.Core;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.Configuration;
@@ -166,6 +170,70 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
     public async Task DeleteSharedQuickLink(int id)
     {
         await _sharedQuickLinkRepository.DeleteAsync(id);
+    }
+
+    /// <summary>
+    /// Every screen in the catalogue, paged -- NOT filtered by the caller's permissions, unlike
+    /// GetNavigationBootstrap. An administrator assigning codes has to see screens they will never open
+    /// themselves; a payroll code cannot be maintained by someone who must first be granted payroll.
+    /// The [AbpAuthorize] on the method is what makes that safe.
+    /// </summary>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_Administration_Navigation_ManageScreenCodes)]
+    public async Task<PagedResultDto<ScreenDto>> GetAllScreens(GetAllScreensInput input)
+    {
+        var filter = input.Filter?.Trim();
+
+        var query = _screenRepository.GetAll()
+            .WhereIf(!string.IsNullOrWhiteSpace(input.Module), s => s.Module == input.Module)
+            .WhereIf(
+                !string.IsNullOrWhiteSpace(filter),
+                s => s.Code.Contains(filter) || s.NameKey.Contains(filter) || s.Route.Contains(filter));
+
+        var total = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(input.Sorting)
+            .PageBy(input)
+            .ToListAsync();
+
+        return new PagedResultDto<ScreenDto>(total, items.Select(MapScreen).ToList());
+    }
+
+    /// <summary>The modules present in the catalogue, for the listing's filter.</summary>
+    [AbpAuthorize(AppPermissions.Pages_Administration_Navigation_ManageScreenCodes)]
+    public async Task<List<string>> GetScreenModules()
+    {
+        return await _screenRepository.GetAll()
+            .Select(s => s.Module)
+            .Distinct()
+            .OrderBy(m => m)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Every published quick link, in display order, with its screen resolved.
+    ///
+    /// Unlike the dashboard's copy this is NOT permission-filtered and NOT capped: an administrator
+    /// curating the list must see what they published, including a link to a screen they personally
+    /// cannot open, or they would delete rows they simply could not see.
+    /// </summary>
+    [AbpAuthorize(AppPermissions.Pages_Administration_Navigation_ManageQuickLinks)]
+    public async Task<List<SharedQuickLinkDto>> GetSharedQuickLinks()
+    {
+        var links = await _sharedQuickLinkRepository.GetAll().OrderBy(l => l.DisplayOrder).ToListAsync();
+        var screens = await _screenRepository.GetAll().ToListAsync();
+        var byKey = screens.ToDictionary(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase);
+
+        return links.Select(l => new SharedQuickLinkDto
+        {
+            Id = l.Id,
+            ScreenKey = l.ScreenKey,
+            DisplayOrder = l.DisplayOrder,
+            // Left null rather than dropped: a link pointing at a retired screen is exactly what an
+            // administrator needs to see in order to remove it.
+            Screen = byKey.TryGetValue(l.ScreenKey, out var screen) ? MapScreen(screen) : null,
+        }).ToList();
     }
 
     /// <summary>

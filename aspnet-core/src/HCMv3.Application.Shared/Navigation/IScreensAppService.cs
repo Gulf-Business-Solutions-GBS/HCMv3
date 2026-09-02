@@ -11,6 +11,12 @@ public interface IScreensAppService : IApplicationService
 {
     Task<NavigationBootstrapDto> GetNavigationBootstrap();
 
+    Task<Abp.Application.Services.Dto.PagedResultDto<ScreenDto>> GetAllScreens(GetAllScreensInput input);
+
+    Task<System.Collections.Generic.List<string>> GetScreenModules();
+
+    Task<System.Collections.Generic.List<SharedQuickLinkDto>> GetSharedQuickLinks();
+
     Task UpdateScreenCode(UpdateScreenCodeInput input);
 
     Task CreateOrEditSharedQuickLink(CreateOrEditSharedQuickLinkInput input);

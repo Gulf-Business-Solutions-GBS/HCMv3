@@ -1,0 +1,44 @@
+.ql-code {
+    font-family: 'IBM Plex Mono', SFMono-Regular, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0b6e80;
+}
+
+/* Rows past the sixth are dimmed rather than hidden: the administrator still needs to reorder them. */
+.ql-hidden-row {
+    opacity: 0.55;
+}
+
+.ql-cap-note {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #a3690a;
+}
+
+.ql-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 10px;
+    margin-bottom: 5px;
+    text-align: left;
+    background: #f7f9fa;
+    border: 1px solid #dfe6ea;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.ql-result:hover {
+    background: #eef6f8;
+    border-color: #0b6e80;
+}
+
+.ql-result-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

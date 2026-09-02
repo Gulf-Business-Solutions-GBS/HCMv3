@@ -1,0 +1,105 @@
+<div [@routerTransition]>
+    <sub-header [title]="'ManageQuickLinks' | localize" [description]="'QuickLinksAdminIntro' | localize" />
+
+    <div [class]="containerClass">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <h5 class="mb-3">{{ 'PublishedQuickLinks' | localize }}</h5>
+
+                        <div [busyIf]="isLoading()">
+                            @if (links().length) {
+                                <table class="table table-sm">
+                                    <tbody>
+                                        @for (link of links(); track link.id; let i = $index) {
+                                            <tr [class.ql-hidden-row]="i >= visibleCap">
+                                                <td style="width: 90px">
+                                                    @if (link.screen) {
+                                                        <span class="ql-code">{{ link.screen.code }}</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (link.screen) {
+                                                        {{ link.screen.nameKey | localize }}
+                                                    } @else {
+                                                        <!-- The screen is gone from the catalogue. Shown
+                                                             rather than hidden, because a link nobody can
+                                                             see is a link nobody can remove. -->
+                                                        <span class="text-danger">
+                                                            {{ 'QuickLinkScreenMissing' | localize }}
+                                                            <span class="text-muted">({{ link.screenKey }})</span>
+                                                        </span>
+                                                    }
+                                                </td>
+                                                <td class="text-end" style="width: 150px">
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-light"
+                                                        type="button"
+                                                        [disabled]="i === 0"
+                                                        (click)="moveUp(i)">
+                                                        <i class="fa fa-angle-up"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-light ms-1"
+                                                        type="button"
+                                                        [disabled]="i === links().length - 1"
+                                                        (click)="moveDown(i)">
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-light-danger ms-1"
+                                                        type="button"
+                                                        (click)="remove(link)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                @if (hasHiddenLinks()) {
+                                    <!-- Says which rows will not appear, rather than letting an
+                                         administrator publish a seventh link and wonder why nobody sees it. -->
+                                    <p class="ql-cap-note">{{ 'QuickLinksCapNote' | localize: visibleCap }}</p>
+                                }
+                            } @else {
+                                <div class="alert alert-light-info mb-0">{{ 'NoQuickLinksPublished' | localize }}</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <h5 class="mb-3">{{ 'AddQuickLink' | localize }}</h5>
+
+                        <input
+                            type="search"
+                            class="form-control mb-3"
+                            [ngModel]="screenSearch()"
+                            (ngModelChange)="screenSearch.set($event)"
+                            (keyup.enter)="searchScreens()"
+                            [placeholder]="'ScreenCodeSearchHint' | localize" />
+
+                        <div [busyIf]="isSearching()">
+                            @for (screen of searchResults(); track screen.screenKey) {
+                                <button class="ql-result" type="button" (click)="add(screen)">
+                                    <span class="ql-code">{{ screen.code }}</span>
+                                    <span class="ql-result-name">{{ screen.nameKey | localize }}</span>
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            }
+                            @if (screenSearch() && !searchResults().length && !isSearching()) {
+                                <p class="text-muted mb-0">{{ 'NoData' | localize }}</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
