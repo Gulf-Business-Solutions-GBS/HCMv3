@@ -114,26 +114,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="PAEmployee_RequestComments">{{ 'RequestComments' | localize }}</label>
-                                <textarea
-                                    id="PAEmployee_RequestComments"
-                                    class="form-control"
-                                    name="RequestComments"
-                                    rows="2"
-                                    [ngModel]="paEmployee().requestComments"
-                                    (ngModelChange)="updateField('requestComments', $event)"></textarea>
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label" for="PAEmployee_WorkflowComments">{{ 'WorkflowComments' | localize }}</label>
-                                <textarea
-                                    id="PAEmployee_WorkflowComments"
-                                    class="form-control"
-                                    name="WorkflowComments"
-                                    rows="2"
-                                    [ngModel]="paEmployee().workflowComments"
-                                    (ngModelChange)="updateField('workflowComments', $event)"></textarea>
-                            </div>
+                            <!-- RequestComments / WorkflowComments removed: CreateOrEditPAEmployeeDto
+                                 deliberately omits both. The columns survive on PAEmployee so migrated
+                                 appraisals keep the text their approvers typed, and PAEmployeeDto still
+                                 returns it for reading, but no screen may WRITE them again -- new
+                                 approval comments belong to the WorkflowComment thread, which keeps one
+                                 comment per row with an author and a timestamp. Binding them here did
+                                 not compile and broke the whole app build. -->
                         </div>
                     </div>
                     <div class="modal-footer">

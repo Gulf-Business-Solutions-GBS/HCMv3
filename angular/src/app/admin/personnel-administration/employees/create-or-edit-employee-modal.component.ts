@@ -23,7 +23,7 @@ import {
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '@shared/common/appBsModal/app-bs-modal.directive';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ValidationMessagesComponent } from '@shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -37,6 +37,7 @@ interface LookupOption {
 @Component({
     selector: 'createOrEditEmployeeModal',
     templateUrl: './create-or-edit-employee-modal.component.html',
+    styleUrl: './create-or-edit-employee-modal.component.css',
     imports: [AppBsModalDirective, FormsModule, ValidationMessagesComponent, ButtonBusyDirective, LocalizePipe],
 })
 export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
@@ -57,6 +58,74 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly employee = signal<CreateOrEditEmployeeDto>(new CreateOrEditEmployeeDto());
+
+    /**
+     * The form's six groups, with the controls in each.
+     *
+     * The groups already existed as `<h6>` headings; all this adds is the ability to collapse them, so
+     * 121 fields stop arriving as one scroll. The control lists exist for one reason: a collapsed
+     * section can hide the empty required field that is keeping Save disabled, and a Save button that
+     * is disabled for an invisible reason is worse than a long form.
+     */
+    private static readonly FormSections: { id: string; labelKey: string; controls: string[] }[] = [
+        {
+            id: 'names',
+            labelKey: 'Names',
+            controls: [
+                'FirstNameEn', 'SecondNameEn', 'ThirdNameEn', 'LastNameEn',
+                'FirstNameAr', 'SecondNameAr', 'ThirdNameAr', 'LastNameAr',
+            ],
+        },
+        {
+            id: 'personal',
+            labelKey: 'PersonalInfo',
+            controls: [
+                'Code', 'TitleId', 'BirthDate', 'Gender', 'MaritalStatusId', 'NationalityId',
+                'ReligionId', 'QualificationId', 'BloodGroup', 'CivilID', 'BirthPlaceId',
+                'FatherNameEn', 'FatherNameAr', 'MotherNameEn', 'MotherNameAr',
+            ],
+        },
+        {
+            id: 'address',
+            labelKey: 'Address',
+            controls: [
+                'FlatNumn', 'FloorNum', 'BuildingNum', 'StreetNum', 'BlockNum', 'LaneNumber',
+                'PaciNumber', 'ZipCode', 'City', 'GovernorateId', 'CountryId',
+                'CurrentAddress', 'PermanentAddress',
+            ],
+        },
+        {
+            id: 'contact',
+            labelKey: 'Contact',
+            controls: [
+                'Telephone', 'Mobile', 'PermanentTelephone', 'Email', 'AlternateEmail',
+                'LoginID', 'AccessID', 'BusinessLandline', 'BusinessExtension',
+            ],
+        },
+        {
+            id: 'emergency',
+            labelKey: 'EmergencyContactSection',
+            controls: [
+                'EmergencyContact', 'EmergencyNumber', 'EmergencyRelation',
+                'EmergencyContactAddress', 'CriticalIllness',
+            ],
+        },
+        {
+            id: 'employment',
+            labelKey: 'Employment',
+            controls: [
+                'Status', 'EmploymentType', 'JoiningDate', 'ProbationDays',
+                'RecruitmentTypeId', 'PreviousEmpCode', 'ReferenceCode',
+            ],
+        },
+    ];
+
+    /**
+     * Which sections are expanded. Names and Personal open by default -- between them they hold every
+     * required field, so the common path stays a straight run down the form rather than a hunt through
+     * six collapsed panels.
+     */
+    readonly openSections = signal<Set<string>>(new Set(['names', 'personal']));
 
     readonly nationalities = signal<LookupOption[]>([]);
     readonly religions = signal<SimpleLookupDto[]>([]);
@@ -83,9 +152,56 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
         { value: EmploymentType.Temporary, name: 'Temporary' },
     ];
 
+    isSectionOpen(id: string): boolean {
+        return this.openSections().has(id);
+    }
+
+    toggleSection(id: string): void {
+        const next = new Set(this.openSections());
+        next.has(id) ? next.delete(id) : next.add(id);
+        this.openSections.set(next);
+    }
+
+    /**
+     * How many controls in a section are invalid. Returns 0 rather than null so the template's
+     * `@if (...; as missing)` treats "nothing wrong" as falsy and shows no badge.
+     *
+     * Counts invalid regardless of touched state: on a new employee the required fields are untouched
+     * AND invalid, and they are precisely the ones keeping Save disabled. Waiting for the user to touch
+     * a field before admitting it is required would tell them nothing at the moment they are stuck.
+     */
+    sectionInvalidCount(form: NgForm, id: string): number {
+        const section = CreateOrEditEmployeeModalComponent.FormSections.find((s) => s.id === id);
+        if (!section || !form?.form) {
+            return 0;
+        }
+
+        return section.controls.filter((name) => form.form.get(name)?.invalid).length;
+    }
+
+    /** Sections with something missing, for the hint that explains a disabled Save. */
+    incompleteSections(form: NgForm): { id: string; labelKey: string }[] {
+        return CreateOrEditEmployeeModalComponent.FormSections.filter(
+            (s) => this.sectionInvalidCount(form, s.id) > 0
+        ).map((s) => ({ id: s.id, labelKey: s.labelKey }));
+    }
+
+    /** Opens every section holding an invalid control, so the blocking field is on screen. */
+    revealIncompleteSections(form: NgForm): void {
+        const next = new Set(this.openSections());
+        for (const section of this.incompleteSections(form)) {
+            next.add(section.id);
+        }
+        this.openSections.set(next);
+    }
+
     show(employeeId?: number): void {
         this.active.set(true);
         this.loadLookups();
+
+        // Reset the panels each time the modal opens: carrying the last record's expansion over would
+        // have somebody editing a different employee through whatever shape they left behind.
+        this.openSections.set(new Set(['names', 'personal']));
 
         if (!employeeId) {
             const employee = new CreateOrEditEmployeeDto();

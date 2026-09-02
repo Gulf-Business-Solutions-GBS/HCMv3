@@ -5702,5 +5702,7 @@
     <text name="TimeRegisterNotFound">One or more of the selected days no longer exist.</text>
     <text name="StartDateCannotBeGreaterThanEndDate">Start date cannot be later than the end date.</text>
     <text name="SelectAnEmployeeOrAnOrganizationUnit">Select an employee or an organization unit.</text>
+    <text name="EmpFormSectionIncomplete">Fields in this section still need a value.</text>
+    <text name="EmpFormIncompleteHint">Still needed in:</text>
   </texts>
 </localizationDictionary>

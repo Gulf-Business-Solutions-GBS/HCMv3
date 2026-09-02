@@ -28,8 +28,28 @@
                             [disabled]="saving()"></button>
                     </div>
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
-                        <h6>{{ 'Names' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('names')"
+                                [attr.aria-expanded]="isSectionOpen('names')"
+                                (click)="toggleSection('names')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('names')"
+                                    [class.fa-angle-right]="!isSectionOpen('names')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Names' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'names'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('names')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label required" for="Employee_FirstNameEn">{{ 'FirstNameEn' | localize }}</label>
@@ -136,9 +156,31 @@
                                 <validation-messages [formCtrl]="lastNameArInput" />
                             </div>
                         </div>
+                            </div>
+                        </div>
 
-                        <h6>{{ 'PersonalInfo' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('personal')"
+                                [attr.aria-expanded]="isSectionOpen('personal')"
+                                (click)="toggleSection('personal')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('personal')"
+                                    [class.fa-angle-right]="!isSectionOpen('personal')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'PersonalInfo' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'personal'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('personal')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_Code">{{ 'Code' | localize }}</label>
@@ -340,9 +382,31 @@
                                 }
                             </div>
                         </div>
+                            </div>
+                        </div>
 
-                        <h6>{{ 'Address' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('address')"
+                                [attr.aria-expanded]="isSectionOpen('address')"
+                                (click)="toggleSection('address')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('address')"
+                                    [class.fa-angle-right]="!isSectionOpen('address')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Address' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'address'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('address')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_FlatNumn">{{ 'FlatNumber' | localize }}</label>
@@ -483,9 +547,31 @@
                                     (ngModelChange)="updateField('permanentAddress', $event)" />
                             </div>
                         </div>
+                            </div>
+                        </div>
 
-                        <h6>{{ 'Contact' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('contact')"
+                                [attr.aria-expanded]="isSectionOpen('contact')"
+                                (click)="toggleSection('contact')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('contact')"
+                                    [class.fa-angle-right]="!isSectionOpen('contact')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Contact' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'contact'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('contact')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_Telephone">{{ 'Telephone' | localize }}</label>
@@ -580,9 +666,31 @@
                                     (ngModelChange)="updateField('businessExtension', $event)" />
                             </div>
                         </div>
+                            </div>
+                        </div>
 
-                        <h6>{{ 'EmergencyContactSection' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('emergency')"
+                                [attr.aria-expanded]="isSectionOpen('emergency')"
+                                (click)="toggleSection('emergency')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('emergency')"
+                                    [class.fa-angle-right]="!isSectionOpen('emergency')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'EmergencyContactSection' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'emergency'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('emergency')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_EmergencyContact">{{ 'EmergencyContact' | localize }}</label>
@@ -635,9 +743,31 @@
                                     (ngModelChange)="updateField('criticalIllness', $event)" />
                             </div>
                         </div>
+                            </div>
+                        </div>
 
-                        <h6>{{ 'Employment' | localize }}</h6>
-                        <hr />
+                        <div class="emp-acc-section">
+                            <button
+                                type="button"
+                                class="emp-acc-head"
+                                [class.emp-acc-open]="isSectionOpen('employment')"
+                                [attr.aria-expanded]="isSectionOpen('employment')"
+                                (click)="toggleSection('employment')">
+                                <i
+                                    class="fa emp-acc-chevron"
+                                    [class.fa-angle-down]="isSectionOpen('employment')"
+                                    [class.fa-angle-right]="!isSectionOpen('employment')"
+                                    aria-hidden="true"></i>
+                                <span class="emp-acc-title">{{ 'Employment' | localize }}</span>
+                                @if (sectionInvalidCount(employeeForm, 'employment'); as missing) {
+                                    <span class="emp-acc-badge" [title]="'EmpFormSectionIncomplete' | localize">{{ missing }}</span>
+                                }
+                            </button>
+                            <!-- [hidden], NOT @if: @if would DESTROY the controls, Angular would drop
+                                 them from the form, and a collapsed section with an empty required
+                                 field would make the form report itself valid. Save would then submit a
+                                 record the server rejects. Hidden controls stay registered. -->
+                            <div class="emp-acc-body" [hidden]="!isSectionOpen('employment')">
                         <div class="row">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label" for="Employee_Status">{{ 'Status' | localize }}</label>
@@ -724,8 +854,25 @@
                                     (ngModelChange)="updateField('referenceCode', $event)" />
                             </div>
                         </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
+                        <!-- Save is disabled while the form is invalid, and collapsing sections made it
+                             possible for the blocking field to be off screen -- a dead button with no
+                             visible cause. This names the sections and opens them on click. -->
+                        @if (!employeeForm.form.valid && incompleteSections(employeeForm).length) {
+                            <button
+                                type="button"
+                                class="btn btn-link emp-acc-incomplete me-auto"
+                                (click)="revealIncompleteSections(employeeForm)">
+                                <i class="fa fa-exclamation-circle"></i>
+                                {{ 'EmpFormIncompleteHint' | localize }}
+                                @for (section of incompleteSections(employeeForm); track section.id) {
+                                    <span class="emp-acc-incomplete-name">{{ section.labelKey | localize }}</span>
+                                }
+                            </button>
+                        }
                         <button
                             [disabled]="saving()"
                             type="button"

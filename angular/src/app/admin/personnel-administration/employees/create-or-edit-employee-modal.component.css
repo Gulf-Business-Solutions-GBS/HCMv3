@@ -1,0 +1,105 @@
+/*
+ * Accordion for the employee form's six groups.
+ *
+ * The headings already existed; this makes them collapsible so 121 fields stop arriving as one scroll.
+ * Palette matches the employee record's section rail, since the two screens are opened by the same
+ * people minutes apart.
+ */
+
+.emp-acc-section {
+    border: 1px solid #dfe6ea;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.emp-acc-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    text-align: left;
+    background: #eaeff2;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.emp-acc-head:hover {
+    background: #e2e9ed;
+}
+
+.emp-acc-open {
+    /* Square off the bottom when open so the header reads as attached to its fields. */
+    border-radius: 3px 3px 0 0;
+    border-bottom: 1px solid #dfe6ea;
+}
+
+.emp-acc-chevron {
+    width: 10px;
+    font-size: 13px;
+    color: #6b7c85;
+}
+
+.emp-acc-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #55666f;
+}
+
+/* Count of fields still blocking Save in a section. Amber, not red: the form is unfinished, which is
+   the normal state of a form being filled in, not an error the user has made. */
+.emp-acc-badge {
+    min-width: 18px;
+    padding: 1px 6px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a5200;
+    background: #ffe6ac;
+}
+
+.emp-acc-body {
+    padding: 14px 12px 0;
+}
+
+.emp-acc-incomplete {
+    padding: 0;
+    font-size: 12.5px;
+    color: #a3690a;
+    text-decoration: none;
+}
+
+.emp-acc-incomplete:hover {
+    color: #7a5200;
+    text-decoration: underline;
+}
+
+.emp-acc-incomplete .fa {
+    margin-right: 5px;
+}
+
+.emp-acc-incomplete-name {
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+.emp-acc-incomplete-name:not(:last-child)::after {
+    content: ',';
+}
+
+[dir='rtl'] .emp-acc-head {
+    text-align: right;
+}
+
+[dir='rtl'] .emp-acc-incomplete .fa {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+[dir='rtl'] .emp-acc-incomplete-name {
+    margin-left: 0;
+    margin-right: 5px;
+}
