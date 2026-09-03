@@ -1,0 +1,198 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EssMyProfile' | localize">
+        <div role="actions">
+            @if (!notLinked() && !showForm()) {
+                <button class="btn btn-primary" (click)="openForm()">
+                    <i class="fa fa-pen"></i> {{ 'RequestPersonalDataChange' | localize }}
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        @if (notLinked()) {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</div>
+                </div>
+            </div>
+        } @else {
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @if (showForm()) {
+                            {{ 'RequestPersonalDataChange' | localize }}
+                        } @else {
+                            {{ 'PersonalInfo' | localize }}
+                        }
+                    </h5>
+
+                    @if (hasPendingRequest()) {
+                        <div class="alert alert-info">{{ 'YouAlreadyHaveAPendingPersonalDataChange' | localize }}</div>
+                    }
+
+                    @if (showForm()) {
+                        <p class="text-muted">{{ 'PickTheFieldsYouWantToChangeHint' | localize }}</p>
+                    }
+
+                    @if (currentLoading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        @for (section of sections; track section.label) {
+                            <h6 class="mt-4 mb-2 text-uppercase text-muted">{{ section.label | localize }}</h6>
+
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 25%">{{ 'Field' | localize }}</th>
+                                            <th style="width: 30%">{{ 'Current' | localize }}</th>
+                                            @if (showForm()) {
+                                                <th style="width: 10%">{{ 'Change' | localize }}</th>
+                                                <th>{{ 'NewValue' | localize }}</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (field of section.fields; track field.key) {
+                                            <tr>
+                                                <td>{{ field.label | localize }}</td>
+                                                <td class="text-muted">{{ displayCurrent(field) }}</td>
+
+                                                @if (showForm()) {
+                                                    <td>
+                                                        <input
+                                                            type="checkbox"
+                                                            [checked]="isSelected(field)"
+                                                            (change)="toggleField(field)" />
+                                                    </td>
+                                                    <td>
+                                                        @if (isSelected(field)) {
+                                                            @switch (field.kind) {
+                                                                @case ('date') {
+                                                                    <input
+                                                                        type="date"
+                                                                        class="form-control form-control-sm"
+                                                                        [name]="'pd_' + field.key"
+                                                                        [(ngModel)]="edits[field.key]" />
+                                                                }
+                                                                @case ('number') {
+                                                                    <input
+                                                                        type="number"
+                                                                        class="form-control form-control-sm"
+                                                                        [name]="'pd_' + field.key"
+                                                                        [(ngModel)]="edits[field.key]" />
+                                                                }
+                                                                @case ('gender') {
+                                                                    <select
+                                                                        class="form-control form-control-sm"
+                                                                        [name]="'pd_' + field.key"
+                                                                        [(ngModel)]="edits[field.key]">
+                                                                        <option value="">--</option>
+                                                                        @for (option of genderOptions; track option.value) {
+                                                                            <option [ngValue]="option.value">
+                                                                                {{ option.label | localize }}
+                                                                            </option>
+                                                                        }
+                                                                    </select>
+                                                                }
+                                                                @default {
+                                                                    <input
+                                                                        type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        [name]="'pd_' + field.key"
+                                                                        [(ngModel)]="edits[field.key]" />
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                        @if (showForm()) {
+                            <div class="form-row mt-4">
+                                <div class="form-group col-md-8">
+                                    <label>{{ 'Comments' | localize }}</label>
+                                    <input type="text" class="form-control" maxlength="1000" [(ngModel)]="comments" name="pdComments" />
+                                </div>
+                            </div>
+
+                            <div class="text-muted mb-3">{{ 'SelectedFieldCount' | localize: selectedCount() }}</div>
+
+                            <button class="btn btn-primary mr-2" [disabled]="saving()" (click)="submit()">
+                                {{ 'Save' | localize }}
+                            </button>
+                            <button class="btn btn-light" (click)="closeForm()">{{ 'Cancel' | localize }}</button>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <h5 class="card-title">{{ 'EssMyRequests' | localize }}</h5>
+
+                    @if (loading()) {
+                        <div class="text-center p-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    } @else {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'Changes' | localize }}</th>
+                                        <th>{{ 'Comments' | localize }}</th>
+                                        <th>{{ 'Status' | localize }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (row of rows(); track row.id) {
+                                        <tr>
+                                            <td>
+                                                @for (change of proposedFields(row); track change.label) {
+                                                    <div>
+                                                        <span class="text-muted">{{ change.label | localize }}:</span>
+                                                        {{ change.value }}
+                                                    </div>
+                                                } @empty {
+                                                    <span class="text-muted">{{ 'NoData' | localize }}</span>
+                                                }
+                                            </td>
+                                            <td>{{ row.comments }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="statusClass(row)">{{ statusLabel(row) }}</span>
+                                            </td>
+                                            <td class="text-right">
+                                                @if (row.workflowRequestId) {
+                                                    <button class="btn btn-sm btn-link" (click)="history.show(row.workflowRequestId)">
+                                                        {{ 'WorkflowHistory' | localize }}
+                                                    </button>
+                                                }
+                                                @if (row.canCancel) {
+                                                    <button class="btn btn-sm btn-link text-danger" (click)="cancel(row)">
+                                                        {{ 'Withdraw' | localize }}
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center p-4">{{ 'NoData' | localize }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<workflowHistoryModal #history />
