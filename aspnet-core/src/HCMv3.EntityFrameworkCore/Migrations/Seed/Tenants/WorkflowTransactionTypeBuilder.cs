@@ -180,7 +180,23 @@ public class WorkflowTransactionTypeBuilder
         // Travel row, and until now the only way one could exist was for an administrator to key it in --
         // an employee could claim for a trip nobody could request. Approving this writes nothing anywhere
         // else; the trip becoming visible is the trip being approved.
-        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240)
+        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240),
+
+        // The HR payment batch (legacy PaymentRequest). NOT self-service: HR pays a group of people a one-off
+        // amount, an employee does not request one about themselves -- so EssRoute and EssPermissionName are
+        // deliberately null, exactly as for EmployeeAction and ManpowerPlanning. No sub-type: legacy routed
+        // every payment request the same way whatever wage type it paid.
+        //
+        // The Code is the entity's name as always, but READ THE ENTITY before assuming this is the shadow
+        // shape the rest of this catalog exists to have removed. It is not. A batch is a HEADER OVER MANY
+        // EMPLOYEES: one approval produces N EmployeePayment rows, one per line, so there is no single
+        // pre-existing transaction row for TargetEntityId to point at. EmployeePaymentBatch is the PARENT of
+        // EmployeePayment, not a mirror of it -- the same argument as TimeLogApproval above.
+        //
+        // What approval buys is money: it is the only thing that creates the EmployeePayment rows, and it
+        // creates them exactly once. Legacy created them from OnSaving whenever an approved request happened
+        // to be saved, so re-saving one paid everybody in it again.
+        ("EmployeePaymentBatch", "Payment Batch", "دفعة رواتب", null, null, null, "flaticon-coins", 250)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

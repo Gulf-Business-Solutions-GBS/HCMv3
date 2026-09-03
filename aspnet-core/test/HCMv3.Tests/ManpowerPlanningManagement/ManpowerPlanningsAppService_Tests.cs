@@ -42,6 +42,24 @@ public class ManpowerPlanningsAppService_Tests : ManpowerPlanningManagementAppSe
             await repository.InsertAsync(entity);
             return entity.Id;
         }
+
+        /// <summary>
+        /// The multi-employee variant (used by <c>EmployeePaymentBatch</c>). Same behaviour: the subject
+        /// employee only affects the <c>WorkflowRequest</c>, which is not created when the type is off.
+        /// </summary>
+        public async Task<int> CreateAndSubmitForSubjectAsync<TEntity>(
+            IRepository<TEntity> repository,
+            TEntity entity,
+            string requestType,
+            string requestNumberPrefix,
+            int subjectEmployeeId,
+            int? subTypeId = null)
+            where TEntity : class, IEntity<int>, IWorkflowEnabledEntity
+        {
+            entity.WorkflowStatus = null;
+            await repository.InsertAsync(entity);
+            return entity.Id;
+        }
     }
 
     private HCMv3.ManpowerPlanningManagement.ManpowerPlanningsAppService CreateAppService()

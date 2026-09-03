@@ -651,6 +651,17 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeePayment> EmployeePayments { get; set; }
 
+    /// <summary>
+    /// The HR payment batch -- one wage type, many employees, one approval. A header/detail pair, and the
+    /// second one in this port after <see cref="TimeLogApproval"/>, for the same reason: what is approved
+    /// covers many employees, and <c>WorkflowRequest.TargetEntityId</c> addresses a single row. See
+    /// <see cref="EmployeePaymentBatch"/> for why this is NOT the shadow-request shape the port exists to
+    /// remove.
+    /// </summary>
+    public virtual DbSet<EmployeePaymentBatch> EmployeePaymentBatches { get; set; }
+
+    public virtual DbSet<EmployeePaymentBatchDetail> EmployeePaymentBatchDetails { get; set; }
+
     public virtual DbSet<EmployeeRecurringPayment> EmployeeRecurringPayments { get; set; }
 
     public virtual DbSet<EmployeeRemuneration> EmployeeRemunerations { get; set; }
@@ -1737,6 +1748,58 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeePaymentBatch>(b =>
+        {
+            // No EmployeeId on this row -- a batch is about a group -- so the index is the one the list
+            // screen and the ApprovedOnly filter actually read together.
+            b.HasIndex(e => new { e.TenantId, e.WorkflowStatus });
+
+            b.HasOne(e => e.WageType)
+                .WithMany()
+                .HasForeignKey(e => e.WageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(e => e.Currency)
+                .WithMany()
+                .HasForeignKey(e => e.CurrencyId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeePaymentBatchDetail>(b =>
+        {
+            b.HasOne(e => e.EmployeePaymentBatch)
+                .WithMany(e => e.Details)
+                .HasForeignKey(e => e.EmployeePaymentBatchId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Restrict on Employee, NOT Cascade. Employee is reachable from this row by more than one path
+            // once the batch's payments exist, and SQL Server refuses the second cascading one ("may cause
+            // cycles or multiple cascade paths") -- the same failure EmployeeLoanExemption and
+            // EmployeeDocumentMvmt hit. It is right on the merits too: a line is the record of what somebody
+            // was going to be paid, and deleting an employee must not quietly rewrite a batch's total.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // The handler and the list screen both fetch a batch's lines by parent id.
+            b.HasIndex(e => new { e.TenantId, e.EmployeePaymentBatchId });
+        });
+
+        modelBuilder.Entity<EmployeePayment>(b =>
+        {
+            // Bare FK, no navigation on EmployeePayment -- see EmployeePayment.EmployeePaymentBatchId.
+            // Restrict because this link is what stops a batch paying out twice; a cascade would delete the
+            // evidence along with the batch.
+            b.HasOne<EmployeePaymentBatch>()
+                .WithMany()
+                .HasForeignKey(e => e.EmployeePaymentBatchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // The handler's "has this batch already paid out?" guard queries by this column.
+            b.HasIndex(e => new { e.TenantId, e.EmployeePaymentBatchId });
         });
 
         modelBuilder.Entity<EmployeeClearance>(b =>

@@ -5755,5 +5755,14 @@
     <text name="QuickLinksCapNote">Only the first {0} appear on the dashboard. Reorder to change which.</text>
 
     <text name="Shortcuts">Shortcuts</text>
+
+    <text name="EmployeePaymentBatches">Payment Batches</text>
+    <text name="EmployeePaymentBatchNotFound">Payment batch not found.</text>
+    <text name="EmployeePaymentBatchHasNoLines">Add at least one employee to the payment batch.</text>
+    <text name="DuplicateEmployeeInEmployeePaymentBatch">{0} appears more than once in this payment batch. Each employee may have only one line.</text>
+    <text name="EmployeePaymentBatchCannotBeChangedOnceSubmitted">This payment batch has already been submitted for approval and can no longer be changed.</text>
+    <text name="EmployeePaymentBatchPaymentDateIsRequired">Say which date the batch is to be paid on.</text>
+    <text name="WageTypeCannotBePaidThroughAPaymentBatch">This wage type cannot be paid through a payment batch.</text>
+    <text name="CurrencyNotFound">Currency not found.</text>
   </texts>
 </localizationDictionary>

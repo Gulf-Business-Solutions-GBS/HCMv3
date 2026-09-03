@@ -33,4 +33,23 @@ public class FakeAdminTransactionSubmitter : IAdminTransactionSubmitter
 
         return entity.Id;
     }
+
+    /// <summary>
+    /// The multi-employee variant (used by <c>EmployeePaymentBatch</c>, whose employees are its detail
+    /// lines). Behaves identically here: the subject employee only affects the <c>WorkflowRequest</c> that
+    /// this fake does not create.
+    /// </summary>
+    public async Task<int> CreateAndSubmitForSubjectAsync<TEntity>(
+        IRepository<TEntity> repository,
+        TEntity entity,
+        string requestType,
+        string requestNumberPrefix,
+        int subjectEmployeeId,
+        int? subTypeId = null)
+        where TEntity : class, IEntity<int>, IWorkflowEnabledEntity
+    {
+        await repository.InsertAsync(entity);
+
+        return entity.Id;
+    }
 }
