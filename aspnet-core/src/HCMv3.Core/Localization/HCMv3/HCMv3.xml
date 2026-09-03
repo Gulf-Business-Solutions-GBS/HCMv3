@@ -5766,5 +5766,9 @@
     <text name="CurrentlyIn">Currently in</text>
     <text name="NoPunchesToday">No punches recorded today.</text>
     <text name="AttendanceIndicativeHint">Indicative only. Payroll hours come from the Time Engine.</text>
+
+    <text name="EmployeeAssignedTasks">Assigned Tasks</text>
+    <text name="TaskSubjectIsRequired">Enter what the task is.</text>
+    <text name="OnlyTheTaskCreatorCanChangeTaskDetails">Only the person who assigned this task can change its subject, description or dates. You can still update its status.</text>
   </texts>
 </localizationDictionary>

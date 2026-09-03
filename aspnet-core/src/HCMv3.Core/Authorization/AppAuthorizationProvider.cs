@@ -747,6 +747,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Edit, L("EditItem"));
         employeeTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeTasks_Delete, L("DeleteItem"));
 
+        var employeeAssignedTasks = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssignedTasks, L("EmployeeAssignedTasks"));
+        employeeAssignedTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssignedTasks_Create, L("CreateNewItem"));
+        employeeAssignedTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssignedTasks_Edit, L("EditItem"));
+        employeeAssignedTasks.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeAssignedTasks_Delete, L("DeleteItem"));
+
         var news = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News, L("News"));
         news.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News_Create, L("CreateNewItem"));
         news.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_News_Edit, L("EditItem"));
