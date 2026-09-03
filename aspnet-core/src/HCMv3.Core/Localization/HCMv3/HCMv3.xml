@@ -1814,6 +1814,9 @@
     <text name="APunchOfThisTypeAlreadyExistsForThatDay">A punch of this type is already recorded for {0}.</text>
     <text name="NoDutyIsScheduledForThatDay">You were not scheduled to work on {0}, so there is no shift for this punch to belong to.</text>
     <text name="APunchCannotBeRequestedForAFutureDate">A missing punch can only be requested for a day that has already happened.</text>
+    <text name="NoPunchTypesAreAvailable">No punch types have been set up yet. Ask HR to add them before requesting a missing punch.</text>
+    <text name="NoColleaguesAvailableToDelegateTo">There is nobody available to delegate to at the moment.</text>
+    <text name="NoTravelDestinationsConfigured">No travel destinations have been set up yet. Ask HR to add them before requesting a trip.</text>
     <text name="EmployeeHRServices">Employee HR Services</text>
     <text name="EmployeeITServices">Employee IT Services</text>
     <text name="EmployeeIsRequired">Select the employee this is for.</text>
