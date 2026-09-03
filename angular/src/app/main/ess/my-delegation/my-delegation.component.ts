@@ -5,11 +5,10 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    EmployeeDto,
-    EmployeesServiceProxy,
     EntityDto,
+    EssColleagueLookupDto,
+    EssLookupServiceProxy,
     EssSessionServiceProxy,
-    GetAllEmployeesInput,
     GetMyRequestsInput,
     MyDelegationDto,
     MyDelegationServiceProxy,
@@ -26,9 +25,10 @@ import { MyRequestComponentBase } from '../my-request-component-base';
  * Self-service delegation of approval duties: the employee names a colleague to cover for them over a date
  * range.
  *
- * <p>The colleague list comes from the general employee lookup because that is the only endpoint that
- * returns employees. It carries an HR permission, so a plain self-service account gets nothing back; the
- * screen reports that rather than presenting an empty dropdown that silently cannot be used.</p>
+ * <p>The colleague list comes from the self-service lookup service, which returns active colleagues in the
+ * tenant -- a staff number and a name, and nothing else about them -- with the signed-in employee already
+ * removed. It is deliberately not narrowed to the employee's own department: cover most often crosses one,
+ * and the delegation still routes through the normal approval chain.</p>
  */
 @Component({
     templateUrl: './my-delegation.component.html',
@@ -38,38 +38,28 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDto> implements OnInit {
     private readonly _service = inject(MyDelegationServiceProxy);
-    private readonly _employeesService = inject(EmployeesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
     private readonly _sessionService = inject(EssSessionServiceProxy);
 
-    readonly colleagues = signal<EmployeeDto[]>([]);
-
-    /** True when the colleague lookup could not be read, so the form explains itself instead of failing on submit. */
-    readonly colleagueLookupUnavailable = signal(false);
+    readonly colleagues = signal<EssColleagueLookupDto[]>([]);
 
     private myEmployeeId: number | null = null;
 
     form = { delegateToId: null as number | null, startDate: '', endDate: '', comments: '' };
 
     ngOnInit(): void {
-        // Needed only to keep the employee out of their own delegate list; a delegation to yourself is
-        // refused by the server and is worth ruling out before it is offered.
+        // The server already leaves the employee out of their own candidate list. This is kept only so the
+        // submit guard below can name the rule in the employee's own language rather than surfacing a
+        // server error, for the case where a stale form posts an id the list no longer offers.
         this._sessionService.getEssContext().subscribe({
-            next: (context) => {
-                this.myEmployeeId = context.employeeId ?? null;
-                this.applySelfExclusion();
-            },
+            next: (context) => (this.myEmployeeId = context.employeeId ?? null),
             error: () => undefined,
         });
 
-        this._employeesService
-            .getAll(new GetAllEmployeesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe({
-                next: (result) => {
-                    this.colleagues.set(result.items ?? []);
-                    this.applySelfExclusion();
-                },
-                error: () => this.colleagueLookupUnavailable.set(true),
-            });
+        this._lookups.getDelegationCandidates().subscribe({
+            next: (result) => this.colleagues.set(result ?? []),
+            error: () => this.colleagues.set([]),
+        });
 
         this.reload();
     }
@@ -127,7 +117,7 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
             .subscribe((result) => this.notifySubmitted(result.submittedForApproval));
     }
 
-    colleagueName(employee: EmployeeDto): string {
+    colleagueName(employee: EssColleagueLookupDto): string {
         const name = this.pick(employee.fullNameEn, employee.fullNameAr);
         return employee.code ? `${employee.code} - ${name}` : name;
     }
@@ -135,13 +125,5 @@ export class MyDelegationComponent extends MyRequestComponentBase<MyDelegationDt
     delegateName(row: MyDelegationDto): string {
         const name = this.pick(row.delegateToFullNameEn, row.delegateToFullNameAr);
         return row.delegateToCode ? `${row.delegateToCode} - ${name}` : name;
-    }
-
-    private applySelfExclusion(): void {
-        if (this.myEmployeeId === null) {
-            return;
-        }
-
-        this.colleagues.update((list) => list.filter((employee) => employee.id !== this.myEmployeeId));
     }
 }

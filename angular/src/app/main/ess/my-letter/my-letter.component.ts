@@ -5,14 +5,13 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    DocumentTypeDto,
-    DocumentTypesServiceProxy,
     EntityDto,
-    GetAllDocumentTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyLetterRequestDto,
     MyLetterRequestServiceProxy,
     RequestLetterInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -36,9 +35,9 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto> implements OnInit {
     private readonly _service = inject(MyLetterRequestServiceProxy);
-    private readonly _typesService = inject(DocumentTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly letterTypes = signal<DocumentTypeDto[]>([]);
+    readonly letterTypes = signal<SimpleLookupDto[]>([]);
 
     form = {
         documentTypeId: null as number | null,
@@ -49,9 +48,7 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
     };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: true }))
-            .subscribe((result) => this.letterTypes.set(result.items ?? []));
+        this._lookups.getLetterTypes().subscribe((result) => this.letterTypes.set(result ?? []));
 
         this.reload();
     }
@@ -126,7 +123,7 @@ export class MyLetterComponent extends MyRequestComponentBase<MyLetterRequestDto
         return this.pick(row.addressToEn, row.addressToAr);
     }
 
-    letterTypeName(type: DocumentTypeDto): string {
+    letterTypeName(type: SimpleLookupDto): string {
         return this.pick(type.nameEn, type.nameAr);
     }
 }

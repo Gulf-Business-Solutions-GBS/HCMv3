@@ -6,17 +6,16 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    AbsenceTypeDto,
     AmendMyLeaveInput,
-    AbsenceTypesServiceProxy,
     ApplyForLeaveInput,
     EntityDto,
-    GetAllAbsenceTypesInput,
+    EssLookupServiceProxy,
     GetMyLeavesInput,
     MyLeaveBalanceDto,
     MyLeaveDto,
     MyLeaveServiceProxy,
     RequestStatus,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
@@ -39,7 +38,7 @@ import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-a
 })
 export class MyLeaveComponent extends AppComponentBase implements OnInit {
     private readonly _myLeaveService = inject(MyLeaveServiceProxy);
-    private readonly _absenceTypesService = inject(AbsenceTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly loading = signal(false);
     readonly saving = signal(false);
@@ -47,7 +46,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
 
     readonly balances = signal<MyLeaveBalanceDto[]>([]);
     readonly leaves = signal<MyLeaveDto[]>([]);
-    readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
+    readonly absenceTypes = signal<SimpleLookupDto[]>([]);
 
     readonly showForm = signal(false);
 
@@ -85,9 +84,7 @@ export class MyLeaveComponent extends AppComponentBase implements OnInit {
     }
 
     private loadAbsenceTypes(): void {
-        this._absenceTypesService
-            .getAll(new GetAllAbsenceTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.absenceTypes.set(result.items));
+        this._lookups.getAbsenceTypes().subscribe((result) => this.absenceTypes.set(result ?? []));
     }
 
     openForm(): void {

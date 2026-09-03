@@ -6,13 +6,12 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    GetAllTicketTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyTicketRequestDto,
     MyTicketServiceProxy,
     RequestTicketInput,
-    TicketTypeDto,
-    TicketTypesServiceProxy,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -30,16 +29,14 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyTicketComponent extends MyRequestComponentBase<MyTicketRequestDto> implements OnInit {
     private readonly _service = inject(MyTicketServiceProxy);
-    private readonly _typesService = inject(TicketTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly ticketTypes = signal<TicketTypeDto[]>([]);
+    readonly ticketTypes = signal<SimpleLookupDto[]>([]);
 
     form = { ticketTypeId: null as number | null, ticketDate: '', amount: null as number | null, comments: '' };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllTicketTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.ticketTypes.set(result.items));
+        this._lookups.getTicketTypes().subscribe((result) => this.ticketTypes.set(result ?? []));
 
         this.reload();
     }

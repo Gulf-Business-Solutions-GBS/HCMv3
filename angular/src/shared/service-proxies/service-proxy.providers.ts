@@ -11,6 +11,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.MyScreenShortcutsServiceProxy,
     ApiServiceProxies.AuditLogServiceProxy,
     ApiServiceProxies.EssSessionServiceProxy,
+    ApiServiceProxies.EssLookupServiceProxy,
     ApiServiceProxies.WorkflowActivityServiceProxy,
     ApiServiceProxies.MyLeaveServiceProxy,
     ApiServiceProxies.EssInboxServiceProxy,

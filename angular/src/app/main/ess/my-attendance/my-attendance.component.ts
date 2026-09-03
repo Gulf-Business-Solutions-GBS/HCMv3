@@ -5,14 +5,13 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    AttendanceTypeDto,
-    AttendanceTypesServiceProxy,
     EntityDto,
-    GetAllAttendanceTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyAttendanceRequestDto,
     MyAttendanceServiceProxy,
     RequestAttendanceCorrectionInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -30,16 +29,14 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyAttendanceComponent extends MyRequestComponentBase<MyAttendanceRequestDto> implements OnInit {
     private readonly _service = inject(MyAttendanceServiceProxy);
-    private readonly _typesService = inject(AttendanceTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly attendanceTypes = signal<AttendanceTypeDto[]>([]);
+    readonly attendanceTypes = signal<SimpleLookupDto[]>([]);
 
     form = { attendanceTypeId: null as number | null, date: '', startTime: '09:00', endTime: '17:00', comments: '' };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllAttendanceTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.attendanceTypes.set(result.items));
+        this._lookups.getAttendanceTypes().subscribe((result) => this.attendanceTypes.set(result ?? []));
 
         this.reload();
     }

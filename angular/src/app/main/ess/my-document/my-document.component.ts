@@ -5,14 +5,13 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    DocumentTypeDto,
-    DocumentTypesServiceProxy,
     EntityDto,
-    GetAllDocumentTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyDocumentRequestDto,
     MyDocumentServiceProxy,
     RequestDocumentInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -30,16 +29,16 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyDocumentComponent extends MyRequestComponentBase<MyDocumentRequestDto> implements OnInit {
     private readonly _service = inject(MyDocumentServiceProxy);
-    private readonly _typesService = inject(DocumentTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly documentTypes = signal<DocumentTypeDto[]>([]);
+    readonly documentTypes = signal<SimpleLookupDto[]>([]);
 
     form = { documentTypeId: null as number | null, documentNum: '', issueDate: '', expiryDate: '', comments: '' };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllDocumentTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined, onlyLetterTypes: false }))
-            .subscribe((result) => this.documentTypes.set(result.items));
+        // Every document type, not only the letter ones -- this screen is "I hold document X", which the
+        // letter form's narrower list would wrongly exclude a passport from.
+        this._lookups.getDocumentTypes().subscribe((result) => this.documentTypes.set(result ?? []));
 
         this.reload();
     }
