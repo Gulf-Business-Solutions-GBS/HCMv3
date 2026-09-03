@@ -264544,6 +264544,62 @@ export interface IMyDashboardAlertsDto {
     workAnniversariesThisMonth: number;
 }
 
+export class MyDashboardAttendanceDto implements IMyDashboardAttendanceDto {
+    date!: DateTime;
+    firstIn!: DateTime | undefined;
+    lastOut!: DateTime | undefined;
+    punchCount!: number;
+    workedHours!: number;
+    isCurrentlyIn!: boolean;
+
+    constructor(data?: IMyDashboardAttendanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : undefined as any;
+            this.firstIn = _data["firstIn"] ? DateTime.fromISO(_data["firstIn"].toString()) : undefined as any;
+            this.lastOut = _data["lastOut"] ? DateTime.fromISO(_data["lastOut"].toString()) : undefined as any;
+            this.punchCount = _data["punchCount"];
+            this.workedHours = _data["workedHours"];
+            this.isCurrentlyIn = _data["isCurrentlyIn"];
+        }
+    }
+
+    static fromJS(data: any): MyDashboardAttendanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardAttendanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toString() : undefined as any;
+        data["firstIn"] = this.firstIn ? this.firstIn.toString() : undefined as any;
+        data["lastOut"] = this.lastOut ? this.lastOut.toString() : undefined as any;
+        data["punchCount"] = this.punchCount;
+        data["workedHours"] = this.workedHours;
+        data["isCurrentlyIn"] = this.isCurrentlyIn;
+        return data;
+    }
+}
+
+export interface IMyDashboardAttendanceDto {
+    date: DateTime;
+    firstIn: DateTime | undefined;
+    lastOut: DateTime | undefined;
+    punchCount: number;
+    workedHours: number;
+    isCurrentlyIn: boolean;
+}
+
 export class MyDashboardLeaveBalanceDto implements IMyDashboardLeaveBalanceDto {
     leaveType!: string | undefined;
     balance!: number;
@@ -264651,6 +264707,7 @@ export interface IMyDashboardProfileDto {
 export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
     profile!: MyDashboardProfileDto;
     leaveBalances!: MyDashboardLeaveBalanceDto[] | undefined;
+    todayAttendance!: MyDashboardAttendanceDto;
     alerts!: MyDashboardAlertsDto;
 
     constructor(data?: IMyDashboardSummaryDto) {
@@ -264670,6 +264727,7 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
                 for (let item of _data["leaveBalances"])
                     this.leaveBalances!.push(MyDashboardLeaveBalanceDto.fromJS(item));
             }
+            this.todayAttendance = _data["todayAttendance"] ? MyDashboardAttendanceDto.fromJS(_data["todayAttendance"]) : undefined as any;
             this.alerts = _data["alerts"] ? MyDashboardAlertsDto.fromJS(_data["alerts"]) : undefined as any;
         }
     }
@@ -264689,6 +264747,7 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
             for (let item of this.leaveBalances)
                 data["leaveBalances"].push(item ? item.toJSON() : undefined as any);
         }
+        data["todayAttendance"] = this.todayAttendance ? this.todayAttendance.toJSON() : undefined as any;
         data["alerts"] = this.alerts ? this.alerts.toJSON() : undefined as any;
         return data;
     }
@@ -264697,6 +264756,7 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
 export interface IMyDashboardSummaryDto {
     profile: MyDashboardProfileDto;
     leaveBalances: MyDashboardLeaveBalanceDto[] | undefined;
+    todayAttendance: MyDashboardAttendanceDto;
     alerts: MyDashboardAlertsDto;
 }
 

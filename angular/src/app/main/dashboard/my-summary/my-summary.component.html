@@ -47,7 +47,7 @@
 
     <div class="row">
         @if (leaveBalances().length) {
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <div class="card card-custom ms-card">
                     <div class="card-body">
                         <div class="ms-section-head">{{ 'LeaveBalance' | localize }}</div>
@@ -65,6 +65,41 @@
                         <!-- Bookable, not remaining: days already awaiting approval are not yours to
                              apply for a second time. -->
                         <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (attendance(); as att) {
+            <div class="col-md-4">
+                <div class="card card-custom ms-card">
+                    <div class="card-body">
+                        <div class="ms-section-head">{{ 'TodaysAttendance' | localize }}</div>
+
+                        @if (att.punchCount) {
+                            <div class="ms-alert">
+                                <span>{{ 'PunchIn' | localize }}</span>
+                                <span class="ms-punch">{{ att.firstIn | date: 'shortTime' }}</span>
+                            </div>
+                            <div class="ms-alert">
+                                <span>{{ 'PunchOut' | localize }}</span>
+                                <span class="ms-punch">
+                                    @if (att.isCurrentlyIn) {
+                                        <!-- Still on site. A blank here would read as a missed punch. -->
+                                        <span class="ms-in-badge">{{ 'CurrentlyIn' | localize }}</span>
+                                    } @else {
+                                        {{ att.lastOut | date: 'shortTime' }}
+                                    }
+                                </span>
+                            </div>
+                            <div class="ms-alert">
+                                <span>{{ 'TotalHours' | localize }}</span>
+                                <span class="ms-alert-count">{{ att.workedHours }}</span>
+                            </div>
+                            <p class="ms-balance-note">{{ 'AttendanceIndicativeHint' | localize }}</p>
+                        } @else {
+                            <p class="ms-empty">{{ 'NoPunchesToday' | localize }}</p>
+                        }
                     </div>
                 </div>
             </div>

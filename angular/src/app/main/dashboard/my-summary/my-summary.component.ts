@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -24,7 +25,7 @@ interface QuickAction {
     selector: 'my-summary',
     templateUrl: './my-summary.component.html',
     styleUrl: './my-summary.component.css',
-    imports: [RouterLink, LocalizePipe],
+    imports: [RouterLink, LocalizePipe, DatePipe],
 })
 export class MySummaryComponent extends AppComponentBase implements OnInit {
     private _dashboardService = inject(MyDashboardServiceProxy);
@@ -35,6 +36,7 @@ export class MySummaryComponent extends AppComponentBase implements OnInit {
     readonly profile = computed(() => this.summary()?.profile);
     readonly leaveBalances = computed(() => this.summary()?.leaveBalances ?? []);
     readonly alerts = computed(() => this.summary()?.alerts);
+    readonly attendance = computed(() => this.summary()?.todayAttendance);
 
     /**
      * Fixed, common tasks -- distinct from the Shortcuts tile, which is what YOU chose. These are the

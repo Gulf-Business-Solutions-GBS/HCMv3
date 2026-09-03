@@ -198,3 +198,24 @@
     border-left: 0;
     border-right: 1px solid #edf1f3;
 }
+
+.ms-punch {
+    font-size: 14px;
+    font-weight: 600;
+    color: #23313a;
+}
+
+.ms-in-badge {
+    padding: 2px 8px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0b6e80;
+    background: #eef6f8;
+}
+
+.ms-empty {
+    margin: 0;
+    font-size: 12.5px;
+    color: #8b9aa3;
+}

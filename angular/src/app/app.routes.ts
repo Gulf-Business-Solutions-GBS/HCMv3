@@ -270,6 +270,37 @@ export const appRoutes: Routes = [
                             import('./main/ess/my-loan-exemption/my-loan-exemption.component').then((m) => m.MyLoanExemptionComponent),
                         data: { permission: 'Ess.MyLoanExemptions' },
                     },
+                    {
+                        path: 'ess/punch',
+                        loadComponent: () =>
+                            import('./main/ess/my-punch/my-punch.component').then((m) => m.MyPunchComponent),
+                        data: { permission: 'Ess.MyPunches' },
+                    },
+                    {
+                        path: 'ess/clearance',
+                        loadComponent: () =>
+                            import('./main/ess/my-clearance/my-clearance.component').then((m) => m.MyClearanceComponent),
+                        data: { permission: 'Ess.MyClearances' },
+                    },
+                    {
+                        path: 'ess/health-reimburse',
+                        loadComponent: () =>
+                            import('./main/ess/my-health-reimburse/my-health-reimburse.component').then(
+                                (m) => m.MyHealthReimburseComponent
+                            ),
+                        data: { permission: 'Ess.MyHealthReimburses' },
+                    },
+                    {
+                        // The personal-data screen uses Ess.MyProfile rather than a permission of its own:
+                        // "my profile" is precisely what it is, and the app service is authorized on the
+                        // same one.
+                        path: 'ess/my-details',
+                        loadComponent: () =>
+                            import('./main/ess/my-personal-data/my-personal-data.component').then(
+                                (m) => m.MyPersonalDataComponent
+                            ),
+                        data: { permission: 'Ess.MyProfile' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },
