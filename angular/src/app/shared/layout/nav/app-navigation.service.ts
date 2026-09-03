@@ -2290,6 +2290,12 @@ export class AppNavigationService {
                         '/app/admin/employees'
                     ),
                     new AppMenuItem(
+                        'Announcements',
+                        'Pages.PersonnelAdministration.News',
+                        'flaticon-paper-plane',
+                        '/app/admin/announcements'
+                    ),
+                    new AppMenuItem(
                         'EmployeeBasicPayDetails',
                         'Pages.PersonnelAdministration.EmployeeBasicPayDetails',
                         'flaticon-list-3',

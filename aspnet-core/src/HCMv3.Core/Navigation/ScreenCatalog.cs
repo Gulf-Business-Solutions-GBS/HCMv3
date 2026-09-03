@@ -30,7 +30,7 @@ public static class ScreenCatalog
         string Route,
         string PermissionName);
 
-    /// <summary>547 screens as of the initial assignment.</summary>
+    /// <summary>548 screens as of the initial assignment.</summary>
     public static readonly IReadOnlyList<ScreenSeed> All = new List<ScreenSeed>
     {
         new("app.admin.accommodation-service-types", "SAC001", "AccommodationManagement", "AccommodationServiceTypes", "/app/admin/accommodation-service-types", "Pages.AccommodationManagement.AccommodationServiceTypes"),
@@ -220,6 +220,7 @@ public static class ScreenCatalog
         new("app.admin.employee-fund-exemptions", "SPA004", "PersonnelAdministration", "EmployeeFundExemptions", "/app/admin/employee-fund-exemptions", "Pages.PersonnelAdministration.EmployeeFundExemptions"),
         new("app.admin.employee-loan-exemptions", "SPA005", "PersonnelAdministration", "EmployeeLoanExemptions", "/app/admin/employee-loan-exemptions", "Pages.PersonnelAdministration.EmployeeLoanExemptions"),
         new("app.admin.employee-loan-recoveries", "SPA006", "PersonnelAdministration", "EmployeeLoanRecoveries", "/app/admin/employee-loan-recoveries", "Pages.PersonnelAdministration.EmployeeLoanRecoveries"),
+        new("app.admin.announcements", "SPA009", "PersonnelAdministration", "Announcements", "/app/admin/announcements", "Pages.PersonnelAdministration.News"),
         new("app.admin.employees", "SPA007", "PersonnelAdministration", "Employees", "/app/admin/employees", "Pages.PersonnelAdministration.Employees"),
         new("app.admin.loan-installments", "SPA008", "PersonnelAdministration", "LoanInstallments", "/app/admin/loan-installments", "Pages.PersonnelAdministration.LoanInstallments"),
         new("app.admin.employee-project-details", "SPJ001", "ProjectManagement", "EmployeeProjectDetails", "/app/admin/employee-project-details", "Pages.ProjectManagement.EmployeeProjectDetails"),

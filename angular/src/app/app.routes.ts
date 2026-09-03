@@ -1500,6 +1500,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Tenants' },
                     },
                     {
+                        path: 'announcements',
+                        loadComponent: () =>
+                            import('./admin/personnel-administration/announcements/announcements.component').then(
+                                (m) => m.AnnouncementsComponent
+                            ),
+                        data: { permission: 'Pages.PersonnelAdministration.News' },
+                    },
+                    {
                         path: 'employees',
                         loadComponent: () =>
                             import('./admin/personnel-administration/employees/employees.component').then(
