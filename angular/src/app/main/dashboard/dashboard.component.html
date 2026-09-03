@@ -1,15 +1,18 @@
-<!-- The personal tiles first: who you are, what you can do, what leave you have left. Modelled on
-     the legacy ESS dashboard, and on the MAIN dashboard rather than a separate ESS home, so there is
-     one landing page instead of two competing ones. -->
+<!-- The personal tiles: identity, Quick Actions, leave, attendance, alerts, announcements. -->
 <my-summary />
 
-<!-- Self-service: requests waiting on you, your recent requests, workflow history. Embedded rather
-     than duplicated -- this is the same component that used to be its own page, minus its chrome, so
-     the two can never drift apart. -->
-<ess-home [embedded]="true" />
-
-<!-- Shortcuts are what YOU chose; Quick Actions above are the fixed tasks everyone does. Both earn a
-     place, so the personal one sits after the common one. -->
+<!-- Shortcuts below Quick Actions, as asked. Quick Actions are the fixed tasks everyone does;
+     Shortcuts are the ones this person chose or visited. Both belong on the landing page, and the
+     personal list follows the common one. Moved here OUT of the sidebar: 585 menu items above them
+     meant scrolling past the menu to reach the shortcuts that exist to avoid the menu. -->
 <quick-links />
 
-<customizable-dashboard [dashboardName]="dashboardName" />
+<!-- The ASP.NET Zero demo widgets (Total Profit, New Feedbacks, New Orders, Sales Summary, Regional
+     Stats) are gone. They are template sample data with no connection to HCMv3 -- invented figures on
+     the first screen everyone sees, which teaches people not to trust the numbers on it. The
+     customizable-dashboard host is removed with them; when real HR widgets exist it can come back
+     carrying those instead. -->
+
+<!-- Self-service: approvals, my requests, workflow history. The existing EssHomeComponent embedded,
+     not rebuilt, so there is one implementation of "what is waiting on you". -->
+<ess-home [embedded]="true" />

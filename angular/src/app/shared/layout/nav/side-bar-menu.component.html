@@ -5,39 +5,10 @@
         </div>
     }
 
-    <!-- Favourites and recents, between the search box and the menu proper. Placed here because the
-         two shortcuts answer the same question the search box does -- "where am I going?" -- and putting
-         them below 585 menu items would mean scrolling past the thing they exist to save you from.
-         Hidden entirely in icon-only mode: a five-item list of names has nothing to show as icons. -->
-    @if (!iconMenu()) {
-        @if (favoriteScreens().length) {
-            <div class="menu-shortcut-group">
-                <div class="menu-shortcut-head">{{ 'Favorites' | localize }}</div>
-                @for (screen of favoriteScreens(); track screen.screenKey) {
-                    <a class="menu-shortcut" [routerLink]="[screen.route]">
-                        <span class="menu-shortcut-name">{{ screen.nameKey | localize }}</span>
-                        @if (showScreenCodes()) {
-                            <span class="menu-scode">{{ screen.code }}</span>
-                        }
-                    </a>
-                }
-            </div>
-        }
-
-        @if (recentScreens().length) {
-            <div class="menu-shortcut-group">
-                <div class="menu-shortcut-head">{{ 'RecentlyVisited' | localize }}</div>
-                @for (screen of recentScreens(); track screen.screenKey) {
-                    <a class="menu-shortcut" [routerLink]="[screen.route]">
-                        <span class="menu-shortcut-name">{{ screen.nameKey | localize }}</span>
-                        @if (showScreenCodes()) {
-                            <span class="menu-scode">{{ screen.code }}</span>
-                        }
-                    </a>
-                }
-            </div>
-        }
-    }
+    <!-- Favourites and Recently Visited used to sit here. They now live on the dashboard, below Quick
+         Actions: putting them in the sidebar meant they scrolled with 585 menu items, and a shortcut you
+         have to scroll the menu to reach is not a shortcut. The star on each menu item stays -- pinning
+         happens in the menu, the pinned list is read on the dashboard. -->
 
     <ng-container [ngTemplateOutlet]="menuListTemplate" />
 </div>
