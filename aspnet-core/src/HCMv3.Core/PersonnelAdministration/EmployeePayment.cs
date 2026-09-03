@@ -65,6 +65,25 @@ public class EmployeePayment : FullAuditedEntity, IMustHaveTenant
     public virtual DateTime? OffCyclePaymentDate { get; set; }
 
     /// <summary>
+    /// The <see cref="EmployeePaymentBatch"/> this payment was created from, when it came from one. A bare
+    /// FK with no navigation property, exactly like <c>TimeRegister.TimeLogApprovalId</c>.
+    ///
+    /// <para>
+    /// It is not decoration -- it is the idempotency key.
+    /// <c>PaymentBatchWorkflowTransactionHandler.OnApprovedAsync</c> refuses to write a second time for a
+    /// batch that already has payments against it, and this column is how it knows. Legacy had no such link
+    /// and created the payments from <c>PaymentRequest.OnSaving</c>, so every re-save of an approved batch
+    /// duplicated the lot.
+    /// </para>
+    ///
+    /// <para>
+    /// Null for a payment keyed in directly on the <c>EmployeePayment</c> screen or written by the payroll
+    /// engine, which is the great majority of them.
+    /// </para>
+    /// </summary>
+    public virtual int? EmployeePaymentBatchId { get; set; }
+
+    /// <summary>
     /// Legacy <c>EmployeePayment.IsSystemGenerated</c> (set to <c>true</c> at legacy line 2983). BUSINESS
     /// data -- "written by the payroll engine" vs "keyed in by a user" -- not audit metadata that
     /// <c>FullAuditedEntity</c> already covers.

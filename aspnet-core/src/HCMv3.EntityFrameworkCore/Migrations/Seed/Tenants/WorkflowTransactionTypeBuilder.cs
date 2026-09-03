@@ -191,7 +191,23 @@ public class WorkflowTransactionTypeBuilder
         // assignment row IS the request. No sub-type: legacy routed every task through code "17" whatever
         // the work was. Note what approval buys, and it is nothing beyond visibility -- legacy had NO
         // approval side effect for this type at all, so the row becoming effective is the whole of it.
-        ("EmployeeAssignedTask", "Task Assignment", "إسناد مهمة", null, null, null, "flaticon-list-3", 250)
+        ("EmployeeAssignedTask", "Task Assignment", "إسناد مهمة", null, null, null, "flaticon-list-3", 250),
+
+        // The HR payment batch (legacy PaymentRequest). NOT self-service: HR pays a group of people a one-off
+        // amount, an employee does not request one about themselves -- so EssRoute and EssPermissionName are
+        // deliberately null, exactly as for EmployeeAction and ManpowerPlanning. No sub-type: legacy routed
+        // every payment request the same way whatever wage type it paid.
+        //
+        // The Code is the entity's name as always, but READ THE ENTITY before assuming this is the shadow
+        // shape the rest of this catalog exists to have removed. It is not. A batch is a HEADER OVER MANY
+        // EMPLOYEES: one approval produces N EmployeePayment rows, one per line, so there is no single
+        // pre-existing transaction row for TargetEntityId to point at. EmployeePaymentBatch is the PARENT of
+        // EmployeePayment, not a mirror of it -- the same argument as TimeLogApproval above.
+        //
+        // What approval buys is money: it is the only thing that creates the EmployeePayment rows, and it
+        // creates them exactly once. Legacy created them from OnSaving whenever an approved request happened
+        // to be saved, so re-saving one paid everybody in it again.
+        ("EmployeePaymentBatch", "Payment Batch", "دفعة رواتب", null, null, null, "flaticon-coins", 260)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

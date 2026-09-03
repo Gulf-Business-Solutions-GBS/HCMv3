@@ -5771,5 +5771,25 @@
     <text name="TaskSubjectIsRequired">Enter what the task is.</text>
     <text name="OnlyTheTaskCreatorCanChangeTaskDetails">Only the person who assigned this task can change its subject, description or dates. You can still update its status.</text>
     <text name="Announcements">Announcements</text>
+
+    <text name="EmployeePaymentBatches">Payment Batches</text>
+    <text name="EmployeePaymentBatchNotFound">Payment batch not found.</text>
+    <text name="EmployeePaymentBatchHasNoLines">Add at least one employee to the payment batch.</text>
+    <text name="DuplicateEmployeeInEmployeePaymentBatch">{0} appears more than once in this payment batch. Each employee may have only one line.</text>
+    <text name="EmployeePaymentBatchCannotBeChangedOnceSubmitted">This payment batch has already been submitted for approval and can no longer be changed.</text>
+    <text name="EmployeePaymentBatchPaymentDateIsRequired">Say which date the batch is to be paid on.</text>
+    <text name="WageTypeCannotBePaidThroughAPaymentBatch">This wage type cannot be paid through a payment batch.</text>
+    <text name="CurrencyNotFound">Currency not found.</text>
+    <text name="AnnouncementsIntro">Notices shown on everyone's dashboard between their issue and expiry dates.</text>
+    <text name="AnnouncementDeleteWarning">This announcement will be removed from everyone's dashboard.</text>
+    <text name="CreateAnnouncement">New Announcement</text>
+    <text name="EditAnnouncement">Edit Announcement</text>
+    <text name="AnnouncementDateRangeInvalid">The expiry date is before the issue date, so this announcement would never appear.</text>
+    <text name="AnnouncementSummaryHint">This is the text shown on the dashboard panel.</text>
+    <text name="SendEmailSmtpHint">E-mail is not configured on this environment yet, so nothing will be sent.</text>
+    <text name="SummaryAr">Summary (Arabic)</text>
+    <text name="Live">Live</text>
+    <text name="Scheduled">Scheduled</text>
+    <text name="Everyone">Everyone</text>
   </texts>
 </localizationDictionary>

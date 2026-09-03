@@ -702,6 +702,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employeePayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Edit, L("EditItem"));
         employeePayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Delete, L("DeleteItem"));
 
+        var employeePaymentBatches = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches, L("EmployeePaymentBatches"));
+        employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Create, L("CreateNewItem"));
+        employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Edit, L("EditItem"));
+        employeePaymentBatches.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeePaymentBatches_Delete, L("DeleteItem"));
+
         var employeeRecurringPayments = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments, L("EmployeeRecurringPayments"));
         employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Create, L("CreateNewItem"));
         employeeRecurringPayments.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeRecurringPayments_Edit, L("EditItem"));

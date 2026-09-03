@@ -41,4 +41,35 @@ public interface IAdminTransactionSubmitter
         string requestNumberPrefix,
         int? subTypeId = null)
         where TEntity : class, IEntity<int>, IHasEmployeeId, IWorkflowEnabledEntity;
+
+    /// <summary>
+    /// The same thing for a transaction that is ABOUT MORE THAN ONE EMPLOYEE, where the subject therefore has
+    /// to be supplied rather than read off the entity.
+    ///
+    /// <para>
+    /// <c>EmployeePaymentBatch</c> is the case this exists for: a header over N employees, whose employees
+    /// are its detail lines. It cannot implement <see cref="IHasEmployeeId"/> honestly, and giving it an
+    /// <c>EmployeeId</c> column purely to satisfy the constraint above would put a meaningless value on the
+    /// row -- which the next person to read it would take for the person being paid.
+    /// </para>
+    ///
+    /// <para>
+    /// Everything else is identical to <see cref="CreateAndSubmitAsync{TEntity}"/>, including the
+    /// create-hidden-then-submit ordering. The only difference is where <c>WorkflowRequest.EmployeeId</c>
+    /// comes from, and it matters because that is what the approver resolver routes by: for a batch the
+    /// subject is the person who RAISED it, since there is no one person it is about.
+    /// </para>
+    /// </summary>
+    /// <param name="subjectEmployeeId">
+    /// The employee the request is recorded against and routed by -- for a batch, the requester. Also used as
+    /// the acting employee at submit when the signed-in user has no employee link of their own.
+    /// </param>
+    Task<int> CreateAndSubmitForSubjectAsync<TEntity>(
+        IRepository<TEntity> repository,
+        TEntity entity,
+        string requestType,
+        string requestNumberPrefix,
+        int subjectEmployeeId,
+        int? subTypeId = null)
+        where TEntity : class, IEntity<int>, IWorkflowEnabledEntity;
 }

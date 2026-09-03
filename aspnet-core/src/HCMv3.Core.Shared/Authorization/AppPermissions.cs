@@ -605,6 +605,14 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeePayments_Edit = "Pages.PersonnelAdministration.EmployeePayments.Edit";
     public const string Pages_PersonnelAdministration_EmployeePayments_Delete = "Pages.PersonnelAdministration.EmployeePayments.Delete";
 
+    // The HR payment BATCH -- one wage type, many employees, one approval. Separate from EmployeePayments
+    // above on purpose: granting somebody the right to key in a single payment is not the same as granting
+    // them the right to put a whole payroll run's worth of money in front of an approver.
+    public const string Pages_PersonnelAdministration_EmployeePaymentBatches = "Pages.PersonnelAdministration.EmployeePaymentBatches";
+    public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Create = "Pages.PersonnelAdministration.EmployeePaymentBatches.Create";
+    public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Edit = "Pages.PersonnelAdministration.EmployeePaymentBatches.Edit";
+    public const string Pages_PersonnelAdministration_EmployeePaymentBatches_Delete = "Pages.PersonnelAdministration.EmployeePaymentBatches.Delete";
+
     public const string Pages_PersonnelAdministration_EmployeeRecurringPayments = "Pages.PersonnelAdministration.EmployeeRecurringPayments";
     public const string Pages_PersonnelAdministration_EmployeeRecurringPayments_Create = "Pages.PersonnelAdministration.EmployeeRecurringPayments.Create";
     public const string Pages_PersonnelAdministration_EmployeeRecurringPayments_Edit = "Pages.PersonnelAdministration.EmployeeRecurringPayments.Edit";
