@@ -5755,5 +5755,10 @@
     <text name="QuickLinksCapNote">Only the first {0} appear on the dashboard. Reorder to change which.</text>
 
     <text name="Shortcuts">Shortcuts</text>
+    <text name="QuickActions">Quick Actions</text>
+    <text name="AlertsSummary">Alerts / Summary</text>
+    <text name="BirthdaysThisMonth">Birthdays this month</text>
+    <text name="WorkAnniversariesThisMonth">Work anniversaries this month</text>
+    <text name="LeaveBalanceBookableHint">Days you can still apply for. Requests awaiting approval are already deducted.</text>
   </texts>
 </localizationDictionary>

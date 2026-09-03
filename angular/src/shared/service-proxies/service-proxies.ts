@@ -84990,6 +84990,69 @@ export class MyClearanceServiceProxy {
 }
 
 @Injectable()
+export class MyDashboardServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getSummary(): Observable<MyDashboardSummaryDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyDashboard/GetSummary";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSummary(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyDashboardSummaryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyDashboardSummaryDto>;
+        }));
+    }
+
+    protected processGetSummary(response: HttpResponseBase): Observable<MyDashboardSummaryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyDashboardSummaryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class MyDelegationServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -87993,6 +88056,240 @@ export class MyTicketServiceProxy {
     }
 
     protected processCancelMyTicket(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyTravelServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getMyTravels(body?: GetMyRequestsInput | undefined): Observable<PagedResultDtoOfMyTravelDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravel/GetMyTravels";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyTravels(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyTravels(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMyTravelDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMyTravelDto>;
+        }));
+    }
+
+    protected processGetMyTravels(response: HttpResponseBase): Observable<PagedResultDtoOfMyTravelDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMyTravelDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getTravelTypes(): Observable<TravelTypeLookupDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravel/GetTravelTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTravelTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTravelTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TravelTypeLookupDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TravelTypeLookupDto[]>;
+        }));
+    }
+
+    protected processGetTravelTypes(response: HttpResponseBase): Observable<TravelTypeLookupDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TravelTypeLookupDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    requestTravel(body?: RequestTravelInput | undefined): Observable<MyRequestSubmissionDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravel/RequestTravel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestTravel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestTravel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyRequestSubmissionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyRequestSubmissionDto>;
+        }));
+    }
+
+    protected processRequestTravel(response: HttpResponseBase): Observable<MyRequestSubmissionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyRequestSubmissionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelMyTravel(body?: EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MyTravel/CancelMyTravel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelMyTravel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelMyTravel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelMyTravel(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -187230,6 +187527,7 @@ export class CreateOrEditTravelDetailCostDto implements ICreateOrEditTravelDetai
     id!: number | undefined;
     travelDetailId!: number;
     expenseTypeId!: number;
+    currencyId!: number | undefined;
     amount!: number;
     comments!: string | undefined;
 
@@ -187247,6 +187545,7 @@ export class CreateOrEditTravelDetailCostDto implements ICreateOrEditTravelDetai
             this.id = _data["id"];
             this.travelDetailId = _data["travelDetailId"];
             this.expenseTypeId = _data["expenseTypeId"];
+            this.currencyId = _data["currencyId"];
             this.amount = _data["amount"];
             this.comments = _data["comments"];
         }
@@ -187264,6 +187563,7 @@ export class CreateOrEditTravelDetailCostDto implements ICreateOrEditTravelDetai
         data["id"] = this.id;
         data["travelDetailId"] = this.travelDetailId;
         data["expenseTypeId"] = this.expenseTypeId;
+        data["currencyId"] = this.currencyId;
         data["amount"] = this.amount;
         data["comments"] = this.comments;
         return data;
@@ -187274,6 +187574,7 @@ export interface ICreateOrEditTravelDetailCostDto {
     id: number | undefined;
     travelDetailId: number;
     expenseTypeId: number;
+    currencyId: number | undefined;
     amount: number;
     comments: string | undefined;
 }
@@ -187291,7 +187592,14 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
     travelAirlineId!: number | undefined;
     nightStay!: boolean;
     totalNights!: number;
+    isVisaRequired!: boolean;
+    visaComments!: string | undefined;
+    isHotelRequired!: boolean;
+    hotelComments!: string | undefined;
+    anyOtherExpense!: boolean;
+    otherComments!: string | undefined;
     comments!: string | undefined;
+    travelDetailCosts!: CreateOrEditTravelDetailCostDto[] | undefined;
 
     constructor(data?: ICreateOrEditTravelDetailDto) {
         if (data) {
@@ -187316,7 +187624,18 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
             this.travelAirlineId = _data["travelAirlineId"];
             this.nightStay = _data["nightStay"];
             this.totalNights = _data["totalNights"];
+            this.isVisaRequired = _data["isVisaRequired"];
+            this.visaComments = _data["visaComments"];
+            this.isHotelRequired = _data["isHotelRequired"];
+            this.hotelComments = _data["hotelComments"];
+            this.anyOtherExpense = _data["anyOtherExpense"];
+            this.otherComments = _data["otherComments"];
             this.comments = _data["comments"];
+            if (Array.isArray(_data["travelDetailCosts"])) {
+                this.travelDetailCosts = [] as any;
+                for (let item of _data["travelDetailCosts"])
+                    this.travelDetailCosts!.push(CreateOrEditTravelDetailCostDto.fromJS(item));
+            }
         }
     }
 
@@ -187341,7 +187660,18 @@ export class CreateOrEditTravelDetailDto implements ICreateOrEditTravelDetailDto
         data["travelAirlineId"] = this.travelAirlineId;
         data["nightStay"] = this.nightStay;
         data["totalNights"] = this.totalNights;
+        data["isVisaRequired"] = this.isVisaRequired;
+        data["visaComments"] = this.visaComments;
+        data["isHotelRequired"] = this.isHotelRequired;
+        data["hotelComments"] = this.hotelComments;
+        data["anyOtherExpense"] = this.anyOtherExpense;
+        data["otherComments"] = this.otherComments;
         data["comments"] = this.comments;
+        if (Array.isArray(this.travelDetailCosts)) {
+            data["travelDetailCosts"] = [];
+            for (let item of this.travelDetailCosts)
+                data["travelDetailCosts"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -187359,7 +187689,14 @@ export interface ICreateOrEditTravelDetailDto {
     travelAirlineId: number | undefined;
     nightStay: boolean;
     totalNights: number;
+    isVisaRequired: boolean;
+    visaComments: string | undefined;
+    isHotelRequired: boolean;
+    hotelComments: string | undefined;
+    anyOtherExpense: boolean;
+    otherComments: string | undefined;
     comments: string | undefined;
+    travelDetailCosts: CreateOrEditTravelDetailCostDto[] | undefined;
 }
 
 export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
@@ -187369,7 +187706,9 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
     travelTypeId!: number;
     startDate!: DateTime;
     endDate!: DateTime;
+    travelPurpose!: string | undefined;
     comments!: string | undefined;
+    travelDetails!: CreateOrEditTravelDetailDto[] | undefined;
 
     constructor(data?: ICreateOrEditTravelDto) {
         if (data) {
@@ -187388,7 +187727,13 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
             this.travelTypeId = _data["travelTypeId"];
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.travelPurpose = _data["travelPurpose"];
             this.comments = _data["comments"];
+            if (Array.isArray(_data["travelDetails"])) {
+                this.travelDetails = [] as any;
+                for (let item of _data["travelDetails"])
+                    this.travelDetails!.push(CreateOrEditTravelDetailDto.fromJS(item));
+            }
         }
     }
 
@@ -187407,7 +187752,13 @@ export class CreateOrEditTravelDto implements ICreateOrEditTravelDto {
         data["travelTypeId"] = this.travelTypeId;
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["travelPurpose"] = this.travelPurpose;
         data["comments"] = this.comments;
+        if (Array.isArray(this.travelDetails)) {
+            data["travelDetails"] = [];
+            for (let item of this.travelDetails)
+                data["travelDetails"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -187419,7 +187770,9 @@ export interface ICreateOrEditTravelDto {
     travelTypeId: number;
     startDate: DateTime;
     endDate: DateTime;
+    travelPurpose: string | undefined;
     comments: string | undefined;
+    travelDetails: CreateOrEditTravelDetailDto[] | undefined;
 }
 
 export class CreateOrEditTravelFeedbackDto implements ICreateOrEditTravelFeedbackDto {
@@ -264151,6 +264504,202 @@ export interface IMyClearanceDto {
     comments: string | undefined;
 }
 
+export class MyDashboardAlertsDto implements IMyDashboardAlertsDto {
+    birthdaysThisMonth!: number;
+    workAnniversariesThisMonth!: number;
+
+    constructor(data?: IMyDashboardAlertsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.birthdaysThisMonth = _data["birthdaysThisMonth"];
+            this.workAnniversariesThisMonth = _data["workAnniversariesThisMonth"];
+        }
+    }
+
+    static fromJS(data: any): MyDashboardAlertsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardAlertsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["birthdaysThisMonth"] = this.birthdaysThisMonth;
+        data["workAnniversariesThisMonth"] = this.workAnniversariesThisMonth;
+        return data;
+    }
+}
+
+export interface IMyDashboardAlertsDto {
+    birthdaysThisMonth: number;
+    workAnniversariesThisMonth: number;
+}
+
+export class MyDashboardLeaveBalanceDto implements IMyDashboardLeaveBalanceDto {
+    leaveType!: string | undefined;
+    balance!: number;
+
+    constructor(data?: IMyDashboardLeaveBalanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.leaveType = _data["leaveType"];
+            this.balance = _data["balance"];
+        }
+    }
+
+    static fromJS(data: any): MyDashboardLeaveBalanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardLeaveBalanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["leaveType"] = this.leaveType;
+        data["balance"] = this.balance;
+        return data;
+    }
+}
+
+export interface IMyDashboardLeaveBalanceDto {
+    leaveType: string | undefined;
+    balance: number;
+}
+
+export class MyDashboardProfileDto implements IMyDashboardProfileDto {
+    employeeId!: number;
+    code!: string | undefined;
+    fullName!: string | undefined;
+    jobTitle!: string | undefined;
+    department!: string | undefined;
+    company!: string | undefined;
+    workLocation!: string | undefined;
+    costCenter!: string | undefined;
+
+    constructor(data?: IMyDashboardProfileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.code = _data["code"];
+            this.fullName = _data["fullName"];
+            this.jobTitle = _data["jobTitle"];
+            this.department = _data["department"];
+            this.company = _data["company"];
+            this.workLocation = _data["workLocation"];
+            this.costCenter = _data["costCenter"];
+        }
+    }
+
+    static fromJS(data: any): MyDashboardProfileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardProfileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["code"] = this.code;
+        data["fullName"] = this.fullName;
+        data["jobTitle"] = this.jobTitle;
+        data["department"] = this.department;
+        data["company"] = this.company;
+        data["workLocation"] = this.workLocation;
+        data["costCenter"] = this.costCenter;
+        return data;
+    }
+}
+
+export interface IMyDashboardProfileDto {
+    employeeId: number;
+    code: string | undefined;
+    fullName: string | undefined;
+    jobTitle: string | undefined;
+    department: string | undefined;
+    company: string | undefined;
+    workLocation: string | undefined;
+    costCenter: string | undefined;
+}
+
+export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
+    profile!: MyDashboardProfileDto;
+    leaveBalances!: MyDashboardLeaveBalanceDto[] | undefined;
+    alerts!: MyDashboardAlertsDto;
+
+    constructor(data?: IMyDashboardSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.profile = _data["profile"] ? MyDashboardProfileDto.fromJS(_data["profile"]) : undefined as any;
+            if (Array.isArray(_data["leaveBalances"])) {
+                this.leaveBalances = [] as any;
+                for (let item of _data["leaveBalances"])
+                    this.leaveBalances!.push(MyDashboardLeaveBalanceDto.fromJS(item));
+            }
+            this.alerts = _data["alerts"] ? MyDashboardAlertsDto.fromJS(_data["alerts"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyDashboardSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["profile"] = this.profile ? this.profile.toJSON() : undefined as any;
+        if (Array.isArray(this.leaveBalances)) {
+            data["leaveBalances"] = [];
+            for (let item of this.leaveBalances)
+                data["leaveBalances"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["alerts"] = this.alerts ? this.alerts.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyDashboardSummaryDto {
+    profile: MyDashboardProfileDto;
+    leaveBalances: MyDashboardLeaveBalanceDto[] | undefined;
+    alerts: MyDashboardAlertsDto;
+}
+
 export class MyDelegationDto implements IMyDelegationDto {
     id!: number;
     workflowStatus!: RequestStatus;
@@ -265637,6 +266186,294 @@ export interface IMyTravelClaimDto {
     claimDate: DateTime;
     claimAmount: number;
     comments: string | undefined;
+}
+
+export class MyTravelCostDto implements IMyTravelCostDto {
+    id!: number;
+    expenseTypeId!: number;
+    expenseTypeNameEn!: string | undefined;
+    currencyId!: number | undefined;
+    amount!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IMyTravelCostDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.expenseTypeId = _data["expenseTypeId"];
+            this.expenseTypeNameEn = _data["expenseTypeNameEn"];
+            this.currencyId = _data["currencyId"];
+            this.amount = _data["amount"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): MyTravelCostDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyTravelCostDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["expenseTypeId"] = this.expenseTypeId;
+        data["expenseTypeNameEn"] = this.expenseTypeNameEn;
+        data["currencyId"] = this.currencyId;
+        data["amount"] = this.amount;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IMyTravelCostDto {
+    id: number;
+    expenseTypeId: number;
+    expenseTypeNameEn: string | undefined;
+    currencyId: number | undefined;
+    amount: number;
+    comments: string | undefined;
+}
+
+export class MyTravelDto implements IMyTravelDto {
+    id!: number;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+    canCancel!: boolean;
+    code!: string | undefined;
+    travelTypeId!: number;
+    travelTypeNameEn!: string | undefined;
+    travelTypeNameAr!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    totalTravelCost!: number;
+    travelPurpose!: string | undefined;
+    comments!: string | undefined;
+    legs!: MyTravelLegDto[] | undefined;
+
+    constructor(data?: IMyTravelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+            this.canCancel = _data["canCancel"];
+            this.code = _data["code"];
+            this.travelTypeId = _data["travelTypeId"];
+            this.travelTypeNameEn = _data["travelTypeNameEn"];
+            this.travelTypeNameAr = _data["travelTypeNameAr"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.totalTravelCost = _data["totalTravelCost"];
+            this.travelPurpose = _data["travelPurpose"];
+            this.comments = _data["comments"];
+            if (Array.isArray(_data["legs"])) {
+                this.legs = [] as any;
+                for (let item of _data["legs"])
+                    this.legs!.push(MyTravelLegDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MyTravelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyTravelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        data["canCancel"] = this.canCancel;
+        data["code"] = this.code;
+        data["travelTypeId"] = this.travelTypeId;
+        data["travelTypeNameEn"] = this.travelTypeNameEn;
+        data["travelTypeNameAr"] = this.travelTypeNameAr;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["totalTravelCost"] = this.totalTravelCost;
+        data["travelPurpose"] = this.travelPurpose;
+        data["comments"] = this.comments;
+        if (Array.isArray(this.legs)) {
+            data["legs"] = [];
+            for (let item of this.legs)
+                data["legs"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IMyTravelDto {
+    id: number;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+    canCancel: boolean;
+    code: string | undefined;
+    travelTypeId: number;
+    travelTypeNameEn: string | undefined;
+    travelTypeNameAr: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    totalTravelCost: number;
+    travelPurpose: string | undefined;
+    comments: string | undefined;
+    legs: MyTravelLegDto[] | undefined;
+}
+
+export class MyTravelLegDto implements IMyTravelLegDto {
+    id!: number;
+    departureId!: number;
+    departureNameEn!: string | undefined;
+    departureNameAr!: string | undefined;
+    arrivalId!: number;
+    arrivalNameEn!: string | undefined;
+    arrivalNameAr!: string | undefined;
+    departureDate!: DateTime;
+    departureTime!: DateTime;
+    arrivalDate!: DateTime;
+    arrivalTime!: DateTime;
+    hotelId!: number | undefined;
+    travelAirlineId!: number | undefined;
+    nightStay!: boolean;
+    totalNights!: number;
+    totalAmount!: number;
+    isVisaRequired!: boolean;
+    visaComments!: string | undefined;
+    isHotelRequired!: boolean;
+    hotelComments!: string | undefined;
+    anyOtherExpense!: boolean;
+    otherComments!: string | undefined;
+    comments!: string | undefined;
+    costs!: MyTravelCostDto[] | undefined;
+
+    constructor(data?: IMyTravelLegDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.departureId = _data["departureId"];
+            this.departureNameEn = _data["departureNameEn"];
+            this.departureNameAr = _data["departureNameAr"];
+            this.arrivalId = _data["arrivalId"];
+            this.arrivalNameEn = _data["arrivalNameEn"];
+            this.arrivalNameAr = _data["arrivalNameAr"];
+            this.departureDate = _data["departureDate"] ? DateTime.fromISO(_data["departureDate"].toString()) : undefined as any;
+            this.departureTime = _data["departureTime"] ? DateTime.fromISO(_data["departureTime"].toString()) : undefined as any;
+            this.arrivalDate = _data["arrivalDate"] ? DateTime.fromISO(_data["arrivalDate"].toString()) : undefined as any;
+            this.arrivalTime = _data["arrivalTime"] ? DateTime.fromISO(_data["arrivalTime"].toString()) : undefined as any;
+            this.hotelId = _data["hotelId"];
+            this.travelAirlineId = _data["travelAirlineId"];
+            this.nightStay = _data["nightStay"];
+            this.totalNights = _data["totalNights"];
+            this.totalAmount = _data["totalAmount"];
+            this.isVisaRequired = _data["isVisaRequired"];
+            this.visaComments = _data["visaComments"];
+            this.isHotelRequired = _data["isHotelRequired"];
+            this.hotelComments = _data["hotelComments"];
+            this.anyOtherExpense = _data["anyOtherExpense"];
+            this.otherComments = _data["otherComments"];
+            this.comments = _data["comments"];
+            if (Array.isArray(_data["costs"])) {
+                this.costs = [] as any;
+                for (let item of _data["costs"])
+                    this.costs!.push(MyTravelCostDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MyTravelLegDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyTravelLegDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["departureId"] = this.departureId;
+        data["departureNameEn"] = this.departureNameEn;
+        data["departureNameAr"] = this.departureNameAr;
+        data["arrivalId"] = this.arrivalId;
+        data["arrivalNameEn"] = this.arrivalNameEn;
+        data["arrivalNameAr"] = this.arrivalNameAr;
+        data["departureDate"] = this.departureDate ? this.departureDate.toString() : undefined as any;
+        data["departureTime"] = this.departureTime ? this.departureTime.toString() : undefined as any;
+        data["arrivalDate"] = this.arrivalDate ? this.arrivalDate.toString() : undefined as any;
+        data["arrivalTime"] = this.arrivalTime ? this.arrivalTime.toString() : undefined as any;
+        data["hotelId"] = this.hotelId;
+        data["travelAirlineId"] = this.travelAirlineId;
+        data["nightStay"] = this.nightStay;
+        data["totalNights"] = this.totalNights;
+        data["totalAmount"] = this.totalAmount;
+        data["isVisaRequired"] = this.isVisaRequired;
+        data["visaComments"] = this.visaComments;
+        data["isHotelRequired"] = this.isHotelRequired;
+        data["hotelComments"] = this.hotelComments;
+        data["anyOtherExpense"] = this.anyOtherExpense;
+        data["otherComments"] = this.otherComments;
+        data["comments"] = this.comments;
+        if (Array.isArray(this.costs)) {
+            data["costs"] = [];
+            for (let item of this.costs)
+                data["costs"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IMyTravelLegDto {
+    id: number;
+    departureId: number;
+    departureNameEn: string | undefined;
+    departureNameAr: string | undefined;
+    arrivalId: number;
+    arrivalNameEn: string | undefined;
+    arrivalNameAr: string | undefined;
+    departureDate: DateTime;
+    departureTime: DateTime;
+    arrivalDate: DateTime;
+    arrivalTime: DateTime;
+    hotelId: number | undefined;
+    travelAirlineId: number | undefined;
+    nightStay: boolean;
+    totalNights: number;
+    totalAmount: number;
+    isVisaRequired: boolean;
+    visaComments: string | undefined;
+    isHotelRequired: boolean;
+    hotelComments: string | undefined;
+    anyOtherExpense: boolean;
+    otherComments: string | undefined;
+    comments: string | undefined;
+    costs: MyTravelCostDto[] | undefined;
 }
 
 export class NameValue implements INameValue {
@@ -285783,6 +286620,54 @@ export class PagedResultDtoOfMyTravelClaimDto implements IPagedResultDtoOfMyTrav
 
 export interface IPagedResultDtoOfMyTravelClaimDto {
     items: MyTravelClaimDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMyTravelDto implements IPagedResultDtoOfMyTravelDto {
+    items!: MyTravelDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMyTravelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MyTravelDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMyTravelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMyTravelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMyTravelDto {
+    items: MyTravelDto[] | undefined;
     totalCount: number;
 }
 
@@ -307531,6 +308416,233 @@ export interface IRequestTravelClaimInput {
     comments: string | undefined;
 }
 
+export class RequestTravelCostInput implements IRequestTravelCostInput {
+    expenseTypeId!: number;
+    currencyId!: number | undefined;
+    amount!: number;
+    comments!: string | undefined;
+
+    constructor(data?: IRequestTravelCostInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.expenseTypeId = _data["expenseTypeId"];
+            this.currencyId = _data["currencyId"];
+            this.amount = _data["amount"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): RequestTravelCostInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestTravelCostInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["expenseTypeId"] = this.expenseTypeId;
+        data["currencyId"] = this.currencyId;
+        data["amount"] = this.amount;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface IRequestTravelCostInput {
+    expenseTypeId: number;
+    currencyId: number | undefined;
+    amount: number;
+    comments: string | undefined;
+}
+
+export class RequestTravelInput implements IRequestTravelInput {
+    travelTypeId!: number;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    travelPurpose!: string | undefined;
+    comments!: string | undefined;
+    legs!: RequestTravelLegInput[];
+
+    constructor(data?: IRequestTravelInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.legs = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.travelTypeId = _data["travelTypeId"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.travelPurpose = _data["travelPurpose"];
+            this.comments = _data["comments"];
+            if (Array.isArray(_data["legs"])) {
+                this.legs = [] as any;
+                for (let item of _data["legs"])
+                    this.legs!.push(RequestTravelLegInput.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RequestTravelInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestTravelInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["travelTypeId"] = this.travelTypeId;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["travelPurpose"] = this.travelPurpose;
+        data["comments"] = this.comments;
+        if (Array.isArray(this.legs)) {
+            data["legs"] = [];
+            for (let item of this.legs)
+                data["legs"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRequestTravelInput {
+    travelTypeId: number;
+    startDate: DateTime;
+    endDate: DateTime;
+    travelPurpose: string | undefined;
+    comments: string | undefined;
+    legs: RequestTravelLegInput[];
+}
+
+export class RequestTravelLegInput implements IRequestTravelLegInput {
+    departureId!: number;
+    arrivalId!: number;
+    departureDate!: DateTime;
+    departureTime!: DateTime;
+    arrivalDate!: DateTime;
+    arrivalTime!: DateTime;
+    hotelId!: number | undefined;
+    travelAirlineId!: number | undefined;
+    nightStay!: boolean;
+    totalNights!: number;
+    isVisaRequired!: boolean;
+    visaComments!: string | undefined;
+    isHotelRequired!: boolean;
+    hotelComments!: string | undefined;
+    anyOtherExpense!: boolean;
+    otherComments!: string | undefined;
+    comments!: string | undefined;
+    costs!: RequestTravelCostInput[] | undefined;
+
+    constructor(data?: IRequestTravelLegInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.departureId = _data["departureId"];
+            this.arrivalId = _data["arrivalId"];
+            this.departureDate = _data["departureDate"] ? DateTime.fromISO(_data["departureDate"].toString()) : undefined as any;
+            this.departureTime = _data["departureTime"] ? DateTime.fromISO(_data["departureTime"].toString()) : undefined as any;
+            this.arrivalDate = _data["arrivalDate"] ? DateTime.fromISO(_data["arrivalDate"].toString()) : undefined as any;
+            this.arrivalTime = _data["arrivalTime"] ? DateTime.fromISO(_data["arrivalTime"].toString()) : undefined as any;
+            this.hotelId = _data["hotelId"];
+            this.travelAirlineId = _data["travelAirlineId"];
+            this.nightStay = _data["nightStay"];
+            this.totalNights = _data["totalNights"];
+            this.isVisaRequired = _data["isVisaRequired"];
+            this.visaComments = _data["visaComments"];
+            this.isHotelRequired = _data["isHotelRequired"];
+            this.hotelComments = _data["hotelComments"];
+            this.anyOtherExpense = _data["anyOtherExpense"];
+            this.otherComments = _data["otherComments"];
+            this.comments = _data["comments"];
+            if (Array.isArray(_data["costs"])) {
+                this.costs = [] as any;
+                for (let item of _data["costs"])
+                    this.costs!.push(RequestTravelCostInput.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RequestTravelLegInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestTravelLegInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["departureId"] = this.departureId;
+        data["arrivalId"] = this.arrivalId;
+        data["departureDate"] = this.departureDate ? this.departureDate.toString() : undefined as any;
+        data["departureTime"] = this.departureTime ? this.departureTime.toString() : undefined as any;
+        data["arrivalDate"] = this.arrivalDate ? this.arrivalDate.toString() : undefined as any;
+        data["arrivalTime"] = this.arrivalTime ? this.arrivalTime.toString() : undefined as any;
+        data["hotelId"] = this.hotelId;
+        data["travelAirlineId"] = this.travelAirlineId;
+        data["nightStay"] = this.nightStay;
+        data["totalNights"] = this.totalNights;
+        data["isVisaRequired"] = this.isVisaRequired;
+        data["visaComments"] = this.visaComments;
+        data["isHotelRequired"] = this.isHotelRequired;
+        data["hotelComments"] = this.hotelComments;
+        data["anyOtherExpense"] = this.anyOtherExpense;
+        data["otherComments"] = this.otherComments;
+        data["comments"] = this.comments;
+        if (Array.isArray(this.costs)) {
+            data["costs"] = [];
+            for (let item of this.costs)
+                data["costs"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRequestTravelLegInput {
+    departureId: number;
+    arrivalId: number;
+    departureDate: DateTime;
+    departureTime: DateTime;
+    arrivalDate: DateTime;
+    arrivalTime: DateTime;
+    hotelId: number | undefined;
+    travelAirlineId: number | undefined;
+    nightStay: boolean;
+    totalNights: number;
+    isVisaRequired: boolean;
+    visaComments: string | undefined;
+    isHotelRequired: boolean;
+    hotelComments: string | undefined;
+    anyOtherExpense: boolean;
+    otherComments: string | undefined;
+    comments: string | undefined;
+    costs: RequestTravelCostInput[] | undefined;
+}
+
 export enum ResetFrequency {
     Daily = 1,
     Weekly = 2,
@@ -319962,6 +321074,7 @@ export class TravelDetailCostDto implements ITravelDetailCostDto {
     travelDetailId!: number;
     expenseTypeId!: number;
     expenseTypeNameEn!: string | undefined;
+    currencyId!: number | undefined;
     amount!: number;
     comments!: string | undefined;
 
@@ -319980,6 +321093,7 @@ export class TravelDetailCostDto implements ITravelDetailCostDto {
             this.travelDetailId = _data["travelDetailId"];
             this.expenseTypeId = _data["expenseTypeId"];
             this.expenseTypeNameEn = _data["expenseTypeNameEn"];
+            this.currencyId = _data["currencyId"];
             this.amount = _data["amount"];
             this.comments = _data["comments"];
         }
@@ -319998,6 +321112,7 @@ export class TravelDetailCostDto implements ITravelDetailCostDto {
         data["travelDetailId"] = this.travelDetailId;
         data["expenseTypeId"] = this.expenseTypeId;
         data["expenseTypeNameEn"] = this.expenseTypeNameEn;
+        data["currencyId"] = this.currencyId;
         data["amount"] = this.amount;
         data["comments"] = this.comments;
         return data;
@@ -320009,6 +321124,7 @@ export interface ITravelDetailCostDto {
     travelDetailId: number;
     expenseTypeId: number;
     expenseTypeNameEn: string | undefined;
+    currencyId: number | undefined;
     amount: number;
     comments: string | undefined;
 }
@@ -320031,6 +321147,12 @@ export class TravelDetailDto implements ITravelDetailDto {
     nightStay!: boolean;
     totalNights!: number;
     totalAmount!: number;
+    isVisaRequired!: boolean;
+    visaComments!: string | undefined;
+    isHotelRequired!: boolean;
+    hotelComments!: string | undefined;
+    anyOtherExpense!: boolean;
+    otherComments!: string | undefined;
     comments!: string | undefined;
 
     constructor(data?: ITravelDetailDto) {
@@ -320061,6 +321183,12 @@ export class TravelDetailDto implements ITravelDetailDto {
             this.nightStay = _data["nightStay"];
             this.totalNights = _data["totalNights"];
             this.totalAmount = _data["totalAmount"];
+            this.isVisaRequired = _data["isVisaRequired"];
+            this.visaComments = _data["visaComments"];
+            this.isHotelRequired = _data["isHotelRequired"];
+            this.hotelComments = _data["hotelComments"];
+            this.anyOtherExpense = _data["anyOtherExpense"];
+            this.otherComments = _data["otherComments"];
             this.comments = _data["comments"];
         }
     }
@@ -320091,6 +321219,12 @@ export class TravelDetailDto implements ITravelDetailDto {
         data["nightStay"] = this.nightStay;
         data["totalNights"] = this.totalNights;
         data["totalAmount"] = this.totalAmount;
+        data["isVisaRequired"] = this.isVisaRequired;
+        data["visaComments"] = this.visaComments;
+        data["isHotelRequired"] = this.isHotelRequired;
+        data["hotelComments"] = this.hotelComments;
+        data["anyOtherExpense"] = this.anyOtherExpense;
+        data["otherComments"] = this.otherComments;
         data["comments"] = this.comments;
         return data;
     }
@@ -320114,6 +321248,12 @@ export interface ITravelDetailDto {
     nightStay: boolean;
     totalNights: number;
     totalAmount: number;
+    isVisaRequired: boolean;
+    visaComments: string | undefined;
+    isHotelRequired: boolean;
+    hotelComments: string | undefined;
+    anyOtherExpense: boolean;
+    otherComments: string | undefined;
     comments: string | undefined;
 }
 
@@ -320128,7 +321268,10 @@ export class TravelDto implements ITravelDto {
     startDate!: DateTime;
     endDate!: DateTime;
     totalTravelCost!: number;
+    travelPurpose!: string | undefined;
     comments!: string | undefined;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
 
     constructor(data?: ITravelDto) {
         if (data) {
@@ -320151,7 +321294,10 @@ export class TravelDto implements ITravelDto {
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
             this.totalTravelCost = _data["totalTravelCost"];
+            this.travelPurpose = _data["travelPurpose"];
             this.comments = _data["comments"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
         }
     }
 
@@ -320174,7 +321320,10 @@ export class TravelDto implements ITravelDto {
         data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
         data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
         data["totalTravelCost"] = this.totalTravelCost;
+        data["travelPurpose"] = this.travelPurpose;
         data["comments"] = this.comments;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
         return data;
     }
 }
@@ -320190,7 +321339,10 @@ export interface ITravelDto {
     startDate: DateTime;
     endDate: DateTime;
     totalTravelCost: number;
+    travelPurpose: string | undefined;
     comments: string | undefined;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
 }
 
 export class TravelFeedbackDto implements ITravelFeedbackDto {
@@ -320393,6 +321545,54 @@ export interface ITravelTypeDto {
     nameAr: string | undefined;
     wageTypeId: number | undefined;
     wageTypeNameEn: string | undefined;
+}
+
+export class TravelTypeLookupDto implements ITravelTypeLookupDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: ITravelTypeLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): TravelTypeLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TravelTypeLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface ITravelTypeLookupDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
 }
 
 export class TwitterExternalLoginProviderSettings implements ITwitterExternalLoginProviderSettings {

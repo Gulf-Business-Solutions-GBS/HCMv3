@@ -1,0 +1,91 @@
+@if (!isLoading()) {
+    <!-- Identity. Shown only when the signed-in user has an employee record: an administrator has none,
+         and an identity card with every field blank is worse than no card at all. -->
+    @if (profile(); as p) {
+        <div class="ms-identity">
+            <div class="ms-avatar" aria-hidden="true">{{ p.fullName ? p.fullName.charAt(0) : '?' }}</div>
+            <div class="ms-identity-text">
+                <div class="ms-identity-code">{{ p.code }}</div>
+                <h2 class="ms-identity-name">{{ p.fullName }}</h2>
+                @if (p.jobTitle) {
+                    <div class="ms-identity-job">{{ p.jobTitle }}</div>
+                }
+            </div>
+
+            <div class="ms-org">
+                <div class="ms-org-item">
+                    <span class="ms-org-label">{{ 'Department' | localize }}</span>
+                    <span class="ms-org-value">{{ orgValue(p.department) }}</span>
+                </div>
+                <div class="ms-org-item">
+                    <span class="ms-org-label">{{ 'WorkLocation' | localize }}</span>
+                    <span class="ms-org-value">{{ orgValue(p.workLocation) }}</span>
+                </div>
+                <div class="ms-org-item">
+                    <span class="ms-org-label">{{ 'CostCenter' | localize }}</span>
+                    <span class="ms-org-value">{{ orgValue(p.costCenter) }}</span>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (visibleQuickActions().length) {
+        <div class="card card-custom ms-card">
+            <div class="card-body">
+                <div class="ms-section-head">{{ 'QuickActions' | localize }}</div>
+                <div class="ms-actions">
+                    @for (action of visibleQuickActions(); track action.route) {
+                        <a class="ms-action" [routerLink]="[action.route]">
+                            <i [class]="action.icon" aria-hidden="true"></i>
+                            <span>{{ action.labelKey | localize }}</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        @if (leaveBalances().length) {
+            <div class="col-md-8">
+                <div class="card card-custom ms-card">
+                    <div class="card-body">
+                        <div class="ms-section-head">{{ 'LeaveBalance' | localize }}</div>
+                        <div class="ms-balances">
+                            @for (balance of leaveBalances(); track balance.leaveType) {
+                                <div class="ms-balance">
+                                    <div class="ms-balance-type">{{ balance.leaveType }}</div>
+                                    <div class="ms-balance-value">
+                                        {{ balance.balance }}
+                                        <span class="ms-balance-unit">{{ 'Days' | localize }}</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <!-- Bookable, not remaining: days already awaiting approval are not yours to
+                             apply for a second time. -->
+                        <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (alerts(); as a) {
+            <div class="col-md-4">
+                <div class="card card-custom ms-card">
+                    <div class="card-body">
+                        <div class="ms-section-head">{{ 'AlertsSummary' | localize }}</div>
+                        <div class="ms-alert">
+                            <span>{{ 'BirthdaysThisMonth' | localize }}</span>
+                            <span class="ms-alert-count">{{ a.birthdaysThisMonth }}</span>
+                        </div>
+                        <div class="ms-alert">
+                            <span>{{ 'WorkAnniversariesThisMonth' | localize }}</span>
+                            <span class="ms-alert-count">{{ a.workAnniversariesThisMonth }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,6 +1,10 @@
-<!-- Quick links sit ABOVE the customizable area, not inside it as a widget. They are navigation, not a
-     metric: something a user could accidentally remove and then not know how to get back is the wrong
-     home for the control that gets them to their work. -->
+<!-- The personal tiles first: who you are, what you can do, what leave you have left. Modelled on
+     the legacy ESS dashboard, and on the MAIN dashboard rather than a separate ESS home, so there is
+     one landing page instead of two competing ones. -->
+<my-summary />
+
+<!-- Shortcuts are what YOU chose; Quick Actions above are the fixed tasks everyone does. Both earn a
+     place, so the personal one sits after the common one. -->
 <quick-links />
 
 <customizable-dashboard [dashboardName]="dashboardName" />
