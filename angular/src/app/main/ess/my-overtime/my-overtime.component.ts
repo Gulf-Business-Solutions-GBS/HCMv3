@@ -6,14 +6,13 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    GetAllOvertimeTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyOvertimeRequestDto,
     MyOvertimeServiceProxy,
-    OvertimeTypeDto,
-    OvertimeTypesServiceProxy,
     RequestOvertimeInput,
     RequestStatus,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -31,18 +30,16 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyOvertimeComponent extends MyRequestComponentBase<MyOvertimeRequestDto> implements OnInit {
     private readonly _service = inject(MyOvertimeServiceProxy);
-    private readonly _typesService = inject(OvertimeTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly overtimeTypes = signal<OvertimeTypeDto[]>([]);
+    readonly overtimeTypes = signal<SimpleLookupDto[]>([]);
 
     readonly Status = RequestStatus;
 
     form = { overtimeTypeId: null as number | null, effectiveDate: '', overtimeHours: null as number | null, comments: '' };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllOvertimeTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.overtimeTypes.set(result.items));
+        this._lookups.getOvertimeTypes().subscribe((result) => this.overtimeTypes.set(result ?? []));
 
         this.reload();
     }

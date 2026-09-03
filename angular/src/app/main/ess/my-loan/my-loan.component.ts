@@ -6,13 +6,12 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    GetAllLoanTypesInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
-    LoanTypeDto,
-    LoanTypesServiceProxy,
     MyLoanRequestDto,
     MyLoanServiceProxy,
     RequestLoanInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -30,9 +29,9 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> implements OnInit {
     private readonly _service = inject(MyLoanServiceProxy);
-    private readonly _typesService = inject(LoanTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly loanTypes = signal<LoanTypeDto[]>([]);
+    readonly loanTypes = signal<SimpleLookupDto[]>([]);
 
     form = {
         loanTypeId: null as number | null,
@@ -45,9 +44,7 @@ export class MyLoanComponent extends MyRequestComponentBase<MyLoanRequestDto> im
     };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllLoanTypesInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.loanTypes.set(result.items));
+        this._lookups.getLoanTypes().subscribe((result) => this.loanTypes.set(result ?? []));
 
         this.reload();
     }

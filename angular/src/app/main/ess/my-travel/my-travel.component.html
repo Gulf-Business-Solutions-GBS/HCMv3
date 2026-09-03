@@ -22,8 +22,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ 'RequestTravel' | localize }}</h5>
 
-                        @if (lookupsUnavailable()) {
-                            <div class="alert alert-warning">{{ 'TravelLookupsUnavailable' | localize }}</div>
+                        @if (noDestinationsConfigured()) {
+                            <div class="alert alert-warning">{{ 'NoTravelDestinationsConfigured' | localize }}</div>
                         }
 
                         <div class="form-row">

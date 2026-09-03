@@ -5,14 +5,13 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    AssetDto,
-    AssetsServiceProxy,
     EntityDto,
-    GetAllAssetsInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyAssetRequestDto,
     MyAssetServiceProxy,
     RequestAssetInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -31,16 +30,14 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyAssetComponent extends MyRequestComponentBase<MyAssetRequestDto> implements OnInit {
     private readonly _service = inject(MyAssetServiceProxy);
-    private readonly _assetsService = inject(AssetsServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly assets = signal<AssetDto[]>([]);
+    readonly assets = signal<SimpleLookupDto[]>([]);
 
     form = { assetId: null as number | null, startDate: '', endDate: '', comments: '' };
 
     ngOnInit(): void {
-        this._assetsService
-            .getAll(new GetAllAssetsInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.assets.set(result.items));
+        this._lookups.getAssets().subscribe((result) => this.assets.set(result ?? []));
 
         this.reload();
     }

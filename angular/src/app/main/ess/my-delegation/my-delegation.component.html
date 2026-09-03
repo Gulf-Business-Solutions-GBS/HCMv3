@@ -22,8 +22,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ 'RequestDelegation' | localize }}</h5>
 
-                        @if (colleagueLookupUnavailable()) {
-                            <div class="alert alert-warning">{{ 'DelegateLookupUnavailable' | localize }}</div>
+                        @if (colleagues().length === 0) {
+                            <div class="alert alert-warning">{{ 'NoColleaguesAvailableToDelegateTo' | localize }}</div>
                         }
 
                         <div class="form-row">

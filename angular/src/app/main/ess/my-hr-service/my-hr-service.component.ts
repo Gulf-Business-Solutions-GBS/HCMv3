@@ -6,9 +6,8 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    GetAllSimpleLookupsInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
-    HRServiceTypesServiceProxy,
     MyHRServiceRequestDto,
     MyHRServiceServiceProxy,
     RequestHRServiceInput,
@@ -35,7 +34,7 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequestDto> implements OnInit {
     private readonly _service = inject(MyHRServiceServiceProxy);
-    private readonly _typesService = inject(HRServiceTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly serviceTypes = signal<SimpleLookupDto[]>([]);
 
@@ -47,9 +46,7 @@ export class MyHRServiceComponent extends MyRequestComponentBase<MyHRServiceRequ
     };
 
     ngOnInit(): void {
-        this._typesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.serviceTypes.set(result.items ?? []));
+        this._lookups.getHRServiceTypes().subscribe((result) => this.serviceTypes.set(result ?? []));
 
         this.reload();
     }

@@ -6,17 +6,16 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
     EntityDto,
-    GetAllSimpleLookupsInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyPunchRequestDto,
     MyPunchServiceProxy,
     RequestMissingPunchInput,
     SimpleLookupDto,
-    TransTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
-import { Observable, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { WorkflowHistoryModalComponent } from '../../../shared/common/workflow-activity/workflow-history-modal.component';
 import { MyRequestComponentBase } from '../my-request-component-base';
@@ -36,7 +35,7 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyPunchComponent extends MyRequestComponentBase<MyPunchRequestDto> implements OnInit {
     private readonly _service = inject(MyPunchServiceProxy);
-    private readonly _transTypesService = inject(TransTypesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly punchTypes = signal<SimpleLookupDto[]>([]);
 
@@ -47,12 +46,13 @@ export class MyPunchComponent extends MyRequestComponentBase<MyPunchRequestDto> 
     readonly today = DateTime.local().toISODate();
 
     ngOnInit(): void {
-        this._transTypesService
-            .getAll(new GetAllSimpleLookupsInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            // The punch catalog is administered behind its own permission. An employee who cannot read it
-            // gets an empty dropdown and a clear message rather than a page that fails to render at all.
-            .pipe(catchError(() => of(null)))
-            .subscribe((result) => this.punchTypes.set(result?.items ?? []));
+        // An empty list now means one thing only -- HR has configured no punch types -- so the form's
+        // "none available" notice still earns its place. It used to double as the symptom of a permission
+        // failure, which is no longer possible: this lookup is readable by any self-service user.
+        this._lookups.getPunchTypes().subscribe({
+            next: (result) => this.punchTypes.set(result ?? []),
+            error: () => this.punchTypes.set([]),
+        });
 
         this.reload();
     }

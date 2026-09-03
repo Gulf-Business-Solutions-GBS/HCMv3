@@ -1,18 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    CurrenciesServiceProxy,
-    CurrencyDto,
     EntityDto,
-    ExpenseTypesServiceProxy,
-    GetAllCurrenciesInput,
-    GetAllSimpleLookupsInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
-    HotelsServiceProxy,
     MyTravelDto,
     MyTravelLegDto,
     MyTravelServiceProxy,
@@ -20,8 +15,6 @@ import {
     RequestTravelInput,
     RequestTravelLegInput,
     SimpleLookupDto,
-    TravelAirlinesServiceProxy,
-    TravelDestinationsServiceProxy,
     TravelTypeLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
@@ -82,25 +75,21 @@ interface TravelLegForm {
 })
 export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> implements OnInit {
     private readonly _service = inject(MyTravelServiceProxy);
-    private readonly _destinationsService = inject(TravelDestinationsServiceProxy);
-    private readonly _expenseTypesService = inject(ExpenseTypesServiceProxy);
-    private readonly _currenciesService = inject(CurrenciesServiceProxy);
-    private readonly _hotelsService = inject(HotelsServiceProxy);
-    private readonly _airlinesService = inject(TravelAirlinesServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
     readonly travelTypes = signal<TravelTypeLookupDto[]>([]);
     readonly destinations = signal<SimpleLookupDto[]>([]);
     readonly expenseTypes = signal<SimpleLookupDto[]>([]);
-    readonly currencies = signal<CurrencyDto[]>([]);
+    readonly currencies = signal<SimpleLookupDto[]>([]);
     readonly hotels = signal<SimpleLookupDto[]>([]);
     readonly airlines = signal<SimpleLookupDto[]>([]);
 
     /**
-     * True when the destination or expense-type lookups could not be read. Both carry travel-desk
-     * permissions rather than self-service ones, so a plain ESS account gets nothing back and cannot fill a
-     * leg. The form says so rather than presenting empty dropdowns.
+     * True when there are no destinations configured, which is the one remaining way a leg cannot be
+     * filled in. It used to mean "these lookups are behind a travel-desk permission the employee does not
+     * hold"; that is no longer possible, so an empty list now means only that HR has configured none.
      */
-    readonly lookupsUnavailable = signal(false);
+    readonly noDestinationsConfigured = computed(() => this.destinations().length === 0);
 
     /** The row whose legs are expanded in the list, if any. */
     readonly expandedRowId = signal<number | null>(null);
@@ -115,36 +104,33 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
             error: () => this.travelTypes.set([]),
         });
 
-        const lookupInput = () => new GetAllSimpleLookupsInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined });
-
-        this._destinationsService.getAll(lookupInput()).subscribe({
-            next: (result) => this.destinations.set(result.items ?? []),
-            error: () => this.lookupsUnavailable.set(true),
+        // All five come from the self-service lookup service, so none of them can fail for want of a
+        // travel-desk permission any more. Hotel, airline and currency remain optional on a leg; a
+        // destination is not, which is why only that one drives a notice on the form.
+        this._lookups.getTravelDestinations().subscribe({
+            next: (result) => this.destinations.set(result ?? []),
+            error: () => this.destinations.set([]),
         });
 
-        this._expenseTypesService.getAll(lookupInput()).subscribe({
-            next: (result) => this.expenseTypes.set(result.items ?? []),
-            error: () => this.lookupsUnavailable.set(true),
+        this._lookups.getExpenseTypes().subscribe({
+            next: (result) => this.expenseTypes.set(result ?? []),
+            error: () => this.expenseTypes.set([]),
         });
 
-        // Hotel, airline and currency are all optional on a leg, so failing to read them costs the employee
-        // a convenience rather than the ability to raise the request.
-        this._hotelsService.getAll(lookupInput()).subscribe({
-            next: (result) => this.hotels.set(result.items ?? []),
+        this._lookups.getHotels().subscribe({
+            next: (result) => this.hotels.set(result ?? []),
             error: () => this.hotels.set([]),
         });
 
-        this._airlinesService.getAll(lookupInput()).subscribe({
-            next: (result) => this.airlines.set(result.items ?? []),
+        this._lookups.getTravelAirlines().subscribe({
+            next: (result) => this.airlines.set(result ?? []),
             error: () => this.airlines.set([]),
         });
 
-        this._currenciesService
-            .getAll(new GetAllCurrenciesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe({
-                next: (result) => this.currencies.set(result.items ?? []),
-                error: () => this.currencies.set([]),
-            });
+        this._lookups.getCurrencies().subscribe({
+            next: (result) => this.currencies.set(result ?? []),
+            error: () => this.currencies.set([]),
+        });
 
         this.reload();
     }
@@ -290,7 +276,7 @@ export class MyTravelComponent extends MyRequestComponentBase<MyTravelDto> imple
         return this.pick(type.nameEn, type.nameAr);
     }
 
-    currencyName(currency: CurrencyDto): string {
+    currencyName(currency: SimpleLookupDto): string {
         return currency.code || this.pick(currency.nameEn, currency.nameAr);
     }
 

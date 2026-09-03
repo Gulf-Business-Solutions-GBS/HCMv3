@@ -5,14 +5,13 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import {
-    BankDto,
-    BanksServiceProxy,
     EntityDto,
-    GetAllBanksInput,
+    EssLookupServiceProxy,
     GetMyRequestsInput,
     MyBankRequestDto,
     MyBankServiceProxy,
     RequestBankChangeInput,
+    SimpleLookupDto,
 } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -36,16 +35,14 @@ import { MyRequestComponentBase } from '../my-request-component-base';
 })
 export class MyBankComponent extends MyRequestComponentBase<MyBankRequestDto> implements OnInit {
     private readonly _service = inject(MyBankServiceProxy);
-    private readonly _banksService = inject(BanksServiceProxy);
+    private readonly _lookups = inject(EssLookupServiceProxy);
 
-    readonly banks = signal<BankDto[]>([]);
+    readonly banks = signal<SimpleLookupDto[]>([]);
 
     form = { bankId: null as number | null, accountNum: '', iban: '', bankBranch: '', startDate: '' };
 
     ngOnInit(): void {
-        this._banksService
-            .getAll(new GetAllBanksInput({ maxResultCount: 200, skipCount: 0, sorting: undefined, filter: undefined }))
-            .subscribe((result) => this.banks.set(result.items));
+        this._lookups.getBanks().subscribe((result) => this.banks.set(result ?? []));
 
         this.reload();
     }
