@@ -24,9 +24,14 @@ namespace HCMv3.Navigation;
 /// user's pinned screens -- the failure would surface weeks later as "my favourites disappeared", with
 /// nothing to connect it to the rename.
 /// </summary>
-public class Screen : FullAuditedEntity, IMustHaveTenant
+public class Screen : FullAuditedEntity, IMayHaveTenant
 {
-    public virtual int TenantId { get; set; }
+    /// <summary>
+    /// Nullable, NOT IMustHaveTenant. The host administrator has no tenant and still navigates, and ABP
+    /// refuses TenantId 0 on IMustHaveTenant -- which made every page change return HTTP 500 for them.
+    /// Null here means a host-level row, which is exactly what a host user needs.
+    /// </summary>
+    public virtual int? TenantId { get; set; }
 
     /// <summary>
     /// Immutable identity, e.g. <c>app.admin.employees</c>. Seeded from the route because that was the

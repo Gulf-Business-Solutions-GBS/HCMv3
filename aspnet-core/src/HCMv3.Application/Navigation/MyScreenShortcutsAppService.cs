@@ -82,7 +82,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
 
             await _repository.InsertAsync(new UserScreenUsage
             {
-                TenantId = AbpSession.TenantId ?? 0,
+                TenantId = AbpSession.TenantId,
                 UserId = userId,
                 ScreenKey = input.ScreenKey.Trim(),
                 IsFavorite = true,
@@ -105,7 +105,7 @@ public class MyScreenShortcutsAppService : HCMv3AppServiceBase, IMyScreenShortcu
         {
             await _repository.InsertAsync(new UserScreenUsage
             {
-                TenantId = AbpSession.TenantId ?? 0,
+                TenantId = AbpSession.TenantId,
                 UserId = userId,
                 ScreenKey = input.ScreenKey.Trim(),
                 IsFavorite = false,

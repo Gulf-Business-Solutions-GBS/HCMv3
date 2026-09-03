@@ -160,7 +160,7 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
 
         await _sharedQuickLinkRepository.InsertAsync(new SharedQuickLink
         {
-            TenantId = AbpSession.TenantId ?? 0,
+            TenantId = AbpSession.TenantId,
             ScreenKey = input.ScreenKey,
             DisplayOrder = input.DisplayOrder,
         });
@@ -255,7 +255,7 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
             return;
         }
 
-        _screenSeeder.SeedForTenant(AbpSession.TenantId ?? 0);
+        _screenSeeder.SeedForTenant(AbpSession.TenantId);
 
         // Flush before reading them back. ABP saves at the END of the unit of work, so without this the
         // GetAll() immediately below queries the database and sees none of what was just inserted -- the

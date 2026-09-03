@@ -6,6 +6,7 @@
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "--project", "aspnet-core/src/HCMv3.Web.Host/HCMv3.Web.Host.csproj", "--urls", "https://localhost:44301"],
       "port": 44301,
+      "autoPort": false,
       "url": "https://localhost:44301"
     },
     {
@@ -13,6 +14,7 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
       "port": 4200,
+      "autoPort": false,
       "cwd": "angular"
     }
   ]

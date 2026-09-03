@@ -19,9 +19,14 @@ namespace HCMv3.Navigation;
 /// rename. The key never changes. A key with no matching Screen row is still possible -- a screen
 /// removed between visits -- so reading code MUST tolerate it rather than assume every row resolves.
 /// </summary>
-public class UserScreenUsage : CreationAuditedEntity, IMustHaveTenant
+public class UserScreenUsage : CreationAuditedEntity, IMayHaveTenant
 {
-    public virtual int TenantId { get; set; }
+    /// <summary>
+    /// Nullable, NOT IMustHaveTenant. The host administrator has no tenant and still navigates, and ABP
+    /// refuses TenantId 0 on IMustHaveTenant -- which made every page change return HTTP 500 for them.
+    /// Null here means a host-level row, which is exactly what a host user needs.
+    /// </summary>
+    public virtual int? TenantId { get; set; }
 
     /// <summary>Owner. Every query is filtered by this: one person's rail is nobody else's business.</summary>
     public virtual long UserId { get; set; }

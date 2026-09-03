@@ -18,9 +18,14 @@ namespace HCMv3.Navigation;
 /// SHARED LINKS ONLY, NOT SHARED FAVOURITES. An administrator may offer a link; they may not reach into
 /// someone's personal favourites and pin something there.
 /// </summary>
-public class SharedQuickLink : FullAuditedEntity, IMustHaveTenant
+public class SharedQuickLink : FullAuditedEntity, IMayHaveTenant
 {
-    public virtual int TenantId { get; set; }
+    /// <summary>
+    /// Nullable, NOT IMustHaveTenant. The host administrator has no tenant and still navigates, and ABP
+    /// refuses TenantId 0 on IMustHaveTenant -- which made every page change return HTTP 500 for them.
+    /// Null here means a host-level row, which is exactly what a host user needs.
+    /// </summary>
+    public virtual int? TenantId { get; set; }
 
     /// <summary>
     /// Points at <see cref="Screen.ScreenKey"/>, never at the code, so re-mapping a code leaves the

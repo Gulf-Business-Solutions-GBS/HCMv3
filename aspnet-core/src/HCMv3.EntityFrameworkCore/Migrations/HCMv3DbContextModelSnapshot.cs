@@ -11621,7 +11621,7 @@ namespace HCMv3.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("TenantId")
+                    b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -11674,7 +11674,7 @@ namespace HCMv3.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("TenantId")
+                    b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -11709,7 +11709,7 @@ namespace HCMv3.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("TenantId")
+                    b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<long>("UserId")
@@ -11721,7 +11721,8 @@ namespace HCMv3.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TenantId", "UserId", "ScreenKey")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[TenantId] IS NOT NULL");
 
                     b.ToTable("UserScreenUsages");
                 });

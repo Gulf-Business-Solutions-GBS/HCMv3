@@ -20,7 +20,7 @@ namespace HCMv3.Navigation;
 /// </summary>
 public interface IScreenSeeder : IDomainService
 {
-    void SeedForTenant(int tenantId);
+    void SeedForTenant(int? tenantId);
 }
 
 public class ScreenSeeder : IScreenSeeder, ITransientDependency
@@ -34,8 +34,10 @@ public class ScreenSeeder : IScreenSeeder, ITransientDependency
         _unitOfWorkManager = unitOfWorkManager;
     }
 
-    public void SeedForTenant(int tenantId)
+    public void SeedForTenant(int? tenantId)
     {
+        // Null tenant means the HOST catalogue. SetTenantId accepts null and scopes the unit of work to
+        // host-level rows, which is what a host administrator needs to see.
         using (_unitOfWorkManager.Current.SetTenantId(tenantId))
         {
             var existing = _screenRepository.GetAll().ToList();
