@@ -69,25 +69,41 @@ export class MenuSearchBarComponent extends AppComponentBase {
     }
 
     selectMenuItem(event: any): void {
-        const route = event?.value?.route;
-        const parameters = event?.value?.parameters;
+        const item = event?.value;
+        const route = item?.route;
+        const parameters = item?.parameters;
 
         if (!route) {
             return;
         }
 
-        if (event.external) {
+        // item.external, NOT event.external. The event is PrimeNG's { originalEvent, value } wrapper and
+        // has no such property, so this branch never fired and an external link was handed to the
+        // router as an internal path -- where it matched nothing and silently did nothing.
+        if (item.external) {
             window.open(route, '_blank');
+            this.selected = '';
             return;
         }
 
         this.router
             .navigate([route], { queryParams: parameters })
-            .then(() => {
+            .then((navigated) => {
                 this.selected = '';
+
+                if (!navigated) {
+                    // navigate() resolves FALSE when a guard blocks -- it does not reject. AppRouteGuard
+                    // redirects a denied user to the "best route", which is usually the dashboard, so
+                    // somebody already on the dashboard sees the overlay close and nothing else happen.
+                    // Saying so turns an invisible refusal into an explanation.
+                    this.message.warn(this.l('ScreenNotPermittedOrUnavailable'));
+                }
             })
             .catch((error) => {
+                // A genuine routing failure -- an unmatched path, or a chunk that would not load.
                 console.error('Navigation error:', error);
+                this.selected = '';
+                this.message.warn(this.l('ScreenNotPermittedOrUnavailable'));
             });
     }
 
