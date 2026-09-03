@@ -207,7 +207,19 @@ public class WorkflowTransactionTypeBuilder
         // What approval buys is money: it is the only thing that creates the EmployeePayment rows, and it
         // creates them exactly once. Legacy created them from OnSaving whenever an approved request happened
         // to be saved, so re-saving one paid everybody in it again.
-        ("EmployeePaymentBatch", "Payment Batch", "دفعة رواتب", null, null, null, "flaticon-coins", 260)
+        ("EmployeePaymentBatch", "Payment Batch", "دفعة رواتب", null, null, null, "flaticon-coins", 260),
+
+        // Mobile device registration (legacy MobileAppDeviceRequest): an employee enrolling their phone so
+        // the mobile app will accept attendance punches from it. Self-service by nature -- legacy's only
+        // real creation site was the mobile app posting to WorkflowServiceApiController -- so it gets a real
+        // EssRoute and permission. The Code is the transaction entity's name as always: there is no
+        // MobileAppDeviceRequest table here, the registration row IS the request. No sub-type; legacy routed
+        // every device registration the same way and there is nothing on the row to discriminate on. Note
+        // what approval buys, and in legacy it bought nothing at all: legacy's approval side effect was
+        // commented out and copy-pasted from the asset request, so an approved device registration had
+        // nowhere to land and nothing ever read DeviceId back. Here approval is what makes the row visible
+        // to IMobileDeviceRegistrationService, which is what makes the handset usable.
+        ("EmployeeMobileDevice", "Mobile Device Registration", "تسجيل جهاز محمول", null, "/app/main/ess/mobile-device", AppPermissions.Ess_MyMobileDevices, "flaticon2-phone", 270)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

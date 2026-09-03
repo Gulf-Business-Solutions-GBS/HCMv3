@@ -5791,5 +5791,11 @@
     <text name="Live">Live</text>
     <text name="Scheduled">Scheduled</text>
     <text name="Everyone">Everyone</text>
+
+    <text name="EssMyMobileDevices">My Mobile Devices</text>
+    <text name="MobileDeviceIdIsRequired">Enter the device ID.</text>
+    <text name="MobileDeviceTypeIsRequired">Enter what the device is, for example iPhone 14.</text>
+    <text name="ThisDeviceIsAlreadyRegisteredForYou">You have already registered this device.</text>
+    <text name="ThisDeviceIsRegisteredToAnotherEmployee">This device is already registered to another employee.</text>
   </texts>
 </localizationDictionary>

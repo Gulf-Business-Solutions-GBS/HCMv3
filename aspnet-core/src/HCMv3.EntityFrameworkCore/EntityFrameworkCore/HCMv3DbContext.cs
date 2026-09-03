@@ -321,6 +321,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<TimeEvent> TimeEvents { get; set; }
 
+    /// <summary>
+    /// Handsets employees have registered so the mobile app will accept attendance punches from them. One
+    /// row is both the registration and the request -- there is no MobileAppDeviceRequest table.
+    /// </summary>
+    public virtual DbSet<EmployeeMobileDevice> EmployeeMobileDevices { get; set; }
+
     public virtual DbSet<TimeAttAPI> TimeAttAPIs { get; set; }
 
     public virtual DbSet<TimeLog> TimeLogs { get; set; }
@@ -1774,6 +1780,29 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<EmployeeMobileDevice>(b =>
+        {
+            // Self-service lists an employee's own handsets and the ApprovedOnly filter reads WorkflowStatus
+            // on the same pass, so both belong in the one index.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            // The lookup index. IMobileDeviceRegistrationService is asked "is this device id registered" on
+            // what is intended to become the mobile punch path, i.e. once per punch per employee per day,
+            // and the duplicate rule queries by device id across employees -- neither of which the index
+            // above can serve, because both start from the device id rather than from the employee.
+            b.HasIndex(e => new { e.TenantId, e.DeviceId });
+
+            // Restrict, not the convention's Cascade. Employee already has cascading paths reaching it from
+            // several transaction tables and SQL Server refuses another ("may cause cycles or multiple
+            // cascade paths"). It is right on the merits too: this row is the record of which handset was
+            // allowed to punch as this person, which is evidence about attendance that must not disappear
+            // with the employee record.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<EmployeePaymentBatch>(b =>
         {
             // No EmployeeId on this row -- a batch is about a group -- so the index is the one the list
@@ -1825,6 +1854,7 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // The handler's "has this batch already paid out?" guard queries by this column.
             b.HasIndex(e => new { e.TenantId, e.EmployeePaymentBatchId });
         });
+
 
         modelBuilder.Entity<EmployeeClearance>(b =>
         {
