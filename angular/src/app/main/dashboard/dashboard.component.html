@@ -3,6 +3,11 @@
      one landing page instead of two competing ones. -->
 <my-summary />
 
+<!-- Self-service: requests waiting on you, your recent requests, workflow history. Embedded rather
+     than duplicated -- this is the same component that used to be its own page, minus its chrome, so
+     the two can never drift apart. -->
+<ess-home [embedded]="true" />
+
 <!-- Shortcuts are what YOU chose; Quick Actions above are the fixed tasks everyone does. Both earn a
      place, so the personal one sits after the common one. -->
 <quick-links />

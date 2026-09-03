@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -29,6 +29,7 @@ import { WorkflowHistoryModalComponent } from '../../shared/common/workflow-acti
  * thing from what somebody else is waiting on you for.</p>
  */
 @Component({
+    selector: 'ess-home',
     templateUrl: './ess-home.component.html',
     styleUrls: ['./ess-home.component.less'],
     animations: [appModuleAnimation()],
@@ -36,6 +37,15 @@ import { WorkflowHistoryModalComponent } from '../../shared/common/workflow-acti
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EssHomeComponent extends AppComponentBase implements OnInit {
+    /**
+     * True when rendered inside the dashboard rather than as its own page.
+     *
+     * Suppresses the page chrome -- sub-header and container -- because the dashboard supplies both.
+     * Kept as a flag rather than splitting the component in two: the ESS logic here (recent requests,
+     * what is waiting on you, workflow history) is the same either way, and two copies of it would drift.
+     */
+    readonly embedded = input(false);
+
     private readonly _essSessionService = inject(EssSessionServiceProxy);
 
     readonly loading = signal(true);

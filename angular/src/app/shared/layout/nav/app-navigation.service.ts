@@ -41,7 +41,9 @@ export class AppNavigationService {
             // Entries are added here only as their screens are built -- a menu item pointing at a route that
             // does not exist is worse than no menu item. The landing page lists the rest from the catalog.
             new AppMenuItem('EmployeeSelfService', 'Ess', 'flaticon-user-ok', '', [], [
-                new AppMenuItem('EssHome', 'Ess', 'flaticon-home', '/app/main/ess'),
+                // No EssHome entry: self-service now opens on the main dashboard. A menu item pointing at
+                // a route that only redirects would look like a second landing page and land people back
+                // where they started, which reads as a broken link rather than a deliberate move.
                 new AppMenuItem('EssInbox', 'Ess.Inbox', 'flaticon-multimedia', '/app/main/ess/inbox'),
                 new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
                 new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset'),

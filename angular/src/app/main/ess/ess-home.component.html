@@ -1,7 +1,11 @@
 <div [@routerTransition]>
-    <sub-header [title]="'EmployeeSelfService' | localize"></sub-header>
+    <!-- Chrome only when this is its own page. Embedded on the dashboard, the page already has a header
+         and a container, and a second set of both would indent the section and repeat the title. -->
+    @if (!embedded()) {
+        <sub-header [title]="'EmployeeSelfService' | localize"></sub-header>
+    }
 
-    <div [class]="containerClass">
+    <div [class]="embedded() ? '' : containerClass">
         @if (loading()) {
             <div class="card card-custom gutter-b">
                 <div class="card-body text-center p-5">

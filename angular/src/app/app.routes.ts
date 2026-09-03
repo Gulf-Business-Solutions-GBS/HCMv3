@@ -156,10 +156,13 @@ export const appRoutes: Routes = [
                         // employee holding only the Employee role never sees them. The per-transaction
                         // screens (leave, asset, ...) are added here as each is built; the landing page
                         // already lists them from the WorkflowTransactionType catalog.
+                        // Self-service now lives on the main dashboard; there is no separate ESS home.
+                        // REDIRECTED rather than deleted: this path is in people's bookmarks and in the
+                        // links of every request notification already sent, and a dead route would
+                        // strand them on a blank page with no clue where the screen went.
                         path: 'ess',
-                        loadComponent: () =>
-                            import('./main/ess/ess-home.component').then((m) => m.EssHomeComponent),
-                        data: { permission: 'Ess' },
+                        redirectTo: '/app/main/dashboard',
+                        pathMatch: 'full',
                     },
                     {
                         path: 'ess/leave',
