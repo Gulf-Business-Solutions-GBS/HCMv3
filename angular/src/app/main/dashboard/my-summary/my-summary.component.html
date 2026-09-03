@@ -29,6 +29,16 @@
         </div>
     }
 
+    @if (showNoEmployeeNotice()) {
+        <!-- Where the identity card would be. An administrator account is usually not linked to an
+             Employee row, so identity, leave and attendance have nothing to draw. Saying so once, here,
+             beats three silently absent tiles that read as a broken page. -->
+        <div class="alert alert-light-warning ms-notice">
+            <strong>{{ 'NotLinkedToEmployee' | localize }}</strong>
+            <div>{{ 'NotLinkedToEmployeeHint' | localize }}</div>
+        </div>
+    }
+
     @if (visibleQuickActions().length) {
         <div class="card card-custom ms-card">
             <div class="card-body">
@@ -43,10 +53,19 @@
                 </div>
             </div>
         </div>
+    } @else if (hasEmployeeRecord()) {
+        <!-- An employee with no self-service permissions at all. Rare, but silently omitting the
+             section makes it look like the feature is missing rather than not granted. -->
+        <div class="card card-custom ms-card">
+            <div class="card-body">
+                <div class="ms-section-head">{{ 'QuickActions' | localize }}</div>
+                <p class="ms-empty">{{ 'NoSelfServiceActionsGranted' | localize }}</p>
+            </div>
+        </div>
     }
 
     <div class="row">
-        @if (leaveBalances().length) {
+        @if (leaveBalances().length || hasEmployeeRecord()) {
             <div class="col-md-4">
                 <div class="card card-custom ms-card">
                     <div class="card-body">
@@ -62,9 +81,15 @@
                                 </div>
                             }
                         </div>
-                        <!-- Bookable, not remaining: days already awaiting approval are not yours to
-                             apply for a second time. -->
-                        <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
+                        @if (leaveBalances().length) {
+                            <!-- Bookable, not remaining: days already awaiting approval are not yours to
+                                 apply for a second time. -->
+                            <p class="ms-balance-note">{{ 'LeaveBalanceBookableHint' | localize }}</p>
+                        } @else {
+                            <!-- An employee with no quota rows. Distinct from "zero days left", which is
+                                 a balance; this is no entitlement recorded at all. -->
+                            <p class="ms-empty">{{ 'NoLeaveQuotasAssigned' | localize }}</p>
+                        }
                     </div>
                 </div>
             </div>

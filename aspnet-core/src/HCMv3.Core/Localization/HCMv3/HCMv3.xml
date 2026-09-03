@@ -5875,5 +5875,9 @@
     <text name="YouAlreadyHaveAPendingPersonalDataChange">You already have a personal details update waiting for approval.</text>
 
     <text name="ScreenNotPermittedOrUnavailable">That screen could not be opened. You may not have permission for it.</text>
+    <text name="NotLinkedToEmployee">Your account is not linked to an employee record</text>
+    <text name="NotLinkedToEmployeeHint">Personal details, leave balance and attendance are not shown because there is no employee record behind this login. Ask HR to link it if you need self service.</text>
+    <text name="NoSelfServiceActionsGranted">No self-service actions are granted to your account.</text>
+    <text name="NoLeaveQuotasAssigned">No leave entitlement is recorded against your record yet.</text>
   </texts>
 </localizationDictionary>

@@ -56,6 +56,18 @@ export class MySummaryComponent extends AppComponentBase implements OnInit {
         { labelKey: 'EssInbox', icon: 'flaticon-multimedia', route: '/app/main/ess/inbox', permission: 'Ess.Inbox' },
     ];
 
+    /**
+     * Whether the signed-in user is an employee at all.
+     *
+     * An administrator account is usually NOT linked to an Employee row, and the personal tiles --
+     * identity, leave, attendance -- have nothing to draw for them. Rendering nothing left a mostly
+     * blank dashboard that read as broken; this drives a notice that says why instead.
+     */
+    readonly hasEmployeeRecord = computed(() => !!this.profile());
+
+    /** True once loaded and there is genuinely nothing personal to show. */
+    readonly showNoEmployeeNotice = computed(() => !this.isLoading() && !this.hasEmployeeRecord());
+
     readonly visibleQuickActions = computed(() =>
         this.quickActions.filter((a) => !a.permission || this.isGranted(a.permission))
     );
