@@ -1833,6 +1833,14 @@ public static class AppPermissions
     /// </summary>
     public const string Ess_MyDelegations = "Ess.MyDelegations";
 
+    /// <summary>
+    /// Registering the handset the mobile app may send attendance punches from. Separate from
+    /// Ess.MyAttendance and Ess.MyPunches on purpose: those are claims ABOUT attendance that an approver
+    /// reads and judges, whereas this grants a device the standing to record attendance in the first place,
+    /// and a company may well let everyone correct a punch while letting nobody enrol their own phone.
+    /// </summary>
+    public const string Ess_MyMobileDevices = "Ess.MyMobileDevices";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";

@@ -180,7 +180,19 @@ public class WorkflowTransactionTypeBuilder
         // Travel row, and until now the only way one could exist was for an administrator to key it in --
         // an employee could claim for a trip nobody could request. Approving this writes nothing anywhere
         // else; the trip becoming visible is the trip being approved.
-        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240)
+        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240),
+
+        // Mobile device registration (legacy MobileAppDeviceRequest): an employee enrolling their phone so
+        // the mobile app will accept attendance punches from it. Self-service by nature -- legacy's only
+        // real creation site was the mobile app posting to WorkflowServiceApiController -- so it gets a real
+        // EssRoute and permission. The Code is the transaction entity's name as always: there is no
+        // MobileAppDeviceRequest table here, the registration row IS the request. No sub-type; legacy routed
+        // every device registration the same way and there is nothing on the row to discriminate on. Note
+        // what approval buys, and in legacy it bought nothing at all: legacy's approval side effect was
+        // commented out and copy-pasted from the asset request, so an approved device registration had
+        // nowhere to land and nothing ever read DeviceId back. Here approval is what makes the row visible
+        // to IMobileDeviceRegistrationService, which is what makes the handset usable.
+        ("EmployeeMobileDevice", "Mobile Device Registration", "تسجيل جهاز محمول", null, "/app/main/ess/mobile-device", AppPermissions.Ess_MyMobileDevices, "flaticon2-phone", 250)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)
