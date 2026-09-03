@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
@@ -40,6 +41,7 @@ namespace HCMv3.Tests.Workflow;
 public class PaymentBatchWorkflow_Tests : AppTestBase
 {
     private readonly IEmployeePaymentBatchesAppService _paymentBatches;
+    private readonly IRepository<EmployeePaymentBatch> _batchRepository;
     private readonly PaymentBatchWorkflowTransactionHandler _handler;
     private readonly IWorkflowApprovalService _approvalService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
@@ -48,6 +50,7 @@ public class PaymentBatchWorkflow_Tests : AppTestBase
     {
         LoginAsDefaultTenantAdmin();
         _paymentBatches = Resolve<IEmployeePaymentBatchesAppService>();
+        _batchRepository = Resolve<IRepository<EmployeePaymentBatch>>();
         _handler = Resolve<PaymentBatchWorkflowTransactionHandler>();
         _approvalService = Resolve<IWorkflowApprovalService>();
         _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
@@ -238,6 +241,32 @@ public class PaymentBatchWorkflow_Tests : AppTestBase
             r => r.RequestType == PaymentBatchWorkflowTransactionHandler.PaymentBatchRequestType
                  && r.TargetEntityId == batchId));
 
+    /// <summary>
+    /// Whether the batch is visible to an ORDINARY application query.
+    ///
+    /// <para>
+    /// Deliberately a repository read inside a unit of work, not a raw <c>UsingDbContext</c> one. An ABP data
+    /// filter only exists within a unit of work, so a bare context read sees every row whatever its status
+    /// and would report a pending batch as visible no matter how well the filter worked. Same approach as
+    /// <c>ApprovedOnlyFilter_Tests.IsVisibleAsync</c>.
+    /// </para>
+    /// </summary>
+    private Task<bool> IsBatchVisibleAsync(int batchId)
+    {
+        return InUnitOfWorkAsync(() => _batchRepository.GetAll().AnyAsync(b => b.Id == batchId));
+    }
+
+    private async Task<TResult> InUnitOfWorkAsync<TResult>(Func<Task<TResult>> action)
+    {
+        using (var uow = _unitOfWorkManager.Begin())
+        {
+            var result = await action();
+            await uow.CompleteAsync();
+
+            return result;
+        }
+    }
+
     private async Task InUnitOfWorkAsync(Func<Task> action)
     {
         using (var uow = _unitOfWorkManager.Begin())
@@ -267,8 +296,7 @@ public class PaymentBatchWorkflow_Tests : AppTestBase
             BatchFor(wageTypeId, currencyId, (firstId, 100), (secondId, 250)));
 
         // Hidden: an ordinary query with the filter on cannot see it.
-        var visible = UsingDbContext(c => c.Set<EmployeePaymentBatch>().Any(b => b.Id == batchId));
-        visible.ShouldBeFalse("A batch awaiting approval was visible to ordinary queries.");
+        (await IsBatchVisibleAsync(batchId)).ShouldBeFalse("A batch awaiting approval was visible to ordinary queries.");
 
         // But it exists, in flight, with its lines.
         BatchRow(batchId).WorkflowStatus.ShouldBe(RequestStatus.Open);
@@ -341,7 +369,7 @@ public class PaymentBatchWorkflow_Tests : AppTestBase
 
         // The batch itself is now effective, so payroll can see it.
         BatchRow(batchId).WorkflowStatus.ShouldBe(RequestStatus.Approved);
-        UsingDbContext(c => c.Set<EmployeePaymentBatch>().Any(b => b.Id == batchId)).ShouldBeTrue();
+        (await IsBatchVisibleAsync(batchId)).ShouldBeTrue();
 
         // The requester is unpaid -- they raised the batch, they are not on it.
         payments.ShouldNotContain(p => p.EmployeeId == requesterId);
@@ -383,7 +411,7 @@ public class PaymentBatchWorkflow_Tests : AppTestBase
         BatchRow(batchId).WorkflowStatus.ShouldBe(RequestStatus.Rejected);
 
         // And it stays invisible, so nothing downstream ever sees it.
-        UsingDbContext(c => c.Set<EmployeePaymentBatch>().Any(b => b.Id == batchId)).ShouldBeFalse();
+        (await IsBatchVisibleAsync(batchId)).ShouldBeFalse();
         requesterId.ShouldBeGreaterThan(0);
     }
 
