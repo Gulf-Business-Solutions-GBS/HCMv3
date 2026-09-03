@@ -637,6 +637,13 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<EmployeeITService> EmployeeITServices { get; set; }
 
+    /// <summary>
+    /// Work ASSIGNED to an employee (legacy <c>TaskRequest</c>). Deliberately a separate table from
+    /// <see cref="EmployeeTasks"/>, which is the HR reminder/monitoring record -- see
+    /// <see cref="EmployeeAssignedTask"/> for why the two are not one thing.
+    /// </summary>
+    public virtual DbSet<EmployeeAssignedTask> EmployeeAssignedTasks { get; set; }
+
     public virtual DbSet<EmployeeDisciplinary> EmployeeDisciplinaries { get; set; }
 
     public virtual DbSet<EmployeeClearance> EmployeeClearances { get; set; }
@@ -1733,6 +1740,23 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
             // second cascading one ("may cause cycles or multiple cascade paths"). Restrict is right on the
             // merits too: a skipped instalment is part of a loan's repayment history, and deleting an
             // employee record must not quietly rewrite what was repaid.
+            b.HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<EmployeeAssignedTask>(b =>
+        {
+            // The assignee's task list and the approver's view both read by employee, and the ApprovedOnly
+            // filter reads WorkflowStatus on the same pass, so both belong in the one index.
+            b.HasIndex(e => new { e.TenantId, e.EmployeeId, e.WorkflowStatus });
+
+            // Restrict, not the convention's Cascade. Employee is reached from several rows in this model at
+            // once and SQL Server refuses the second cascading path ("may cause cycles or multiple cascade
+            // paths") at migration time -- we have hit that twice this week. It is right on the merits too:
+            // work assigned to somebody who has since left is history, and deleting an employee record must
+            // not quietly erase what they were asked to do.
             b.HasOne(e => e.Employee)
                 .WithMany()
                 .HasForeignKey(e => e.EmployeeId)

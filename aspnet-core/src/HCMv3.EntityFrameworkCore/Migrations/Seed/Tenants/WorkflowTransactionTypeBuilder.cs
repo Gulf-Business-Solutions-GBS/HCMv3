@@ -180,7 +180,18 @@ public class WorkflowTransactionTypeBuilder
         // Travel row, and until now the only way one could exist was for an administrator to key it in --
         // an employee could claim for a trip nobody could request. Approving this writes nothing anywhere
         // else; the trip becoming visible is the trip being approved.
-        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240)
+        ("Travel", "Travel Request", "طلب سفر", "TravelType", "/app/main/ess/travel", AppPermissions.Ess_MyTravel, "flaticon-airplane", 240),
+
+        // Work assigned to an employee (legacy TaskRequest, legacy request code "17"). NOT self-service, and
+        // for the plainest of reasons: a task is HANDED to somebody. Legacy keeps the creator (SysCreator)
+        // and the subject (Employee) as different people and greys the subject, description and dates out
+        // for anyone but the creator, so it was never a thing an employee raised about themselves --
+        // EssRoute and EssPermissionName are null exactly as for EmployeeAction and ManpowerPlanning. The
+        // Code is the transaction entity's name as always: there is no TaskRequest table here, the
+        // assignment row IS the request. No sub-type: legacy routed every task through code "17" whatever
+        // the work was. Note what approval buys, and it is nothing beyond visibility -- legacy had NO
+        // approval side effect for this type at all, so the row becoming effective is the whole of it.
+        ("EmployeeAssignedTask", "Task Assignment", "إسناد مهمة", null, null, null, "flaticon-list-3", 250)
     };
 
     public WorkflowTransactionTypeBuilder(HCMv3DbContext context, int tenantId)

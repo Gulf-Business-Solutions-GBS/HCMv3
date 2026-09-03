@@ -650,6 +650,15 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_EmployeeTasks_Edit = "Pages.PersonnelAdministration.EmployeeTasks.Edit";
     public const string Pages_PersonnelAdministration_EmployeeTasks_Delete = "Pages.PersonnelAdministration.EmployeeTasks.Delete";
 
+    // Work ASSIGNED to an employee (legacy TaskRequest). A separate permission set from EmployeeTasks above,
+    // because it guards a separate thing: EmployeeTasks is the HR reminder/monitoring record, this is an
+    // assignment that routes for approval. Sharing one permission would mean granting HR's diary in order to
+    // let a manager hand out work.
+    public const string Pages_PersonnelAdministration_EmployeeAssignedTasks = "Pages.PersonnelAdministration.EmployeeAssignedTasks";
+    public const string Pages_PersonnelAdministration_EmployeeAssignedTasks_Create = "Pages.PersonnelAdministration.EmployeeAssignedTasks.Create";
+    public const string Pages_PersonnelAdministration_EmployeeAssignedTasks_Edit = "Pages.PersonnelAdministration.EmployeeAssignedTasks.Edit";
+    public const string Pages_PersonnelAdministration_EmployeeAssignedTasks_Delete = "Pages.PersonnelAdministration.EmployeeAssignedTasks.Delete";
+
     public const string Pages_PersonnelAdministration_News = "Pages.PersonnelAdministration.News";
     public const string Pages_PersonnelAdministration_News_Create = "Pages.PersonnelAdministration.News.Create";
     public const string Pages_PersonnelAdministration_News_Edit = "Pages.PersonnelAdministration.News.Edit";
