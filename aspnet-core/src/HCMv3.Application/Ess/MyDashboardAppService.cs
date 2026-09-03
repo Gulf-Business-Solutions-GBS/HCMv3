@@ -31,17 +31,20 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly ILeaveBalanceService _leaveBalanceService;
+    private readonly IRepository<TimeEvent> _timeEventRepository;
 
     public MyDashboardAppService(
         IEmployeeSessionService employeeSession,
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
-        ILeaveBalanceService leaveBalanceService)
+        ILeaveBalanceService leaveBalanceService,
+        IRepository<TimeEvent> timeEventRepository)
     {
         _employeeSession = employeeSession;
         _employeeRepository = employeeRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _leaveBalanceService = leaveBalanceService;
+        _timeEventRepository = timeEventRepository;
     }
 
     public async Task<MyDashboardSummaryDto> GetSummary()
@@ -64,6 +67,7 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
 
         summary.Profile = await GetProfileAsync(employeeId.Value, today);
         summary.LeaveBalances = await GetLeaveBalancesAsync(employeeId.Value);
+        summary.TodayAttendance = await GetTodayAttendanceAsync(employeeId.Value, today);
 
         return summary;
     }
@@ -131,6 +135,79 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
             })
             .OrderByDescending(b => b.Balance)
             .ToList();
+    }
+
+    /// <summary>
+    /// Today's clockings from TimeEvents.
+    ///
+    /// PAIRS IN AND OUT IN ORDER rather than just subtracting the first punch from the last. Somebody
+    /// who steps out at lunch produces IN OUT IN OUT, and last-minus-first would silently bill them for
+    /// the break. An unmatched trailing IN contributes nothing: they are still on site, and counting an
+    /// open period would make the number climb every time the page was refreshed.
+    ///
+    /// This is NOT the payroll figure. The Time Engine owns shift rules, grace and overtime; this
+    /// answers "when did I arrive and how long have I been here".
+    /// </summary>
+    private async Task<MyDashboardAttendanceDto> GetTodayAttendanceAsync(int employeeId, DateTime today)
+    {
+        var events = await _timeEventRepository.GetAll()
+            .Include(e => e.TransType)
+            .Where(e => e.EmployeeId == employeeId && e.TransDate.Date == today)
+            .OrderBy(e => e.TransTime)
+            .ToListAsync();
+
+        var result = new MyDashboardAttendanceDto
+        {
+            Date = today,
+            PunchCount = events.Count,
+        };
+
+        if (events.Count == 0)
+        {
+            // Returned rather than left null: the tile should say "no punches yet", because an absent
+            // attendance card reads as a broken dashboard rather than a day that has not started.
+            return result;
+        }
+
+        DateTime? openIn = null;
+        double workedHours = 0;
+
+        foreach (var timeEvent in events)
+        {
+            if (IsClockIn(timeEvent))
+            {
+                // Consecutive INs with no OUT between them: keep the FIRST. A duplicate punch at the
+                // door should not restart the clock and shorten the day.
+                openIn ??= timeEvent.TransTime;
+                result.FirstIn ??= timeEvent.TransTime;
+                continue;
+            }
+
+            result.LastOut = timeEvent.TransTime;
+
+            if (openIn.HasValue)
+            {
+                workedHours += (timeEvent.TransTime - openIn.Value).TotalHours;
+                openIn = null;
+            }
+        }
+
+        result.WorkedHours = Math.Round((decimal)workedHours, 2);
+        result.IsCurrentlyIn = openIn.HasValue;
+
+        return result;
+    }
+
+    /// <summary>
+    /// Clock-in is TransType code "1"; everything else counts as a departure.
+    ///
+    /// Same rule as PunchDutyResolver, and deliberately the same way round: treating an unknown code as
+    /// a departure closes an open period, whereas treating it as an arrival would leave the period open
+    /// and inflate the hours.
+    /// </summary>
+    private static bool IsClockIn(TimeEvent timeEvent)
+    {
+        return string.Equals(timeEvent.TransType?.Code?.Trim(), TransTypeCodes.ClockIn, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>

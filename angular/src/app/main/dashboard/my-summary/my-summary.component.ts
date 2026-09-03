@@ -73,6 +73,19 @@ export class MySummaryComponent extends AppComponentBase implements OnInit {
         });
     }
 
+    /**
+     * The proxies type timestamps as luxon DateTime, which Angular's date pipe refuses -- it wants a
+     * Date, a number or a string. Converting here keeps the template free of casts that would hide the
+     * mismatch rather than fix it. Same conversion the run-history screen needed.
+     */
+    toDate(value: any): Date | null {
+        if (!value) {
+            return null;
+        }
+
+        return typeof value.toJSDate === 'function' ? value.toJSDate() : new Date(value);
+    }
+
     /** Blank rather than "null": an unpopulated org chart should read as empty, not as an error. */
     orgValue(value: string | undefined): string {
         return value && value.trim().length ? value : '—';

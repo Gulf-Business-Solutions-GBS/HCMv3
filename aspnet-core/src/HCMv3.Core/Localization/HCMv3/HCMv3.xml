@@ -5760,5 +5760,11 @@
     <text name="BirthdaysThisMonth">Birthdays this month</text>
     <text name="WorkAnniversariesThisMonth">Work anniversaries this month</text>
     <text name="LeaveBalanceBookableHint">Days you can still apply for. Requests awaiting approval are already deducted.</text>
+    <text name="TodaysAttendance">Today's Attendance</text>
+    <text name="PunchIn">Punch In</text>
+    <text name="PunchOut">Punch Out</text>
+    <text name="CurrentlyIn">Currently in</text>
+    <text name="NoPunchesToday">No punches recorded today.</text>
+    <text name="AttendanceIndicativeHint">Indicative only. Payroll hours come from the Time Engine.</text>
   </texts>
 </localizationDictionary>

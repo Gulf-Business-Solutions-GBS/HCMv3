@@ -79,7 +79,7 @@
                         @if (att.punchCount) {
                             <div class="ms-alert">
                                 <span>{{ 'PunchIn' | localize }}</span>
-                                <span class="ms-punch">{{ att.firstIn | date: 'shortTime' }}</span>
+                                <span class="ms-punch">{{ toDate(att.firstIn) | date: 'shortTime' }}</span>
                             </div>
                             <div class="ms-alert">
                                 <span>{{ 'PunchOut' | localize }}</span>
@@ -88,7 +88,7 @@
                                         <!-- Still on site. A blank here would read as a missed punch. -->
                                         <span class="ms-in-badge">{{ 'CurrentlyIn' | localize }}</span>
                                     } @else {
-                                        {{ att.lastOut | date: 'shortTime' }}
+                                        {{ toDate(att.lastOut) | date: 'shortTime' }}
                                     }
                                 </span>
                             </div>

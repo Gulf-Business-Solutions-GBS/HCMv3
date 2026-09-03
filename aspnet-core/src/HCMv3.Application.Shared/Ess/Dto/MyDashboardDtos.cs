@@ -58,5 +58,36 @@ public class MyDashboardSummaryDto
 
     public List<MyDashboardLeaveBalanceDto> LeaveBalances { get; set; }
 
+    /// <summary>Null when the user has no employee record.</summary>
+    public MyDashboardAttendanceDto TodayAttendance { get; set; }
+
     public MyDashboardAlertsDto Alerts { get; set; }
+}
+
+/// <summary>
+/// Today's clockings, read from TimeEvents.
+///
+/// A DISPLAY CONVENIENCE, NOT THE PAYROLL FIGURE. WorkedHours here is the sum of paired in/out
+/// intervals recorded so far. The Time Engine owns the real calculation -- shift rules, grace periods,
+/// breaks, overtime -- and this tile deliberately does not attempt any of that. It answers "when did I
+/// arrive and how long have I been here", which is what someone glancing at a dashboard wants.
+/// </summary>
+public class MyDashboardAttendanceDto
+{
+    public DateTime Date { get; set; }
+
+    /// <summary>First clock-in of the day, or null before the first punch.</summary>
+    public DateTime? FirstIn { get; set; }
+
+    /// <summary>Last clock-out, null while still clocked in.</summary>
+    public DateTime? LastOut { get; set; }
+
+    /// <summary>Total punches today. Shown so a mid-day break is not mistaken for a missing punch.</summary>
+    public int PunchCount { get; set; }
+
+    /// <summary>Sum of completed in/out pairs, in hours. Excludes an open period still running.</summary>
+    public decimal WorkedHours { get; set; }
+
+    /// <summary>True when the last event was a clock-in: the person is currently on site.</summary>
+    public bool IsCurrentlyIn { get; set; }
 }
