@@ -226,6 +226,24 @@ export const appRoutes: Routes = [
                             import('./main/ess/my-travel-claim/my-travel-claim.component').then((m) => m.MyTravelClaimComponent),
                         data: { permission: 'Ess.MyTravelClaims' },
                     },
+                    {
+                        path: 'ess/travel',
+                        loadComponent: () =>
+                            import('./main/ess/my-travel/my-travel.component').then((m) => m.MyTravelComponent),
+                        data: { permission: 'Ess.MyTravel' },
+                    },
+                    {
+                        path: 'ess/delegation',
+                        loadComponent: () =>
+                            import('./main/ess/my-delegation/my-delegation.component').then((m) => m.MyDelegationComponent),
+                        data: { permission: 'Ess.MyDelegations' },
+                    },
+                    {
+                        path: 'ess/loan-exemption',
+                        loadComponent: () =>
+                            import('./main/ess/my-loan-exemption/my-loan-exemption.component').then((m) => m.MyLoanExemptionComponent),
+                        data: { permission: 'Ess.MyLoanExemptions' },
+                    },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                 ],
             },
