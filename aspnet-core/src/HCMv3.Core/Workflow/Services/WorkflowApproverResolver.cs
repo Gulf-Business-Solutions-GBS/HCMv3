@@ -21,7 +21,17 @@ namespace HCMv3.Workflow.Services;
 /// <item>NARROWED to the requester's own part of the organisation, when the step says so.</item>
 /// <item>MINUS anyone who already signed an earlier signatory step, when this step is a signatory step.</item>
 /// <item>Falling back to the chain's default approver, so a request is never left unroutable in silence.</item>
+/// <item>SUBSTITUTED, finally, for anyone with active cover in place -- see below.</item>
 /// </list>
+///
+/// <para>
+/// DELEGATION. The last thing that happens to a candidate list is <see cref="IWorkflowDelegationResolver"/>
+/// swapping out anybody who has arranged cover for the person covering them. It happens LAST, and it is not
+/// gated on the stand-in holding the role, the workflow role, or the permission the delegator holds: the
+/// delegation row -- routed and approved in its own right -- IS the authority. Requiring the stand-in to
+/// pass the role check as well would make delegation a no-op in exactly the ordinary case, since the whole
+/// reason a step landed on this manager is that nobody else holds their role.
+/// </para>
 ///
 /// <para>
 /// ORG SCOPE, and where this deliberately differs from legacy. Legacy carried denormalised
@@ -42,24 +52,70 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
+    private readonly IWorkflowDelegationResolver _delegationResolver;
 
     public WorkflowApproverResolver(
         IRepository<EmployeeWorkflowRole> employeeWorkflowRoleRepository,
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         IRepository<RequestDetail> requestDetailRepository,
-        IRepository<RequestLog> requestLogRepository)
+        IRepository<RequestLog> requestLogRepository,
+        IWorkflowDelegationResolver delegationResolver)
     {
         _employeeWorkflowRoleRepository = employeeWorkflowRoleRepository;
         _employeeManagerRepository = employeeManagerRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _requestDetailRepository = requestDetailRepository;
         _requestLogRepository = requestLogRepository;
+        _delegationResolver = delegationResolver;
     }
 
     public List<int> ResolveForStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
     {
-        var candidates = ResolveCandidates(request, requestDetail);
+        return ResolveStep(request, requestMaster, requestDetail).Approvers;
+    }
+
+    public int? ResolveDelegatedFrom(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int actingEmployeeId)
+    {
+        // Cheap way out for the overwhelming majority of approvals: if nobody has delegated to this person
+        // at all, no amount of re-resolving the step will change the answer.
+        if (!_delegationResolver.HasActiveDelegationTo(actingEmployeeId))
+        {
+            return null;
+        }
+
+        var resolved = ResolveStep(request, requestMaster, requestDetail);
+
+        return resolved.DelegatedFrom.TryGetValue(actingEmployeeId, out var delegatorId)
+            ? delegatorId
+            : (int?)null;
+    }
+
+    /// <summary>
+    /// The step's approvers together with the substitutions that produced them.
+    ///
+    /// <para>
+    /// Substitution runs BEFORE the signatory exclusion, not after. A stand-in who already signed an earlier
+    /// signatory step must be excluded from this one on their own name -- the log records who actually
+    /// clicked -- and doing it the other way round would let one person sign twice by covering for the
+    /// second signatory.
+    /// </para>
+    /// <para>
+    /// The default-approver fallback is substituted too. A chain's nominated last resort is a person like
+    /// any other, and "the fallback is on leave" is the exact circumstance in which the fallback is being
+    /// used.
+    /// </para>
+    /// </summary>
+    private StepApprovers ResolveStep(WorkflowRequest request, RequestMaster requestMaster, RequestDetail requestDetail)
+    {
+        var originalCandidates = ResolveCandidates(request, requestDetail);
+
+        var candidates = _delegationResolver.ApplySubstitution(originalCandidates);
+        var delegatedFrom = _delegationResolver.BuildSubstitutionMap(originalCandidates);
 
         if (requestDetail != null && requestDetail.SignatoryStep)
         {
@@ -68,16 +124,35 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
 
         if (candidates.Count > 0)
         {
-            return candidates;
+            return new StepApprovers(candidates, delegatedFrom);
         }
 
         // Last resort, exactly as legacy: better one nominated fallback than a request nobody can act on.
         if (requestMaster?.DefaultApproverId != null)
         {
-            return new List<int> { requestMaster.DefaultApproverId.Value };
+            var fallback = new List<int> { requestMaster.DefaultApproverId.Value };
+
+            return new StepApprovers(
+                _delegationResolver.ApplySubstitution(fallback),
+                _delegationResolver.BuildSubstitutionMap(fallback));
         }
 
-        return new List<int>();
+        return new StepApprovers(new List<int>(), new Dictionary<int, int>());
+    }
+
+    private sealed class StepApprovers
+    {
+        public StepApprovers(List<int> approvers, IReadOnlyDictionary<int, int> delegatedFrom)
+        {
+            Approvers = approvers;
+            DelegatedFrom = delegatedFrom;
+        }
+
+        /// <summary>Who the step goes to, after substitution.</summary>
+        public List<int> Approvers { get; }
+
+        /// <summary>Stand-in employee id -> the person they are standing in for.</summary>
+        public IReadOnlyDictionary<int, int> DelegatedFrom { get; }
     }
 
     public List<int> ResolveForEscalation(
@@ -97,7 +172,14 @@ public class WorkflowApproverResolver : HCMv3DomainServiceBase, IWorkflowApprove
             candidates,
             requestDetail.EscalateWorkflowRoleGroup);
 
-        // The people who have already failed to act are precisely who this must not land on again.
+        // Substituted the same way an ordinary step is. An escalation that ignored cover would hand the
+        // stalled request to the one category of person guaranteed not to act on it -- somebody who is away
+        // -- and then start the escalation clock again from zero.
+        candidates = _delegationResolver.ApplySubstitution(candidates);
+
+        // The people who have already failed to act are precisely who this must not land on again. Applied
+        // AFTER substitution so that a stand-in who is already sitting on the request is excluded under the
+        // name the request actually knows them by.
         return candidates.Where(id => !currentApproverIds.Contains(id)).ToList();
     }
 

@@ -19,6 +19,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     private readonly IRepository<RequestLog> _requestLogRepository;
     private readonly IRepository<RequestDetail> _requestDetailRepository;
     private readonly IRepository<WFReadLog> _readLogRepository;
+    private readonly IRepository<Employee> _employeeRepository;
     private readonly IWorkflowApproverResolver _approverResolver;
     private readonly IRequestMasterResolver _requestMasterResolver;
     private readonly IWorkflowTransactionHandlerResolver _handlerResolver;
@@ -29,6 +30,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         IRepository<RequestLog> requestLogRepository,
         IRepository<RequestDetail> requestDetailRepository,
         IRepository<WFReadLog> readLogRepository,
+        IRepository<Employee> employeeRepository,
         IWorkflowApproverResolver approverResolver,
         IRequestMasterResolver requestMasterResolver,
         IWorkflowTransactionHandlerResolver handlerResolver)
@@ -38,6 +40,7 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         _requestLogRepository = requestLogRepository;
         _requestDetailRepository = requestDetailRepository;
         _readLogRepository = readLogRepository;
+        _employeeRepository = employeeRepository;
         _approverResolver = approverResolver;
         _requestMasterResolver = requestMasterResolver;
         _handlerResolver = handlerResolver;
@@ -124,7 +127,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         var stepApproved = IsStepApproved(approvers, requestDetail);
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Approved, remark, currentStep);
+        await AddLogAsync(
+            request,
+            actingEmployeeId,
+            RequestActionType.Approved,
+            remark,
+            currentStep,
+            ResolveDelegatedFrom(request, requestMaster, requestDetail, actingEmployeeId));
 
         if (!stepApproved)
         {
@@ -181,7 +190,15 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
 
         request.RequestStatus = RequestStatus.Rejected;
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.Rejected, remark, request.WorkflowStep);
+        // A rejection carries at least as much consequence as an approval, so it records the delegation the
+        // same way. "Who killed this request, and on whose authority" is asked more often, not less.
+        await AddLogAsync(
+            request,
+            actingEmployeeId,
+            RequestActionType.Rejected,
+            remark,
+            request.WorkflowStep,
+            ResolveDelegatedFrom(request, requestMaster, requestDetail, actingEmployeeId));
 
         await _workflowRequestRepository.UpdateAsync(request);
 
@@ -217,7 +234,13 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         request.WorkflowStep = 1;
         request.RequestStatus = RequestStatus.Draft;
 
-        await AddLogAsync(request, actingEmployeeId, RequestActionType.SentBack, remark, stepBeingSentBackFrom);
+        await AddLogAsync(
+            request,
+            actingEmployeeId,
+            RequestActionType.SentBack,
+            remark,
+            stepBeingSentBackFrom,
+            ResolveDelegatedFrom(request, requestMaster, requestDetail, actingEmployeeId));
 
         await _workflowRequestRepository.UpdateAsync(request);
 
@@ -327,10 +350,25 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
     /// <c>RequestProcessApproval.HideShowController</c>'s <c>IsApprover</c> computation -- the acting
     /// employee must hold an unresolved (<c>IsApproved == false</c>) <see cref="WorkFlowApprover"/> row for
     /// this request, or (fallback, for requests whose approver rows could not be resolved) be the request's
-    /// <see cref="WorkflowRequest.ApproverId"/>. Legacy's additional "or is an <c>EmployeeDelegation</c>
-    /// delegate of the assigned approver" branch is not ported (delegation-of-approval is a separate,
-    /// unported feature in this port -- see <see cref="EmployeeWorkflowRole"/> remarks for the related, but
-    /// distinct, "who holds this WorkflowRole" delegation concept that IS ported).
+    /// <see cref="WorkflowRequest.ApproverId"/>.
+    ///
+    /// <para>
+    /// <b>Delegation needs no branch here, and that is the design.</b> Legacy bolted an extra "...or is an
+    /// <c>EmployeeDelegation</c> delegate of the assigned approver" clause onto this check, which is what
+    /// made the delegator and the delegate BOTH able to act. HCMv3 substitutes upstream instead: the
+    /// stand-in's employee id is what <see cref="IWorkflowApproverResolver"/> wrote into
+    /// <see cref="WorkFlowApprover"/> when the step was assigned, so they pass this check as themselves and
+    /// the delegator fails it as a natural consequence of no longer being on the request. Adding a
+    /// delegate-of clause back here would silently restore the legacy "both people can act" behaviour AND
+    /// open a second hop (a stand-in's own delegate could act on the first person's requests), so it must
+    /// not be added.
+    /// </para>
+    /// <para>
+    /// One consequence worth knowing: a request assigned BEFORE the delegation existed keeps its original
+    /// approver, because approver rows are written at step entry and nothing rewrites them when a delegation
+    /// is later approved. Cover therefore takes effect for everything routed from that point on, not
+    /// retroactively for what is already sitting in the queue.
+    /// </para>
     /// </summary>
     private void EnsureOpenAndCurrentApprover(WorkflowRequest request, int actingEmployeeId)
     {
@@ -369,6 +407,38 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
             ApprovalRequire.Parallel => approversAtRequest.All(a => a.IsApproved),
             _ => approversAtRequest.All(a => a.IsApproved)
         };
+    }
+
+    /// <summary>
+    /// Whether this action is being taken by somebody standing in for the person the step nominated, and if
+    /// so for whom.
+    ///
+    /// <para>
+    /// Never allowed to break the action. A delegation is a fact ABOUT the approval, not a precondition of
+    /// it -- if working out the "on behalf of" line fails for any reason, the approval still happens and the
+    /// log simply reads as it did before this feature. Losing an approval to protect an audit annotation
+    /// would be the wrong way round.
+    /// </para>
+    /// </summary>
+    private int? ResolveDelegatedFrom(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int actingEmployeeId)
+    {
+        try
+        {
+            return _approverResolver.ResolveDelegatedFrom(request, requestMaster, requestDetail, actingEmployeeId);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(
+                $"Could not determine whether employee {actingEmployeeId} acted under a delegation on "
+                + $"workflow request {request.Id}: {ex.Message}",
+                ex);
+
+            return null;
+        }
     }
 
     private RequestDetail GetRequestDetail(int requestMasterId, int step)
@@ -422,18 +492,79 @@ public class WorkflowApprovalService : HCMv3DomainServiceBase, IWorkflowApproval
         return _approverResolver.ResolveForStep(request, requestMaster, requestDetail);
     }
 
-    private async Task AddLogAsync(WorkflowRequest request, int actingEmployeeId, RequestActionType actionType, string remark, int workflowStep)
+    /// <summary>
+    /// Writes the audit row for an action, naming BOTH people when the actor is standing in for somebody.
+    ///
+    /// <para>
+    /// <c>ActionById</c> is always whoever actually clicked, because that is the fact the history exists to
+    /// record and overwriting it with the delegator would be a lie about who took the decision. What that
+    /// alone loses is the other half of the story -- that the chain nominated a different person and a
+    /// delegation is why it moved -- so the delegator is written into the comment, by name and code, as a
+    /// localized phrase. For a payment batch or a disciplinary action, "who signed this off, and under whose
+    /// authority" is the whole question the log is asked six months later.
+    /// </para>
+    /// <para>
+    /// Recorded as text rather than a column deliberately: the substitution is fully reconstructable from
+    /// the <c>EmployeeDelegation</c> rows, which are never hard-deleted, so a schema change would be storing
+    /// a second copy of a fact the database already holds.
+    /// </para>
+    /// </summary>
+    private async Task AddLogAsync(
+        WorkflowRequest request,
+        int actingEmployeeId,
+        RequestActionType actionType,
+        string remark,
+        int workflowStep,
+        int? onBehalfOfEmployeeId = null)
     {
         await _requestLogRepository.InsertAsync(new RequestLog
         {
             TenantId = request.TenantId,
             WorkflowRequestId = request.Id,
             ActionById = actingEmployeeId,
-            RequestActionComment = remark,
+            RequestActionComment = ComposeComment(remark, onBehalfOfEmployeeId),
             ActionDateTime = DateTime.Now,
             ActionType = actionType,
             WorkflowStep = workflowStep,
             Platform = WorkflowPlatform.Core
         });
+    }
+
+    private string ComposeComment(string remark, int? onBehalfOfEmployeeId)
+    {
+        if (!onBehalfOfEmployeeId.HasValue)
+        {
+            return remark;
+        }
+
+        var note = L("WorkflowActionTakenOnBehalfOf", DescribeEmployee(onBehalfOfEmployeeId.Value));
+
+        return remark.IsNullOrWhiteSpace() ? note : remark + " -- " + note;
+    }
+
+    /// <summary>
+    /// Name plus code. The code is what makes the line searchable and unambiguous when two people share a
+    /// name, which in a workforce of any size they do.
+    /// </summary>
+    private string DescribeEmployee(int employeeId)
+    {
+        var employee = _employeeRepository.GetAll()
+            .Where(e => e.Id == employeeId)
+            .Select(e => new { e.Code, e.FullNameEn })
+            .FirstOrDefault();
+
+        if (employee == null)
+        {
+            return employeeId.ToString();
+        }
+
+        if (employee.FullNameEn.IsNullOrWhiteSpace())
+        {
+            return employee.Code ?? employeeId.ToString();
+        }
+
+        return employee.Code.IsNullOrWhiteSpace()
+            ? employee.FullNameEn
+            : employee.FullNameEn + " (" + employee.Code + ")";
     }
 }

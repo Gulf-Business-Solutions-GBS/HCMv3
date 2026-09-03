@@ -34,4 +34,23 @@ public interface IWorkflowApproverResolver
         WorkflowRequest request,
         RequestDetail requestDetail,
         IReadOnlyCollection<int> currentApproverIds);
+
+    /// <summary>
+    /// Who <paramref name="actingEmployeeId"/> is standing in FOR on this step, or null when they are acting
+    /// in their own right.
+    ///
+    /// <para>
+    /// Exists so the audit trail can name both people. <see cref="ResolveForStep"/> hands the step to the
+    /// stand-in and, having done so, the stand-in looks like any other approver -- which would quietly lose
+    /// the fact that the chain nominated somebody else and a delegation is why it moved. Recomputed from the
+    /// step's own configuration rather than guessed from "does this person hold any delegation", because a
+    /// colleague who covers for one manager and is separately a real approver for a different chain must not
+    /// have unrelated approvals logged as being on anyone's behalf.
+    /// </para>
+    /// </summary>
+    int? ResolveDelegatedFrom(
+        WorkflowRequest request,
+        RequestMaster requestMaster,
+        RequestDetail requestDetail,
+        int actingEmployeeId);
 }

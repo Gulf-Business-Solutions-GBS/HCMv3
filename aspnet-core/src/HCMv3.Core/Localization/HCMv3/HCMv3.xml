@@ -5873,6 +5873,7 @@
     <text name="SelectAtLeastOneFieldToChange">Tick at least one detail you want to change.</text>
     <text name="ProposedValueIsRequired">Enter a new value for {0}, or untick it.</text>
     <text name="YouAlreadyHaveAPendingPersonalDataChange">You already have a personal details update waiting for approval.</text>
+    <text name="WorkflowActionTakenOnBehalfOf">On behalf of {0}, under an approved delegation.</text>
 
   </texts>
 </localizationDictionary>
