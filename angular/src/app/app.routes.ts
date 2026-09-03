@@ -191,6 +191,32 @@ export const appRoutes: Routes = [
                         data: { permission: 'Ess.MyDocuments' },
                     },
                     {
+                        path: 'ess/passport-withdrawal',
+                        loadComponent: () =>
+                            import('./main/ess/my-passport-withdrawal/my-passport-withdrawal.component').then(
+                                (m) => m.MyPassportWithdrawalComponent
+                            ),
+                        data: { permission: 'Ess.MyPassportWithdrawals' },
+                    },
+                    {
+                        path: 'ess/exit-permit',
+                        loadComponent: () =>
+                            import('./main/ess/my-exit-permit/my-exit-permit.component').then((m) => m.MyExitPermitComponent),
+                        data: { permission: 'Ess.MyExitPermits' },
+                    },
+                    {
+                        path: 'ess/hr-service',
+                        loadComponent: () =>
+                            import('./main/ess/my-hr-service/my-hr-service.component').then((m) => m.MyHRServiceComponent),
+                        data: { permission: 'Ess.MyHRServices' },
+                    },
+                    {
+                        path: 'ess/letter',
+                        loadComponent: () =>
+                            import('./main/ess/my-letter/my-letter.component').then((m) => m.MyLetterComponent),
+                        data: { permission: 'Ess.MyLetterRequests' },
+                    },
+                    {
                         path: 'ess/loan',
                         loadComponent: () =>
                             import('./main/ess/my-loan/my-loan.component').then((m) => m.MyLoanComponent),

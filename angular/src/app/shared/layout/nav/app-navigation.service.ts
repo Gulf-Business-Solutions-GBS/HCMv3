@@ -48,6 +48,15 @@ export class AppNavigationService {
                 new AppMenuItem('EssMyLeave', 'Ess.MyLeave', 'flaticon-calendar', '/app/main/ess/leave'),
                 new AppMenuItem('EssMyAssets', 'Ess.MyAssets', 'flaticon-laptop', '/app/main/ess/asset'),
                 new AppMenuItem('EssMyDocuments', 'Ess.MyDocuments', 'flaticon-file-2', '/app/main/ess/document'),
+                new AppMenuItem(
+                    'EssMyPassportWithdrawals',
+                    'Ess.MyPassportWithdrawals',
+                    'flaticon-suitcase',
+                    '/app/main/ess/passport-withdrawal'
+                ),
+                new AppMenuItem('EssMyExitPermits', 'Ess.MyExitPermits', 'flaticon-paper-plane', '/app/main/ess/exit-permit'),
+                new AppMenuItem('EssMyHRServices', 'Ess.MyHRServices', 'flaticon-notepad', '/app/main/ess/hr-service'),
+                new AppMenuItem('EssMyLetterRequests', 'Ess.MyLetterRequests', 'flaticon-mail-1', '/app/main/ess/letter'),
                 new AppMenuItem('EssMyLoans', 'Ess.MyLoans', 'flaticon-piggy-bank', '/app/main/ess/loan'),
                 new AppMenuItem('EssMyOvertime', 'Ess.MyOvertime', 'flaticon-time-3', '/app/main/ess/overtime'),
                 new AppMenuItem('EssMyTickets', 'Ess.MyTickets', 'flaticon-price-tag', '/app/main/ess/ticket'),
