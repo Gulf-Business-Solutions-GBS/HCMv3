@@ -32,19 +32,22 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly ILeaveBalanceService _leaveBalanceService;
     private readonly IRepository<TimeEvent> _timeEventRepository;
+    private readonly IRepository<News> _newsRepository;
 
     public MyDashboardAppService(
         IEmployeeSessionService employeeSession,
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
         ILeaveBalanceService leaveBalanceService,
-        IRepository<TimeEvent> timeEventRepository)
+        IRepository<TimeEvent> timeEventRepository,
+        IRepository<News> newsRepository)
     {
         _employeeSession = employeeSession;
         _employeeRepository = employeeRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _leaveBalanceService = leaveBalanceService;
         _timeEventRepository = timeEventRepository;
+        _newsRepository = newsRepository;
     }
 
     public async Task<MyDashboardSummaryDto> GetSummary()
@@ -58,6 +61,9 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
             // Alerts are about colleagues, not about you, so they are filled in even for a user with no
             // employee record of their own.
             Alerts = await GetAlertsAsync(today),
+            // Announcements are tenant news, not personal, so they load for a user with no employee
+            // record too -- an administrator should still see what was posted.
+            Announcements = await GetAnnouncementsAsync(employeeId, today),
         };
 
         if (!employeeId.HasValue)
@@ -208,6 +214,55 @@ public class MyDashboardAppService : HCMv3AppServiceBase, IMyDashboardAppService
     private static bool IsClockIn(TimeEvent timeEvent)
     {
         return string.Equals(timeEvent.TransType?.Code?.Trim(), TransTypeCodes.ClockIn, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Active announcements, ported from legacy AnnouncementRepository.GetAnnouncements.
+    ///
+    /// LEGACY RULES KEPT EXACTLY: issued on or before now, not yet expired, newest first, at most three.
+    /// The cap is the legacy's and worth keeping -- a dashboard panel that scrolls stops being read.
+    ///
+    /// TARGETING. Legacy resolved announcements department-wise. News carries an optional
+    /// OrganizationUnitId: null means everybody, a value means that unit only. An employee with no org
+    /// assignment therefore sees only the untargeted ones, which on this deployment is all of them --
+    /// every EmployeeOrgAssignment row has a null OrganizationUnitId. That is the honest result of an
+    /// unpopulated org chart, not a bug in the filter.
+    /// </summary>
+    private async Task<List<MyDashboardAnnouncementDto>> GetAnnouncementsAsync(int? employeeId, DateTime today)
+    {
+        long? myOrgUnitId = null;
+
+        if (employeeId.HasValue)
+        {
+            myOrgUnitId = await _orgAssignmentRepository.GetAll()
+                .Where(a => a.EmployeeId == employeeId.Value && a.StartDate <= today)
+                .OrderByDescending(a => a.StartDate)
+                .Select(a => a.OrganizationUnitId)
+                .FirstOrDefaultAsync();
+        }
+
+        var now = Clock.Now;
+
+        var announcements = await _newsRepository.GetAll()
+            .Where(n => n.IssueDate <= now && now <= n.ExpiryDate)
+            // Untargeted reaches everyone; targeted reaches only its own unit.
+            .Where(n => n.OrganizationUnitId == null || n.OrganizationUnitId == myOrgUnitId)
+            .OrderByDescending(n => n.IssueDate)
+            .Take(3)
+            .ToListAsync();
+
+        return announcements.Select(n => new MyDashboardAnnouncementDto
+        {
+            Id = n.Id,
+            Title = n.Title,
+            TitleAr = n.TitleAr,
+            // Comments is the plain-text summary; DocumentHtml is the full article. The dashboard shows
+            // the summary and links onward, exactly as legacy did -- rendering stored HTML into the
+            // dashboard would let whoever wrote the announcement style the page around it.
+            Body = n.Comments,
+            BodyAr = n.CommentAr,
+            IssueDate = n.IssueDate,
+        }).ToList();
     }
 
     /// <summary>

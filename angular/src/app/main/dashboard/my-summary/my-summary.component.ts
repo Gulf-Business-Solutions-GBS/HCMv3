@@ -37,6 +37,7 @@ export class MySummaryComponent extends AppComponentBase implements OnInit {
     readonly leaveBalances = computed(() => this.summary()?.leaveBalances ?? []);
     readonly alerts = computed(() => this.summary()?.alerts);
     readonly attendance = computed(() => this.summary()?.todayAttendance);
+    readonly announcements = computed(() => this.summary()?.announcements ?? []);
 
     /**
      * Fixed, common tasks -- distinct from the Shortcuts tile, which is what YOU chose. These are the

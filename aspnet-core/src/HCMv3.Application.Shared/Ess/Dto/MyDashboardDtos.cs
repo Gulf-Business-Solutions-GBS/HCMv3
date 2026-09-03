@@ -62,6 +62,9 @@ public class MyDashboardSummaryDto
     public MyDashboardAttendanceDto TodayAttendance { get; set; }
 
     public MyDashboardAlertsDto Alerts { get; set; }
+
+    /// <summary>Active announcements, newest first. Empty rather than null when there are none.</summary>
+    public List<MyDashboardAnnouncementDto> Announcements { get; set; }
 }
 
 /// <summary>
@@ -90,4 +93,25 @@ public class MyDashboardAttendanceDto
 
     /// <summary>True when the last event was a clock-in: the person is currently on site.</summary>
     public bool IsCurrentlyIn { get; set; }
+}
+
+/// <summary>
+/// One announcement, as the dashboard shows it.
+///
+/// Bilingual because the legacy screen was: Title/TitleAr and Comments/CommentAr are separate columns,
+/// and picking one server-side would fix the language at fetch time rather than at render time.
+/// </summary>
+public class MyDashboardAnnouncementDto
+{
+    public int Id { get; set; }
+
+    public string Title { get; set; }
+
+    public string TitleAr { get; set; }
+
+    public string Body { get; set; }
+
+    public string BodyAr { get; set; }
+
+    public DateTime IssueDate { get; set; }
 }

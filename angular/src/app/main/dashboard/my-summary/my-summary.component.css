@@ -219,3 +219,64 @@
     font-size: 12.5px;
     color: #8b9aa3;
 }
+
+/* ---------- announcements ---------- */
+.ms-ann {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf1f3;
+}
+
+.ms-ann:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Date block echoes the legacy screen's calendar tile -- the posting date is how people tell one
+   announcement from another when the titles are similar. */
+.ms-ann-date {
+    flex: 0 0 auto;
+    width: 52px;
+    padding: 8px 0;
+    text-align: center;
+    background: #f7f9fa;
+    border: 1px solid #dfe6ea;
+    border-radius: 4px;
+}
+
+.ms-ann-day {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1;
+    color: #23313a;
+}
+
+.ms-ann-month {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #8b9aa3;
+}
+
+.ms-ann-text {
+    min-width: 0;
+}
+
+.ms-ann-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #23313a;
+}
+
+.ms-ann-body {
+    margin: 4px 0 0;
+    font-size: 12.5px;
+    color: #6b7c85;
+    /* Clamped: an announcement can be several paragraphs, and one long post should not push the rest
+       of the dashboard off the screen. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

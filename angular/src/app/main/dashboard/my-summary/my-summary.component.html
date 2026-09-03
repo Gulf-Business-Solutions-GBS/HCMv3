@@ -123,4 +123,28 @@
             </div>
         }
     </div>
+
+    <!-- Announcements last and full width, as on the legacy screen: they are read occasionally, unlike
+         the tiles above which are checked daily. -->
+    @if (announcements().length) {
+        <div class="card card-custom ms-card">
+            <div class="card-body">
+                <div class="ms-section-head">{{ 'Announcements' | localize }}</div>
+                @for (item of announcements(); track item.id) {
+                    <div class="ms-ann">
+                        <div class="ms-ann-date">
+                            <div class="ms-ann-day">{{ toDate(item.issueDate) | date: 'dd' }}</div>
+                            <div class="ms-ann-month">{{ toDate(item.issueDate) | date: 'MMM' }}</div>
+                        </div>
+                        <div class="ms-ann-text">
+                            <div class="ms-ann-title">{{ item.title }}</div>
+                            @if (item.body) {
+                                <p class="ms-ann-body">{{ item.body }}</p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 }

@@ -30967,6 +30967,234 @@ export class EmployeeAssetsServiceProxy {
 }
 
 @Injectable()
+export class EmployeeAssignedTasksServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getAll(body?: GetAllEmployeeAssignedTasksInput | undefined): Observable<PagedResultDtoOfEmployeeAssignedTaskDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAssignedTasks/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfEmployeeAssignedTaskDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfEmployeeAssignedTaskDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfEmployeeAssignedTaskDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfEmployeeAssignedTaskDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getEmployeeAssignedTaskForEdit(id?: number | undefined): Observable<GetEmployeeAssignedTaskForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAssignedTasks/GetEmployeeAssignedTaskForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeeAssignedTaskForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeAssignedTaskForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetEmployeeAssignedTaskForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetEmployeeAssignedTaskForEditOutput>;
+        }));
+    }
+
+    protected processGetEmployeeAssignedTaskForEdit(response: HttpResponseBase): Observable<GetEmployeeAssignedTaskForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetEmployeeAssignedTaskForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEdit(body?: CreateOrEditEmployeeAssignedTaskDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAssignedTasks/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    delete(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeAssignedTasks/Delete?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeAttendanceQuotasServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -159534,6 +159762,13 @@ export enum AssetStatus {
     Inactive = 1,
 }
 
+export enum AssignedTaskStatus {
+    Opened = 0,
+    Closed = 1,
+    Working = 2,
+    OnHold = 3,
+}
+
 export class AttendanceLogReportRowDto implements IAttendanceLogReportRowDto {
     id!: number;
     employeeCode!: string | undefined;
@@ -170364,6 +170599,70 @@ export interface ICreateOrEditEmployeeAssetInvoiceDto {
     employeePlanAmount: number;
     deductionAmount: number;
     deductFromEmployee: boolean;
+    comments: string | undefined;
+}
+
+export class CreateOrEditEmployeeAssignedTaskDto implements ICreateOrEditEmployeeAssignedTaskDto {
+    id!: number | undefined;
+    employeeId!: number;
+    subject!: string;
+    description!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    taskStatus!: AssignedTaskStatus;
+    comments!: string | undefined;
+
+    constructor(data?: ICreateOrEditEmployeeAssignedTaskDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.subject = _data["subject"];
+            this.description = _data["description"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.taskStatus = _data["taskStatus"];
+            this.comments = _data["comments"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditEmployeeAssignedTaskDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditEmployeeAssignedTaskDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["subject"] = this.subject;
+        data["description"] = this.description;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["taskStatus"] = this.taskStatus;
+        data["comments"] = this.comments;
+        return data;
+    }
+}
+
+export interface ICreateOrEditEmployeeAssignedTaskDto {
+    id: number | undefined;
+    employeeId: number;
+    subject: string;
+    description: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    taskStatus: AssignedTaskStatus;
     comments: string | undefined;
 }
 
@@ -194974,6 +195273,90 @@ export interface IEmployeeAssetReportRowDto {
     value: number;
 }
 
+export class EmployeeAssignedTaskDto implements IEmployeeAssignedTaskDto {
+    id!: number;
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeFullNameEn!: string | undefined;
+    subject!: string | undefined;
+    description!: string | undefined;
+    startDate!: DateTime;
+    endDate!: DateTime;
+    taskStatus!: AssignedTaskStatus;
+    comments!: string | undefined;
+    creatorUserId!: number | undefined;
+    workflowStatus!: RequestStatus;
+    workflowRequestId!: number | undefined;
+
+    constructor(data?: IEmployeeAssignedTaskDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeFullNameEn = _data["employeeFullNameEn"];
+            this.subject = _data["subject"];
+            this.description = _data["description"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : undefined as any;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : undefined as any;
+            this.taskStatus = _data["taskStatus"];
+            this.comments = _data["comments"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.workflowStatus = _data["workflowStatus"];
+            this.workflowRequestId = _data["workflowRequestId"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeAssignedTaskDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAssignedTaskDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeFullNameEn"] = this.employeeFullNameEn;
+        data["subject"] = this.subject;
+        data["description"] = this.description;
+        data["startDate"] = this.startDate ? this.startDate.toString() : undefined as any;
+        data["endDate"] = this.endDate ? this.endDate.toString() : undefined as any;
+        data["taskStatus"] = this.taskStatus;
+        data["comments"] = this.comments;
+        data["creatorUserId"] = this.creatorUserId;
+        data["workflowStatus"] = this.workflowStatus;
+        data["workflowRequestId"] = this.workflowRequestId;
+        return data;
+    }
+}
+
+export interface IEmployeeAssignedTaskDto {
+    id: number;
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeFullNameEn: string | undefined;
+    subject: string | undefined;
+    description: string | undefined;
+    startDate: DateTime;
+    endDate: DateTime;
+    taskStatus: AssignedTaskStatus;
+    comments: string | undefined;
+    creatorUserId: number | undefined;
+    workflowStatus: RequestStatus;
+    workflowRequestId: number | undefined;
+}
+
 export class EmployeeAttendanceDto implements IEmployeeAttendanceDto {
     id!: number;
     employeeId!: number;
@@ -215700,6 +216083,62 @@ export interface IGetAllEmployeeAssetsInput {
     employeeId: number | undefined;
 }
 
+export class GetAllEmployeeAssignedTasksInput implements IGetAllEmployeeAssignedTasksInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    employeeId!: number | undefined;
+    taskStatus!: AssignedTaskStatus;
+    filter!: string | undefined;
+
+    constructor(data?: IGetAllEmployeeAssignedTasksInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.employeeId = _data["employeeId"];
+            this.taskStatus = _data["taskStatus"];
+            this.filter = _data["filter"];
+        }
+    }
+
+    static fromJS(data: any): GetAllEmployeeAssignedTasksInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllEmployeeAssignedTasksInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["employeeId"] = this.employeeId;
+        data["taskStatus"] = this.taskStatus;
+        data["filter"] = this.filter;
+        return data;
+    }
+}
+
+export interface IGetAllEmployeeAssignedTasksInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    employeeId: number | undefined;
+    taskStatus: AssignedTaskStatus;
+    filter: string | undefined;
+}
+
 export class GetAllEmployeeAttendanceQuotasInput implements IGetAllEmployeeAttendanceQuotasInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -234354,6 +234793,46 @@ export interface IGetEmployeeAssetReportInput {
     toDate: DateTime | undefined;
     employeeCode: string | undefined;
     employeeStatus: EmployeeStatus;
+}
+
+export class GetEmployeeAssignedTaskForEditOutput implements IGetEmployeeAssignedTaskForEditOutput {
+    employeeAssignedTask!: CreateOrEditEmployeeAssignedTaskDto;
+    canEditTaskDetails!: boolean;
+
+    constructor(data?: IGetEmployeeAssignedTaskForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeAssignedTask = _data["employeeAssignedTask"] ? CreateOrEditEmployeeAssignedTaskDto.fromJS(_data["employeeAssignedTask"]) : undefined as any;
+            this.canEditTaskDetails = _data["canEditTaskDetails"];
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeAssignedTaskForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeAssignedTaskForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeAssignedTask"] = this.employeeAssignedTask ? this.employeeAssignedTask.toJSON() : undefined as any;
+        data["canEditTaskDetails"] = this.canEditTaskDetails;
+        return data;
+    }
+}
+
+export interface IGetEmployeeAssignedTaskForEditOutput {
+    employeeAssignedTask: CreateOrEditEmployeeAssignedTaskDto;
+    canEditTaskDetails: boolean;
 }
 
 export class GetEmployeeAttendanceForEditOutput implements IGetEmployeeAttendanceForEditOutput {
@@ -264544,6 +265023,62 @@ export interface IMyDashboardAlertsDto {
     workAnniversariesThisMonth: number;
 }
 
+export class MyDashboardAnnouncementDto implements IMyDashboardAnnouncementDto {
+    id!: number;
+    title!: string | undefined;
+    titleAr!: string | undefined;
+    body!: string | undefined;
+    bodyAr!: string | undefined;
+    issueDate!: DateTime;
+
+    constructor(data?: IMyDashboardAnnouncementDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.titleAr = _data["titleAr"];
+            this.body = _data["body"];
+            this.bodyAr = _data["bodyAr"];
+            this.issueDate = _data["issueDate"] ? DateTime.fromISO(_data["issueDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): MyDashboardAnnouncementDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyDashboardAnnouncementDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["titleAr"] = this.titleAr;
+        data["body"] = this.body;
+        data["bodyAr"] = this.bodyAr;
+        data["issueDate"] = this.issueDate ? this.issueDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IMyDashboardAnnouncementDto {
+    id: number;
+    title: string | undefined;
+    titleAr: string | undefined;
+    body: string | undefined;
+    bodyAr: string | undefined;
+    issueDate: DateTime;
+}
+
 export class MyDashboardAttendanceDto implements IMyDashboardAttendanceDto {
     date!: DateTime;
     firstIn!: DateTime | undefined;
@@ -264709,6 +265244,7 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
     leaveBalances!: MyDashboardLeaveBalanceDto[] | undefined;
     todayAttendance!: MyDashboardAttendanceDto;
     alerts!: MyDashboardAlertsDto;
+    announcements!: MyDashboardAnnouncementDto[] | undefined;
 
     constructor(data?: IMyDashboardSummaryDto) {
         if (data) {
@@ -264729,6 +265265,11 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
             }
             this.todayAttendance = _data["todayAttendance"] ? MyDashboardAttendanceDto.fromJS(_data["todayAttendance"]) : undefined as any;
             this.alerts = _data["alerts"] ? MyDashboardAlertsDto.fromJS(_data["alerts"]) : undefined as any;
+            if (Array.isArray(_data["announcements"])) {
+                this.announcements = [] as any;
+                for (let item of _data["announcements"])
+                    this.announcements!.push(MyDashboardAnnouncementDto.fromJS(item));
+            }
         }
     }
 
@@ -264749,6 +265290,11 @@ export class MyDashboardSummaryDto implements IMyDashboardSummaryDto {
         }
         data["todayAttendance"] = this.todayAttendance ? this.todayAttendance.toJSON() : undefined as any;
         data["alerts"] = this.alerts ? this.alerts.toJSON() : undefined as any;
+        if (Array.isArray(this.announcements)) {
+            data["announcements"] = [];
+            for (let item of this.announcements)
+                data["announcements"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -264758,6 +265304,7 @@ export interface IMyDashboardSummaryDto {
     leaveBalances: MyDashboardLeaveBalanceDto[] | undefined;
     todayAttendance: MyDashboardAttendanceDto;
     alerts: MyDashboardAlertsDto;
+    announcements: MyDashboardAnnouncementDto[] | undefined;
 }
 
 export class MyDelegationDto implements IMyDelegationDto {
@@ -275544,6 +276091,54 @@ export class PagedResultDtoOfEmployeeAssetReportRowDto implements IPagedResultDt
 
 export interface IPagedResultDtoOfEmployeeAssetReportRowDto {
     items: EmployeeAssetReportRowDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfEmployeeAssignedTaskDto implements IPagedResultDtoOfEmployeeAssignedTaskDto {
+    items!: EmployeeAssignedTaskDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfEmployeeAssignedTaskDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(EmployeeAssignedTaskDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfEmployeeAssignedTaskDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfEmployeeAssignedTaskDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfEmployeeAssignedTaskDto {
+    items: EmployeeAssignedTaskDto[] | undefined;
     totalCount: number;
 }
 
