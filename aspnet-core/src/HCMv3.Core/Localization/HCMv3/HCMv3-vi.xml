@@ -662,7 +662,6 @@
     <text name="WrongSmsVerificationCode">Mã xác minh sai!</text>
     <text name="OrganizationUnits">Cơ cấu Tổ chức</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">Bạn có thể quản lý các Cơ cấu Tổ chức của người dùng từ trang Cơ cấu Tổ chức.</text>
-    <text name="DemoUiComponents">Thành phần giao diện người dùng demo</text>
     <text name="DateAndTimePickers">Bộ chọn ngày và giờ</text>
     <text name="FileUpload">Tập tin tải lên</text>
     <text name="PostedValue">Giá trị đã đăng</text>
@@ -672,11 +671,6 @@
     <text name="PostedData">Dữ liệu đã đăng</text>
     <text name="Remove">Tẩy</text>
     <text name="OrganizationUnitNotFoundForThisUser">Không tìm thấy Cơ cấu Tổ chức nào cho người dùng này.</text>
-    <text name="DemoUiComponents_Info">
-      Trang này giới thiệu một số thành phần giao diện người dùng hữu ích mà bạn có thể sử dụng trong ứng dụng của mình.
-      Các thành phần này được triển khai full stack (bao gồm cả server side).
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Tham khảo Theme Metronic để biết thêm các thành phần giao diện người dùng</text>
     <text name="Image">Hình ảnh</text>
     <text name="File">Tập tin</text>
     <text name="Link">Liên kết</text>

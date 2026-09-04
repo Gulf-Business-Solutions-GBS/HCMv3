@@ -3773,14 +3773,6 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Host.Dashboard' },
                     },
                     {
-                        path: 'demo-ui-components',
-                        loadComponent: () =>
-                            import('./admin/demo-ui-components/demo-ui-components.component').then(
-                                (m) => m.DemoUiComponentsComponent
-                            ),
-                        data: { permission: 'Pages.DemoUiComponents' },
-                    },
-                    {
                         // Go-Live Setup. The only feature-level nested route block in this file:
                         // the shell owns the navigation rail and overall progress, and the board and the
                         // individual steps render into its outlet. Steps are dispatched by :stepPath from
@@ -3808,27 +3800,6 @@ export const appRoutes: Routes = [
                                     ).then((m) => m.GoLiveStepComponent),
                             },
                         ],
-                    },
-                    {
-                        // Prototype harness for the Go-Live Setup paste grid. Sits in the demo
-                        // gallery (and borrows its permission) so the grid can be exercised before the
-                        // Go-Live Setup shell, routes and Pages.GoLiveSetup permission exist.
-                        path: 'paste-grid-demo',
-                        loadComponent: () =>
-                            import('./admin/demo-ui-components/demo-ui-paste-grid.component').then(
-                                (m) => m.DemoUiPasteGridComponent
-                            ),
-                        data: { permission: 'Pages.DemoUiComponents' },
-                    },
-                    {
-                        // Prototype harness for the Go-Live Setup question card, using the real
-                        // S1.2 "How you pay" step. Same borrowed permission as the paste grid demo.
-                        path: 'question-card-demo',
-                        loadComponent: () =>
-                            import('./admin/demo-ui-components/demo-ui-question-card.component').then(
-                                (m) => m.DemoUiQuestionCardComponent
-                            ),
-                        data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
                         path: 'screen-codes',

@@ -663,7 +663,6 @@
     <text name="WrongSmsVerificationCode">Wrong verification code!</text>
     <text name="OrganizationUnits">Organisation Units</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">You can manage User's organisation units From Organisation Units page.</text>
-    <text name="DemoUiComponents">Demo UI Components</text>
     <text name="DateAndTimePickers">Date and Time Pickers</text>
     <text name="FileUpload">File Upload</text>
     <text name="PostedValue">Posted value</text>
@@ -673,11 +672,6 @@
     <text name="PostedData">Posted data</text>
     <text name="Remove">Remove</text>
     <text name="OrganizationUnitNotFoundForThisUser">There is no Organisation Unit For this user.</text>
-    <text name="DemoUiComponents_Info">
-      This page shows a few useful UI components those can be used in your application.
-      Components in this page are implemented as full stack (includes the server side).
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Check Metronic theme for more UI components</text>
     <text name="Image">Image</text>
     <text name="File">File</text>
     <text name="Link">Link</text>

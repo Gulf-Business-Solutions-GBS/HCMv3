@@ -62,7 +62,6 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.TenantRegistrationServiceProxy,
     ApiServiceProxies.HostDashboardServiceProxy,
     ApiServiceProxies.PaymentServiceProxy,
-    ApiServiceProxies.DemoUiComponentsServiceProxy,
     ApiServiceProxies.InvoiceServiceProxy,
     ApiServiceProxies.SubscriptionServiceProxy,
     ApiServiceProxies.InstallServiceProxy,

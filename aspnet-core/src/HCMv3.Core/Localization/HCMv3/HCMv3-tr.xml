@@ -676,7 +676,6 @@
     <text name="YourPhoneNumberIsVerified">Telefon numaranız doğrulandı</text>
     <text name="YourPhoneNumberIsNotVerified">Telefon numaranız doğrulanmadı</text>
     <text name="WrongSmsVerificationCode">Yanlış doğrulama kodu !</text>
-    <text name="DemoUiComponents">Demo UI Bileşenleri</text>
     <text name="DateAndTimePickers">Tarih ve Saat Seçici</text>
     <text name="FileUpload">Dosya Yükleme</text>
     <text name="PostedValue">Gönderilen değer</text>
@@ -687,11 +686,6 @@
     <text name="Remove">Kaldır</text>
     <text name="OrganizationUnitNotFoundForThisUser">Bu kullanıcıya ait bir Organizasyon Brimi yok.</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">Kullanıcının bağlı olduğu organizasyon birimlerini, Organizasyon Birimleri sayfasından yönetebilirsiniz.</text>
-    <text name="DemoUiComponents_Info">
-      Bu sayfada uygulamanız için örnek olması amacıyla birkaç kullanışlı bileşen gösteriliyor.
-      Bu bileşenlerin sunucu tarafı da kodlanmıştır.
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Daha fazla bileşen için Metronic temasına bakınız</text>
     <text name="Image">Resim</text>
     <text name="File">Dosya</text>
     <text name="Link">Link</text>

@@ -681,7 +681,6 @@
     <text name="YourPhoneNumberIsNotVerified">您的电话号码未经过验证</text>
     <text name="WrongSmsVerificationCode">错误的验证码！</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">您可以从“组织单位”页面管理用户的组织单位。</text>
-    <text name="DemoUiComponents">演示UI组件</text>
     <text name="DateAndTimePickers">日期和时间选择器</text>
     <text name="FileUpload">上传文件</text>
     <text name="PostedValue">发布数值</text>
@@ -691,11 +690,6 @@
     <text name="PostedData">发布数据</text>
     <text name="Remove">删除</text>
     <text name="OrganizationUnitNotFoundForThisUser">此用户没有组织单位。</text>
-    <text name="DemoUiComponents_Info">
-      此页面显示了一些可在您的应用程序中使用的UI组件。
-            此页面中的组件实现为全栈（包括服务器端）。
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">检查Metronic主题以获取更多UI组件</text>
     <text name="Image">图像</text>
     <text name="File">文件</text>
     <text name="Link">链接</text>

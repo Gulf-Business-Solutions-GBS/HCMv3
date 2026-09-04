@@ -29,7 +29,6 @@ public class AppAuthorizationProvider : AuthorizationProvider
         //COMMON PERMISSIONS (FOR BOTH OF TENANTS AND HOST)
 
         var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
-        pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
         pages.CreateChildPermission(AppPermissions.Pages_GoLiveSetup, L("GoLiveSetup"));
 
         //EMPLOYEE SELF SERVICE

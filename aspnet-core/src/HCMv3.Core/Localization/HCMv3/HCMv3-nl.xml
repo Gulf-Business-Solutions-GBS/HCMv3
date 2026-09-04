@@ -662,7 +662,6 @@
     <text name="WrongSmsVerificationCode">Verkeerde verificatie code!</text>
     <text name="OrganizationUnits">Organisatie-afdelingen</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">U kunt uw gebruiker's organisatie-afdeling beheren via de Organisatie-afdelingen pagina.</text>
-    <text name="DemoUiComponents">Demo UI Componenten</text>
     <text name="DateAndTimePickers">Datum en Tijd selecties</text>
     <text name="FileUpload">Bestand Upload</text>
     <text name="PostedValue">Verzonden waarde</text>
@@ -672,11 +671,6 @@
     <text name="PostedData">Verzonden data</text>
     <text name="Remove">Verwijderen</text>
     <text name="OrganizationUnitNotFoundForThisUser">Dit is geen bestaande organisatie-afdeling voor deze gebruiker.</text>
-    <text name="DemoUiComponents_Info">
-      Deze pagina toont enkele bruikbare UI componenten welke gebruikt kunnen worden in uw applicatie.
-      Componenten op deze pagina worden geïmplementeerd als full stack (inclusief de server-zijde).
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Bekijk het Metronic thema voor meer UI componenten</text>
     <text name="Image">Afbeelding</text>
     <text name="File">Bestand</text>
     <text name="Link">Link</text>

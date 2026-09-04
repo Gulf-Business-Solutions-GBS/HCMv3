@@ -10,7 +10,6 @@ public static class AppPermissions
 
     public const string Pages = "Pages";
 
-    public const string Pages_DemoUiComponents = "Pages.DemoUiComponents";
 
     /// <summary>
     /// Go-Live Setup -- the guided go-live setup (questions, bulk sheets, readiness board).

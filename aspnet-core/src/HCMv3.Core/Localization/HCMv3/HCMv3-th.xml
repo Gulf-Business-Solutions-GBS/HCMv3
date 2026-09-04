@@ -139,10 +139,6 @@
     <text name="DeletingRole">การลบบทบาท</text>
     <text name="DeletingTenant">การลบผู้เช่า</text>
     <text name="DeletingUser">การลบผู้ใช้</text>
-    <text name="DemoUiComponents_Info">
-      หน้านี้แสดงส่วนประกอบ UI ที่มีประโยชน์ที่สามารถนํามาใช้ในแอปพลิเคชั่นของคุณ
-      ส่วนประกอบอื่นๆในเพจนี้จะถูกนําไปใช้แบบเต็มสแต็ค (รวมถึงด้านเซิร์ฟเวอร์)
-    </text>
     <text name="Detail">รายละเอียด</text>
     <text name="Disable">ปิดการใช้งาน</text>
     <text name="Disabled">ปิดการใช้งาน</text>

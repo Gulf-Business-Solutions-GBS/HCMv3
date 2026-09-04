@@ -664,7 +664,6 @@
     <text name="WrongSmsVerificationCode">Code de vérification erroné !</text>
     <text name="OrganizationUnits">Unités d'organisation</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">Gérez les organisations des utilisateurs depuis la page des Unités d'Organisation.</text>
-    <text name="DemoUiComponents">Démo - Éléments d'UI</text>
     <text name="DateAndTimePickers">Sélecteurs de date et heure</text>
     <text name="FileUpload">Téléchargement de fichier</text>
     <text name="PostedValue">Valeur envoyée</text>
@@ -674,11 +673,6 @@
     <text name="PostedData">Données envoyées</text>
     <text name="Remove">Supprimer</text>
     <text name="OrganizationUnitNotFoundForThisUser">Aucune organisation n'est définie pour cet utilisateur.</text>
-    <text name="DemoUiComponents_Info">
-      Cette page montre quelques composants d'interface utilisateur que vous pouvez utiliser dans votre application.
-      Les composants de cette page sont intégrés en full-stack (gestion côté serveur incluse).
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Retrouvez plus de composants d'UI dans le thème Metronic</text>
     <text name="Image">Image</text>
     <text name="File">Fichier</text>
     <text name="Link">Lien</text>

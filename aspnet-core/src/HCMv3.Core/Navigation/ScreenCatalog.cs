@@ -78,7 +78,6 @@ public static class ScreenCatalog
         new("app.admin.competency-by-job-title-details", "SCD005", "CompetencyDevelopment", "CompetencyByJobTitleDetails", "/app/admin/competency-by-job-title-details", "Pages.CompetencyDevelopment.CompetencyByJobTitles"),
         new("app.admin.competency-by-job-titles", "SCD006", "CompetencyDevelopment", "CompetencyByJobTitles", "/app/admin/competency-by-job-titles", "Pages.CompetencyDevelopment.CompetencyByJobTitles"),
         new("app.admin.competency-types", "SCD007", "CompetencyDevelopment", "CompetencyTypes", "/app/admin/competency-types", "Pages.CompetencyDevelopment.CompetencyTypes"),
-        new("app.admin.demo-ui-components", "SDEV001", "DemoUiComponents", "DemoUiComponents", "/app/admin/demo-ui-components", "Pages.DemoUiComponents"),
         new("app.main.ess", "SGEN001", "General", "EssHome", "/app/main/ess", "Ess"),
         new("app.main.ess.asset", "SGEN002", "General", "EssMyAssets", "/app/main/ess/asset", "Ess.MyAssets"),
         new("app.main.ess.attendance", "SGEN003", "General", "EssMyAttendance", "/app/main/ess/attendance", "Ess.MyAttendance"),

@@ -664,7 +664,6 @@
     <text name="WrongSmsVerificationCode">رمز التحقق غير صحيح!</text>
     <text name="OrganizationUnits">الوحدات التنظيمية</text>
     <text name="YouCanManageUsersOrganizationUnitsFromOrganizationUnitsPage">يمكنك إدارة وحدات التنظيم من صفحة الوحدات التنظيمية.</text>
-    <text name="DemoUiComponents">مكونات واجهة المستخدم التجريبية</text>
     <text name="DateAndTimePickers">إختيار التاريخ و الوقت</text>
     <text name="FileUpload">تحميل الملف</text>
     <text name="PostedValue">القيمة المنشورة</text>
@@ -674,11 +673,6 @@
     <text name="PostedData">البيانات المنشورة</text>
     <text name="Remove">إزالة</text>
     <text name="OrganizationUnitNotFoundForThisUser">لا توجد وحدة تنظيمية لهذا المستخدم.</text>
-    <text name="DemoUiComponents_Info">
-      This page shows a few useful UI components those can be used in your application.
-      Components in this page are implemented as full stack (includes the server side).
-    </text>
-    <text name="DemoUiComponents_Info_Metronic_Link_Text">Check Metronic theme for more UI components</text>
     <text name="Image">صورة</text>
     <text name="File">ملف</text>
     <text name="Link">رابط</text>
