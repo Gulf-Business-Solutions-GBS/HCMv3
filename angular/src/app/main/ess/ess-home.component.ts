@@ -84,7 +84,10 @@ export class EssHomeComponent extends AppComponentBase implements OnInit {
 
     /** Initials stand in for a missing photo, so the card never shows a broken image or an empty circle. */
     initials(): string {
-        const name = this.employeeName().trim();
+        // ?? '' because employeeName() legitimately returns null -- an unlinked account has no name, and
+        // a template that reaches this while the context says so would otherwise throw on every
+        // change-detection pass, taking the rest of the page's rendering down with it.
+        const name = (this.employeeName() ?? '').trim();
         if (!name) {
             return '?';
         }

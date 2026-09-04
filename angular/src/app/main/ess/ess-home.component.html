@@ -19,17 +19,26 @@
                 employee scope -- "sees nothing", never "sees everything". Telling them to ask HR is
                 actionable; a blank list is not. Admin accounts land here by design: they are never linked
                 to an employee.
+
+                SILENT WHEN EMBEDDED, but the branch still has to CATCH the unlinked case. On the dashboard
+                this section sits under a notice that already says the account is unlinked, and saying it
+                twice on one page reads as a fault rather than as an explanation. The guard belongs inside
+                the branch, not in its condition: excluding embedded from the condition itself dropped an
+                unlinked user through to the profile branch below, where initials() dereferenced a name
+                that does not exist and threw on every change-detection pass.
             -->
-            <div class="card card-custom gutter-b">
-                <div class="card-body">
-                    <div class="alert alert-warning mb-0">
-                        <h5 class="alert-heading">
-                            <i class="fa fa-exclamation-triangle mr-2"></i>{{ 'EmployeeSelfService' | localize }}
-                        </h5>
-                        <p class="mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
+            @if (!embedded()) {
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-0">
+                            <h5 class="alert-heading">
+                                <i class="fa fa-exclamation-triangle mr-2"></i>{{ 'EmployeeSelfService' | localize }}
+                            </h5>
+                            <p class="mb-0">{{ 'CurrentUserHasNoEmployeeRecord' | localize }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         } @else if (context()) {
             <div class="row">
                 <div class="col-xl-4 col-lg-5 col-md-12">

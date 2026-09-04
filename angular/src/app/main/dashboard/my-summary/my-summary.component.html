@@ -32,10 +32,20 @@
     @if (showNoEmployeeNotice()) {
         <!-- Where the identity card would be. An administrator account is usually not linked to an
              Employee row, so identity, leave and attendance have nothing to draw. Saying so once, here,
-             beats three silently absent tiles that read as a broken page. -->
-        <div class="alert alert-light-warning ms-notice">
-            <strong>{{ 'NotLinkedToEmployee' | localize }}</strong>
-            <div>{{ 'NotLinkedToEmployeeHint' | localize }}</div>
+             beats three silently absent tiles that read as a broken page.
+
+             THE ONLY PLACE THIS IS SAID. The embedded self-service section further down used to repeat it
+             in its own words, so an unlinked user was told the same thing twice on one screen; it now
+             stays silent when embedded and defers to this notice. -->
+        <div class="card card-custom ms-card">
+            <div class="card-body">
+                <div class="alert alert-warning mb-0">
+                    <h5 class="alert-heading">
+                        <i class="fa fa-exclamation-triangle me-2"></i>{{ 'NotLinkedToEmployee' | localize }}
+                    </h5>
+                    <p class="mb-0">{{ 'NotLinkedToEmployeeHint' | localize }}</p>
+                </div>
+            </div>
         </div>
     }
 
