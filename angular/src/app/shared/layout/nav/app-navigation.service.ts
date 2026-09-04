@@ -3032,6 +3032,147 @@ export class AppNavigationService {
                 ]
             ),
             new AppMenuItem(
+                'HealthAndSafetyManagement',
+                '',
+                'flaticon-safe-shield-protection',
+                '',
+                [],
+                [
+                    new AppMenuItem(
+                        'ActionStatuses',
+                        'Pages.HealthAndSafetyManagement.ActionStatuses',
+                        'flaticon-list-3',
+                        '/app/admin/action-statuses'
+                    ),
+                    new AppMenuItem(
+                        'FirstAidMedicines',
+                        'Pages.HealthAndSafetyManagement.FirstAidMedicines',
+                        'flaticon-list-3',
+                        '/app/admin/first-aid-medicines'
+                    ),
+                    new AppMenuItem(
+                        'IncidentClaimStatuses',
+                        'Pages.HealthAndSafetyManagement.IncidentClaimStatuses',
+                        'flaticon-list-3',
+                        '/app/admin/incident-claim-statuses'
+                    ),
+                    new AppMenuItem(
+                        'IncidentNatures',
+                        'Pages.HealthAndSafetyManagement.IncidentNatures',
+                        'flaticon-list-3',
+                        '/app/admin/incident-natures'
+                    ),
+                    new AppMenuItem(
+                        'IncidentSeverities',
+                        'Pages.HealthAndSafetyManagement.IncidentSeverities',
+                        'flaticon-list-3',
+                        '/app/admin/incident-severities'
+                    ),
+                    new AppMenuItem(
+                        'IncidentStatuses',
+                        'Pages.HealthAndSafetyManagement.IncidentStatuses',
+                        'flaticon-list-3',
+                        '/app/admin/incident-statuses'
+                    ),
+                    new AppMenuItem(
+                        'IncidentTypes',
+                        'Pages.HealthAndSafetyManagement.IncidentTypes',
+                        'flaticon-list-3',
+                        '/app/admin/incident-types'
+                    ),
+                    new AppMenuItem(
+                        'InvestigationRootCauses',
+                        'Pages.HealthAndSafetyManagement.InvestigationRootCauses',
+                        'flaticon-list-3',
+                        '/app/admin/investigation-root-causes'
+                    ),
+                    new AppMenuItem(
+                        'RiskActions',
+                        'Pages.HealthAndSafetyManagement.RiskActions',
+                        'flaticon-list-3',
+                        '/app/admin/risk-actions'
+                    ),
+                    new AppMenuItem(
+                        'RiskImpacts',
+                        'Pages.HealthAndSafetyManagement.RiskImpacts',
+                        'flaticon-list-3',
+                        '/app/admin/risk-impacts'
+                    ),
+                    new AppMenuItem(
+                        'RiskPossibilities',
+                        'Pages.HealthAndSafetyManagement.RiskPossibilities',
+                        'flaticon-list-3',
+                        '/app/admin/risk-possibilities'
+                    ),
+                    new AppMenuItem(
+                        'RiskStatuses',
+                        'Pages.HealthAndSafetyManagement.RiskStatuses',
+                        'flaticon-list-3',
+                        '/app/admin/risk-statuses'
+                    ),
+                    new AppMenuItem(
+                        'RiskTypes',
+                        'Pages.HealthAndSafetyManagement.RiskTypes',
+                        'flaticon-list-3',
+                        '/app/admin/risk-types'
+                    ),
+                    new AppMenuItem(
+                        'SafetyAreaAssets',
+                        'Pages.HealthAndSafetyManagement.SafetyAreaAssets',
+                        'flaticon-list-3',
+                        '/app/admin/safety-area-assets'
+                    ),
+                    new AppMenuItem(
+                        'ActionRegisters',
+                        'Pages.HealthAndSafetyManagement.ActionRegisters',
+                        'flaticon-list-3',
+                        '/app/admin/action-registers'
+                    ),
+                    new AppMenuItem(
+                        'FirstAidBoxes',
+                        'Pages.HealthAndSafetyManagement.FirstAidBoxes',
+                        'flaticon-list-3',
+                        '/app/admin/first-aid-boxes'
+                    ),
+                    new AppMenuItem(
+                        'IncidentClaims',
+                        'Pages.HealthAndSafetyManagement.IncidentClaims',
+                        'flaticon-list-3',
+                        '/app/admin/incident-claims'
+                    ),
+                    new AppMenuItem(
+                        'IncidentInvestigations',
+                        'Pages.HealthAndSafetyManagement.IncidentInvestigations',
+                        'flaticon-list-3',
+                        '/app/admin/incident-investigations'
+                    ),
+                    new AppMenuItem(
+                        'IncidentRegisters',
+                        'Pages.HealthAndSafetyManagement.IncidentRegisters',
+                        'flaticon-list-3',
+                        '/app/admin/incident-registers'
+                    ),
+                    new AppMenuItem(
+                        'RiskRegisters',
+                        'Pages.HealthAndSafetyManagement.RiskRegisters',
+                        'flaticon-list-3',
+                        '/app/admin/risk-registers'
+                    ),
+                    new AppMenuItem(
+                        'SafetyChecklists',
+                        'Pages.HealthAndSafetyManagement.SafetyChecklists',
+                        'flaticon-list-3',
+                        '/app/admin/safety-checklists'
+                    ),
+                    new AppMenuItem(
+                        'SiteAudits',
+                        'Pages.HealthAndSafetyManagement.SiteAudits',
+                        'flaticon-list-3',
+                        '/app/admin/site-audits'
+                    ),
+                ]
+            ),
+            new AppMenuItem(
                 'SystemSettings',
                 '',
                 'flaticon-settings',
@@ -3436,147 +3577,6 @@ export class AppNavigationService {
                         false,
                         {},
                         () => this._appSessionService.isSessionManagementEnabled
-                    ),
-                ]
-            ),
-            new AppMenuItem(
-                'HealthAndSafetyManagement',
-                '',
-                'flaticon-safe-shield-protection',
-                '',
-                [],
-                [
-                    new AppMenuItem(
-                        'ActionStatuses',
-                        'Pages.HealthAndSafetyManagement.ActionStatuses',
-                        'flaticon-list-3',
-                        '/app/admin/action-statuses'
-                    ),
-                    new AppMenuItem(
-                        'FirstAidMedicines',
-                        'Pages.HealthAndSafetyManagement.FirstAidMedicines',
-                        'flaticon-list-3',
-                        '/app/admin/first-aid-medicines'
-                    ),
-                    new AppMenuItem(
-                        'IncidentClaimStatuses',
-                        'Pages.HealthAndSafetyManagement.IncidentClaimStatuses',
-                        'flaticon-list-3',
-                        '/app/admin/incident-claim-statuses'
-                    ),
-                    new AppMenuItem(
-                        'IncidentNatures',
-                        'Pages.HealthAndSafetyManagement.IncidentNatures',
-                        'flaticon-list-3',
-                        '/app/admin/incident-natures'
-                    ),
-                    new AppMenuItem(
-                        'IncidentSeverities',
-                        'Pages.HealthAndSafetyManagement.IncidentSeverities',
-                        'flaticon-list-3',
-                        '/app/admin/incident-severities'
-                    ),
-                    new AppMenuItem(
-                        'IncidentStatuses',
-                        'Pages.HealthAndSafetyManagement.IncidentStatuses',
-                        'flaticon-list-3',
-                        '/app/admin/incident-statuses'
-                    ),
-                    new AppMenuItem(
-                        'IncidentTypes',
-                        'Pages.HealthAndSafetyManagement.IncidentTypes',
-                        'flaticon-list-3',
-                        '/app/admin/incident-types'
-                    ),
-                    new AppMenuItem(
-                        'InvestigationRootCauses',
-                        'Pages.HealthAndSafetyManagement.InvestigationRootCauses',
-                        'flaticon-list-3',
-                        '/app/admin/investigation-root-causes'
-                    ),
-                    new AppMenuItem(
-                        'RiskActions',
-                        'Pages.HealthAndSafetyManagement.RiskActions',
-                        'flaticon-list-3',
-                        '/app/admin/risk-actions'
-                    ),
-                    new AppMenuItem(
-                        'RiskImpacts',
-                        'Pages.HealthAndSafetyManagement.RiskImpacts',
-                        'flaticon-list-3',
-                        '/app/admin/risk-impacts'
-                    ),
-                    new AppMenuItem(
-                        'RiskPossibilities',
-                        'Pages.HealthAndSafetyManagement.RiskPossibilities',
-                        'flaticon-list-3',
-                        '/app/admin/risk-possibilities'
-                    ),
-                    new AppMenuItem(
-                        'RiskStatuses',
-                        'Pages.HealthAndSafetyManagement.RiskStatuses',
-                        'flaticon-list-3',
-                        '/app/admin/risk-statuses'
-                    ),
-                    new AppMenuItem(
-                        'RiskTypes',
-                        'Pages.HealthAndSafetyManagement.RiskTypes',
-                        'flaticon-list-3',
-                        '/app/admin/risk-types'
-                    ),
-                    new AppMenuItem(
-                        'SafetyAreaAssets',
-                        'Pages.HealthAndSafetyManagement.SafetyAreaAssets',
-                        'flaticon-list-3',
-                        '/app/admin/safety-area-assets'
-                    ),
-                    new AppMenuItem(
-                        'ActionRegisters',
-                        'Pages.HealthAndSafetyManagement.ActionRegisters',
-                        'flaticon-list-3',
-                        '/app/admin/action-registers'
-                    ),
-                    new AppMenuItem(
-                        'FirstAidBoxes',
-                        'Pages.HealthAndSafetyManagement.FirstAidBoxes',
-                        'flaticon-list-3',
-                        '/app/admin/first-aid-boxes'
-                    ),
-                    new AppMenuItem(
-                        'IncidentClaims',
-                        'Pages.HealthAndSafetyManagement.IncidentClaims',
-                        'flaticon-list-3',
-                        '/app/admin/incident-claims'
-                    ),
-                    new AppMenuItem(
-                        'IncidentInvestigations',
-                        'Pages.HealthAndSafetyManagement.IncidentInvestigations',
-                        'flaticon-list-3',
-                        '/app/admin/incident-investigations'
-                    ),
-                    new AppMenuItem(
-                        'IncidentRegisters',
-                        'Pages.HealthAndSafetyManagement.IncidentRegisters',
-                        'flaticon-list-3',
-                        '/app/admin/incident-registers'
-                    ),
-                    new AppMenuItem(
-                        'RiskRegisters',
-                        'Pages.HealthAndSafetyManagement.RiskRegisters',
-                        'flaticon-list-3',
-                        '/app/admin/risk-registers'
-                    ),
-                    new AppMenuItem(
-                        'SafetyChecklists',
-                        'Pages.HealthAndSafetyManagement.SafetyChecklists',
-                        'flaticon-list-3',
-                        '/app/admin/safety-checklists'
-                    ),
-                    new AppMenuItem(
-                        'SiteAudits',
-                        'Pages.HealthAndSafetyManagement.SiteAudits',
-                        'flaticon-list-3',
-                        '/app/admin/site-audits'
                     ),
                 ]
             ),
