@@ -40,17 +40,20 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
     private readonly IRepository<SharedQuickLink> _sharedQuickLinkRepository;
     private readonly IRepository<UserScreenUsage> _usageRepository;
     private readonly IScreenSeeder _screenSeeder;
+    private readonly IPermissionManager _permissionManager;
 
     public ScreensAppService(
         IRepository<Screen> screenRepository,
         IRepository<SharedQuickLink> sharedQuickLinkRepository,
         IRepository<UserScreenUsage> usageRepository,
-        IScreenSeeder screenSeeder)
+        IScreenSeeder screenSeeder,
+        IPermissionManager permissionManager)
     {
         _screenRepository = screenRepository;
         _sharedQuickLinkRepository = sharedQuickLinkRepository;
         _usageRepository = usageRepository;
         _screenSeeder = screenSeeder;
+        _permissionManager = permissionManager;
     }
 
     public async Task<NavigationBootstrapDto> GetNavigationBootstrap()
@@ -286,6 +289,21 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
         var granted = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
         foreach (var permission in permissions)
         {
+            // A screen whose permission no longer exists is HIDDEN, not an error.
+            //
+            // The seeder is additive by design -- a screen removed from the application keeps its row so
+            // that favourites and shared links pointing at it do not silently vanish. That leaves rows
+            // naming permissions the code no longer defines, and IsGrantedAsync THROWS on an unknown
+            // name rather than returning false. One such row therefore failed the entire navigation
+            // bootstrap, so removing a single feature took the whole menu down with it.
+            //
+            // Not granted is the right answer anyway: nobody can hold a permission that does not exist.
+            if (_permissionManager.GetPermissionOrNull(permission) == null)
+            {
+                granted[permission] = false;
+                continue;
+            }
+
             granted[permission] = await PermissionChecker.IsGrantedAsync(permission);
         }
 

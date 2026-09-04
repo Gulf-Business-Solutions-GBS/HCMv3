@@ -188,4 +188,43 @@ public class ScreensAppService_Tests : AppTestBase
             Resolve<IScreensAppService>().UpdateScreenCode(
                 new UpdateScreenCodeInput { Id = screen.Id, Code = "OTHER1" }));
     }
+
+    /// <summary>
+    /// A catalogue row naming a permission the application no longer defines must HIDE that screen, not
+    /// fail the whole bootstrap.
+    ///
+    /// This is the shape of a real outage. Removing the Demo UI Components feature deleted its
+    /// permission from code, but the seeder is additive on purpose -- rows stay so that favourites
+    /// pointing at them do not vanish -- so a row naming Pages.DemoUiComponents remained. ABP's
+    /// IsGrantedAsync throws on an unknown permission rather than returning false, and that single row
+    /// turned every navigation call into an HTTP 500: the entire menu gone because one feature was
+    /// removed.
+    /// </summary>
+    [Fact]
+    public async Task Should_Hide_A_Screen_Whose_Permission_No_Longer_Exists()
+    {
+        await _appService.GetNavigationBootstrap();
+
+        await UsingDbContextAsync(async context =>
+        {
+            context.Screens.Add(new Screen
+            {
+                TenantId = AbpSession.TenantId,
+                ScreenKey = "app.admin.removed-feature",
+                Code = "SZZZ999",
+                Module = "Removed",
+                NameKey = "RemovedFeature",
+                Route = "/app/admin/removed-feature",
+                PermissionName = "Pages.ThisPermissionWasDeleted",
+            });
+
+            await context.SaveChangesAsync();
+        });
+
+        // Must not throw, and must not offer the screen.
+        var bootstrap = await _appService.GetNavigationBootstrap();
+
+        bootstrap.Screens.ShouldNotBeEmpty();
+        bootstrap.Screens.ShouldNotContain(s => s.ScreenKey == "app.admin.removed-feature");
+    }
 }
