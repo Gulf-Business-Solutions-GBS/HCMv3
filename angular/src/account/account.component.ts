@@ -65,7 +65,9 @@ export class AccountComponent extends AppComponentBase implements OnInit {
     tenantLogoUrl: string;
 
     skin = this.appSession.theme?.baseSettings?.layout.darkMode ? 'dark' : 'light';
-    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.skin + '.svg';
+    // Built the same way LogoService builds it, so the login page and the sidebar cannot show different
+    // logos. Kept inline rather than calling the service because this runs as a field initialiser.
+    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/gbs-logo-on-' + this.skin + '.png';
     backgroundImageName = this.appSession.theme?.baseSettings?.layout.darkMode ? 'login-dark' : 'login';
     readonly qrCodeUrl = signal<string>('');
     qrCodeRefreshInterval: any;

@@ -32,10 +32,18 @@ export class LogoService {
         return `${this.remoteServiceBaseUrl}/TenantCustomization/GetTenantLogo?skin=${resolvedSkin}${suffix}&tenantId=${tenantId}&c=${date}`;
     }
 
+    /**
+     * The logo shown when there is no tenant, or the tenant has not uploaded one: GBS.
+     *
+     * PNG, NOT SVG. The supplied artwork is a raster; wrapping it in an SVG would have kept the old file
+     * extension while changing nothing about what it is, and auto-tracing a 96x65 bitmap of a circular
+     * mark produces a visibly worse logo than the bitmap. If vector artwork turns up, swap these four
+     * files for .svg and change the extension here -- nothing else needs to know.
+     */
     getDefaultLogoUrl(skin?: string, small: boolean = false): string {
         const resolvedSkin = skin || this.skin;
         const suffix = small ? '-sm' : '';
-        return `${AppConsts.appBaseUrl}/assets/common/images/app-logo-on-${resolvedSkin}${suffix}.svg`;
+        return `${AppConsts.appBaseUrl}/assets/common/images/gbs-logo-on-${resolvedSkin}${suffix}.png`;
     }
 
     notifyLogoChanged(skin: string): void {
