@@ -137,7 +137,7 @@ export const appRoutes: Routes = [
                                 (m) => m.NotificationsComponent
                             ),
                     },
-                    { path: '', redirectTo: '/app/main/dashboard', pathMatch: 'full' },
+                    { path: '', redirectTo: '/app/main/home', pathMatch: 'full' },
                 ],
             },
             {
@@ -145,7 +145,7 @@ export const appRoutes: Routes = [
                 data: { preload: true },
                 children: [
                     {
-                        path: 'dashboard',
+                        path: 'home',
                         loadComponent: () =>
                             import('./main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
                         data: { permission: 'Pages.Tenant.Dashboard' },
@@ -161,7 +161,7 @@ export const appRoutes: Routes = [
                         // links of every request notification already sent, and a dead route would
                         // strand them on a blank page with no clue where the screen went.
                         path: 'ess',
-                        redirectTo: '/app/main/dashboard',
+                        redirectTo: '/app/main/home',
                         pathMatch: 'full',
                     },
                     {

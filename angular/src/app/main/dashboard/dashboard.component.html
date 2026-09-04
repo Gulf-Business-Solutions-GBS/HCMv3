@@ -1,3 +1,9 @@
+<!-- The page header every other screen has, and this one was missing.
+     It carries the title band -- navy under the legacy skin, plain under the other themes -- so without
+     it the landing page was the ONLY screen whose content started hard against the top bar. On a theme
+     where that band is a solid colour the omission reads as a rendering fault rather than as a choice. -->
+<sub-header [title]="'Home' | localize" [description]="'HomeSubtitle' | localize" />
+
 <!-- The personal tiles: identity, Quick Actions, leave, attendance, alerts, announcements. -->
 <my-summary />
 

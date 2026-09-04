@@ -11,10 +11,17 @@ namespace HCMv3.Navigation;
 /// <summary>
 /// Brings a tenant's screen catalogue up to date with the application's screens.
 ///
-/// ADDITIVE, NEVER DESTRUCTIVE. It inserts screens that are missing and leaves every existing row
-/// exactly as it is -- including a code an administrator has re-mapped. Nothing here updates or deletes.
-/// A screen that disappears from the application keeps its row, because favourites and shared links
-/// still point at it and silently dropping it would make them vanish with no explanation.
+/// NEVER DESTRUCTIVE, BUT NOT BLIND. It inserts screens that are missing and refreshes the fields the
+/// APPLICATION owns on the ones that exist -- name, route, module, permission -- because a screen renamed
+/// or moved in the code has to reach the people using it, and a row that never changes means Quick Nav
+/// keeps offering last year's name and pointing at a route that has moved.
+///
+/// The CODE is never touched: that is the administrator's to re-map, and rewriting it on every start
+/// would undo their decision silently.
+///
+/// Nothing is deleted. A screen that disappears from the application keeps its row, because favourites
+/// and shared links still point at it and dropping it would make them vanish with no explanation. Such a
+/// row is hidden at read time instead -- see ScreensAppService.FilterToPermittedAsync.
 ///
 /// This runs per tenant, and is safe to run repeatedly.
 /// </summary>
@@ -41,9 +48,7 @@ public class ScreenSeeder : IScreenSeeder, ITransientDependency
         using (_unitOfWorkManager.Current.SetTenantId(tenantId))
         {
             var existing = _screenRepository.GetAll().ToList();
-            var existingKeys = new HashSet<string>(
-                existing.Select(s => s.ScreenKey),
-                StringComparer.OrdinalIgnoreCase);
+            var existingByKey = existing.ToDictionary(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase);
 
             // Codes already in use, so a generated one never collides with an administrator's rename.
             var usedCodes = new HashSet<string>(
@@ -52,8 +57,22 @@ public class ScreenSeeder : IScreenSeeder, ITransientDependency
 
             foreach (var seed in ScreenCatalog.All)
             {
-                if (existingKeys.Contains(seed.Key))
+                if (existingByKey.TryGetValue(seed.Key, out var row))
                 {
+                    // The application owns what a screen IS -- its name, where it lives, what it needs.
+                    // An administrator owns only the Code. Leaving these alone meant a screen renamed or
+                    // moved in the application kept its old row forever, so the rename never reached
+                    // anybody: Quick Nav went on offering the previous name, and a moved route went on
+                    // pointing at a page that was no longer there.
+                    //
+                    // Code is NOT touched. That is the one field an administrator may have re-mapped, and
+                    // overwriting it would undo their decision on the next start.
+                    row.Module = seed.Module;
+                    row.NameKey = seed.NameKey;
+                    row.Route = seed.Route;
+                    row.PermissionName = seed.PermissionName;
+
+                    _screenRepository.Update(row);
                     continue;
                 }
 

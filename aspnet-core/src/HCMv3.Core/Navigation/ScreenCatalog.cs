@@ -554,7 +554,7 @@ public static class ScreenCatalog
         new("app.admin.yearly-time-registers", "STM033", "TimeManagement", "YearlyTimeRegisters", "/app/admin/yearly-time-registers", "Pages.TimeManagement.YearlyTimeRegisters"),
         new("app.admin.editions", "STN001", "Editions", "Editions", "/app/admin/editions", "Pages.Editions"),
         new("app.admin.tenants", "STN002", "Tenants", "Tenants", "/app/admin/tenants", "Pages.Tenants"),
-        new("app.main.dashboard", "STN003", "Tenant", "Dashboard", "/app/main/dashboard", "Pages.Tenant.Dashboard"),
+        new("app.main.home", "STN003", "Tenant", "Home", "/app/main/home", "Pages.Tenant.Dashboard"),
         new("app.admin.employee-trainings", "STR001", "TrainingManagement", "EmployeeTrainings", "/app/admin/employee-trainings", "Pages.TrainingManagement.EmployeeTrainings"),
         new("app.admin.training-attendances", "STR002", "TrainingManagement", "TrainingAttendances", "/app/admin/training-attendances", "Pages.TrainingManagement.TrainingAttendances"),
         new("app.admin.training-courses", "STR003", "TrainingManagement", "TrainingCourses", "/app/admin/training-courses", "Pages.TrainingManagement.TrainingCourses"),

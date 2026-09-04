@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { appRoutes } from './app/app.routes';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/app/main/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: '/app/main/home', pathMatch: 'full' },
     {
         path: 'account',
         loadComponent: () => import('account/account.component').then((m) => m.AccountComponent),
@@ -151,5 +151,5 @@ export const routes: Routes = [
         path: 'install',
         loadComponent: () => import('install/install.component').then((m) => m.InstallComponent),
     },
-    { path: '**', redirectTo: '/app/main/dashboard' },
+    { path: '**', redirectTo: '/app/main/home' },
 ];

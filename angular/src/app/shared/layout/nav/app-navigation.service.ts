@@ -18,7 +18,10 @@ export class AppNavigationService {
                 'flaticon-line-graph',
                 '/app/admin/hostDashboard'
             ),
-            new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
+            // "Home", not "Dashboard": the label says what somebody goes there for, not what it is built
+            // from. The HOST dashboard above keeps its name -- it really is a dashboard, and only a host
+            // administrator sees it.
+            new AppMenuItem('Home', 'Pages.Tenant.Dashboard', 'flaticon-home', '/app/main/home'),
 
             // GO-LIVE SETUP. Deliberately near the top: while a tenant is being set up this is
             // the only screen that matters, and burying it under Administration is how onboarding stalls.
