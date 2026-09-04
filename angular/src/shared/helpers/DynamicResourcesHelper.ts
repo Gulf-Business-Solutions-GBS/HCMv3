@@ -26,16 +26,19 @@ export class DynamicResourcesHelper {
         const cssPostfix = isRtl ? '.rtl' : '';
         const styleLoaderService = new StyleLoaderService();
 
+        // Which theme's Metronic BUNDLE to load, which is not always the theme itself -- see below.
+        const bundleTheme = DynamicResourcesHelper.getMetronicBundleTheme(theme);
+
         let styleUrls = [
             AppConsts.appBaseUrl +
                 '/assets/metronic/themes/' +
-                theme +
+                bundleTheme +
                 '/css/style.bundle' +
                 cssPostfix.replace('-', '.') +
                 '.css',
             AppConsts.appBaseUrl +
                 '/assets/metronic/themes/' +
-                theme +
+                bundleTheme +
                 '/plugins/global/plugins.bundle' +
                 cssPostfix.replace('-', '.') +
                 '.css',
@@ -56,6 +59,21 @@ export class DynamicResourcesHelper {
         });
 
         return Promise.resolve(true);
+    }
+
+    /**
+     * The theme whose prebuilt Metronic bundle a theme uses.
+     *
+     * Every Metronic theme ships 22 MB of prebuilt CSS, JS and plugins, and theme14 is the default theme
+     * in different colours -- the same layout, the same components, the same behaviour. Copying those
+     * 22 MB to say the same thing twice would put a second identical bundle in every deployment and in
+     * the repository, and the two would then have to be patched in step on every Metronic upgrade.
+     *
+     * So theme14 borrows the default bundle, and its palette arrives as one small stylesheet on top.
+     * Any future colour-only theme should map here too rather than duplicate the bundle.
+     */
+    static getMetronicBundleTheme(theme: string): string {
+        return theme === 'theme14' ? 'default' : theme;
     }
 
     static getAdditionalThemeAssets(): string[] {

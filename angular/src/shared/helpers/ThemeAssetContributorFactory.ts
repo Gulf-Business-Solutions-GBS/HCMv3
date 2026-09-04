@@ -13,6 +13,7 @@ import { Theme10ThemeAssetContributor } from '@app/shared/layout/themes/theme10/
 import { Theme11ThemeAssetContributor } from '@app/shared/layout/themes/theme11/Theme11ThemeAssetContributor';
 import { Theme12ThemeAssetContributor } from '@app/shared/layout/themes/theme12/Theme12ThemeAssetContributor';
 import { Theme13ThemeAssetContributor } from '@app/shared/layout/themes/theme13/Theme13ThemeAssetContributor';
+import { Theme14ThemeAssetContributor } from '@app/shared/layout/themes/theme14/Theme14ThemeAssetContributor';
 export class ThemeAssetContributorFactory {
     static getCurrent(): IThemeAssetContributor {
         let theme = ThemeHelper.getTheme();
@@ -67,6 +68,10 @@ export class ThemeAssetContributorFactory {
 
         if (theme === 'theme13') {
             return new Theme13ThemeAssetContributor();
+        }
+
+        if (theme === 'theme14') {
+            return new Theme14ThemeAssetContributor();
         }
 
         return null;

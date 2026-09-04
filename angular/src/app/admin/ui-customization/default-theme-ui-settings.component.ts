@@ -19,10 +19,20 @@ export class DefaultThemeUiSettingsComponent extends AppComponentBase {
 
     readonly settings = input<ThemeSettingsDto>(undefined);
 
+    /**
+     * Which theme this panel is saving for. Defaults to 'default', which is every existing caller.
+     *
+     * NEEDED BECAUSE THE THEME NAME IS STAMPED ON SAVE, below. Theme14 -- the legacy self-service skin --
+     * is the default layout in different colours and so reuses this panel; without this input the stamp
+     * rewrote its name back to 'default' on every save, so the theme could be chosen but never stuck,
+     * and no colour ever changed.
+     */
+    readonly themeName = input<string>('default');
+
     AsideMinimizingDisabled = computed(() => !this.settings().menu.allowAsideMinimizing);
 
     getCustomizedSetting(settings: ThemeSettingsDto) {
-        settings.theme = 'default';
+        settings.theme = this.themeName();
 
         return settings;
     }

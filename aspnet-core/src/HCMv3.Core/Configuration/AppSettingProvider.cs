@@ -53,6 +53,7 @@ public class AppSettingProvider : SettingProvider
             .Union(GetTheme11Settings())
             .Union(GetTheme12Settings())
             .Union(GetTheme13Settings())
+            .Union(GetTheme14Settings())
             .Union(GetDashboardSettings())
             .Union(GetExternalLoginProviderSettings())
             .Union(GetAdditionalLdapSettings());
@@ -285,8 +286,23 @@ public class AppSettingProvider : SettingProvider
 
     private IEnumerable<SettingDefinition> GetDefaultThemeSettings()
     {
-        var themeName = "default";
+        return GetLayoutSettingsFor("default");
+    }
 
+    /// <summary>
+    /// Theme14 -- the legacy self-service skin -- is the default layout wearing different colours, so it
+    /// takes the same settings rather than a set of its own. Sharing the definitions is what makes
+    /// switching between the two change nothing but the palette.
+    /// </summary>
+    private IEnumerable<SettingDefinition> GetTheme14Settings()
+    {
+        // Literal, like every other theme here: Core does not reference Application.Shared, so AppConsts
+        // is out of reach.
+        return GetLayoutSettingsFor("theme14");
+    }
+
+    private IEnumerable<SettingDefinition> GetLayoutSettingsFor(string themeName)
+    {
         return new[]
         {
                 new SettingDefinition(themeName + "." + AppSettings.UiManagement.DarkMode,

@@ -96,6 +96,11 @@ public class UiThemeCustomizerFactory : IUiThemeCustomizerFactory
             return _serviceProvider.GetService<Theme13UiCustomizer>();
         }
 
+        if (theme.Equals(AppConsts.Theme14, StringComparison.InvariantCultureIgnoreCase))
+        {
+            return _serviceProvider.GetService<Theme14UiCustomizer>();
+        }
+
         return _serviceProvider.GetService<ThemeDefaultUiCustomizer>();
     }
 }

@@ -19,7 +19,23 @@ public class ThemeDefaultUiCustomizer : UiThemeCustomizerBase, IUiCustomizer
     public ThemeDefaultUiCustomizer(
         ISettingManager settingManager,
         ILocalizationManager localizationManager)
-        : base(settingManager, AppConsts.ThemeDefault)
+        : this(settingManager, localizationManager, AppConsts.ThemeDefault)
+    {
+    }
+
+    /// <summary>
+    /// For a theme that IS this layout in different colours -- Theme14, the legacy self-service skin.
+    ///
+    /// Subclassed rather than copied: every method here reads and writes settings under ThemeName, so
+    /// passing a different name is the whole difference. A duplicate of this file would be three hundred
+    /// lines that have to be kept in step with it forever, and would silently drift the first time a
+    /// setting was added to one and not the other.
+    /// </summary>
+    protected ThemeDefaultUiCustomizer(
+        ISettingManager settingManager,
+        ILocalizationManager localizationManager,
+        string themeName)
+        : base(settingManager, themeName)
     {
         _localizationManager = localizationManager;
     }

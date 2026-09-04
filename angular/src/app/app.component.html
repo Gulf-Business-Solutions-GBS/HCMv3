@@ -1,5 +1,8 @@
 <div [ngClass]="{ 'subscription-bar-visible': subscriptionStatusBarVisible() }" class="d-flex flex-column flex-root">
-    @if (theme() == 'default') {
+    <!-- theme14 is the legacy self-service SKIN, not a layout: same components, different palette and
+         font, applied by a stylesheet. Sharing this branch is what guarantees that switching between
+         the two changes nothing but the colours. -->
+    @if (theme() == 'default' || theme() == 'theme14') {
         <default-layout />
     }
     @if (theme() == 'theme2') {

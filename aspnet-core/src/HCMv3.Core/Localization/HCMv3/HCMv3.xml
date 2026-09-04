@@ -456,6 +456,11 @@
     <text name="ProfilePicture_Warn_SizeLimit">Picture size must be smaller than {0}MB. Please select another file.</text>
     <text name="ProfilePicture_Warn_FileType">You can only select JPG/JPEG file. Please select another file.</text>
     <text name="Dashboard">Dashboard</text>
+    <!-- The landing page is called Home to the people using it. "Dashboard" names what it is built from,
+         tiles and figures, rather than what somebody goes there to do, and the legacy self-service called
+         it Home. The Dashboard key stays: it still names the ASP.NET Zero host dashboard. -->
+    <text name="Home">Home</text>
+    <text name="HomeSubtitle">Your leave, attendance and what is waiting for you</text>
     <text name="DashboardHeaderInfo">statistics and reports</text>
     <text name="GoToApplication">Go to application</text>
     <text name="TenantInformations">Tenant information</text>
@@ -1497,6 +1502,9 @@
     <text name="WebhookPageInfo">Webhooks allow external services to be notified when certain events happen. When the specified events happen, we’ll send a POST request to each of the URLs you provide.</text>
     <text name="UiCustomization_DarkMode">Dark Mode</text>
     <text name="Theme_Theme13">Theme 13</text>
+    <!-- Named for what it is, not numbered like the Metronic samples: somebody looking for the legacy
+         look should recognise it in the list without having to remember a number. -->
+    <text name="Theme_Theme14">Legacy ESS (Navy)</text>
     <text name="EnableCheckingLastXPasswordWhenPasswordChangeSettingLabel">Prevented user's new password from being the same as any of the last x passwords</text>
     <text name="CheckingLastXPasswordCountSettingLabel">The user's new password must different from how many last passwords?</text>
     <text name="NewPasswordMustBeDifferentThenLastXPassword">New password must be different then last {0} password</text>

@@ -1,0 +1,214 @@
+/* ============================================================================
+   Theme14 -- the legacy Pinnacle HRMS self-service skin.
+
+   EVERY RULE IS SCOPED TO [data-hcm-skin='legacy-ess'], which only this theme sets. Nothing here can
+   reach the other thirteen themes, so the promise "switch back and it is exactly as it was" is enforced
+   by the selector rather than by being careful.
+
+   COLOUR AND TYPE ONLY. No rule changes a size, a position or a layout. A theme that also moved things
+   would make switching back a bigger promise than it sounds: somebody who had adjusted to the new
+   arrangement would lose it on the way out.
+   ============================================================================ */
+
+[data-hcm-skin='legacy-ess'] {
+    /* Sampled from the legacy self-service screens. Navy is the chrome -- sidebar and sub-header -- and
+       the blue is what the legacy screens use for anything a person acts on: headings, figures, links. */
+    --hcm-navy: #0b1c3f;
+    --hcm-navy-dark: #071430;
+    --hcm-navy-soft: #13284f;
+    --hcm-blue: #1451c4;
+    --hcm-blue-bright: #2f6fe4;
+    --hcm-ink: #0b1c3f;
+    --hcm-muted: #6b7a94;
+    --hcm-line: #e3e9f2;
+    --hcm-canvas: #f4f7fb;
+
+    /* Bootstrap's own tokens, so components we never touch directly -- buttons, badges, alerts, the
+       pagination on 500 tables -- follow the palette instead of needing a rule each. */
+    --bs-primary: var(--hcm-blue);
+    --bs-primary-rgb: 20, 81, 196;
+    --bs-link-color: var(--hcm-blue);
+    --bs-link-hover-color: var(--hcm-navy);
+    --bs-body-color: var(--hcm-ink);
+    --bs-border-color: var(--hcm-line);
+}
+
+/* ---------- typography ----------
+   Zain with a real fallback stack: if Google Fonts is unreachable the app renders in the system sans
+   rather than in a default serif, which would look like a fault rather than a missing font. */
+[data-hcm-skin='legacy-ess'] body,
+[data-hcm-skin='legacy-ess'] .app-wrapper,
+[data-hcm-skin='legacy-ess'] .btn,
+[data-hcm-skin='legacy-ess'] .form-control,
+[data-hcm-skin='legacy-ess'] .form-select {
+    font-family: Zain, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Zain's headings carry the legacy screens' weight. Kept to colour and weight -- not size -- so no
+   heading changes the height of anything it sits in. */
+[data-hcm-skin='legacy-ess'] h1,
+[data-hcm-skin='legacy-ess'] h2,
+[data-hcm-skin='legacy-ess'] h3,
+[data-hcm-skin='legacy-ess'] h4,
+[data-hcm-skin='legacy-ess'] h5,
+[data-hcm-skin='legacy-ess'] .card-label,
+[data-hcm-skin='legacy-ess'] .page-heading {
+    color: var(--hcm-ink);
+    font-weight: 700;
+}
+
+/* ---------- sidebar ----------
+   The navy the user asked for. Metronic's dark-sidebar variables are set rather than its rules
+   overridden, so hover, active and minimised states keep working as they were built to. */
+[data-hcm-skin='legacy-ess'] .app-sidebar {
+    background-color: var(--hcm-navy) !important;
+    border-right: 0 !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-title,
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-icon i,
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-arrow:after {
+    color: #c7d3e8 !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link:hover .menu-title,
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link:hover .menu-icon i {
+    color: #ffffff !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link:hover,
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-item.here > .menu-link {
+    background-color: var(--hcm-navy-soft) !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link.active {
+    background-color: var(--hcm-blue) !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link.active .menu-title,
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-link.active .menu-icon i {
+    color: #ffffff !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-sub {
+    background-color: var(--hcm-navy-dark) !important;
+}
+
+/* Screen Codes stay legible against navy. They are a reference people read across the screen, so they
+   must not become decoration. */
+[data-hcm-skin='legacy-ess'] .app-sidebar .menu-scode {
+    color: #8fa6cc !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-sidebar .menuSearchBarContainer .p-inputtext {
+    background-color: var(--hcm-navy-dark) !important;
+    border-color: var(--hcm-navy-soft) !important;
+    color: #dce5f3 !important;
+}
+
+/* ---------- header and toolbar ---------- */
+[data-hcm-skin='legacy-ess'] .app-header {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid var(--hcm-line) !important;
+}
+
+/* The navy band under the header, as on the legacy Home screen. */
+[data-hcm-skin='legacy-ess'] .app-toolbar {
+    background-color: var(--hcm-navy) !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-toolbar .page-heading,
+[data-hcm-skin='legacy-ess'] .app-toolbar .breadcrumb-item,
+[data-hcm-skin='legacy-ess'] .app-toolbar .breadcrumb-item a,
+[data-hcm-skin='legacy-ess'] .app-toolbar .text-gray-900,
+[data-hcm-skin='legacy-ess'] .app-toolbar .text-muted {
+    color: #ffffff !important;
+}
+
+[data-hcm-skin='legacy-ess'] .app-content,
+[data-hcm-skin='legacy-ess'] .app-wrapper {
+    background-color: var(--hcm-canvas);
+}
+
+/* ---------- cards ---------- */
+[data-hcm-skin='legacy-ess'] .card {
+    border: 1px solid var(--hcm-line);
+    border-radius: 8px;
+}
+
+[data-hcm-skin='legacy-ess'] .card-header .card-label {
+    color: var(--hcm-ink);
+}
+
+/* ---------- the dashboard tiles ----------
+   These carry their own palette from when they were built, so they need naming explicitly; everything
+   else on the page inherits from the Bootstrap tokens above. */
+[data-hcm-skin='legacy-ess'] .ms-identity-code,
+[data-hcm-skin='legacy-ess'] .ms-balance-value,
+[data-hcm-skin='legacy-ess'] .ms-alert-count,
+[data-hcm-skin='legacy-ess'] .ms-action i {
+    color: var(--hcm-blue);
+}
+
+[data-hcm-skin='legacy-ess'] .ms-avatar {
+    background: var(--hcm-navy);
+}
+
+[data-hcm-skin='legacy-ess'] .ms-identity-name,
+[data-hcm-skin='legacy-ess'] .ms-org-value,
+[data-hcm-skin='legacy-ess'] .ms-ann-title,
+[data-hcm-skin='legacy-ess'] .ms-ann-day {
+    color: var(--hcm-ink);
+}
+
+[data-hcm-skin='legacy-ess'] .ms-section-head,
+[data-hcm-skin='legacy-ess'] .ms-org-label {
+    color: var(--hcm-muted);
+}
+
+[data-hcm-skin='legacy-ess'] .ms-action:hover {
+    border-color: var(--hcm-blue);
+    color: var(--hcm-blue);
+    background: #eef3fd;
+}
+
+[data-hcm-skin='legacy-ess'] .ms-identity,
+[data-hcm-skin='legacy-ess'] .ms-balance,
+[data-hcm-skin='legacy-ess'] .ms-action,
+[data-hcm-skin='legacy-ess'] .ms-ann-date {
+    border-color: var(--hcm-line);
+}
+
+/* ---------- buttons and links ---------- */
+[data-hcm-skin='legacy-ess'] .btn.btn-primary {
+    background-color: var(--hcm-blue);
+    border-color: var(--hcm-blue);
+}
+
+[data-hcm-skin='legacy-ess'] .btn.btn-primary:hover,
+[data-hcm-skin='legacy-ess'] .btn.btn-primary:focus {
+    background-color: var(--hcm-blue-bright);
+    border-color: var(--hcm-blue-bright);
+}
+
+[data-hcm-skin='legacy-ess'] a {
+    color: var(--hcm-blue);
+}
+
+/* ---------- tables ----------
+   Header row in navy text on a tinted band, as the legacy grids had. Row striping is left alone: it is
+   how people track a row across a wide table, and changing it would be a legibility decision dressed up
+   as a colour one. */
+[data-hcm-skin='legacy-ess'] .table > thead th,
+[data-hcm-skin='legacy-ess'] .p-datatable .p-datatable-thead > tr > th {
+    color: var(--hcm-ink);
+    background-color: #eef2f8;
+}
+
+/* Dark mode is left entirely alone. This skin describes a light palette, and half-applying it over the
+   dark theme would produce navy text on near-black. Somebody who wants dark mode should get Metronic's,
+   which was designed for it. */
+[data-hcm-skin='legacy-ess'][data-bs-theme='dark'] {
+    --bs-body-color: inherit;
+}

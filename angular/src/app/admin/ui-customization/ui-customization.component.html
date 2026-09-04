@@ -55,6 +55,16 @@
                             @if (themeSetting.theme == 'theme13') {
                                 <theme13-theme-ui-settings [settings]="themeSetting" />
                             }
+                            <!-- theme14 takes the DEFAULT theme's settings panel: it is the default
+                                 layout in different colours, so it has exactly the same options and a
+                                 panel of its own would be a copy that could only drift.
+
+                                 themeName MUST be passed. The panel stamps the theme name onto the
+                                 payload it saves, and without this it stamps 'default' -- so theme14
+                                 could be selected but never stuck. -->
+                            @if (themeSetting.theme == 'theme14') {
+                                <default-theme-ui-settings [settings]="themeSetting" themeName="theme14" />
+                            }
                         </tab>
                     }
                 </tabset>

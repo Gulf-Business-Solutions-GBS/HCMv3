@@ -46,6 +46,15 @@ public class AppConsts
     public const string Theme12 = "theme12";
     public const string Theme13 = "theme13";
 
+    /// <summary>
+    /// The legacy Pinnacle HRMS self-service skin: navy chrome, its blue accents, and Zain.
+    ///
+    /// A SELECTABLE THEME rather than a change to the existing look, so that adopting it is a click and
+    /// abandoning it is the same click. Everything about it is colour and type -- it shares the default
+    /// theme's layout and Metronic bundle, so no screen behaves differently under it.
+    /// </summary>
+    public const string Theme14 = "theme14";
+
     public static TimeSpan AccessTokenExpiration = TimeSpan.FromDays(1);
     public static TimeSpan RefreshTokenExpiration = TimeSpan.FromDays(365);
     public static TimeSpan TwoFactorRememberClientTokenExpiration = TimeSpan.FromDays(365);
