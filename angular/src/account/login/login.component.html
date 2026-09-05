@@ -140,24 +140,9 @@
         </div>
     }
 
-    @if (isSelfRegistrationAllowed || (!multiTenancySideIsTenant && isTenantSelfRegistrationAllowed)) {
-        <div class="mt-2">
-            <span>{{ 'NotAMemberYet' | localize }}</span>
-        </div>
-    }
-    @if (isSelfRegistrationAllowed) {
-        <span>
-            <a routerLink="/account/register">{{ 'CreateAnAccount' | localize }}</a>
-            <span class="pipe-divider">|</span>
-        </span>
-    }
-
-    @if (!multiTenancySideIsTenant && isTenantSelfRegistrationAllowed) {
-        <span>
-            <a routerLink="/account/select-edition">{{ 'NewTenant' | localize }}</a>
-            <span class="pipe-divider">|</span>
-        </span>
-    }
-
-    <a routerLink="/account/email-activation" id="email-activation-btn">{{ 'EmailActivation' | localize }}</a>
+    <!-- Self-registration, new tenant and email activation are gone from this page.
+         They are ASP.NET Zero's SaaS sign-up flow, and this is an internal HR system: nobody creates
+         their own employee account, HR does. Offering it invited a dead end, because a self-registered
+         user is not linked to an employee record and can see nothing. The routes still exist for a host
+         administrator who needs them; they are simply not advertised on the login screen. -->
 </div>

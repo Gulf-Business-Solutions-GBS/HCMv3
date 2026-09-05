@@ -6,17 +6,28 @@
             class="d-flex flex-center flex-column flex-column-fluid"
             [class.pb-lg-20]="!isSelectEditionPage()"
             [class.pb-0]="isSelectEditionPage()">
+            <!--begin::Language-->
+            <!-- At the top, not in the footer. Somebody who cannot read the form needs the switch before
+                 they reach the form, and a row of flags under the fold is found only by scrolling past
+                 the thing you could not read. -->
+            <div class="d-flex justify-content-center mt-6">
+                <language-switch />
+            </div>
+            <!--end::Language-->
+
             <!--begin::Logo-->
+            <!-- h-60px, up from h-40px, to match the legacy self-service sign-in. The supplied artwork is
+                 65px tall, so this stays inside its native resolution and does not blur. -->
             <a
                 (click)="goToHome()"
                 href=""
-                class="d-flex justify-content-center mt-10"
+                class="d-flex justify-content-center mt-6"
                 [class.mb-12]="!isSelectEditionPage()">
                 @if (!appSession.tenant || !appSession.tenant.HasLogo()) {
-                    <img [src]="defaultLogo" alt="logo" class="h-40px" [class.mb-12]="isSelectEditionPage()" />
+                    <img [src]="defaultLogo" alt="logo" class="h-60px" [class.mb-12]="isSelectEditionPage()" />
                 }
                 @if (appSession.tenant && appSession.tenant.HasLogo()) {
-                    <img [src]="tenantLogoUrl" alt="logo" class="h-40px" />
+                    <img [src]="tenantLogoUrl" alt="logo" class="h-60px" />
                 }
             </a>
             <!--end::Logo-->
@@ -87,18 +98,7 @@
             <!--end::Wrapper-->
         </div>
         <!--end::Content-->
-        <!--begin::Footer-->
-        <div
-            class="d-flex flex-center flex-column-auto p-10"
-            [class.pt-0]="isSelectEditionPage()"
-            [class.mt-5]="isSelectEditionPage()">
-            <!--begin::Links-->
-            <div class="d-flex align-items-center fw-bold fs-6">
-                <language-switch class="mx-auto" />
-            </div>
-            <!--end::Links-->
-        </div>
-        <!--end::Footer-->
+        <!-- The footer held the language switch and nothing else. It has moved above the logo. -->
     </div>
     <!--end::Authentication - Sign-in-->
 </div>
