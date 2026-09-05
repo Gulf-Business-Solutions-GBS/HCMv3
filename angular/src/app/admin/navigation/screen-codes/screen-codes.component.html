@@ -84,18 +84,20 @@
                         </tbody>
                     </table>
 
-                    <div class="d-flex align-items-center justify-content-end gap-2">
-                        <span class="text-muted">{{ totalCount() }}</span>
-                        <button class="btn btn-sm btn-light" type="button" [disabled]="skipCount() === 0" (click)="previousPage()">
-                            <i class="fa fa-angle-left"></i>
-                        </button>
-                        <button
-                            class="btn btn-sm btn-light"
-                            type="button"
-                            [disabled]="skipCount() + pageSize >= totalCount()"
-                            (click)="nextPage()">
-                            <i class="fa fa-angle-right"></i>
-                        </button>
+                    <!-- The standard pager, not a pair of arrows. This screen had a bare count and two
+                         chevrons: no page numbers, no total, no way to change the page size, and nothing
+                         that looked like the pager on every other list in the product. With 548 screens
+                         at 20 a page that is 28 clicks to reach the end and no way to tell where you are. -->
+                    <div class="primeng-paging-container">
+                        <p-paginator
+                            #paginator
+                            [rows]="pageSize()"
+                            [first]="skipCount()"
+                            [totalRecords]="totalCount()"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="'TotalRecordsCount' | localize: totalCount()"
+                            (onPageChange)="onPageChange($event)" />
                     </div>
                 </div>
             </div>

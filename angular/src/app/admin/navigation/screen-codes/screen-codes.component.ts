@@ -6,6 +6,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { Paginator } from 'primeng/paginator';
 import { ScreensServiceProxy, ScreenDto, GetAllScreensInput, UpdateScreenCodeInput } from '@shared/service-proxies/service-proxies';
 
 /**
@@ -23,7 +24,7 @@ import { ScreensServiceProxy, ScreenDto, GetAllScreensInput, UpdateScreenCodeInp
     templateUrl: './screen-codes.component.html',
     styleUrl: './screen-codes.component.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe],
+    imports: [SubHeaderComponent, BusyIfDirective, FormsModule, LocalizePipe, Paginator],
 })
 export class ScreenCodesComponent extends AppComponentBase {
     private _screensService = inject(ScreensServiceProxy);
@@ -36,7 +37,7 @@ export class ScreenCodesComponent extends AppComponentBase {
     readonly filter = signal<string>('');
     readonly module = signal<string>('');
     readonly skipCount = signal<number>(0);
-    readonly pageSize = 20;
+    readonly pageSize = signal<number>(20);
 
     /** Which row is being edited, and the value typed so far. */
     readonly editingId = signal<number | undefined>(undefined);
@@ -53,7 +54,7 @@ export class ScreenCodesComponent extends AppComponentBase {
         input.filter = this.filter();
         input.module = this.module() || undefined;
         input.skipCount = this.skipCount();
-        input.maxResultCount = this.pageSize;
+        input.maxResultCount = this.pageSize();
 
         this.isLoading.set(true);
         this._screensService
@@ -72,18 +73,15 @@ export class ScreenCodesComponent extends AppComponentBase {
         this.load();
     }
 
-    nextPage(): void {
-        if (this.skipCount() + this.pageSize < this.totalCount()) {
-            this.skipCount.set(this.skipCount() + this.pageSize);
-            this.load();
-        }
-    }
-
-    previousPage(): void {
-        if (this.skipCount() > 0) {
-            this.skipCount.set(Math.max(0, this.skipCount() - this.pageSize));
-            this.load();
-        }
+    /**
+     * Driven by the standard paginator, which reports the first row index rather than a page number, so
+     * it maps straight onto skipCount. Rows-per-page comes from the same event, which is why pageSize is
+     * a signal rather than the constant it used to be.
+     */
+    onPageChange(event: { first?: number; rows?: number }): void {
+        this.pageSize.set(event.rows ?? this.pageSize());
+        this.skipCount.set(event.first ?? 0);
+        this.load();
     }
 
     startEdit(screen: ScreenDto): void {

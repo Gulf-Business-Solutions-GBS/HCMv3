@@ -28,11 +28,19 @@
 
                 <div class="row align-items-center">
                     <div class="primeng-datatable-container" [busyIf]="isLoading()">
+                        <!-- Paged in the browser, not on the server. Every report is already loaded to
+                             drive the filter box, so asking the server for a page would be a round trip
+                             for rows that are in memory. 98 reports in one scroll is a list nobody reads
+                             to the end of. -->
                         <p-table
                             #dataTable
                             sortMode="multiple"
                             [value]="filteredRecords()"
-                            [paginator]="false"
+                            [paginator]="true"
+                            [rows]="10"
+                            [rowsPerPageOptions]="[10, 25, 50, 100]"
+                            [showCurrentPageReport]="true"
+                            [currentPageReportTemplate]="'TotalRecordsCount' | localize: filteredRecords().length"
                             [scrollable]="true"
                             [tableStyle]="{ 'min-width': '50rem' }">
                             <ng-template #header>
