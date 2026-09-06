@@ -16,9 +16,14 @@ export class DynamicResourcesHelper {
 
         const isRtl = rtlDetect.isRtlLang(abp.localization.currentLanguage.name);
 
-        if (isRtl) {
-            document.documentElement.setAttribute('dir', 'rtl');
-        }
+        // SET BOTH WAYS. This used to set dir="rtl" for an RTL language and do nothing otherwise, which
+        // is only correct on a fresh document, where index.html already says ltr. Whenever this runs a
+        // second time in the same document -- after signing in, after a tenant change -- switching from
+        // Arabic to English left dir at rtl, so the page rendered English text in a right-to-left
+        // layout: labels on the wrong side, "Current tenant: Default ( Change )" reading backwards.
+        // Writing the attribute unconditionally makes the direction follow the language every time.
+        document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', abp.localization.currentLanguage.name);
 
         const skin = ThemeHelper.darkMode() ? 'dark' : 'light';
         document.documentElement.setAttribute('data-bs-theme', skin);
