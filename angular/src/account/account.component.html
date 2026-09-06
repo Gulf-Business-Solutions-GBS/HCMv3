@@ -86,10 +86,9 @@
                                     </div>
                                 }
                                 @if (!qrCodeUrl()) {
-                                    <img
-                                        src="/assets/common/images/gbs-loader.svg"
-                                        class="gbs-loader"
-                                        alt="{{ 'LoadingWithThreeDot' | localize }}" />
+                                    <div class="root-initial-loader">
+                                        <i class="fas fa-circle-notch fa-3x fa-spin-2x"></i>
+                                    </div>
                                 }
                             </div>
                         </div>

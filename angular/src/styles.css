@@ -159,36 +159,6 @@ body.swal2-height-auto {
     -webkit-animation: fa-spin 1s infinite linear;
     animation: fa-spin 1s infinite linear;
 }
-
-/* The GBS loading mark, for use inside the application. The same rules are inlined in index.html for the
-   loader that appears before this stylesheet has been fetched; they are duplicated deliberately rather
-   than shared, because one of the two has to work without any stylesheet at all. */
-.gbs-loader {
-    width: 96px;
-    height: 96px;
-}
-
-.gbs-loader-sm {
-    width: 48px;
-    height: 48px;
-}
-
-.gbs-loader-spin {
-    transform-origin: 586.52px 379.99px;
-    animation: gbs-loader-spin 1.6s linear infinite;
-}
-
-@keyframes gbs-loader-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .gbs-loader-spin {
-        animation: none;
-    }
-}
 ngx-spinner .loading-text {
     font-weight: bold;
     color: white;
