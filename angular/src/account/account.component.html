@@ -42,11 +42,21 @@
                     </div>
                 } @else {
                     <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
-                        @if (showTenantChange()) {
-                            <div class="tenant-change-box mb-5">
-                                <tenant-change />
-                            </div>
-                        }
+                        <!-- Language sits on the tenant row, inside the card. It was at the foot of the
+                             page, which is below the fold on a short window and a long way from the thing
+                             it changes. Opposite the tenant line it is on the first row somebody reads,
+                             next to the other "which context am I in" control, without displacing the
+                             logo the way putting it on top did. -->
+                        <div class="d-flex align-items-center justify-content-between mb-5">
+                            @if (showTenantChange()) {
+                                <div class="tenant-change-box">
+                                    <tenant-change />
+                                </div>
+                            } @else {
+                                <span></span>
+                            }
+                            <language-switch />
+                        </div>
                         <router-outlet />
                     </div>
                 }
@@ -90,15 +100,6 @@
         </div>
         <!--end::Content-->
 
-        <!--begin::Language-->
-        <!-- Below the sign-in card, not above the logo. It sat on top for a while on the argument that
-             somebody who cannot read the form needs the switch before reaching the form -- but it pushed
-             the logo down the page and read as a toolbar sitting on the brand, and EN | AR is small
-             enough to find wherever it is. The logo comes first. -->
-        <div class="d-flex flex-center flex-column-auto pb-10" [class.pt-0]="isSelectEditionPage()">
-            <language-switch />
-        </div>
-        <!--end::Language-->
     </div>
     <!--end::Authentication - Sign-in-->
 </div>
