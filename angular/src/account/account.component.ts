@@ -10,6 +10,7 @@ import { LogoService } from '@app/shared/common/logo/logo.service';
 import { NgTemplateOutlet } from '@angular/common';
 import { TenantChangeComponent } from './shared/tenant-change.component';
 import { LanguageSwitchComponent } from './language-switch.component';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { QrLoginSignalRService } from './qr-login/qr-login-signalr.service';
 import { SignalRHelper } from '@shared/helpers/SignalRHelper';
 import {
@@ -27,7 +28,7 @@ import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-b
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.less'],
     encapsulation: ViewEncapsulation.None,
-    imports: [NgTemplateOutlet, TenantChangeComponent, RouterOutlet, LanguageSwitchComponent],
+    imports: [NgTemplateOutlet, TenantChangeComponent, RouterOutlet, LanguageSwitchComponent, LocalizePipe],
     providers: [
         LoginService,
         QrLoginSignalRService,

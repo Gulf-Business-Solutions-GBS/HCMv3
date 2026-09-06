@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The GBS mark, spinning, for loading indicators.
+
+    ANIMATED WITH SMIL, NOT WITH A REMOTE SCRIPT. The legacy file this is taken from
+    (HCM10.ESS/wwwroot/images/svg/GBS_Logo_Loading_Animated.svg) drives its rotation from
+    cdn.svgator.com, fetched at run time. That means the logo does not animate without internet, it puts
+    a third party in the load path of the first screen anybody sees, and the browser blocks it outright
+    when the page is served over a strict content security policy. The four arcs and their colours are
+    the artwork exactly as drawn; only the animation is reimplemented.
+
+    NO "LOADING" TEXT, which the legacy version has baked into the artwork in English. This appears in an
+    Arabic interface too, and a word burned into a picture cannot be translated.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="360.647 157 451.746 445.98" width="96" height="96" role="img" aria-label="Loading">
+    <g>
+        <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            from="0 586.52 379.99"
+            to="360 586.52 379.99"
+            dur="1.6s"
+            repeatCount="indefinite" />
+        <path fill="#203864" d="M453.483,554.322c-74.94-23.912-112.04-117.372-82.89-208.742c29.16-91.38,113.55-146.07,188.48-122.15
+            c-84.56,6.26-156.69,91.81-161.11,191.08C395.433,471.44,416.033,523.3,453.483,554.322z"/>
+        <path fill="#4472C4" d="M382.583,305.2c7.1-84.02,92.87-145.37,191.58-137.02c98.71,8.34,172.97,83.21,165.87,167.23
+            c-19.56-86.27-116.99-144.58-217.61-130.23C457.583,214.43,404.333,252.52,382.583,305.2z"/>
+        <path fill="#2F5597" d="M592.433,157c121.48,0,219.96,99.84,219.96,222.99s-98.48,222.99-219.96,222.99
+            c121.48-27.396,198.05-149.44,171.03-272.6C744.473,243.84,677.803,176.25,592.433,157z"/>
+        <path fill="#7F7F7F" d="M716.293,508.18c-50.35,81.53-154.85,108.288-233.42,59.771c-78.57-48.521-101.45-153.941-51.1-235.461
+            c-33.96,91.64,10.71,191.48,99.77,222.998C595.693,578.186,668.233,559.612,716.293,508.18z"/>
+    </g>
+</svg>

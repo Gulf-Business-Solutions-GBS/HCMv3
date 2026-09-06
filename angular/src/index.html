@@ -15,12 +15,66 @@
         <meta name="author" content="" />
         <meta name="description" content="" />
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+        <!-- INLINE ON PURPOSE. This styles the loader that shows before the application has started, so
+             it has to be in the document itself: styles.css is a separate request, and if the animation
+             waited for it the first thing a user saw on a slow connection would be a motionless logo.
+             Duplicated in styles.css for the same loader used inside the app. -->
+        <style>
+            .root-initial-loader {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .gbs-loader {
+                width: 96px;
+                height: 96px;
+            }
+
+            /* The whole mark turns, which is what the legacy animation does. Rotating about the artwork's
+               own centre rather than the viewBox's, or it wobbles. */
+            .gbs-loader-spin {
+                transform-origin: 586.52px 379.99px;
+                animation: gbs-loader-spin 1.6s linear infinite;
+            }
+
+            @keyframes gbs-loader-spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Somebody who has asked their system not to animate things gets a still logo rather than a
+               spinning one. The page still loads; they simply are not made to watch it turn. */
+            @media (prefers-reduced-motion: reduce) {
+                .gbs-loader-spin {
+                    animation: none;
+                }
+            }
+        </style>
     </head>
 
     <body id="kt_body">
         <app-root>
+            <!-- The GBS mark rather than a generic spinner. This is the very first thing anybody sees,
+                 before a single script has run, and it was a Font Awesome circle that said nothing about
+                 whose system this is.
+
+                 INLINE, NOT AN <img>. The markup below is served with the page, so it draws immediately;
+                 an image reference would be a second request that races the app and can leave the screen
+                 blank on a slow connection -- exactly when a loading indicator matters. -->
             <div class="root-initial-loader">
-                <i class="fas fa-circle-notch fa-3x fa-spin-2x"></i>
+                <svg class="gbs-loader" viewBox="360.647 157 451.746 445.98" role="img" aria-label="Loading">
+                    <g class="gbs-loader-spin">
+                        <path fill="#203864" d="M453.483,554.322c-74.94-23.912-112.04-117.372-82.89-208.742c29.16-91.38,113.55-146.07,188.48-122.15c-84.56,6.26-156.69,91.81-161.11,191.08C395.433,471.44,416.033,523.3,453.483,554.322z"/>
+                        <path fill="#4472C4" d="M382.583,305.2c7.1-84.02,92.87-145.37,191.58-137.02c98.71,8.34,172.97,83.21,165.87,167.23c-19.56-86.27-116.99-144.58-217.61-130.23C457.583,214.43,404.333,252.52,382.583,305.2z"/>
+                        <path fill="#2F5597" d="M592.433,157c121.48,0,219.96,99.84,219.96,222.99s-98.48,222.99-219.96,222.99c121.48-27.396,198.05-149.44,171.03-272.6C744.473,243.84,677.803,176.25,592.433,157z"/>
+                        <path fill="#7F7F7F" d="M716.293,508.18c-50.35,81.53-154.85,108.288-233.42,59.771c-78.57-48.521-101.45-153.941-51.1-235.461c-33.96,91.64,10.71,191.48,99.77,222.998C595.693,578.186,668.233,559.612,716.293,508.18z"/>
+                    </g>
+                </svg>
             </div>
         </app-root>
     </body>
