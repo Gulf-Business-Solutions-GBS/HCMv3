@@ -95,6 +95,20 @@ Legacy has recurring orthographic slips. Corrected, not carried over:
 - أيقاف → **إيقاف** (`OnHoldLoanDeduction`)
 - Trailing colons stripped from labels (`LoanDeductionType:`, `OvertimeRate:`, `AdjustmentType:`)
 
+## Deliberately left in English
+
+27 keys have no Arabic row, so ABP falls back to English for them. That is the intended
+display, not an omission.
+
+They are the column names of the AX journal voucher export: `LedgerDimension.MainAccount`,
+`DefaultDimension.Employees`, `OffsetLedgerDimension.MainAccount`, `RecId`, `NL CODE`,
+`SL/PL a/c` and the rest. These are identifiers in the *target* system's schema, checked
+against an import specification by whoever loads the file into AX. Translating them would
+make the export unrecognisable to the person doing that job.
+
+If a future release does translate them, the export header row must stay English
+separately, or the AX import will stop matching.
+
 ## Still to be reviewed by a native speaker
 
 This glossary is a starting point, not an authority. Terms tied to Kuwait Labour Law
