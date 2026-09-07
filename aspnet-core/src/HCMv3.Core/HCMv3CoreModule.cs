@@ -14,7 +14,9 @@ using Abp.Reflection.Extensions;
 using Abp.Timing;
 using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
+using Abp.Events.Bus.Entities;
 using Abp.Events.Bus;
+using Abp.Events.Bus.Handlers;
 using Abp.Events.Bus.Exceptions;
 using Abp.Json;
 using Abp.Localization.Dictionaries.Xml;
@@ -38,6 +40,8 @@ using HCMv3.Authorization.Ldap;
 using HCMv3.Authorization.PasswordlessLogin;
 using HCMv3.Authorization.QrLogin;
 using HCMv3.Authorization.Roles;
+using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.BusinessRules;
 using HCMv3.Authorization.Users;
 using HCMv3.Chat;
 using HCMv3.Configuration;
@@ -148,6 +152,54 @@ public class HCMv3CoreModule : AbpModule
     public override void Initialize()
     {
         IocManager.RegisterAssemblyByConvention(typeof(HCMv3CoreModule).GetAssembly());
+
+        RegisterBusinessRuleEntityHooks();
+    }
+
+    /// <summary>
+    /// Wires the business rule engine to entity save events, one entity at a time.
+    ///
+    /// <para>
+    /// Registered by hand rather than by convention, and that is not a style choice. Castle binds a
+    /// conventionally registered class to the interfaces whose names match it by suffix; no reasonable
+    /// class name matches <c>IEventHandler&lt;EntityCreatingEventData&lt;T&gt;&gt;</c>, so a hook left to
+    /// convention registers as itself, the event bus never subscribes it, and every rule armed on that
+    /// entity silently never runs. The same silent-registration trap as
+    /// <c>{X}WorkflowTransactionHandler</c>, with no resolver to notice the absence.
+    /// </para>
+    ///
+    /// <para>
+    /// Adding an entity to the engine is a line here plus a hook class plus a base object provider. Leaving
+    /// an entity out is the default, which is the intended bias: a rule can only reach what somebody
+    /// deliberately exposed.
+    /// </para>
+    ///
+    /// <para>
+    /// THE CONCRETE TYPE MUST BE IN THE <c>For&lt;&gt;</c> LIST, not only the handler interfaces. ABP's
+    /// <c>IocHandlerFactory</c> resolves a handler by its implementation type when the event fires, so
+    /// registering the interfaces alone leaves the container able to enumerate the handler but unable to
+    /// build it -- every save of that entity then dies with "no component for supporting the service". The
+    /// resolver tests caught this; without them it would have surfaced as the Employee screen failing to
+    /// save at all.
+    /// </para>
+    /// </summary>
+    private void RegisterBusinessRuleEntityHooks()
+    {
+        IocManager.IocContainer.Register(
+            Component
+                .For<IEventHandler<EntityCreatingEventData<Employee>>,
+                    IEventHandler<EntityUpdatingEventData<Employee>>,
+                    EmployeeBusinessRuleHook>()
+                .ImplementedBy<EmployeeBusinessRuleHook>()
+                .LifestyleTransient());
+
+        IocManager.IocContainer.Register(
+            Component
+                .For<IEventHandler<EntityCreatingEventData<EmployeeAbsence>>,
+                    IEventHandler<EntityUpdatingEventData<EmployeeAbsence>>,
+                    EmployeeAbsenceBusinessRuleHook>()
+                .ImplementedBy<EmployeeAbsenceBusinessRuleHook>()
+                .LifestyleTransient());
     }
 
     public override void PostInitialize()

@@ -303,6 +303,13 @@ public static class AppPermissions
     public const string Pages_OrganizationManagement_OrgUnits_Edit = "Pages.OrganizationManagement.OrgUnits.Edit";
     public const string Pages_OrganizationManagement_OrgUnits_Delete = "Pages.OrganizationManagement.OrgUnits.Delete";
 
+    /// <summary>
+    /// Read-only Company Structure Overview chart. Separate from <see cref="Pages_OrganizationManagement_OrgUnits"/>
+    /// on purpose: viewing the org structure is a far broader entitlement than administering it, so the
+    /// chart must be grantable without also granting create/edit/delete on the unit master.
+    /// </summary>
+    public const string Pages_OrganizationManagement_CompanyStructureChart = "Pages.OrganizationManagement.CompanyStructureChart";
+
     public const string Pages_OrganizationManagement_OrganizationBankInfos = "Pages.OrganizationManagement.OrganizationBankInfos";
     public const string Pages_OrganizationManagement_OrganizationBankInfos_Create = "Pages.OrganizationManagement.OrganizationBankInfos.Create";
     public const string Pages_OrganizationManagement_OrganizationBankInfos_Edit = "Pages.OrganizationManagement.OrganizationBankInfos.Edit";
@@ -1760,6 +1767,28 @@ public static class AppPermissions
     public const string Pages_Workflow_WorkflowTransactionTypes_Create = "Pages.Workflow.WorkflowTransactionTypes.Create";
     public const string Pages_Workflow_WorkflowTransactionTypes_Edit = "Pages.Workflow.WorkflowTransactionTypes.Edit";
     public const string Pages_Workflow_WorkflowTransactionTypes_Delete = "Pages.Workflow.WorkflowTransactionTypes.Delete";
+
+    #region Business Rules
+
+    // The rule engine is administrative configuration, not a data screen: a rule authored here runs inside
+    // other people's saves. Authoring is therefore separated from ASSIGNING -- writing a rule changes
+    // nothing until somebody binds it to a base object and an event, and that binding is its own permission
+    // so a business analyst can draft rules without being able to arm them in production.
+    public const string Pages_BusinessRules = "Pages.BusinessRules";
+    public const string Pages_BusinessRules_Create = "Pages.BusinessRules.Create";
+    public const string Pages_BusinessRules_Edit = "Pages.BusinessRules.Edit";
+    public const string Pages_BusinessRules_Delete = "Pages.BusinessRules.Delete";
+
+    /// <summary>Dry-run a rule against sample values. Read-only: the test harness never persists.</summary>
+    public const string Pages_BusinessRules_Test = "Pages.BusinessRules.Test";
+
+    /// <summary>Bind a rule to a base object and event, or unbind it. This is what makes a rule live.</summary>
+    public const string Pages_BusinessRules_Assign = "Pages.BusinessRules.Assign";
+
+    /// <summary>Read the execution log -- which rule fired, on which row, with what outcome.</summary>
+    public const string Pages_BusinessRules_ExecutionLogs = "Pages.BusinessRules.ExecutionLogs";
+
+    #endregion
 
     #region Employee Self Service
 

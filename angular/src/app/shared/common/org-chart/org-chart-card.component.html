@@ -1,0 +1,58 @@
+<div
+    class="org-chart-card"
+    [class.org-chart-card--focused]="focused()"
+    [class.org-chart-card--navigable]="card().navigable"
+    [style.--org-chart-accent]="accentColor()"
+    [attr.role]="card().navigable ? 'button' : null"
+    [attr.tabindex]="card().navigable ? 0 : null"
+    (click)="onClick()"
+    (keydown.enter)="onClick()"
+    (keydown.space)="onClick()">
+    <span class="org-chart-card__accent" aria-hidden="true"></span>
+
+    <div class="org-chart-card__body">
+        @if (card().typeLabel) {
+            <div class="org-chart-card__type">{{ card().typeLabel }}</div>
+        }
+
+        @if (card().code) {
+            <div class="org-chart-card__code">{{ card().code }}</div>
+        }
+
+        <div class="org-chart-card__name" [pTooltip]="card().name" tooltipPosition="top">
+            {{ card().name }}
+        </div>
+
+        @if (card().metrics.length) {
+            <div class="org-chart-card__metrics">
+                @for (metric of card().metrics; track metric.icon) {
+                    <span class="org-chart-card__metric" [pTooltip]="metric.tooltip" tooltipPosition="bottom">
+                        <!-- Inline SVG rather than an icon font, so the icons survive image export. -->
+                        <svg
+                            class="org-chart-card__metric-icon"
+                            viewBox="0 0 16 16"
+                            width="15"
+                            height="15"
+                            fill="currentColor"
+                            aria-hidden="true">
+                            @if (metric.icon === 'person') {
+                                <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 1.2c-2.6 0-5 1.3-5 2.9V14h10v-1.9c0-1.6-2.4-2.9-5-2.9Z" />
+                            } @else {
+                                <path
+                                    d="M5.6 7.6a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2Zm5.6.4a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4ZM5.6 8.8C3.3 8.8 1 10 1 11.5V14h9.2v-2.5c0-1.5-2.3-2.7-4.6-2.7Zm5.6.4c-.5 0-1 .05-1.45.15.75.65 1.25 1.45 1.25 2.15V14H15v-2.1c0-1.35-1.9-2.7-3.8-2.7Z" />
+                            }
+                        </svg>
+                        <span class="org-chart-card__metric-value">{{ metric.value }}</span>
+                    </span>
+                }
+            </div>
+        }
+    </div>
+
+    @if (card().stripCount !== null) {
+        <div class="org-chart-card__strip" [pTooltip]="card().stripTooltip ?? ''" tooltipPosition="left">
+            {{ card().stripCount }}
+        </div>
+    }
+</div>

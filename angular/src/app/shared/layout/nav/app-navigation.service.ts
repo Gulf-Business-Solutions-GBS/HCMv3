@@ -1496,6 +1496,12 @@ export class AppNavigationService {
                         'flaticon-list-3',
                         '/app/admin/org-units'
                     ),
+                    new AppMenuItem(
+                        'CompanyStructureOverview',
+                        'Pages.OrganizationManagement.CompanyStructureChart',
+                        'flaticon-network',
+                        '/app/admin/company-structure-chart'
+                    ),
                 ]
             ),
             new AppMenuItem(
@@ -2538,6 +2544,12 @@ export class AppNavigationService {
                 '',
                 [],
                 [
+                    new AppMenuItem(
+                        'BusinessRules',
+                        'Pages.BusinessRules',
+                        'flaticon-cogwheel-2',
+                        '/app/admin/business-rules'
+                    ),
                     new AppMenuItem(
                         'WorkflowRoles',
                         'Pages.Workflow.WorkflowRoles',

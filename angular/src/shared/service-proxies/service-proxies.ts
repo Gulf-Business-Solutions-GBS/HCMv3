@@ -11008,6 +11008,559 @@ export class BulkUploadLogsServiceProxy {
 }
 
 @Injectable()
+export class BusinessRulesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getBusinessRules(body?: GetAllBusinessRulesInput | undefined): Observable<PagedResultDtoOfBusinessRuleDto> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/GetBusinessRules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBusinessRules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBusinessRules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfBusinessRuleDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfBusinessRuleDto>;
+        }));
+    }
+
+    protected processGetBusinessRules(response: HttpResponseBase): Observable<PagedResultDtoOfBusinessRuleDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfBusinessRuleDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getBusinessRuleForEdit(id?: number | undefined): Observable<GetBusinessRuleForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/GetBusinessRuleForEdit?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBusinessRuleForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBusinessRuleForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetBusinessRuleForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetBusinessRuleForEditOutput>;
+        }));
+    }
+
+    protected processGetBusinessRuleForEdit(response: HttpResponseBase): Observable<GetBusinessRuleForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBusinessRuleForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEditBusinessRule(body?: CreateOrEditBusinessRuleDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/CreateOrEditBusinessRule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditBusinessRule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditBusinessRule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEditBusinessRule(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteBusinessRule(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/DeleteBusinessRule?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteBusinessRule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteBusinessRule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteBusinessRule(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createOrEditAssignment(body?: CreateOrEditBusinessRuleAssignmentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/CreateOrEditAssignment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditAssignment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditAssignment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEditAssignment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteAssignment(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/DeleteAssignment?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteAssignment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteAssignment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteAssignment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getRuleMetadata(): Observable<RuleMetadataDto> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/GetRuleMetadata";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRuleMetadata(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRuleMetadata(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RuleMetadataDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RuleMetadataDto>;
+        }));
+    }
+
+    protected processGetRuleMetadata(response: HttpResponseBase): Observable<RuleMetadataDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RuleMetadataDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    testBusinessRule(body?: TestBusinessRuleInput | undefined): Observable<TestBusinessRuleOutput> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/TestBusinessRule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTestBusinessRule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTestBusinessRule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TestBusinessRuleOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TestBusinessRuleOutput>;
+        }));
+    }
+
+    protected processTestBusinessRule(response: HttpResponseBase): Observable<TestBusinessRuleOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TestBusinessRuleOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getExecutionLogs(body?: GetBusinessRuleExecutionLogsInput | undefined): Observable<PagedResultDtoOfBusinessRuleExecutionLogDto> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/GetExecutionLogs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExecutionLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExecutionLogs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfBusinessRuleExecutionLogDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfBusinessRuleExecutionLogDto>;
+        }));
+    }
+
+    protected processGetExecutionLogs(response: HttpResponseBase): Observable<PagedResultDtoOfBusinessRuleExecutionLogDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfBusinessRuleExecutionLogDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    installSampleRules(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/BusinessRules/InstallSampleRules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processInstallSampleRules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processInstallSampleRules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processInstallSampleRules(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class BusinessTypesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -15379,6 +15932,188 @@ export class CompanyInsuranceDetailsServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class CompanyStructureChartServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getNode(body?: GetCompanyStructureNodeInput | undefined): Observable<CompanyStructureNodeDto> {
+        let url_ = this.baseUrl + "/api/services/app/CompanyStructureChart/GetNode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNode(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CompanyStructureNodeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CompanyStructureNodeDto>;
+        }));
+    }
+
+    protected processGetNode(response: HttpResponseBase): Observable<CompanyStructureNodeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyStructureNodeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getFilterOptions(): Observable<CompanyStructureChartFilterOptionsDto> {
+        let url_ = this.baseUrl + "/api/services/app/CompanyStructureChart/GetFilterOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFilterOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFilterOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CompanyStructureChartFilterOptionsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CompanyStructureChartFilterOptionsDto>;
+        }));
+    }
+
+    protected processGetFilterOptions(response: HttpResponseBase): Observable<CompanyStructureChartFilterOptionsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyStructureChartFilterOptionsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    searchNodes(body?: SearchCompanyStructureNodesInput | undefined): Observable<OrgChartNodeSummaryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/CompanyStructureChart/SearchNodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchNodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchNodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OrgChartNodeSummaryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OrgChartNodeSummaryDto[]>;
+        }));
+    }
+
+    protected processSearchNodes(response: HttpResponseBase): Observable<OrgChartNodeSummaryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OrgChartNodeSummaryDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -162823,6 +163558,238 @@ export enum BulkUploadLogType {
     ProfilePhoto = 1,
 }
 
+export class BusinessRuleAssignmentDto implements IBusinessRuleAssignmentDto {
+    id!: number;
+    businessRuleId!: number;
+    baseObject!: string | undefined;
+    eventType!: RuleEventType;
+    executionOrder!: number;
+    isActive!: boolean;
+    continueOnError!: boolean;
+    isTraced!: boolean;
+    ruleCode!: string | undefined;
+    ruleName!: string | undefined;
+
+    constructor(data?: IBusinessRuleAssignmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.businessRuleId = _data["businessRuleId"];
+            this.baseObject = _data["baseObject"];
+            this.eventType = _data["eventType"];
+            this.executionOrder = _data["executionOrder"];
+            this.isActive = _data["isActive"];
+            this.continueOnError = _data["continueOnError"];
+            this.isTraced = _data["isTraced"];
+            this.ruleCode = _data["ruleCode"];
+            this.ruleName = _data["ruleName"];
+        }
+    }
+
+    static fromJS(data: any): BusinessRuleAssignmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BusinessRuleAssignmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["businessRuleId"] = this.businessRuleId;
+        data["baseObject"] = this.baseObject;
+        data["eventType"] = this.eventType;
+        data["executionOrder"] = this.executionOrder;
+        data["isActive"] = this.isActive;
+        data["continueOnError"] = this.continueOnError;
+        data["isTraced"] = this.isTraced;
+        data["ruleCode"] = this.ruleCode;
+        data["ruleName"] = this.ruleName;
+        return data;
+    }
+}
+
+export interface IBusinessRuleAssignmentDto {
+    id: number;
+    businessRuleId: number;
+    baseObject: string | undefined;
+    eventType: RuleEventType;
+    executionOrder: number;
+    isActive: boolean;
+    continueOnError: boolean;
+    isTraced: boolean;
+    ruleCode: string | undefined;
+    ruleName: string | undefined;
+}
+
+export class BusinessRuleDto implements IBusinessRuleDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    description!: string | undefined;
+    baseObject!: string | undefined;
+    baseObjectDisplayName!: string | undefined;
+    purpose!: RulePurpose;
+    effectiveFrom!: DateTime;
+    effectiveTo!: DateTime | undefined;
+    isActive!: boolean;
+    activeAssignmentCount!: number;
+    hasDefinitionError!: boolean;
+
+    constructor(data?: IBusinessRuleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.description = _data["description"];
+            this.baseObject = _data["baseObject"];
+            this.baseObjectDisplayName = _data["baseObjectDisplayName"];
+            this.purpose = _data["purpose"];
+            this.effectiveFrom = _data["effectiveFrom"] ? DateTime.fromISO(_data["effectiveFrom"].toString()) : undefined as any;
+            this.effectiveTo = _data["effectiveTo"] ? DateTime.fromISO(_data["effectiveTo"].toString()) : undefined as any;
+            this.isActive = _data["isActive"];
+            this.activeAssignmentCount = _data["activeAssignmentCount"];
+            this.hasDefinitionError = _data["hasDefinitionError"];
+        }
+    }
+
+    static fromJS(data: any): BusinessRuleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BusinessRuleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["description"] = this.description;
+        data["baseObject"] = this.baseObject;
+        data["baseObjectDisplayName"] = this.baseObjectDisplayName;
+        data["purpose"] = this.purpose;
+        data["effectiveFrom"] = this.effectiveFrom ? this.effectiveFrom.toString() : undefined as any;
+        data["effectiveTo"] = this.effectiveTo ? this.effectiveTo.toString() : undefined as any;
+        data["isActive"] = this.isActive;
+        data["activeAssignmentCount"] = this.activeAssignmentCount;
+        data["hasDefinitionError"] = this.hasDefinitionError;
+        return data;
+    }
+}
+
+export interface IBusinessRuleDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    description: string | undefined;
+    baseObject: string | undefined;
+    baseObjectDisplayName: string | undefined;
+    purpose: RulePurpose;
+    effectiveFrom: DateTime;
+    effectiveTo: DateTime | undefined;
+    isActive: boolean;
+    activeAssignmentCount: number;
+    hasDefinitionError: boolean;
+}
+
+export class BusinessRuleExecutionLogDto implements IBusinessRuleExecutionLogDto {
+    id!: number;
+    businessRuleId!: number;
+    ruleCode!: string | undefined;
+    baseObject!: string | undefined;
+    eventType!: RuleEventType;
+    targetEntityId!: number | undefined;
+    succeeded!: boolean;
+    conditionMatched!: boolean;
+    message!: string | undefined;
+    durationMs!: number;
+    executedAt!: DateTime;
+
+    constructor(data?: IBusinessRuleExecutionLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.businessRuleId = _data["businessRuleId"];
+            this.ruleCode = _data["ruleCode"];
+            this.baseObject = _data["baseObject"];
+            this.eventType = _data["eventType"];
+            this.targetEntityId = _data["targetEntityId"];
+            this.succeeded = _data["succeeded"];
+            this.conditionMatched = _data["conditionMatched"];
+            this.message = _data["message"];
+            this.durationMs = _data["durationMs"];
+            this.executedAt = _data["executedAt"] ? DateTime.fromISO(_data["executedAt"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): BusinessRuleExecutionLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BusinessRuleExecutionLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["businessRuleId"] = this.businessRuleId;
+        data["ruleCode"] = this.ruleCode;
+        data["baseObject"] = this.baseObject;
+        data["eventType"] = this.eventType;
+        data["targetEntityId"] = this.targetEntityId;
+        data["succeeded"] = this.succeeded;
+        data["conditionMatched"] = this.conditionMatched;
+        data["message"] = this.message;
+        data["durationMs"] = this.durationMs;
+        data["executedAt"] = this.executedAt ? this.executedAt.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IBusinessRuleExecutionLogDto {
+    id: number;
+    businessRuleId: number;
+    ruleCode: string | undefined;
+    baseObject: string | undefined;
+    eventType: RuleEventType;
+    targetEntityId: number | undefined;
+    succeeded: boolean;
+    conditionMatched: boolean;
+    message: string | undefined;
+    durationMs: number;
+    executedAt: DateTime;
+}
+
 export class CDAnnualYearReviewDto implements ICDAnnualYearReviewDto {
     id!: number;
     cdFormId!: number;
@@ -165298,6 +166265,126 @@ export interface ICompanyInsuranceDetailDto {
     installmentDate: DateTime;
     installmentAmount: number;
     installmentType: InstallmentType;
+}
+
+export class CompanyStructureChartFilterOptionsDto implements ICompanyStructureChartFilterOptionsDto {
+    roots!: OrgChartNodeSummaryDto[] | undefined;
+    organizationUnitTypes!: OrgChartTypeOptionDto[] | undefined;
+
+    constructor(data?: ICompanyStructureChartFilterOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["roots"])) {
+                this.roots = [] as any;
+                for (let item of _data["roots"])
+                    this.roots!.push(OrgChartNodeSummaryDto.fromJS(item));
+            }
+            if (Array.isArray(_data["organizationUnitTypes"])) {
+                this.organizationUnitTypes = [] as any;
+                for (let item of _data["organizationUnitTypes"])
+                    this.organizationUnitTypes!.push(OrgChartTypeOptionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CompanyStructureChartFilterOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyStructureChartFilterOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.roots)) {
+            data["roots"] = [];
+            for (let item of this.roots)
+                data["roots"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.organizationUnitTypes)) {
+            data["organizationUnitTypes"] = [];
+            for (let item of this.organizationUnitTypes)
+                data["organizationUnitTypes"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ICompanyStructureChartFilterOptionsDto {
+    roots: OrgChartNodeSummaryDto[] | undefined;
+    organizationUnitTypes: OrgChartTypeOptionDto[] | undefined;
+}
+
+export class CompanyStructureNodeDto implements ICompanyStructureNodeDto {
+    asOfDate!: DateTime;
+    focus!: OrgChartNodeDto;
+    ancestors!: OrgChartNodeSummaryDto[] | undefined;
+    children!: OrgChartNodeDto[] | undefined;
+
+    constructor(data?: ICompanyStructureNodeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+            this.focus = _data["focus"] ? OrgChartNodeDto.fromJS(_data["focus"]) : undefined as any;
+            if (Array.isArray(_data["ancestors"])) {
+                this.ancestors = [] as any;
+                for (let item of _data["ancestors"])
+                    this.ancestors!.push(OrgChartNodeSummaryDto.fromJS(item));
+            }
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children!.push(OrgChartNodeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CompanyStructureNodeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyStructureNodeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        data["focus"] = this.focus ? this.focus.toJSON() : undefined as any;
+        if (Array.isArray(this.ancestors)) {
+            data["ancestors"] = [];
+            for (let item of this.ancestors)
+                data["ancestors"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface ICompanyStructureNodeDto {
+    asOfDate: DateTime;
+    focus: OrgChartNodeDto;
+    ancestors: OrgChartNodeSummaryDto[] | undefined;
+    children: OrgChartNodeDto[] | undefined;
 }
 
 export class CompetencyByJobTitleDetailDto implements ICompetencyByJobTitleDetailDto {
@@ -168618,6 +169705,142 @@ export interface ICreateOrEditBulkUploadLogDto {
     stopFlag: boolean;
     noOfEmployee: number;
     recordNo: number;
+}
+
+export class CreateOrEditBusinessRuleAssignmentDto implements ICreateOrEditBusinessRuleAssignmentDto {
+    id!: number | undefined;
+    businessRuleId!: number;
+    eventType!: RuleEventType;
+    executionOrder!: number;
+    isActive!: boolean;
+    continueOnError!: boolean;
+    isTraced!: boolean;
+
+    constructor(data?: ICreateOrEditBusinessRuleAssignmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.businessRuleId = _data["businessRuleId"];
+            this.eventType = _data["eventType"];
+            this.executionOrder = _data["executionOrder"];
+            this.isActive = _data["isActive"];
+            this.continueOnError = _data["continueOnError"];
+            this.isTraced = _data["isTraced"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditBusinessRuleAssignmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditBusinessRuleAssignmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["businessRuleId"] = this.businessRuleId;
+        data["eventType"] = this.eventType;
+        data["executionOrder"] = this.executionOrder;
+        data["isActive"] = this.isActive;
+        data["continueOnError"] = this.continueOnError;
+        data["isTraced"] = this.isTraced;
+        return data;
+    }
+}
+
+export interface ICreateOrEditBusinessRuleAssignmentDto {
+    id: number | undefined;
+    businessRuleId: number;
+    eventType: RuleEventType;
+    executionOrder: number;
+    isActive: boolean;
+    continueOnError: boolean;
+    isTraced: boolean;
+}
+
+export class CreateOrEditBusinessRuleDto implements ICreateOrEditBusinessRuleDto {
+    id!: number | undefined;
+    code!: string;
+    nameEn!: string;
+    nameAr!: string | undefined;
+    description!: string | undefined;
+    baseObject!: string;
+    purpose!: RulePurpose;
+    definitionJson!: string;
+    effectiveFrom!: DateTime;
+    effectiveTo!: DateTime | undefined;
+    isActive!: boolean;
+
+    constructor(data?: ICreateOrEditBusinessRuleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.description = _data["description"];
+            this.baseObject = _data["baseObject"];
+            this.purpose = _data["purpose"];
+            this.definitionJson = _data["definitionJson"];
+            this.effectiveFrom = _data["effectiveFrom"] ? DateTime.fromISO(_data["effectiveFrom"].toString()) : undefined as any;
+            this.effectiveTo = _data["effectiveTo"] ? DateTime.fromISO(_data["effectiveTo"].toString()) : undefined as any;
+            this.isActive = _data["isActive"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditBusinessRuleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditBusinessRuleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["description"] = this.description;
+        data["baseObject"] = this.baseObject;
+        data["purpose"] = this.purpose;
+        data["definitionJson"] = this.definitionJson;
+        data["effectiveFrom"] = this.effectiveFrom ? this.effectiveFrom.toString() : undefined as any;
+        data["effectiveTo"] = this.effectiveTo ? this.effectiveTo.toString() : undefined as any;
+        data["isActive"] = this.isActive;
+        return data;
+    }
+}
+
+export interface ICreateOrEditBusinessRuleDto {
+    id: number | undefined;
+    code: string;
+    nameEn: string;
+    nameAr: string | undefined;
+    description: string | undefined;
+    baseObject: string;
+    purpose: RulePurpose;
+    definitionJson: string;
+    effectiveFrom: DateTime;
+    effectiveTo: DateTime | undefined;
+    isActive: boolean;
 }
 
 export class CreateOrEditCDAnnualYearReviewDto implements ICreateOrEditCDAnnualYearReviewDto {
@@ -214857,6 +216080,74 @@ export interface IGetAllBulkUploadLogsInput {
     logType: BulkUploadLogType;
 }
 
+export class GetAllBusinessRulesInput implements IGetAllBusinessRulesInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    filter!: string | undefined;
+    baseObject!: string | undefined;
+    eventType!: RuleEventType;
+    purpose!: RulePurpose;
+    isActive!: boolean | undefined;
+    asOfDate!: DateTime | undefined;
+
+    constructor(data?: IGetAllBusinessRulesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.filter = _data["filter"];
+            this.baseObject = _data["baseObject"];
+            this.eventType = _data["eventType"];
+            this.purpose = _data["purpose"];
+            this.isActive = _data["isActive"];
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetAllBusinessRulesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllBusinessRulesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["filter"] = this.filter;
+        data["baseObject"] = this.baseObject;
+        data["eventType"] = this.eventType;
+        data["purpose"] = this.purpose;
+        data["isActive"] = this.isActive;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetAllBusinessRulesInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    filter: string | undefined;
+    baseObject: string | undefined;
+    eventType: RuleEventType;
+    purpose: RulePurpose;
+    isActive: boolean | undefined;
+    asOfDate: DateTime | undefined;
+}
+
 export class GetAllCDAnnualYearReviewsInput implements IGetAllCDAnnualYearReviewsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -233177,6 +234468,114 @@ export interface IGetBulkUploadLogForEditOutput {
     bulkUploadLog: CreateOrEditBulkUploadLogDto;
 }
 
+export class GetBusinessRuleExecutionLogsInput implements IGetBusinessRuleExecutionLogsInput {
+    maxResultCount!: number;
+    skipCount!: number;
+    sorting!: string | undefined;
+    businessRuleId!: number | undefined;
+    succeeded!: boolean | undefined;
+    fromDate!: DateTime | undefined;
+    toDate!: DateTime | undefined;
+
+    constructor(data?: IGetBusinessRuleExecutionLogsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.sorting = _data["sorting"];
+            this.businessRuleId = _data["businessRuleId"];
+            this.succeeded = _data["succeeded"];
+            this.fromDate = _data["fromDate"] ? DateTime.fromISO(_data["fromDate"].toString()) : undefined as any;
+            this.toDate = _data["toDate"] ? DateTime.fromISO(_data["toDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetBusinessRuleExecutionLogsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBusinessRuleExecutionLogsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["sorting"] = this.sorting;
+        data["businessRuleId"] = this.businessRuleId;
+        data["succeeded"] = this.succeeded;
+        data["fromDate"] = this.fromDate ? this.fromDate.toString() : undefined as any;
+        data["toDate"] = this.toDate ? this.toDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetBusinessRuleExecutionLogsInput {
+    maxResultCount: number;
+    skipCount: number;
+    sorting: string | undefined;
+    businessRuleId: number | undefined;
+    succeeded: boolean | undefined;
+    fromDate: DateTime | undefined;
+    toDate: DateTime | undefined;
+}
+
+export class GetBusinessRuleForEditOutput implements IGetBusinessRuleForEditOutput {
+    rule!: CreateOrEditBusinessRuleDto;
+    assignments!: BusinessRuleAssignmentDto[] | undefined;
+
+    constructor(data?: IGetBusinessRuleForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.rule = _data["rule"] ? CreateOrEditBusinessRuleDto.fromJS(_data["rule"]) : undefined as any;
+            if (Array.isArray(_data["assignments"])) {
+                this.assignments = [] as any;
+                for (let item of _data["assignments"])
+                    this.assignments!.push(BusinessRuleAssignmentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetBusinessRuleForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBusinessRuleForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["rule"] = this.rule ? this.rule.toJSON() : undefined as any;
+        if (Array.isArray(this.assignments)) {
+            data["assignments"] = [];
+            for (let item of this.assignments)
+                data["assignments"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGetBusinessRuleForEditOutput {
+    rule: CreateOrEditBusinessRuleDto;
+    assignments: BusinessRuleAssignmentDto[] | undefined;
+}
+
 export class GetCDAnnualYearReviewForEditOutput implements IGetCDAnnualYearReviewForEditOutput {
     cdAnnualYearReview!: CreateOrEditCDAnnualYearReviewDto;
 
@@ -233679,6 +235078,46 @@ export class GetCompanyInsuranceDetailForEditOutput implements IGetCompanyInsura
 
 export interface IGetCompanyInsuranceDetailForEditOutput {
     companyInsuranceDetail: CreateOrEditCompanyInsuranceDetailDto;
+}
+
+export class GetCompanyStructureNodeInput implements IGetCompanyStructureNodeInput {
+    organizationUnitId!: number | undefined;
+    asOfDate!: DateTime | undefined;
+
+    constructor(data?: IGetCompanyStructureNodeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitId = _data["organizationUnitId"];
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetCompanyStructureNodeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCompanyStructureNodeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetCompanyStructureNodeInput {
+    organizationUnitId: number | undefined;
+    asOfDate: DateTime | undefined;
 }
 
 export class GetCompetencyByJobTitleDetailForEditOutput implements IGetCompetencyByJobTitleDetailForEditOutput {
@@ -269983,6 +271422,202 @@ export interface IOpenIdConnectExternalLoginProviderSettings {
     responseType: string | undefined;
 }
 
+export class OrgChartNodeDto implements IOrgChartNodeDto {
+    id!: number;
+    treeCode!: string | undefined;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    parentId!: number | undefined;
+    organizationUnitTypeId!: number | undefined;
+    organizationUnitTypeCode!: string | undefined;
+    organizationUnitTypeNameEn!: string | undefined;
+    organizationUnitTypeNameAr!: string | undefined;
+    directEmployeeCount!: number;
+    totalEmployeeCount!: number;
+    childUnitCount!: number;
+
+    constructor(data?: IOrgChartNodeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.treeCode = _data["treeCode"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.parentId = _data["parentId"];
+            this.organizationUnitTypeId = _data["organizationUnitTypeId"];
+            this.organizationUnitTypeCode = _data["organizationUnitTypeCode"];
+            this.organizationUnitTypeNameEn = _data["organizationUnitTypeNameEn"];
+            this.organizationUnitTypeNameAr = _data["organizationUnitTypeNameAr"];
+            this.directEmployeeCount = _data["directEmployeeCount"];
+            this.totalEmployeeCount = _data["totalEmployeeCount"];
+            this.childUnitCount = _data["childUnitCount"];
+        }
+    }
+
+    static fromJS(data: any): OrgChartNodeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgChartNodeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["treeCode"] = this.treeCode;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["parentId"] = this.parentId;
+        data["organizationUnitTypeId"] = this.organizationUnitTypeId;
+        data["organizationUnitTypeCode"] = this.organizationUnitTypeCode;
+        data["organizationUnitTypeNameEn"] = this.organizationUnitTypeNameEn;
+        data["organizationUnitTypeNameAr"] = this.organizationUnitTypeNameAr;
+        data["directEmployeeCount"] = this.directEmployeeCount;
+        data["totalEmployeeCount"] = this.totalEmployeeCount;
+        data["childUnitCount"] = this.childUnitCount;
+        return data;
+    }
+}
+
+export interface IOrgChartNodeDto {
+    id: number;
+    treeCode: string | undefined;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    parentId: number | undefined;
+    organizationUnitTypeId: number | undefined;
+    organizationUnitTypeCode: string | undefined;
+    organizationUnitTypeNameEn: string | undefined;
+    organizationUnitTypeNameAr: string | undefined;
+    directEmployeeCount: number;
+    totalEmployeeCount: number;
+    childUnitCount: number;
+}
+
+export class OrgChartNodeSummaryDto implements IOrgChartNodeSummaryDto {
+    id!: number;
+    treeCode!: string | undefined;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    parentId!: number | undefined;
+    organizationUnitTypeNameEn!: string | undefined;
+    organizationUnitTypeNameAr!: string | undefined;
+
+    constructor(data?: IOrgChartNodeSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.treeCode = _data["treeCode"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.parentId = _data["parentId"];
+            this.organizationUnitTypeNameEn = _data["organizationUnitTypeNameEn"];
+            this.organizationUnitTypeNameAr = _data["organizationUnitTypeNameAr"];
+        }
+    }
+
+    static fromJS(data: any): OrgChartNodeSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgChartNodeSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["treeCode"] = this.treeCode;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["parentId"] = this.parentId;
+        data["organizationUnitTypeNameEn"] = this.organizationUnitTypeNameEn;
+        data["organizationUnitTypeNameAr"] = this.organizationUnitTypeNameAr;
+        return data;
+    }
+}
+
+export interface IOrgChartNodeSummaryDto {
+    id: number;
+    treeCode: string | undefined;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    parentId: number | undefined;
+    organizationUnitTypeNameEn: string | undefined;
+    organizationUnitTypeNameAr: string | undefined;
+}
+
+export class OrgChartTypeOptionDto implements IOrgChartTypeOptionDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+
+    constructor(data?: IOrgChartTypeOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+        }
+    }
+
+    static fromJS(data: any): OrgChartTypeOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgChartTypeOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        return data;
+    }
+}
+
+export interface IOrgChartTypeOptionDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+}
+
 export class OrgSettingsEditDto implements IOrgSettingsEditDto {
     id!: number;
     enablePostingGroup!: boolean;
@@ -274453,6 +276088,102 @@ export class PagedResultDtoOfBulkUploadLogEntryDto implements IPagedResultDtoOfB
 
 export interface IPagedResultDtoOfBulkUploadLogEntryDto {
     items: BulkUploadLogEntryDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfBusinessRuleDto implements IPagedResultDtoOfBusinessRuleDto {
+    items!: BusinessRuleDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfBusinessRuleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BusinessRuleDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBusinessRuleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBusinessRuleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfBusinessRuleDto {
+    items: BusinessRuleDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfBusinessRuleExecutionLogDto implements IPagedResultDtoOfBusinessRuleExecutionLogDto {
+    items!: BusinessRuleExecutionLogDto[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfBusinessRuleExecutionLogDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BusinessRuleExecutionLogDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBusinessRuleExecutionLogDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBusinessRuleExecutionLogDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfBusinessRuleExecutionLogDto {
+    items: BusinessRuleExecutionLogDto[] | undefined;
     totalCount: number;
 }
 
@@ -312267,6 +313998,363 @@ export enum RosterPlannerFrequency {
     Monthly = 1,
 }
 
+export class RuleBaseObjectMetadataDto implements IRuleBaseObjectMetadataDto {
+    code!: string | undefined;
+    displayName!: string | undefined;
+    supportedEvents!: RuleEventType[] | undefined;
+    parameters!: RuleParameterMetadataDto[] | undefined;
+
+    constructor(data?: IRuleBaseObjectMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.displayName = _data["displayName"];
+            if (Array.isArray(_data["supportedEvents"])) {
+                this.supportedEvents = [] as any;
+                for (let item of _data["supportedEvents"])
+                    this.supportedEvents!.push(item);
+            }
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(RuleParameterMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RuleBaseObjectMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleBaseObjectMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["displayName"] = this.displayName;
+        if (Array.isArray(this.supportedEvents)) {
+            data["supportedEvents"] = [];
+            for (let item of this.supportedEvents)
+                data["supportedEvents"].push(item);
+        }
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRuleBaseObjectMetadataDto {
+    code: string | undefined;
+    displayName: string | undefined;
+    supportedEvents: RuleEventType[] | undefined;
+    parameters: RuleParameterMetadataDto[] | undefined;
+}
+
+export enum RuleDataType {
+    Unknown = 0,
+    String = 1,
+    Integer = 2,
+    Decimal = 3,
+    Boolean = 4,
+    Date = 5,
+    DateTime = 6,
+    Lookup = 7,
+    Enum = 8,
+}
+
+export enum RuleEventType {
+    None = 0,
+    OnInit = 1,
+    BeforeSave = 2,
+    AfterSave = 3,
+    OnValidate = 4,
+    BeforeDelete = 5,
+    OnRoute = 6,
+}
+
+export class RuleFieldMetadataDto implements IRuleFieldMetadataDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+    dataType!: RuleDataType;
+    isWritable!: boolean;
+    lookupSource!: string | undefined;
+
+    constructor(data?: IRuleFieldMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            this.dataType = _data["dataType"];
+            this.isWritable = _data["isWritable"];
+            this.lookupSource = _data["lookupSource"];
+        }
+    }
+
+    static fromJS(data: any): RuleFieldMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleFieldMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["dataType"] = this.dataType;
+        data["isWritable"] = this.isWritable;
+        data["lookupSource"] = this.lookupSource;
+        return data;
+    }
+}
+
+export interface IRuleFieldMetadataDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    dataType: RuleDataType;
+    isWritable: boolean;
+    lookupSource: string | undefined;
+}
+
+export class RuleFunctionMetadataDto implements IRuleFunctionMetadataDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+    returnType!: RuleDataType;
+    parameters!: RuleFunctionParameterMetadataDto[] | undefined;
+
+    constructor(data?: IRuleFunctionMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            this.returnType = _data["returnType"];
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(RuleFunctionParameterMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RuleFunctionMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleFunctionMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["returnType"] = this.returnType;
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRuleFunctionMetadataDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    returnType: RuleDataType;
+    parameters: RuleFunctionParameterMetadataDto[] | undefined;
+}
+
+export class RuleFunctionParameterMetadataDto implements IRuleFunctionParameterMetadataDto {
+    name!: string | undefined;
+    dataType!: RuleDataType;
+    isOptional!: boolean;
+
+    constructor(data?: IRuleFunctionParameterMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.dataType = _data["dataType"];
+            this.isOptional = _data["isOptional"];
+        }
+    }
+
+    static fromJS(data: any): RuleFunctionParameterMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleFunctionParameterMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["dataType"] = this.dataType;
+        data["isOptional"] = this.isOptional;
+        return data;
+    }
+}
+
+export interface IRuleFunctionParameterMetadataDto {
+    name: string | undefined;
+    dataType: RuleDataType;
+    isOptional: boolean;
+}
+
+export class RuleMetadataDto implements IRuleMetadataDto {
+    baseObjects!: RuleBaseObjectMetadataDto[] | undefined;
+    functions!: RuleFunctionMetadataDto[] | undefined;
+
+    constructor(data?: IRuleMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["baseObjects"])) {
+                this.baseObjects = [] as any;
+                for (let item of _data["baseObjects"])
+                    this.baseObjects!.push(RuleBaseObjectMetadataDto.fromJS(item));
+            }
+            if (Array.isArray(_data["functions"])) {
+                this.functions = [] as any;
+                for (let item of _data["functions"])
+                    this.functions!.push(RuleFunctionMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RuleMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.baseObjects)) {
+            data["baseObjects"] = [];
+            for (let item of this.baseObjects)
+                data["baseObjects"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.functions)) {
+            data["functions"] = [];
+            for (let item of this.functions)
+                data["functions"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRuleMetadataDto {
+    baseObjects: RuleBaseObjectMetadataDto[] | undefined;
+    functions: RuleFunctionMetadataDto[] | undefined;
+}
+
+export class RuleParameterMetadataDto implements IRuleParameterMetadataDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+    isWritable!: boolean;
+    fields!: RuleFieldMetadataDto[] | undefined;
+
+    constructor(data?: IRuleParameterMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            this.isWritable = _data["isWritable"];
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields!.push(RuleFieldMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RuleParameterMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleParameterMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["isWritable"] = this.isWritable;
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRuleParameterMetadataDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    isWritable: boolean;
+    fields: RuleFieldMetadataDto[] | undefined;
+}
+
+export enum RulePurpose {
+    None = 0,
+    Evaluate = 1,
+    Validate = 2,
+    Route = 3,
+}
+
 export class RunPayrollEngineInput implements IRunPayrollEngineInput {
     payrollRunType!: PayrollRunType;
     employeeCodes!: string | undefined;
@@ -314636,6 +316724,54 @@ export interface IScreenUsageDto {
     isFavorite: boolean;
     lastVisitedAt: DateTime | undefined;
     visitCount: number;
+}
+
+export class SearchCompanyStructureNodesInput implements ISearchCompanyStructureNodesInput {
+    filter!: string | undefined;
+    organizationUnitTypeId!: number | undefined;
+    rootOrganizationUnitId!: number | undefined;
+    maxResultCount!: number;
+
+    constructor(data?: ISearchCompanyStructureNodesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+            this.organizationUnitTypeId = _data["organizationUnitTypeId"];
+            this.rootOrganizationUnitId = _data["rootOrganizationUnitId"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): SearchCompanyStructureNodesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchCompanyStructureNodesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        data["organizationUnitTypeId"] = this.organizationUnitTypeId;
+        data["rootOrganizationUnitId"] = this.rootOrganizationUnitId;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface ISearchCompanyStructureNodesInput {
+    filter: string | undefined;
+    organizationUnitTypeId: number | undefined;
+    rootOrganizationUnitId: number | undefined;
+    maxResultCount: number;
 }
 
 export class SecuritySettingsEditDto implements ISecuritySettingsEditDto {
@@ -320416,6 +322552,150 @@ export interface ITenantUserManagementSettingsEditDto {
     isRestrictedEmailDomainEnabledForApplication: boolean;
     isQrLoginEnabled: boolean;
     isQrLoginEnabledForApplication: boolean;
+}
+
+export class TestBusinessRuleInput implements ITestBusinessRuleInput {
+    baseObject!: string | undefined;
+    purpose!: RulePurpose;
+    definitionJson!: string | undefined;
+    sampleValues!: { [key: string]: string; } | undefined;
+    asOfDate!: DateTime | undefined;
+
+    constructor(data?: ITestBusinessRuleInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.baseObject = _data["baseObject"];
+            this.purpose = _data["purpose"];
+            this.definitionJson = _data["definitionJson"];
+            if (_data["sampleValues"]) {
+                this.sampleValues = {} as any;
+                for (let key in _data["sampleValues"]) {
+                    if (_data["sampleValues"].hasOwnProperty(key))
+                        (this.sampleValues as any)![key] = _data["sampleValues"][key];
+                }
+            }
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): TestBusinessRuleInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TestBusinessRuleInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["baseObject"] = this.baseObject;
+        data["purpose"] = this.purpose;
+        data["definitionJson"] = this.definitionJson;
+        if (this.sampleValues) {
+            data["sampleValues"] = {};
+            for (let key in this.sampleValues) {
+                if (this.sampleValues.hasOwnProperty(key))
+                    (data["sampleValues"] as any)[key] = (this.sampleValues as any)[key];
+            }
+        }
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface ITestBusinessRuleInput {
+    baseObject: string | undefined;
+    purpose: RulePurpose;
+    definitionJson: string | undefined;
+    sampleValues: { [key: string]: string; } | undefined;
+    asOfDate: DateTime | undefined;
+}
+
+export class TestBusinessRuleOutput implements ITestBusinessRuleOutput {
+    succeeded!: boolean;
+    conditionMatched!: boolean;
+    writes!: string[] | undefined;
+    errors!: string[] | undefined;
+    failures!: string[] | undefined;
+    trace!: string | undefined;
+
+    constructor(data?: ITestBusinessRuleOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.succeeded = _data["succeeded"];
+            this.conditionMatched = _data["conditionMatched"];
+            if (Array.isArray(_data["writes"])) {
+                this.writes = [] as any;
+                for (let item of _data["writes"])
+                    this.writes!.push(item);
+            }
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors!.push(item);
+            }
+            if (Array.isArray(_data["failures"])) {
+                this.failures = [] as any;
+                for (let item of _data["failures"])
+                    this.failures!.push(item);
+            }
+            this.trace = _data["trace"];
+        }
+    }
+
+    static fromJS(data: any): TestBusinessRuleOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TestBusinessRuleOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["succeeded"] = this.succeeded;
+        data["conditionMatched"] = this.conditionMatched;
+        if (Array.isArray(this.writes)) {
+            data["writes"] = [];
+            for (let item of this.writes)
+                data["writes"].push(item);
+        }
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        if (Array.isArray(this.failures)) {
+            data["failures"] = [];
+            for (let item of this.failures)
+                data["failures"].push(item);
+        }
+        data["trace"] = this.trace;
+        return data;
+    }
+}
+
+export interface ITestBusinessRuleOutput {
+    succeeded: boolean;
+    conditionMatched: boolean;
+    writes: string[] | undefined;
+    errors: string[] | undefined;
+    failures: string[] | undefined;
+    trace: string | undefined;
 }
 
 export class ThemeFooterSettingsDto implements IThemeFooterSettingsDto {

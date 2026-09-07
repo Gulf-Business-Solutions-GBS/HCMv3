@@ -213,6 +213,7 @@ public static class ScreenCatalog
         new("app.admin.organization-bank-infos", "SOM007", "OrganizationManagement", "OrganizationBankInfo", "/app/admin/organization-bank-infos", "Pages.OrganizationManagement.OrganizationBankInfos"),
         new("app.admin.organization-unit-types", "SOM008", "OrganizationManagement", "OrganizationUnitTypes", "/app/admin/organization-unit-types", "Pages.OrganizationManagement.OrganizationUnitTypes"),
         new("app.admin.work-locations", "SOM009", "OrganizationManagement", "WorkLocations", "/app/admin/work-locations", "Pages.OrganizationManagement.WorkLocations"),
+        new("app.admin.company-structure-chart", "SOM010", "OrganizationManagement", "CompanyStructureOverview", "/app/admin/company-structure-chart", "Pages.OrganizationManagement.CompanyStructureChart"),
         new("app.admin.employee-basic-pay-details", "SPA001", "PersonnelAdministration", "EmployeeBasicPayDetails", "/app/admin/employee-basic-pay-details", "Pages.PersonnelAdministration.EmployeeBasicPayDetails"),
         new("app.admin.employee-dependant-exceptions", "SPA002", "PersonnelAdministration", "EmployeeDependantExceptions", "/app/admin/employee-dependant-exceptions", "Pages.PersonnelAdministration.EmployeeDependantExceptions"),
         new("app.admin.employee-fund-details", "SPA003", "PersonnelAdministration", "EmployeeFundDetails", "/app/admin/employee-fund-details", "Pages.PersonnelAdministration.EmployeeFundDetails"),

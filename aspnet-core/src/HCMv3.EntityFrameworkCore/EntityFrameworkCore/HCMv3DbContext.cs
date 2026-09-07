@@ -48,6 +48,7 @@ using HCMv3.SystemSettings;
 using HCMv3.TimeManagement;
 using HCMv3.TrainingManagement;
 using HCMv3.TravelManagement;
+using HCMv3.BusinessRules;
 using HCMv3.Workflow;
 
 namespace HCMv3.EntityFrameworkCore;
@@ -793,6 +794,12 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WFReadLog> WFReadLogs { get; set; }
 
+    public virtual DbSet<BusinessRule> BusinessRules { get; set; }
+
+    public virtual DbSet<BusinessRuleAssignment> BusinessRuleAssignments { get; set; }
+
+    public virtual DbSet<BusinessRuleExecutionLog> BusinessRuleExecutionLogs { get; set; }
+
     public virtual DbSet<Applicant> Applicants { get; set; }
 
     public virtual DbSet<ApplicantCV> ApplicantCVs { get; set; }
@@ -1270,6 +1277,42 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.DefaultRequestMasterId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // The rule engine. Code is unique per tenant because seed data, imports and the routing hook all
+        // find a rule by its code -- a duplicate would make "which rule is PROBATION_END_DATE" depend on
+        // insertion order.
+        modelBuilder.Entity<BusinessRule>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.Code })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+
+            b.HasIndex(e => new { e.TenantId, e.BaseObject });
+        });
+
+        // The runner's hot-path query: "every rule armed on this base object and event". It runs inside
+        // saves, so it must be an indexed seek; without this index the engine would table-scan the
+        // assignments on every employee save even when the answer is "none".
+        modelBuilder.Entity<BusinessRuleAssignment>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.BaseObject, e.EventType, e.IsActive });
+
+            // Cascade, unusually for this codebase: an assignment whose rule is gone is not a record worth
+            // keeping, it is a binding to nothing.
+            b.HasOne(e => e.BusinessRule)
+                .WithMany(e => e.Assignments)
+                .HasForeignKey(e => e.BusinessRuleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // No foreign key to BusinessRule on purpose -- see the entity's remarks. A log entry must remain
+        // readable after the rule it describes has been deleted, which is precisely when someone is most
+        // likely to be reading it.
+        modelBuilder.Entity<BusinessRuleExecutionLog>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.BusinessRuleId, e.ExecutedAt });
+            b.HasIndex(e => new { e.TenantId, e.Succeeded, e.ExecutedAt });
         });
 
         modelBuilder.Entity<EmployeeOrgAssignment>(b =>

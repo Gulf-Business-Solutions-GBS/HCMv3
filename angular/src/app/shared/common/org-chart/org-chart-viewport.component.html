@@ -1,0 +1,12 @@
+<div
+    class="org-chart-viewport"
+    [class.org-chart-viewport--panning]="isPanning()"
+    (wheel)="onWheel($event)"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)">
+    <div #canvas class="org-chart-viewport__canvas" [style.transform]="canvasTransform()">
+        <ng-content />
+    </div>
+</div>

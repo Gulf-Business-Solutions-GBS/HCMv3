@@ -4,9 +4,14 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Extensions;
+using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings.Services;
+using HCMv3.BusinessRules;
+using HCMv3.BusinessRules.Services;
+using HCMv3.PersonnelAdministration.BusinessRules;
+using HCMv3.Workflow.BusinessRules;
 
 namespace HCMv3.Workflow.Services;
 
@@ -25,6 +30,10 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
     private readonly IRepository<RequestMaster> _requestMasterRepository;
     private readonly IRepository<EmployeeOrgAssignment> _orgAssignmentRepository;
     private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly IBusinessRuleRunner _businessRuleRunner;
+    private readonly IRuleBaseObjectRegistry _ruleBaseObjectRegistry;
+    private readonly IRuleEmployeeSnapshotBuilder _employeeSnapshotBuilder;
+    private readonly IAbpSession _abpSession;
 
     public RequestMasterResolver(
         IRepository<WorkflowTransactionType> transactionTypeRepository,
@@ -32,7 +41,11 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         IRepository<WorkflowGroupDetail> workflowGroupDetailRepository,
         IRepository<RequestMaster> requestMasterRepository,
         IRepository<EmployeeOrgAssignment> orgAssignmentRepository,
-        ISysSettingsAccessor sysSettingsAccessor)
+        ISysSettingsAccessor sysSettingsAccessor,
+        IBusinessRuleRunner businessRuleRunner,
+        IRuleBaseObjectRegistry ruleBaseObjectRegistry,
+        IRuleEmployeeSnapshotBuilder employeeSnapshotBuilder,
+        IAbpSession abpSession)
     {
         _transactionTypeRepository = transactionTypeRepository;
         _workflowGroupRepository = workflowGroupRepository;
@@ -40,6 +53,10 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
         _requestMasterRepository = requestMasterRepository;
         _orgAssignmentRepository = orgAssignmentRepository;
         _sysSettingsAccessor = sysSettingsAccessor;
+        _businessRuleRunner = businessRuleRunner;
+        _ruleBaseObjectRegistry = ruleBaseObjectRegistry;
+        _employeeSnapshotBuilder = employeeSnapshotBuilder;
+        _abpSession = abpSession;
     }
 
     public Task<WorkflowTransactionType> GetTransactionTypeAsync(string code)
@@ -97,6 +114,18 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
 
         RequestMaster requestMaster = null;
 
+        // FIRST: ask the business rules. A tenant may have configured "if the applier is a manager, use the
+        // senior chain" without a code change, and that decision has to outrank the ordinary group lookup
+        // or it could never express an exception to it. A rule that matches nothing returns null here and
+        // the original behaviour continues untouched, which is what makes arming one safe.
+        requestMaster = await ResolveFromBusinessRulesAsync(
+            requestType, employeeId, requestSubTypeId, customSubTypeId);
+
+        if (requestMaster != null)
+        {
+            return requestMaster;
+        }
+
         var workflowSettings = await _sysSettingsAccessor.GetWorkflowSettingsAsync();
         if (workflowSettings != null && workflowSettings.EnableWorkflowGroup)
         {
@@ -122,6 +151,74 @@ public class RequestMasterResolver : HCMv3DomainServiceBase, IRequestMasterResol
             // Legacy returned null here and let the caller fail later with something unrelated. A request
             // that cannot be routed has no valid next state, so it fails at the point of misconfiguration.
             throw new UserFriendlyException(L("NoWorkflowConfigurationFoundForRequestType", transactionType.NameEn));
+        }
+
+        return requestMaster;
+    }
+
+    /// <summary>
+    /// Runs the tenant's <c>OnRoute</c> rules and turns whatever chain code they name into a
+    /// <see cref="RequestMaster"/>. Returns null when no rule is armed, no rule matches, or the request has
+    /// no employee to describe -- all three meaning "the ordinary lookup should proceed".
+    ///
+    /// <para>
+    /// The rule names a chain by CODE and this method resolves it, rather than letting rules hand back an
+    /// id. Codes are what a configurer sees on the approval-chain screen and they survive a data refresh;
+    /// ids do neither. It also means a rule naming a chain that does not exist fails HERE, with a message
+    /// saying so, instead of returning null and being silently overridden by the default chain -- a routing
+    /// rule that quietly does nothing is the single worst failure this feature could have.
+    /// </para>
+    /// </summary>
+    private async Task<RequestMaster> ResolveFromBusinessRulesAsync(
+        string requestType,
+        int? employeeId,
+        int? requestSubTypeId,
+        int? customSubTypeId)
+    {
+        var baseObject = _ruleBaseObjectRegistry.Find(WorkflowRoutingRuleBaseObjectProvider.BaseObjectCode);
+
+        if (baseObject == null || !employeeId.HasValue)
+        {
+            return null;
+        }
+
+        var today = DateTime.Today;
+
+        var applier = await _employeeSnapshotBuilder.BuildAsync(employeeId.Value, today);
+
+        if (applier == null)
+        {
+            return null;
+        }
+
+        var decision = new WorkflowRoutingDecision();
+
+        var context = new RuleExecutionContext(baseObject, RuleEventType.OnRoute, today, _abpSession.TenantId)
+            .WithParameter(
+                WorkflowRoutingRuleBaseObjectProvider.RequestParameter,
+                new RuleWorkflowRequestSnapshot
+                {
+                    RequestType = requestType,
+                    RequestSubTypeId = requestSubTypeId,
+                    CustomSubTypeId = customSubTypeId
+                })
+            .WithParameter(WorkflowRoutingRuleBaseObjectProvider.ApplierParameter, applier)
+            .WithParameter(WorkflowRoutingRuleBaseObjectProvider.RoutingParameter, decision);
+
+        await _businessRuleRunner.RunAsync(context, employeeId);
+
+        if (!decision.IsResolved)
+        {
+            return null;
+        }
+
+        var requestMaster = _requestMasterRepository.GetAll()
+            .FirstOrDefault(m => m.Code == decision.RequestMasterCode);
+
+        if (requestMaster == null)
+        {
+            throw new UserFriendlyException(
+                L("WorkflowRoutingRuleNamedUnknownChain", decision.RequestMasterCode));
         }
 
         return requestMaster;

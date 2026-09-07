@@ -402,6 +402,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         orgUnits.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits_Edit, L("EditItem"));
         orgUnits.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrgUnits_Delete, L("DeleteItem"));
 
+        // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
+        // OrgUnits so that viewing the structure does not require rights to administer it.
+        organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CompanyStructureChart, L("CompanyStructureOverview"));
+
         var organizationBankInfos = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos, L("OrganizationBankInfos"));
         organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Create, L("CreateNewItem"));
         organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Edit, L("EditItem"));
@@ -1933,6 +1937,14 @@ public class AppAuthorizationProvider : AuthorizationProvider
         var wfReadLogs = workflow.CreateChildPermission(AppPermissions.Pages_Workflow_WFReadLogs, L("WFReadLogs"));
         wfReadLogs.CreateChildPermission(AppPermissions.Pages_Workflow_WFReadLogs_Create, L("CreateNewItem"));
         wfReadLogs.CreateChildPermission(AppPermissions.Pages_Workflow_WFReadLogs_Delete, L("DeleteItem"));
+
+        var businessRules = pages.CreateChildPermission(AppPermissions.Pages_BusinessRules, L("BusinessRules"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_Create, L("CreateNewItem"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_Edit, L("EditItem"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_Delete, L("DeleteItem"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_Test, L("TestingBusinessRule"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_Assign, L("AssigningBusinessRule"));
+        businessRules.CreateChildPermission(AppPermissions.Pages_BusinessRules_ExecutionLogs, L("BusinessRuleExecutionLogs"));
 
         var reportManagement = pages.CreateChildPermission(AppPermissions.Pages_ReportManagement, L("ReportManagement"));
 

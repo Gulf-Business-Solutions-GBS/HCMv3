@@ -1,0 +1,91 @@
+/*
+ * The rule tree. The visual job here is to make nesting legible at a glance -- an author has to be able to
+ * see which conditions sit inside which group without reading the whole tree, because a misread nesting is
+ * a rule that fires on the wrong records.
+ *
+ * Indentation plus a connecting rail does that with no library and no drag-and-drop.
+ */
+
+.rule-node {
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--bs-border-color, #e4e6ef);
+    border-radius: 0.475rem;
+    background-color: var(--bs-body-bg, #fff);
+}
+
+.rule-children {
+    margin-top: 0.5rem;
+    margin-inline-start: 1.25rem;
+    padding-inline-start: 0.85rem;
+
+    /* The rail. Logical properties, not left/right, so the tree indents correctly in Arabic too. */
+    border-inline-start: 2px solid var(--bs-border-color, #e4e6ef);
+}
+
+.rule-child {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.rule-child-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color, #7e8299);
+    margin-bottom: 0.15rem;
+}
+
+.rule-kind-select {
+    width: 9.5rem;
+    flex: 0 0 auto;
+}
+
+.rule-type-select,
+.rule-op-select {
+    width: 8.5rem;
+    flex: 0 0 auto;
+}
+
+.rule-field-select {
+    min-width: 14rem;
+    flex: 1 1 14rem;
+}
+
+.rule-value-input {
+    min-width: 9rem;
+    flex: 1 1 9rem;
+}
+
+/* The if/then block, styled to echo the SuccessFactors layout an HCM configurer already knows. */
+.rule-block {
+    border: 1px solid var(--bs-border-color, #e4e6ef);
+    border-radius: 0.625rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.rule-block-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--bs-secondary-color, #7e8299);
+    margin-bottom: 0.5rem;
+}
+
+.rule-action-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 0.5rem 0.65rem;
+    border: 1px dashed var(--bs-border-color, #e4e6ef);
+    border-radius: 0.475rem;
+    margin-bottom: 0.5rem;
+}
+
+.rule-trace {
+    font-family: var(--bs-font-monospace, monospace);
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}

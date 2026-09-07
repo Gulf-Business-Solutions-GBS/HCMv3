@@ -697,6 +697,14 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.OrganizationManagement.OrgUnits' },
                     },
+                    {
+                        path: 'company-structure-chart',
+                        loadComponent: () =>
+                            import(
+                                './admin/organization-management/company-structure-chart/company-structure-chart.component'
+                            ).then((m) => m.CompanyStructureChartComponent),
+                        data: { permission: 'Pages.OrganizationManagement.CompanyStructureChart' },
+                    },
                     simpleLookupRoute('time-types', 'TimeTypes', 'TimeTypes', TimeTypesServiceProxy, 'TimeManagement'),
                     simpleLookupRoute(
                         'trans-types',
@@ -3311,6 +3319,14 @@ export const appRoutes: Routes = [
                                 (m) => m.TravelFeedbacksComponent
                             ),
                         data: { permission: 'Pages.TravelManagement.TravelFeedbacks' },
+                    },
+                    {
+                        path: 'business-rules',
+                        loadComponent: () =>
+                            import('./admin/business-rules/business-rules.component').then(
+                                (m) => m.BusinessRulesComponent
+                            ),
+                        data: { permission: 'Pages.BusinessRules' },
                     },
                     {
                         path: 'workflow-roles',

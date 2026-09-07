@@ -1,0 +1,165 @@
+<div [@routerTransition]>
+    <sub-header
+        [title]="'CompanyStructureOverview' | localize"
+        [description]="'OrganizationManagement' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="row align-items-end g-3 mb-4">
+                    <div class="col-xl-3 col-md-6">
+                        <label class="form-label">{{ 'CompanyStructure' | localize }}</label>
+                        <p-select
+                            [options]="roots()"
+                            optionValue="id"
+                            [ngModel]="selectedRootId()"
+                            (ngModelChange)="onRootChange($event)"
+                            styleClass="w-100"
+                            [placeholder]="'CompanyStructure' | localize">
+                            <ng-template #selectedItem let-root>
+                                <span>{{ displayName(root) }}</span>
+                            </ng-template>
+                            <ng-template #item let-root>
+                                <span>{{ displayName(root) }}</span>
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="col-xl-2 col-md-6">
+                        <label class="form-label">{{ 'OrganizationUnitType' | localize }}</label>
+                        <p-select
+                            [options]="organizationUnitTypes()"
+                            optionValue="id"
+                            [ngModel]="selectedTypeId()"
+                            (ngModelChange)="onTypeChange($event)"
+                            [showClear]="true"
+                            styleClass="w-100"
+                            [placeholder]="'AllOrganizationUnitTypes' | localize">
+                            <ng-template #selectedItem let-type>
+                                <span>{{ typeDisplayName(type) }}</span>
+                            </ng-template>
+                            <ng-template #item let-type>
+                                <span>{{ typeDisplayName(type) }}</span>
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label class="form-label">{{ 'SearchOrganizationUnit' | localize }}</label>
+                        <p-select
+                            [options]="searchResults()"
+                            optionValue="id"
+                            [ngModel]="null"
+                            (ngModelChange)="onSearchSelect($event)"
+                            [filter]="true"
+                            [resetFilterOnHide]="true"
+                            (onFilter)="onSearchFilter($event)"
+                            (onShow)="searchNodes('')"
+                            styleClass="w-100"
+                            [placeholder]="'SearchWithThreeDot' | localize">
+                            <ng-template #item let-match>
+                                <span>{{ displayName(match) }}</span>
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="col-xl-2 col-md-6">
+                        <label class="form-label">{{ 'AsOf' | localize }}</label>
+                        <p-datepicker
+                            inputId="AsOfDate"
+                            name="AsOfDate"
+                            datePickerLuxonModifier
+                            [date]="asOfDate()"
+                            (dateChange)="onAsOfDateChange($event)"
+                            [showIcon]="true"
+                            [iconDisplay]="'input'"
+                            appendTo="body"
+                            styleClass="w-100" />
+                    </div>
+
+                    <div class="col-xl-2 col-md-6">
+                        <div class="org-chart-toolbar">
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-light btn-sm"
+                                (click)="zoomOut()"
+                                [pTooltip]="'ZoomOut' | localize">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-light btn-sm org-chart-toolbar__zoom"
+                                (click)="resetZoom()"
+                                [pTooltip]="'ResetZoom' | localize">
+                                {{ zoomPercent() }}%
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-light btn-sm"
+                                (click)="zoomIn()"
+                                [pTooltip]="'ZoomIn' | localize">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-light btn-sm"
+                                (click)="exportAsImage()"
+                                [pTooltip]="'ExportAsImage' | localize">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-light btn-sm"
+                                (click)="toggleFullscreen()"
+                                [pTooltip]="(isFullscreen() ? 'ExitFullscreen' : 'EnterFullscreen') | localize">
+                                <i
+                                    class="fa"
+                                    [class.fa-expand]="!isFullscreen()"
+                                    [class.fa-compress]="isFullscreen()"
+                                    aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                @if (ancestors().length) {
+                    <nav class="org-chart-breadcrumb" [attr.aria-label]="'CompanyStructure' | localize">
+                        @for (ancestor of ancestors(); track ancestor.id) {
+                            <button type="button" class="org-chart-breadcrumb__item" (click)="onBreadcrumbClick(ancestor.id)">
+                                {{ displayName(ancestor) }}
+                            </button>
+                            <span class="org-chart-breadcrumb__separator" aria-hidden="true">/</span>
+                        }
+                        <span class="org-chart-breadcrumb__current">{{ focusCard()?.name }}</span>
+                    </nav>
+                }
+
+                <div [busyIf]="isLoading()">
+                    <hcm-org-chart-viewport exportFileName="company-structure">
+                        @if (focusCard(); as focus) {
+                            <div class="org-chart-explorer">
+                                <div class="org-chart-explorer__focus">
+                                    <hcm-org-chart-card [card]="focus" [focused]="true" />
+                                </div>
+
+                                @if (childCards().length) {
+                                    <div class="org-chart-explorer__connector" aria-hidden="true"></div>
+
+                                    <div class="org-chart-explorer__children">
+                                        @for (child of childCards(); track child.id) {
+                                            <hcm-org-chart-card [card]="child" (cardClick)="onCardClick($event)" />
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        } @else if (!isLoading()) {
+                            <div class="org-chart-explorer__empty">
+                                {{ 'NoOrganizationUnitsConfigured' | localize }}
+                            </div>
+                        }
+                    </hcm-org-chart-viewport>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
