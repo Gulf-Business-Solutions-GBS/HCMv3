@@ -47,3 +47,4 @@ webhost2.log
 webhost*.log
 designer*.log
 gridreports-tests*.log
+ng-build*.log

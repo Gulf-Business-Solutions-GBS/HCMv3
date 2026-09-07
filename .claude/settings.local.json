@@ -6,7 +6,10 @@
       "Bash($env:PYTHONIOENCODING='utf-8')",
       "WebFetch(domain:cursor.com)",
       "Bash(del:*)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(dotnet build *)",
+      "Bash(cd \"C:/GBS/HCM/HCMv3/aspnet-core/src/HCMv3.Application/Reports\" && cp ReportsAppService.cs /c/Users/MUSTAF~1/AppData/Local/Temp/claude/C--GBS-HCM-HCMv3/36856b70-d54e-4ae3-b17a-317841e1ed07/scratchpad/ReportsAppService.bak.cs && sed -i '857,861s/^/\\\\/\\\\/BISECT /' ReportsAppService.cs && sed -n '855,863p' ReportsAppService.cs)",
+      "Bash(dotnet HCMv3.PayrollEngineRunner.dll --connection \"Server=localhost\\\\SQLEXPRESS; Database=HCMv3; Trusted_Connection=True; TrustServerCertificate=True;\" --payroll-area \"Admin. Office\" --pay-in-date 2024-06-30 --employee-codes \"2362,3400,3804,4225,4528\" --prepare --normalize-null-dates)"
     ]
   }
 }
