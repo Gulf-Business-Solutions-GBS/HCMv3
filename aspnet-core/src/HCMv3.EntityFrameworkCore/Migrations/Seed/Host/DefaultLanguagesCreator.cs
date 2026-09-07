@@ -16,10 +16,16 @@ public class DefaultLanguagesCreator
     {
         var tenantId = HCMv3Consts.MultiTenancyEnabled ? null : (int?)1;
 
-        // ALL FIFTEEN ARE CREATED, and all but English (UK) and Arabic are then DISABLED by the
-        // Enable_Only_English_And_Arabic migration. Only those two are offered, because the other
-        // thirteen have no translations here and choosing one gave an English interface under a foreign
-        // flag.
+        // ALL FIFTEEN ARE CREATED, and all but English and Arabic are then DISABLED by the
+        // Enable_Only_English_And_Arabic and Use_Neutral_English_Instead_Of_En_GB migrations. Only those
+        // two are offered, because the other thirteen have no translations here and choosing one gave an
+        // English interface under a foreign flag.
+        //
+        // English is the neutral "en", not "en-GB". The culture code has to stay neutral for the base
+        // localization dictionary to resolve -- "en-GB" served only the 937-key stub file and left the
+        // interface showing raw key names. British date formatting is applied on the client instead, via
+        // the "en" -> "en-GB" locale mappings in the Angular appconfig files, so the flag here is GB
+        // while the code stays neutral.
         //
         // Created and hidden, rather than never created: a language that does not exist cannot be turned
         // back on. An administrator who wants French enables the row from Administration > Languages,
@@ -27,7 +33,7 @@ public class DefaultLanguagesCreator
         // permanently different from an upgraded one, and taken that choice away.
         return new List<ApplicationLanguage>
             {
-                new ApplicationLanguage(tenantId, "en", "English", "famfamfam-flags us"),
+                new ApplicationLanguage(tenantId, "en", "English", "famfamfam-flags gb"),
                 new ApplicationLanguage(tenantId, "en-GB", "English (UK)", "famfamfam-flags gb"),
                 new ApplicationLanguage(tenantId, "ar", "العربية", "famfamfam-flags sa"),
                 new ApplicationLanguage(tenantId, "de", "Deutsch", "famfamfam-flags de"),

@@ -4,6 +4,10 @@
   "localeMappings": {
     "angular": [
       {
+        "from": "en",
+        "to": "en-GB"
+      },
+      {
         "from": "pt-BR",
         "to": "pt"
       },
@@ -26,6 +30,10 @@
     ],
     "luxon": [
       {
+        "from": "en",
+        "to": "en-gb"
+      },
+      {
         "from": "es-MX",
         "to": "es"
       },
@@ -39,6 +47,10 @@
       }
     ],
     "primeng": [
+      {
+        "from": "en",
+        "to": "en-GB"
+      },
       {
         "from": "en-US",
         "to": "en"
