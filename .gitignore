@@ -48,3 +48,6 @@ webhost*.log
 designer*.log
 gridreports-tests*.log
 ng-build*.log
+
+# Build output and deploy packages produced locally; artefacts, never source.
+artifacts/

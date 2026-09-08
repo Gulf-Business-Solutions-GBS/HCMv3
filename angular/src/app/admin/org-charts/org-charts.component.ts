@@ -3,7 +3,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
-import { SubHeaderComponent } from '../shared/common/sub-header/sub-header.component';
+import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 
 interface OrgChartTab {
     /** Child route segment under /app/admin/org-charts. */
