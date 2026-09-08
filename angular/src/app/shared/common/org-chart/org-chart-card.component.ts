@@ -44,13 +44,6 @@ export class OrgChartCardComponent {
         return !!card.avatar?.imageUrl && this.failedImageCardId() !== card.id;
     });
 
-    /** The `person` variant renders its figures joined, e.g. "122 / 515", rather than as icon badges. */
-    readonly joinedMetrics = computed(() =>
-        this.card()
-            .metrics.map((metric) => metric.value)
-            .join(' / ')
-    );
-
     onClick(): void {
         const card = this.card();
         if (card.navigable) {

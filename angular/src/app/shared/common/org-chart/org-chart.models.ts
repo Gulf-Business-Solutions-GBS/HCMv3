@@ -23,10 +23,9 @@ export interface OrgChartMetric {
 /**
  * Which of the two card treatments to draw.
  *
- * `unit` is an organization box: a type-coloured bar down the leading edge, icon+number badges, and a
- * coloured strip carrying the child count. `person` is a human: a circular avatar, no accent bar, no
- * strip, and the report counts rendered as a plain "direct / total" pair -- which is what the Employee
- * and Position charts need.
+ * `unit` is an organization box: a type-coloured bar down the leading edge and a coloured strip carrying
+ * the child count. `person` is a human: a circular avatar in place of that bar, the job title under the
+ * name, and no strip. Both render their figures as icon+number badges.
  *
  * Both share the same frame, typography, hover, focus treatment and export behaviour, which is the whole
  * point of them being one component.
@@ -91,12 +90,6 @@ export interface OrgChartCard {
 
     /** Only drawn by the `person` variant. Omit to hide the button. */
     action?: OrgChartCardAction;
-
-    /**
-     * Tooltip for the `person` variant's joined "direct / total" figure, where the individual metric
-     * tooltips have nowhere to attach.
-     */
-    metricsTooltip?: string;
 }
 
 /**

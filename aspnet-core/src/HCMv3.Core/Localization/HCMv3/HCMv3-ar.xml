@@ -1737,6 +1737,8 @@
     <text name="TotalReports">إجمالي المرؤوسين بكل المستويات</text>
     <text name="ViewEmployeeRecord">عرض ملف الموظف</text>
     <text name="NoReportingLinesConfigured">لم يتم إعداد أي تسلسل إداري لهذا التاريخ.</text>
+    <text name="GoToManager">الانتقال إلى المدير</text>
+    <text name="GoToReports">الانتقال إلى المرؤوسين</text>
     <text name="NoOrganizationUnitsConfigured">لم يتم إعداد أي وحدات تنظيمية بعد.</text>
     <text name="OrganizationBankInfos">المعلومات البنكية للشركة</text>
     <text name="OrganizationBankInfo">المعلومات البنكية للشركة</text>

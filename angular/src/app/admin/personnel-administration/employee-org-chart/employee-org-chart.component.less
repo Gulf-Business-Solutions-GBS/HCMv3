@@ -54,3 +54,29 @@
     text-align: center;
     color: var(--bs-gray-600, #7e8299);
 }
+
+/* Step one level up or down the hierarchy. The chart only ever draws three rows, so these are how you
+   move the window rather than expand it. */
+.employee-org-chart__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin: 4px 0;
+    padding: 0;
+    border: 1px solid var(--bs-border-color, #eff2f5);
+    border-radius: 50%;
+    background: var(--bs-card-bg, #ffffff);
+    color: var(--bs-gray-700, #5e6278);
+
+    &:hover {
+        border-color: var(--bs-primary, #009ef7);
+        color: var(--bs-primary, #009ef7);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--bs-primary, #009ef7);
+        outline-offset: 2px;
+    }
+}

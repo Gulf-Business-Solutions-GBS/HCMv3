@@ -26,10 +26,10 @@ import { OrgChartCard } from '../../../shared/common/org-chart/org-chart.models'
  * Employee Org Chart -- the second of three org-chart screens, sharing the card and viewport components
  * under `shared/common/org-chart` with the Company Structure Overview.
  *
- * Reads as the reference design does: the management chain stacked above the person in focus, their
- * direct reports as a wrapped grid below. Clicking a report re-centres on them; the chain above is
- * clickable to walk back up. Only one level loads at a time, which is what makes it usable across
- * thousands of employees.
+ * Three rows and no more: the immediate manager above, the person in focus, and their direct reports as
+ * a wrapped grid below. Clicking any card re-centres the chart on that person, and the up/down arrows do
+ * the same one level at a time. Deliberately not a whole-tree render -- at several thousand employees
+ * that is unreadable as well as slow.
  */
 @Component({
     templateUrl: './employee-org-chart.component.html',
@@ -93,9 +93,10 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
         return focus ? this.toCard(focus, false) : null;
     });
 
-    readonly managerChainCards = computed<OrgChartCard[]>(() =>
-        (this.node()?.managerChain ?? []).map((manager) => this.toCard(manager, true))
-    );
+    readonly managerCard = computed<OrgChartCard | null>(() => {
+        const manager = this.node()?.manager;
+        return manager ? this.toCard(manager, true) : null;
+    });
 
     readonly directReportCards = computed<OrgChartCard[]>(() =>
         (this.node()?.directReports ?? []).map((report) => this.toCard(report, true))
@@ -103,6 +104,27 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
 
     readonly zoomPercent = computed(() => this.viewport()?.zoomPercent() ?? 100);
     readonly isFullscreen = computed(() => this.viewport()?.isFullscreen() ?? false);
+
+    /** The up arrow is only meaningful when somebody sits above the person in focus. */
+    readonly canGoUp = computed(() => !!this.node()?.manager);
+
+    /**
+     * Where the down arrow leads: the direct report with the most people beneath them.
+     *
+     * The chart shows one level down at a time, so "descend" has to pick somebody. Following the deepest
+     * branch walks the main line of the hierarchy, which is what the arrow is for -- reaching any other
+     * individual is a single click on their own card.
+     */
+    readonly descendTarget = computed<EmployeeOrgChartNodeDto | null>(() => {
+        const reports = this.node()?.directReports ?? [];
+        if (!reports.length) {
+            return null;
+        }
+
+        return reports.reduce((deepest, candidate) =>
+            candidate.totalReportCount > deepest.totalReportCount ? candidate : deepest
+        );
+    });
 
     ngOnInit(): void {
         this.loadNode(null);
@@ -159,6 +181,22 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
 
     onCardClick(card: OrgChartCard): void {
         this.loadNode(card.id);
+    }
+
+    /** Up arrow: re-centre on the manager, which brings their own manager into view above. */
+    goUp(): void {
+        const manager = this.node()?.manager;
+        if (manager) {
+            this.loadNode(manager.id);
+        }
+    }
+
+    /** Down arrow: follow the deepest branch one level down. */
+    goDown(): void {
+        const target = this.descendTarget();
+        if (target) {
+            this.loadNode(target.id);
+        }
     }
 
     onOpenEmployee(card: OrgChartCard): void {
@@ -227,7 +265,6 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
                       { icon: 'people', value: node.totalReportCount, tooltip: this.l('TotalReports') },
                   ]
                 : [],
-            metricsTooltip: `${this.l('DirectReports')} / ${this.l('TotalReports')}`,
             stripCount: null,
             navigable,
         };

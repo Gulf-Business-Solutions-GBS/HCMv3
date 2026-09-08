@@ -18,9 +18,10 @@ namespace HCMv3.PersonnelAdministration;
 /// Read-only feed for the Employee Org Chart -- the second of the three org-chart screens, sharing the
 /// Angular card and viewport with the Company Structure Overview.
 ///
-/// SHAPE: a drill-down view. It returns the person in focus, the managers stacked above them, and one
-/// level of direct reports; clicking a report re-centres the chart on them. Only one level is ever loaded,
-/// so the response size follows one person's span of control rather than the size of the company.
+/// SHAPE: three rows only -- the person in focus, their immediate manager above, and their direct reports
+/// below. Clicking any card re-centres on that person, so moving up or down the hierarchy is a fresh call
+/// rather than a deeper render. Nothing beyond those three rows is ever returned, which is what keeps the
+/// response bounded by one person's span of control rather than by the size of the company.
 ///
 /// WHY THE WHOLE EDGE SET IS LOADED: <see cref="EmployeeManager"/> is a plain employee-to-manager row with
 /// no materialised path, so there is nothing to prefix-match on -- the trick that makes the descendant
@@ -36,8 +37,8 @@ namespace HCMv3.PersonnelAdministration;
 /// answers "who reports to whom now", and dating it silently emptied the whole chart whenever the
 /// underlying rows had lapsed.
 ///
-/// CYCLES: the data allows A to manage B while B manages A, and a cycle would otherwise hang both the
-/// chain walk and the descendant count. Every traversal below carries a visited set and stops.
+/// CYCLES: the data allows A to manage B while B manages A, and a cycle would otherwise hang the
+/// descendant count. That traversal carries a visited set and stops.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgChart)]
 public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChartAppService
@@ -77,10 +78,15 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
             return new EmployeeOrgChartDto();
         }
 
-        var managerChainIds = reportingLines.BuildManagerChain(focusEmployeeId.Value);
+        var managerId = reportingLines.GetManager(focusEmployeeId.Value);
         var directReportIds = reportingLines.GetDirectReports(focusEmployeeId.Value);
 
-        var cardIds = new List<int>(managerChainIds) { focusEmployeeId.Value };
+        var cardIds = new List<int> { focusEmployeeId.Value };
+        if (managerId.HasValue)
+        {
+            cardIds.Add(managerId.Value);
+        }
+
         cardIds.AddRange(directReportIds);
 
         var cards = await BuildCardsAsync(cardIds, reportingLines);
@@ -88,10 +94,9 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
         return new EmployeeOrgChartDto
         {
             Focus = cards.TryGetValue(focusEmployeeId.Value, out var focusCard) ? focusCard : null,
-            ManagerChain = managerChainIds
-                .Where(cards.ContainsKey)
-                .Select(id => cards[id])
-                .ToList(),
+            Manager = managerId.HasValue && cards.TryGetValue(managerId.Value, out var managerCard)
+                ? managerCard
+                : null,
             DirectReports = directReportIds
                 .Where(cards.ContainsKey)
                 .Select(id => cards[id])
@@ -287,13 +292,6 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     /// </summary>
     private class ReportingLines
     {
-        /// <summary>
-        /// Guards against a pathological chain as well as a cycle -- a visited set already stops a true
-        /// loop, but a chain thousands deep would mean corrupt data, and stacking that many cards helps
-        /// nobody.
-        /// </summary>
-        private const int MaxChainDepth = 64;
-
         private readonly Dictionary<int, int> _managerOf = new Dictionary<int, int>();
         private readonly Dictionary<int, List<int>> _reportsOf = new Dictionary<int, List<int>>();
 
@@ -371,26 +369,10 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
             return total;
         }
 
-        /// <summary>Managers above this person, ROOT FIRST so the screen can stack them top-down.</summary>
-        public List<int> BuildManagerChain(int employeeId)
+        /// <summary>This person's immediate manager, or null if they are the top of their tree.</summary>
+        public int? GetManager(int employeeId)
         {
-            var chain = new List<int>();
-            var visited = new HashSet<int> { employeeId };
-            var current = employeeId;
-
-            while (chain.Count < MaxChainDepth && _managerOf.TryGetValue(current, out var managerId))
-            {
-                if (!visited.Add(managerId))
-                {
-                    break;
-                }
-
-                chain.Add(managerId);
-                current = managerId;
-            }
-
-            chain.Reverse();
-            return chain;
+            return _managerOf.TryGetValue(employeeId, out var managerId) ? managerId : (int?)null;
         }
 
         /// <summary>

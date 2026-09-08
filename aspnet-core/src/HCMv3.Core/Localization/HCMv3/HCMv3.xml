@@ -1753,6 +1753,8 @@
     <text name="TotalReports">Total reports, all levels</text>
     <text name="ViewEmployeeRecord">View employee record</text>
     <text name="NoReportingLinesConfigured">No reporting lines have been set up for this date.</text>
+    <text name="GoToManager">Go to manager</text>
+    <text name="GoToReports">Go to direct reports</text>
     <text name="NoOrganizationUnitsConfigured">No organization units have been set up yet.</text>
     <text name="OrganizationBankInfos">Organization Bank Info</text>
     <text name="OrganizationBankInfo">Organization Bank Info</text>

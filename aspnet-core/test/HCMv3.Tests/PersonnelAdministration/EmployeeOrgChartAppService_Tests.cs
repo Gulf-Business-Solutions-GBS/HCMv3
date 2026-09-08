@@ -38,11 +38,11 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         result.Focus.ShouldNotBeNull();
         result.Focus.Id.ShouldBe(tree.GeneralManagerId);
-        result.ManagerChain.ShouldBeEmpty();
+        result.Manager.ShouldBeNull();
     }
 
     [Fact]
-    public async Task Should_Return_Manager_Chain_Root_First()
+    public async Task Should_Return_Only_The_Immediate_Manager_Not_The_Whole_Chain()
     {
         var tree = CreateReportingTree();
 
@@ -52,8 +52,37 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         });
 
         result.Focus.Id.ShouldBe(tree.WarehouseOfficerId);
-        result.ManagerChain.Select(x => x.Id)
-            .ShouldBe(new[] { tree.GeneralManagerId, tree.SupplyManagerId, tree.WarehouseManagerId });
+
+        // Three levels sit above this person, but the chart draws one row of manager and steps up by
+        // re-centring, so only the nearest one comes back.
+        result.Manager.ShouldNotBeNull();
+        result.Manager.Id.ShouldBe(tree.WarehouseManagerId);
+    }
+
+    [Fact]
+    public async Task Should_Step_Up_One_Level_At_A_Time()
+    {
+        var tree = CreateReportingTree();
+
+        var atOfficer = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = tree.WarehouseOfficerId
+        });
+
+        var atWarehouseManager = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = atOfficer.Manager.Id
+        });
+
+        // Walking up by following Manager each time reaches the top, which is what the up arrow does.
+        atWarehouseManager.Manager.Id.ShouldBe(tree.SupplyManagerId);
+
+        var atSupplyManager = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = atWarehouseManager.Manager.Id
+        });
+
+        atSupplyManager.Manager.Id.ShouldBe(tree.GeneralManagerId);
     }
 
     [Fact]
@@ -141,7 +170,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         result.Focus.Id.ShouldBe(first.Id);
         result.Focus.TotalReportCount.ShouldBe(1);
-        result.ManagerChain.Select(x => x.Id).ShouldBe(new[] { second.Id });
+        result.Manager.Id.ShouldBe(second.Id);
     }
 
     [Fact]
@@ -156,7 +185,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         });
 
         result.Focus.Id.ShouldBe(loner.Id);
-        result.ManagerChain.ShouldBeEmpty();
+        result.Manager.ShouldBeNull();
         result.DirectReports.ShouldBeEmpty();
         result.Focus.TotalReportCount.ShouldBe(0);
     }
@@ -213,7 +242,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput());
 
         result.Focus.ShouldBeNull();
-        result.ManagerChain.ShouldBeEmpty();
+        result.Manager.ShouldBeNull();
         result.DirectReports.ShouldBeEmpty();
     }
 

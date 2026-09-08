@@ -88,8 +88,19 @@
                     <hcm-org-chart-viewport exportFileName="employee-org-chart">
                         @if (focusCard(); as focus) {
                             <div class="employee-org-chart">
-                                <!-- Managers above the person in focus, root first, each joined by a stem. -->
-                                @for (manager of managerChainCards(); track manager.id) {
+                                <!-- Step up a level. Hidden at the top of the tree, where it would do nothing. -->
+                                @if (canGoUp()) {
+                                    <button
+                                        type="button"
+                                        class="employee-org-chart__arrow"
+                                        (click)="goUp()"
+                                        [pTooltip]="'GoToManager' | localize"
+                                        [attr.aria-label]="'GoToManager' | localize">
+                                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                    </button>
+                                }
+
+                                @if (managerCard(); as manager) {
                                     <div class="employee-org-chart__node">
                                         <hcm-org-chart-card
                                             [card]="manager"
@@ -117,6 +128,18 @@
                                                 (actionClick)="onOpenEmployee($event)" />
                                         }
                                     </div>
+                                }
+
+                                <!-- Step down the deepest branch; absent once the focus has nobody below. -->
+                                @if (descendTarget(); as target) {
+                                    <button
+                                        type="button"
+                                        class="employee-org-chart__arrow"
+                                        (click)="goDown()"
+                                        [pTooltip]="displayName(target)"
+                                        [attr.aria-label]="'GoToReports' | localize">
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    </button>
                                 }
                             </div>
                         } @else if (!isLoading()) {

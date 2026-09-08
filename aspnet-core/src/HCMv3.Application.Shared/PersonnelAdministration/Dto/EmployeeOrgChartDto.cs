@@ -16,10 +16,14 @@ public class EmployeeOrgChartDto
     public EmployeeOrgChartNodeDto Focus { get; set; }
 
     /// <summary>
-    /// Managers above <see cref="Focus"/>, ROOT FIRST, so the screen can stack them top-down without
-    /// reversing. Empty when the focus is the top of their tree.
+    /// The focus person's immediate manager, or null when they are the top of their tree.
+    ///
+    /// Deliberately one person and not the whole chain: the chart shows three rows -- manager, focus,
+    /// direct reports -- and moving up is a navigation step that re-centres on the manager, at which point
+    /// their own manager is fetched. Returning the full chain would draw a column of ancestors nobody
+    /// asked for and grow the response with the depth of the hierarchy.
     /// </summary>
-    public List<EmployeeOrgChartNodeDto> ManagerChain { get; set; } = new List<EmployeeOrgChartNodeDto>();
+    public EmployeeOrgChartNodeDto Manager { get; set; }
 
     /// <summary>People reporting directly to <see cref="Focus"/>, ordered by name.</summary>
     public List<EmployeeOrgChartNodeDto> DirectReports { get; set; } = new List<EmployeeOrgChartNodeDto>();
