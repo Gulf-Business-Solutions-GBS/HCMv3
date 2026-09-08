@@ -147,7 +147,7 @@ export class RuleFormulaInputComponent extends AppComponentBase {
                     }
 
                     const name = text.substring(start, i);
-                    const descriptor = this.functions().find((f) => f.name.toLowerCase() === name.toLowerCase());
+                    const descriptor = this.functions().find((f) => (f.name ?? '').toLowerCase() === name.toLowerCase());
 
                     return descriptor ? this.signatureOf(descriptor) : '';
                 }
@@ -293,24 +293,24 @@ export class RuleFormulaInputComponent extends AppComponentBase {
 
         for (const parameter of baseObject?.parameters ?? []) {
             suggestions.push({
-                label: parameter.name,
-                insert: parameter.name + '.',
+                label: parameter.name ?? '',
+                insert: (parameter.name ?? '') + '.',
                 caretOffset: 0,
                 kind: 'parameter',
-                detail: parameter.displayName,
+                detail: parameter.displayName ?? '',
                 description: parameter.isWritable ? undefined : this.l('ReadOnly'),
             });
         }
 
         for (const fn of this.functions()) {
             suggestions.push({
-                label: fn.name,
-                insert: fn.name + '()',
+                label: fn.name ?? '',
+                insert: (fn.name ?? '') + '()',
                 // Land between the brackets, ready for the first argument.
                 caretOffset: -1,
                 kind: 'function',
                 detail: this.signatureOf(fn),
-                description: fn.displayName,
+                description: fn.displayName ?? undefined,
             });
         }
 
@@ -347,19 +347,22 @@ export class RuleFormulaInputComponent extends AppComponentBase {
      */
     private pathSuggestions(pathSegments: string[], prefix: string): FormulaSuggestion[] {
         const parameter = this.baseObject()?.parameters.find(
-            (p) => p.name.toLowerCase() === pathSegments[0]?.toLowerCase()
+            (p) => (p.name ?? '').toLowerCase() === pathSegments[0]?.toLowerCase()
         );
 
         if (!parameter) {
             return [];
         }
 
-        let fields = parameter.fields;
+        // Every array and string on the generated DTOs is `| undefined`, so each hop coalesces rather than
+        // trusting the shape. A missing collection here would otherwise throw inside a computed signal,
+        // which surfaces as a blank editor with no clue why.
+        let fields = parameter.fields ?? [];
         let navigations = parameter.navigations ?? [];
 
         for (let i = 1; i < pathSegments.length; i++) {
             const segment = pathSegments[i].toLowerCase();
-            const navigation = navigations.find((n) => n.name.toLowerCase() === segment);
+            const navigation = navigations.find((n) => (n.name ?? '').toLowerCase() === segment);
 
             if (!navigation) {
                 // A segment that is not a declared reference -- a typo, or a field with more typed after it.
@@ -367,7 +370,7 @@ export class RuleFormulaInputComponent extends AppComponentBase {
                 return [];
             }
 
-            fields = navigation.fields;
+            fields = navigation.fields ?? [];
             navigations = navigation.navigations ?? [];
         }
 
@@ -378,31 +381,31 @@ export class RuleFormulaInputComponent extends AppComponentBase {
         // References first: they lead somewhere, and a list that buried them under thirty fields would hide
         // the very thing this feature exists to expose.
         for (const navigation of navigations) {
-            if (lower && navigation.name.toLowerCase().indexOf(lower) < 0 && navigation.displayName.toLowerCase().indexOf(lower) < 0) {
+            if (lower && !this.matches(navigation.name, navigation.displayName, lower)) {
                 continue;
             }
 
             suggestions.push({
-                label: navigation.name,
-                insert: path + '.' + navigation.name + '.',
+                label: navigation.name ?? '',
+                insert: path + '.' + (navigation.name ?? '') + '.',
                 caretOffset: 0,
                 kind: 'parameter',
-                detail: navigation.displayName,
+                detail: navigation.displayName ?? '',
                 description: this.l('RuleRelatedRecord'),
             });
         }
 
         for (const field of fields) {
-            if (lower && field.name.toLowerCase().indexOf(lower) < 0 && field.displayName.toLowerCase().indexOf(lower) < 0) {
+            if (lower && !this.matches(field.name, field.displayName, lower)) {
                 continue;
             }
 
             suggestions.push({
-                label: field.name,
-                insert: path + '.' + field.name,
+                label: field.name ?? '',
+                insert: path + '.' + (field.name ?? ''),
                 caretOffset: 0,
                 kind: 'field',
-                detail: field.displayName,
+                detail: field.displayName ?? '',
                 // Says why a field is missing from the assignment list, rather than leaving its absence
                 // unexplained.
                 description: field.isWritable ? undefined : this.l('ReadOnly'),
@@ -412,10 +415,22 @@ export class RuleFormulaInputComponent extends AppComponentBase {
         return suggestions.slice(0, 60);
     }
 
-    private signatureOf(fn: RuleFunctionMetadataDto): string {
-        const args = fn.parameters.map((p) => (p.isOptional ? `[${p.name}]` : p.name)).join(', ');
+    /**
+     * Case-insensitive prefix match against either the technical name or the translated label, so typing
+     * "nation" finds Nationality and typing the Arabic label finds it too. Both sides are optional on the
+     * generated DTOs, hence the coalescing.
+     */
+    private matches(name: string | undefined, displayName: string | undefined, lower: string): boolean {
+        return (name ?? '').toLowerCase().indexOf(lower) >= 0
+            || (displayName ?? '').toLowerCase().indexOf(lower) >= 0;
+    }
 
-        return `${fn.name}(${args})`;
+    private signatureOf(fn: RuleFunctionMetadataDto): string {
+        const args = (fn.parameters ?? [])
+            .map((p) => (p.isOptional ? `[${p.name ?? ''}]` : (p.name ?? '')))
+            .join(', ');
+
+        return `${fn.name ?? ''}(${args})`;
     }
 
     iconFor(kind: string): string {

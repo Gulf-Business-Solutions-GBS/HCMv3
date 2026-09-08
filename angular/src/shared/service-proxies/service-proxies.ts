@@ -166589,7 +166589,6 @@ export interface ICompanyStructureChartFilterOptionsDto {
 }
 
 export class CompanyStructureNodeDto implements ICompanyStructureNodeDto {
-    asOfDate!: DateTime;
     focus!: OrgChartNodeDto;
     ancestors!: OrgChartNodeSummaryDto[] | undefined;
     children!: OrgChartNodeDto[] | undefined;
@@ -166605,7 +166604,6 @@ export class CompanyStructureNodeDto implements ICompanyStructureNodeDto {
 
     init(_data?: any) {
         if (_data) {
-            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
             this.focus = _data["focus"] ? OrgChartNodeDto.fromJS(_data["focus"]) : undefined as any;
             if (Array.isArray(_data["ancestors"])) {
                 this.ancestors = [] as any;
@@ -166629,7 +166627,6 @@ export class CompanyStructureNodeDto implements ICompanyStructureNodeDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
         data["focus"] = this.focus ? this.focus.toJSON() : undefined as any;
         if (Array.isArray(this.ancestors)) {
             data["ancestors"] = [];
@@ -166646,7 +166643,6 @@ export class CompanyStructureNodeDto implements ICompanyStructureNodeDto {
 }
 
 export interface ICompanyStructureNodeDto {
-    asOfDate: DateTime;
     focus: OrgChartNodeDto;
     ancestors: OrgChartNodeSummaryDto[] | undefined;
     children: OrgChartNodeDto[] | undefined;
@@ -235475,7 +235471,6 @@ export interface IGetCompanyInsuranceDetailForEditOutput {
 
 export class GetCompanyStructureNodeInput implements IGetCompanyStructureNodeInput {
     organizationUnitId!: number | undefined;
-    asOfDate!: DateTime | undefined;
 
     constructor(data?: IGetCompanyStructureNodeInput) {
         if (data) {
@@ -235489,7 +235484,6 @@ export class GetCompanyStructureNodeInput implements IGetCompanyStructureNodeInp
     init(_data?: any) {
         if (_data) {
             this.organizationUnitId = _data["organizationUnitId"];
-            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
         }
     }
 
@@ -235503,14 +235497,12 @@ export class GetCompanyStructureNodeInput implements IGetCompanyStructureNodeInp
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["organizationUnitId"] = this.organizationUnitId;
-        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
         return data;
     }
 }
 
 export interface IGetCompanyStructureNodeInput {
     organizationUnitId: number | undefined;
-    asOfDate: DateTime | undefined;
 }
 
 export class GetCompetencyByJobTitleDetailForEditOutput implements IGetCompetencyByJobTitleDetailForEditOutput {
@@ -314901,11 +314893,76 @@ export interface IRuleMetadataDto {
     functions: RuleFunctionMetadataDto[] | undefined;
 }
 
+export class RuleNavigationMetadataDto implements IRuleNavigationMetadataDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+    fields!: RuleFieldMetadataDto[] | undefined;
+    navigations!: RuleNavigationMetadataDto[] | undefined;
+
+    constructor(data?: IRuleNavigationMetadataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields!.push(RuleFieldMetadataDto.fromJS(item));
+            }
+            if (Array.isArray(_data["navigations"])) {
+                this.navigations = [] as any;
+                for (let item of _data["navigations"])
+                    this.navigations!.push(RuleNavigationMetadataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RuleNavigationMetadataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RuleNavigationMetadataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.navigations)) {
+            data["navigations"] = [];
+            for (let item of this.navigations)
+                data["navigations"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IRuleNavigationMetadataDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    fields: RuleFieldMetadataDto[] | undefined;
+    navigations: RuleNavigationMetadataDto[] | undefined;
+}
+
 export class RuleParameterMetadataDto implements IRuleParameterMetadataDto {
     name!: string | undefined;
     displayName!: string | undefined;
     isWritable!: boolean;
     fields!: RuleFieldMetadataDto[] | undefined;
+    navigations!: RuleNavigationMetadataDto[] | undefined;
 
     constructor(data?: IRuleParameterMetadataDto) {
         if (data) {
@@ -314925,6 +314982,11 @@ export class RuleParameterMetadataDto implements IRuleParameterMetadataDto {
                 this.fields = [] as any;
                 for (let item of _data["fields"])
                     this.fields!.push(RuleFieldMetadataDto.fromJS(item));
+            }
+            if (Array.isArray(_data["navigations"])) {
+                this.navigations = [] as any;
+                for (let item of _data["navigations"])
+                    this.navigations!.push(RuleNavigationMetadataDto.fromJS(item));
             }
         }
     }
@@ -314946,6 +315008,11 @@ export class RuleParameterMetadataDto implements IRuleParameterMetadataDto {
             for (let item of this.fields)
                 data["fields"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.navigations)) {
+            data["navigations"] = [];
+            for (let item of this.navigations)
+                data["navigations"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -314955,6 +315022,7 @@ export interface IRuleParameterMetadataDto {
     displayName: string | undefined;
     isWritable: boolean;
     fields: RuleFieldMetadataDto[] | undefined;
+    navigations: RuleNavigationMetadataDto[] | undefined;
 }
 
 export enum RulePurpose {

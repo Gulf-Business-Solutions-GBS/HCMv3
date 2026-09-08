@@ -116,9 +116,14 @@ public class RuleExecutionContext
 
         var foreignKey = navigation.ForeignKeyGetter(owner);
 
-        // An unset reference is ordinary data -- an employee with no nationality -- so it reads as null
-        // rather than failing.
-        if (!foreignKey.HasValue)
+        // An unset reference is ordinary data -- an employee with no religion recorded -- so it reads as
+        // null rather than failing.
+        //
+        // Zero counts as unset, and that is not a nicety. Plenty of these foreign keys are non-nullable
+        // ints (Employee.NationalityId among them), so "nothing chosen" arrives as 0 rather than null.
+        // Without this guard every such row would issue a lookup for entity 0, find nothing, and return
+        // null anyway -- a wasted query per row per rule. No entity in this system has id 0.
+        if (!foreignKey.HasValue || foreignKey.Value == 0)
         {
             return null;
         }
