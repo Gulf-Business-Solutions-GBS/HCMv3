@@ -1500,7 +1500,7 @@ export class AppNavigationService {
                         'CompanyStructureOverview',
                         'Pages.OrganizationManagement.CompanyStructureChart',
                         'flaticon-network',
-                        '/app/admin/company-structure-chart'
+                        '/app/admin/org-charts/company'
                     ),
                 ]
             ),
@@ -2302,7 +2302,7 @@ export class AppNavigationService {
                         'EmployeeOrgChart',
                         'Pages.PersonnelAdministration.EmployeeOrgChart',
                         'flaticon-network',
-                        '/app/admin/employee-org-chart'
+                        '/app/admin/org-charts/employee'
                     ),
                     new AppMenuItem(
                         'Announcements',
@@ -3009,7 +3009,7 @@ export class AppNavigationService {
                         'PositionOrgChart',
                         'Pages.ManpowerPlanningManagement.PositionOrgChart',
                         'flaticon-network',
-                        '/app/admin/position-org-chart'
+                        '/app/admin/org-charts/position'
                     ),
                     new AppMenuItem(
                         'PositionRelationships',

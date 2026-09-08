@@ -1748,6 +1748,8 @@
     <text name="NoPositionHierarchyConfigured">لم يتم إعداد هيكل الوظائف بعد. حدد "ترفع تقاريرها إلى وظيفة" في الوظائف لبنائه.</text>
     <text name="PositionCannotReportToItself">لا يمكن أن ترفع الوظيفة تقاريرها إلى نفسها.</text>
     <text name="PositionHierarchyWouldLoop">هذا الاختيار سينشئ حلقة مغلقة في هيكل الوظائف.</text>
+    <text name="OrgCharts">المخططات التنظيمية</text>
+    <text name="OrgChartsDescription">هيكل الشركة والتسلسل الإداري والوظائف</text>
     <text name="NoOrganizationUnitsConfigured">لم يتم إعداد أي وحدات تنظيمية بعد.</text>
     <text name="OrganizationBankInfos">المعلومات البنكية للشركة</text>
     <text name="OrganizationBankInfo">المعلومات البنكية للشركة</text>

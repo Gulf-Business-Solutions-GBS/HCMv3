@@ -1,155 +1,143 @@
-<div [@routerTransition]>
-    <sub-header
-        [title]="'EmployeeOrgChart' | localize"
-        [description]="'PersonnelAdministration' | localize" />
+<div class="row align-items-end g-3 mb-4">
+    <div class="col-xl-8 col-md-12">
+        <label class="form-label">{{ 'Search' | localize }}</label>
+        <p-select
+            [options]="searchOptions()"
+            optionValue="id"
+            [ngModel]="selectedNode()?.id ?? null"
+            (ngModelChange)="onSearchSelect($event)"
+            [filter]="true"
+            [resetFilterOnHide]="true"
+            (onFilter)="onSearchFilter($event)"
+            (onShow)="searchNodes('')"
+            styleClass="w-100"
+            [placeholder]="'SearchWithThreeDot' | localize">
+            <!--
+              Both templates are required. Without #selectedItem PrimeNG has no label for
+              the chosen option and renders the bound object itself, which reads as
+              "[object Object]" in the closed box.
+            -->
+            <ng-template #selectedItem let-match>
+                <span>{{ displayName(match) }}</span>
+            </ng-template>
+            <ng-template #item let-match>
+                <span>{{ displayName(match) }}</span>
+                @if (match.jobTitleEn) {
+                    <span class="employee-org-chart__search-title">
+                        &mdash; {{ isRtl ? match.jobTitleAr || match.jobTitleEn : match.jobTitleEn }}
+                    </span>
+                }
+            </ng-template>
+        </p-select>
+    </div>
 
-    <div [class]="containerClass">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="row align-items-end g-3 mb-4">
-                    <div class="col-xl-8 col-md-12">
-                        <label class="form-label">{{ 'Search' | localize }}</label>
-                        <p-select
-                            [options]="searchOptions()"
-                            optionValue="id"
-                            [ngModel]="selectedNode()?.id ?? null"
-                            (ngModelChange)="onSearchSelect($event)"
-                            [filter]="true"
-                            [resetFilterOnHide]="true"
-                            (onFilter)="onSearchFilter($event)"
-                            (onShow)="searchNodes('')"
-                            styleClass="w-100"
-                            [placeholder]="'SearchWithThreeDot' | localize">
-                            <!--
-                              Both templates are required. Without #selectedItem PrimeNG has no label for
-                              the chosen option and renders the bound object itself, which reads as
-                              "[object Object]" in the closed box.
-                            -->
-                            <ng-template #selectedItem let-match>
-                                <span>{{ displayName(match) }}</span>
-                            </ng-template>
-                            <ng-template #item let-match>
-                                <span>{{ displayName(match) }}</span>
-                                @if (match.jobTitleEn) {
-                                    <span class="employee-org-chart__search-title">
-                                        &mdash; {{ isRtl ? match.jobTitleAr || match.jobTitleEn : match.jobTitleEn }}
-                                    </span>
-                                }
-                            </ng-template>
-                        </p-select>
-                    </div>
-
-                    <div class="col-xl-4 col-md-12">
-                        <div class="org-chart-toolbar">
-                            <button
-                                type="button"
-                                class="btn btn-icon btn-light btn-sm"
-                                (click)="zoomOut()"
-                                [pTooltip]="'ZoomOut' | localize">
-                                <i class="fa fa-minus" aria-hidden="true"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-light btn-sm org-chart-toolbar__zoom"
-                                (click)="resetZoom()"
-                                [pTooltip]="'ResetZoom' | localize">
-                                {{ zoomPercent() }}%
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-icon btn-light btn-sm"
-                                (click)="zoomIn()"
-                                [pTooltip]="'ZoomIn' | localize">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-icon btn-light btn-sm"
-                                (click)="exportAsImage()"
-                                [pTooltip]="'ExportAsImage' | localize">
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-icon btn-light btn-sm"
-                                (click)="toggleFullscreen()"
-                                [pTooltip]="(isFullscreen() ? 'ExitFullscreen' : 'EnterFullscreen') | localize">
-                                <i
-                                    class="fa"
-                                    [class.fa-expand]="!isFullscreen()"
-                                    [class.fa-compress]="isFullscreen()"
-                                    aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div [busyIf]="isLoading()">
-                    <hcm-org-chart-viewport exportFileName="employee-org-chart">
-                        @if (focusCard(); as focus) {
-                            <div class="employee-org-chart">
-                                <!-- Step up a level. Hidden at the top of the tree, where it would do nothing. -->
-                                @if (canGoUp()) {
-                                    <button
-                                        type="button"
-                                        class="employee-org-chart__arrow"
-                                        (click)="goUp()"
-                                        [pTooltip]="'GoToManager' | localize"
-                                        [attr.aria-label]="'GoToManager' | localize">
-                                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                                    </button>
-                                }
-
-                                @if (managerCard(); as manager) {
-                                    <div class="employee-org-chart__node">
-                                        <hcm-org-chart-card
-                                            [card]="manager"
-                                            (cardClick)="onCardClick($event)"
-                                            (actionClick)="onOpenEmployee($event)" />
-                                    </div>
-                                    <div class="employee-org-chart__connector" aria-hidden="true"></div>
-                                }
-
-                                <div class="employee-org-chart__node">
-                                    <hcm-org-chart-card
-                                        [card]="focus"
-                                        [focused]="true"
-                                        (actionClick)="onOpenEmployee($event)" />
-                                </div>
-
-                                @if (directReportCards().length) {
-                                    <div class="employee-org-chart__connector" aria-hidden="true"></div>
-
-                                    <div class="employee-org-chart__reports">
-                                        @for (report of directReportCards(); track report.id) {
-                                            <hcm-org-chart-card
-                                                [card]="report"
-                                                (cardClick)="onCardClick($event)"
-                                                (actionClick)="onOpenEmployee($event)" />
-                                        }
-                                    </div>
-                                }
-
-                                <!-- Step down the deepest branch; absent once the focus has nobody below. -->
-                                @if (descendTarget(); as target) {
-                                    <button
-                                        type="button"
-                                        class="employee-org-chart__arrow"
-                                        (click)="goDown()"
-                                        [pTooltip]="displayName(target)"
-                                        [attr.aria-label]="'GoToReports' | localize">
-                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                    </button>
-                                }
-                            </div>
-                        } @else if (!isLoading()) {
-                            <div class="employee-org-chart__empty">
-                                {{ 'NoReportingLinesConfigured' | localize }}
-                            </div>
-                        }
-                    </hcm-org-chart-viewport>
-                </div>
-            </div>
+    <div class="col-xl-4 col-md-12">
+        <div class="org-chart-toolbar">
+            <button
+                type="button"
+                class="btn btn-icon btn-light btn-sm"
+                (click)="zoomOut()"
+                [pTooltip]="'ZoomOut' | localize">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+            </button>
+            <button
+                type="button"
+                class="btn btn-light btn-sm org-chart-toolbar__zoom"
+                (click)="resetZoom()"
+                [pTooltip]="'ResetZoom' | localize">
+                {{ zoomPercent() }}%
+            </button>
+            <button
+                type="button"
+                class="btn btn-icon btn-light btn-sm"
+                (click)="zoomIn()"
+                [pTooltip]="'ZoomIn' | localize">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <button
+                type="button"
+                class="btn btn-icon btn-light btn-sm"
+                (click)="exportAsImage()"
+                [pTooltip]="'ExportAsImage' | localize">
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </button>
+            <button
+                type="button"
+                class="btn btn-icon btn-light btn-sm"
+                (click)="toggleFullscreen()"
+                [pTooltip]="(isFullscreen() ? 'ExitFullscreen' : 'EnterFullscreen') | localize">
+                <i
+                    class="fa"
+                    [class.fa-expand]="!isFullscreen()"
+                    [class.fa-compress]="isFullscreen()"
+                    aria-hidden="true"></i>
+            </button>
         </div>
     </div>
+</div>
+
+<div [busyIf]="isLoading()">
+    <hcm-org-chart-viewport exportFileName="employee-org-chart">
+        @if (focusCard(); as focus) {
+            <div class="employee-org-chart">
+                <!-- Step up a level. Hidden at the top of the tree, where it would do nothing. -->
+                @if (canGoUp()) {
+                    <button
+                        type="button"
+                        class="employee-org-chart__arrow"
+                        (click)="goUp()"
+                        [pTooltip]="'GoToManager' | localize"
+                        [attr.aria-label]="'GoToManager' | localize">
+                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </button>
+                }
+
+                @if (managerCard(); as manager) {
+                    <div class="employee-org-chart__node">
+                        <hcm-org-chart-card
+                            [card]="manager"
+                            (cardClick)="onCardClick($event)"
+                            (actionClick)="onOpenEmployee($event)" />
+                    </div>
+                    <div class="employee-org-chart__connector" aria-hidden="true"></div>
+                }
+
+                <div class="employee-org-chart__node">
+                    <hcm-org-chart-card
+                        [card]="focus"
+                        [focused]="true"
+                        (actionClick)="onOpenEmployee($event)" />
+                </div>
+
+                @if (directReportCards().length) {
+                    <div class="employee-org-chart__connector" aria-hidden="true"></div>
+
+                    <div class="employee-org-chart__reports">
+                        @for (report of directReportCards(); track report.id) {
+                            <hcm-org-chart-card
+                                [card]="report"
+                                (cardClick)="onCardClick($event)"
+                                (actionClick)="onOpenEmployee($event)" />
+                        }
+                    </div>
+                }
+
+                <!-- Step down the deepest branch; absent once the focus has nobody below. -->
+                @if (descendTarget(); as target) {
+                    <button
+                        type="button"
+                        class="employee-org-chart__arrow"
+                        (click)="goDown()"
+                        [pTooltip]="displayName(target)"
+                        [attr.aria-label]="'GoToReports' | localize">
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                }
+            </div>
+        } @else if (!isLoading()) {
+            <div class="employee-org-chart__empty">
+                {{ 'NoReportingLinesConfigured' | localize }}
+            </div>
+        }
+    </hcm-org-chart-viewport>
 </div>

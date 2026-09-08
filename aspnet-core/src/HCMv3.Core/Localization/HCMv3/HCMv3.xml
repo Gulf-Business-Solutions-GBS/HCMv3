@@ -1764,6 +1764,8 @@
     <text name="NoPositionHierarchyConfigured">No position hierarchy has been set up yet. Set "Reports to position" on your positions to build one.</text>
     <text name="PositionCannotReportToItself">A position cannot report to itself.</text>
     <text name="PositionHierarchyWouldLoop">That parent would create a loop in the position hierarchy.</text>
+    <text name="OrgCharts">Org Charts</text>
+    <text name="OrgChartsDescription">Company structure, reporting lines and positions</text>
     <text name="NoOrganizationUnitsConfigured">No organization units have been set up yet.</text>
     <text name="OrganizationBankInfos">Organization Bank Info</text>
     <text name="OrganizationBankInfo">Organization Bank Info</text>

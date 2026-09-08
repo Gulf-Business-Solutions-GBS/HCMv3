@@ -1,0 +1,20 @@
+.org-charts__tabs {
+    margin-bottom: 16px;
+
+    .nav-link {
+        cursor: pointer;
+        color: var(--bs-gray-700, #5e6278);
+        font-weight: 500;
+
+        &.active {
+            color: var(--bs-primary, #009ef7);
+            font-weight: 600;
+        }
+    }
+}
+
+/* The charts now render only their toolbar and canvas -- the shell owns the card and the heading, so the
+   child must not add another card's padding on top of this one. */
+.org-charts__panel {
+    padding-top: 4px;
+}

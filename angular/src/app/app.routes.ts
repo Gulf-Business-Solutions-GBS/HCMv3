@@ -697,13 +697,45 @@ export const appRoutes: Routes = [
                             ),
                         data: { permission: 'Pages.OrganizationManagement.OrgUnits' },
                     },
+                    // The three org charts live as tabs on one page. Each stays a route of its own so it
+                    // remains deep-linkable, lazily loaded, and guarded by its own permission -- a user may
+                    // hold one chart and not the others.
+                    {
+                        path: 'org-charts',
+                        loadComponent: () =>
+                            import('./admin/org-charts/org-charts.component').then((m) => m.OrgChartsComponent),
+                        children: [
+                            {
+                                path: 'company',
+                                loadComponent: () =>
+                                    import(
+                                        './admin/organization-management/company-structure-chart/company-structure-chart.component'
+                                    ).then((m) => m.CompanyStructureChartComponent),
+                                data: { permission: 'Pages.OrganizationManagement.CompanyStructureChart' },
+                            },
+                            {
+                                path: 'employee',
+                                loadComponent: () =>
+                                    import(
+                                        './admin/personnel-administration/employee-org-chart/employee-org-chart.component'
+                                    ).then((m) => m.EmployeeOrgChartComponent),
+                                data: { permission: 'Pages.PersonnelAdministration.EmployeeOrgChart' },
+                            },
+                            {
+                                path: 'position',
+                                loadComponent: () =>
+                                    import(
+                                        './admin/manpower-planning-management/position-org-chart/position-org-chart.component'
+                                    ).then((m) => m.PositionOrgChartComponent),
+                                data: { permission: 'Pages.ManpowerPlanningManagement.PositionOrgChart' },
+                            },
+                        ],
+                    },
+                    // Kept so existing bookmarks and any stored Quick Nav rows still land somewhere real.
                     {
                         path: 'company-structure-chart',
-                        loadComponent: () =>
-                            import(
-                                './admin/organization-management/company-structure-chart/company-structure-chart.component'
-                            ).then((m) => m.CompanyStructureChartComponent),
-                        data: { permission: 'Pages.OrganizationManagement.CompanyStructureChart' },
+                        redirectTo: 'org-charts/company',
+                        pathMatch: 'full',
                     },
                     simpleLookupRoute('time-types', 'TimeTypes', 'TimeTypes', TimeTypesServiceProxy, 'TimeManagement'),
                     simpleLookupRoute(
@@ -2796,11 +2828,8 @@ export const appRoutes: Routes = [
                     },
                     {
                         path: 'employee-org-chart',
-                        loadComponent: () =>
-                            import(
-                                './admin/personnel-administration/employee-org-chart/employee-org-chart.component'
-                            ).then((m) => m.EmployeeOrgChartComponent),
-                        data: { permission: 'Pages.PersonnelAdministration.EmployeeOrgChart' },
+                        redirectTo: 'org-charts/employee',
+                        pathMatch: 'full',
                     },
                     {
                         path: 'employees/:id',
@@ -3931,11 +3960,8 @@ export const appRoutes: Routes = [
                     },
                     {
                         path: 'position-org-chart',
-                        loadComponent: () =>
-                            import(
-                                './admin/manpower-planning-management/position-org-chart/position-org-chart.component'
-                            ).then((m) => m.PositionOrgChartComponent),
-                        data: { permission: 'Pages.ManpowerPlanningManagement.PositionOrgChart' },
+                        redirectTo: 'org-charts/position',
+                        pathMatch: 'full',
                     },
                     {
                         path: 'position-relationships',

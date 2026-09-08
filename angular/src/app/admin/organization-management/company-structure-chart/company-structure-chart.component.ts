@@ -5,7 +5,6 @@ import { Select } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Tooltip } from 'primeng/tooltip';
 import { finalize } from 'rxjs/operators';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
@@ -19,7 +18,6 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { PrimengDatePickerLuxonModifierDirective } from '../../../../shared/utils/date-time/primeng-date-picker-luxon-modifier.directive';
-import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { OrgChartCardComponent } from '../../../shared/common/org-chart/org-chart-card.component';
 import { OrgChartViewportComponent } from '../../../shared/common/org-chart/org-chart-viewport.component';
 import { OrgChartCard } from '../../../shared/common/org-chart/org-chart.models';
@@ -36,13 +34,11 @@ import { OrgChartCard } from '../../../shared/common/org-chart/org-chart.models'
 @Component({
     templateUrl: './company-structure-chart.component.html',
     styleUrls: ['./company-structure-chart.component.less'],
-    animations: [appModuleAnimation()],
     imports: [
         FormsModule,
         Select,
         DatePickerModule,
         Tooltip,
-        SubHeaderComponent,
         BusyIfDirective,
         LocalizePipe,
         PrimengDatePickerLuxonModifierDirective,
