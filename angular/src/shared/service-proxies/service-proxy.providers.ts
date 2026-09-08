@@ -288,6 +288,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.WorkLocationsServiceProxy,
     ApiServiceProxies.OrgUnitsServiceProxy,
     ApiServiceProxies.CompanyStructureChartServiceProxy,
+    ApiServiceProxies.EmployeeOrgChartServiceProxy,
     ApiServiceProxies.EmployeesServiceProxy,
     ApiServiceProxies.EmployeeDatesServiceProxy,
     ApiServiceProxies.EmployeeManagersServiceProxy,

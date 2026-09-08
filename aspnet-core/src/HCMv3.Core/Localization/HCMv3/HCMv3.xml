@@ -1747,6 +1747,12 @@
     <text name="ExitFullscreen">Exit full screen</text>
     <text name="ExportAsImage">Export as image</text>
     <text name="OrgChartExportFailed">The chart could not be exported as an image.</text>
+    <!-- Employee Org Chart (shares the org-chart renderer with Company Structure Overview) -->
+    <text name="EmployeeOrgChart">Employee Org Chart</text>
+    <text name="DirectReports">Direct reports</text>
+    <text name="TotalReports">Total reports, all levels</text>
+    <text name="ViewEmployeeRecord">View employee record</text>
+    <text name="NoReportingLinesConfigured">No reporting lines have been set up for this date.</text>
     <text name="NoOrganizationUnitsConfigured">No organization units have been set up yet.</text>
     <text name="OrganizationBankInfos">Organization Bank Info</text>
     <text name="OrganizationBankInfo">Organization Bank Info</text>

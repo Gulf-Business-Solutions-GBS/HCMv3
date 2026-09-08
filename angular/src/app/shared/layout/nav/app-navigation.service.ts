@@ -2299,6 +2299,12 @@ export class AppNavigationService {
                         '/app/admin/employees'
                     ),
                     new AppMenuItem(
+                        'EmployeeOrgChart',
+                        'Pages.PersonnelAdministration.EmployeeOrgChart',
+                        'flaticon-network',
+                        '/app/admin/employee-org-chart'
+                    ),
+                    new AppMenuItem(
                         'Announcements',
                         'Pages.PersonnelAdministration.News',
                         'flaticon-paper-plane',

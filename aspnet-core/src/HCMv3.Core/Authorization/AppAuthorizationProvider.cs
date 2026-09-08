@@ -426,6 +426,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_Delete, L("DeleteItem"));
         employees.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_Employees_ManageUserLink, L("ManageUserLink"));
 
+        // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
+        // EmployeeManagers so that seeing the reporting structure does not require rights to change it.
+        personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgChart, L("EmployeeOrgChart"));
+
         var employeeDates = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates, L("EmployeeDates"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Create, L("CreateNewItem"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Edit, L("EditItem"));

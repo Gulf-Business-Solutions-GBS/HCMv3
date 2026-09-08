@@ -329,6 +329,13 @@ public static class AppPermissions
     public const string Pages_PersonnelAdministration_Employees_Delete = "Pages.PersonnelAdministration.Employees.Delete";
     public const string Pages_PersonnelAdministration_Employees_ManageUserLink = "Pages.PersonnelAdministration.Employees.ManageUserLink";
 
+    /// <summary>
+    /// Read-only Employee Org Chart. Separate from <see cref="Pages_PersonnelAdministration_EmployeeManagers"/>
+    /// on purpose: the chart shows the company's whole reporting structure, which is a far broader thing to
+    /// hand out than the right to edit who reports to whom.
+    /// </summary>
+    public const string Pages_PersonnelAdministration_EmployeeOrgChart = "Pages.PersonnelAdministration.EmployeeOrgChart";
+
     public const string Pages_PersonnelAdministration_EmployeeDates = "Pages.PersonnelAdministration.EmployeeDates";
     public const string Pages_PersonnelAdministration_EmployeeDates_Create = "Pages.PersonnelAdministration.EmployeeDates.Create";
     public const string Pages_PersonnelAdministration_EmployeeDates_Edit = "Pages.PersonnelAdministration.EmployeeDates.Edit";

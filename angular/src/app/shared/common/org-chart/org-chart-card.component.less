@@ -118,3 +118,92 @@
         font-size: 1rem;
     }
 }
+
+/*
+ * PERSON VARIANT (Employee and Position charts).
+ *
+ * Same frame, hover, focus and export behaviour as the organization-box variant above -- what changes is
+ * a circular avatar in place of the type-coloured bar, the job title under the name instead of above it,
+ * and the report counts as a plain "direct / total" pair rather than icon badges.
+ */
+.org-chart-card--person {
+    --org-chart-avatar-bg: #eef0f4;
+    --org-chart-avatar-fg: #9aa2b1;
+
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    min-height: 96px;
+    border-radius: 10px;
+
+    .org-chart-card__body {
+        padding: 0;
+        gap: 3px;
+    }
+
+    .org-chart-card__name {
+        font-size: 1rem;
+        color: var(--bs-gray-800, #3f4254);
+    }
+}
+
+.org-chart-card__avatar {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--org-chart-avatar-bg, #eef0f4);
+
+    img,
+    .org-chart-card__avatar-blank {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+}
+
+/* Job title, under the name on a person card. */
+.org-chart-card__title {
+    font-size: 0.9rem;
+    color: var(--bs-gray-600, #7e8299);
+
+    /* Two lines then ellipsis, so a long title cannot push the grid rows out of alignment. */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* The "122 / 515" pair: direct reports over total reports at every level. */
+.org-chart-card__counts {
+    margin-top: 2px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--bs-gray-800, #3f4254);
+}
+
+.org-chart-card__action {
+    flex: 0 0 auto;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--bs-primary, #009ef7);
+
+    &:hover {
+        background: var(--bs-gray-100, #f9f9f9);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--bs-primary, #009ef7);
+        outline-offset: 2px;
+    }
+}

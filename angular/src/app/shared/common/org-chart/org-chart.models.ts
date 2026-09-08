@@ -20,6 +20,38 @@ export interface OrgChartMetric {
     tooltip: string;
 }
 
+/**
+ * Which of the two card treatments to draw.
+ *
+ * `unit` is an organization box: a type-coloured bar down the leading edge, icon+number badges, and a
+ * coloured strip carrying the child count. `person` is a human: a circular avatar, no accent bar, no
+ * strip, and the report counts rendered as a plain "direct / total" pair -- which is what the Employee
+ * and Position charts need.
+ *
+ * Both share the same frame, typography, hover, focus treatment and export behaviour, which is the whole
+ * point of them being one component.
+ */
+export type OrgChartCardVariant = 'unit' | 'person';
+
+/** Which blank silhouette to draw when a person has no photo. */
+export type OrgChartAvatarFallback = 'male' | 'female' | 'neutral';
+
+export interface OrgChartAvatar {
+    /**
+     * Photo URL, or null to go straight to the silhouette. The card also falls back to the silhouette if
+     * the image 404s, so a caller that guesses wrong degrades quietly rather than showing a broken image.
+     */
+    imageUrl: string | null;
+
+    fallback: OrgChartAvatarFallback;
+}
+
+/** The small button on the trailing edge of a person card. */
+export interface OrgChartCardAction {
+    /** Tooltip text -- already localized by the caller. */
+    tooltip: string;
+}
+
 export interface OrgChartCard {
     id: number;
 
@@ -50,6 +82,21 @@ export interface OrgChartCard {
 
     /** When false the card renders as static: no hover affordance, no click output. */
     navigable: boolean;
+
+    /** Defaults to `unit` when omitted, so existing callers keep the organization-box treatment. */
+    variant?: OrgChartCardVariant;
+
+    /** Only drawn by the `person` variant. */
+    avatar?: OrgChartAvatar;
+
+    /** Only drawn by the `person` variant. Omit to hide the button. */
+    action?: OrgChartCardAction;
+
+    /**
+     * Tooltip for the `person` variant's joined "direct / total" figure, where the individual metric
+     * tooltips have nowhere to attach.
+     */
+    metricsTooltip?: string;
 }
 
 /**

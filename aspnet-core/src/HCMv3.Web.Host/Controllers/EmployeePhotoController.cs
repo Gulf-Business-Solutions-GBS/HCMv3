@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Domain.Repositories;
+using HCMv3.Graphics;
 using HCMv3.PersonnelAdministration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -29,15 +30,31 @@ namespace HCMv3.Web.Controllers;
 [Route("api/employee-photo")]
 public class EmployeePhotoController : HCMv3ControllerBase
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    /// <summary>
+    /// Upper bound on the <c>size</c> query parameter. Caps the CPU an unauthenticated-shaped request can
+    /// ask for, and anything larger is better served by the untouched photo anyway.
+    /// </summary>
+    private const int MaxThumbnailSize = 512;
 
-    public EmployeePhotoController(IRepository<Employee> employeeRepository)
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IImageThumbnailService _imageThumbnailService;
+
+    public EmployeePhotoController(
+        IRepository<Employee> employeeRepository,
+        IImageThumbnailService imageThumbnailService)
     {
         _employeeRepository = employeeRepository;
+        _imageThumbnailService = imageThumbnailService;
     }
 
+    /// <param name="size">
+    /// Optional square thumbnail edge in pixels. Added for the Employee Org Chart, where one manager can
+    /// have over a hundred direct reports on screen at once -- serving each of those cards the full stored
+    /// photo to fill a 40px circle would move tens of megabytes. Omitted, the stored photo is returned
+    /// unchanged, which is what the workflow activity feed has always asked for.
+    /// </param>
     [HttpGet("{employeeId:int}")]
-    public async Task<IActionResult> Get(int employeeId)
+    public async Task<IActionResult> Get(int employeeId, [FromQuery] int? size = null)
     {
         var photo = await _employeeRepository.GetAll()
             .Where(e => e.Id == employeeId)
@@ -52,8 +69,20 @@ public class EmployeePhotoController : HCMv3ControllerBase
         }
 
         // Photos change rarely and are re-requested on every feed render. Private, because the response is
-        // tenant-scoped and must not be held by a shared proxy.
+        // tenant-scoped and must not be held by a shared proxy. Varies by size so the full photo and a
+        // thumbnail of it do not evict each other in the browser cache.
         Response.Headers.CacheControl = "private, max-age=43200";
+
+        if (size is > 0 and <= MaxThumbnailSize)
+        {
+            // A null return means the bytes would not decode; serve them untouched rather than 404, since
+            // the browser may well render an image SkiaSharp declined to.
+            var thumbnail = _imageThumbnailService.CreateSquareThumbnail(photo, size.Value);
+            if (thumbnail != null)
+            {
+                return File(thumbnail, "image/jpeg");
+            }
+        }
 
         return File(photo, "image/jpeg");
     }

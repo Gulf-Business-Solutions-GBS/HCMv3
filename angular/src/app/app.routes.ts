@@ -2795,6 +2795,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Reports.Analysis.YearlyLeaveIndemnityDetailCustom023' },
                     },
                     {
+                        path: 'employee-org-chart',
+                        loadComponent: () =>
+                            import(
+                                './admin/personnel-administration/employee-org-chart/employee-org-chart.component'
+                            ).then((m) => m.EmployeeOrgChartComponent),
+                        data: { permission: 'Pages.PersonnelAdministration.EmployeeOrgChart' },
+                    },
+                    {
                         path: 'employees/:id',
                         loadComponent: () =>
                             import('./admin/personnel-administration/employee-detail/employee-detail.component').then(
