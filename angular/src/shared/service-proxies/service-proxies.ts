@@ -111665,6 +111665,137 @@ export class PoolCarsServiceProxy {
 }
 
 @Injectable()
+export class PositionOrgChartServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getNode(body?: GetPositionOrgChartNodeInput | undefined): Observable<PositionOrgChartDto> {
+        let url_ = this.baseUrl + "/api/services/app/PositionOrgChart/GetNode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNode(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PositionOrgChartDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PositionOrgChartDto>;
+        }));
+    }
+
+    protected processGetNode(response: HttpResponseBase): Observable<PositionOrgChartDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PositionOrgChartDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    searchNodes(body?: SearchPositionOrgChartNodesInput | undefined): Observable<PositionOrgChartNodeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/PositionOrgChart/SearchNodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchNodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchNodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PositionOrgChartNodeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PositionOrgChartNodeDto[]>;
+        }));
+    }
+
+    protected processSearchNodes(response: HttpResponseBase): Observable<PositionOrgChartNodeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PositionOrgChartNodeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class PositionRelationshipsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -184966,6 +185097,7 @@ export class CreateOrEditPositionDto implements ICreateOrEditPositionDto {
     maxSalary!: number;
     isBudgeted!: boolean;
     fteLimit!: number;
+    parentPositionId!: number | undefined;
 
     constructor(data?: ICreateOrEditPositionDto) {
         if (data) {
@@ -184998,6 +185130,7 @@ export class CreateOrEditPositionDto implements ICreateOrEditPositionDto {
             this.maxSalary = _data["maxSalary"];
             this.isBudgeted = _data["isBudgeted"];
             this.fteLimit = _data["fteLimit"];
+            this.parentPositionId = _data["parentPositionId"];
         }
     }
 
@@ -185030,6 +185163,7 @@ export class CreateOrEditPositionDto implements ICreateOrEditPositionDto {
         data["maxSalary"] = this.maxSalary;
         data["isBudgeted"] = this.isBudgeted;
         data["fteLimit"] = this.fteLimit;
+        data["parentPositionId"] = this.parentPositionId;
         return data;
     }
 }
@@ -185055,6 +185189,7 @@ export interface ICreateOrEditPositionDto {
     maxSalary: number;
     isBudgeted: boolean;
     fteLimit: number;
+    parentPositionId: number | undefined;
 }
 
 export class CreateOrEditPositionRelationshipDto implements ICreateOrEditPositionRelationshipDto {
@@ -204581,9 +204716,8 @@ export interface IEmployeeOrgAssignmentDto {
 }
 
 export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
-    asOfDate!: DateTime;
     focus!: EmployeeOrgChartNodeDto;
-    managerChain!: EmployeeOrgChartNodeDto[] | undefined;
+    manager!: EmployeeOrgChartNodeDto;
     directReports!: EmployeeOrgChartNodeDto[] | undefined;
 
     constructor(data?: IEmployeeOrgChartDto) {
@@ -204597,13 +204731,8 @@ export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
 
     init(_data?: any) {
         if (_data) {
-            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
             this.focus = _data["focus"] ? EmployeeOrgChartNodeDto.fromJS(_data["focus"]) : undefined as any;
-            if (Array.isArray(_data["managerChain"])) {
-                this.managerChain = [] as any;
-                for (let item of _data["managerChain"])
-                    this.managerChain!.push(EmployeeOrgChartNodeDto.fromJS(item));
-            }
+            this.manager = _data["manager"] ? EmployeeOrgChartNodeDto.fromJS(_data["manager"]) : undefined as any;
             if (Array.isArray(_data["directReports"])) {
                 this.directReports = [] as any;
                 for (let item of _data["directReports"])
@@ -204621,13 +204750,8 @@ export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
         data["focus"] = this.focus ? this.focus.toJSON() : undefined as any;
-        if (Array.isArray(this.managerChain)) {
-            data["managerChain"] = [];
-            for (let item of this.managerChain)
-                data["managerChain"].push(item ? item.toJSON() : undefined as any);
-        }
+        data["manager"] = this.manager ? this.manager.toJSON() : undefined as any;
         if (Array.isArray(this.directReports)) {
             data["directReports"] = [];
             for (let item of this.directReports)
@@ -204638,9 +204762,8 @@ export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
 }
 
 export interface IEmployeeOrgChartDto {
-    asOfDate: DateTime;
     focus: EmployeeOrgChartNodeDto;
-    managerChain: EmployeeOrgChartNodeDto[] | undefined;
+    manager: EmployeeOrgChartNodeDto;
     directReports: EmployeeOrgChartNodeDto[] | undefined;
 }
 
@@ -240992,7 +241115,6 @@ export interface IGetEmployeeOrgAssignmentForEditOutput {
 
 export class GetEmployeeOrgChartNodeInput implements IGetEmployeeOrgChartNodeInput {
     employeeId!: number | undefined;
-    asOfDate!: DateTime | undefined;
 
     constructor(data?: IGetEmployeeOrgChartNodeInput) {
         if (data) {
@@ -241006,7 +241128,6 @@ export class GetEmployeeOrgChartNodeInput implements IGetEmployeeOrgChartNodeInp
     init(_data?: any) {
         if (_data) {
             this.employeeId = _data["employeeId"];
-            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
         }
     }
 
@@ -241020,14 +241141,12 @@ export class GetEmployeeOrgChartNodeInput implements IGetEmployeeOrgChartNodeInp
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeId"] = this.employeeId;
-        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
         return data;
     }
 }
 
 export interface IGetEmployeeOrgChartNodeInput {
     employeeId: number | undefined;
-    asOfDate: DateTime | undefined;
 }
 
 export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeForEditOutput {
@@ -252388,6 +252507,42 @@ export class GetPositionForEditOutput implements IGetPositionForEditOutput {
 
 export interface IGetPositionForEditOutput {
     position: CreateOrEditPositionDto;
+}
+
+export class GetPositionOrgChartNodeInput implements IGetPositionOrgChartNodeInput {
+    positionId!: number | undefined;
+
+    constructor(data?: IGetPositionOrgChartNodeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.positionId = _data["positionId"];
+        }
+    }
+
+    static fromJS(data: any): GetPositionOrgChartNodeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPositionOrgChartNodeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["positionId"] = this.positionId;
+        return data;
+    }
+}
+
+export interface IGetPositionOrgChartNodeInput {
+    positionId: number | undefined;
 }
 
 export class GetPositionRelationshipForEditOutput implements IGetPositionRelationshipForEditOutput {
@@ -307258,6 +307413,8 @@ export class PositionDto implements IPositionDto {
     maxSalary!: number;
     isBudgeted!: boolean;
     fteLimit!: number;
+    parentPositionId!: number | undefined;
+    parentPositionName!: string | undefined;
 
     constructor(data?: IPositionDto) {
         if (data) {
@@ -307298,6 +307455,8 @@ export class PositionDto implements IPositionDto {
             this.maxSalary = _data["maxSalary"];
             this.isBudgeted = _data["isBudgeted"];
             this.fteLimit = _data["fteLimit"];
+            this.parentPositionId = _data["parentPositionId"];
+            this.parentPositionName = _data["parentPositionName"];
         }
     }
 
@@ -307338,6 +307497,8 @@ export class PositionDto implements IPositionDto {
         data["maxSalary"] = this.maxSalary;
         data["isBudgeted"] = this.isBudgeted;
         data["fteLimit"] = this.fteLimit;
+        data["parentPositionId"] = this.parentPositionId;
+        data["parentPositionName"] = this.parentPositionName;
         return data;
     }
 }
@@ -307371,6 +307532,144 @@ export interface IPositionDto {
     maxSalary: number;
     isBudgeted: boolean;
     fteLimit: number;
+    parentPositionId: number | undefined;
+    parentPositionName: string | undefined;
+}
+
+export class PositionOrgChartDto implements IPositionOrgChartDto {
+    focus!: PositionOrgChartNodeDto;
+    parent!: PositionOrgChartNodeDto;
+    children!: PositionOrgChartNodeDto[] | undefined;
+
+    constructor(data?: IPositionOrgChartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.focus = _data["focus"] ? PositionOrgChartNodeDto.fromJS(_data["focus"]) : undefined as any;
+            this.parent = _data["parent"] ? PositionOrgChartNodeDto.fromJS(_data["parent"]) : undefined as any;
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children!.push(PositionOrgChartNodeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PositionOrgChartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PositionOrgChartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["focus"] = this.focus ? this.focus.toJSON() : undefined as any;
+        data["parent"] = this.parent ? this.parent.toJSON() : undefined as any;
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IPositionOrgChartDto {
+    focus: PositionOrgChartNodeDto;
+    parent: PositionOrgChartNodeDto;
+    children: PositionOrgChartNodeDto[] | undefined;
+}
+
+export class PositionOrgChartNodeDto implements IPositionOrgChartNodeDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    parentPositionId!: number | undefined;
+    isVacant!: boolean;
+    holderEmployeeId!: number | undefined;
+    holderFullNameEn!: string | undefined;
+    holderFullNameAr!: string | undefined;
+    holderGender!: Gender;
+    holderHasPhoto!: boolean;
+    directChildCount!: number;
+    totalChildCount!: number;
+
+    constructor(data?: IPositionOrgChartNodeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.parentPositionId = _data["parentPositionId"];
+            this.isVacant = _data["isVacant"];
+            this.holderEmployeeId = _data["holderEmployeeId"];
+            this.holderFullNameEn = _data["holderFullNameEn"];
+            this.holderFullNameAr = _data["holderFullNameAr"];
+            this.holderGender = _data["holderGender"];
+            this.holderHasPhoto = _data["holderHasPhoto"];
+            this.directChildCount = _data["directChildCount"];
+            this.totalChildCount = _data["totalChildCount"];
+        }
+    }
+
+    static fromJS(data: any): PositionOrgChartNodeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PositionOrgChartNodeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["parentPositionId"] = this.parentPositionId;
+        data["isVacant"] = this.isVacant;
+        data["holderEmployeeId"] = this.holderEmployeeId;
+        data["holderFullNameEn"] = this.holderFullNameEn;
+        data["holderFullNameAr"] = this.holderFullNameAr;
+        data["holderGender"] = this.holderGender;
+        data["holderHasPhoto"] = this.holderHasPhoto;
+        data["directChildCount"] = this.directChildCount;
+        data["totalChildCount"] = this.totalChildCount;
+        return data;
+    }
+}
+
+export interface IPositionOrgChartNodeDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    parentPositionId: number | undefined;
+    isVacant: boolean;
+    holderEmployeeId: number | undefined;
+    holderFullNameEn: string | undefined;
+    holderFullNameAr: string | undefined;
+    holderGender: Gender;
+    holderHasPhoto: boolean;
+    directChildCount: number;
+    totalChildCount: number;
 }
 
 export enum PositionRelationType {
@@ -317086,7 +317385,6 @@ export interface ISearchCompanyStructureNodesInput {
 
 export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChartNodesInput {
     filter!: string | undefined;
-    asOfDate!: DateTime | undefined;
     maxResultCount!: number;
 
     constructor(data?: ISearchEmployeeOrgChartNodesInput) {
@@ -317101,7 +317399,6 @@ export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChart
     init(_data?: any) {
         if (_data) {
             this.filter = _data["filter"];
-            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
             this.maxResultCount = _data["maxResultCount"];
         }
     }
@@ -317116,7 +317413,6 @@ export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChart
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["filter"] = this.filter;
-        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
         data["maxResultCount"] = this.maxResultCount;
         return data;
     }
@@ -317124,7 +317420,46 @@ export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChart
 
 export interface ISearchEmployeeOrgChartNodesInput {
     filter: string | undefined;
-    asOfDate: DateTime | undefined;
+    maxResultCount: number;
+}
+
+export class SearchPositionOrgChartNodesInput implements ISearchPositionOrgChartNodesInput {
+    filter!: string | undefined;
+    maxResultCount!: number;
+
+    constructor(data?: ISearchPositionOrgChartNodesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): SearchPositionOrgChartNodesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchPositionOrgChartNodesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface ISearchPositionOrgChartNodesInput {
+    filter: string | undefined;
     maxResultCount: number;
 }
 

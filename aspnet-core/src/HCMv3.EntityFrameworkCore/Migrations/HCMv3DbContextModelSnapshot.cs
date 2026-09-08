@@ -11416,6 +11416,9 @@ namespace HCMv3.Migrations
                     b.Property<long?>("OrganizationUnitId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("ParentPositionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PayrollAreaId")
                         .HasColumnType("int");
 
@@ -11443,9 +11446,13 @@ namespace HCMv3.Migrations
 
                     b.HasIndex("OrganizationUnitId");
 
+                    b.HasIndex("ParentPositionId");
+
                     b.HasIndex("PayrollAreaId");
 
                     b.HasIndex("WorkLocationId");
+
+                    b.HasIndex("TenantId", "ParentPositionId");
 
                     b.ToTable("Positions");
                 });
@@ -36097,6 +36104,11 @@ namespace HCMv3.Migrations
                         .WithMany()
                         .HasForeignKey("OrganizationUnitId");
 
+                    b.HasOne("HCMv3.ManpowerPlanningManagement.Position", "ParentPosition")
+                        .WithMany("ChildPositions")
+                        .HasForeignKey("ParentPositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HCMv3.PayrollManagement.PayrollArea", "PayrollArea")
                         .WithMany()
                         .HasForeignKey("PayrollAreaId");
@@ -36114,6 +36126,8 @@ namespace HCMv3.Migrations
                     b.Navigation("JobTitle");
 
                     b.Navigation("OrganizationUnit");
+
+                    b.Navigation("ParentPosition");
 
                     b.Navigation("PayrollArea");
 
@@ -41539,6 +41553,8 @@ namespace HCMv3.Migrations
 
             modelBuilder.Entity("HCMv3.ManpowerPlanningManagement.Position", b =>
                 {
+                    b.Navigation("ChildPositions");
+
                     b.Navigation("PositionRelationships");
                 });
 

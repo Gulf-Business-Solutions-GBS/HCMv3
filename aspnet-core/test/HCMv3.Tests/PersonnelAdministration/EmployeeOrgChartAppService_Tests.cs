@@ -399,7 +399,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
             context.Set<EmployeeManager>().Add(new EmployeeManager
             {
                 TenantId = AbpSession.TenantId ?? 1,
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
                 ManagerId = managerId,
                 StartDate = startDate,
                 EndDate = endDate
@@ -414,7 +414,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
             context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
             {
                 TenantId = AbpSession.TenantId ?? 1,
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
                 JobTitleId = jobTitleId,
                 StartDate = startDate,
                 EndDate = endDate
