@@ -44335,6 +44335,137 @@ export class EmployeeOrgAssignmentsServiceProxy {
 }
 
 @Injectable()
+export class EmployeeOrgChartServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getNode(body?: GetEmployeeOrgChartNodeInput | undefined): Observable<EmployeeOrgChartDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOrgChart/GetNode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNode(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeOrgChartDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeOrgChartDto>;
+        }));
+    }
+
+    protected processGetNode(response: HttpResponseBase): Observable<EmployeeOrgChartDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeOrgChartDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    searchNodes(body?: SearchEmployeeOrgChartNodesInput | undefined): Observable<EmployeeOrgChartNodeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeOrgChart/SearchNodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchNodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchNodes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeOrgChartNodeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeOrgChartNodeDto[]>;
+        }));
+    }
+
+    protected processSearchNodes(response: HttpResponseBase): Observable<EmployeeOrgChartNodeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EmployeeOrgChartNodeDto.fromJS(item));
+            }
+            else {
+                result200 = null as any;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmployeeOvertimesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -45621,13 +45752,16 @@ export class ApiServiceProxy {
     }
 
     /**
+     * @param size (optional) 
      * @return OK
      */
-    employeePhoto(employeeId: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/employee-photo/{employeeId}";
+    employeePhoto(employeeId: number, size?: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/employee-photo/{employeeId}?";
         if (employeeId === undefined || employeeId === null)
             throw new globalThis.Error("The parameter 'employeeId' must be defined.");
         url_ = url_.replace("{employeeId}", encodeURIComponent("" + employeeId));
+        if (size !== undefined && size !== null)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -204446,6 +204580,142 @@ export interface IEmployeeOrgAssignmentDto {
     organizationUnitName: string | undefined;
 }
 
+export class EmployeeOrgChartDto implements IEmployeeOrgChartDto {
+    asOfDate!: DateTime;
+    focus!: EmployeeOrgChartNodeDto;
+    managerChain!: EmployeeOrgChartNodeDto[] | undefined;
+    directReports!: EmployeeOrgChartNodeDto[] | undefined;
+
+    constructor(data?: IEmployeeOrgChartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+            this.focus = _data["focus"] ? EmployeeOrgChartNodeDto.fromJS(_data["focus"]) : undefined as any;
+            if (Array.isArray(_data["managerChain"])) {
+                this.managerChain = [] as any;
+                for (let item of _data["managerChain"])
+                    this.managerChain!.push(EmployeeOrgChartNodeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["directReports"])) {
+                this.directReports = [] as any;
+                for (let item of _data["directReports"])
+                    this.directReports!.push(EmployeeOrgChartNodeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EmployeeOrgChartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeOrgChartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        data["focus"] = this.focus ? this.focus.toJSON() : undefined as any;
+        if (Array.isArray(this.managerChain)) {
+            data["managerChain"] = [];
+            for (let item of this.managerChain)
+                data["managerChain"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.directReports)) {
+            data["directReports"] = [];
+            for (let item of this.directReports)
+                data["directReports"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IEmployeeOrgChartDto {
+    asOfDate: DateTime;
+    focus: EmployeeOrgChartNodeDto;
+    managerChain: EmployeeOrgChartNodeDto[] | undefined;
+    directReports: EmployeeOrgChartNodeDto[] | undefined;
+}
+
+export class EmployeeOrgChartNodeDto implements IEmployeeOrgChartNodeDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+    jobTitleEn!: string | undefined;
+    jobTitleAr!: string | undefined;
+    gender!: Gender;
+    hasPhoto!: boolean;
+    directReportCount!: number;
+    totalReportCount!: number;
+
+    constructor(data?: IEmployeeOrgChartNodeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+            this.jobTitleEn = _data["jobTitleEn"];
+            this.jobTitleAr = _data["jobTitleAr"];
+            this.gender = _data["gender"];
+            this.hasPhoto = _data["hasPhoto"];
+            this.directReportCount = _data["directReportCount"];
+            this.totalReportCount = _data["totalReportCount"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeOrgChartNodeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeOrgChartNodeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        data["jobTitleEn"] = this.jobTitleEn;
+        data["jobTitleAr"] = this.jobTitleAr;
+        data["gender"] = this.gender;
+        data["hasPhoto"] = this.hasPhoto;
+        data["directReportCount"] = this.directReportCount;
+        data["totalReportCount"] = this.totalReportCount;
+        return data;
+    }
+}
+
+export interface IEmployeeOrgChartNodeDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+    jobTitleEn: string | undefined;
+    jobTitleAr: string | undefined;
+    gender: Gender;
+    hasPhoto: boolean;
+    directReportCount: number;
+    totalReportCount: number;
+}
+
 export class EmployeeOvertimeDto implements IEmployeeOvertimeDto {
     id!: number;
     employeeId!: number;
@@ -240718,6 +240988,46 @@ export class GetEmployeeOrgAssignmentForEditOutput implements IGetEmployeeOrgAss
 
 export interface IGetEmployeeOrgAssignmentForEditOutput {
     employeeOrgAssignment: CreateOrEditEmployeeOrgAssignmentDto;
+}
+
+export class GetEmployeeOrgChartNodeInput implements IGetEmployeeOrgChartNodeInput {
+    employeeId!: number | undefined;
+    asOfDate!: DateTime | undefined;
+
+    constructor(data?: IGetEmployeeOrgChartNodeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GetEmployeeOrgChartNodeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEmployeeOrgChartNodeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGetEmployeeOrgChartNodeInput {
+    employeeId: number | undefined;
+    asOfDate: DateTime | undefined;
 }
 
 export class GetEmployeeOvertimeForEditOutput implements IGetEmployeeOvertimeForEditOutput {
@@ -316771,6 +317081,50 @@ export interface ISearchCompanyStructureNodesInput {
     filter: string | undefined;
     organizationUnitTypeId: number | undefined;
     rootOrganizationUnitId: number | undefined;
+    maxResultCount: number;
+}
+
+export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChartNodesInput {
+    filter!: string | undefined;
+    asOfDate!: DateTime | undefined;
+    maxResultCount!: number;
+
+    constructor(data?: ISearchEmployeeOrgChartNodesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+            this.asOfDate = _data["asOfDate"] ? DateTime.fromISO(_data["asOfDate"].toString()) : undefined as any;
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): SearchEmployeeOrgChartNodesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchEmployeeOrgChartNodesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        data["asOfDate"] = this.asOfDate ? this.asOfDate.toString() : undefined as any;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface ISearchEmployeeOrgChartNodesInput {
+    filter: string | undefined;
+    asOfDate: DateTime | undefined;
     maxResultCount: number;
 }
 
