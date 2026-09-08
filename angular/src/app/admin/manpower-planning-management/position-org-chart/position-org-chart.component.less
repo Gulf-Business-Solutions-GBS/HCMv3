@@ -24,8 +24,7 @@
 /* Each card in the management chain, and the focus card, sit at one fixed width so the stem between
    them lines up down the centre. */
 .position-org-chart__node {
-    width: 340px;
-    max-width: 100%;
+    width: min(340px, 100%);
 }
 
 .position-org-chart__connector {
@@ -41,7 +40,7 @@
  */
 .position-org-chart__reports {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 340px));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 340px));
     justify-content: center;
     gap: 16px;
     width: 100%;

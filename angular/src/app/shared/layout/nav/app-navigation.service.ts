@@ -1497,10 +1497,10 @@ export class AppNavigationService {
                         '/app/admin/org-units'
                     ),
                     new AppMenuItem(
-                        'CompanyStructureOverview',
+                        'OrganizationChart',
                         'Pages.OrganizationManagement.CompanyStructureChart',
                         'flaticon-network',
-                        '/app/admin/org-charts/company'
+                        '/app/admin/org-charts/organization'
                     ),
                 ]
             ),
@@ -2299,7 +2299,7 @@ export class AppNavigationService {
                         '/app/admin/employees'
                     ),
                     new AppMenuItem(
-                        'EmployeeOrgChart',
+                        'EmployeeChart',
                         'Pages.PersonnelAdministration.EmployeeOrgChart',
                         'flaticon-network',
                         '/app/admin/org-charts/employee'
@@ -2550,12 +2550,6 @@ export class AppNavigationService {
                 '',
                 [],
                 [
-                    new AppMenuItem(
-                        'BusinessRules',
-                        'Pages.BusinessRules',
-                        'flaticon-cogwheel-2',
-                        '/app/admin/business-rules'
-                    ),
                     new AppMenuItem(
                         'WorkflowRoles',
                         'Pages.Workflow.WorkflowRoles',
@@ -3006,7 +3000,7 @@ export class AppNavigationService {
                         '/app/admin/positions'
                     ),
                     new AppMenuItem(
-                        'PositionOrgChart',
+                        'PositionChart',
                         'Pages.ManpowerPlanningManagement.PositionOrgChart',
                         'flaticon-network',
                         '/app/admin/org-charts/position'
@@ -3198,6 +3192,12 @@ export class AppNavigationService {
                         '/app/admin/site-audits'
                     ),
                 ]
+            ),
+            new AppMenuItem(
+                'ConfigureBusinessRules',
+                'Pages.BusinessRules',
+                'flaticon-cogwheel-2',
+                '/app/admin/business-rules'
             ),
             new AppMenuItem(
                 'SystemSettings',

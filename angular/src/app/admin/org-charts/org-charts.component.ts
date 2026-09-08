@@ -38,17 +38,17 @@ export class OrgChartsComponent extends AppComponentBase implements OnInit {
     private readonly allTabs: OrgChartTab[] = [
         {
             path: 'company',
-            labelKey: 'CompanyStructureOverview',
+            labelKey: 'OrganizationChart',
             permission: 'Pages.OrganizationManagement.CompanyStructureChart',
         },
         {
             path: 'employee',
-            labelKey: 'EmployeeOrgChart',
+            labelKey: 'EmployeeChart',
             permission: 'Pages.PersonnelAdministration.EmployeeOrgChart',
         },
         {
             path: 'position',
-            labelKey: 'PositionOrgChart',
+            labelKey: 'PositionChart',
             permission: 'Pages.ManpowerPlanningManagement.PositionOrgChart',
         },
     ];

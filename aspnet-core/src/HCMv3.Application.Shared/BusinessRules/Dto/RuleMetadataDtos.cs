@@ -41,6 +41,32 @@ public class RuleParameterMetadataDto
     public bool IsWritable { get; set; }
 
     public List<RuleFieldMetadataDto> Fields { get; set; } = new();
+
+    /// <summary>
+    /// References the author may follow out of this parameter, e.g. Leave to its Employee. The builder walks
+    /// these to offer the next level of suggestions after a dot.
+    /// </summary>
+    public List<RuleNavigationMetadataDto> Navigations { get; set; } = new();
+}
+
+/// <summary>
+/// One followable reference, with the fields and further references at the far end.
+///
+/// <para>
+/// Recursive, because the paths are: <c>Leave.Employee.Nationality.NameEn</c> is a parameter, two
+/// references and a field. Depth is bounded by what the server declares, so the tree is always finite --
+/// the client can walk it without a depth guard.
+/// </para>
+/// </summary>
+public class RuleNavigationMetadataDto
+{
+    public string Name { get; set; }
+
+    public string DisplayName { get; set; }
+
+    public List<RuleFieldMetadataDto> Fields { get; set; } = new();
+
+    public List<RuleNavigationMetadataDto> Navigations { get; set; } = new();
 }
 
 public class RuleFieldMetadataDto

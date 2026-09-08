@@ -22,6 +22,8 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { RuleExpressionEditorComponent } from './rule-expression-editor.component';
+import { RuleFormulaInputComponent } from './rule-formula-input.component';
+import { parseFormula, parseOptionalFormula, printFormula } from './rule-formula';
 import {
     RuleAction,
     RuleBlock,
@@ -51,6 +53,7 @@ import {
         ValidationMessagesComponent,
         ButtonBusyDirective,
         RuleExpressionEditorComponent,
+        RuleFormulaInputComponent,
         LocalizePipe,
         PermissionPipe,
     ],
@@ -123,6 +126,11 @@ export class CreateOrEditBusinessRuleModalComponent extends AppComponentBase {
         this.activeTab.set('definition');
         this.sampleValues.set({});
 
+        // Text belongs to the rule being edited, not to the dialog. Left behind, the previous rule's
+        // formulas would be shown against this one's tree.
+        this.formulaText.clear();
+        this.formulaInvalid.clear();
+
         this._service.getRuleMetadata().subscribe((metadata) => {
             this.baseObjects.set(metadata.baseObjects);
             this.functions.set(metadata.functions);
@@ -174,6 +182,8 @@ export class CreateOrEditBusinessRuleModalComponent extends AppComponentBase {
         this.definition.set(emptyDefinition());
         this.testResult.set(undefined);
         this.sampleValues.set({});
+        this.formulaText.clear();
+        this.formulaInvalid.clear();
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -223,6 +233,82 @@ export class CreateOrEditBusinessRuleModalComponent extends AppComponentBase {
         block.else = block.else || [];
         return block.else;
     }
+
+    // ---------------------------------------------------------------------------------------------
+    // Formula editing
+    // ---------------------------------------------------------------------------------------------
+
+    /**
+     * Typed text, keyed by the block or action object it belongs to.
+     *
+     * Keyed by OBJECT REFERENCE rather than by index, which is what makes deleting or reordering a block
+     * safe -- an index-keyed map would silently hand block 3's text to whatever moved into slot 3. The AST
+     * stays the single source of truth; this map only remembers what the author typed, so that text which
+     * does not yet parse survives a keystroke instead of snapping back to the last valid formula.
+     */
+    private readonly formulaText = new Map<object, string>();
+
+    /** Objects whose text currently does not parse. Non-empty blocks Save. */
+    private readonly formulaInvalid = new Set<object>();
+
+    readonly editorMode = signal<'formula' | 'visual'>('formula');
+
+    setEditorMode(mode: 'formula' | 'visual'): void {
+        // Dropping the cache re-prints every box from the AST, so switching back from the tree shows what
+        // the tree actually built rather than stale text.
+        this.formulaText.clear();
+        this.formulaInvalid.clear();
+        this.editorMode.set(mode);
+    }
+
+    hasFormulaErrors(): boolean {
+        return this.formulaInvalid.size > 0;
+    }
+
+    conditionText(block: RuleBlock): string {
+        if (!this.formulaText.has(block)) {
+            this.formulaText.set(block, printFormula(block.if));
+        }
+
+        return this.formulaText.get(block) ?? '';
+    }
+
+    onConditionText(block: RuleBlock, text: string): void {
+        this.formulaText.set(block, text);
+
+        try {
+            block.if = parseOptionalFormula(text) ?? null;
+            this.formulaInvalid.delete(block);
+        } catch {
+            // The AST is deliberately left alone. A half-typed formula must not destroy the last thing that
+            // parsed, or an author who mistypes loses the rule they had.
+            this.formulaInvalid.add(block);
+        }
+    }
+
+    actionValueText(action: RuleAction): string {
+        if (!this.formulaText.has(action)) {
+            this.formulaText.set(action, printFormula(action.value));
+        }
+
+        return this.formulaText.get(action) ?? '';
+    }
+
+    onActionValueText(action: RuleAction, text: string): void {
+        this.formulaText.set(action, text);
+
+        try {
+            action.value = parseFormula(text);
+            this.formulaInvalid.delete(action);
+        } catch {
+            this.formulaInvalid.add(action);
+        }
+    }
+
+    /** Names declared in the Variables section, offered by the autocomplete alongside fields. */
+    readonly variableNames = computed<string[]>(() =>
+        (this.definition().variables ?? []).map((v) => v.name).filter((n) => !!n)
+    );
 
     actionTargetKey(action: RuleAction): string {
         return action.parameter && action.field ? action.parameter + '.' + action.field : '';
@@ -359,6 +445,14 @@ export class CreateOrEditBusinessRuleModalComponent extends AppComponentBase {
     // ---------------------------------------------------------------------------------------------
 
     save(): void {
+        // Saving with a formula that does not parse would store whatever last parsed, silently discarding
+        // what the author typed. Refuse instead, and say so.
+        if (this.hasFormulaErrors()) {
+            this.notify.warn(this.l('FixTheFormulaErrorsFirst'));
+            this.activeTab.set('definition');
+            return;
+        }
+
         this.saving.set(true);
 
         const record = this.record();

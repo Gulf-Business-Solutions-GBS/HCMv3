@@ -1733,7 +1733,7 @@
     <text name="TreeCode">Tree Code</text>
     <text name="OrganizationUnitMaxDepthExceeded">Organization unit hierarchy cannot exceed {0} levels of depth.</text>
     <!-- Org charts (Company Structure Overview, Employee Org Chart, Position Org Chart) -->
-    <text name="CompanyStructureOverview">Company Structure Overview</text>
+    <text name="OrganizationChart">Organization Chart</text>
     <text name="CompanyStructure">Company Structure</text>
     <text name="AsOf">As Of</text>
     <text name="DirectEmployees">Employees in this unit</text>
@@ -1748,7 +1748,7 @@
     <text name="ExportAsImage">Export as image</text>
     <text name="OrgChartExportFailed">The chart could not be exported as an image.</text>
     <!-- Employee Org Chart (shares the org-chart renderer with Company Structure Overview) -->
-    <text name="EmployeeOrgChart">Employee Org Chart</text>
+    <text name="EmployeeChart">Employee Chart</text>
     <text name="DirectReports">Direct reports</text>
     <text name="TotalReports">Total reports, all levels</text>
     <text name="ViewEmployeeRecord">View employee record</text>
@@ -1756,7 +1756,7 @@
     <text name="GoToManager">Go to manager</text>
     <text name="GoToReports">Go to direct reports</text>
     <!-- Position Org Chart -->
-    <text name="PositionOrgChart">Position Org Chart</text>
+    <text name="PositionChart">Position Chart</text>
     <text name="ParentPosition">Reports to position</text>
     <text name="DirectPositions">Positions reporting directly</text>
     <text name="TotalPositions">Positions below, all levels</text>
@@ -6032,5 +6032,18 @@
     <text name="RuleOperatorAnd">and</text>
     <text name="RuleOperatorOr">or</text>
     <text name="MaternityLeaveIsNotAvailableForMaleEmployees">Maternity leave cannot be requested for a male employee.</text>
+    <text name="RuleEditorFormula">Formula</text>
+    <text name="RuleEditorVisual">Visual</text>
+    <text name="FormulaIsRequired">Enter a formula.</text>
+    <text name="FormulaHasErrors">Some formulas have errors</text>
+    <text name="FixTheFormulaErrorsFirst">Please correct the formulas marked in red before saving.</text>
+    <text name="AtPosition">(at character {0})</text>
+    <text name="FormulaEditorHint">Type a field or function name for suggestions, or press Ctrl+Space. Example: Employee.JoiningDate &gt; #2026-01-01#</text>
+    <text name="FormulaConditionPlaceholder">e.g. Applier.JobTitleCode = "CHRO" AND Applier.IsManager = true</text>
+    <text name="FormulaValuePlaceholder">e.g. AddCalendarDays(Employee.JoiningDate, 100)</text>
+    <text name="RuleVariable">Variable</text>
+    <text name="ReadOnly">Read-only</text>
+    <text name="RuleRelatedRecord">Related record</text>
+    <text name="ConfigureBusinessRules">Configure Business Rules</text>
   </texts>
 </localizationDictionary>

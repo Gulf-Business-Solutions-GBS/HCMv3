@@ -89,6 +89,83 @@ public class RuleExecutionContext
     /// <summary>Fields actually assigned during this execution, for the log line and the test harness.</summary>
     public List<RuleFieldWrite> Writes { get; } = new();
 
+    /// <summary>
+    /// Loads the entity at the far end of a declared reference. Null disables reference following, which is
+    /// what the dry-run harness does -- there is no real row to walk out of.
+    /// </summary>
+    public IRuleEntityLoader EntityLoader { get; set; }
+
+    private readonly Dictionary<string, object> _loadedEntities = new();
+
+    /// <summary>
+    /// Follows one declared reference, memoised for the rest of this execution.
+    ///
+    /// <para>
+    /// The memo is what keeps reference-following affordable: a rule reading three fields off
+    /// <c>Leave.Employee</c> loads that employee once, and two rules armed on the same event share the load
+    /// because they share the context. Misses are cached too -- an id that resolves to nothing must not be
+    /// re-queried on every read.
+    /// </para>
+    /// </summary>
+    public object FollowReference(RuleNavigationDescriptor navigation, object owner)
+    {
+        if (owner == null || navigation == null)
+        {
+            return null;
+        }
+
+        var foreignKey = navigation.ForeignKeyGetter(owner);
+
+        // An unset reference is ordinary data -- an employee with no nationality -- so it reads as null
+        // rather than failing.
+        if (!foreignKey.HasValue)
+        {
+            return null;
+        }
+
+        if (EntityLoader == null)
+        {
+            throw new RuleExecutionException(
+                CurrentRuleCode,
+                "This rule follows the reference '" + navigation.Name
+                + "', which is not available in this context.");
+        }
+
+        var key = navigation.TargetType.FullName + "#" + foreignKey.Value;
+
+        if (_loadedEntities.TryGetValue(key, out var cached))
+        {
+            return cached;
+        }
+
+        var loaded = EntityLoader.Load(navigation.TargetType, foreignKey.Value);
+
+        _loadedEntities[key] = loaded;
+
+        return loaded;
+    }
+
+    /// <summary>
+    /// Walks a resolved path to the object that owns the final field, or null when any reference along the
+    /// way is unset.
+    /// </summary>
+    public object ResolveOwner(RuleResolvedField resolved, object root)
+    {
+        var current = root;
+
+        foreach (var navigation in resolved.Navigations)
+        {
+            if (current == null)
+            {
+                return null;
+            }
+
+            current = FollowReference(navigation, current);
+        }
+
+        return current;
+    }
+
     /// <summary>Registers a parameter object. Null objects are allowed -- a rule may branch on their absence.</summary>
     public RuleExecutionContext WithParameter(string name, object value)
     {

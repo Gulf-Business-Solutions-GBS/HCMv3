@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace HCMv3.OrganizationManagement.Dto;
@@ -13,9 +12,6 @@ namespace HCMv3.OrganizationManagement.Dto;
 /// </summary>
 public class CompanyStructureNodeDto
 {
-    /// <summary>The date the counts were resolved at -- echoed back so the screen can confirm what it got.</summary>
-    public DateTime AsOfDate { get; set; }
-
     /// <summary>The card at the top. Null only when the tenant has no organization units at all.</summary>
     public OrgChartNodeDto Focus { get; set; }
 

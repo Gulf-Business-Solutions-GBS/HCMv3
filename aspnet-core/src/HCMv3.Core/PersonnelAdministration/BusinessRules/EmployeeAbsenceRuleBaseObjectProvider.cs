@@ -53,7 +53,38 @@ public class EmployeeAbsenceRuleBaseObjectProvider : IRuleBaseObjectProvider, IS
                 .ReadWrite("ReturnDate", "ReturnDate", RuleDataType.Date, a => a.ReturnDate, (a, v) => a.ReturnDate = v)
                 .ReadWrite("AdvanceLeavePaid", "AdvanceLeavePaid", RuleDataType.Boolean, a => a.AdvanceLeavePaid, (a, v) => a.AdvanceLeavePaid = v)
                 .Read("LeavePaymentType", "LeavePaymentType", RuleDataType.Enum, a => (long)a.LeavePaymentType, nameof(LeavePaymentType))
-                .Read("IsTravelling", "IsTravelling", RuleDataType.Boolean, a => a.IsTravelling))
+                .Read("IsTravelling", "IsTravelling", RuleDataType.Boolean, a => a.IsTravelling)
+
+                // References the engine follows by key. This is what lets an author write
+                // Leave.Employee.Nationality.NameEn instead of memorising that nationality 12 is Indian.
+                // Each one is loaded on demand and memoised for the execution -- see RuleEntityLoader.
+                .Navigate<Employee>("Employee", "Employee", a => a.EmployeeId, e => e
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("FullNameEn", "FullName", RuleDataType.String, x => x.FullNameEn)
+                    .Read("Gender", "Gender", RuleDataType.Enum, x => (long)x.Gender, nameof(Gender))
+                    .Read("BirthDate", "BirthDate", RuleDataType.Date, x => x.BirthDate)
+                    .Read("JoiningDate", "JoiningDate", RuleDataType.Date, x => x.JoiningDate)
+                    .Read("ProbationDays", "ProbationDays", RuleDataType.Integer, x => (long)x.ProbationDays)
+                    .Read("ProbationEndDate", "ProbationEndDate", RuleDataType.Date, x => x.ProbationEndDate)
+                    .Read("Status", "Status", RuleDataType.Enum, x => (long)x.Status, nameof(EmployeeStatus))
+                    .Read("EmploymentType", "EmploymentType", RuleDataType.Enum, x => (long)x.EmploymentType, nameof(EmploymentType))
+                    .Read("Email", "Email", RuleDataType.String, x => x.Email)
+                    .Navigate<Nationality>("Nationality", "Nationality", x => x.NationalityId, n => n
+                        .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                        .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn)
+                        .Read("NameAr", "NameAr", RuleDataType.String, x => x.NameAr))
+                    .Navigate<Religion>("Religion", "Religion", x => x.ReligionId, r => r
+                        .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                        .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn))
+                    .Navigate<Qualification>("Qualification", "Qualification", x => x.QualificationId, q => q
+                        .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                        .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn)))
+
+                .Navigate<AbsenceType>("AbsenceType", "AbsenceType", a => a.AbsenceTypeId, t => t
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn)
+                    .Read("IsPaid", "IsPaid", RuleDataType.Boolean, x => x.IsPaid)
+                    .Read("IsActive", "Active", RuleDataType.Boolean, x => x.IsActive)))
 
             .Parameter<RuleEmployeeSnapshot>(EmployeeParameter, "Employee", isWritable: false, p => p
                 .Read("EmployeeId", "Employee", RuleDataType.Integer, e => (long)e.EmployeeId)

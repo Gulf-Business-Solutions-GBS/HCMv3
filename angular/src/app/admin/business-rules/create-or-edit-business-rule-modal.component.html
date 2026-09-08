@@ -169,6 +169,32 @@
 
                         <!-- ============================ DEFINITION ============================ -->
                         @if (activeTab() === 'definition') {
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        [class.btn-primary]="editorMode() === 'formula'"
+                                        [class.btn-light]="editorMode() !== 'formula'"
+                                        (click)="setEditorMode('formula')">
+                                        <i class="fa fa-keyboard me-1"></i>{{ 'RuleEditorFormula' | localize }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        [class.btn-primary]="editorMode() === 'visual'"
+                                        [class.btn-light]="editorMode() !== 'visual'"
+                                        (click)="setEditorMode('visual')">
+                                        <i class="fa fa-sitemap me-1"></i>{{ 'RuleEditorVisual' | localize }}
+                                    </button>
+                                </div>
+                                @if (hasFormulaErrors()) {
+                                    <span class="badge badge-light-danger">
+                                        <i class="fa fa-exclamation-circle me-1"></i>{{ 'FormulaHasErrors' | localize }}
+                                    </span>
+                                }
+                            </div>
+
                             @for (block of definition().blocks; track $index) {
                                 <div class="rule-block">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -195,11 +221,23 @@
 
                                     @if (block.if) {
                                         <div class="rule-block-label">{{ 'RuleIf' | localize }}</div>
-                                        <rule-expression-editor
-                                            [expression]="block.if"
-                                            [baseObject]="selectedBaseObject()"
-                                            [functions]="functions()"
-                                            [isRoot]="true" />
+                                        @if (editorMode() === 'formula') {
+                                            <rule-formula-input
+                                                [value]="conditionText(block)"
+                                                (valueChange)="onConditionText(block, $event)"
+                                                [baseObject]="selectedBaseObject()"
+                                                [functions]="functions()"
+                                                [variableNames]="variableNames()"
+                                                [required]="true"
+                                                [rows]="2"
+                                                [placeholder]="l('FormulaConditionPlaceholder')" />
+                                        } @else {
+                                            <rule-expression-editor
+                                                [expression]="block.if"
+                                                [baseObject]="selectedBaseObject()"
+                                                [functions]="functions()"
+                                                [isRoot]="true" />
+                                        }
                                     } @else {
                                         <div class="alert alert-light-primary py-2 mb-3">
                                             {{ 'RuleRunsAlways' | localize }}
@@ -227,11 +265,23 @@
                                                 </select>
                                                 <span class="align-self-center">=</span>
                                                 <div class="flex-grow-1">
-                                                    <rule-expression-editor
-                                                        [expression]="action.value"
-                                                        [baseObject]="selectedBaseObject()"
-                                                        [functions]="functions()"
-                                                        [isRoot]="true" />
+                                                    @if (editorMode() === 'formula') {
+                                                        <rule-formula-input
+                                                            [value]="actionValueText(action)"
+                                                            (valueChange)="onActionValueText(action, $event)"
+                                                            [baseObject]="selectedBaseObject()"
+                                                            [functions]="functions()"
+                                                            [variableNames]="variableNames()"
+                                                            [required]="true"
+                                                            [rows]="1"
+                                                            [placeholder]="l('FormulaValuePlaceholder')" />
+                                                    } @else {
+                                                        <rule-expression-editor
+                                                            [expression]="action.value"
+                                                            [baseObject]="selectedBaseObject()"
+                                                            [functions]="functions()"
+                                                            [isRoot]="true" />
+                                                    }
                                                 </div>
                                             } @else {
                                                 <span class="badge badge-light-danger align-self-center">
@@ -292,11 +342,23 @@
                                                     </select>
                                                     <span class="align-self-center">=</span>
                                                     <div class="flex-grow-1">
-                                                        <rule-expression-editor
-                                                            [expression]="action.value"
-                                                            [baseObject]="selectedBaseObject()"
-                                                            [functions]="functions()"
-                                                            [isRoot]="true" />
+                                                        @if (editorMode() === 'formula') {
+                                                            <rule-formula-input
+                                                                [value]="actionValueText(action)"
+                                                                (valueChange)="onActionValueText(action, $event)"
+                                                                [baseObject]="selectedBaseObject()"
+                                                                [functions]="functions()"
+                                                                [variableNames]="variableNames()"
+                                                                [required]="true"
+                                                                [rows]="1"
+                                                                [placeholder]="l('FormulaValuePlaceholder')" />
+                                                        } @else {
+                                                            <rule-expression-editor
+                                                                [expression]="action.value"
+                                                                [baseObject]="selectedBaseObject()"
+                                                                [functions]="functions()"
+                                                                [isRoot]="true" />
+                                                        }
                                                     </div>
                                                 } @else {
                                                     <span class="badge badge-light-danger align-self-center">

@@ -36,7 +36,6 @@ describe('CompanyStructureChartComponent', () => {
     };
 
     const nodeJson = {
-        asOfDate: '2026-09-06T00:00:00',
         focus: {
             id: 1,
             treeCode: '00001',
@@ -223,7 +222,7 @@ describe('CompanyStructureChartComponent', () => {
 
     it('should show the empty state when the tenant has no organization units', async () => {
         (service.getNode as jasmine.Spy).and.returnValue(
-            of(CompanyStructureNodeDto.fromJS({ asOfDate: '2026-09-06T00:00:00', ancestors: [], children: [] }))
+            of(CompanyStructureNodeDto.fromJS({ ancestors: [], children: [] }))
         );
 
         fixture.detectChanges();

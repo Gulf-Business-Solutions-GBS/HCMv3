@@ -114,6 +114,12 @@ export class OrgChartViewportComponent implements OnInit {
     }
 
     onPointerDown(event: PointerEvent): void {
+        // Touch is left to the browser: a finger drag must scroll the page, which is what a phone user
+        // expects and what hijacking it here previously broke. Drag-to-pan stays a mouse/pen gesture.
+        if (event.pointerType === 'touch') {
+            return;
+        }
+
         // Left button only, and never when the gesture started on a card -- that is a drill-down click.
         if (event.button !== 0 || (event.target as HTMLElement).closest('.org-chart-card')) {
             return;

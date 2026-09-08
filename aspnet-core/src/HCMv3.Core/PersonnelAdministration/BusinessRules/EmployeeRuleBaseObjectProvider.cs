@@ -72,7 +72,24 @@ public class EmployeeRuleBaseObjectProvider : IRuleBaseObjectProvider, ISingleto
                 // --- Employment dates: the probation rule's subject. ---
                 .Read("JoiningDate", "JoiningDate", RuleDataType.Date, e => e.JoiningDate)
                 .ReadWrite("ProbationDays", "ProbationDays", RuleDataType.Integer, e => (long)e.ProbationDays, (e, v) => e.ProbationDays = (int)v)
-                .ReadWrite("ProbationEndDate", "ProbationEndDate", RuleDataType.Date, e => e.ProbationEndDate, (e, v) => e.ProbationEndDate = v))
+                .ReadWrite("ProbationEndDate", "ProbationEndDate", RuleDataType.Date, e => e.ProbationEndDate, (e, v) => e.ProbationEndDate = v)
+
+                // References the engine follows by key, so a rule can compare against a nationality NAME
+                // rather than an id that differs per environment. Read-only in both directions: a rule may
+                // read the related row, never write it.
+                .Navigate<Nationality>("Nationality", "Nationality", e => e.NationalityId, n => n
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn)
+                    .Read("NameAr", "NameAr", RuleDataType.String, x => x.NameAr))
+                .Navigate<Religion>("Religion", "Religion", e => e.ReligionId, r => r
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn))
+                .Navigate<Qualification>("Qualification", "Qualification", e => e.QualificationId, q => q
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn))
+                .Navigate<Title>("Title", "Title", e => e.TitleId, t => t
+                    .Read("Code", "Code", RuleDataType.String, x => x.Code)
+                    .Read("NameEn", "NameEn", RuleDataType.String, x => x.NameEn)))
             .Build();
     }
 }

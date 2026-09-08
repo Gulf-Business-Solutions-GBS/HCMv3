@@ -1,6 +1,15 @@
 .org-charts__tabs {
     margin-bottom: 16px;
 
+    /* Three tab labels do not fit across a phone. Scrolling the bar keeps them all reachable and, more
+       importantly, stops them wrapping into a stack that pushes the chart below the fold. */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    .nav-item {
+        white-space: nowrap;
+    }
+
     .nav-link {
         cursor: pointer;
         color: var(--bs-gray-700, #5e6278);

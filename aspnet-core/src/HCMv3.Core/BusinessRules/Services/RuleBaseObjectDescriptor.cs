@@ -105,10 +105,136 @@ public class RuleParameterDescriptor
 
     public IReadOnlyList<RuleFieldDescriptor> Fields { get; }
 
+    /// <summary>References a rule may follow out of this parameter, e.g. Leave to its Employee.</summary>
+    public IReadOnlyList<RuleNavigationDescriptor> Navigations { get; set; } = Array.Empty<RuleNavigationDescriptor>();
+
     public RuleFieldDescriptor FindField(string name)
     {
         return Fields.FirstOrDefault(f => string.Equals(f.Name, name, StringComparison.OrdinalIgnoreCase));
     }
+
+    public RuleNavigationDescriptor FindNavigation(string name)
+    {
+        return Navigations.FirstOrDefault(n => string.Equals(n.Name, name, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// Resolves a dotted path such as <c>Employee.Nationality.NameEn</c> into the references to follow and
+    /// the field to read at the end, or null when any segment is not declared.
+    ///
+    /// <para>
+    /// Returning null rather than throwing lets the caller decide: the validator turns it into an authoring
+    /// error naming the path, while the evaluator turns it into a rule failure. Both are better than the
+    /// thing this replaced, where an unknown path silently read as empty.
+    /// </para>
+    /// </summary>
+    public RuleResolvedField ResolvePath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        var segments = path.Split('.');
+        var navigations = new List<RuleNavigationDescriptor>();
+
+        IReadOnlyList<RuleFieldDescriptor> fields = Fields;
+        IReadOnlyList<RuleNavigationDescriptor> available = Navigations;
+
+        for (var i = 0; i < segments.Length - 1; i++)
+        {
+            var segment = segments[i];
+
+            var navigation = available.FirstOrDefault(n => string.Equals(n.Name, segment, StringComparison.OrdinalIgnoreCase));
+
+            if (navigation == null)
+            {
+                return null;
+            }
+
+            navigations.Add(navigation);
+            fields = navigation.Fields;
+            available = navigation.Navigations;
+        }
+
+        var last = segments[segments.Length - 1];
+        var field = fields.FirstOrDefault(f => string.Equals(f.Name, last, StringComparison.OrdinalIgnoreCase));
+
+        return field == null ? null : new RuleResolvedField(navigations, field);
+    }
+}
+
+/// <summary>
+/// A reference a rule may follow: which entity sits at the other end, and the foreign key that finds it.
+///
+/// <para><b>Why a foreign key and not the navigation property.</b> Lazy loading is switched off in this
+/// solution, so <c>absence.Employee</c> is null unless some query happened to Include it. A descriptor that
+/// read the navigation property would therefore work in the one code path that eager-loads and silently
+/// read as empty everywhere else -- and an empty read makes a condition quietly false, which is the failure
+/// mode this engine can least afford. Declaring the foreign key instead means the engine LOADS what it
+/// needs, and the cost is visible to whoever declared the reference.</para>
+///
+/// <para>
+/// Single-valued references only. Collections would need aggregate functions ("any dependent over 18") and
+/// an unbounded amount of loading; that is a separate feature, not a wider version of this one.
+/// </para>
+/// </summary>
+public class RuleNavigationDescriptor
+{
+    public RuleNavigationDescriptor(
+        string name,
+        string displayNameKey,
+        Type targetType,
+        Func<object, int?> foreignKeyGetter,
+        IReadOnlyList<RuleFieldDescriptor> fields,
+        IReadOnlyList<RuleNavigationDescriptor> navigations)
+    {
+        Name = name;
+        DisplayNameKey = displayNameKey;
+        TargetType = targetType;
+        ForeignKeyGetter = foreignKeyGetter;
+        Fields = fields ?? Array.Empty<RuleFieldDescriptor>();
+        Navigations = navigations ?? Array.Empty<RuleNavigationDescriptor>();
+    }
+
+    public string Name { get; }
+
+    public string DisplayNameKey { get; }
+
+    /// <summary>The entity to load. Must be an <c>IEntity&lt;int&gt;</c> with a registered repository.</summary>
+    public Type TargetType { get; }
+
+    /// <summary>
+    /// Reads the foreign key off the owning object. Null means the reference is simply not set, which
+    /// resolves the whole rest of the path to null -- an employee with no nationality is ordinary data, not
+    /// an error.
+    /// </summary>
+    public Func<object, int?> ForeignKeyGetter { get; }
+
+    public IReadOnlyList<RuleFieldDescriptor> Fields { get; }
+
+    public IReadOnlyList<RuleNavigationDescriptor> Navigations { get; }
+}
+
+/// <summary>A dotted path resolved against the whitelist: references to follow, then the field to read.</summary>
+public class RuleResolvedField
+{
+    public RuleResolvedField(IReadOnlyList<RuleNavigationDescriptor> navigations, RuleFieldDescriptor field)
+    {
+        Navigations = navigations ?? Array.Empty<RuleNavigationDescriptor>();
+        Field = field;
+    }
+
+    public IReadOnlyList<RuleNavigationDescriptor> Navigations { get; }
+
+    public RuleFieldDescriptor Field { get; }
+
+    /// <summary>
+    /// True when the field sits directly on the parameter. Only direct fields may be ASSIGNED: writing
+    /// through a reference would mean saving a second entity as a side effect of saving the first, which is
+    /// well outside what a rule should be able to do.
+    /// </summary>
+    public bool IsDirect => Navigations.Count == 0;
 }
 
 /// <summary>

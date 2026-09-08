@@ -706,7 +706,7 @@ export const appRoutes: Routes = [
                             import('./admin/org-charts/org-charts.component').then((m) => m.OrgChartsComponent),
                         children: [
                             {
-                                path: 'company',
+                                path: 'organization',
                                 loadComponent: () =>
                                     import(
                                         './admin/organization-management/company-structure-chart/company-structure-chart.component'
@@ -734,7 +734,12 @@ export const appRoutes: Routes = [
                     // Kept so existing bookmarks and any stored Quick Nav rows still land somewhere real.
                     {
                         path: 'company-structure-chart',
-                        redirectTo: 'org-charts/company',
+                        redirectTo: 'org-charts/organization',
+                        pathMatch: 'full',
+                    },
+                    {
+                        path: 'org-charts/company',
+                        redirectTo: 'org-charts/organization',
                         pathMatch: 'full',
                     },
                     simpleLookupRoute('time-types', 'TimeTypes', 'TimeTypes', TimeTypesServiceProxy, 'TimeManagement'),

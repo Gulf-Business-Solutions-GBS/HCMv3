@@ -59,7 +59,10 @@ public class RuleBaseObjectBuilder<TEntity> where TEntity : class
             displayNameKey,
             typeof(TParameter),
             isWritable,
-            builder.Build()));
+            builder.Build())
+        {
+            Navigations = builder.BuildNavigations()
+        });
 
         return this;
     }
@@ -92,6 +95,7 @@ public class RuleBaseObjectBuilder<TEntity> where TEntity : class
 public class RuleParameterBuilder<TParameter> where TParameter : class
 {
     private readonly List<RuleFieldDescriptor> _fields = new();
+    private readonly List<RuleNavigationDescriptor> _navigations = new();
 
     /// <summary>Exposes a field a rule may read but not change.</summary>
     public RuleParameterBuilder<TParameter> Read<TValue>(
@@ -138,6 +142,43 @@ public class RuleParameterBuilder<TParameter> where TParameter : class
         return this;
     }
 
+    /// <summary>
+    /// Declares a reference a rule may follow, so an author can write
+    /// <c>Leave.Employee.Nationality.NameEn</c> instead of memorising a nationality id.
+    ///
+    /// <para>
+    /// <paramref name="foreignKey"/> is how the target is FOUND -- the engine loads it rather than reading a
+    /// navigation property, because lazy loading is off in this solution and an unloaded navigation would
+    /// read as empty and quietly make the condition false. See <see cref="RuleNavigationDescriptor"/>.
+    /// </para>
+    ///
+    /// <para>
+    /// Each reference costs one keyed lookup the first time a rule touches it, memoised for the rest of that
+    /// execution. That is cheap, but it is not free: declare references that rules genuinely need, not the
+    /// whole schema.
+    /// </para>
+    /// </summary>
+    public RuleParameterBuilder<TParameter> Navigate<TTarget>(
+        string name,
+        string displayNameKey,
+        Func<TParameter, int?> foreignKey,
+        Action<RuleParameterBuilder<TTarget>> configure)
+        where TTarget : class
+    {
+        var builder = new RuleParameterBuilder<TTarget>();
+        configure(builder);
+
+        _navigations.Add(new RuleNavigationDescriptor(
+            name,
+            displayNameKey,
+            typeof(TTarget),
+            owner => foreignKey((TParameter)owner),
+            builder.Build(),
+            builder.BuildNavigations()));
+
+        return this;
+    }
+
     internal IReadOnlyList<RuleFieldDescriptor> Build()
     {
         var duplicate = _fields
@@ -152,5 +193,35 @@ public class RuleParameterBuilder<TParameter> where TParameter : class
         }
 
         return _fields;
+    }
+
+    internal IReadOnlyList<RuleNavigationDescriptor> BuildNavigations()
+    {
+        var clash = _navigations
+            .Select(n => n.Name)
+            .Intersect(_fields.Select(f => f.Name), StringComparer.OrdinalIgnoreCase)
+            .FirstOrDefault();
+
+        if (clash != null)
+        {
+            // "Employee" as both a field and a reference would make Leave.Employee ambiguous, and which one
+            // won would depend on resolution order. Refuse rather than pick.
+            throw new InvalidOperationException(
+                "'" + clash + "' is declared as both a field and a reference on parameter type "
+                + typeof(TParameter).Name + ".");
+        }
+
+        var duplicate = _navigations
+            .GroupBy(n => n.Name, StringComparer.OrdinalIgnoreCase)
+            .FirstOrDefault(g => g.Count() > 1);
+
+        if (duplicate != null)
+        {
+            throw new InvalidOperationException(
+                "The reference '" + duplicate.Key + "' is declared more than once on parameter type "
+                + typeof(TParameter).Name + ".");
+        }
+
+        return _navigations;
     }
 }

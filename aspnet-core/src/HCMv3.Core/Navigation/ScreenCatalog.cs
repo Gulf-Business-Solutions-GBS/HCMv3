@@ -67,6 +67,10 @@ public static class ScreenCatalog
         new("app.admin.ui-customization", "SAD019", "Administration", "VisualSettings", "/app/admin/ui-customization", "Pages.Administration.UiCustomization"),
         new("app.admin.users", "SAD020", "Administration", "Users", "/app/admin/users", "Pages.Administration.Users"),
         new("app.admin.webhook-subscriptions", "SAD021", "Administration", "WebhookSubscriptions", "/app/admin/webhook-subscriptions", "Pages.Administration.WebhookSubscription"),
+        // Its own module rather than Workflow: rules derive employee fields and validate leave as well as
+        // choosing approval chains, and the permission tree is rooted at Pages.BusinessRules, outside
+        // Pages.Workflow. SBR is a fresh prefix with room for the assignment and execution-log screens.
+        new("app.admin.business-rules", "SBR001", "BusinessRules", "ConfigureBusinessRules", "/app/admin/business-rules", "Pages.BusinessRules"),
         new("app.admin.company-insurance-details", "SBN001", "BenefitsManagement", "CompanyInsuranceDetails", "/app/admin/company-insurance-details", "Pages.BenefitsManagement.CompanyInsuranceDetails"),
         new("app.admin.employee-insurance-details", "SBN002", "BenefitsManagement", "EmployeeInsuranceDetails", "/app/admin/employee-insurance-details", "Pages.BenefitsManagement.EmployeeInsuranceDetails"),
         new("app.admin.insurance-plans", "SBN003", "BenefitsManagement", "InsurancePlans", "/app/admin/insurance-plans", "Pages.BenefitsManagement.InsurancePlans"),
@@ -204,7 +208,7 @@ public static class ScreenCatalog
         new("app.admin.manpower-plannings", "SMP002", "ManpowerPlanningManagement", "ManpowerPlannings", "/app/admin/manpower-plannings", "Pages.ManpowerPlanningManagement.ManpowerPlannings"),
         new("app.admin.position-relationships", "SMP003", "ManpowerPlanningManagement", "PositionRelationships", "/app/admin/position-relationships", "Pages.ManpowerPlanningManagement.PositionRelationships"),
         new("app.admin.positions", "SMP004", "ManpowerPlanningManagement", "Positions", "/app/admin/positions", "Pages.ManpowerPlanningManagement.Positions"),
-        new("app.admin.position-org-chart", "SMP005", "ManpowerPlanningManagement", "PositionOrgChart", "/app/admin/org-charts/position", "Pages.ManpowerPlanningManagement.PositionOrgChart"),
+        new("app.admin.position-org-chart", "SMP005", "ManpowerPlanningManagement", "PositionChart", "/app/admin/org-charts/position", "Pages.ManpowerPlanningManagement.PositionOrgChart"),
         new("app.admin.cost-center-groups", "SOM001", "OrganizationManagement", "CostCenterGroups", "/app/admin/cost-center-groups", "Pages.OrganizationManagement.CostCenterGroups"),
         new("app.admin.cost-centers", "SOM002", "OrganizationManagement", "CostCenters", "/app/admin/cost-centers", "Pages.OrganizationManagement.CostCenters"),
         new("app.admin.cost-element-types", "SOM003", "OrganizationManagement", "CostElementTypes", "/app/admin/cost-element-types", "Pages.OrganizationManagement.CostElementTypes"),
@@ -214,7 +218,7 @@ public static class ScreenCatalog
         new("app.admin.organization-bank-infos", "SOM007", "OrganizationManagement", "OrganizationBankInfo", "/app/admin/organization-bank-infos", "Pages.OrganizationManagement.OrganizationBankInfos"),
         new("app.admin.organization-unit-types", "SOM008", "OrganizationManagement", "OrganizationUnitTypes", "/app/admin/organization-unit-types", "Pages.OrganizationManagement.OrganizationUnitTypes"),
         new("app.admin.work-locations", "SOM009", "OrganizationManagement", "WorkLocations", "/app/admin/work-locations", "Pages.OrganizationManagement.WorkLocations"),
-        new("app.admin.company-structure-chart", "SOM010", "OrganizationManagement", "CompanyStructureOverview", "/app/admin/org-charts/company", "Pages.OrganizationManagement.CompanyStructureChart"),
+        new("app.admin.company-structure-chart", "SOM010", "OrganizationManagement", "OrganizationChart", "/app/admin/org-charts/organization", "Pages.OrganizationManagement.CompanyStructureChart"),
         new("app.admin.employee-basic-pay-details", "SPA001", "PersonnelAdministration", "EmployeeBasicPayDetails", "/app/admin/employee-basic-pay-details", "Pages.PersonnelAdministration.EmployeeBasicPayDetails"),
         new("app.admin.employee-dependant-exceptions", "SPA002", "PersonnelAdministration", "EmployeeDependantExceptions", "/app/admin/employee-dependant-exceptions", "Pages.PersonnelAdministration.EmployeeDependantExceptions"),
         new("app.admin.employee-fund-details", "SPA003", "PersonnelAdministration", "EmployeeFundDetails", "/app/admin/employee-fund-details", "Pages.PersonnelAdministration.EmployeeFundDetails"),
@@ -224,7 +228,7 @@ public static class ScreenCatalog
         new("app.admin.announcements", "SPA009", "PersonnelAdministration", "Announcements", "/app/admin/announcements", "Pages.PersonnelAdministration.News"),
         new("app.admin.employees", "SPA007", "PersonnelAdministration", "Employees", "/app/admin/employees", "Pages.PersonnelAdministration.Employees"),
         new("app.admin.loan-installments", "SPA008", "PersonnelAdministration", "LoanInstallments", "/app/admin/loan-installments", "Pages.PersonnelAdministration.LoanInstallments"),
-        new("app.admin.employee-org-chart", "SPA010", "PersonnelAdministration", "EmployeeOrgChart", "/app/admin/org-charts/employee", "Pages.PersonnelAdministration.EmployeeOrgChart"),
+        new("app.admin.employee-org-chart", "SPA010", "PersonnelAdministration", "EmployeeChart", "/app/admin/org-charts/employee", "Pages.PersonnelAdministration.EmployeeOrgChart"),
         new("app.admin.employee-project-details", "SPJ001", "ProjectManagement", "EmployeeProjectDetails", "/app/admin/employee-project-details", "Pages.ProjectManagement.EmployeeProjectDetails"),
         new("app.admin.employee-projects", "SPJ002", "ProjectManagement", "EmployeeProjects", "/app/admin/employee-projects", "Pages.ProjectManagement.EmployeeProjects"),
         new("app.admin.project-cost-engine", "SPJ003", "ProjectManagement", "ProjectCostEngine", "/app/admin/project-cost-engine", "Pages.ProjectManagement.ProjectCostEngine"),

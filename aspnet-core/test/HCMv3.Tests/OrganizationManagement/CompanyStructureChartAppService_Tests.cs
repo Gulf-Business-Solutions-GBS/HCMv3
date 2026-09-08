@@ -12,9 +12,10 @@ using Xunit;
 namespace HCMv3.Tests.OrganizationManagement;
 
 /// <summary>
-/// Covers the Company Structure Overview chart feed. The interesting behaviour is all in the headcount
-/// roll-up: the direct figure counts only assignments naming a unit exactly, while the total figure rolls
-/// up every descendant -- both resolved as of a caller-supplied date rather than "now".
+/// Covers the Organization Chart feed. The interesting behaviour is all in the headcount roll-up: the
+/// direct figure counts only assignments naming a unit exactly, while the total figure rolls up every
+/// descendant. Both read each employee's LATEST assignment -- there is no as-of date, so a lapsed row
+/// still counts and a move is reflected in the new unit only.
 /// </summary>
 public class CompanyStructureChartAppService_Tests : AppTestBase
 {
@@ -45,10 +46,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
             expectedRootName = firstRoot.DisplayName;
         });
 
-        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
-        {
-            AsOfDate = new DateTime(2026, 6, 1)
-        });
+        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput());
 
         result.Focus.ShouldNotBeNull();
         result.Focus.Id.ShouldBe(expectedRootId);
@@ -64,8 +62,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
         result.Children.Select(x => x.NameEn).ShouldBe(new[] { "Consumer Goods", "Human Resources" });
@@ -87,8 +84,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
         // Only the employee assigned to the legal entity itself -- the one in Consumer Goods is a
@@ -108,8 +104,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
         // Legal entity (1) + Consumer Goods (1) + E-Commerce, which is a grandchild under Consumer Goods (1).
@@ -122,37 +117,58 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Exclude_Assignments_That_Do_Not_Span_The_As_Of_Date()
+    public async Task Should_Count_Employees_Whose_Only_Assignment_Has_Lapsed()
     {
         var tree = CreateTwoLevelTree();
-        AssignEmployeeToUnit("EMP-LEAVER", tree.ConsumerGoodsId, new DateTime(2020, 1, 1), new DateTime(2024, 12, 31));
-        AssignEmployeeToUnit("EMP-JOINER", tree.ConsumerGoodsId, new DateTime(2027, 1, 1), new DateTime(2099, 12, 31));
+        AssignEmployeeToUnit("EMP-LAPSED", tree.ConsumerGoodsId, new DateTime(2020, 1, 1), new DateTime(2024, 12, 31));
+        AssignEmployeeToUnit("EMP-FUTURE", tree.ConsumerGoodsId, new DateTime(2027, 1, 1), new DateTime(2099, 12, 31));
         AssignEmployeeToUnit("EMP-CURRENT", tree.ConsumerGoodsId, new DateTime(2020, 1, 1), new DateTime(2099, 12, 31));
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
-        result.Children.Single(x => x.NameEn == "Consumer Goods").DirectEmployeeCount.ShouldBe(1);
+        // All three, because each has exactly one assignment and it is therefore their latest. Date ranges
+        // no longer gate the count -- a tenant whose rows were loaded once and never re-dated would
+        // otherwise see an empty chart.
+        result.Children.Single(x => x.NameEn == "Consumer Goods").DirectEmployeeCount.ShouldBe(3);
     }
 
     [Fact]
-    public async Task Should_Count_An_Employee_Once_Per_Unit_Despite_Overlapping_Assignments()
+    public async Task Should_Count_An_Employee_In_Their_Latest_Unit_Only()
+    {
+        var tree = CreateTwoLevelTree();
+        var mover = CreateEmployee("EMP-MOVED");
+
+        // Moved from Human Resources to Consumer Goods. The newer row wins, and the older one must not
+        // leave them counted in both units.
+        AddOrgAssignment(mover.Id, tree.HumanResourcesId, new DateTime(2020, 1, 1), new DateTime(2024, 12, 31));
+        AddOrgAssignment(mover.Id, tree.ConsumerGoodsId, new DateTime(2025, 1, 1), new DateTime(2099, 12, 31));
+
+        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
+        {
+            OrganizationUnitId = tree.LegalEntityId
+        });
+
+        result.Children.Single(x => x.NameEn == "Consumer Goods").DirectEmployeeCount.ShouldBe(1);
+        result.Children.Single(x => x.NameEn == "Human Resources").DirectEmployeeCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Should_Count_An_Employee_Once_Despite_Duplicate_Assignments()
     {
         var tree = CreateTwoLevelTree();
         var employee = CreateEmployee("EMP-DUP");
 
-        // Two rows naming the same unit and both spanning the as-of date -- a data condition the
-        // EndDate-chaining is meant to prevent, but the count must not double up if it slips through.
+        // Two rows naming the same unit -- a data condition the EndDate-chaining is meant to prevent, but
+        // the count must not double up if it slips through.
         AddOrgAssignment(employee.Id, tree.ConsumerGoodsId, new DateTime(2020, 1, 1), new DateTime(2099, 12, 31));
         AddOrgAssignment(employee.Id, tree.ConsumerGoodsId, new DateTime(2021, 1, 1), new DateTime(2099, 12, 31));
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
         result.Children.Single(x => x.NameEn == "Consumer Goods").DirectEmployeeCount.ShouldBe(1);
@@ -165,8 +181,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.LegalEntityId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.LegalEntityId
         });
 
         result.Focus.ChildUnitCount.ShouldBe(2);
@@ -181,23 +196,12 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
 
         var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
         {
-            OrganizationUnitId = tree.ECommerceId,
-            AsOfDate = new DateTime(2026, 6, 1)
+            OrganizationUnitId = tree.ECommerceId
         });
 
         result.Focus.Id.ShouldBe(tree.ECommerceId);
         result.Ancestors.Select(x => x.NameEn).ShouldBe(new[] { "Legal Entity", "Consumer Goods" });
         result.Children.ShouldBeEmpty();
-    }
-
-    [Fact]
-    public async Task Should_Default_As_Of_Date_To_Today_When_Not_Supplied()
-    {
-        CreateTwoLevelTree();
-
-        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput());
-
-        result.AsOfDate.ShouldBe(Abp.Timing.Clock.Now.Date);
     }
 
     [Fact]
@@ -217,10 +221,7 @@ public class CompanyStructureChartAppService_Tests : AppTestBase
             }
         });
 
-        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput
-        {
-            AsOfDate = new DateTime(2026, 6, 1)
-        });
+        var result = await _companyStructureChartAppService.GetNode(new GetCompanyStructureNodeInput());
 
         result.Focus.ShouldBeNull();
         result.Children.ShouldBeEmpty();

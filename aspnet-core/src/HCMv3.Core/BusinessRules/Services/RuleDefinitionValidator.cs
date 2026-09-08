@@ -154,13 +154,20 @@ public class RuleDefinitionValidator : IRuleDefinitionValidator, ITransientDepen
             return;
         }
 
-        var field = parameter.FindField(set.Field);
+        var resolved = parameter.ResolvePath(set.Field);
 
-        if (field == null)
+        if (resolved == null)
         {
             errors.Add("'" + set.Parameter + "." + set.Field + "' does not exist.");
         }
-        else if (!parameter.IsWritable || !field.IsWritable)
+        else if (!resolved.IsDirect)
+        {
+            // Caught here so the author is told at the authoring screen, not when the rule first fires.
+            errors.Add(
+                "'" + set.Parameter + "." + set.Field
+                + "' belongs to a related record. Rules may read related records but not change them.");
+        }
+        else if (!parameter.IsWritable || !resolved.Field.IsWritable)
         {
             errors.Add("'" + set.Parameter + "." + set.Field + "' is read-only and cannot be assigned.");
         }
@@ -190,7 +197,7 @@ public class RuleDefinitionValidator : IRuleDefinitionValidator, ITransientDepen
                 {
                     errors.Add("'" + field.Parameter + "' is not a parameter of base object '" + baseObject.Code + "'.");
                 }
-                else if (parameter.FindField(field.Field) == null)
+                else if (parameter.ResolvePath(field.Field) == null)
                 {
                     errors.Add("'" + field + "' does not exist.");
                 }

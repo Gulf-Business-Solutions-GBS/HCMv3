@@ -35,6 +35,7 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
     private readonly IRuleDefinitionValidator _validator;
     private readonly IRepository<BusinessRuleExecutionLog, long> _logRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IRuleEntityLoader _entityLoader;
 
     public BusinessRuleRunner(
         IBusinessRuleCache cache,
@@ -42,7 +43,8 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         IRuleBaseObjectRegistry baseObjectRegistry,
         IRuleDefinitionValidator validator,
         IRepository<BusinessRuleExecutionLog, long> logRepository,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IRuleEntityLoader entityLoader)
     {
         _cache = cache;
         _evaluator = evaluator;
@@ -50,6 +52,7 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         _validator = validator;
         _logRepository = logRepository;
         _unitOfWorkManager = unitOfWorkManager;
+        _entityLoader = entityLoader;
     }
 
     public async Task<BusinessRuleRunResult> RunAsync(RuleExecutionContext context, int? targetEntityId = null)
@@ -58,6 +61,10 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         {
             throw new ArgumentNullException(nameof(context));
         }
+
+        // Supplied here rather than by every caller: following a declared reference is the engine's job,
+        // and a caller that forgot to wire it would get rules silently reading empty related records.
+        context.EntityLoader ??= _entityLoader;
 
         var result = new BusinessRuleRunResult();
 
@@ -96,6 +103,8 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         RulePurpose purpose,
         RuleExecutionContext context)
     {
+        context.EntityLoader ??= _entityLoader;
+
         var result = new BusinessRuleRunResult();
         var baseObject = _baseObjectRegistry.Find(baseObjectCode);
 

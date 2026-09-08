@@ -18,6 +18,7 @@ import { DefaultBrandComponent } from './default-brand.component';
 import { SideBarMenuComponent } from '../../nav/side-bar-menu.component';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../footer.component';
+import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 
 @Component({
     templateUrl: './default-layout.component.html',
@@ -38,6 +39,7 @@ import { FooterComponent } from '../../footer.component';
         SideBarMenuComponent,
         RouterOutlet,
         FooterComponent,
+        LocalizePipe,
     ],
 })
 export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements OnInit {
@@ -51,5 +53,14 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         if (this.currentTheme.baseSettings.menu.defaultMinimizedAside) {
             this.document.body.setAttribute('data-kt-aside-minimize', 'on');
         }
+    }
+
+    /**
+     * Closes the mobile sidebar drawer by clicking the header toggle that owns it, rather than reaching
+     * into Metronic's drawer API -- the toggle already carries the open/close behaviour, so routing through
+     * it keeps one source of truth and cannot fall out of step with the data-kt-drawer wiring.
+     */
+    closeMobileSidebar(): void {
+        this.document.getElementById('kt_app_sidebar_mobile_toggle')?.click();
     }
 }

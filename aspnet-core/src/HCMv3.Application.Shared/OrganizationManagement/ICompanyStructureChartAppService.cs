@@ -14,7 +14,7 @@ public interface ICompanyStructureChartAppService : IApplicationService
 {
     /// <summary>
     /// Returns one focus node, its immediate children and its breadcrumb trail, with all headcounts
-    /// resolved as of <c>GetCompanyStructureNodeInput.AsOfDate</c>.
+    /// counted from each employee's latest org assignment.
     /// </summary>
     Task<CompanyStructureNodeDto> GetNode(GetCompanyStructureNodeInput input);
 

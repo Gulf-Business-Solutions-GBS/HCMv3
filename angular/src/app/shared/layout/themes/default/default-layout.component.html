@@ -99,6 +99,19 @@
                     <!--begin::Logo image-->
                     <default-brand />
                     <!--end::Logo image-->
+                    <!--begin::Mobile close-->
+                    <!--
+                      On a phone the drawer covers the hamburger that opened it, leaving the overlay strip
+                      beside the menu as the only way back. This gives the drawer its own close control.
+                      Below lg only: on desktop the sidebar is not a drawer and there is nothing to close.
+                    -->
+                    <div
+                        class="btn btn-icon btn-active-color-primary w-30px h-30px ms-auto d-lg-none"
+                        [title]="'Close' | localize"
+                        (click)="closeMobileSidebar()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                    <!--end::Mobile close-->
                     <!--begin::Sidebar toggle-->
                     @if (appSession.theme.baseSettings.menu.allowAsideMinimizing) {
                         <div

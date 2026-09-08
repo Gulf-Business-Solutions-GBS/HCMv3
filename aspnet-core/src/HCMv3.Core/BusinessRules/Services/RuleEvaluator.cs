@@ -114,10 +114,23 @@ public class RuleEvaluator : IRuleEvaluator, ITransientDependency
                             "The rule assigns to '" + set.Parameter + "', which base object '"
                             + context.BaseObject.Code + "' does not expose.");
 
-        var field = parameter.FindField(set.Field)
-                    ?? throw new RuleExecutionException(
-                        ruleCode,
-                        "The rule assigns to '" + set.Parameter + "." + set.Field + "', which does not exist.");
+        var resolved = parameter.ResolvePath(set.Field)
+                       ?? throw new RuleExecutionException(
+                           ruleCode,
+                           "The rule assigns to '" + set.Parameter + "." + set.Field + "', which does not exist.");
+
+        // Reading through a reference is fine; writing through one is not. It would mean saving a second
+        // entity as a side effect of saving the first -- a whole extra row changed by a rule that appears
+        // to be editing this one.
+        if (!resolved.IsDirect)
+        {
+            throw new RuleExecutionException(
+                ruleCode,
+                "The rule assigns to '" + set.Parameter + "." + set.Field
+                + "', which belongs to a related record. Rules may read related records but not change them.");
+        }
+
+        var field = resolved.Field;
 
         // Both gates must open. A field may be writable in principle and still be unreachable through a
         // read-only parameter -- that is what keeps an "original record" companion parameter read-only even
@@ -255,10 +268,12 @@ public class RuleEvaluator : IRuleEvaluator, ITransientDependency
                             "The rule reads '" + expression.Parameter + "', which base object '"
                             + context.BaseObject.Code + "' does not expose.");
 
-        var field = parameter.FindField(expression.Field)
-                    ?? throw new RuleExecutionException(
-                        context.CurrentRuleCode,
-                        "The rule reads '" + expression + "', which does not exist.");
+        // Resolves the whole dotted path, so "Employee.Nationality.NameEn" is followed reference by
+        // reference. A one-segment path resolves with no references and behaves exactly as it always did.
+        var resolved = parameter.ResolvePath(expression.Field)
+                       ?? throw new RuleExecutionException(
+                           context.CurrentRuleCode,
+                           "The rule reads '" + expression + "', which does not exist.");
 
         var target = context.GetParameter(expression.Parameter);
 
@@ -269,7 +284,16 @@ public class RuleEvaluator : IRuleEvaluator, ITransientDependency
             return null;
         }
 
-        return RuleValueConverter.Normalize(field.Getter(target));
+        var owner = context.ResolveOwner(resolved, target);
+
+        // An unset reference anywhere along the path reads as empty, for the same reason a null parameter
+        // does: an employee with no nationality is data, not a fault.
+        if (owner == null)
+        {
+            return null;
+        }
+
+        return RuleValueConverter.Normalize(resolved.Field.Getter(owner));
     }
 
     private object EvaluateFunction(RuleFunctionExpression expression, RuleExecutionContext context)

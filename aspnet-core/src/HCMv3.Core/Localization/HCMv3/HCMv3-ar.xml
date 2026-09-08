@@ -1717,7 +1717,7 @@
     <text name="TreeCode">رمز الشجرة</text>
     <text name="OrganizationUnitMaxDepthExceeded">لا يمكن أن يتجاوز التسلسل الهرمي لوحدات الشركة {0} مستويات.</text>
     <!-- Org charts (Company Structure Overview, Employee Org Chart, Position Org Chart) -->
-    <text name="CompanyStructureOverview">نظرة عامة على هيكل الشركة</text>
+    <text name="OrganizationChart">المخطط التنظيمي</text>
     <text name="CompanyStructure">هيكل الشركة</text>
     <text name="AsOf">كما في تاريخ</text>
     <text name="DirectEmployees">الموظفون في هذه الوحدة</text>
@@ -1732,7 +1732,7 @@
     <text name="ExportAsImage">تصدير كصورة</text>
     <text name="OrgChartExportFailed">تعذر تصدير المخطط كصورة.</text>
     <!-- Employee Org Chart (shares the org-chart renderer with Company Structure Overview) -->
-    <text name="EmployeeOrgChart">الهيكل التنظيمي للموظفين</text>
+    <text name="EmployeeChart">مخطط الموظفين</text>
     <text name="DirectReports">المرؤوسون المباشرون</text>
     <text name="TotalReports">إجمالي المرؤوسين بكل المستويات</text>
     <text name="ViewEmployeeRecord">عرض ملف الموظف</text>
@@ -1740,7 +1740,7 @@
     <text name="GoToManager">الانتقال إلى المدير</text>
     <text name="GoToReports">الانتقال إلى المرؤوسين</text>
     <!-- Position Org Chart -->
-    <text name="PositionOrgChart">الهيكل التنظيمي للوظائف</text>
+    <text name="PositionChart">مخطط الوظائف</text>
     <text name="ParentPosition">ترفع تقاريرها إلى وظيفة</text>
     <text name="DirectPositions">الوظائف التابعة مباشرة</text>
     <text name="TotalPositions">الوظائف الأدنى بكل المستويات</text>
@@ -5871,5 +5871,18 @@
     <text name="RuleOperatorAnd">و</text>
     <text name="RuleOperatorOr">أو</text>
     <text name="MaternityLeaveIsNotAvailableForMaleEmployees">لا يمكن طلب إجازة وضع لموظف ذكر.</text>
+    <text name="RuleEditorFormula">صيغة</text>
+    <text name="RuleEditorVisual">مرئي</text>
+    <text name="FormulaIsRequired">الرجاء إدخال صيغة.</text>
+    <text name="FormulaHasErrors">توجد أخطاء في بعض الصيغ</text>
+    <text name="FixTheFormulaErrorsFirst">الرجاء تصحيح الصيغ المحددة بالأحمر قبل الحفظ.</text>
+    <text name="AtPosition">(عند الحرف {0})</text>
+    <text name="FormulaEditorHint">اكتب اسم حقل أو دالة لعرض الاقتراحات، أو اضغط Ctrl+Space. مثال: ‎Employee.JoiningDate &gt; #2026-01-01#</text>
+    <text name="FormulaConditionPlaceholder">مثال: ‎Applier.JobTitleCode = "CHRO" AND Applier.IsManager = true</text>
+    <text name="FormulaValuePlaceholder">مثال: ‎AddCalendarDays(Employee.JoiningDate, 100)</text>
+    <text name="RuleVariable">متغير</text>
+    <text name="ReadOnly">للقراءة فقط</text>
+    <text name="RuleRelatedRecord">سجل مرتبط</text>
+    <text name="ConfigureBusinessRules">إعداد قواعد العمل</text>
   </texts>
 </localizationDictionary>

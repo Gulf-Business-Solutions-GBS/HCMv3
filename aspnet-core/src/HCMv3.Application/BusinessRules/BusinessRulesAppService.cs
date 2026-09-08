@@ -324,7 +324,8 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
                         // evaluator would refuse.
                         IsWritable = p.IsWritable && f.IsWritable,
                         LookupSource = f.LookupSource
-                    }).ToList()
+                    }).ToList(),
+                    Navigations = p.Navigations.Select(ToDto).ToList()
                 }).ToList()
             }).ToList(),
 
@@ -588,6 +589,38 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
         }
 
         return instance;
+    }
+
+    /// <summary>
+    /// Maps a declared reference and everything under it.
+    ///
+    /// <para>
+    /// Recursive, and safe to be: the descriptor tree is built from code at startup, so its depth is fixed
+    /// by what developers declared and cannot be driven by input.
+    /// </para>
+    ///
+    /// <para>
+    /// Fields reached through a reference are reported as NOT writable regardless of how they were declared,
+    /// because the evaluator refuses to write through one. Saying otherwise here would put targets in the
+    /// builder's list that fail the moment the rule runs.
+    /// </para>
+    /// </summary>
+    private RuleNavigationMetadataDto ToDto(RuleNavigationDescriptor navigation)
+    {
+        return new RuleNavigationMetadataDto
+        {
+            Name = navigation.Name,
+            DisplayName = L(navigation.DisplayNameKey),
+            Fields = navigation.Fields.Select(f => new RuleFieldMetadataDto
+            {
+                Name = f.Name,
+                DisplayName = L(f.DisplayNameKey),
+                DataType = f.DataType,
+                IsWritable = false,
+                LookupSource = f.LookupSource
+            }).ToList(),
+            Navigations = navigation.Navigations.Select(ToDto).ToList()
+        };
     }
 
     private static RuleDefinition ParseOrThrow(string definitionJson)

@@ -404,7 +404,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
         // OrgUnits so that viewing the structure does not require rights to administer it.
-        organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CompanyStructureChart, L("CompanyStructureOverview"));
+        organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_CompanyStructureChart, L("OrganizationChart"));
 
         var organizationBankInfos = organizationManagement.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos, L("OrganizationBankInfos"));
         organizationBankInfos.CreateChildPermission(AppPermissions.Pages_OrganizationManagement_OrganizationBankInfos_Create, L("CreateNewItem"));
@@ -428,7 +428,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
         // EmployeeManagers so that seeing the reporting structure does not require rights to change it.
-        personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgChart, L("EmployeeOrgChart"));
+        personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeOrgChart, L("EmployeeChart"));
 
         var employeeDates = personnelAdministration.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates, L("EmployeeDates"));
         employeeDates.CreateChildPermission(AppPermissions.Pages_PersonnelAdministration_EmployeeDates_Create, L("CreateNewItem"));
@@ -1864,7 +1864,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
 
         // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
         // Positions so that viewing the structure does not require rights to re-parent it.
-        manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionOrgChart, L("PositionOrgChart"));
+        manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionOrgChart, L("PositionChart"));
 
         var positionRelationships = manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionRelationships, L("PositionRelationships"));
         positionRelationships.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionRelationships_Create, L("CreateNewItem"));

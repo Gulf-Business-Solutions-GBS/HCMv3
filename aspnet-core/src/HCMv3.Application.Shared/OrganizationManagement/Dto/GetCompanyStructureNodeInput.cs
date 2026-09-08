@@ -10,9 +10,4 @@ public class GetCompanyStructureNodeInput
     /// </summary>
     public long? OrganizationUnitId { get; set; }
 
-    /// <summary>
-    /// The "As Of" date driving every headcount on the returned cards. Null means today. Time-of-day is
-    /// ignored -- the service takes <c>.Date</c>, since org assignments are whole-day ranges.
-    /// </summary>
-    public DateTime? AsOfDate { get; set; }
 }

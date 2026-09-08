@@ -47,8 +47,8 @@
 }
 
 .org-chart-explorer__focus {
-    width: 320px;
-    max-width: 100%;
+    /* Capped at the frame so a narrow phone gets a full-width card rather than horizontal overflow. */
+    width: min(320px, 100%);
 }
 
 /* The vertical stem joining the focus card to the group of children below it. */
@@ -65,7 +65,8 @@
  */
 .org-chart-explorer__children {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    /* min() inside minmax so the track never demands more width than the screen actually has. */
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 320px));
     justify-content: center;
     gap: 16px;
     width: 100%;

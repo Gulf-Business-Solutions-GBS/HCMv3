@@ -7,7 +7,6 @@ using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.Organizations;
-using Abp.Timing;
 using HCMv3.Authorization;
 using HCMv3.OrganizationManagement.Dto;
 using HCMv3.PersonnelAdministration;
@@ -25,10 +24,14 @@ namespace HCMv3.OrganizationManagement;
 /// here is scoped to a single level, and the response size is bounded by one node's fan-out rather than by
 /// the size of the tenant's tree.
 ///
-/// HEADCOUNTS: cards show employees "as of" a date, sourced from <see cref="EmployeeOrgAssignment"/> --
-/// the date-bound row that names an employee's <c>OrganizationUnit</c>. Rather than one aggregate query
-/// per card, <see cref="GetNode"/> issues a single grouped query over the focus subtree and folds the
-/// direct/total figures out of it in memory (see <see cref="LoadSubtreeHeadcountsAsync"/>).
+/// HEADCOUNTS: cards show where employees sit NOW, from each employee's latest
+/// <see cref="EmployeeOrgAssignment"/> -- the row that names their <c>OrganizationUnit</c>. Rather than one
+/// aggregate query per card, <see cref="GetNode"/> reads the assignments once and folds the direct/total
+/// figures out of that single result in memory (see <see cref="LoadSubtreeHeadcountsAsync"/>).
+///
+/// NO DATE FILTER: an earlier version took an "as of" date and counted the assignments in force then. It
+/// was removed because the chart answers "who sits where now", and dating it zeroed every card as soon as
+/// the underlying rows had lapsed.
 ///
 /// Descendant and ancestor resolution both use Zero's own hierarchical dot-separated
 /// <c>OrganizationUnit.Code</c> (ancestor "00001.00002" is a string-prefix of descendant
@@ -66,14 +69,12 @@ public class CompanyStructureChartAppService : HCMv3AppServiceBase, ICompanyStru
     [HttpPost]
     public async Task<CompanyStructureNodeDto> GetNode(GetCompanyStructureNodeInput input)
     {
-        var asOfDate = (input.AsOfDate ?? Clock.Now).Date;
-
         var focusUnit = await ResolveFocusUnitAsync(input.OrganizationUnitId);
         if (focusUnit == null)
         {
             // Tenant has no organization units at all -- an empty result, not an error: the screen draws
             // its own "nothing configured yet" state rather than showing a failure.
-            return new CompanyStructureNodeDto { AsOfDate = asOfDate };
+            return new CompanyStructureNodeDto();
         }
 
         var childUnits = await _organizationUnitRepository.GetAll()
@@ -87,12 +88,11 @@ public class CompanyStructureChartAppService : HCMv3AppServiceBase, ICompanyStru
         var cardUnitIds = cardUnits.Select(x => x.Id).ToList();
         var profiles = await LoadProfilesAsync(cardUnitIds);
         var organizationUnitTypes = await _organizationUnitTypeRepository.GetAllListAsync();
-        var headcounts = await LoadSubtreeHeadcountsAsync(focusUnit.Code, asOfDate);
+        var headcounts = await LoadSubtreeHeadcountsAsync(focusUnit.Code);
         var childUnitCounts = await LoadChildUnitCountsAsync(cardUnitIds);
 
         return new CompanyStructureNodeDto
         {
-            AsOfDate = asOfDate,
             Focus = ToNodeDto(focusUnit, profiles, organizationUnitTypes, headcounts, childUnitCounts),
             Children = childUnits
                 .Select(x => ToNodeDto(x, profiles, organizationUnitTypes, headcounts, childUnitCounts))
@@ -206,34 +206,54 @@ public class CompanyStructureChartAppService : HCMv3AppServiceBase, ICompanyStru
     }
 
     /// <summary>
-    /// One grouped query covering the whole focus subtree, returning the as-of headcount per organization
-    /// unit tree code. The focus card and all of its child cards are then folded out of this single result
-    /// in memory -- both the direct figure (exact code match) and the total figure (code prefix match) --
-    /// instead of issuing two aggregate queries per card.
+    /// Headcount per organization unit tree code, from each employee's CURRENT org assignment. The focus
+    /// card and all of its child cards are folded out of this one result in memory -- the direct figure by
+    /// exact code match, the total by code prefix -- rather than two aggregate queries per card.
     ///
-    /// Employees are counted distinctly per unit, so an employee with two concurrent assignment rows
-    /// naming the same unit counts once. Across different units in the subtree they would count once per
-    /// unit in the rolled-up total, which is the intended reading of "headcount in this unit and below".
+    /// NOT FILTERED TO A DATE. An earlier version took an "as of" date and counted the assignments in force
+    /// then; that was dropped because the chart answers "who sits where now", and dating it zeroed every
+    /// card the moment the underlying rows had lapsed.
+    ///
+    /// The latest row per employee has to be picked before the subtree is narrowed, not after: an employee
+    /// whose newest assignment sits elsewhere in the company must not still be counted here on the strength
+    /// of an older one. That reduction cannot be expressed as a grouped query, so the assignments come back
+    /// projected to four columns -- a couple of thousand rows at this tenant's scale -- and are reduced
+    /// here. Ties on StartDate fall to the highest Id, the later-entered row.
     /// </summary>
-    private async Task<List<SubtreeHeadcount>> LoadSubtreeHeadcountsAsync(string focusTreeCode, DateTime asOfDate)
+    private async Task<List<SubtreeHeadcount>> LoadSubtreeHeadcountsAsync(string focusTreeCode)
     {
         var descendantPrefix = focusTreeCode + TreeCodeSeparator;
 
-        return await (from assignment in _employeeOrgAssignmentRepository.GetAll()
-                      // EmployeeOrgAssignment.OrganizationUnitId is nullable, OrganizationUnit.Id is not --
-                      // the cast keeps the join key types matched; null-keyed rows simply never match.
-                      join unit in _organizationUnitRepository.GetAll()
-                          on assignment.OrganizationUnitId equals (long?)unit.Id
-                      where assignment.StartDate <= asOfDate
-                            && assignment.EndDate >= asOfDate
-                            && (unit.Code == focusTreeCode || unit.Code.StartsWith(descendantPrefix))
-                      group assignment by unit.Code into grouped
-                      select new SubtreeHeadcount
-                      {
-                          TreeCode = grouped.Key,
-                          EmployeeCount = grouped.Select(x => x.EmployeeId).Distinct().Count()
-                      })
-                     .ToListAsync();
+        var assignments = await (from assignment in _employeeOrgAssignmentRepository.GetAll()
+                                 // EmployeeOrgAssignment.OrganizationUnitId is nullable, OrganizationUnit.Id
+                                 // is not -- the cast keeps the join key types matched; null-keyed rows
+                                 // simply never match.
+                                 join unit in _organizationUnitRepository.GetAll()
+                                     on assignment.OrganizationUnitId equals (long?)unit.Id
+                                 select new
+                                 {
+                                     assignment.EmployeeId,
+                                     assignment.Id,
+                                     assignment.StartDate,
+                                     UnitCode = unit.Code
+                                 })
+                                .ToListAsync();
+
+        return assignments
+            .GroupBy(x => x.EmployeeId)
+            .Select(group => group
+                .OrderByDescending(x => x.StartDate)
+                .ThenByDescending(x => x.Id)
+                .First())
+            .Where(x => x.UnitCode == focusTreeCode || x.UnitCode.StartsWith(descendantPrefix))
+            .GroupBy(x => x.UnitCode)
+            .Select(grouped => new SubtreeHeadcount
+            {
+                TreeCode = grouped.Key,
+                // One row per employee survives the reduction above, so this is already a headcount.
+                EmployeeCount = grouped.Count()
+            })
+            .ToList();
     }
 
     private async Task<Dictionary<long, int>> LoadChildUnitCountsAsync(List<long> parentIds)
