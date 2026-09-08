@@ -7,12 +7,12 @@
         <div class="card card-custom">
             <div class="card-body">
                 <div class="row align-items-end g-3 mb-4">
-                    <div class="col-xl-5 col-md-6">
+                    <div class="col-xl-8 col-md-12">
                         <label class="form-label">{{ 'Search' | localize }}</label>
                         <p-select
-                            [options]="searchResults()"
+                            [options]="searchOptions()"
                             optionValue="id"
-                            [ngModel]="null"
+                            [ngModel]="selectedNode()?.id ?? null"
                             (ngModelChange)="onSearchSelect($event)"
                             [filter]="true"
                             [resetFilterOnHide]="true"
@@ -20,6 +20,14 @@
                             (onShow)="searchNodes('')"
                             styleClass="w-100"
                             [placeholder]="'SearchWithThreeDot' | localize">
+                            <!--
+                              Both templates are required. Without #selectedItem PrimeNG has no label for
+                              the chosen option and renders the bound object itself, which reads as
+                              "[object Object]" in the closed box.
+                            -->
+                            <ng-template #selectedItem let-match>
+                                <span>{{ displayName(match) }}</span>
+                            </ng-template>
                             <ng-template #item let-match>
                                 <span>{{ displayName(match) }}</span>
                                 @if (match.jobTitleEn) {
@@ -29,20 +37,6 @@
                                 }
                             </ng-template>
                         </p-select>
-                    </div>
-
-                    <div class="col-xl-3 col-md-6">
-                        <label class="form-label">{{ 'AsOf' | localize }}</label>
-                        <p-datepicker
-                            inputId="AsOfDate"
-                            name="AsOfDate"
-                            datePickerLuxonModifier
-                            [date]="asOfDate()"
-                            (dateChange)="onAsOfDateChange($event)"
-                            [showIcon]="true"
-                            [iconDisplay]="'input'"
-                            appendTo="body"
-                            styleClass="w-100" />
                     </div>
 
                     <div class="col-xl-4 col-md-12">

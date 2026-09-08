@@ -6,7 +6,6 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
-using Abp.Timing;
 using HCMv3.Authorization;
 using HCMv3.OrganizationManagement;
 using HCMv3.PersonnelAdministration.Dto;
@@ -27,10 +26,15 @@ namespace HCMv3.PersonnelAdministration;
 /// no materialised path, so there is nothing to prefix-match on -- the trick that makes the descendant
 /// counts on the Company Structure chart a single grouped query does not transfer. Counting everyone below
 /// a person therefore needs a traversal. Rather than recurse in SQL (which would put raw queries in the
-/// application layer) or issue a query per level, this loads every reporting edge in force on the chart
-/// date -- two integers per employee, a few thousand rows at this tenant's scale -- and walks it in memory.
-/// If a tenant ever grows to where that is too much, the fix is a recursive CTE behind a repository method
-/// in the EntityFrameworkCore project, not a change here.
+/// application layer) or issue a query per level, this loads every current reporting edge -- two integers
+/// per employee, a few thousand rows at this tenant's scale -- and walks it in memory. If a tenant ever
+/// grows to where that is too much, the fix is a recursive CTE behind a repository method in the
+/// EntityFrameworkCore project, not a change here.
+///
+/// NO DATE FILTER: the chart always shows the present picture, taking each employee's latest reporting
+/// line and latest job title. An earlier version took an "as of" date; it was removed because the chart
+/// answers "who reports to whom now", and dating it silently emptied the whole chart whenever the
+/// underlying rows had lapsed.
 ///
 /// CYCLES: the data allows A to manage B while B manages A, and a cycle would otherwise hang both the
 /// chain walk and the descendant count. Every traversal below carries a visited set and stops.
@@ -63,15 +67,14 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     [HttpPost]
     public async Task<EmployeeOrgChartDto> GetNode(GetEmployeeOrgChartNodeInput input)
     {
-        var asOfDate = (input.AsOfDate ?? Clock.Now).Date;
-        var reportingLines = await LoadReportingLinesAsync(asOfDate);
+        var reportingLines = await LoadReportingLinesAsync();
 
         var focusEmployeeId = ResolveFocusEmployeeId(input.EmployeeId, reportingLines);
         if (focusEmployeeId == null)
         {
-            // Nobody has a reporting line on this date and the caller named nobody. An empty result, not
-            // an error: the screen draws its own "nothing set up yet" state.
-            return new EmployeeOrgChartDto { AsOfDate = asOfDate };
+            // Nobody has a reporting line at all and the caller named nobody. An empty result, not an
+            // error: the screen draws its own "nothing set up yet" state.
+            return new EmployeeOrgChartDto();
         }
 
         var managerChainIds = reportingLines.BuildManagerChain(focusEmployeeId.Value);
@@ -80,11 +83,10 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
         var cardIds = new List<int>(managerChainIds) { focusEmployeeId.Value };
         cardIds.AddRange(directReportIds);
 
-        var cards = await BuildCardsAsync(cardIds, asOfDate, reportingLines);
+        var cards = await BuildCardsAsync(cardIds, reportingLines);
 
         return new EmployeeOrgChartDto
         {
-            AsOfDate = asOfDate,
             Focus = cards.TryGetValue(focusEmployeeId.Value, out var focusCard) ? focusCard : null,
             ManagerChain = managerChainIds
                 .Where(cards.ContainsKey)
@@ -101,8 +103,6 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     [HttpPost]
     public async Task<List<EmployeeOrgChartNodeDto>> SearchNodes(SearchEmployeeOrgChartNodesInput input)
     {
-        var asOfDate = (input.AsOfDate ?? Clock.Now).Date;
-
         var maxResultCount = input.MaxResultCount <= 0
             ? SearchEmployeeOrgChartNodesInput.DefaultResultCount
             : Math.Min(input.MaxResultCount, SearchEmployeeOrgChartNodesInput.MaxAllowedResultCount);
@@ -127,8 +127,8 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
             return new List<EmployeeOrgChartNodeDto>();
         }
 
-        var reportingLines = await LoadReportingLinesAsync(asOfDate);
-        var cards = await BuildCardsAsync(matchedIds, asOfDate, reportingLines);
+        var reportingLines = await LoadReportingLinesAsync();
+        var cards = await BuildCardsAsync(matchedIds, reportingLines);
 
         return matchedIds
             .Where(cards.ContainsKey)
@@ -137,20 +137,33 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     }
 
     /// <summary>
-    /// Every employee-to-manager edge in force on the chart date, in one query, projected down to the two
-    /// integers the traversals need -- no entity materialisation, no photo blobs.
+    /// Each employee's CURRENT manager -- the latest reporting line on record, regardless of whether its
+    /// date range has ended.
+    ///
+    /// Deliberately not filtered to a date window. The chart used to take an "as of" date and show the
+    /// lines in force then; that was dropped because the chart is meant to answer "who reports to whom
+    /// now", and a date filter silently produces an empty chart whenever the rows have lapsed. Latest
+    /// wins: the row with the newest StartDate, breaking ties on the newest EndDate so a correction
+    /// entered against the same start date supersedes the row it replaces.
     /// </summary>
-    private async Task<ReportingLines> LoadReportingLinesAsync(DateTime asOfDate)
+    private async Task<ReportingLines> LoadReportingLinesAsync()
     {
         // Projected to an anonymous type and converted in memory rather than straight into ReportingEdge:
         // EF Core's translation of a projection into a user-defined struct is not something to rely on.
-        var edges = await _employeeManagerRepository.GetAll()
-            .Where(x => x.StartDate <= asOfDate && x.EndDate >= asOfDate)
-            .Select(x => new { x.EmployeeId, x.ManagerId })
+        var rows = await _employeeManagerRepository.GetAll()
+            .Select(x => new { x.EmployeeId, x.ManagerId, x.StartDate, x.EndDate })
             .ToListAsync();
 
-        return new ReportingLines(
-            edges.Select(x => new ReportingEdge { EmployeeId = x.EmployeeId, ManagerId = x.ManagerId }).ToList());
+        var latestPerEmployee = rows
+            .GroupBy(x => x.EmployeeId)
+            .Select(group => group
+                .OrderByDescending(x => x.StartDate)
+                .ThenByDescending(x => x.EndDate)
+                .First())
+            .Select(x => new ReportingEdge { EmployeeId = x.EmployeeId, ManagerId = x.ManagerId })
+            .ToList();
+
+        return new ReportingLines(latestPerEmployee);
     }
 
     /// <summary>
@@ -176,7 +189,6 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     /// </summary>
     private async Task<Dictionary<int, EmployeeOrgChartNodeDto>> BuildCardsAsync(
         List<int> employeeIds,
-        DateTime asOfDate,
         ReportingLines reportingLines)
     {
         var distinctIds = employeeIds.Distinct().ToList();
@@ -198,7 +210,7 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
             })
             .ToListAsync();
 
-        var jobTitles = await LoadJobTitlesAsync(distinctIds, asOfDate);
+        var jobTitles = await LoadJobTitlesAsync(distinctIds);
 
         return employees.ToDictionary(
             employee => employee.Id,
@@ -223,11 +235,11 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
     }
 
     /// <summary>
-    /// Job title per employee, read from the org assignment covering the chart date. Where an employee has
-    /// more than one assignment spanning the date -- which the EndDate chaining is meant to prevent -- the
-    /// latest-starting one wins, matching how the rest of the app resolves current-dated assignments.
+    /// Each employee's CURRENT job title, taken from their latest org assignment. Not filtered to a date
+    /// window, for the same reason as the reporting lines above: the chart shows the present picture, and
+    /// a lapsed assignment should still name the title rather than leave the card blank.
     /// </summary>
-    private async Task<Dictionary<int, JobTitleName>> LoadJobTitlesAsync(List<int> employeeIds, DateTime asOfDate)
+    private async Task<Dictionary<int, JobTitleName>> LoadJobTitlesAsync(List<int> employeeIds)
     {
         var assignments = await (from assignment in _employeeOrgAssignmentRepository.GetAll()
                                      // EmployeeOrgAssignment.JobTitleId is nullable and JobTitle.Id is not --
@@ -235,8 +247,6 @@ public class EmployeeOrgChartAppService : HCMv3AppServiceBase, IEmployeeOrgChart
                                  join jobTitle in _jobTitleRepository.GetAll()
                                      on assignment.JobTitleId equals (int?)jobTitle.Id
                                  where employeeIds.Contains(assignment.EmployeeId)
-                                       && assignment.StartDate <= asOfDate
-                                       && assignment.EndDate >= asOfDate
                                  select new
                                  {
                                      assignment.EmployeeId,

@@ -18,7 +18,6 @@ namespace HCMv3.Tests.PersonnelAdministration;
 /// </summary>
 public class EmployeeOrgChartAppService_Tests : AppTestBase
 {
-    private static readonly DateTime AsOf = new DateTime(2026, 6, 1);
     private static readonly DateTime Always = new DateTime(2099, 12, 31);
     private static readonly DateTime LongAgo = new DateTime(2020, 1, 1);
 
@@ -35,10 +34,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
     {
         var tree = CreateReportingTree();
 
-        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
-        {
-            AsOfDate = AsOf
-        });
+        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput());
 
         result.Focus.ShouldNotBeNull();
         result.Focus.Id.ShouldBe(tree.GeneralManagerId);
@@ -52,8 +48,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.WarehouseOfficerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.WarehouseOfficerId
         });
 
         result.Focus.Id.ShouldBe(tree.WarehouseOfficerId);
@@ -68,8 +63,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.SupplyManagerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.SupplyManagerId
         });
 
         result.DirectReports.Select(x => x.FullNameEn)
@@ -83,8 +77,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.SupplyManagerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.SupplyManagerId
         });
 
         // Three report to the supply manager directly; the warehouse officer is one level further down and
@@ -101,8 +94,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.GeneralManagerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.GeneralManagerId
         });
 
         // Supply manager, their three reports, and the warehouse officer below one of those.
@@ -113,22 +105,22 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Ignore_Reporting_Lines_That_Do_Not_Span_The_As_Of_Date()
+    public async Task Should_Break_A_Tie_On_Start_Date_Using_The_Later_End_Date()
     {
         var tree = CreateReportingTree();
-        var formerReport = CreateEmployee("EOC-LEAVER", "Zoe Former", Gender.Female);
+        var corrected = CreateEmployee("EOC-FIX", "Corrected Person", Gender.Female);
 
-        // Ended before the chart date, so this person is no longer on the supply manager's team.
-        AddReportingLine(formerReport.Id, tree.SupplyManagerId, LongAgo, new DateTime(2024, 12, 31));
+        // Two rows sharing a start date -- a correction entered against the original. The one running
+        // further into the future is the surviving record.
+        AddReportingLine(corrected.Id, tree.WarehouseManagerId, LongAgo, new DateTime(2024, 12, 31));
+        AddReportingLine(corrected.Id, tree.SupplyManagerId, LongAgo, Always);
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.SupplyManagerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.SupplyManagerId
         });
 
-        result.DirectReports.Select(x => x.Id).ShouldNotContain(formerReport.Id);
-        result.Focus.DirectReportCount.ShouldBe(3);
+        result.DirectReports.Select(x => x.Id).ShouldContain(corrected.Id);
     }
 
     [Fact]
@@ -144,8 +136,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = first.Id,
-            AsOfDate = AsOf
+            EmployeeId = first.Id
         });
 
         result.Focus.Id.ShouldBe(first.Id);
@@ -161,8 +152,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = loner.Id,
-            AsOfDate = AsOf
+            EmployeeId = loner.Id
         });
 
         result.Focus.Id.ShouldBe(loner.Id);
@@ -172,14 +162,13 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Resolve_Job_Title_From_The_Assignment_Covering_The_Date()
+    public async Task Should_Resolve_Job_Title_From_The_Latest_Assignment()
     {
         var tree = CreateReportingTree();
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = tree.SupplyManagerId,
-            AsOfDate = AsOf
+            EmployeeId = tree.SupplyManagerId
         });
 
         result.Focus.JobTitleEn.ShouldBe("Senior Manager");
@@ -195,8 +184,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = withPhoto.Id,
-            AsOfDate = AsOf
+            EmployeeId = withPhoto.Id
         });
 
         result.Focus.HasPhoto.ShouldBeTrue();
@@ -212,8 +200,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
 
         var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
         {
-            EmployeeId = manager.Id,
-            AsOfDate = AsOf
+            EmployeeId = manager.Id
         });
 
         result.Focus.Gender.ShouldBe(Gender.Male);
@@ -223,10 +210,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Return_Empty_Result_When_No_Reporting_Lines_Exist()
     {
-        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
-        {
-            AsOfDate = AsOf
-        });
+        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput());
 
         result.Focus.ShouldBeNull();
         result.ManagerChain.ShouldBeEmpty();
@@ -234,13 +218,49 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Default_As_Of_Date_To_Today_When_Not_Supplied()
+    public async Task Should_Use_The_Latest_Reporting_Line_When_An_Employee_Has_Several()
     {
-        CreateReportingTree();
+        var tree = CreateReportingTree();
+        var mover = CreateEmployee("EOC-MOVE", "Moved Person", Gender.Male);
 
-        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput());
+        // Started under the warehouse manager, moved to the supply manager last year. The chart shows the
+        // present picture, so the newer row wins -- and the older one must not leave them on both teams.
+        AddReportingLine(mover.Id, tree.WarehouseManagerId, LongAgo, new DateTime(2024, 12, 31));
+        AddReportingLine(mover.Id, tree.SupplyManagerId, new DateTime(2025, 1, 1), Always);
 
-        result.AsOfDate.ShouldBe(Abp.Timing.Clock.Now.Date);
+        var supplyManagerView = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = tree.SupplyManagerId
+        });
+
+        supplyManagerView.DirectReports.Select(x => x.Id).ShouldContain(mover.Id);
+
+        var warehouseManagerView = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = tree.WarehouseManagerId
+        });
+
+        warehouseManagerView.DirectReports.Select(x => x.Id).ShouldNotContain(mover.Id);
+    }
+
+    [Fact]
+    public async Task Should_Count_A_Lapsed_Reporting_Line_That_Was_Never_Superseded()
+    {
+        var tree = CreateReportingTree();
+        var lapsed = CreateEmployee("EOC-LAPSED", "Lapsed Line", Gender.Female);
+
+        // The only row on record for this person, and its range has ended. Dropping it would empty the
+        // chart for any tenant whose rows were loaded once and never re-dated -- which is exactly why the
+        // as-of filter was removed.
+        AddReportingLine(lapsed.Id, tree.SupplyManagerId, LongAgo, new DateTime(2024, 12, 31));
+
+        var result = await _employeeOrgChartAppService.GetNode(new GetEmployeeOrgChartNodeInput
+        {
+            EmployeeId = tree.SupplyManagerId
+        });
+
+        result.DirectReports.Select(x => x.Id).ShouldContain(lapsed.Id);
+        result.Focus.DirectReportCount.ShouldBe(4);
     }
 
     [Fact]
@@ -249,15 +269,15 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         var tree = CreateReportingTree();
 
         var byEnglishName = await _employeeOrgChartAppService.SearchNodes(
-            new SearchEmployeeOrgChartNodesInput { Filter = "Bassel", AsOfDate = AsOf });
+            new SearchEmployeeOrgChartNodesInput { Filter = "Bassel" });
         byEnglishName.Select(x => x.Id).ShouldBe(new[] { tree.WarehouseManagerId });
 
         var byArabicName = await _employeeOrgChartAppService.SearchNodes(
-            new SearchEmployeeOrgChartNodesInput { Filter = "باسل", AsOfDate = AsOf });
+            new SearchEmployeeOrgChartNodesInput { Filter = "باسل" });
         byArabicName.Select(x => x.Id).ShouldBe(new[] { tree.WarehouseManagerId });
 
         var byCode = await _employeeOrgChartAppService.SearchNodes(
-            new SearchEmployeeOrgChartNodesInput { Filter = "EOC-GM", AsOfDate = AsOf });
+            new SearchEmployeeOrgChartNodesInput { Filter = "EOC-GM" });
         byCode.Select(x => x.Id).ShouldBe(new[] { tree.GeneralManagerId });
     }
 
@@ -267,7 +287,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         var tree = CreateReportingTree();
 
         var results = await _employeeOrgChartAppService.SearchNodes(
-            new SearchEmployeeOrgChartNodesInput { Filter = "Mian", AsOfDate = AsOf });
+            new SearchEmployeeOrgChartNodesInput { Filter = "Mian" });
 
         results.Single(x => x.Id == tree.SupplyManagerId).TotalReportCount.ShouldBe(4);
     }
@@ -280,7 +300,6 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
         var results = await _employeeOrgChartAppService.SearchNodes(new SearchEmployeeOrgChartNodesInput
         {
             MaxResultCount = int.MaxValue,
-            AsOfDate = AsOf
         });
 
         results.Count.ShouldBeLessThanOrEqualTo(SearchEmployeeOrgChartNodesInput.MaxAllowedResultCount);
@@ -351,7 +370,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
             context.Set<EmployeeManager>().Add(new EmployeeManager
             {
                 TenantId = AbpSession.TenantId ?? 1,
-                EmployeeId = employeeId,
+                EmployeeId = employeeId
                 ManagerId = managerId,
                 StartDate = startDate,
                 EndDate = endDate
@@ -366,7 +385,7 @@ public class EmployeeOrgChartAppService_Tests : AppTestBase
             context.Set<EmployeeOrgAssignment>().Add(new EmployeeOrgAssignment
             {
                 TenantId = AbpSession.TenantId ?? 1,
-                EmployeeId = employeeId,
+                EmployeeId = employeeId
                 JobTitleId = jobTitleId,
                 StartDate = startDate,
                 EndDate = endDate

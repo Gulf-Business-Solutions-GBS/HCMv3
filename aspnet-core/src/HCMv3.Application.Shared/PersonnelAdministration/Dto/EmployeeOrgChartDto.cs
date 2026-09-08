@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace HCMv3.PersonnelAdministration.Dto;
@@ -13,10 +12,7 @@ namespace HCMv3.PersonnelAdministration.Dto;
 /// </summary>
 public class EmployeeOrgChartDto
 {
-    /// <summary>The date the chart was resolved at -- echoed back so the screen can confirm what it got.</summary>
-    public DateTime AsOfDate { get; set; }
-
-    /// <summary>The card in the middle. Null when nobody has a reporting line on this date.</summary>
+    /// <summary>The card in the middle. Null when nobody has a reporting line at all.</summary>
     public EmployeeOrgChartNodeDto Focus { get; set; }
 
     /// <summary>

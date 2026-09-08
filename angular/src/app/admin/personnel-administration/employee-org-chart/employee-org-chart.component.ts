@@ -1,9 +1,7 @@
 import { Component, OnInit, computed, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DateTime } from 'luxon';
 import { Select } from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
 import { Tooltip } from 'primeng/tooltip';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -19,7 +17,6 @@ import {
     SearchEmployeeOrgChartNodesInput,
 } from '@shared/service-proxies/service-proxies';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
-import { PrimengDatePickerLuxonModifierDirective } from '../../../../shared/utils/date-time/primeng-date-picker-luxon-modifier.directive';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { OrgChartCardComponent } from '../../../shared/common/org-chart/org-chart-card.component';
 import { OrgChartViewportComponent } from '../../../shared/common/org-chart/org-chart-viewport.component';
@@ -41,12 +38,10 @@ import { OrgChartCard } from '../../../shared/common/org-chart/org-chart.models'
     imports: [
         FormsModule,
         Select,
-        DatePickerModule,
         Tooltip,
         SubHeaderComponent,
         BusyIfDirective,
         LocalizePipe,
-        PrimengDatePickerLuxonModifierDirective,
         OrgChartCardComponent,
         OrgChartViewportComponent,
     ],
@@ -68,7 +63,29 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
 
     readonly isLoading = signal(false);
     readonly searchResults = signal<EmployeeOrgChartNodeDto[]>([]);
-    readonly asOfDate = signal<DateTime>(DateTime.local().startOf('day'));
+
+    /**
+     * The person currently picked in the search box, held separately from the results list. PrimeNG can
+     * only render a label for an option it can still find, and the results list is replaced on every
+     * keystroke -- without this the box would fall back to stringifying the value.
+     */
+    readonly selectedNode = signal<EmployeeOrgChartNodeDto | null>(null);
+
+    /**
+     * The search box's options, with the current selection folded in when a fresh search has dropped it.
+     * PrimeNG resolves the displayed label by looking the bound value up in this list, so a selection that
+     * is not present renders as the raw object.
+     */
+    readonly searchOptions = computed<EmployeeOrgChartNodeDto[]>(() => {
+        const selected = this.selectedNode();
+        const results = this.searchResults();
+
+        if (!selected || results.some((result) => result.id === selected.id)) {
+            return results;
+        }
+
+        return [selected, ...results];
+    });
     readonly node = signal<EmployeeOrgChartDto | null>(null);
 
     readonly focusCard = computed<OrgChartCard | null>(() => {
@@ -99,25 +116,22 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
     loadNode(employeeId: number | null): void {
         const input = new GetEmployeeOrgChartNodeInput();
         input.employeeId = employeeId ?? undefined;
-        input.asOfDate = this.asOfDate();
 
         this.isLoading.set(true);
         this._employeeOrgChartService
             .getNode(input)
             .pipe(finalize(() => this.isLoading.set(false)))
-            .subscribe((result) => this.node.set(result));
-    }
-
-    onAsOfDateChange(date: DateTime | null): void {
-        // The date changes the reporting lines and titles, not who is in view, so stay on the same person.
-        this.asOfDate.set(date ?? DateTime.local().startOf('day'));
-        this.loadNode(this.node()?.focus?.id ?? null);
+            .subscribe((result) => {
+                this.node.set(result);
+                // Keep the search box showing whoever the chart is centred on, however they got there --
+                // a card click and a search both land here.
+                this.selectedNode.set(result.focus ?? null);
+            });
     }
 
     searchNodes(filter: string): void {
         const input = new SearchEmployeeOrgChartNodesInput();
         input.filter = filter;
-        input.asOfDate = this.asOfDate();
         input.maxResultCount = 50;
 
         this._employeeOrgChartService
@@ -131,9 +145,16 @@ export class EmployeeOrgChartComponent extends AppComponentBase implements OnIni
 
     /** Jumping straight to someone found by name, rather than walking the reporting lines to them. */
     onSearchSelect(employeeId: number | null): void {
-        if (employeeId) {
-            this.loadNode(employeeId);
+        if (!employeeId) {
+            return;
         }
+
+        const picked = this.searchOptions().find((option) => option.id === employeeId);
+        if (picked) {
+            this.selectedNode.set(picked);
+        }
+
+        this.loadNode(employeeId);
     }
 
     onCardClick(card: OrgChartCard): void {
