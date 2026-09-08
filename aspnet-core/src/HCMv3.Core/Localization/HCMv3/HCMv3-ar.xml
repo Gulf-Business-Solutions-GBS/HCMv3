@@ -1739,6 +1739,15 @@
     <text name="NoReportingLinesConfigured">لم يتم إعداد أي تسلسل إداري لهذا التاريخ.</text>
     <text name="GoToManager">الانتقال إلى المدير</text>
     <text name="GoToReports">الانتقال إلى المرؤوسين</text>
+    <!-- Position Org Chart -->
+    <text name="PositionOrgChart">الهيكل التنظيمي للوظائف</text>
+    <text name="ParentPosition">ترفع تقاريرها إلى وظيفة</text>
+    <text name="DirectPositions">الوظائف التابعة مباشرة</text>
+    <text name="TotalPositions">الوظائف الأدنى بكل المستويات</text>
+    <text name="GoToParentPosition">الانتقال إلى الوظيفة الأعلى</text>
+    <text name="NoPositionHierarchyConfigured">لم يتم إعداد هيكل الوظائف بعد. حدد "ترفع تقاريرها إلى وظيفة" في الوظائف لبنائه.</text>
+    <text name="PositionCannotReportToItself">لا يمكن أن ترفع الوظيفة تقاريرها إلى نفسها.</text>
+    <text name="PositionHierarchyWouldLoop">هذا الاختيار سينشئ حلقة مغلقة في هيكل الوظائف.</text>
     <text name="NoOrganizationUnitsConfigured">لم يتم إعداد أي وحدات تنظيمية بعد.</text>
     <text name="OrganizationBankInfos">المعلومات البنكية للشركة</text>
     <text name="OrganizationBankInfo">المعلومات البنكية للشركة</text>

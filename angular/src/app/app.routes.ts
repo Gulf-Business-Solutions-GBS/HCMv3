@@ -3930,6 +3930,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.ManpowerPlanningManagement.Positions' },
                     },
                     {
+                        path: 'position-org-chart',
+                        loadComponent: () =>
+                            import(
+                                './admin/manpower-planning-management/position-org-chart/position-org-chart.component'
+                            ).then((m) => m.PositionOrgChartComponent),
+                        data: { permission: 'Pages.ManpowerPlanningManagement.PositionOrgChart' },
+                    },
+                    {
                         path: 'position-relationships',
                         loadComponent: () =>
                             import('./admin/manpower-planning-management/position-relationships/position-relationships.component').then(

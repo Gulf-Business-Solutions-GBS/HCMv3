@@ -1734,6 +1734,13 @@ public static class AppPermissions
     public const string Pages_ManpowerPlanningManagement_Positions_Edit = "Pages.ManpowerPlanningManagement.Positions.Edit";
     public const string Pages_ManpowerPlanningManagement_Positions_Delete = "Pages.ManpowerPlanningManagement.Positions.Delete";
 
+    /// <summary>
+    /// Read-only Position Org Chart. Separate from <see cref="Pages_ManpowerPlanningManagement_Positions"/>
+    /// on purpose: seeing how positions report to one another is a far broader entitlement than the right
+    /// to create and re-parent them.
+    /// </summary>
+    public const string Pages_ManpowerPlanningManagement_PositionOrgChart = "Pages.ManpowerPlanningManagement.PositionOrgChart";
+
     public const string Pages_ManpowerPlanningManagement_PositionRelationships = "Pages.ManpowerPlanningManagement.PositionRelationships";
     public const string Pages_ManpowerPlanningManagement_PositionRelationships_Create = "Pages.ManpowerPlanningManagement.PositionRelationships.Create";
     public const string Pages_ManpowerPlanningManagement_PositionRelationships_Edit = "Pages.ManpowerPlanningManagement.PositionRelationships.Edit";

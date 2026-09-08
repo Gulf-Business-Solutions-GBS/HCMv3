@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.ManpowerPlanningManagement;
@@ -82,5 +83,52 @@ public class PositionsAppService_Tests : ManpowerPlanningManagementAppServiceTes
                 EndDate = new DateTime(9999, 12, 31),
                 FTELimit = 1
             }));
+    }
+
+    [Fact]
+    public async Task Should_Reject_A_Parent_Position_That_Would_Create_A_Loop()
+    {
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(NewPosition("Top"));
+        var top = (await service.GetAll(new GetAllPositionsInput { Filter = "Top" })).Items.Single();
+
+        var child = NewPosition("Child");
+        child.ParentPositionId = top.Id;
+        await service.CreateOrEdit(child);
+        var childSaved = (await service.GetAll(new GetAllPositionsInput { Filter = "Child" })).Items.Single();
+
+        // Putting the top under its own descendant closes the loop, which would hang every traversal
+        // that walks this chain.
+        var edit = (await service.GetPositionForEdit(new Abp.Application.Services.Dto.EntityDto(top.Id))).Position;
+        edit.ParentPositionId = childSaved.Id;
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(edit));
+    }
+
+    [Fact]
+    public async Task Should_Reject_A_Position_Reporting_To_Itself()
+    {
+        var service = CreateAppService();
+
+        await service.CreateOrEdit(NewPosition("Solo"));
+        var saved = (await service.GetAll(new GetAllPositionsInput { Filter = "Solo" })).Items.Single();
+
+        var edit = (await service.GetPositionForEdit(new Abp.Application.Services.Dto.EntityDto(saved.Id))).Position;
+        edit.ParentPositionId = saved.Id;
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(edit));
+    }
+
+    private static CreateOrEditPositionDto NewPosition(string nameEn)
+    {
+        return new CreateOrEditPositionDto
+        {
+            NameEn = nameEn,
+            NameAr = nameEn,
+            StartDate = new DateTime(2026, 1, 1),
+            EndDate = new DateTime(9999, 12, 31),
+            FTELimit = 1
+        };
     }
 }

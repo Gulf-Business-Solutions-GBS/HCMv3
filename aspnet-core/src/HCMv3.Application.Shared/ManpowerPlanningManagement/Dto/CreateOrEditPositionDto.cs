@@ -55,4 +55,10 @@ public class CreateOrEditPositionDto
 
     [Range(1, int.MaxValue)]
     public int FTELimit { get; set; }
+
+    /// <summary>
+    /// The position this one reports to. Null for the top of a tree, and for every position whose parent
+    /// has not been filled in yet -- the Position Org Chart simply will not show those until it is.
+    /// </summary>
+    public int? ParentPositionId { get; set; }
 }

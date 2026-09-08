@@ -1862,6 +1862,10 @@ public class AppAuthorizationProvider : AuthorizationProvider
         positions.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_Positions_Edit, L("EditItem"));
         positions.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_Positions_Delete, L("DeleteItem"));
 
+        // No Create/Edit/Delete children: the chart is read-only, and it is granted independently of
+        // Positions so that viewing the structure does not require rights to re-parent it.
+        manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionOrgChart, L("PositionOrgChart"));
+
         var positionRelationships = manpowerPlanningManagement.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionRelationships, L("PositionRelationships"));
         positionRelationships.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionRelationships_Create, L("CreateNewItem"));
         positionRelationships.CreateChildPermission(AppPermissions.Pages_ManpowerPlanningManagement_PositionRelationships_Edit, L("EditItem"));

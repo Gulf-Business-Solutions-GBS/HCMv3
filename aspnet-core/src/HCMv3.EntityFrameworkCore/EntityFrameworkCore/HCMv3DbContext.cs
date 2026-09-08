@@ -1233,6 +1233,20 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        // Positions report to positions, which is what the Position Org Chart draws. Restrict on delete for
+        // the same reason as the comment thread above: removing a position must not silently take the
+        // positions beneath it with it -- they need re-parenting, and a cascade would destroy a branch of
+        // the structure on one click.
+        modelBuilder.Entity<Position>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.ParentPositionId });
+
+            b.HasOne(e => e.ParentPosition)
+                .WithMany(e => e.ChildPositions)
+                .HasForeignKey(e => e.ParentPositionId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         // The screen catalogue. Both uniques are enforced HERE and not only in the app service: the
         // service checks for a clashing code before writing, which is check-then-act and races with
         // itself under concurrent edits. The index is what actually makes a duplicate impossible.

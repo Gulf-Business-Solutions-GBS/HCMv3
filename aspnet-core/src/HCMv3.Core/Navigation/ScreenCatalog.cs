@@ -204,6 +204,7 @@ public static class ScreenCatalog
         new("app.admin.manpower-plannings", "SMP002", "ManpowerPlanningManagement", "ManpowerPlannings", "/app/admin/manpower-plannings", "Pages.ManpowerPlanningManagement.ManpowerPlannings"),
         new("app.admin.position-relationships", "SMP003", "ManpowerPlanningManagement", "PositionRelationships", "/app/admin/position-relationships", "Pages.ManpowerPlanningManagement.PositionRelationships"),
         new("app.admin.positions", "SMP004", "ManpowerPlanningManagement", "Positions", "/app/admin/positions", "Pages.ManpowerPlanningManagement.Positions"),
+        new("app.admin.position-org-chart", "SMP005", "ManpowerPlanningManagement", "PositionOrgChart", "/app/admin/position-org-chart", "Pages.ManpowerPlanningManagement.PositionOrgChart"),
         new("app.admin.cost-center-groups", "SOM001", "OrganizationManagement", "CostCenterGroups", "/app/admin/cost-center-groups", "Pages.OrganizationManagement.CostCenterGroups"),
         new("app.admin.cost-centers", "SOM002", "OrganizationManagement", "CostCenters", "/app/admin/cost-centers", "Pages.OrganizationManagement.CostCenters"),
         new("app.admin.cost-element-types", "SOM003", "OrganizationManagement", "CostElementTypes", "/app/admin/cost-element-types", "Pages.OrganizationManagement.CostElementTypes"),

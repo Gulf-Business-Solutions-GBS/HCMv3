@@ -90,5 +90,27 @@ public class Position : FullAuditedEntity, IMustHaveTenant
     /// </summary>
     public virtual int FTELimit { get; set; }
 
+    /// <summary>
+    /// The position this one reports to, giving positions a hierarchy of their own.
+    ///
+    /// Added for the Position Org Chart. Nothing in the legacy model carried it: <see cref="PositionRelationship"/>
+    /// links a position to the EMPLOYEE holding it, never to another position, and
+    /// <see cref="OrganizationUnitId"/> only says which box on the company structure a position sits in --
+    /// several positions share one unit, so it cannot order them. Without this column a position chart
+    /// could only redraw the org-unit tree with positions hanging off it, which is the Company Structure
+    /// Overview again rather than a reporting structure.
+    ///
+    /// Nullable: the top position of each tree has no parent, and every position that existed before this
+    /// column did starts unset rather than being guessed at.
+    ///
+    /// Cycles are rejected in <c>PositionsAppService</c> -- the database cannot express "not a cycle", and
+    /// one would hang every traversal that walks this chain.
+    /// </summary>
+    public virtual int? ParentPositionId { get; set; }
+
+    public virtual Position ParentPosition { get; set; }
+
+    public virtual ICollection<Position> ChildPositions { get; set; }
+
     public virtual ICollection<PositionRelationship> PositionRelationships { get; set; }
 }

@@ -1755,6 +1755,15 @@
     <text name="NoReportingLinesConfigured">No reporting lines have been set up for this date.</text>
     <text name="GoToManager">Go to manager</text>
     <text name="GoToReports">Go to direct reports</text>
+    <!-- Position Org Chart -->
+    <text name="PositionOrgChart">Position Org Chart</text>
+    <text name="ParentPosition">Reports to position</text>
+    <text name="DirectPositions">Positions reporting directly</text>
+    <text name="TotalPositions">Positions below, all levels</text>
+    <text name="GoToParentPosition">Go to parent position</text>
+    <text name="NoPositionHierarchyConfigured">No position hierarchy has been set up yet. Set "Reports to position" on your positions to build one.</text>
+    <text name="PositionCannotReportToItself">A position cannot report to itself.</text>
+    <text name="PositionHierarchyWouldLoop">That parent would create a loop in the position hierarchy.</text>
     <text name="NoOrganizationUnitsConfigured">No organization units have been set up yet.</text>
     <text name="OrganizationBankInfos">Organization Bank Info</text>
     <text name="OrganizationBankInfo">Organization Bank Info</text>

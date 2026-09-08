@@ -121,6 +121,20 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-5">
+                                <label class="form-label" for="Position_ParentPositionId">{{ 'ParentPosition' | localize }}</label>
+                                <select
+                                    id="Position_ParentPositionId"
+                                    class="form-select"
+                                    name="ParentPositionId"
+                                    [ngModel]="record().parentPositionId"
+                                    (ngModelChange)="updateField('parentPositionId', $event)">
+                                    <option [ngValue]="undefined"></option>
+                                    @for (item of parentPositions(); track item.id) {
+                                        <option [ngValue]="item.id">{{ item.nameEn }}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-5">
                                 <label class="form-label" for="Position_CostCenterId">{{ 'CostCenter' | localize }}</label>
                                 <select
                                     id="Position_CostCenterId"

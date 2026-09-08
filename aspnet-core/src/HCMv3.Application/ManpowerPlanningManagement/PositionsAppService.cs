@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -45,6 +46,7 @@ public class PositionsAppService : HCMv3AppServiceBase, IPositionsAppService
             .Include(p => p.WorkLocation)
             .Include(p => p.CostCenter)
             .Include(p => p.OrganizationUnit)
+            .Include(p => p.ParentPosition)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), p =>
                 p.Code.Contains(input.Filter) ||
                 p.NameEn.Contains(input.Filter) ||
@@ -146,6 +148,54 @@ public class PositionsAppService : HCMv3AppServiceBase, IPositionsAppService
         {
             throw new UserFriendlyException(L("FTELimitMustBeGreaterThanZero"));
         }
+
+        await ValidateParentPositionAsync(entity);
+    }
+
+    /// <summary>
+    /// Keeps the position hierarchy a tree.
+    ///
+    /// The database cannot express "no cycles" -- a self-referencing foreign key is perfectly happy with
+    /// A under B and B under A -- and a cycle would hang the Position Org Chart's traversals as well as
+    /// making the structure meaningless. So it is checked here, on the only path that sets a parent:
+    /// walking up from the proposed parent, the entity being saved must never appear.
+    ///
+    /// A new position (Id 0) cannot be part of a cycle, but the walk still runs, because a corrupt chain
+    /// already in the data would otherwise loop forever the moment somebody attached anything to it.
+    /// </summary>
+    private async Task ValidateParentPositionAsync(Position entity)
+    {
+        if (entity.ParentPositionId == null)
+        {
+            return;
+        }
+
+        if (entity.ParentPositionId == entity.Id && entity.Id != 0)
+        {
+            throw new UserFriendlyException(L("PositionCannotReportToItself"));
+        }
+
+        var parentLinks = await _positionRepository.GetAll()
+            .Where(p => p.ParentPositionId != null)
+            .Select(p => new { p.Id, p.ParentPositionId })
+            .ToListAsync();
+
+        var parentOf = parentLinks
+            .GroupBy(x => x.Id)
+            .ToDictionary(g => g.Key, g => g.First().ParentPositionId.Value);
+
+        var visited = new HashSet<int>();
+        var current = entity.ParentPositionId;
+
+        while (current.HasValue && visited.Add(current.Value))
+        {
+            if (current.Value == entity.Id && entity.Id != 0)
+            {
+                throw new UserFriendlyException(L("PositionHierarchyWouldLoop"));
+            }
+
+            current = parentOf.TryGetValue(current.Value, out var next) ? next : (int?)null;
+        }
     }
 
     private static Position MapToEntity(CreateOrEditPositionDto input, Position entity)
@@ -169,6 +219,7 @@ public class PositionsAppService : HCMv3AppServiceBase, IPositionsAppService
         entity.MaxSalary = input.MaxSalary;
         entity.IsBudgeted = input.IsBudgeted;
         entity.FTELimit = input.FTELimit;
+        entity.ParentPositionId = input.ParentPositionId;
 
         return entity;
     }
@@ -203,7 +254,9 @@ public class PositionsAppService : HCMv3AppServiceBase, IPositionsAppService
             MidSalary = entity.MidSalary,
             MaxSalary = entity.MaxSalary,
             IsBudgeted = entity.IsBudgeted,
-            FTELimit = entity.FTELimit
+            FTELimit = entity.FTELimit,
+            ParentPositionId = entity.ParentPositionId,
+            ParentPositionName = entity.ParentPosition?.NameEn
         };
     }
 
@@ -230,7 +283,8 @@ public class PositionsAppService : HCMv3AppServiceBase, IPositionsAppService
             MidSalary = entity.MidSalary,
             MaxSalary = entity.MaxSalary,
             IsBudgeted = entity.IsBudgeted,
-            FTELimit = entity.FTELimit
+            FTELimit = entity.FTELimit,
+            ParentPositionId = entity.ParentPositionId
         };
     }
 }

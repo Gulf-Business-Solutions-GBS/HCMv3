@@ -61,4 +61,9 @@ public class PositionDto : EntityDto<int>
     public bool IsBudgeted { get; set; }
 
     public int FTELimit { get; set; }
+
+    public int? ParentPositionId { get; set; }
+
+    /// <summary>Resolved name of the parent position, for the list column.</summary>
+    public string ParentPositionName { get; set; }
 }

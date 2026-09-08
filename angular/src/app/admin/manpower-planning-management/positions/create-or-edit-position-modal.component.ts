@@ -12,6 +12,7 @@ import {
     GetAllEmployeeGroupsInput,
     GetAllEmployeeSubGroupsInput,
     GetAllPayrollAreasInput,
+    GetAllPositionsInput,
     GetAllSimpleLookupsInput,
     GetAllWorkLocationsInput,
     JobTitlesServiceProxy,
@@ -20,6 +21,7 @@ import {
     OrganizationUnitServiceProxy,
     PayrollAreaDto,
     PayrollAreasServiceProxy,
+    PositionDto,
     PositionsServiceProxy,
     SimpleLookupDto,
     WorkLocationDto,
@@ -64,6 +66,12 @@ export class CreateOrEditPositionModalComponent extends AppComponentBase {
     readonly costCenters = signal<CostCenterDto[]>([]);
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
 
+    /**
+     * Candidate parents for the position hierarchy the Position Org Chart draws. The position being
+     * edited is filtered out -- nothing may report to itself, and the server rejects it anyway.
+     */
+    readonly parentPositions = signal<PositionDto[]>([]);
+
     show(id?: number): void {
         this.active.set(true);
 
@@ -102,6 +110,18 @@ export class CreateOrEditPositionModalComponent extends AppComponentBase {
         this._organizationUnitService
             .getOrganizationUnits()
             .subscribe((result: ListResultDtoOfOrganizationUnitDto) => this.organizationUnits.set(result.items));
+
+        this._service
+            .getAll(
+                new GetAllPositionsInput({
+                    maxResultCount: 1000,
+                    skipCount: 0,
+                    sorting: undefined,
+                    filter: undefined,
+                    vacant: undefined,
+                })
+            )
+            .subscribe((result) => this.parentPositions.set(result.items.filter((p) => p.id !== id)));
 
         if (!id) {
             this.record.set(new CreateOrEditPositionDto());

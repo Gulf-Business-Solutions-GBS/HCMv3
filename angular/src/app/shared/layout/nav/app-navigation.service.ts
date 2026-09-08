@@ -3006,6 +3006,12 @@ export class AppNavigationService {
                         '/app/admin/positions'
                     ),
                     new AppMenuItem(
+                        'PositionOrgChart',
+                        'Pages.ManpowerPlanningManagement.PositionOrgChart',
+                        'flaticon-network',
+                        '/app/admin/position-org-chart'
+                    ),
+                    new AppMenuItem(
                         'PositionRelationships',
                         'Pages.ManpowerPlanningManagement.PositionRelationships',
                         'flaticon-list-3',
