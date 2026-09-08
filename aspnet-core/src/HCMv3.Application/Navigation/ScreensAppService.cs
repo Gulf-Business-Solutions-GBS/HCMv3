@@ -246,14 +246,33 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
     /// would otherwise have no catalogue at all, and a release that adds screens would need someone to
     /// remember to run something. Doing it on read means both cases heal themselves.
     ///
-    /// The count check keeps the common path to one cheap query -- the seeder is only entered when the
-    /// tenant is genuinely short of screens, which is once per tenant per release at most. Duplicates
-    /// are impossible regardless: (TenantId, ScreenKey) is unique in the database.
+    /// A COUNT CANNOT ANSWER THIS, which is what the first version of this check got wrong. Rows are
+    /// never deleted, so a screen retired from the catalogue leaves its row behind and pads the total: a
+    /// tenant can hold exactly as many rows as the catalogue has entries while still missing the newest
+    /// screen. The old guard read those equal numbers as "nothing to do" and skipped seeding for ever,
+    /// so a screen added in a release never appeared and a screen that MOVED kept serving its old route.
+    ///
+    /// Compare what is actually there against what the application declares instead -- both the keys and
+    /// the fields the application owns, since a rename or a moved route has to reach people too. The
+    /// projection costs one query over small columns, on a path that loads every screen a line later
+    /// anyway.
     /// </summary>
     private async Task EnsureCatalogSeededAsync()
     {
-        var existing = await _screenRepository.CountAsync();
-        if (existing >= ScreenCatalog.All.Count)
+        var existing = await _screenRepository.GetAll()
+            .Select(s => new { s.ScreenKey, s.Module, s.NameKey, s.Route, s.PermissionName })
+            .ToListAsync();
+
+        var existingByKey = existing.ToDictionary(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase);
+
+        var catalogueIsCurrent = ScreenCatalog.All.All(seed =>
+            existingByKey.TryGetValue(seed.Key, out var row)
+            && row.Module == seed.Module
+            && row.NameKey == seed.NameKey
+            && row.Route == seed.Route
+            && row.PermissionName == seed.PermissionName);
+
+        if (catalogueIsCurrent)
         {
             return;
         }
