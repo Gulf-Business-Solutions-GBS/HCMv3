@@ -112,3 +112,26 @@ html[dir="rtl"] {
     .tooltip-arrow {
     position: absolute;
     }
+/*
+ * Sidebar brand row.
+ *
+ * The GBS mark is drawn for a light ground -- against the dark navy sidebar its circular border read as a
+ * halo around the logo. Giving the brand row its own white band puts the mark on the background it was
+ * designed for while the rest of the sidebar stays dark. The divider keeps the band from floating, and the
+ * explicit icon colour is for the controls that sit in this row (the minimize chevron and, on mobile, the
+ * drawer close button), which would otherwise inherit colours chosen for a dark background.
+ */
+.app-sidebar .app-sidebar-logo {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    .btn,
+    .btn i {
+        color: #5e6278;
+    }
+
+    .btn:hover,
+    .btn:hover i {
+        color: #009ef7;
+    }
+}
