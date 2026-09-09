@@ -65829,6 +65829,74 @@ export class GatePassVendorsServiceProxy {
 }
 
 @Injectable()
+export class GlobalSearchServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    searchPeople(body?: SearchPeopleInput | undefined): Observable<GlobalSearchPeopleResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/GlobalSearch/SearchPeople";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchPeople(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchPeople(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GlobalSearchPeopleResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GlobalSearchPeopleResultDto>;
+        }));
+    }
+
+    protected processSearchPeople(response: HttpResponseBase): Observable<GlobalSearchPeopleResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GlobalSearchPeopleResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class GoLiveApplyServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -259449,6 +259517,122 @@ export interface IGetYearlyTimeRegisterForEditOutput {
     yearlyTimeRegister: CreateOrEditYearlyTimeRegisterDto;
 }
 
+export class GlobalSearchPeopleResultDto implements IGlobalSearchPeopleResultDto {
+    people!: GlobalSearchPersonDto[] | undefined;
+    hasMore!: boolean;
+
+    constructor(data?: IGlobalSearchPeopleResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["people"])) {
+                this.people = [] as any;
+                for (let item of _data["people"])
+                    this.people!.push(GlobalSearchPersonDto.fromJS(item));
+            }
+            this.hasMore = _data["hasMore"];
+        }
+    }
+
+    static fromJS(data: any): GlobalSearchPeopleResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GlobalSearchPeopleResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.people)) {
+            data["people"] = [];
+            for (let item of this.people)
+                data["people"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["hasMore"] = this.hasMore;
+        return data;
+    }
+}
+
+export interface IGlobalSearchPeopleResultDto {
+    people: GlobalSearchPersonDto[] | undefined;
+    hasMore: boolean;
+}
+
+export class GlobalSearchPersonDto implements IGlobalSearchPersonDto {
+    id!: number;
+    code!: string | undefined;
+    fullNameEn!: string | undefined;
+    fullNameAr!: string | undefined;
+    jobTitleEn!: string | undefined;
+    jobTitleAr!: string | undefined;
+    departmentEn!: string | undefined;
+    departmentAr!: string | undefined;
+    hasPhoto!: boolean;
+
+    constructor(data?: IGlobalSearchPersonDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.fullNameEn = _data["fullNameEn"];
+            this.fullNameAr = _data["fullNameAr"];
+            this.jobTitleEn = _data["jobTitleEn"];
+            this.jobTitleAr = _data["jobTitleAr"];
+            this.departmentEn = _data["departmentEn"];
+            this.departmentAr = _data["departmentAr"];
+            this.hasPhoto = _data["hasPhoto"];
+        }
+    }
+
+    static fromJS(data: any): GlobalSearchPersonDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GlobalSearchPersonDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["fullNameEn"] = this.fullNameEn;
+        data["fullNameAr"] = this.fullNameAr;
+        data["jobTitleEn"] = this.jobTitleEn;
+        data["jobTitleAr"] = this.jobTitleAr;
+        data["departmentEn"] = this.departmentEn;
+        data["departmentAr"] = this.departmentAr;
+        data["hasPhoto"] = this.hasPhoto;
+        return data;
+    }
+}
+
+export interface IGlobalSearchPersonDto {
+    id: number;
+    code: string | undefined;
+    fullNameEn: string | undefined;
+    fullNameAr: string | undefined;
+    jobTitleEn: string | undefined;
+    jobTitleAr: string | undefined;
+    departmentEn: string | undefined;
+    departmentAr: string | undefined;
+    hasPhoto: boolean;
+}
+
 export class GoLiveApplyIssueDto implements IGoLiveApplyIssueDto {
     row!: number;
     key!: string | undefined;
@@ -317487,6 +317671,46 @@ export class SearchEmployeeOrgChartNodesInput implements ISearchEmployeeOrgChart
 }
 
 export interface ISearchEmployeeOrgChartNodesInput {
+    filter: string | undefined;
+    maxResultCount: number;
+}
+
+export class SearchPeopleInput implements ISearchPeopleInput {
+    filter!: string | undefined;
+    maxResultCount!: number;
+
+    constructor(data?: ISearchPeopleInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"];
+            this.maxResultCount = _data["maxResultCount"];
+        }
+    }
+
+    static fromJS(data: any): SearchPeopleInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchPeopleInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter;
+        data["maxResultCount"] = this.maxResultCount;
+        return data;
+    }
+}
+
+export interface ISearchPeopleInput {
     filter: string | undefined;
     maxResultCount: number;
 }
