@@ -1471,7 +1471,8 @@
     <text name="FullName">Full Name</text>
     <text name="FirstName">First Name</text>
     <text name="UiCustomization_HoverableAside">Expand menu when hovered</text>
-    <text name="SMTPSettingsNotProvidedWarningText">SMTP settings not provided, Please provided SMTP settings.</text>
+    <text name="SMTPSettingsNotProvidedWarningText">SMTP settings have not been provided. Please configure the SMTP settings.</text>
+    <text name="SMTPSettingsIncompleteWarningText">The email could not be sent because these SMTP settings are missing or still set to their default values: {0}. Set them under Settings, then save before sending a test email.</text>
     <text name="SocialLoginDeactivate_Description">This external login option will be disabled for your tenant.</text>
     <text name="DisplayName">Display Name</text>
     <text name="AssignDynamicPropertiesToEntity">Assign Dynamic Properties To Entity</text>

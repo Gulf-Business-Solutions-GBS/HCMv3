@@ -1102,7 +1102,8 @@
     <text name="FullName">الاسم الكامل</text>
     <text name="FirstName">الاسم الاول</text>
     <text name="UiCustomization_HoverableAside">توسيع القائمة عند التمرير</text>
-    <text name="SMTPSettingsNotProvidedWarningText">لم يتم توفير إعدادات SMTP ، يرجى توفير إعدادات SMTP.</text>
+    <text name="SMTPSettingsNotProvidedWarningText">لم يتم توفير إعدادات SMTP. يرجى ضبط إعدادات SMTP.</text>
+    <text name="SMTPSettingsIncompleteWarningText">تعذر إرسال البريد الإلكتروني لأن إعدادات SMTP التالية ناقصة أو ما زالت بالقيم الافتراضية: {0}. يرجى ضبطها من الإعدادات ثم الحفظ قبل إرسال بريد تجريبي.</text>
     <text name="SocialLoginDeactivate_Description">سيتم تعطيل خيار تسجيل الدخول الخارجي للعميل الحالي.</text>
     <text name="DisplayName">اسم العرض</text>
     <text name="AssignDynamicPropertiesToEntity">Assign Dynamic Properties To Entity</text>

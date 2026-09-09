@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Abp.Localization;
@@ -26,9 +27,16 @@ public class HCMv3MailKitSmtpBuilder : DefaultMailKitSmtpBuilder
 
     protected override void ConfigureClient(SmtpClient client)
     {
-        if (!_emailSettingsChecker.EmailSettingsValid())
+        // Name the settings that are wrong. The old message said only that SMTP settings were not
+        // provided, which sent people hunting through a screen of a dozen fields -- and it appeared
+        // just as readily when every field was filled but one still held a seeded placeholder.
+        var missingSettings = _emailSettingsChecker.GetMissingEmailSettingKeys();
+        if (missingSettings.Count > 0)
         {
-            throw new UserFriendlyException(L("SMTPSettingsNotProvidedWarningText"));
+            throw new UserFriendlyException(
+                L("SMTPSettingsIncompleteWarningText")
+                    .Replace("{0}", string.Join(", ", missingSettings.Select(L)))
+            );
         }
 
         client.ServerCertificateValidationCallback = SslCertificateValidationCallback;
