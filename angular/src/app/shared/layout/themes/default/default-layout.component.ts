@@ -1,4 +1,4 @@
-import { Component, OnInit, DOCUMENT, inject } from '@angular/core';
+import { Component, HostListener, OnInit, DOCUMENT, inject, signal } from '@angular/core';
 
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { ThemesLayoutBaseComponent } from '@app/shared/layout/themes/themes-layout-base.component';
@@ -54,6 +54,35 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         this.installationMode = UrlHelper.isInstallUrl(location.href);
         if (this.currentTheme.baseSettings.menu.defaultMinimizedAside) {
             this.document.body.setAttribute('data-kt-aside-minimize', 'on');
+        }
+    }
+
+    /**
+     * Whether the mobile search overlay is showing. Only ever true below lg -- the icon that sets it is
+     * itself d-lg-none, and the overlay is too, so a desktop window can never end up holding it open.
+     */
+    readonly isMobileSearchOpen = signal(false);
+
+    openMobileSearch(): void {
+        this.isMobileSearchOpen.set(true);
+
+        // Focus after the overlay has actually rendered -- the input does not exist until change
+        // detection has run, and a phone keyboard that does not appear makes the overlay look broken.
+        setTimeout(() => {
+            const input = this.document.querySelector<HTMLInputElement>('.mobile-search-overlay input');
+            input?.focus();
+        }, 50);
+    }
+
+    closeMobileSearch(): void {
+        this.isMobileSearchOpen.set(false);
+    }
+
+    /** Escape closes the overlay, which is what anyone with a keyboard attached will try first. */
+    @HostListener('document:keydown.escape')
+    onEscape(): void {
+        if (this.isMobileSearchOpen()) {
+            this.closeMobileSearch();
         }
     }
 

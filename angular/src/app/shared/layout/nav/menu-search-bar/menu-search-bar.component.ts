@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppNavigationService } from '../app-navigation.service';
 import { ScreenNavigationService } from '../screen-navigation.service';
@@ -66,6 +66,13 @@ export class MenuSearchBarComponent extends AppComponentBase {
 
     selected: '';
 
+    /**
+     * Fires as soon as a result is chosen, so a host that opened this in an overlay -- the mobile header
+     * does -- can close itself. Emitted before navigation rather than after, because the overlay should
+     * come down on the tap, not once the target route has finished resolving.
+     */
+    readonly resultSelected = output<void>();
+
     constructor() {
         super();
         this.initializeMenuSearch();
@@ -104,6 +111,8 @@ export class MenuSearchBarComponent extends AppComponentBase {
         if (!item) {
             return;
         }
+
+        this.resultSelected.emit();
 
         if (item.kind === 'person') {
             this.selected = '';

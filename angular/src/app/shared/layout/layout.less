@@ -112,3 +112,50 @@ html[dir="rtl"] {
     .tooltip-arrow {
     position: absolute;
     }
+/*
+ * Mobile search overlay.
+ *
+ * Below lg the header cannot hold a search field between the logo and the controls, so the field lives
+ * behind an icon and opens over the page instead. Anchored to the top rather than centred: a phone
+ * keyboard takes the bottom half of the screen the moment the input focuses, and anything vertically
+ * centred would be pushed under it.
+ */
+.mobile-search-overlay {
+    position: fixed;
+    inset: 0;
+
+    /*
+     * Below PrimeNG's overlay layer on purpose. The autocomplete panel is appendTo="body" and PrimeNG
+     * assigns it roughly 1001, so anything higher here would draw the backdrop over the very results the
+     * overlay exists to show. 900 still clears the Metronic header, which sits far lower.
+     */
+    z-index: 900;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+}
+
+.mobile-search-overlay__panel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bs-body-bg, #ffffff);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+
+    /* The field takes the panel; only the close button keeps its own width. */
+    menu-search-bar {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    /* Override the desktop cap -- on a phone the whole width is the point. */
+    .globalSearchContainer {
+        max-width: none;
+    }
+}
+
+.mobile-search-overlay__close {
+    flex: 0 0 auto;
+    color: var(--bs-gray-700, #5e6278);
+}
