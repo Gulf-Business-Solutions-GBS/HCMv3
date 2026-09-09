@@ -1,5 +1,6 @@
 using System.Linq;
 using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using HCMv3.BusinessRules.Hooks;
 using HCMv3.BusinessRules.Services;
@@ -26,9 +27,10 @@ public class EmployeeAbsenceBusinessRuleHook : BusinessRuleEntityHookBase<Employ
         IBusinessRuleRunner runner,
         IRuleBaseObjectRegistry registry,
         IAbpSession session,
+        IUnitOfWorkManager unitOfWorkManager,
         IRuleEmployeeSnapshotBuilder employeeSnapshotBuilder,
         IRepository<AbsenceType> absenceTypeRepository)
-        : base(runner, registry, session)
+        : base(runner, registry, session, unitOfWorkManager)
     {
         _employeeSnapshotBuilder = employeeSnapshotBuilder;
         _absenceTypeRepository = absenceTypeRepository;

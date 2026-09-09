@@ -1,3 +1,4 @@
+using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using HCMv3.BusinessRules.Hooks;
 using HCMv3.BusinessRules.Services;
@@ -17,8 +18,9 @@ public class EmployeeBusinessRuleHook : BusinessRuleEntityHookBase<Employee>
     public EmployeeBusinessRuleHook(
         IBusinessRuleRunner runner,
         IRuleBaseObjectRegistry registry,
-        IAbpSession session)
-        : base(runner, registry, session)
+        IAbpSession session,
+        IUnitOfWorkManager unitOfWorkManager)
+        : base(runner, registry, session, unitOfWorkManager)
     {
     }
 

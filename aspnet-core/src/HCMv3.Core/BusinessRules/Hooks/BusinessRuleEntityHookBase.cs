@@ -1,6 +1,7 @@
 using System;
 
 using Abp.Domain.Entities;
+using Abp.Domain.Uow;
 using Abp.Events.Bus.Entities;
 using Abp.Events.Bus.Handlers;
 using Abp.Runtime.Session;
@@ -46,11 +47,13 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
     protected BusinessRuleEntityHookBase(
         IBusinessRuleRunner runner,
         IRuleBaseObjectRegistry registry,
-        IAbpSession session)
+        IAbpSession session,
+        IUnitOfWorkManager unitOfWorkManager)
     {
         Runner = runner;
         Registry = registry;
         Session = session;
+        UnitOfWorkManager = unitOfWorkManager;
         Logger = NullLogger.Instance;
     }
 
@@ -61,6 +64,8 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
     protected IRuleBaseObjectRegistry Registry { get; }
 
     protected IAbpSession Session { get; }
+
+    protected IUnitOfWorkManager UnitOfWorkManager { get; }
 
     /// <summary>The base object code whose rules this hook runs. Must match a registered descriptor.</summary>
     protected abstract string BaseObjectCode { get; }
@@ -85,6 +90,24 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
     {
         if (entity == null)
         {
+            return;
+        }
+
+        // No ambient unit of work means no context to read from. A rule needs to look up the employee,
+        // the leave type and the org assignment, and the repositories it would use resolve their
+        // DbContext from the current unit of work -- with none open they hand back a context that has
+        // already been disposed, and the save dies with ObjectDisposedException from inside the engine.
+        //
+        // That is what a seeder, a background job, or a test reaching for a raw DbContext does. Skipping
+        // is deliberate rather than defensive: a save made outside a unit of work has already stepped
+        // outside ABP's conventions, and taking a leave record down because the rules engine could not
+        // reach its data is the trade this class refuses to make everywhere else too.
+        if (UnitOfWorkManager.Current == null)
+        {
+            Logger.Debug(
+                "No ambient unit of work while saving a rule-enabled entity for base object '"
+                + BaseObjectCode + "'. Rules were skipped for this save.");
+
             return;
         }
 
