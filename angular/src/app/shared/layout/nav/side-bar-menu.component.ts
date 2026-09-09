@@ -12,7 +12,6 @@ import * as objectPath from 'object-path';
 import { AppMenuItem } from './app-menu-item';
 import { MenuComponent, DrawerComponent, ToggleComponent, ScrollComponent } from '@metronic/app/kt/components';
 import { NgTemplateOutlet, NgClass } from '@angular/common';
-import { MenuSearchBarComponent } from './menu-search-bar/menu-search-bar.component';
 import { Tooltip } from 'primeng/tooltip';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 
@@ -21,7 +20,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
     selector: 'side-bar-menu',
     styleUrl: './side-bar-menu.component.css',
     encapsulation: ViewEncapsulation.None,
-    imports: [MenuSearchBarComponent, NgTemplateOutlet, NgClass, RouterLinkActive, Tooltip, RouterLink, LocalizePipe],
+    imports: [NgTemplateOutlet, NgClass, RouterLinkActive, Tooltip, RouterLink, LocalizePipe],
 })
 export class SideBarMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
     private router = inject(Router);

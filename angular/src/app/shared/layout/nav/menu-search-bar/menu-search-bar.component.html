@@ -1,13 +1,46 @@
 @if (isMenuSearchActive) {
     <p-autoComplete
         [(ngModel)]="selected"
-        [suggestions]="searchMenuResults"
-        (completeMethod)="searchMenuItem($event)"
-        (onSelect)="selectMenuItem($event)"
+        [suggestions]="searchResults"
+        (completeMethod)="search($event)"
+        (onSelect)="selectResult($event)"
+        [group]="true"
+        optionGroupLabel="label"
+        optionGroupChildren="items"
         optionLabel="name"
-        placeholder="{{ 'QuickNav' | localize }}"
+        placeholder="{{ 'SearchActionsOrPeople' | localize }}"
         [minLength]="1"
+        [delay]="250"
         appendTo="body"
-        inputStyleClass="form-control menuSearchBarInput"
-        styleClass="menuSearchBarContainer" />
+        inputStyleClass="form-control globalSearchInput"
+        styleClass="globalSearchContainer">
+        <ng-template #group let-group>
+            <span class="global-search__group">{{ group.label }}</span>
+        </ng-template>
+
+        <ng-template #item let-result>
+            @if (result.kind === 'person') {
+                <span class="global-search__person">
+                    @if (result.photoUrl) {
+                        <img class="global-search__avatar" [src]="result.photoUrl" alt="" (error)="onPhotoError(result)" />
+                    } @else {
+                        <span class="global-search__avatar global-search__avatar--blank" aria-hidden="true">
+                            <i class="fa fa-user"></i>
+                        </span>
+                    }
+                    <span class="global-search__person-text">
+                        <span class="global-search__person-name">{{ result.name }}</span>
+                        @if (result.subtitle) {
+                            <span class="global-search__person-subtitle">{{ result.subtitle }}</span>
+                        }
+                    </span>
+                </span>
+            } @else {
+                <span class="global-search__action">
+                    <i class="fa fa-arrow-right global-search__action-icon" aria-hidden="true"></i>
+                    <span>{{ result.name }}</span>
+                </span>
+            }
+        </ng-template>
+    </p-autoComplete>
 }

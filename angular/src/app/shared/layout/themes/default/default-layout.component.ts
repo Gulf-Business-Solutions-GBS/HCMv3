@@ -19,6 +19,7 @@ import { SideBarMenuComponent } from '../../nav/side-bar-menu.component';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../footer.component';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { MenuSearchBarComponent } from '../../nav/menu-search-bar/menu-search-bar.component';
 
 @Component({
     templateUrl: './default-layout.component.html',
@@ -40,6 +41,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
         RouterOutlet,
         FooterComponent,
         LocalizePipe,
+        MenuSearchBarComponent,
     ],
 })
 export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements OnInit {

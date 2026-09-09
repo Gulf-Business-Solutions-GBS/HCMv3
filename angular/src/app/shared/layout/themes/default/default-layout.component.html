@@ -58,7 +58,15 @@
                         </div>
                     }
                     @if (!appSession.theme.isTopMenuUsed) {
-                        <div>&nbsp;</div>
+                        <!--
+                          Global search. Sits in the space the side-menu layout previously left blank, so
+                          it reads as the centre of the header the way Outlook and SuccessFactors place
+                          theirs. Hidden below lg: on a phone the header has room for the logo and the
+                          controls, and squeezing a search field between them leaves all three unusable.
+                        -->
+                        <div class="d-none d-lg-flex align-items-center flex-grow-1 justify-content-center px-4">
+                            <menu-search-bar />
+                        </div>
                     }
                     <!--end::Menu wrapper-->
                     <!--begin::Navbar-->

@@ -1,10 +1,4 @@
 <div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false" [class]="menuClass()">
-    @if (currentTheme.baseSettings.menu.searchActive) {
-        <div class="menu-item mb-5 mt-5" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-            <menu-search-bar />
-        </div>
-    }
-
     <!-- Favourites and Recently Visited used to sit here. They now live on the dashboard, below Quick
          Actions: putting them in the sidebar meant they scrolled with 585 menu items, and a shortcut you
          have to scroll the menu to reach is not a shortcut. The star on each menu item stays -- pinning

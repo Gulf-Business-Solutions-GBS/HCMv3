@@ -5751,6 +5751,10 @@
     <text name="ProposedValueIsRequired">أدخل قيمة جديدة لـ {0}، أو ألغِ تحديده.</text>
     <text name="YouAlreadyHaveAPendingPersonalDataChange">لديك طلب تعديل بيانات شخصية بانتظار الاعتماد مسبقاً.</text>
     <text name="ScreenNotPermittedOrUnavailable">تعذّر فتح هذه الشاشة. قد لا تكون لديك صلاحية عليها.</text>
+    <!-- Header global search -->
+    <text name="SearchActionsOrPeople">ابحث عن إجراء أو شخص</text>
+    <text name="People">الأشخاص</text>
+    <text name="MoreResultsAvailable">تابع الكتابة لتضييق النتائج</text>
     <text name="NotLinkedToEmployee">حسابك غير مرتبط بسجل موظف</text>
     <text name="NotLinkedToEmployeeHint">لا تظهر البيانات الشخصية ورصيد الإجازات والحضور لعدم وجود سجل موظف خلف هذا الحساب. الرجاء مراجعة الموارد البشرية لربطه إذا كنت بحاجة إلى الخدمة الذاتية.</text>
     <text name="NoSelfServiceActionsGranted">لم تُمنح لحسابك أي إجراءات خدمة ذاتية.</text>
