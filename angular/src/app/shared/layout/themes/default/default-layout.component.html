@@ -95,13 +95,19 @@
                           Mobile search. Below lg the header has no room for a field between the logo and
                           these controls, so it collapses to an icon that opens a full-width overlay --
                           the field then gets the whole screen instead of a squeezed sliver.
+
+                          The wrapper is the one every other navbar item uses. Without it the button does
+                          not vertically centre against the flag, bell and avatar beside it, and it loses
+                          the shared spacing too.
                         -->
-                        <div
-                            class="btn btn-icon btn-active-color-primary w-35px h-35px d-lg-none"
-                            [title]="'Search' | localize"
-                            [attr.aria-label]="'Search' | localize"
-                            (click)="openMobileSearch()">
-                            <i class="fa fa-search" aria-hidden="true"></i>
+                        <div class="d-flex align-items-center ms-1 ms-lg-3 d-lg-none">
+                            <div
+                                class="btn btn-icon btn-active-color-primary w-35px h-35px"
+                                [title]="'Search' | localize"
+                                [attr.aria-label]="'Search' | localize"
+                                (click)="openMobileSearch()">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </div>
                         </div>
                         @if (!installationMode) {
                             <active-delegated-users-combo />
