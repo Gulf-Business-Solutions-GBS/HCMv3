@@ -2,9 +2,20 @@
  * Header global search. The field is centred and wide like the Outlook and SuccessFactors bars it is
  * modelled on, and shrinks with the viewport rather than pushing the header controls off-screen.
  */
-.globalSearchContainer {
+/*
+ * The host has to carry the width. A custom element is display:inline by default, so it shrank to its
+ * content and the width:100% below resolved against that sliver -- the field came out a few hundred
+ * pixels wide no matter what the header wrapper allowed it.
+ */
+:host {
+    display: block;
     width: 100%;
     max-width: 720px;
+}
+
+.globalSearchContainer {
+    display: block;
+    width: 100%;
 }
 
 .globalSearchInput {
