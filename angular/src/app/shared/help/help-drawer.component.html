@@ -1,0 +1,61 @@
+@if (help.isOpen()) {
+    <div class="help-backdrop" (click)="close()"></div>
+
+    <aside class="help-drawer" role="complementary" [attr.aria-label]="l('Help')">
+        <header class="help-head">
+            <div class="help-head-text">
+                <div class="help-eyebrow">{{ 'Help' | localize }}</div>
+                <h3 class="help-title">{{ help.content()?.title || l('Help') }}</h3>
+            </div>
+            <button
+                type="button"
+                class="btn-close"
+                (click)="close()"
+                [attr.aria-label]="l('Close')"></button>
+        </header>
+
+        <div class="help-body">
+            @if (help.loading()) {
+                <div class="help-placeholder">…</div>
+            } @else if (help.failed() || !help.content()) {
+                <div class="help-placeholder">{{ 'HelpNotAvailable' | localize }}</div>
+            } @else {
+                <div class="help-overview" [innerHTML]="help.content()!.overviewHtml"></div>
+
+                @for (group of groups(); track group.title) {
+                    <h4 class="help-group">{{ group.title }}</h4>
+
+                    @for (field of group.fields; track field.id) {
+                        <section
+                            class="help-topic"
+                            [id]="anchorId(field.id)"
+                            [class.help-topic-active]="isActive(field.id)">
+                            <h5 class="help-topic-title">{{ field.label | localize }}</h5>
+
+                            <div class="help-topic-body" [innerHTML]="field.html"></div>
+
+                            @if (field.rules) {
+                                <p class="help-rules">
+                                    <span class="help-rules-label">{{ 'Rules' | localize }}</span>
+                                    {{ field.rules }}
+                                </p>
+                            }
+
+                            @if (field.adminHtml) {
+                                <div class="help-admin">
+                                    <span class="help-admin-label">{{ 'AdministratorNote' | localize }}</span>
+                                    <div [innerHTML]="field.adminHtml"></div>
+                                </div>
+                            }
+                        </section>
+                    }
+                }
+            }
+        </div>
+
+        <footer class="help-foot">
+            <span>{{ 'HelpFieldsOnThisScreen' | localize: shownCount() }}</span>
+            <span class="help-hint"><kbd>F1</kbd> {{ 'HelpKeyHint' | localize }}</span>
+        </footer>
+    </aside>
+}

@@ -151,7 +151,8 @@ function rulesFor(prop) {
     }
 
     if (prop.lookupTarget) {
-        parts.push(`Chosen from ${prop.lookupTarget} master data.`);
+        // Entity type names are PascalCase ("MaritalStatus"); the reader should see words.
+        parts.push(`Chosen from ${prop.lookupTarget.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`);
     } else {
         switch (prop.bareType) {
             case 'DateTime':
@@ -456,6 +457,155 @@ function cmdStubs(argv) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// build -- markdown -> runtime JSON (DESIGN.md §11)
+// ---------------------------------------------------------------------------------------------
+
+const ASSET_DIR = 'angular/src/assets/help';
+
+const escapeHtml = (s) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** Inline markdown only -- the content style is deliberately narrow (see DESIGN.md §5.3). */
+function inlineMd(text) {
+    return escapeHtml(text)
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
+        .replace(/ -- /g, ' — ');
+}
+
+function blocksToHtml(lines) {
+    const html = [];
+    let para = [];
+    let list = [];
+
+    const flushPara = () => {
+        if (para.length) html.push(`<p>${inlineMd(para.join(' '))}</p>`);
+        para = [];
+    };
+    const flushList = () => {
+        if (list.length) html.push(`<ul>${list.map((i) => `<li>${inlineMd(i)}</li>`).join('')}</ul>`);
+        list = [];
+    };
+
+    for (const raw of lines) {
+        const line = raw.trim();
+        if (!line) {
+            flushPara();
+            flushList();
+            continue;
+        }
+        const item = line.match(/^[-*]\s+(.*)$/);
+        if (item) {
+            flushPara();
+            list.push(item[1]);
+            continue;
+        }
+        flushList();
+        para.push(line);
+    }
+    flushPara();
+    flushList();
+    return html.join('');
+}
+
+/** Split one `##` section into its public body, its admin-only body, and its condition. */
+function parseSectionBody(md) {
+    const lines = md.split(/\r?\n/).slice(1); // drop the "## …" heading
+    const pub = [];
+    const admin = [];
+    let when = null;
+    let inAdmin = false;
+
+    for (const line of lines) {
+        const t = line.trim();
+        const w = t.match(/^<!--\s*when:\s*(.+?)\s*-->$/);
+        if (w) {
+            when = w[1];
+            continue;
+        }
+        if (/^<!--/.test(t)) continue; // alias markers and other authoring notes
+        if (t === ':::admin') {
+            inAdmin = true;
+            continue;
+        }
+        if (t === ':::') {
+            inAdmin = false;
+            continue;
+        }
+        (inAdmin ? admin : pub).push(line);
+    }
+
+    // Rules are regenerated at build time from the entity, never taken from prose.
+    const body = pub.filter((l) => !/^\s*\*\*Rules\.\*\*/.test(l));
+    return { html: blocksToHtml(body), adminHtml: blocksToHtml(admin), when };
+}
+
+function cmdBuild(argv) {
+    const langs = argv.includes('--lang') ? argv[argv.indexOf('--lang') + 1].split(',') : LANGS;
+    const inv = buildInventory();
+    let written = 0;
+
+    for (const page of inv.pages) {
+        for (const lang of langs) {
+            const rel = path.join(CONTENT_DIR, lang, `${page.helpId}.md`);
+            if (!exists(rel)) {
+                console.log(`skip     ${lang}/${page.helpId} (no content file)`);
+                continue;
+            }
+            const { head, sections } = splitExisting(read(rel));
+            const overviewMd = head.split(/\n## Overview\n/)[1] || '';
+
+            const fields = [];
+            const aliasIndex = {};
+            for (const f of page.fields) {
+                const section = sections.get(f.canonicalId);
+                const parsed = section
+                    ? parseSectionBody(section)
+                    : { html: '', adminHtml: '', when: null };
+                for (const a of f.aliases) aliasIndex[a] = f.canonicalId;
+                fields.push({
+                    id: f.canonicalId,
+                    label: f.locKey,
+                    section: f.section,
+                    aliases: f.aliases,
+                    rules: f.rules,
+                    when: parsed.when,
+                    html: parsed.html,
+                    adminHtml: parsed.adminHtml,
+                    stub: !parsed.html || parsed.html.includes(TODO),
+                });
+            }
+
+            const out = path.join(ASSET_DIR, lang, `${page.helpId}.json`);
+            fs.mkdirSync(path.dirname(abs(out)), { recursive: true });
+            fs.writeFileSync(
+                abs(out),
+                JSON.stringify(
+                    {
+                        helpId: page.helpId,
+                        lang,
+                        title: page.title,
+                        entity: page.entity.fullName,
+                        overviewHtml: blocksToHtml(overviewMd.split(/\r?\n/)),
+                        aliasIndex,
+                        fields,
+                    },
+                    null,
+                    2
+                ) + '\n'
+            );
+            written++;
+            const stubbed = fields.filter((f) => f.stub).length;
+            console.log(`wrote    ${out}  (${fields.length} fields, ${stubbed} still stubs)`);
+        }
+    }
+    console.log(`\n${written} file(s) written`);
+    return 0;
+}
+
+// ---------------------------------------------------------------------------------------------
 // coverage (DESIGN.md §12)
 // ---------------------------------------------------------------------------------------------
 
@@ -526,10 +676,10 @@ function cmdCoverage(argv) {
 // ---------------------------------------------------------------------------------------------
 
 const [, , cmd, ...argv] = process.argv;
-const commands = { extract: cmdExtract, stubs: cmdStubs, coverage: cmdCoverage };
+const commands = { extract: cmdExtract, stubs: cmdStubs, build: cmdBuild, coverage: cmdCoverage };
 
 if (!commands[cmd]) {
-    console.error('usage: help-tool.mjs <extract|stubs|coverage> [--lang en,ar] [--check]');
+    console.error('usage: help-tool.mjs <extract|stubs|build|coverage> [--lang en,ar] [--check]');
     process.exit(2);
 }
 process.exit(commands[cmd](argv));

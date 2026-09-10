@@ -6050,5 +6050,10 @@
     <text name="ReadOnly">Read-only</text>
     <text name="RuleRelatedRecord">Related record</text>
     <text name="ConfigureBusinessRules">Configure Business Rules</text>
+    <text name="Help">Help</text>
+    <text name="AdministratorNote">Administrator note</text>
+    <text name="HelpNotAvailable">No help has been written for this screen yet.</text>
+    <text name="HelpFieldsOnThisScreen">{0} fields on this screen</text>
+    <text name="HelpKeyHint">Press F1 on any field for its explanation</text>
   </texts>
 </localizationDictionary>

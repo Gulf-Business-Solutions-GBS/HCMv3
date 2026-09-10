@@ -5889,5 +5889,10 @@
     <text name="ReadOnly">للقراءة فقط</text>
     <text name="RuleRelatedRecord">سجل مرتبط</text>
     <text name="ConfigureBusinessRules">إعداد قواعد العمل</text>
+    <text name="Help">مساعدة</text>
+    <text name="AdministratorNote">ملاحظة للمسؤول</text>
+    <text name="HelpNotAvailable">لم تتم كتابة مساعدة لهذه الشاشة بعد.</text>
+    <text name="HelpFieldsOnThisScreen">{0} حقلاً في هذه الشاشة</text>
+    <text name="HelpKeyHint">اضغط F1 على أي حقل لعرض شرحه</text>
   </texts>
 </localizationDictionary>

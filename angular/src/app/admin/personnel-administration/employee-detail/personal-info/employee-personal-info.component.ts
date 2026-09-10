@@ -13,6 +13,8 @@ import {
     EmploymentType,
 } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditEmployeeModalComponent } from '../../employees/create-or-edit-employee-modal.component';
+import { HelpPageDirective } from '@app/shared/help/help-page.directive';
+import { HelpService } from '@app/shared/help/help.service';
 
 /**
  * The employee's own particulars, as a read view with Edit in reach.
@@ -32,10 +34,19 @@ import { CreateOrEditEmployeeModalComponent } from '../../employees/create-or-ed
     selector: 'employee-personal-info',
     templateUrl: './employee-personal-info.component.html',
     styleUrl: './employee-personal-info.component.css',
-    imports: [BusyIfDirective, LocalizePipe, PermissionPipe, DatePipe, CreateOrEditEmployeeModalComponent],
+    imports: [
+        BusyIfDirective,
+        LocalizePipe,
+        PermissionPipe,
+        DatePipe,
+        CreateOrEditEmployeeModalComponent,
+        HelpPageDirective,
+    ],
 })
 export class EmployeePersonalInfoComponent extends AppComponentBase implements OnInit {
     private _employeesService = inject(EmployeesServiceProxy);
+
+    readonly help = inject(HelpService);
 
     readonly employeeId = input<number>();
 

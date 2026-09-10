@@ -23,6 +23,15 @@ Creates or **merges** skeleton Markdown under `docs/help/{en,ar}/`. Safe to re-r
 - sections for fields no longer on screen are **kept**, and reported by `coverage`
 
 ```bash
+node tools/help/help-tool.mjs build [--lang en,ar]
+```
+Compiles the Markdown into the runtime payload the Angular drawer loads,
+`angular/src/assets/help/{lang}/{helpId}.json` — one file per screen, fetched on first open and
+cached. Rules text is regenerated here too, so prose can never carry a stale validation rule.
+Build only the languages that actually have prose: a missing language falls back to English at
+runtime, which is better than shipping a file full of `_TODO_`.
+
+```bash
 node tools/help/help-tool.mjs coverage [--check]
 ```
 Three-bucket report (DESIGN.md §12). `--check` exits non-zero on errors, for CI.

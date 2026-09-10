@@ -56,10 +56,16 @@ Each topic may declare aliases. The runtime resolver maps whatever it finds in t
 | Surface | What is in the DOM | Alias form |
 |---|---|---|
 | Edit modal | `<input id="Employee_NationalityId">` | `dom:Employee_NationalityId` |
-| Edit modal | `name="NationalityId"` | resolved via page `entity:` |
-| Read card | `<dt>` with localize key `Nationality` | `loc:Nationality` |
+| Read card | `<dt data-help-loc="Nationality">` | `loc:Nationality` |
 
-Aliases are declared in frontmatter and are generated automatically in Phase 0, not hand-written.
+Aliases are generated in Phase 0, not hand-written, and are compiled into the page JSON as an
+`aliasIndex` the runtime resolver looks up directly.
+
+**The read view needs one marker per field; the edit form needs none.** A rendered template
+contains the *translated* label, not the localization key, so a read-only `<dt>` has nothing a
+resolver can key on — hence `data-help-loc="<localization key>"`, which simply repeats the key the
+template already names one line later. Edit forms are free: `id="Entity_Property"` is already there
+by ASP.NET Zero convention.
 
 ### 4.3 Page id
 
@@ -175,7 +181,9 @@ pandoc over the same tree. No separate authoring.
 
 Esc is rejected as an open-help key: Bootstrap modals, PrimeNG overlays and `appBsModal` all consume it, and rebinding it would fight the entire UI.
 
-**Read-only screens have no focused input.** On a `<dl>` card the target is resolved from the hovered `<dt>`/`<dd>` pair; each `<dt>` also becomes focusable (`tabindex="0"`) so keyboard users can reach it. A `?` glyph appears on hover/focus for mouse users.
+**Read-only screens have no focused input.** On a `<dl>` card the target is resolved from the hovered `<dt>`/`<dd>` pair — the pointer is usually over the value, so the resolver walks from a `<dd>` back to its preceding `<dt>`.
+
+Making each `<dt>` focusable with `tabindex="0"` was considered and **rejected**: it would insert 39 extra tab stops into one screen, which costs every keyboard user on every visit to buy a feature few of them would find. Keyboard users press **Alt+H** instead and get the whole screen's fields as one readable list, which is the better experience anyway.
 
 ## 8. Visibility and tenancy
 
@@ -270,9 +278,16 @@ Without the third bucket every conditional field would fail the gate.
 | `HelpMetadataAppService` | Application | EF model reflection, §9 |
 | `IHelpMetadataAppService` + DTOs | Application.Shared | |
 | `Pages.Administration.HelpTechnicalInfo` | Core (AppPermissions + provider) | |
-| Compiled help JSON | Web.Host static assets | versioned, cacheable |
+| Compiled help JSON | `angular/src/assets/help/` | see below |
 
 No new entities in Phase 1–3. The dynamic-property `HelpText` field (§8.3) is the only schema change, and it lands in Phase 4.
+
+**The compiled JSON ships as an Angular asset, not from Web.Host.** `src/assets` is already served
+wholesale, so this needs no configuration, no API round trip and no running backend to work in
+development; the content is versioned with the SPA that renders it. Content is fetched per page and
+cached in memory, so a screen costs one small request the first time it is opened and nothing
+afterwards. Tenant-specific help (§8.3) still arrives from the API and is merged client-side, so
+this choice does not foreclose it.
 
 ## 14. Phasing
 
@@ -295,6 +310,18 @@ No new entities in Phase 1–3. The dynamic-property `HelpText` field (§8.3) is
 | Help-open key | F1 / Shift+F1 / Alt+H. **Not Esc.** | 2026-09-09 |
 | Visibility | Runtime DOM filtering in-app; `when:` for static | 2026-09-09 |
 | Arabic prose location | Parallel Markdown tree, not localization XML | 2026-09-09 |
+| Compiled JSON location | Angular asset, not Web.Host static | 2026-09-10 |
+| Read-view field marker | `data-help-loc="<loc key>"`; edit forms unchanged | 2026-09-10 |
+| `tabindex` on `<dt>` | Rejected — Alt+H is the keyboard path instead | 2026-09-10 |
+| Admin notes in-app | Shown to all, clearly labelled; the gated surface is the technical tab | 2026-09-10 |
+| Motion | Never load-bearing: entry animation offsets by 1.5rem, not 100%; F1 scroll is instant, not smooth | 2026-09-10 |
+
+**On that last one.** Both the entry animation and the F1 scroll were first written the obvious way
+— `translateX(100%)` and `scrollIntoView({behavior: 'smooth'})` — and both failed the same way when
+animation did not run: the drawer sat entirely off-screen, and the topic highlighted somewhere the
+reader could not see. A help system whose whole purpose is answering "what is this field" must not
+be able to leave the reader looking at nothing because a compositor was busy. Decoration degrades;
+it does not take the feature with it.
 
 ## 16. Survey findings behind this design
 

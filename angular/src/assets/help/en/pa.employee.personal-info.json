@@ -1,0 +1,627 @@
+{
+  "helpId": "pa.employee.personal-info",
+  "lang": "en",
+  "title": "Employee — Personal Information",
+  "entity": "HCMv3.PersonnelAdministration.Employee",
+  "overviewHtml": "<p>The employee's own particulars, shown as a read-only record with <strong>Edit</strong> in reach.</p><p>Every other tab on an employee record lists things that happen <em>to</em> them — absences, loans, contracts, gratuities. This tab is the person themselves: who they are, how to reach them, and who to call in an emergency.</p><p>The fields are shown as text rather than inputs because the common case is looking something up, not changing it. Choosing <strong>Edit</strong> opens the same form used to create an employee, so validation and business rules are identical wherever the record is changed.</p>",
+  "aliasIndex": {
+    "loc:Code": "Employee.Code",
+    "dom:Employee_Code": "Employee.Code",
+    "loc:FullNameEn": "Employee.FullNameEn",
+    "loc:FullNameAr": "Employee.FullNameAr",
+    "loc:Title": "Employee.TitleId",
+    "dom:Employee_TitleId": "Employee.TitleId",
+    "loc:Status": "Employee.Status",
+    "dom:Employee_Status": "Employee.Status",
+    "loc:EmploymentType": "Employee.EmploymentType",
+    "dom:Employee_EmploymentType": "Employee.EmploymentType",
+    "loc:Gender": "Employee.Gender",
+    "dom:Employee_Gender": "Employee.Gender",
+    "loc:BirthDate": "Employee.BirthDate",
+    "dom:Employee_BirthDate": "Employee.BirthDate",
+    "loc:BirthPlace": "Employee.BirthPlaceId",
+    "dom:Employee_BirthPlaceId": "Employee.BirthPlaceId",
+    "loc:Nationality": "Employee.NationalityId",
+    "dom:Employee_NationalityId": "Employee.NationalityId",
+    "loc:Religion": "Employee.ReligionId",
+    "dom:Employee_ReligionId": "Employee.ReligionId",
+    "loc:MaritalStatus": "Employee.MaritalStatusId",
+    "dom:Employee_MaritalStatusId": "Employee.MaritalStatusId",
+    "loc:Qualification": "Employee.QualificationId",
+    "dom:Employee_QualificationId": "Employee.QualificationId",
+    "loc:BloodGroup": "Employee.BloodGroup",
+    "dom:Employee_BloodGroup": "Employee.BloodGroup",
+    "loc:CivilID": "Employee.CivilID",
+    "dom:Employee_CivilID": "Employee.CivilID",
+    "loc:PACINumber": "Employee.PACINumber",
+    "loc:JoiningDate": "Employee.JoiningDate",
+    "dom:Employee_JoiningDate": "Employee.JoiningDate",
+    "loc:ProbationDays": "Employee.ProbationDays",
+    "dom:Employee_ProbationDays": "Employee.ProbationDays",
+    "loc:ProbationEndDate": "Employee.ProbationEndDate",
+    "loc:RecruitmentType": "Employee.RecruitmentTypeId",
+    "dom:Employee_RecruitmentTypeId": "Employee.RecruitmentTypeId",
+    "loc:PreviousEmpCode": "Employee.PreviousEmpCode",
+    "dom:Employee_PreviousEmpCode": "Employee.PreviousEmpCode",
+    "loc:ReferenceCode": "Employee.ReferenceCode",
+    "dom:Employee_ReferenceCode": "Employee.ReferenceCode",
+    "loc:Email": "Employee.Email",
+    "dom:Employee_Email": "Employee.Email",
+    "loc:AlternateEmail": "Employee.AlternateEmail",
+    "dom:Employee_AlternateEmail": "Employee.AlternateEmail",
+    "loc:Mobile": "Employee.Mobile",
+    "dom:Employee_Mobile": "Employee.Mobile",
+    "loc:Telephone": "Employee.Telephone",
+    "dom:Employee_Telephone": "Employee.Telephone",
+    "loc:BusinessLandline": "Employee.BusinessLandline",
+    "dom:Employee_BusinessLandline": "Employee.BusinessLandline",
+    "loc:BusinessExtension": "Employee.BusinessExtension",
+    "dom:Employee_BusinessExtension": "Employee.BusinessExtension",
+    "loc:CurrentAddress": "Employee.CurrentAddress",
+    "dom:Employee_CurrentAddress": "Employee.CurrentAddress",
+    "loc:PermanentAddress": "Employee.PermanentAddress",
+    "dom:Employee_PermanentAddress": "Employee.PermanentAddress",
+    "loc:City": "Employee.City",
+    "dom:Employee_City": "Employee.City",
+    "loc:Governorate": "Employee.GovernorateId",
+    "dom:Employee_GovernorateId": "Employee.GovernorateId",
+    "loc:Country": "Employee.CountryId",
+    "dom:Employee_CountryId": "Employee.CountryId",
+    "loc:ZipCode": "Employee.ZipCode",
+    "dom:Employee_ZipCode": "Employee.ZipCode",
+    "loc:EmergencyContact": "Employee.EmergencyContact",
+    "dom:Employee_EmergencyContact": "Employee.EmergencyContact",
+    "loc:EmergencyRelation": "Employee.EmergencyRelation",
+    "dom:Employee_EmergencyRelation": "Employee.EmergencyRelation",
+    "loc:EmergencyNumber": "Employee.EmergencyNumber",
+    "dom:Employee_EmergencyNumber": "Employee.EmergencyNumber",
+    "loc:EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "dom:Employee_EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "loc:CriticalIllness": "Employee.CriticalIllness",
+    "dom:Employee_CriticalIllness": "Employee.CriticalIllness"
+  },
+  "fields": [
+    {
+      "id": "Employee.Code",
+      "label": "Code",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Code",
+        "dom:Employee_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's business identifier, unique within the company. It appears on payslips, reports and import files, and is the number colleagues will quote when they refer to this person.</p><p><strong>Example.</strong> <code>001245</code></p><p><strong>Why it matters.</strong> Left blank on a new record, the system assigns the next number automatically (highest existing number plus one).</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FullNameEn",
+      "label": "FullNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FullNameEn"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The complete English name, assembled from the four English name parts on the edit form.</p><p><strong>Example.</strong> <code>Ahmed Khaled Saleh Al-Mutairi</code></p><p><strong>Why it matters.</strong> Derived rather than typed. To correct it, edit the individual name parts; this field then rebuilds itself.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FullNameAr",
+      "label": "FullNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FullNameAr"
+      ],
+      "rules": "Optional. Maximum 512 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The complete Arabic name, assembled from the four Arabic name parts.</p><p><strong>Example.</strong> <code>أحمد خالد صالح المطيري</code></p><p><strong>Why it matters.</strong> Used on Arabic statutory output such as PIFSS submissions and Ministry of Labour paperwork, where the name must match the civil ID exactly.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.TitleId",
+      "label": "Title",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Title",
+        "dom:Employee_TitleId"
+      ],
+      "rules": "Optional. Chosen from Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The courtesy title used when addressing the employee in letters and generated correspondence.</p><p><strong>Example.</strong> <code>Mr</code></p>",
+      "adminHtml": "<p>Maintained under General Master Info → Titles.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.Status",
+      "label": "Status",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Status",
+        "dom:Employee_Status"
+      ],
+      "rules": "Required. One of: Inactive, Active.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this record is currently in service. Inactive employees stay on file with their full history but drop out of payroll runs, org charts and most selection lists.</p><p><strong>Example.</strong> <code>Active</code></p><p><strong>Why it matters.</strong> Set this to Inactive rather than deleting a leaver — deleting would take their payroll and leave history with them.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmploymentType",
+      "label": "EmploymentType",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:Employee_EmploymentType"
+      ],
+      "rules": "Required. One of: Permanent, Temporary, ALL.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee is on permanent or temporary terms.</p><p><strong>Example.</strong> <code>Permanent</code></p><p><strong>Why it matters.</strong> Determines eligibility for benefits, leave accrual and end-of-service entitlements that are restricted to permanent staff.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Gender",
+      "label": "Gender",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Gender",
+        "dom:Employee_Gender"
+      ],
+      "rules": "Required. One of: Male, Female.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The gender recorded on the civil ID.</p><p><strong>Example.</strong> <code>Female</code></p><p><strong>Why it matters.</strong> Drives statutory reporting and gender-specific leave entitlements such as maternity leave.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthDate",
+      "label": "BirthDate",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:Employee_BirthDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Date of birth exactly as it appears on the civil ID.</p><p><strong>Example.</strong> <code>14 March 1988</code></p><p><strong>Why it matters.</strong> Drives retirement age, age-based benefit rules and several statutory returns. A mismatch against the civil ID will cause government file submissions to be rejected.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthPlaceId",
+      "label": "BirthPlace",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BirthPlace",
+        "dom:Employee_BirthPlaceId"
+      ],
+      "rules": "Optional. Chosen from City master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The city recorded as place of birth.</p><p><strong>Example.</strong> <code>Kuwait City</code></p><p><strong>Why it matters.</strong> Appears on residency and visa paperwork for expatriate employees.</p>",
+      "adminHtml": "<p>The list is the shared City master data, maintained under General Master Info → Cities.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.NationalityId",
+      "label": "Nationality",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Employee_NationalityId"
+      ],
+      "rules": "Required. Chosen from Nationality master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's nationality as recorded on the civil ID.</p><p><strong>Example.</strong> <code>Kuwaiti</code></p><p><strong>Why it matters.</strong> One of the most consequential fields on the record. It drives PIFSS social-security eligibility, the indemnity calculation, expatriate allowances and work-permit handling.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Nationalities. Deactivating a nationality hides it from new records but leaves existing employees untouched.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReligionId",
+      "label": "Religion",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Religion",
+        "dom:Employee_ReligionId"
+      ],
+      "rules": "Optional. Chosen from Religion master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Religion, where the organisation records it.</p><p><strong>Example.</strong> <code>Muslim</code></p><p><strong>Why it matters.</strong> Used only where statutory or policy entitlements differ, such as Hajj leave. Leave it blank if your organisation does not track it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.MaritalStatusId",
+      "label": "MaritalStatus",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MaritalStatus",
+        "dom:Employee_MaritalStatusId"
+      ],
+      "rules": "Optional. Chosen from Marital Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Current marital status.</p><p><strong>Example.</strong> <code>Married</code></p><p><strong>Why it matters.</strong> Feeds dependant-related allowances and benefit eligibility. Keep it current — a change of status can alter entitlement from the effective month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.QualificationId",
+      "label": "Qualification",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Employee_QualificationId"
+      ],
+      "rules": "Optional. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Highest completed academic or professional qualification.</p><p><strong>Example.</strong> <code>Bachelor of Engineering</code></p><p><strong>Why it matters.</strong> Used in job-profile matching, succession planning and manpower reporting.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BloodGroup",
+      "label": "BloodGroup",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BloodGroup",
+        "dom:Employee_BloodGroup"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Blood group, held for medical and emergency use.</p><p><strong>Example.</strong> <code>O+</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CivilID",
+      "label": "CivilID",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:CivilID",
+        "dom:Employee_CivilID"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The 12-digit Kuwait Civil ID number. This is the single strongest identifier on the record and must match the card exactly.</p><p><strong>Example.</strong> <code>288031400123</code></p><p><strong>Why it matters.</strong> Used to identify the employee in PIFSS and PACI submissions. An incorrect digit will cause those files to be rejected for the whole batch, not just this employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PACINumber",
+      "label": "PACINumber",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:PACINumber"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The PACI address reference for the employee, issued by the Public Authority for Civil Information.</p><p><strong>Example.</strong> <code>12345678</code></p><p><strong>Why it matters.</strong> Identifies the registered civil address, which some government submissions require alongside the civil ID.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.JoiningDate",
+      "label": "JoiningDate",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:JoiningDate",
+        "dom:Employee_JoiningDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date employment actually began.</p><p><strong>Example.</strong> <code>1 September 2024</code></p><p><strong>Why it matters.</strong> The anchor date for the entire record: seniority, indemnity and end-of-service calculations, leave accrual and the probation period are all measured from it. Changing it recalculates a great deal downstream.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ProbationDays",
+      "label": "ProbationDays",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ProbationDays",
+        "dom:Employee_ProbationDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Length of the probation period, counted in calendar days from the joining date.</p><p><strong>Example.</strong> <code>90</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ProbationEndDate",
+      "label": "ProbationEndDate",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ProbationEndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date probation ends.</p><p><strong>Example.</strong> <code>30 November 2024</code></p><p><strong>Why it matters.</strong> Calculated as joining date plus probation days and recalculated automatically whenever either changes. It is stored rather than derived on the fly so that reports and reminders can query it directly.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.RecruitmentTypeId",
+      "label": "RecruitmentType",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:RecruitmentType",
+        "dom:Employee_RecruitmentTypeId"
+      ],
+      "rules": "Optional. Chosen from Recruitment Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How this employee came into the organisation — direct hire, agency, internal transfer, and so on.</p><p><strong>Example.</strong> <code>Direct</code></p><p><strong>Why it matters.</strong> Used for recruitment cost analysis and source-of-hire reporting.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PreviousEmpCode",
+      "label": "PreviousEmpCode",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:PreviousEmpCode",
+        "dom:Employee_PreviousEmpCode"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The identifier this employee held previously — either in a system replaced by HCM, or during an earlier spell of employment.</p><p><strong>Example.</strong> <code>EMP-8841</code></p><p><strong>Why it matters.</strong> Kept so that historical records and archived reports can still be traced back to the person.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReferenceCode",
+      "label": "ReferenceCode",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ReferenceCode",
+        "dom:Employee_ReferenceCode"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A free reference of your own choosing, typically the key used for this employee in an external system.</p><p><strong>Example.</strong> <code>SAP-00123</code></p><p><strong>Why it matters.</strong> Not used by any calculation. It exists so integrations have somewhere to keep their own identifier.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Email",
+      "label": "Email",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Email",
+        "dom:Employee_Email"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work email address.</p><p><strong>Example.</strong> <code>ahmed.mutairi@company.com</code></p><p><strong>Why it matters.</strong> Where the system sends notifications, workflow approvals and self-service account details. If this is wrong the employee will not receive approval requests.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.AlternateEmail",
+      "label": "AlternateEmail",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:AlternateEmail",
+        "dom:Employee_AlternateEmail"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A secondary or personal email address.</p><p><strong>Example.</strong> <code>a.mutairi@gmail.com</code></p><p><strong>Why it matters.</strong> Used as a fallback, and for correspondence that must continue after the work account is closed at the end of service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Mobile",
+      "label": "Mobile",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Mobile",
+        "dom:Employee_Mobile"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Mobile telephone number, entered as digits without spaces or symbols.</p><p><strong>Example.</strong> <code>96550123456</code></p><p><strong>Why it matters.</strong> Used for SMS notifications and one-time passcodes. Include the country code so international sending works.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Telephone",
+      "label": "Telephone",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Employee_Telephone"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Home or personal landline number.</p><p><strong>Example.</strong> <code>22551234</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessLandline",
+      "label": "BusinessLandline",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:BusinessLandline",
+        "dom:Employee_BusinessLandline"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The direct office line for this employee.</p><p><strong>Example.</strong> <code>+965 2222 3344</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessExtension",
+      "label": "BusinessExtension",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:BusinessExtension",
+        "dom:Employee_BusinessExtension"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Internal switchboard extension.</p><p><strong>Example.</strong> <code>4417</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CurrentAddress",
+      "label": "CurrentAddress",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:CurrentAddress",
+        "dom:Employee_CurrentAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the employee lives now, in full.</p><p><strong>Example.</strong> <code>Block 4, Street 12, Building 7, Flat 3, Salmiya</code></p><p><strong>Why it matters.</strong> Used for correspondence and for any document that must show a residential address.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PermanentAddress",
+      "label": "PermanentAddress",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:PermanentAddress",
+        "dom:Employee_PermanentAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The permanent or home-country address, where it differs from the current one.</p><p><strong>Example.</strong> <code>House 22, Sector G-9, Islamabad, Pakistan</code></p><p><strong>Why it matters.</strong> Used at end of service for final correspondence and repatriation ticketing.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.City",
+      "label": "City",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:City",
+        "dom:Employee_City"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> City of the current address.</p><p><strong>Example.</strong> <code>Salmiya</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.GovernorateId",
+      "label": "Governorate",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:Governorate",
+        "dom:Employee_GovernorateId"
+      ],
+      "rules": "Optional. Chosen from Governorate master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Governorate of the current address.</p><p><strong>Example.</strong> <code>Hawalli</code></p>",
+      "adminHtml": "<p>Maintained under General Master Info → Governorates.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.CountryId",
+      "label": "Country",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:Country",
+        "dom:Employee_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Country of the current address.</p><p><strong>Example.</strong> <code>Kuwait</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ZipCode",
+      "label": "ZipCode",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:ZipCode",
+        "dom:Employee_ZipCode"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Postal code for the current address, where one applies.</p><p><strong>Example.</strong> <code>22001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContact",
+      "label": "EmergencyContact",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyContact",
+        "dom:Employee_EmergencyContact"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The name of the person to contact if something happens to this employee at work.</p><p><strong>Example.</strong> <code>Fatima Al-Mutairi</code></p><p><strong>Why it matters.</strong> Reviewed during onboarding and worth confirming annually — it is the one field nobody checks until it is needed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyRelation",
+      "label": "EmergencyRelation",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyRelation",
+        "dom:Employee_EmergencyRelation"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the emergency contact is related to the employee.</p><p><strong>Example.</strong> <code>Spouse</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyNumber",
+      "label": "EmergencyNumber",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyNumber",
+        "dom:Employee_EmergencyNumber"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Telephone number for the emergency contact.</p><p><strong>Example.</strong> <code>96555512345</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContactAddress",
+      "label": "EmergencyContactAddress",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyContactAddress",
+        "dom:Employee_EmergencyContactAddress"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Address of the emergency contact, where it differs from the employee's own.</p><p><strong>Example.</strong> <code>Block 4, Street 12, Building 7, Flat 3, Salmiya</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CriticalIllness",
+      "label": "CriticalIllness",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:CriticalIllness",
+        "dom:Employee_CriticalIllness"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Medical conditions, allergies or medication that first responders or the company doctor should know about.</p><p><strong>Example.</strong> <code>Type 1 diabetes; allergic to penicillin</code></p><p><strong>Why it matters.</strong> Sensitive personal data. Record only what genuinely serves the employee in an emergency, and restrict who can view this screen accordingly.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

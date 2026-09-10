@@ -47,6 +47,7 @@ import { AddFriendModalComponent } from './shared/layout/chat/add-friend-modal.c
 import { ChatBarComponent } from './shared/layout/chat/chat-bar.component';
 import { ThemeSelectionPanelComponent } from './shared/layout/theme-selection/theme-selection-panel.component';
 import { SessionTimeoutComponent } from './shared/common/session-timeout/session-timeout.component';
+import { HelpDrawerComponent } from './shared/help/help-drawer.component';
 
 @Component({
     templateUrl: './app.component.html',
@@ -77,6 +78,7 @@ import { SessionTimeoutComponent } from './shared/common/session-timeout/session
         ChatBarComponent,
         ThemeSelectionPanelComponent,
         SessionTimeoutComponent,
+        HelpDrawerComponent,
     ],
 })
 export class AppComponent extends AppComponentBase implements OnInit, AfterViewInit {
