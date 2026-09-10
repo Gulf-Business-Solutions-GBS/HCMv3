@@ -1,0 +1,25 @@
+{
+  "$comment": "Help page registry. One entry per documented screen. See DESIGN.md §4.3, §11.",
+  "pages": [
+    {
+      "helpId": "pa.employee.personal-info",
+      "title": "Employee — Personal Information",
+      "audience": ["end-user", "admin"],
+      "permissions": ["Pages.PersonnelAdministration.Employees"],
+      "entity": {
+        "name": "Employee",
+        "fullName": "HCMv3.PersonnelAdministration.Employee",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/Employee.cs"
+      },
+      "surfaces": {
+        "read": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/personal-info/employee-personal-info.component.html",
+          "sectionTitleClass": "epi-card-title"
+        },
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employees/create-or-edit-employee-modal.component.html"
+        }
+      }
+    }
+  ]
+}
