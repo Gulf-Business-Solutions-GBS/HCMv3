@@ -30,7 +30,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Optional. Maximum 512 characters.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## FullNameAr {#Employee.FullNameAr}
 <!-- alias: loc:FullNameAr -->
@@ -39,7 +39,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Optional. Maximum 512 characters.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## Title {#Employee.TitleId}
 <!-- alias: loc:Title, dom:Employee_TitleId -->
@@ -66,7 +66,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. One of: Permanent, Temporary, ALL.
+**Rules.** Required. One of: Permanent, Temporary.
 
 ## Gender {#Employee.Gender}
 <!-- alias: loc:Gender, dom:Employee_Gender -->
@@ -183,7 +183,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. Date value.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## RecruitmentType {#Employee.RecruitmentTypeId}
 <!-- alias: loc:RecruitmentType, dom:Employee_RecruitmentTypeId -->

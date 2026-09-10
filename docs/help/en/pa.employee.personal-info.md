@@ -16,16 +16,16 @@ The employee's own particulars, shown as a read-only record with **Edit** in rea
 
 Every other tab on an employee record lists things that happen *to* them -- absences, loans, contracts, gratuities. This tab is the person themselves: who they are, how to reach them, and who to call in an emergency.
 
-The fields are shown as text rather than inputs because the common case is looking something up, not changing it. Choosing **Edit** opens the same form used to create an employee, so validation and business rules are identical wherever the record is changed.
+The fields are shown as text rather than inputs because the common case is looking something up, not changing it. Choosing **Edit** opens the same form used to create an employee, so the same checks apply wherever the record is changed.
 
 ## Code {#Employee.Code}
 <!-- alias: loc:Code, dom:Employee_Code -->
 
-**What it is.** The employee's business identifier, unique within the company. It appears on payslips, reports and import files, and is the number colleagues will quote when they refer to this person.
+**What it is.** The employee's business identifier, unique across the organisation. It is how the employee is identified on lists, reports and printed forms.
 
 **Example.** `001245`
 
-**Why it matters.** Left blank on a new record, the system assigns the next number automatically (highest existing number plus one).
+**Why it matters.** Left blank, the system assigns the next number when the record is saved (the highest existing numeric code plus one). A code already used by another employee is refused.
 
 **Rules.** Optional. Maximum 64 characters.
 
@@ -36,9 +36,9 @@ The fields are shown as text rather than inputs because the common case is looki
 
 **Example.** `Ahmed Khaled Saleh Al-Mutairi`
 
-**Why it matters.** Derived rather than typed. To correct it, edit the individual name parts; this field then rebuilds itself.
+**Why it matters.** Derived rather than typed. To correct it, edit the individual name parts; this field then rebuilds itself when the record is saved.
 
-**Rules.** Optional. Maximum 512 characters.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## FullNameAr {#Employee.FullNameAr}
 <!-- alias: loc:FullNameAr -->
@@ -47,16 +47,18 @@ The fields are shown as text rather than inputs because the common case is looki
 
 **Example.** `أحمد خالد صالح المطيري`
 
-**Why it matters.** Used on Arabic statutory output such as PIFSS submissions and Ministry of Labour paperwork, where the name must match the civil ID exactly.
+**Why it matters.** Printed on Arabic government forms, such as the absence report cancellation and waiver forms. To correct it, edit the Arabic name parts; it rebuilds itself when the record is saved.
 
-**Rules.** Optional. Maximum 512 characters.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## Title {#Employee.TitleId}
 <!-- alias: loc:Title, dom:Employee_TitleId -->
 
-**What it is.** The courtesy title used when addressing the employee in letters and generated correspondence.
+**What it is.** The courtesy title used before the employee's name.
 
 **Example.** `Mr`
+
+**Why it matters.** Printed before the name on the employment notice. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Chosen from Title master data.
 
@@ -67,11 +69,11 @@ Maintained under General Master Info → Titles.
 ## Status {#Employee.Status}
 <!-- alias: loc:Status, dom:Employee_Status -->
 
-**What it is.** Whether this record is currently in service. Inactive employees stay on file with their full history but drop out of payroll runs, org charts and most selection lists.
+**What it is.** Whether this record is currently in service. Inactive employees keep their full record and history, but are left out of payroll runs, the bulk password and attendance tools, self-service lookups and many reports.
 
 **Example.** `Active`
 
-**Why it matters.** Set this to Inactive rather than deleting a leaver -- deleting would take their payroll and leave history with them.
+**Why it matters.** Set a leaver to Inactive rather than deleting them: deleting removes the employee from the system, while Inactive keeps the record and its history available. An inactive employee's Civil ID and Access ID can be given to a new record.
 
 **Rules.** Required. One of: Inactive, Active.
 
@@ -82,29 +84,33 @@ Maintained under General Master Info → Titles.
 
 **Example.** `Permanent`
 
-**Why it matters.** Determines eligibility for benefits, leave accrual and end-of-service entitlements that are restricted to permanent staff.
+**Why it matters.** No built-in calculation uses it. Business rules can test it -- for example, to apply a rule only to temporary staff.
 
-**Rules.** Required. One of: Permanent, Temporary, ALL.
+**Rules.** Required. One of: Permanent, Temporary.
 
 ## Gender {#Employee.Gender}
 <!-- alias: loc:Gender, dom:Employee_Gender -->
 
-**What it is.** The gender recorded on the civil ID.
+**What it is.** The gender recorded on the Civil ID.
 
 **Example.** `Female`
 
-**Why it matters.** Drives statutory reporting and gender-specific leave entitlements such as maternity leave.
+**Why it matters.** Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.
 
 **Rules.** Required. One of: Male, Female.
+
+:::admin
+Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.
+:::
 
 ## BirthDate {#Employee.BirthDate}
 <!-- alias: loc:BirthDate, dom:Employee_BirthDate -->
 
-**What it is.** Date of birth exactly as it appears on the civil ID.
+**What it is.** Date of birth exactly as it appears on the Civil ID.
 
 **Example.** `14 March 1988`
 
-**Why it matters.** Drives retirement age, age-based benefit rules and several statutory returns. A mismatch against the civil ID will cause government file submissions to be rejected.
+**Why it matters.** It must be before today, and the joining date must come after it. Active employees receive a birthday notification on the day, and business rules can test it. Employees can ask for a change through self-service.
 
 **Rules.** Required. Date value.
 
@@ -115,7 +121,7 @@ Maintained under General Master Info → Titles.
 
 **Example.** `Kuwait City`
 
-**Why it matters.** Appears on residency and visa paperwork for expatriate employees.
+**Why it matters.** Printed on the new work-visa application and the end-of-service / visa cancellation forms. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Chosen from City master data.
 
@@ -126,16 +132,16 @@ The list is the shared City master data, maintained under General Master Info �
 ## Nationality {#Employee.NationalityId}
 <!-- alias: loc:Nationality, dom:Employee_NationalityId -->
 
-**What it is.** The employee's nationality as recorded on the civil ID.
+**What it is.** The employee's nationality as recorded on the Civil ID.
 
 **Example.** `Kuwaiti`
 
-**Why it matters.** One of the most consequential fields on the record. It drives PIFSS social-security eligibility, the indemnity calculation, expatriate allowances and work-permit handling.
+**Why it matters.** One of the most consequential fields on the record. It decides which social security (PIFSS) rules apply in payroll, and whether the employee counts as a citizen or a non-citizen in the workforce quota under Government Relations. It is also printed on the work-visa request form.
 
 **Rules.** Required. Chosen from Nationality master data.
 
 :::admin
-Maintained under General Master Info → Nationalities. Deactivating a nationality hides it from new records but leaves existing employees untouched.
+Maintained under General Master Info → Nationalities. For the workforce quota, a nationality counts as citizen when its nationality group is named *Citizen*.
 :::
 
 ## Religion {#Employee.ReligionId}
@@ -145,9 +151,13 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `Muslim`
 
-**Why it matters.** Used only where statutory or policy entitlements differ, such as Hajj leave. Leave it blank if your organisation does not track it.
+**Why it matters.** Recorded for information and printed on the work-visa request form; no calculation uses it. Leave it blank if your organisation does not track it.
 
 **Rules.** Optional. Chosen from Religion master data.
+
+:::admin
+Maintained under General Master Info → Religions. Absence types have a religion setting (for leave such as Hajj), but the system does not currently check it against this field.
+:::
 
 ## MaritalStatus {#Employee.MaritalStatusId}
 <!-- alias: loc:MaritalStatus, dom:Employee_MaritalStatusId -->
@@ -156,9 +166,13 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `Married`
 
-**Why it matters.** Feeds dependant-related allowances and benefit eligibility. Keep it current -- a change of status can alter entitlement from the effective month.
+**Why it matters.** Used by the social security (PIFSS) calculations in payroll, including the marital-status allowance, so keep it current. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Chosen from Marital Status master data.
+
+:::admin
+Maintained under General Master Info → Marital Statuses.
+:::
 
 ## Qualification {#Employee.QualificationId}
 <!-- alias: loc:Qualification, dom:Employee_QualificationId -->
@@ -167,9 +181,13 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `Bachelor of Engineering`
 
-**Why it matters.** Used in job-profile matching, succession planning and manpower reporting.
+**Why it matters.** The social security allowance in payroll can depend on it, alongside nationality, gender and marital status. It is also printed on the work-visa request form.
 
 **Rules.** Optional. Chosen from Qualification master data.
+
+:::admin
+Maintained under General Master Info → Qualifications.
+:::
 
 ## BloodGroup {#Employee.BloodGroup}
 <!-- alias: loc:BloodGroup, dom:Employee_BloodGroup -->
@@ -178,16 +196,18 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `O+`
 
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
+
 **Rules.** Optional. Maximum 32 characters.
 
 ## CivilID {#Employee.CivilID}
 <!-- alias: loc:CivilID, dom:Employee_CivilID -->
 
-**What it is.** The 12-digit Kuwait Civil ID number. This is the single strongest identifier on the record and must match the card exactly.
+**What it is.** The 12-digit Kuwait Civil ID number. It must match the card exactly.
 
 **Example.** `288031400123`
 
-**Why it matters.** Used to identify the employee in PIFSS and PACI submissions. An incorrect digit will cause those files to be rejected for the whole batch, not just this employee.
+**Why it matters.** Printed on government forms. Two active employees cannot share a Civil ID: the form refuses a number that another active employee already has.
 
 **Rules.** Optional. Whole number.
 
@@ -198,18 +218,18 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `12345678`
 
-**Why it matters.** Identifies the registered civil address, which some government submissions require alongside the civil ID.
+**Why it matters.** Kept for reference; no form or calculation uses it yet. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 32 characters.
 
 ## JoiningDate {#Employee.JoiningDate}
 <!-- alias: loc:JoiningDate, dom:Employee_JoiningDate -->
 
-**What it is.** The date employment actually began.
+**What it is.** The date employment actually began. It must come after the birth date.
 
 **Example.** `1 September 2024`
 
-**Why it matters.** The anchor date for the entire record: seniority, indemnity and end-of-service calculations, leave accrual and the probation period are all measured from it. Changing it recalculates a great deal downstream.
+**Why it matters.** The anchor date for the record: leave accruals, leave provisions, service bonuses and the probation period are all measured from it, and active employees receive a work-anniversary notification. Nothing is recalculated the moment you save -- payroll, accruals and provisions use the new date the next time they run.
 
 **Rules.** Required. Date value.
 
@@ -220,6 +240,8 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `90`
 
+**Why it matters.** Sets the probation end date, which is the joining date plus these days. It cannot be negative.
+
 **Rules.** Optional. Whole number.
 
 ## ProbationEndDate {#Employee.ProbationEndDate}
@@ -229,9 +251,9 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `30 November 2024`
 
-**Why it matters.** Calculated as joining date plus probation days and recalculated automatically whenever either changes. It is stored rather than derived on the fly so that reports and reminders can query it directly.
+**Why it matters.** Calculated as the joining date plus the probation days, every time the record is saved. To change it, change either of those.
 
-**Rules.** Required. Date value.
+**Rules.** Set by the system when the record is saved; not entered on the form.
 
 ## RecruitmentType {#Employee.RecruitmentTypeId}
 <!-- alias: loc:RecruitmentType, dom:Employee_RecruitmentTypeId -->
@@ -240,29 +262,33 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `Direct`
 
-**Why it matters.** Used for recruitment cost analysis and source-of-hire reporting.
+**Why it matters.** Recorded for information; no built-in calculation or report uses it. Business rules can test it.
 
 **Rules.** Optional. Chosen from Recruitment Type master data.
+
+:::admin
+Maintained under General Master Info → Recruitment Types.
+:::
 
 ## PreviousEmpCode {#Employee.PreviousEmpCode}
 <!-- alias: loc:PreviousEmpCode, dom:Employee_PreviousEmpCode -->
 
-**What it is.** The identifier this employee held previously -- either in a system replaced by HCM, or during an earlier spell of employment.
+**What it is.** The code this employee held before -- in an earlier period of employment, or in a system HCMv3 replaced.
 
 **Example.** `EMP-8841`
 
-**Why it matters.** Kept so that historical records and archived reports can still be traced back to the person.
+**Why it matters.** Shown on the employee rejoin report, so a returning employee can be matched to their earlier record.
 
 **Rules.** Optional. Maximum 64 characters.
 
 ## ReferenceCode {#Employee.ReferenceCode}
 <!-- alias: loc:ReferenceCode, dom:Employee_ReferenceCode -->
 
-**What it is.** A free reference of your own choosing, typically the key used for this employee in an external system.
+**What it is.** A reference of your own choosing, typically the key used for this employee in another system.
 
 **Example.** `SAP-00123`
 
-**Why it matters.** Not used by any calculation. It exists so integrations have somewhere to keep their own identifier.
+**Why it matters.** No calculation uses it. It appears on the employee information report, and some customised payroll journal exports use it to identify the employee in the accounting system.
 
 **Rules.** Optional. Maximum 64 characters.
 
@@ -273,7 +299,7 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `ahmed.mutairi@company.com`
 
-**Why it matters.** Where the system sends notifications, workflow approvals and self-service account details. If this is wrong the employee will not receive approval requests.
+**Why it matters.** Where HCMv3 emails the employee: new sign-in details from the bulk password tool, announcements, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 256 characters.
 
@@ -284,7 +310,7 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `a.mutairi@gmail.com`
 
-**Why it matters.** Used as a fallback, and for correspondence that must continue after the work account is closed at the end of service.
+**Why it matters.** Kept for reference; HCMv3 does not send anything to it. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 256 characters.
 
@@ -306,9 +332,11 @@ This is not the number sign-in codes are sent to. Text messages from HCMv3 -- ve
 ## Telephone {#Employee.Telephone}
 <!-- alias: loc:Telephone, dom:Employee_Telephone -->
 
-**What it is.** Home or personal landline number.
+**What it is.** Home or personal landline number, entered as digits.
 
 **Example.** `22551234`
+
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Whole number.
 
@@ -337,7 +365,7 @@ This is not the number sign-in codes are sent to. Text messages from HCMv3 -- ve
 
 **Example.** `Block 4, Street 12, Building 7, Flat 3, Salmiya`
 
-**Why it matters.** Used for correspondence and for any document that must show a residential address.
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 1000 characters.
 
@@ -348,16 +376,18 @@ This is not the number sign-in codes are sent to. Text messages from HCMv3 -- ve
 
 **Example.** `House 22, Sector G-9, Islamabad, Pakistan`
 
-**Why it matters.** Used at end of service for final correspondence and repatriation ticketing.
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 1000 characters.
 
 ## City {#Employee.City}
 <!-- alias: loc:City, dom:Employee_City -->
 
-**What it is.** City of the current address.
+**What it is.** City of the current address, typed in.
 
 **Example.** `Salmiya`
+
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 128 characters.
 
@@ -367,6 +397,8 @@ This is not the number sign-in codes are sent to. Text messages from HCMv3 -- ve
 **What it is.** Governorate of the current address.
 
 **Example.** `Hawalli`
+
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Chosen from Governorate master data.
 
@@ -381,7 +413,13 @@ Maintained under General Master Info → Governorates.
 
 **Example.** `Kuwait`
 
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
+
 **Rules.** Optional. Chosen from Country master data.
+
+:::admin
+Maintained under General Master Info → Countries.
+:::
 
 ## ZipCode {#Employee.ZipCode}
 <!-- alias: loc:ZipCode, dom:Employee_ZipCode -->
@@ -389,6 +427,8 @@ Maintained under General Master Info → Governorates.
 **What it is.** Postal code for the current address, where one applies.
 
 **Example.** `22001`
+
+**Why it matters.** Printed on the work-visa request form. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 32 characters.
 
@@ -399,7 +439,7 @@ Maintained under General Master Info → Governorates.
 
 **Example.** `Fatima Al-Mutairi`
 
-**Why it matters.** Reviewed during onboarding and worth confirming annually -- it is the one field nobody checks until it is needed.
+**Why it matters.** Worth confirming once a year -- it is the one field nobody checks until it is needed. Employees can update it through self-service.
 
 **Rules.** Optional. Maximum 256 characters.
 
@@ -410,6 +450,8 @@ Maintained under General Master Info → Governorates.
 
 **Example.** `Spouse`
 
+**Why it matters.** Employees can update it through self-service.
+
 **Rules.** Optional. Maximum 128 characters.
 
 ## EmergencyNumber {#Employee.EmergencyNumber}
@@ -418,6 +460,8 @@ Maintained under General Master Info → Governorates.
 **What it is.** Telephone number for the emergency contact.
 
 **Example.** `96555512345`
+
+**Why it matters.** Employees can update it through self-service.
 
 **Rules.** Optional. Maximum 64 characters.
 
@@ -428,6 +472,8 @@ Maintained under General Master Info → Governorates.
 
 **Example.** `Block 4, Street 12, Building 7, Flat 3, Salmiya`
 
+**Why it matters.** Unlike the other emergency details, it is not on the self-service change request, so only HR can update it.
+
 **Rules.** Optional. Maximum 1000 characters.
 
 ## CriticalIllness {#Employee.CriticalIllness}
@@ -437,6 +483,6 @@ Maintained under General Master Info → Governorates.
 
 **Example.** `Type 1 diabetes; allergic to penicillin`
 
-**Why it matters.** Sensitive personal data. Record only what genuinely serves the employee in an emergency, and restrict who can view this screen accordingly.
+**Why it matters.** Sensitive personal data. Record only what genuinely serves the employee in an emergency, and restrict who can view this screen accordingly. Employees can update it through self-service.
 
 **Rules.** Optional. Maximum 1000 characters.

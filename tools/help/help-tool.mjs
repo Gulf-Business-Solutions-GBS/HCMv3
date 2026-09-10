@@ -130,10 +130,14 @@ function enumMembers(typeName) {
 }
 
 /** DESIGN.md §10 -- the Rules block, derived and never hand-written. */
-function rulesFor(prop, { uiRequired = false } = {}) {
+function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
     if (!prop) return null;
     const parts = [];
     const attrText = prop.attrs.join(' ');
+
+    // Shown on a screen but absent from its edit form: the system writes it (full names,
+    // probation end date). "Optional"/"Required" would tell the reader to go and fill it in.
+    if (systemMaintained) return 'Set by the system when the record is saved; not entered on the form.';
 
     // "Required" must mean the reader cannot save without it. A non-nullable NUMBER is not that:
     // left blank it saves as 0, so Mobile, Civil ID and Probation Days all save empty. Required is
@@ -150,8 +154,10 @@ function rulesFor(prop, { uiRequired = false } = {}) {
     if (range) parts.push(`Between ${range[1].trim()} and ${range[2].trim()}.`);
 
     if (prop.isEnumCandidate) {
-        const members = enumMembers(prop.bareType);
-        if (members) parts.push(`One of: ${members.join(', ')}.`);
+        // "All" is a filter value (EmploymentType.ALL, LeaveReligion.All), never something a
+        // record can be -- the form does not offer it, so neither does the help.
+        const members = enumMembers(prop.bareType)?.filter((m) => !/^all$/i.test(m));
+        if (members?.length) parts.push(`One of: ${members.join(', ')}.`);
     }
 
     if (prop.lookupTarget) {
@@ -347,7 +353,10 @@ function buildInventory() {
                 aliases: [...aliases],
                 resolvedVia: hit.via,
                 type: prop ? prop.type : 'unknown',
-                rules: rulesFor(prop, { uiRequired: onForm?.uiRequired }),
+                rules: rulesFor(prop, {
+                    uiRequired: onForm?.uiRequired,
+                    systemMaintained: editFields.length > 0 && !onForm,
+                }),
             });
         }
 
