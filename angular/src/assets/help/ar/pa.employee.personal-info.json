@@ -1,0 +1,631 @@
+{
+  "helpId": "pa.employee.personal-info",
+  "lang": "ar",
+  "title": "الموظف — البيانات الشخصية",
+  "entity": "HCMv3.PersonnelAdministration.Employee",
+  "overviewHtml": "<p>البيانات الخاصة بالموظف نفسه، معروضة كسجل للقراءة فقط مع زر <strong>تحرير</strong> في متناول اليد.</p><p>تعرض بقية تبويبات سجل الموظف ما يطرأ عليه من أحداث — الإجازات والقروض والعقود ومكافأة نهاية الخدمة. أما هذا التبويب فيعرض الشخص نفسه: من هو، وكيف يمكن التواصل معه، ومن يُتصل به في الحالات الطارئة.</p><p>تُعرض الحقول نصاً لا حقول إدخال، لأن الغالب هو الاطلاع على المعلومة لا تغييرها. وعند اختيار <strong>تحرير</strong> يُفتح النموذج نفسه المستخدم لإنشاء الموظف، فتنطبق عمليات التحقق ذاتها أينما عُدّل السجل.</p>",
+  "aliasIndex": {
+    "loc:Code": "Employee.Code",
+    "dom:Employee_Code": "Employee.Code",
+    "loc:FullNameEn": "Employee.FullNameEn",
+    "loc:FullNameAr": "Employee.FullNameAr",
+    "loc:Title": "Employee.TitleId",
+    "dom:Employee_TitleId": "Employee.TitleId",
+    "loc:Status": "Employee.Status",
+    "dom:Employee_Status": "Employee.Status",
+    "loc:EmploymentType": "Employee.EmploymentType",
+    "dom:Employee_EmploymentType": "Employee.EmploymentType",
+    "loc:Gender": "Employee.Gender",
+    "dom:Employee_Gender": "Employee.Gender",
+    "loc:BirthDate": "Employee.BirthDate",
+    "dom:Employee_BirthDate": "Employee.BirthDate",
+    "loc:BirthPlace": "Employee.BirthPlaceId",
+    "dom:Employee_BirthPlaceId": "Employee.BirthPlaceId",
+    "loc:Nationality": "Employee.NationalityId",
+    "dom:Employee_NationalityId": "Employee.NationalityId",
+    "loc:Religion": "Employee.ReligionId",
+    "dom:Employee_ReligionId": "Employee.ReligionId",
+    "loc:MaritalStatus": "Employee.MaritalStatusId",
+    "dom:Employee_MaritalStatusId": "Employee.MaritalStatusId",
+    "loc:Qualification": "Employee.QualificationId",
+    "dom:Employee_QualificationId": "Employee.QualificationId",
+    "loc:BloodGroup": "Employee.BloodGroup",
+    "dom:Employee_BloodGroup": "Employee.BloodGroup",
+    "loc:CivilID": "Employee.CivilID",
+    "dom:Employee_CivilID": "Employee.CivilID",
+    "loc:PACINumber": "Employee.PACINumber",
+    "dom:Employee_PaciNumber": "Employee.PACINumber",
+    "loc:PaciNumber": "Employee.PACINumber",
+    "loc:JoiningDate": "Employee.JoiningDate",
+    "dom:Employee_JoiningDate": "Employee.JoiningDate",
+    "loc:ProbationDays": "Employee.ProbationDays",
+    "dom:Employee_ProbationDays": "Employee.ProbationDays",
+    "loc:ProbationEndDate": "Employee.ProbationEndDate",
+    "loc:RecruitmentType": "Employee.RecruitmentTypeId",
+    "dom:Employee_RecruitmentTypeId": "Employee.RecruitmentTypeId",
+    "loc:PreviousEmpCode": "Employee.PreviousEmpCode",
+    "dom:Employee_PreviousEmpCode": "Employee.PreviousEmpCode",
+    "loc:ReferenceCode": "Employee.ReferenceCode",
+    "dom:Employee_ReferenceCode": "Employee.ReferenceCode",
+    "loc:Email": "Employee.Email",
+    "dom:Employee_Email": "Employee.Email",
+    "loc:AlternateEmail": "Employee.AlternateEmail",
+    "dom:Employee_AlternateEmail": "Employee.AlternateEmail",
+    "loc:Mobile": "Employee.Mobile",
+    "dom:Employee_Mobile": "Employee.Mobile",
+    "loc:Telephone": "Employee.Telephone",
+    "dom:Employee_Telephone": "Employee.Telephone",
+    "loc:BusinessLandline": "Employee.BusinessLandline",
+    "dom:Employee_BusinessLandline": "Employee.BusinessLandline",
+    "loc:BusinessExtension": "Employee.BusinessExtension",
+    "dom:Employee_BusinessExtension": "Employee.BusinessExtension",
+    "loc:CurrentAddress": "Employee.CurrentAddress",
+    "dom:Employee_CurrentAddress": "Employee.CurrentAddress",
+    "loc:PermanentAddress": "Employee.PermanentAddress",
+    "dom:Employee_PermanentAddress": "Employee.PermanentAddress",
+    "loc:City": "Employee.City",
+    "dom:Employee_City": "Employee.City",
+    "loc:Governorate": "Employee.GovernorateId",
+    "dom:Employee_GovernorateId": "Employee.GovernorateId",
+    "loc:Country": "Employee.CountryId",
+    "dom:Employee_CountryId": "Employee.CountryId",
+    "loc:ZipCode": "Employee.ZipCode",
+    "dom:Employee_ZipCode": "Employee.ZipCode",
+    "loc:EmergencyContact": "Employee.EmergencyContact",
+    "dom:Employee_EmergencyContact": "Employee.EmergencyContact",
+    "loc:EmergencyRelation": "Employee.EmergencyRelation",
+    "dom:Employee_EmergencyRelation": "Employee.EmergencyRelation",
+    "loc:EmergencyNumber": "Employee.EmergencyNumber",
+    "dom:Employee_EmergencyNumber": "Employee.EmergencyNumber",
+    "loc:EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "dom:Employee_EmergencyContactAddress": "Employee.EmergencyContactAddress",
+    "loc:CriticalIllness": "Employee.CriticalIllness",
+    "dom:Employee_CriticalIllness": "Employee.CriticalIllness"
+  },
+  "fields": [
+    {
+      "id": "Employee.Code",
+      "label": "Code",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Code",
+        "dom:Employee_Code"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعرّف الوظيفي للموظف، وهو فريد على مستوى الشركة كلها، ويُعرَّف به الموظف في القوائم والتقارير والنماذج المطبوعة.</p><p><strong>مثال.</strong> <code>001245</code></p><p><strong>لماذا يهم.</strong> إذا تُرك فارغاً، يمنح النظام الموظف الرقم التالي عند حفظ السجل (أعلى رمز رقمي موجود مضافاً إليه واحد). ويُرفض الرمز إذا كان مستخدماً لموظف آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FullNameEn",
+      "label": "FullNameEn",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FullNameEn"
+      ],
+      "rules": "يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الكامل بالإنجليزية، ويُركَّب من أجزاء الاسم الأربعة بالإنجليزية في نموذج التحرير.</p><p><strong>مثال.</strong> <code>Ahmed Khaled Saleh Al-Mutairi</code></p><p><strong>لماذا يهم.</strong> لا يُكتب يدوياً بل يُشتق. لتصحيحه عدّل أجزاء الاسم، فيُعاد تركيبه تلقائياً عند حفظ السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.FullNameAr",
+      "label": "FullNameAr",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:FullNameAr"
+      ],
+      "rules": "يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الكامل بالعربية، ويُركَّب من أجزاء الاسم الأربعة بالعربية.</p><p><strong>مثال.</strong> <code>أحمد خالد صالح المطيري</code></p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية العربية، مثل نموذجي إلغاء بلاغ التغيب والتنازل عنه. لتصحيحه عدّل أجزاء الاسم بالعربية، فيُعاد تركيبه عند حفظ السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.TitleId",
+      "label": "Title",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Title",
+        "dom:Employee_TitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الألقاب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لقب المخاطبة الذي يسبق اسم الموظف.</p><p><strong>مثال.</strong> <code>السيد</code></p><p><strong>لماذا يهم.</strong> يُطبع قبل الاسم في إشعار التوظيف. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>يُدار من البيانات الأساسية العامة ← الألقاب.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.Status",
+      "label": "Status",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:Status",
+        "dom:Employee_Status"
+      ],
+      "rules": "إلزامي. إحدى القيم: غير مفعّل، مفعّل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل الموظف على رأس عمله حالياً. يحتفظ الموظف غير المفعّل بسجله كاملاً بتاريخه، لكنه يُستبعد من مسيرات الرواتب، ومن أداتي كلمات المرور الجماعية والحضور، ومن قوائم الخدمة الذاتية، ومن كثير من التقارير.</p><p><strong>مثال.</strong> <code>مفعّل</code></p><p><strong>لماذا يهم.</strong> اجعل حالة الموظف المغادر «غير مفعّل» بدلاً من حذفه: فالحذف يزيل الموظف من النظام، أما إلغاء التفعيل فيُبقي السجل وتاريخه متاحين. ويمكن منح البطاقة المدنية ومعرّف الوصول الخاصين بموظف غير مفعّل لسجل جديد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmploymentType",
+      "label": "EmploymentType",
+      "section": "EmpCard_Identity",
+      "aliases": [
+        "loc:EmploymentType",
+        "dom:Employee_EmploymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: دائم، مؤقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل الموظف معيَّن بعقد دائم أم مؤقت.</p><p><strong>مثال.</strong> <code>دائم</code></p><p><strong>لماذا يهم.</strong> لا يعتمد عليه أي احتساب مدمج في النظام. ويمكن لقواعد العمل اختباره — كأن تُطبَّق قاعدة على الموظفين المؤقتين وحدهم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Gender",
+      "label": "Gender",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Gender",
+        "dom:Employee_Gender"
+      ],
+      "rules": "إلزامي. إحدى القيم: ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجنس كما هو مسجل في البطاقة المدنية.</p><p><strong>مثال.</strong> <code>أنثى</code></p><p><strong>لماذا يهم.</strong> تستخدمه احتسابات التأمينات الاجتماعية في الرواتب. ويمكن لقواعد العمل اختباره أيضاً؛ إذ تستخدمه قاعدة إجازة الأمومة النموذجية لرفض إجازة الأمومة للموظفين الذكور عند تفعيل تلك القاعدة. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>لأنواع الغياب إعداد خاص بالجنس، لكن النظام لا يطابقه حالياً مع هذا الحقل. لقصر نوع إجازة على جنس معين، استخدم قاعدة عمل.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthDate",
+      "label": "BirthDate",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:Employee_BirthDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ الميلاد كما يظهر في البطاقة المدنية تماماً.</p><p><strong>مثال.</strong> <code>14 مارس 1988</code></p><p><strong>لماذا يهم.</strong> يجب أن يكون قبل تاريخ اليوم، ويجب أن يأتي تاريخ الالتحاق بعده. ويتلقى الموظفون المفعّلون إشعار تهنئة بعيد الميلاد في يومه، ويمكن لقواعد العمل اختباره. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BirthPlaceId",
+      "label": "BirthPlace",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BirthPlace",
+        "dom:Employee_BirthPlaceId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المدن.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المدينة المسجلة مكاناً للميلاد.</p><p><strong>مثال.</strong> <code>مدينة الكويت</code></p><p><strong>لماذا يهم.</strong> يُطبع على طلب تأشيرة العمل الجديدة وعلى نموذج نهاية الخدمة / إلغاء الإقامة. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>القائمة هي بيانات المدن المشتركة، وتُدار من البيانات الأساسية العامة ← المدن.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.NationalityId",
+      "label": "Nationality",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Nationality",
+        "dom:Employee_NationalityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الجنسيات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جنسية الموظف كما هي مسجلة في البطاقة المدنية.</p><p><strong>مثال.</strong> <code>كويتي</code></p><p><strong>لماذا يهم.</strong> من أهم الحقول أثراً في السجل. فهو يحدد قواعد التأمينات الاجتماعية التي تنطبق في الرواتب، ويحدد هل يُحتسب الموظف مواطناً أم غير مواطن في نسبة العمالة ضمن إدارة العلاقات الحكومية. ويُطبع كذلك على نموذج طلب تأشيرة العمل.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الجنسيات. ولأغراض نسبة العمالة، تُحتسب الجنسية جنسيةَ مواطن إذا كانت مجموعة جنسيتها تحمل الاسم <em>Citizen</em>.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReligionId",
+      "label": "Religion",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Religion",
+        "dom:Employee_ReligionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الديانات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الديانة، إن كانت الشركة تسجلها.</p><p><strong>مثال.</strong> <code>مسلم</code></p><p><strong>لماذا يهم.</strong> تُسجَّل للعلم وتُطبع على نموذج طلب تأشيرة العمل، ولا يعتمد عليها أي احتساب. اتركها فارغة إن كانت شركتك لا تتابعها.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الديانات. لأنواع الغياب إعداد خاص بالديانة (لإجازات مثل إجازة الحج)، لكن النظام لا يطابقه حالياً مع هذا الحقل.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.MaritalStatusId",
+      "label": "MaritalStatus",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:MaritalStatus",
+        "dom:Employee_MaritalStatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الحالات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحالة الاجتماعية الحالية.</p><p><strong>مثال.</strong> <code>متزوج</code></p><p><strong>لماذا يهم.</strong> تستخدمها احتسابات التأمينات الاجتماعية في الرواتب، ومنها بدل الحالة الاجتماعية، لذا احرص على تحديثها. ويمكن للموظف طلب تغييرها من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الحالات الاجتماعية.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.QualificationId",
+      "label": "Qualification",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:Qualification",
+        "dom:Employee_QualificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المؤهلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أعلى مؤهل أكاديمي أو مهني حصل عليه الموظف.</p><p><strong>مثال.</strong> <code>بكالوريوس هندسة</code></p><p><strong>لماذا يهم.</strong> قد يعتمد عليه بدل التأمينات الاجتماعية في الرواتب، إلى جانب الجنسية والجنس والحالة الاجتماعية. ويُطبع كذلك على نموذج طلب تأشيرة العمل.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← المؤهلات.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.BloodGroup",
+      "label": "BloodGroup",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:BloodGroup",
+        "dom:Employee_BloodGroup"
+      ],
+      "rules": "اختياري. الحد الأقصى 32 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فصيلة الدم، وتُحفظ للاستخدام الطبي وفي الحالات الطارئة.</p><p><strong>مثال.</strong> <code>O+</code></p><p><strong>لماذا يهم.</strong> تُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييرها من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CivilID",
+      "label": "CivilID",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:CivilID",
+        "dom:Employee_CivilID"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم البطاقة المدنية الكويتية المكوّن من 12 رقماً، ويجب أن يطابق البطاقة تماماً.</p><p><strong>مثال.</strong> <code>288031400123</code></p><p><strong>لماذا يهم.</strong> يُطبع على النماذج الحكومية. ولا يجوز أن يشترك موظفان مفعّلان في رقم بطاقة مدنية واحد: يرفض النموذج رقماً مسجلاً لموظف مفعّل آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PACINumber",
+      "label": "PACINumber",
+      "section": "EmpCard_Personal",
+      "aliases": [
+        "loc:PACINumber",
+        "dom:Employee_PaciNumber",
+        "loc:PaciNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 32 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مرجع عنوان الموظف الصادر عن الهيئة العامة للمعلومات المدنية.</p><p><strong>مثال.</strong> <code>12345678</code></p><p><strong>لماذا يهم.</strong> يُحفظ للرجوع إليه، ولا يعتمد عليه أي نموذج أو احتساب حتى الآن. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.JoiningDate",
+      "label": "JoiningDate",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:JoiningDate",
+        "dom:Employee_JoiningDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي بدأ فيه العمل فعلياً، ويجب أن يأتي بعد تاريخ الميلاد.</p><p><strong>مثال.</strong> <code>1 سبتمبر 2024</code></p><p><strong>لماذا يهم.</strong> هو التاريخ المرجعي للسجل: يُحتسب منه تراكم الإجازات ومخصصات الإجازات ومكافآت الخدمة وفترة الاختبار، ويتلقى الموظفون المفعّلون إشعاراً في ذكرى التحاقهم بالعمل. ولا يُعاد احتساب شيء لحظة الحفظ — إذ تستخدم الرواتب والتراكم والمخصصات التاريخ الجديد في المرة التالية التي تُشغَّل فيها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ProbationDays",
+      "label": "ProbationDays",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ProbationDays",
+        "dom:Employee_ProbationDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة فترة الاختبار، محسوبة بالأيام التقويمية من تاريخ الالتحاق.</p><p><strong>مثال.</strong> <code>90</code></p><p><strong>لماذا يهم.</strong> تحدد تاريخ انتهاء فترة الاختبار، وهو تاريخ الالتحاق مضافاً إليه هذه الأيام. ولا يجوز أن تكون قيمتها سالبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ProbationEndDate",
+      "label": "ProbationEndDate",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ProbationEndDate"
+      ],
+      "rules": "يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء فترة الاختبار.</p><p><strong>مثال.</strong> <code>30 نوفمبر 2024</code></p><p><strong>لماذا يهم.</strong> يُحتسب بإضافة أيام الاختبار إلى تاريخ الالتحاق في كل مرة يُحفظ فيها السجل. ولتغييره، غيّر أحد هذين الحقلين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.RecruitmentTypeId",
+      "label": "RecruitmentType",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:RecruitmentType",
+        "dom:Employee_RecruitmentTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع التوظيف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطريقة التي التحق بها الموظف بالشركة — تعيين مباشر، أو عن طريق وكالة، أو نقل داخلي، ونحو ذلك. ولا يُقصد به دائم أو مؤقت؛ فذلك هو الحقل الآخر الذي يحمل الاسم نفسه.</p><p><strong>مثال.</strong> <code>تعيين مباشر</code></p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يعتمد عليه أي احتساب أو تقرير مدمج. ويمكن لقواعد العمل اختباره.</p>",
+      "adminHtml": "<p>يُدار من البيانات الأساسية العامة ← أنواع التوظيف.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.PreviousEmpCode",
+      "label": "PreviousEmpCode",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:PreviousEmpCode",
+        "dom:Employee_PreviousEmpCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرمز الذي كان يحمله الموظف سابقاً — في فترة عمل سابقة، أو في نظام حلّ HCMv3 محله.</p><p><strong>مثال.</strong> <code>EMP-8841</code></p><p><strong>لماذا يهم.</strong> يظهر في تقرير إعادة التحاق الموظفين، ليُربط الموظف العائد بسجله السابق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.ReferenceCode",
+      "label": "ReferenceCode",
+      "section": "EmpCard_Employment",
+      "aliases": [
+        "loc:ReferenceCode",
+        "dom:Employee_ReferenceCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مرجع تختاره بنفسك، وعادةً ما يكون المعرّف المستخدم لهذا الموظف في نظام آخر.</p><p><strong>مثال.</strong> <code>SAP-00123</code></p><p><strong>لماذا يهم.</strong> لا يعتمد عليه أي احتساب. يظهر في تقرير بيانات الموظفين، وتستخدمه بعض ملفات قيود الرواتب المحاسبية المخصّصة لتعريف الموظف في النظام المحاسبي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Email",
+      "label": "Email",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Email",
+        "dom:Employee_Email"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> البريد الإلكتروني للعمل.</p><p><strong>مثال.</strong> <code>ahmed.mutairi@company.com</code></p><p><strong>لماذا يهم.</strong> هو العنوان الذي يراسل عليه HCMv3 الموظف: بيانات الدخول الجديدة من أداة كلمات المرور الجماعية، والإعلانات، والتقارير المجدولة، والإشعارات مثل التهنئة بعيد الميلاد وذكرى الالتحاق بالعمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.AlternateEmail",
+      "label": "AlternateEmail",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:AlternateEmail",
+        "dom:Employee_AlternateEmail"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بريد إلكتروني ثانوي أو شخصي.</p><p><strong>مثال.</strong> <code>a.mutairi@gmail.com</code></p><p><strong>لماذا يهم.</strong> يُحفظ للرجوع إليه، ولا يرسل إليه HCMv3 شيئاً. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.Mobile",
+      "label": "Mobile",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Mobile",
+        "dom:Employee_Mobile"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الهاتف المتنقل، ويُدخل أرقاماً فقط دون مسافات أو رموز.</p><p><strong>مثال.</strong> <code>96550123456</code></p><p><strong>لماذا يهم.</strong> الرقم الذي تتواصل به الموارد البشرية والمديرون مع الموظف، ويُطبع على نموذج طلب تأشيرة العمل. أدرج رمز الدولة. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>ليس هذا الرقم الذي تُرسل إليه رموز الدخول. فالرسائل النصية من HCMv3 — رموز التحقق والدخول — تُرسل إلى رقم الهاتف المسجل في <em>حساب المستخدم</em> الخاص بالموظف، ويُدار ذلك بشكل منفصل من المستخدمين.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.Telephone",
+      "label": "Telephone",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:Telephone",
+        "dom:Employee_Telephone"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الهاتف الأرضي المنزلي أو الشخصي، ويُدخل أرقاماً.</p><p><strong>مثال.</strong> <code>22551234</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessLandline",
+      "label": "BusinessLandline",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:BusinessLandline",
+        "dom:Employee_BusinessLandline"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خط المكتب المباشر لهذا الموظف.</p><p><strong>مثال.</strong> <code>+965 2222 3344</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.BusinessExtension",
+      "label": "BusinessExtension",
+      "section": "EmpCard_Contact",
+      "aliases": [
+        "loc:BusinessExtension",
+        "dom:Employee_BusinessExtension"
+      ],
+      "rules": "اختياري. الحد الأقصى 32 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم التحويلة الداخلية.</p><p><strong>مثال.</strong> <code>4417</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CurrentAddress",
+      "label": "CurrentAddress",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:CurrentAddress",
+        "dom:Employee_CurrentAddress"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان سكن الموظف الحالي، كاملاً.</p><p><strong>مثال.</strong> <code>قطعة 4، شارع 12، مبنى 7، شقة 3، السالمية</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.PermanentAddress",
+      "label": "PermanentAddress",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:PermanentAddress",
+        "dom:Employee_PermanentAddress"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الدائم أو العنوان في بلد الموظف، إن كان يختلف عن العنوان الحالي.</p><p><strong>مثال.</strong> <code>House 22, Sector G-9, Islamabad, Pakistan</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.City",
+      "label": "City",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:City",
+        "dom:Employee_City"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدينة العنوان الحالي، وتُكتب يدوياً.</p><p><strong>مثال.</strong> <code>السالمية</code></p><p><strong>لماذا يهم.</strong> تُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييرها من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.GovernorateId",
+      "label": "Governorate",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:Governorate",
+        "dom:Employee_GovernorateId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المحافظات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> محافظة العنوان الحالي.</p><p><strong>مثال.</strong> <code>حولي</code></p><p><strong>لماذا يهم.</strong> تُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييرها من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← المحافظات.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.CountryId",
+      "label": "Country",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:Country",
+        "dom:Employee_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بلد العنوان الحالي.</p><p><strong>مثال.</strong> <code>الكويت</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← الدول.</p>",
+      "stub": false
+    },
+    {
+      "id": "Employee.ZipCode",
+      "label": "ZipCode",
+      "section": "EmpCard_Address",
+      "aliases": [
+        "loc:ZipCode",
+        "dom:Employee_ZipCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 32 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرمز البريدي للعنوان الحالي، إن وُجد.</p><p><strong>مثال.</strong> <code>22001</code></p><p><strong>لماذا يهم.</strong> يُطبع على نموذج طلب تأشيرة العمل. ويمكن للموظف طلب تغييره من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContact",
+      "label": "EmergencyContact",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyContact",
+        "dom:Employee_EmergencyContact"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الشخص الذي يُتصل به إذا تعرّض الموظف لطارئ في العمل.</p><p><strong>مثال.</strong> <code>فاطمة المطيري</code></p><p><strong>لماذا يهم.</strong> يحسن التأكد منه مرة كل عام — فهو الحقل الذي لا يراجعه أحد حتى تمسّ الحاجة إليه. ويمكن للموظف تحديثه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyRelation",
+      "label": "EmergencyRelation",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyRelation",
+        "dom:Employee_EmergencyRelation"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صلة جهة الاتصال في الحالات الطارئة بالموظف.</p><p><strong>مثال.</strong> <code>زوجة</code></p><p><strong>لماذا يهم.</strong> يمكن للموظف تحديثه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyNumber",
+      "label": "EmergencyNumber",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyNumber",
+        "dom:Employee_EmergencyNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم هاتف جهة الاتصال في الحالات الطارئة.</p><p><strong>مثال.</strong> <code>96555512345</code></p><p><strong>لماذا يهم.</strong> يمكن للموظف تحديثه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.EmergencyContactAddress",
+      "label": "EmergencyContactAddress",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:EmergencyContactAddress",
+        "dom:Employee_EmergencyContactAddress"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان جهة الاتصال في الحالات الطارئة، إن كان يختلف عن عنوان الموظف.</p><p><strong>مثال.</strong> <code>قطعة 4، شارع 12، مبنى 7، شقة 3، السالمية</code></p><p><strong>لماذا يهم.</strong> خلافاً لبقية بيانات الطوارئ، لا يدخل ضمن طلب تعديل البيانات في الخدمة الذاتية، فلا يحدّثه إلا قسم الموارد البشرية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Employee.CriticalIllness",
+      "label": "CriticalIllness",
+      "section": "EmpCard_Emergency",
+      "aliases": [
+        "loc:CriticalIllness",
+        "dom:Employee_CriticalIllness"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحالات الطبية أو الحساسية أو الأدوية التي ينبغي أن يعرفها المسعفون أو طبيب الشركة.</p><p><strong>مثال.</strong> <code>سكري من النوع الأول؛ حساسية من البنسلين</code></p><p><strong>لماذا يهم.</strong> بيانات شخصية حساسة. سجّل فقط ما يخدم الموظف فعلاً في حالة الطوارئ، وقيّد صلاحية الاطلاع على هذه الشاشة وفقاً لذلك. ويمكن للموظف تحديثه من خلال الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

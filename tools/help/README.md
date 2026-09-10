@@ -29,7 +29,15 @@ Compiles the Markdown into the runtime payload the Angular drawer loads,
 `angular/src/assets/help/{lang}/{helpId}.json` — one file per screen, fetched on first open and
 cached. Rules text is regenerated here too, so prose can never carry a stale validation rule.
 Build only the languages that actually have prose: a missing language falls back to English at
-runtime, which is better than shipping a file full of `_TODO_`.
+runtime, which is better than shipping a file full of `_TODO_`. English and Arabic both have
+prose for the pilot screens, so a plain `build` builds both.
+
+The Rules line is generated per language from the same rule parts, so Arabic can never state a
+different rule from English. Arabic rules name choices and master-data lists with the app's own
+strings from `HCMv3-ar.xml`, and use Arabic number agreement ("1000 حرف", "64 حرفاً"). The
+Arabic label is `**القواعد.**`; either label is recognised, so an English Rules line in an
+Arabic file is rewritten rather than duplicated. Write Arabic prose with the terms in
+`docs/localization/arabic-glossary.md`, and name fields and menus exactly as the Arabic UI does.
 
 ```bash
 node tools/help/help-tool.mjs coverage [--check]

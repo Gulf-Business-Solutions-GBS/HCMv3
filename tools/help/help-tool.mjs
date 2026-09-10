@@ -129,7 +129,69 @@ function enumMembers(typeName) {
     return members.length ? members : null;
 }
 
-/** DESIGN.md §10 -- the Rules block, derived and never hand-written. */
+/**
+ * The app's own translations, so Arabic rules name choices and master-data lists exactly as the
+ * screen does ("مفعّل", "الجنسيات") instead of the help inventing its own words for them.
+ */
+let arTexts = null;
+function arText(key) {
+    if (!arTexts) {
+        const xml = read('aspnet-core/src/HCMv3.Core/Localization/HCMv3/HCMv3-ar.xml');
+        arTexts = new Map([...xml.matchAll(/<text name="([^"]+)">([^<]*)<\/text>/g)].map((m) => [m[1], m[2]]));
+    }
+    return arTexts.get(key);
+}
+
+/** Title -> Titles, City -> Cities, MaritalStatus -> MaritalStatuses: the master-data menu keys. */
+const pluralKey = (type) =>
+    /[^aeiou]y$/.test(type) ? `${type.slice(0, -1)}ies` : /s$/.test(type) ? `${type}es` : `${type}s`;
+
+/**
+ * "Character" after a number, by Arabic counting rules, which follow the last two digits:
+ * 3-10 take the plural (105 أحرف), 11-99 the accusative singular (128 حرفاً), and round
+ * hundreds and thousands the genitive singular (1000 حرف).
+ */
+function arCountedNoun(n) {
+    const t = n % 100;
+    if (t === 0) return 'حرف';
+    if (t >= 3 && t <= 10) return 'أحرف';
+    return 'حرفاً';
+}
+
+/** Every rule phrase, per language. English is the original wording, kept byte-for-byte. */
+const RULE_TEXT = {
+    en: {
+        system: () => 'Set by the system when the record is saved; not entered on the form.',
+        required: () => 'Required.',
+        optional: () => 'Optional.',
+        maxLen: (r) => `Maximum ${r.n} characters.`,
+        range: (r) => `Between ${r.a} and ${r.b}.`,
+        oneOf: (r) => `One of: ${r.members.join(', ')}.`,
+        lookup: (r) => `Chosen from ${r.target.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`,
+        date: () => 'Date value.',
+        whole: () => 'Whole number.',
+    },
+    ar: {
+        system: () => 'يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.',
+        required: () => 'إلزامي.',
+        optional: () => 'اختياري.',
+        maxLen: (r) => `الحد الأقصى ${r.n} ${arCountedNoun(Number(r.n))}.`,
+        range: (r) => `بين ${r.a} و${r.b}.`,
+        oneOf: (r) => `إحدى القيم: ${r.members.map((m) => arText(m) ?? m).join('، ')}.`,
+        lookup: (r) => `يُختار من قائمة ${arText(pluralKey(r.target)) ?? r.target}.`,
+        date: () => 'تاريخ.',
+        whole: () => 'رقم صحيح.',
+    },
+};
+
+/** The label of the generated Rules line in each language's Markdown. */
+const RULES_LABEL = { en: '**Rules.**', ar: '**القواعد.**' };
+const RULES_LINE = /^\*\*(?:Rules|القواعد)\.\*\*.*$/m;
+
+/**
+ * DESIGN.md §10 -- the Rules block, derived and never hand-written. Decided once as a list of
+ * rule parts, then rendered per language, so the Arabic can never state a different rule.
+ */
 function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
     if (!prop) return null;
     const parts = [];
@@ -137,44 +199,41 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
 
     // Shown on a screen but absent from its edit form: the system writes it (full names,
     // probation end date). "Optional"/"Required" would tell the reader to go and fill it in.
-    if (systemMaintained) return 'Set by the system when the record is saved; not entered on the form.';
-
-    // "Required" must mean the reader cannot save without it. A non-nullable NUMBER is not that:
-    // left blank it saves as 0, so Mobile, Civil ID and Probation Days all save empty. Required is
-    // therefore [Required], a form label marked required, or a date/choice that always holds a value.
-    const alwaysHasValue =
-        !prop.isNullable && (prop.bareType === 'DateTime' || (prop.isEnumCandidate && !prop.lookupTarget));
-    if (/\[Required\]/.test(attrText) || uiRequired || alwaysHasValue) parts.push('Required.');
-    else parts.push('Optional.');
-
-    const len = attrText.match(/\[(?:StringLength|MaxLength)\((\d+)\)/);
-    if (len) parts.push(`Maximum ${len[1]} characters.`);
-
-    const range = attrText.match(/\[Range\(([^,]+),\s*([^)]+)\)/);
-    if (range) parts.push(`Between ${range[1].trim()} and ${range[2].trim()}.`);
-
-    if (prop.isEnumCandidate) {
-        // "All" is a filter value (EmploymentType.ALL, LeaveReligion.All), never something a
-        // record can be -- the form does not offer it, so neither does the help.
-        const members = enumMembers(prop.bareType)?.filter((m) => !/^all$/i.test(m));
-        if (members?.length) parts.push(`One of: ${members.join(', ')}.`);
-    }
-
-    if (prop.lookupTarget) {
-        // Entity type names are PascalCase ("MaritalStatus"); the reader should see words.
-        parts.push(`Chosen from ${prop.lookupTarget.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`);
+    if (systemMaintained) {
+        parts.push({ k: 'system' });
     } else {
-        switch (prop.bareType) {
-            case 'DateTime':
-                parts.push('Date value.');
-                break;
-            case 'int':
-            case 'long':
-                if (!prop.isEnumCandidate) parts.push('Whole number.');
-                break;
+        // "Required" must mean the reader cannot save without it. A non-nullable NUMBER is not
+        // that: left blank it saves as 0, so Mobile, Civil ID and Probation Days all save empty.
+        // Required is therefore [Required], a form label marked required, or a date/choice that
+        // always holds a value.
+        const alwaysHasValue =
+            !prop.isNullable && (prop.bareType === 'DateTime' || (prop.isEnumCandidate && !prop.lookupTarget));
+        parts.push({ k: /\[Required\]/.test(attrText) || uiRequired || alwaysHasValue ? 'required' : 'optional' });
+
+        const len = attrText.match(/\[(?:StringLength|MaxLength)\((\d+)\)/);
+        if (len) parts.push({ k: 'maxLen', n: len[1] });
+
+        const range = attrText.match(/\[Range\(([^,]+),\s*([^)]+)\)/);
+        if (range) parts.push({ k: 'range', a: range[1].trim(), b: range[2].trim() });
+
+        if (prop.isEnumCandidate) {
+            // "All" is a filter value (EmploymentType.ALL, LeaveReligion.All), never something a
+            // record can be -- the form does not offer it, so neither does the help.
+            const members = enumMembers(prop.bareType)?.filter((m) => !/^all$/i.test(m));
+            if (members?.length) parts.push({ k: 'oneOf', members });
+        }
+
+        if (prop.lookupTarget) {
+            parts.push({ k: 'lookup', target: prop.lookupTarget });
+        } else if (prop.bareType === 'DateTime') {
+            parts.push({ k: 'date' });
+        } else if ((prop.bareType === 'int' || prop.bareType === 'long') && !prop.isEnumCandidate) {
+            parts.push({ k: 'whole' });
         }
     }
-    return parts.join(' ');
+
+    const render = (lang) => parts.map((p) => RULE_TEXT[lang][p.k](p)).join(' ');
+    return Object.fromEntries(Object.keys(RULE_TEXT).map((lang) => [lang, render(lang)]));
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -344,6 +403,10 @@ function buildInventory() {
                 aliases.add(`loc:${onForm.locKey}`);
             }
 
+            const rulesByLang = rulesFor(prop, {
+                uiRequired: onForm?.uiRequired,
+                systemMaintained: editFields.length > 0 && !onForm,
+            });
             fields.push({
                 canonicalId,
                 property: hit.property,
@@ -353,10 +416,8 @@ function buildInventory() {
                 aliases: [...aliases],
                 resolvedVia: hit.via,
                 type: prop ? prop.type : 'unknown',
-                rules: rulesFor(prop, {
-                    uiRequired: onForm?.uiRequired,
-                    systemMaintained: editFields.length > 0 && !onForm,
-                }),
+                rules: rulesByLang?.en ?? null,
+                rulesByLang,
             });
         }
 
@@ -417,9 +478,11 @@ function cmdExtract() {
 
 const TODO = '_TODO_';
 
+const rulesIn = (field, lang) => field.rulesByLang?.[lang] ?? field.rules;
+
 function sectionMarkdown(field, lang) {
     const alias = `<!-- alias: ${field.aliases.join(', ')} -->`;
-    const rules = field.rules ? `**Rules.** ${field.rules}` : '';
+    const rules = rulesIn(field, lang) ? `${RULES_LABEL[lang]} ${rulesIn(field, lang)}` : '';
     const what = lang === 'ar' ? '**ما هو.**' : '**What it is.**';
     const example = lang === 'ar' ? '**مثال.**' : '**Example.**';
     return [
@@ -471,14 +534,17 @@ function splitExisting(md) {
 }
 
 /** Regenerate the machine-written lines -- Rules and the alias note; prose is never touched. */
-function refreshGenerated(sectionMd, field) {
+function refreshGenerated(sectionMd, field, lang) {
     let out = sectionMd;
     const aliasLine = `<!-- alias: ${field.aliases.join(', ')} -->`;
     if (/^<!--\s*alias:.*-->$/m.test(out)) out = out.replace(/^<!--\s*alias:.*-->$/m, aliasLine);
 
-    if (!field.rules) return out;
-    const line = `**Rules.** ${field.rules}`;
-    if (/^\*\*Rules\.\*\*.*$/m.test(out)) return out.replace(/^\*\*Rules\.\*\*.*$/m, line);
+    const rules = rulesIn(field, lang);
+    if (!rules) return out;
+    // Matches either language's label, so an English "Rules." line in an Arabic file is
+    // rewritten in Arabic rather than left beside a second one.
+    const line = `${RULES_LABEL[lang]} ${rules}`;
+    if (RULES_LINE.test(out)) return out.replace(RULES_LINE, line);
     return `${out}\n\n${line}`;
 }
 
@@ -562,7 +628,7 @@ function cmdStubs(argv) {
                 const existing = sections.get(f.canonicalId);
                 const field = byId.get(f.canonicalId);
                 if (existing) {
-                    out.push(refreshGenerated(existing, field));
+                    out.push(refreshGenerated(existing, field, lang));
                 } else {
                     out.push(sectionMarkdown(field, lang).replace(/\s+$/, ''));
                     newHere++;
@@ -574,7 +640,7 @@ function cmdStubs(argv) {
             // stale so a human decides whether the field moved or the doc is wrong.
             for (const [id, body] of sections) {
                 if (emitted.has(id)) continue;
-                out.push(byId.has(id) ? refreshGenerated(body, byId.get(id)) : body);
+                out.push(byId.has(id) ? refreshGenerated(body, byId.get(id), lang) : body);
             }
 
             fs.writeFileSync(abs(rel), out.join('\n\n') + '\n');
@@ -674,7 +740,7 @@ function parseSectionBody(md) {
     }
 
     // Rules are regenerated at build time from the entity, never taken from prose.
-    const body = pub.filter((l) => !/^\s*\*\*Rules\.\*\*/.test(l));
+    const body = pub.filter((l) => !/^\s*\*\*(?:Rules|القواعد)\.\*\*/.test(l));
     return { html: blocksToHtml(body), adminHtml: blocksToHtml(admin), when };
 }
 
@@ -693,6 +759,7 @@ function cmdBuild(argv) {
                 continue;
             }
             const { head } = splitExisting(read(rel));
+            // Each language names the page itself; the registry title is the English fallback.
             const overviewMd = head.split(/\n## Overview\n/)[1] || '';
 
             const fields = [];
@@ -709,7 +776,7 @@ function cmdBuild(argv) {
                     label: f.locKey,
                     section: f.section,
                     aliases: f.aliases,
-                    rules: f.rules,
+                    rules: rulesIn(f, lang),
                     when: parsed.when,
                     html: parsed.html,
                     adminHtml: parsed.adminHtml,
@@ -725,7 +792,7 @@ function cmdBuild(argv) {
                     {
                         helpId: page.helpId,
                         lang,
-                        title: page.title,
+                        title: head.match(/^title:\s*(.+)$/m)?.[1].trim() ?? page.title,
                         entity: page.entity.fullName,
                         overviewHtml: blocksToHtml(overviewMd.split(/\r?\n/)),
                         aliasIndex,
