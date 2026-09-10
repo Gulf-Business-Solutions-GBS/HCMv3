@@ -159,3 +159,35 @@ html[dir="rtl"] {
     flex: 0 0 auto;
     color: var(--bs-gray-700, #5e6278);
 }
+
+/*
+ * The navigation's logo row, on a phone.
+ *
+ * Metronic hides .app-sidebar-logo below lg outright, on the assumption that the header's own logo is
+ * enough. It is not once the menu opens: on a phone the menu is a drawer that covers the header, so the
+ * logo vanished and the drawer had no control of its own. The drawer's close button was already inside
+ * this row (see default-layout.component.html) -- which is why it never appeared either: it was placed in
+ * the one container hidden on exactly the screens it was written for.
+ *
+ * The ID outranks Metronic's class rule without !important. The height mirrors Metronic's desktop rule
+ * for the same row, so the drawer's top edge lines up with the header it covers.
+ */
+@media (max-width: 991.98px) {
+    #kt_app_sidebar_logo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        height: calc(var(--bs-app-header-height) + 1px);
+    }
+
+    /*
+     * The collapse-to-icons button is a desktop idea: a drawer is open or closed, never minimised, and
+     * Metronic scopes every minimise rule to lg and up, so on a phone it would do nothing when tapped. It
+     * also hangs half outside the sidebar edge by design. The close button beside the logo is the
+     * phone's equivalent control.
+     */
+    #kt_app_sidebar_toggle {
+        display: none;
+    }
+}
