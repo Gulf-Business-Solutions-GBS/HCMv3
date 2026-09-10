@@ -120,7 +120,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Optional. Chosen from MaritalStatus master data.
+**Rules.** Optional. Chosen from Marital Status master data.
 
 ## Qualification {#Employee.QualificationId}
 <!-- alias: loc:Qualification, dom:Employee_QualificationId -->
@@ -147,10 +147,10 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## PACINumber {#Employee.PACINumber}
-<!-- alias: loc:PACINumber -->
+<!-- alias: loc:PACINumber, dom:Employee_PaciNumber, loc:PaciNumber -->
 
 **ما هو.** _TODO_
 
@@ -174,7 +174,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## ProbationEndDate {#Employee.ProbationEndDate}
 <!-- alias: loc:ProbationEndDate -->
@@ -192,7 +192,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Optional. Chosen from RecruitmentType master data.
+**Rules.** Optional. Chosen from Recruitment Type master data.
 
 ## PreviousEmpCode {#Employee.PreviousEmpCode}
 <!-- alias: loc:PreviousEmpCode, dom:Employee_PreviousEmpCode -->
@@ -237,7 +237,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## Telephone {#Employee.Telephone}
 <!-- alias: loc:Telephone, dom:Employee_Telephone -->
@@ -246,7 +246,7 @@ _TODO_
 
 **مثال.** _TODO_
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## BusinessLandline {#Employee.BusinessLandline}
 <!-- alias: loc:BusinessLandline, dom:Employee_BusinessLandline -->

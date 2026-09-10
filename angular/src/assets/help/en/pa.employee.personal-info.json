@@ -34,6 +34,8 @@
     "loc:CivilID": "Employee.CivilID",
     "dom:Employee_CivilID": "Employee.CivilID",
     "loc:PACINumber": "Employee.PACINumber",
+    "dom:Employee_PaciNumber": "Employee.PACINumber",
+    "loc:PaciNumber": "Employee.PACINumber",
     "loc:JoiningDate": "Employee.JoiningDate",
     "dom:Employee_JoiningDate": "Employee.JoiningDate",
     "loc:ProbationDays": "Employee.ProbationDays",
@@ -283,7 +285,7 @@
         "loc:CivilID",
         "dom:Employee_CivilID"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The 12-digit Kuwait Civil ID number. This is the single strongest identifier on the record and must match the card exactly.</p><p><strong>Example.</strong> <code>288031400123</code></p><p><strong>Why it matters.</strong> Used to identify the employee in PIFSS and PACI submissions. An incorrect digit will cause those files to be rejected for the whole batch, not just this employee.</p>",
       "adminHtml": "",
@@ -294,7 +296,9 @@
       "label": "PACINumber",
       "section": "EmpCard_Personal",
       "aliases": [
-        "loc:PACINumber"
+        "loc:PACINumber",
+        "dom:Employee_PaciNumber",
+        "loc:PaciNumber"
       ],
       "rules": "Optional. Maximum 32 characters.",
       "when": null,
@@ -324,7 +328,7 @@
         "loc:ProbationDays",
         "dom:Employee_ProbationDays"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Length of the probation period, counted in calendar days from the joining date.</p><p><strong>Example.</strong> <code>90</code></p>",
       "adminHtml": "",
@@ -421,10 +425,10 @@
         "loc:Mobile",
         "dom:Employee_Mobile"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> Mobile telephone number, entered as digits without spaces or symbols.</p><p><strong>Example.</strong> <code>96550123456</code></p><p><strong>Why it matters.</strong> Used for SMS notifications and one-time passcodes. Include the country code so international sending works.</p>",
-      "adminHtml": "",
+      "html": "<p><strong>What it is.</strong> Mobile telephone number, entered as digits without spaces or symbols.</p><p><strong>Example.</strong> <code>96550123456</code></p><p><strong>Why it matters.</strong> The number HR and managers use to reach the employee, and it is printed on the work-visa request form. Include the country code. Employees can ask for a change through self-service.</p>",
+      "adminHtml": "<p>This is not the number sign-in codes are sent to. Text messages from HCMv3 — verification and sign-in codes — go to the phone number on the employee's <em>user account</em>, which is maintained separately under Users.</p>",
       "stub": false
     },
     {
@@ -435,7 +439,7 @@
         "loc:Telephone",
         "dom:Employee_Telephone"
       ],
-      "rules": "Required. Whole number.",
+      "rules": "Optional. Whole number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Home or personal landline number.</p><p><strong>Example.</strong> <code>22551234</code></p>",
       "adminHtml": "",

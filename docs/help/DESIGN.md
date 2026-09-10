@@ -35,6 +35,8 @@ Explicitly out of scope: the ~40 sibling sections under `employee-detail/` (cont
 
 In scope by necessity: `employees/create-or-edit-employee-modal`, because it is the *edit surface for the same fields* and proves the "one topic, two screens" claim.
 
+**Extended 2026-09-10:** the edit form is now a help page in its own right, `pa.employee.edit` — 58 fields, of which 36 are shared with Personal Information and 22 are form-only. Its content is written; showing it in-app needs the drawer to follow the modal (§6.1), which is pending a browser-testable environment.
+
 ## 4. The identifier contract
 
 ### 4.1 Canonical id
@@ -99,6 +101,8 @@ docs/help/
 ```
 
 Parallel trees. Arabic prose does **not** go into `HCMv3-ar.xml` — those files are for UI strings, and paragraph content would make them unmanageable.
+
+**One file per screen, one home per topic.** A screen's file holds its Overview and the topics for the fields it *introduces*. A field that appears on several screens is written once, in its **home** file — the first screen in `pages.json` that shows it — and every other screen borrows it: the tooling pools all topics of a language by canonical id. So `pa.employee.edit.md` contains only the 22 form-only fields; the other 36 it shows come from `pa.employee.personal-info.md`. The same id defined in two files fails the coverage gate (§12), which is what enforces principle 1.
 
 ### 5.2 File format
 
@@ -245,6 +249,8 @@ public virtual string FirstNameEn { get; set; }
 
 The build emits **Rules: Required. Maximum 128 characters.** Enum-typed properties emit their members. Nullability comes from the EF model.
 
+**"Required" means the reader cannot save without it** — `[Required]` on the entity, a form label marked required, or a date or choice that always holds a value. It does *not* follow from a non-nullable number: `long Mobile` left blank saves as 0, so calling it required told readers about a rule the system does not enforce. The first version made exactly that mistake for Mobile, Telephone, Permanent Telephone, Civil ID and Probation Days; it was corrected on 2026-09-10.
+
 This is the single largest reduction in authoring effort: a writer facing a field already has its name, its label, its type and its rules on the page, and only has to supply meaning and an example.
 
 ## 11. Build pipeline
@@ -315,6 +321,8 @@ this choice does not foreclose it.
 | `tabindex` on `<dt>` | Rejected — Alt+H is the keyboard path instead | 2026-09-10 |
 | Admin notes in-app | Shown to all, clearly labelled; the gated surface is the technical tab | 2026-09-10 |
 | Motion | Never load-bearing: entry animation offsets by 1.5rem, not 100%; F1 scroll is instant, not smooth | 2026-09-10 |
+| Shared fields | One home file per topic; other screens borrow it; duplicates fail coverage | 2026-09-10 |
+| Property-name matching | Case-insensitive — `Employee_PaciNumber` is the `PACINumber` property | 2026-09-10 |
 
 **On that last one.** Both the entry animation and the F1 scroll were first written the obvious way
 — `translateX(100%)` and `scrollIntoView({behavior: 'smooth'})` — and both failed the same way when

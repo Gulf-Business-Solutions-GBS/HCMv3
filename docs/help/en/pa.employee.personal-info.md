@@ -189,10 +189,10 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Why it matters.** Used to identify the employee in PIFSS and PACI submissions. An incorrect digit will cause those files to be rejected for the whole batch, not just this employee.
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## PACINumber {#Employee.PACINumber}
-<!-- alias: loc:PACINumber -->
+<!-- alias: loc:PACINumber, dom:Employee_PaciNumber, loc:PaciNumber -->
 
 **What it is.** The PACI address reference for the employee, issued by the Public Authority for Civil Information.
 
@@ -220,7 +220,7 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `90`
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## ProbationEndDate {#Employee.ProbationEndDate}
 <!-- alias: loc:ProbationEndDate -->
@@ -295,9 +295,13 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `96550123456`
 
-**Why it matters.** Used for SMS notifications and one-time passcodes. Include the country code so international sending works.
+**Why it matters.** The number HR and managers use to reach the employee, and it is printed on the work-visa request form. Include the country code. Employees can ask for a change through self-service.
 
-**Rules.** Required. Whole number.
+:::admin
+This is not the number sign-in codes are sent to. Text messages from HCMv3 -- verification and sign-in codes -- go to the phone number on the employee's *user account*, which is maintained separately under Users.
+:::
+
+**Rules.** Optional. Whole number.
 
 ## Telephone {#Employee.Telephone}
 <!-- alias: loc:Telephone, dom:Employee_Telephone -->
@@ -306,7 +310,7 @@ Maintained under General Master Info → Nationalities. Deactivating a nationali
 
 **Example.** `22551234`
 
-**Rules.** Required. Whole number.
+**Rules.** Optional. Whole number.
 
 ## BusinessLandline {#Employee.BusinessLandline}
 <!-- alias: loc:BusinessLandline, dom:Employee_BusinessLandline -->

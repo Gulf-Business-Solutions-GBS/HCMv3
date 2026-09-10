@@ -48,6 +48,16 @@ Append an entry to `docs/help/pages.json`, then run `extract` and read the outpu
 generating stubs. `unresolved labels: 0` means every label on the screen mapped to a real entity
 property; anything else needs an alias or a registry fix first.
 
+## Screens that share fields
+
+A field shown on several screens is written **once**, in its home file — the first screen in
+`pages.json` that shows it. Every other screen borrows it: `stubs`, `build` and `coverage` pool
+all topics of a language by canonical id. So a new screen's file only ever gets stubs for the
+fields no earlier screen documents. Defining the same field in two files is a coverage error.
+
+A screen with no read view (a form only) is registered with just an `edit` surface; give it a
+`sectionTitleClass` so its fields are grouped under the form's own section headings.
+
 ## How labels are resolved
 
 A read-only screen has only a localization key in the DOM. The **edit surface** for the same

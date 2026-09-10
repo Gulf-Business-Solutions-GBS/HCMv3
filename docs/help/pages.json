@@ -4,8 +4,13 @@
     {
       "helpId": "pa.employee.personal-info",
       "title": "Employee — Personal Information",
-      "audience": ["end-user", "admin"],
-      "permissions": ["Pages.PersonnelAdministration.Employees"],
+      "audience": [
+        "end-user",
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.Employees"
+      ],
       "entity": {
         "name": "Employee",
         "fullName": "HCMv3.PersonnelAdministration.Employee",
@@ -18,6 +23,29 @@
         },
         "edit": {
           "template": "angular/src/app/admin/personnel-administration/employees/create-or-edit-employee-modal.component.html"
+        }
+      }
+    },
+    {
+      "helpId": "pa.employee.edit",
+      "title": "Employee — Create / Edit",
+      "audience": [
+        "end-user",
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.Employees.Create",
+        "Pages.PersonnelAdministration.Employees.Edit"
+      ],
+      "entity": {
+        "name": "Employee",
+        "fullName": "HCMv3.PersonnelAdministration.Employee",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/Employee.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employees/create-or-edit-employee-modal.component.html",
+          "sectionTitleClass": "emp-acc-title"
         }
       }
     }

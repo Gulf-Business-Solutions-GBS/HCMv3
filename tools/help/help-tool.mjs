@@ -130,13 +130,17 @@ function enumMembers(typeName) {
 }
 
 /** DESIGN.md §10 -- the Rules block, derived and never hand-written. */
-function rulesFor(prop) {
+function rulesFor(prop, { uiRequired = false } = {}) {
     if (!prop) return null;
     const parts = [];
     const attrText = prop.attrs.join(' ');
 
-    const valueType = !prop.isNullable && prop.bareType !== 'string' && prop.bareType !== 'byte[]';
-    if (/\[Required\]/.test(attrText) || valueType) parts.push('Required.');
+    // "Required" must mean the reader cannot save without it. A non-nullable NUMBER is not that:
+    // left blank it saves as 0, so Mobile, Civil ID and Probation Days all save empty. Required is
+    // therefore [Required], a form label marked required, or a date/choice that always holds a value.
+    const alwaysHasValue =
+        !prop.isNullable && (prop.bareType === 'DateTime' || (prop.isEnumCandidate && !prop.lookupTarget));
+    if (/\[Required\]/.test(attrText) || uiRequired || alwaysHasValue) parts.push('Required.');
     else parts.push('Optional.');
 
     const len = attrText.match(/\[(?:StringLength|MaxLength)\((\d+)\)/);
@@ -178,34 +182,52 @@ const flatten = (html) => html.replace(/\s+/g, ' ');
  * both (`<label for="Employee_TitleId">{{ 'Title' | localize }}</label>`). The read view has only
  * the key, so it borrows this mapping rather than guessing.
  */
-function parseEditTemplate(rel, entityName) {
+/** Matches an element carrying `sectionTitleClass` whose content is a localized key. */
+const sectionTitlePattern = (cls) =>
+    `<[a-z0-9]+[^>]*class="[^"]*\\b${cls}\\b[^"]*"[^>]*>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}`;
+
+/**
+ * Edit form fields in screen order, each with the section it sits under.
+ *
+ * The labels here are also the AUTHORITATIVE localization-key -> entity-property map: they carry
+ * both (`<label for="Employee_TitleId">{{ 'Title' | localize }}</label>`). A read view has only
+ * the key, so it borrows this mapping rather than guessing.
+ */
+function parseEditTemplate(rel, entityName, sectionTitleClass) {
     const html = flatten(read(rel));
+    const label =
+        `<label([^>]*)for="(${entityName}_[A-Za-z0-9_]+)"([^>]*)>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}`;
     const re = new RegExp(
-        `<label([^>]*)for="(${entityName}_[A-Za-z0-9_]+)"([^>]*)>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}`,
+        sectionTitleClass ? `${sectionTitlePattern(sectionTitleClass)}|${label}` : label,
         'g'
     );
-    const byLocKey = new Map();
+    // With a section pattern first, the label groups shift by one.
+    const o = sectionTitleClass ? 1 : 0;
+    const out = [];
+    let section = null;
     let m;
     while ((m = re.exec(html)) !== null) {
-        const domId = m[2];
-        const locKey = m[4];
-        const attrs = `${m[1]} ${m[3]}`;
-        if (!byLocKey.has(locKey)) {
-            byLocKey.set(locKey, {
-                domId,
-                property: domId.slice(entityName.length + 1),
-                uiRequired: /class="[^"]*\brequired\b/.test(attrs),
-            });
+        if (sectionTitleClass && m[1]) {
+            section = m[1];
+            continue;
         }
+        const domId = m[2 + o];
+        out.push({
+            locKey: m[4 + o],
+            domId,
+            property: domId.slice(entityName.length + 1),
+            uiRequired: /class="[^"]*\brequired\b/.test(`${m[1 + o]} ${m[3 + o]}`),
+            section,
+        });
     }
-    return byLocKey;
+    return out;
 }
 
 /** Read view: ordered card titles and `<dt>` field labels. */
 function parseReadTemplate(rel, sectionTitleClass) {
     const html = flatten(read(rel));
     const re = new RegExp(
-        `<h\\d[^>]*class="[^"]*${sectionTitleClass}[^"]*"[^>]*>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}` +
+        `${sectionTitlePattern(sectionTitleClass)}` +
         `|<dt[^>]*>\\s*\\{\\{\\s*'([^']+)'\\s*\\|\\s*localize\\s*\\}\\}`,
         'g'
     );
@@ -223,19 +245,34 @@ function parseReadTemplate(rel, sectionTitleClass) {
 // Resolution: localization key -> canonical entity property (DESIGN.md §4)
 // ---------------------------------------------------------------------------------------------
 
+/**
+ * The entity's own spelling of a property name.
+ *
+ * Case-insensitive because templates and entities disagree: the edit form's input is
+ * `Employee_PaciNumber` while the property is `PACINumber`. Matching exactly split one field into
+ * two topics and left F1 on that input resolving to nothing.
+ */
+function findProp(props, name) {
+    if (!name) return null;
+    if (props.has(name)) return name;
+    const lower = name.toLowerCase();
+    const hits = [...props.keys()].filter((k) => k.toLowerCase() === lower);
+    return hits.length === 1 ? hits[0] : null;
+}
+
 function resolveField(locKey, editMap, props) {
     const fromEdit = editMap.get(locKey);
-    if (fromEdit && props.has(fromEdit.property)) {
-        return { property: fromEdit.property, domId: fromEdit.domId, via: 'edit-template' };
+    const editProp = fromEdit && findProp(props, fromEdit.property);
+    if (editProp) {
+        return { property: editProp, domId: fromEdit.domId, via: 'edit-template' };
     }
-    if (props.has(locKey) && !props.get(locKey).isNavigation) {
-        return { property: locKey, domId: null, via: 'entity-exact' };
+    const exact = findProp(props, locKey);
+    if (exact && !props.get(exact).isNavigation) {
+        return { property: exact, domId: null, via: 'entity-exact' };
     }
-    if (props.has(`${locKey}Id`)) {
-        return { property: `${locKey}Id`, domId: null, via: 'entity-lookup-id' };
-    }
-    if (fromEdit) {
-        return { property: fromEdit.property, domId: fromEdit.domId, via: 'edit-template-unverified' };
+    const lookup = findProp(props, `${locKey}Id`);
+    if (lookup) {
+        return { property: lookup, domId: null, via: 'entity-lookup-id' };
     }
     return null;
 }
@@ -254,20 +291,36 @@ function buildInventory() {
 
     for (const page of registry.pages) {
         const props = parseEntity(page.entity.file);
-        const editMap = page.surfaces.edit
-            ? parseEditTemplate(page.surfaces.edit.template, page.entity.name)
-            : new Map();
-        const readFields = parseReadTemplate(
-            page.surfaces.read.template,
-            page.surfaces.read.sectionTitleClass || 'card-title'
-        );
+        const editFields = page.surfaces.edit
+            ? parseEditTemplate(
+                  page.surfaces.edit.template,
+                  page.entity.name,
+                  page.surfaces.edit.sectionTitleClass
+              )
+            : [];
+        const editMap = new Map();
+        for (const ef of editFields) if (!editMap.has(ef.locKey)) editMap.set(ef.locKey, ef);
+
+        // A page documents the fields of its PRIMARY surface, in that surface's order: the read
+        // view when there is one, otherwise the form itself.
+        const primary = page.surfaces.read
+            ? parseReadTemplate(page.surfaces.read.template, page.surfaces.read.sectionTitleClass || 'card-title')
+            : editFields.map((ef) => ({ locKey: ef.locKey, section: ef.section }));
+
+        // Every way the same property appears on this page's surfaces, so F1 lands on one topic
+        // whichever of them the reader is looking at.
+        const editByProp = new Map();
+        for (const ef of editFields) {
+            const p = findProp(props, ef.property);
+            if (p && !editByProp.has(p)) editByProp.set(p, ef);
+        }
 
         const fields = [];
         const unresolved = [];
         const seen = new Set();
         let order = 0;
 
-        for (const rf of readFields) {
+        for (const rf of primary) {
             const hit = resolveField(rf.locKey, editMap, props);
             if (!hit) {
                 unresolved.push({ locKey: rf.locKey, section: rf.section });
@@ -278,8 +331,12 @@ function buildInventory() {
             seen.add(canonicalId);
 
             const prop = props.get(hit.property);
-            const aliases = [`loc:${rf.locKey}`];
-            if (hit.domId) aliases.push(`dom:${hit.domId}`);
+            const aliases = new Set([`loc:${rf.locKey}`]);
+            const onForm = editByProp.get(hit.property);
+            if (onForm) {
+                aliases.add(`dom:${onForm.domId}`);
+                aliases.add(`loc:${onForm.locKey}`);
+            }
 
             fields.push({
                 canonicalId,
@@ -287,19 +344,27 @@ function buildInventory() {
                 locKey: rf.locKey,
                 section: rf.section,
                 order: order++,
-                aliases,
+                aliases: [...aliases],
                 resolvedVia: hit.via,
                 type: prop ? prop.type : 'unknown',
-                rules: rulesFor(prop),
+                rules: rulesFor(prop, { uiRequired: onForm?.uiRequired }),
             });
         }
 
-        // Fields the edit surface has but the read view does not -- recorded, not documented,
-        // so coverage can tell "not on this screen" apart from "undocumented".
+        // Fields the edit surface has but this page does not -- recorded, not documented, so
+        // coverage can tell "not on this screen" apart from "undocumented".
         const editOnly = [];
-        for (const [locKey, info] of editMap) {
-            const canonicalId = `${page.entity.name}.${info.property}`;
-            if (!seen.has(canonicalId)) editOnly.push({ canonicalId, locKey, domId: info.domId });
+        for (const [prop, ef] of editByProp) {
+            const canonicalId = `${page.entity.name}.${prop}`;
+            if (!seen.has(canonicalId)) editOnly.push({ canonicalId, locKey: ef.locKey, domId: ef.domId });
+        }
+        // An input whose id names no property: F1 on it would find nothing, even if its label
+        // happens to resolve by another route.
+        for (const ef of editFields) {
+            if (findProp(props, ef.property)) continue;
+            const already = unresolved.find((u) => u.locKey === ef.locKey);
+            if (already) already.domId = ef.domId;
+            else unresolved.push({ locKey: ef.locKey, section: ef.section, domId: ef.domId });
         }
 
         pages.push({
@@ -396,14 +461,56 @@ function splitExisting(md) {
     return { head: head.join('\n\n'), sections };
 }
 
-/** Regenerate only the Rules line; every hand-written line survives untouched. */
-function refreshRules(sectionMd, field) {
-    if (!field.rules) return sectionMd;
+/** Regenerate the machine-written lines -- Rules and the alias note; prose is never touched. */
+function refreshGenerated(sectionMd, field) {
+    let out = sectionMd;
+    const aliasLine = `<!-- alias: ${field.aliases.join(', ')} -->`;
+    if (/^<!--\s*alias:.*-->$/m.test(out)) out = out.replace(/^<!--\s*alias:.*-->$/m, aliasLine);
+
+    if (!field.rules) return out;
     const line = `**Rules.** ${field.rules}`;
-    if (/^\*\*Rules\.\*\*.*$/m.test(sectionMd)) {
-        return sectionMd.replace(/^\*\*Rules\.\*\*.*$/m, line);
+    if (/^\*\*Rules\.\*\*.*$/m.test(out)) return out.replace(/^\*\*Rules\.\*\*.*$/m, line);
+    return `${out}\n\n${line}`;
+}
+
+const pageFile = (page, lang) => path.join(CONTENT_DIR, lang, `${page.helpId}.md`);
+
+/**
+ * Every `##` topic in every help file of one language, keyed by canonical id.
+ *
+ * Topics are pooled rather than read per screen because one field appears on several screens --
+ * the Personal Information card and the edit form show the same 39 -- and DESIGN.md §2.1 says it
+ * is described once. Each topic lives in exactly one file (its "home"); every other screen that
+ * shows the field borrows it from there. Two files defining the same id is a coverage error.
+ */
+function loadTopicPool(lang) {
+    const dir = path.join(CONTENT_DIR, lang);
+    const pool = new Map();
+    const duplicates = [];
+    if (!exists(dir)) return { pool, duplicates };
+
+    const files = fs.readdirSync(abs(dir)).filter((n) => n.endsWith('.md')).sort();
+    for (const name of files) {
+        const rel = path.join(dir, name);
+        for (const [id, body] of splitExisting(read(rel)).sections) {
+            if (pool.has(id)) duplicates.push({ id, files: [pool.get(id).file, rel] });
+            else pool.set(id, { file: rel, body });
+        }
     }
-    return `${sectionMd}\n\n${line}`;
+    return { pool, duplicates };
+}
+
+/** First definition of each field across all pages -- its rules and aliases are the same everywhere. */
+function fieldsById(inv) {
+    const byId = new Map();
+    for (const page of inv.pages) {
+        for (const f of page.fields) {
+            const known = byId.get(f.canonicalId);
+            if (!known) byId.set(f.canonicalId, { ...f, aliases: [...f.aliases] });
+            else for (const a of f.aliases) if (!known.aliases.includes(a)) known.aliases.push(a);
+        }
+    }
+    return byId;
 }
 
 function cmdStubs(argv) {
@@ -411,45 +518,65 @@ function cmdStubs(argv) {
         ? argv[argv.indexOf('--lang') + 1].split(',')
         : LANGS;
     const inv = buildInventory();
+    const byId = fieldsById(inv);
     let created = 0;
     let merged = 0;
     let added = 0;
 
-    for (const page of inv.pages) {
-        for (const lang of langs) {
-            const rel = path.join(CONTENT_DIR, lang, `${page.helpId}.md`);
-            fs.mkdirSync(path.dirname(abs(rel)), { recursive: true });
+    for (const lang of langs) {
+        const { pool } = loadTopicPool(lang);
 
-            if (!exists(rel)) {
-                const body = page.fields.map((f) => sectionMarkdown(f, lang)).join('\n');
-                fs.writeFileSync(abs(rel), frontmatter(page, lang) + body);
-                created++;
-                added += page.fields.length;
-                console.log(`created  ${rel}  (${page.fields.length} sections)`);
-                continue;
-            }
-
-            const { head, sections } = splitExisting(read(rel));
-            const out = [head];
-            let newHere = 0;
+        // A topic's home is the file already holding it; failing that, the first page in the
+        // registry that shows the field. Stubs are only ever written into a field's home.
+        const home = new Map();
+        for (const page of inv.pages) {
             for (const f of page.fields) {
-                const existing = sections.get(f.canonicalId);
-                if (existing) {
-                    out.push(refreshRules(existing, f));
-                } else {
-                    out.push(sectionMarkdown(f, lang).replace(/\s+$/, ''));
-                    newHere++;
+                if (!home.has(f.canonicalId)) {
+                    home.set(f.canonicalId, pool.get(f.canonicalId)?.file ?? pageFile(page, lang));
                 }
             }
-            // Sections no longer on the screen are KEPT; coverage reports them as stale so a
-            // human decides whether the field moved or the doc is wrong.
-            for (const [id, body] of sections) {
-                if (!page.fields.some((f) => f.canonicalId === id)) out.push(body);
+        }
+
+        for (const page of inv.pages) {
+            const rel = pageFile(page, lang);
+            fs.mkdirSync(path.dirname(abs(rel)), { recursive: true });
+            const isNew = !exists(rel);
+            const { head, sections } = isNew
+                ? { head: frontmatter(page, lang).replace(/\s+$/, ''), sections: new Map() }
+                : splitExisting(read(rel));
+
+            const out = [head];
+            const emitted = new Set();
+            let newHere = 0;
+            for (const f of page.fields) {
+                if (home.get(f.canonicalId) !== rel) continue;
+                const existing = sections.get(f.canonicalId);
+                const field = byId.get(f.canonicalId);
+                if (existing) {
+                    out.push(refreshGenerated(existing, field));
+                } else {
+                    out.push(sectionMarkdown(field, lang).replace(/\s+$/, ''));
+                    newHere++;
+                }
+                emitted.add(f.canonicalId);
             }
+            // Everything else already in the file stays: topics homed here for fields this page
+            // does not show, and sections no longer on any screen, which coverage reports as
+            // stale so a human decides whether the field moved or the doc is wrong.
+            for (const [id, body] of sections) {
+                if (emitted.has(id)) continue;
+                out.push(byId.has(id) ? refreshGenerated(body, byId.get(id)) : body);
+            }
+
             fs.writeFileSync(abs(rel), out.join('\n\n') + '\n');
-            merged++;
             added += newHere;
-            console.log(`merged   ${rel}  (+${newHere} new sections)`);
+            if (isNew) {
+                created++;
+                console.log(`created  ${rel}  (${newHere} sections)`);
+            } else {
+                merged++;
+                console.log(`merged   ${rel}  (+${newHere} new sections)`);
+            }
         }
     }
     console.log(`\n${created} created, ${merged} merged, ${added} sections added`);
@@ -547,20 +674,23 @@ function cmdBuild(argv) {
     const inv = buildInventory();
     let written = 0;
 
-    for (const page of inv.pages) {
-        for (const lang of langs) {
-            const rel = path.join(CONTENT_DIR, lang, `${page.helpId}.md`);
+    for (const lang of langs) {
+        const { pool } = loadTopicPool(lang);
+
+        for (const page of inv.pages) {
+            const rel = pageFile(page, lang);
             if (!exists(rel)) {
                 console.log(`skip     ${lang}/${page.helpId} (no content file)`);
                 continue;
             }
-            const { head, sections } = splitExisting(read(rel));
+            const { head } = splitExisting(read(rel));
             const overviewMd = head.split(/\n## Overview\n/)[1] || '';
 
             const fields = [];
             const aliasIndex = {};
             for (const f of page.fields) {
-                const section = sections.get(f.canonicalId);
+                // From whichever file is the topic's home -- not necessarily this page's.
+                const section = pool.get(f.canonicalId)?.body;
                 const parsed = section
                     ? parseSectionBody(section)
                     : { html: '', adminHtml: '', when: null };
@@ -615,9 +745,13 @@ function cmdCoverage(argv) {
     let warnings = 0;
     let errors = 0;
 
-    for (const page of inv.pages) {
-        for (const lang of LANGS) {
-            const rel = path.join(CONTENT_DIR, lang, `${page.helpId}.md`);
+    const onAnyScreen = new Set(inv.pages.flatMap((p) => p.fields.map((f) => f.canonicalId)));
+
+    for (const lang of LANGS) {
+        const { pool, duplicates } = loadTopicPool(lang);
+
+        for (const page of inv.pages) {
+            const rel = pageFile(page, lang);
             console.log(`\n${page.helpId} [${lang}]`);
 
             if (!exists(rel)) {
@@ -628,42 +762,49 @@ function cmdCoverage(argv) {
                 continue;
             }
 
-            const { sections } = splitExisting(read(rel));
-            const known = new Set(page.fields.map((f) => f.canonicalId));
-            const documented = [];
-            const stubbed = [];
-
+            let written = 0;
+            let stubbed = 0;
+            let borrowed = 0;
             for (const f of page.fields) {
-                const body = sections.get(f.canonicalId);
-                if (!body) {
+                const topic = pool.get(f.canonicalId);
+                if (!topic) {
                     console.log(`  warn   undocumented field: ${f.canonicalId} (${f.locKey})`);
                     warnings++;
-                } else if (body.includes(TODO)) {
-                    stubbed.push(f.canonicalId);
-                } else {
-                    documented.push(f.canonicalId);
-                }
-            }
-
-            for (const [id, body] of sections) {
-                if (known.has(id)) continue;
-                if (/<!--\s*when:/.test(body)) {
-                    console.log(`  ok     conditional field not on screen: ${id}`);
                     continue;
                 }
-                console.log(`  ERROR  stale section, no such field on screen: ${id}`);
-                errors++;
+                if (topic.file !== rel) borrowed++;
+                if (topic.body.includes(TODO)) stubbed++;
+                else written++;
             }
 
             const total = page.fields.length;
             console.log(
-                `  ${documented.length}/${total} written, ${stubbed.length} stubbed, ` +
-                `${total - documented.length - stubbed.length} missing`
+                `  ${written}/${total} written, ${stubbed} stubbed, ` +
+                `${total - written - stubbed} missing` +
+                (borrowed ? `  (${borrowed} shared from other screens' files)` : '')
             );
         }
 
+        // Whole-language checks: a topic belongs to no single screen, so these cannot be per page.
+        for (const [id, topic] of pool) {
+            if (onAnyScreen.has(id)) continue;
+            if (/<!--\s*when:/.test(topic.body)) {
+                console.log(`  ok     [${lang}] conditional field not on screen: ${id}`);
+                continue;
+            }
+            console.log(`  ERROR  [${lang}] stale section, no such field on any screen: ${id} (${topic.file})`);
+            errors++;
+        }
+        for (const d of duplicates) {
+            console.log(`  ERROR  [${lang}] ${d.id} is described twice: ${d.files.join(' and ')}`);
+            errors++;
+        }
+    }
+
+    for (const page of inv.pages) {
         for (const u of page.unresolved) {
-            console.log(`  ERROR  label resolves to no entity property: ${u.locKey} (${u.section})`);
+            const where = u.domId ? ` (input id ${u.domId})` : '';
+            console.log(`  ERROR  ${page.helpId}: label resolves to no entity property: ${u.locKey}${where}`);
             errors++;
         }
     }
