@@ -6055,5 +6055,16 @@
     <text name="HelpNotAvailable">No help has been written for this screen yet.</text>
     <text name="HelpFieldsOnThisScreen">{0} fields on this screen</text>
     <text name="HelpKeyHint">Press F1 on any field for its explanation</text>
+    <text name="HelpTechnicalInfo">Help: technical information</text>
+    <text name="HelpEntityNotDescribable">No technical information is available for '{0}'.</text>
+    <text name="TechnicalInformation">Technical information</text>
+    <text name="HelpTable">Table</text>
+    <text name="HelpColumn">Column</text>
+    <text name="HelpDataType">Data type</text>
+    <text name="HelpNullable">Allows empty</text>
+    <text name="HelpMaxLength">Maximum length</text>
+    <text name="HelpReferences">References</text>
+    <text name="HelpPrimaryKey">Primary key</text>
+    <text name="Copied">Copied</text>
   </texts>
 </localizationDictionary>

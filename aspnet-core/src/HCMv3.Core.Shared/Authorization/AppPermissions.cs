@@ -708,6 +708,13 @@ public static class AppPermissions
 
     public const string Pages_Administration_AuditLogs = "Pages.Administration.AuditLogs";
 
+    /// <summary>
+    /// See the database table and column behind a field from in-app help (docs/help/DESIGN.md §9).
+    /// Kept apart from every other permission because it discloses schema, which ordinary users have no
+    /// reason to see.
+    /// </summary>
+    public const string Pages_Administration_HelpTechnicalInfo = "Pages.Administration.HelpTechnicalInfo";
+
     public const string Pages_Administration_ActiveSessions = "Pages.Administration.ActiveSessions";
 
     public const string Pages_Administration_OrganizationUnits = "Pages.Administration.OrganizationUnits";

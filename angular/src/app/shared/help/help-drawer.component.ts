@@ -1,4 +1,4 @@
-import { Component, ElementRef, computed, effect, inject } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, signal } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { HelpField, HelpService } from './help.service';
@@ -23,6 +23,12 @@ export class HelpDrawerComponent extends AppComponentBase {
     readonly help = inject(HelpService);
 
     private _el: ElementRef<HTMLElement> = inject(ElementRef);
+
+    /** Permissions do not change without a reload, so this is read once rather than per render. */
+    readonly canSeeTechnical = this.help.canSeeTechnical();
+
+    /** Which topic's "Copy" button last succeeded, so it can briefly say "Copied". */
+    readonly copiedId = signal<string | null>(null);
 
     /** Only the fields the host screen is actually rendering (DESIGN.md §8.1). */
     readonly groups = computed<HelpGroup[]>(() => {
@@ -92,6 +98,19 @@ export class HelpDrawerComponent extends AppComponentBase {
     private isVisible(field: HelpField, visible: Set<string>): boolean {
         if (visible.has(field.id)) return true;
         return field.aliases.some((alias) => visible.has(alias));
+    }
+
+    /** `Employees.NationalityId` to the clipboard -- what someone writing SQL actually wants. */
+    async copy(text: string, fieldId: string): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(text);
+            this.copiedId.set(fieldId);
+            setTimeout(() => {
+                if (this.copiedId() === fieldId) this.copiedId.set(null);
+            }, 1500);
+        } catch {
+            // Clipboard refused (insecure context, denied permission): the text is on screen to select.
+        }
     }
 
     anchorId(fieldId: string): string {

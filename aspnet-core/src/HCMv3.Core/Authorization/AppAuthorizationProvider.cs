@@ -794,6 +794,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         languages.CreateChildPermission(AppPermissions.Pages_Administration_Languages_ChangeDefaultLanguage, L("ChangeDefaultLanguage"));
 
         administration.CreateChildPermission(AppPermissions.Pages_Administration_AuditLogs, L("AuditLogs"));
+        administration.CreateChildPermission(AppPermissions.Pages_Administration_HelpTechnicalInfo, L("HelpTechnicalInfo"));
         administration.CreateChildPermission(AppPermissions.Pages_Administration_ActiveSessions, L("ActiveSessions"));
 
         var organizationUnits = administration.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits, L("OrganizationUnits"));

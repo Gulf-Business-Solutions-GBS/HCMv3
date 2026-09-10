@@ -1,5 +1,14 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PermissionCheckerService } from 'abp-ng2-module';
+import {
+    EntitySchemaDto,
+    HelpMetadataServiceProxy,
+    PropertySchemaDto,
+} from '@shared/service-proxies/service-proxies';
+
+/** Must match AppPermissions.Pages_Administration_HelpTechnicalInfo. */
+const TECHNICAL_INFO_PERMISSION = 'Pages.Administration.HelpTechnicalInfo';
 
 /** One documented field. Shape is produced by tools/help/help-tool.mjs build. */
 export interface HelpField {
@@ -59,6 +68,20 @@ export class HelpService {
     private _page: RegisteredPage | null = null;
     private _lastHover: Element | null = null;
     private _pendingToken: string | null = null;
+    private _pendingTechnical = false;
+
+    // -- technical information (DESIGN.md §9) --------------------------------------------------
+
+    private _permission = inject(PermissionCheckerService);
+    private _metadata = inject(HelpMetadataServiceProxy);
+    private _schemaCache = new Map<string, EntitySchemaDto>();
+
+    /** Storage schema of the current page's entity; loaded only when someone asks for it. */
+    readonly schema = signal<EntitySchemaDto | null>(null);
+    readonly schemaFailed = signal(false);
+
+    /** Topics whose technical panel is open. */
+    readonly expandedTechnical = signal<ReadonlySet<string>>(new Set());
 
     constructor() {
         document.addEventListener('mouseover', this._onMouseOver, true);
@@ -68,6 +91,10 @@ export class HelpService {
     // -- page registration ---------------------------------------------------------------------
 
     registerPage(helpId: string, host: HTMLElement): void {
+        if (this._page?.helpId !== helpId) {
+            // Open technical panels belong to the previous screen's fields.
+            this.expandedTechnical.set(new Set());
+        }
         this._page = { helpId, host };
     }
 
@@ -126,7 +153,70 @@ export class HelpService {
             this.activeFieldId.set(this._resolveToken(this._pendingToken));
             this._pendingToken = null;
         }
+        // Ctrl+F1: the same topic, with its technical panel already open.
+        const target = this.activeFieldId();
+        if (this._pendingTechnical && target && !this.expandedTechnical().has(target)) {
+            this.toggleTechnical(target);
+        }
+        this._pendingTechnical = false;
         this._snapshotVisibleFields();
+    }
+
+    // -- technical information -----------------------------------------------------------------
+
+    /**
+     * Whether to offer the technical panel at all. Checked on the client only to avoid showing a
+     * control that would fail -- the server enforces the same permission on every call, which is what
+     * actually keeps schema away from people without it.
+     */
+    canSeeTechnical(): boolean {
+        return this._permission.isGranted(TECHNICAL_INFO_PERMISSION);
+    }
+
+    isTechnicalOpen(fieldId: string): boolean {
+        return this.expandedTechnical().has(fieldId);
+    }
+
+    toggleTechnical(fieldId: string): void {
+        const next = new Set(this.expandedTechnical());
+        if (next.has(fieldId)) next.delete(fieldId);
+        else next.add(fieldId);
+        this.expandedTechnical.set(next);
+        if (next.size) void this._loadSchema();
+    }
+
+    /** `Employee.NationalityId` -> the NationalityId column, once the schema has arrived. */
+    propertySchema(fieldId: string): PropertySchemaDto | undefined {
+        const schema = this.schema();
+        if (!schema || schema.entityFullName !== this.content()?.entity) return undefined;
+        const property = fieldId.slice(fieldId.indexOf('.') + 1);
+        return schema.properties?.find((p) => p.propertyName === property);
+    }
+
+    /** One request per entity per session, and only for someone who opened a technical panel. */
+    private async _loadSchema(): Promise<void> {
+        const entity = this.content()?.entity;
+        if (!entity || !this.canSeeTechnical()) return;
+
+        const cached = this._schemaCache.get(entity);
+        if (cached) {
+            this.schema.set(cached);
+            return;
+        }
+
+        this.schemaFailed.set(false);
+        const schema = await new Promise<EntitySchemaDto | null>((resolve) => {
+            this._metadata.getEntitySchema(entity).subscribe({
+                next: (s) => resolve(s),
+                error: () => resolve(null),
+            });
+        });
+        if (!schema) {
+            this.schemaFailed.set(true);
+            return;
+        }
+        this._schemaCache.set(entity, schema);
+        this.schema.set(schema);
     }
 
     // -- content loading -----------------------------------------------------------------------
@@ -220,6 +310,9 @@ export class HelpService {
         }
         const isHelpKey = e.key === 'F1' || (e.altKey && (e.key === 'h' || e.key === 'H'));
         if (!isHelpKey || !this._page) return;
+
+        // Ctrl+F1 asks for the technical panel; without the permission it is plain F1, not a refusal.
+        this._pendingTechnical = e.key === 'F1' && e.ctrlKey && this.canSeeTechnical();
 
         // F1 otherwise opens the browser's own help in Chrome and Edge.
         e.preventDefault();

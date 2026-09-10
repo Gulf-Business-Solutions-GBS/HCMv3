@@ -211,3 +211,110 @@
     font-size: 0.72rem;
     color: #5e6278;
 }
+
+/* -- technical information (DESIGN.md §9) --------------------------------------------------- */
+
+.help-topic-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.help-tech-toggle {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: #b5b5c3;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.help-tech-toggle:hover,
+.help-tech-toggle-on {
+    border-color: #e4e6ef;
+    background: #f5f8fa;
+    color: #3f4254;
+}
+
+.help-tech {
+    margin-block-start: 0.7rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid #e4e6ef;
+    border-radius: 0.4rem;
+    background: #f9fafb;
+    font-size: 0.8rem;
+}
+
+.help-tech-label {
+    margin-block-end: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #7e8299;
+}
+
+.help-tech-address {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-block-end: 0.55rem;
+}
+
+.help-tech-address code {
+    font-size: 0.85rem;
+    color: #181c32;
+    background: none;
+    padding: 0;
+    /* Table and column names are identifiers: they read left-to-right even inside Arabic text. */
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.help-tech-copy {
+    flex: none;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid #e4e6ef;
+    border-radius: 0.3rem;
+    background: #fff;
+    font-size: 0.72rem;
+    color: #5e6278;
+    cursor: pointer;
+}
+
+.help-tech-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 0.9rem;
+    margin: 0;
+}
+
+.help-tech-grid dt {
+    font-weight: 500;
+    color: #7e8299;
+}
+
+.help-tech-grid dd {
+    margin: 0;
+    color: #3f4254;
+}
+
+.help-tech-grid code {
+    padding: 0;
+    background: none;
+    color: #3f4254;
+    font-size: 0.8rem;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.help-tech-muted {
+    margin-inline-start: 0.4rem;
+    color: #a1a5b7;
+}

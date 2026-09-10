@@ -5894,5 +5894,16 @@
     <text name="HelpNotAvailable">لم تتم كتابة مساعدة لهذه الشاشة بعد.</text>
     <text name="HelpFieldsOnThisScreen">{0} حقلاً في هذه الشاشة</text>
     <text name="HelpKeyHint">اضغط F1 على أي حقل لعرض شرحه</text>
+    <text name="HelpTechnicalInfo">المساعدة: المعلومات التقنية</text>
+    <text name="HelpEntityNotDescribable">لا تتوفر معلومات تقنية عن '{0}'.</text>
+    <text name="TechnicalInformation">معلومات تقنية</text>
+    <text name="HelpTable">الجدول</text>
+    <text name="HelpColumn">العمود</text>
+    <text name="HelpDataType">نوع البيانات</text>
+    <text name="HelpNullable">يقبل القيمة الفارغة</text>
+    <text name="HelpMaxLength">الحد الأقصى للطول</text>
+    <text name="HelpReferences">يشير إلى</text>
+    <text name="HelpPrimaryKey">المفتاح الأساسي</text>
+    <text name="Copied">تم النسخ</text>
   </texts>
 </localizationDictionary>

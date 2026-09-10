@@ -67376,6 +67376,72 @@ export class HealthCheckServiceProxy {
 }
 
 @Injectable()
+export class HelpMetadataServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param entityFullName (optional) 
+     * @return OK
+     */
+    getEntitySchema(entityFullName?: string | null | undefined): Observable<EntitySchemaDto> {
+        let url_ = this.baseUrl + "/api/services/app/HelpMetadata/GetEntitySchema?";
+        if (entityFullName !== undefined && entityFullName !== null)
+            url_ += "entityFullName=" + encodeURIComponent("" + entityFullName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntitySchema(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntitySchema(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EntitySchemaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EntitySchemaDto>;
+        }));
+    }
+
+    protected processGetEntitySchema(response: HttpResponseBase): Observable<EntitySchemaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EntitySchemaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class HolidayCalendarsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -211779,6 +211845,62 @@ export interface IEntityPropertyChangeDto {
     tenantId: number | undefined;
 }
 
+export class EntitySchemaDto implements IEntitySchemaDto {
+    entityFullName!: string | undefined;
+    tableName!: string | undefined;
+    schema!: string | undefined;
+    properties!: PropertySchemaDto[] | undefined;
+
+    constructor(data?: IEntitySchemaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.entityFullName = _data["entityFullName"];
+            this.tableName = _data["tableName"];
+            this.schema = _data["schema"];
+            if (Array.isArray(_data["properties"])) {
+                this.properties = [] as any;
+                for (let item of _data["properties"])
+                    this.properties!.push(PropertySchemaDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EntitySchemaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EntitySchemaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["entityFullName"] = this.entityFullName;
+        data["tableName"] = this.tableName;
+        data["schema"] = this.schema;
+        if (Array.isArray(this.properties)) {
+            data["properties"] = [];
+            for (let item of this.properties)
+                data["properties"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IEntitySchemaDto {
+    entityFullName: string | undefined;
+    tableName: string | undefined;
+    schema: string | undefined;
+    properties: PropertySchemaDto[] | undefined;
+}
+
 export class EssColleagueLookupDto implements IEssColleagueLookupDto {
     id!: number;
     code!: string | undefined;
@@ -309223,6 +309345,82 @@ export interface IProjectWiseAccrualReportRowDto {
     netPay: number;
     alCurrentMonthAccrual: number;
     annualLeaveProvision: number;
+}
+
+export class PropertySchemaDto implements IPropertySchemaDto {
+    propertyName!: string | undefined;
+    columnName!: string | undefined;
+    clrType!: string | undefined;
+    storeType!: string | undefined;
+    isNullable!: boolean;
+    maxLength!: number | undefined;
+    isPrimaryKey!: boolean;
+    isEnum!: boolean;
+    foreignKeyEntity!: string | undefined;
+    foreignKeyTable!: string | undefined;
+    foreignKeyColumn!: string | undefined;
+
+    constructor(data?: IPropertySchemaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.propertyName = _data["propertyName"];
+            this.columnName = _data["columnName"];
+            this.clrType = _data["clrType"];
+            this.storeType = _data["storeType"];
+            this.isNullable = _data["isNullable"];
+            this.maxLength = _data["maxLength"];
+            this.isPrimaryKey = _data["isPrimaryKey"];
+            this.isEnum = _data["isEnum"];
+            this.foreignKeyEntity = _data["foreignKeyEntity"];
+            this.foreignKeyTable = _data["foreignKeyTable"];
+            this.foreignKeyColumn = _data["foreignKeyColumn"];
+        }
+    }
+
+    static fromJS(data: any): PropertySchemaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PropertySchemaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["propertyName"] = this.propertyName;
+        data["columnName"] = this.columnName;
+        data["clrType"] = this.clrType;
+        data["storeType"] = this.storeType;
+        data["isNullable"] = this.isNullable;
+        data["maxLength"] = this.maxLength;
+        data["isPrimaryKey"] = this.isPrimaryKey;
+        data["isEnum"] = this.isEnum;
+        data["foreignKeyEntity"] = this.foreignKeyEntity;
+        data["foreignKeyTable"] = this.foreignKeyTable;
+        data["foreignKeyColumn"] = this.foreignKeyColumn;
+        return data;
+    }
+}
+
+export interface IPropertySchemaDto {
+    propertyName: string | undefined;
+    columnName: string | undefined;
+    clrType: string | undefined;
+    storeType: string | undefined;
+    isNullable: boolean;
+    maxLength: number | undefined;
+    isPrimaryKey: boolean;
+    isEnum: boolean;
+    foreignKeyEntity: string | undefined;
+    foreignKeyTable: string | undefined;
+    foreignKeyColumn: string | undefined;
 }
 
 export enum ProrateMethod {

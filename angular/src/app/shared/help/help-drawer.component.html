@@ -30,7 +30,20 @@
                             class="help-topic"
                             [id]="anchorId(field.id)"
                             [class.help-topic-active]="isActive(field.id)">
-                            <h5 class="help-topic-title">{{ field.label | localize }}</h5>
+                            <div class="help-topic-head">
+                                <h5 class="help-topic-title">{{ field.label | localize }}</h5>
+                                @if (canSeeTechnical) {
+                                    <button
+                                        type="button"
+                                        class="help-tech-toggle"
+                                        [class.help-tech-toggle-on]="help.isTechnicalOpen(field.id)"
+                                        [attr.aria-expanded]="help.isTechnicalOpen(field.id)"
+                                        [attr.title]="l('TechnicalInformation')"
+                                        (click)="help.toggleTechnical(field.id)">
+                                        <i class="fa fa-database"></i>
+                                    </button>
+                                }
+                            </div>
 
                             <div class="help-topic-body" [innerHTML]="field.html"></div>
 
@@ -39,6 +52,56 @@
                                     <span class="help-rules-label">{{ 'Rules' | localize }}</span>
                                     {{ field.rules }}
                                 </p>
+                            }
+
+                            @if (canSeeTechnical && help.isTechnicalOpen(field.id)) {
+                                <div class="help-tech">
+                                    <div class="help-tech-label">{{ 'TechnicalInformation' | localize }}</div>
+                                    @if (help.propertySchema(field.id); as col) {
+                                        <div class="help-tech-address">
+                                            <code>{{ help.schema()!.tableName }}.{{ col.columnName }}</code>
+                                            <button
+                                                type="button"
+                                                class="help-tech-copy"
+                                                (click)="copy(help.schema()!.tableName + '.' + col.columnName, field.id)">
+                                                {{ (copiedId() === field.id ? 'Copied' : 'Copy') | localize }}
+                                            </button>
+                                        </div>
+                                        <dl class="help-tech-grid">
+                                            <dt>{{ 'HelpTable' | localize }}</dt>
+                                            <dd>
+                                                <code>{{ help.schema()!.schema ? help.schema()!.schema + '.' : '' }}{{ help.schema()!.tableName }}</code>
+                                            </dd>
+                                            <dt>{{ 'HelpColumn' | localize }}</dt>
+                                            <dd><code>{{ col.columnName }}</code></dd>
+                                            <dt>{{ 'HelpDataType' | localize }}</dt>
+                                            <dd>
+                                                <code>{{ col.storeType }}</code>
+                                                <span class="help-tech-muted">{{ col.clrType }}</span>
+                                            </dd>
+                                            <dt>{{ 'HelpNullable' | localize }}</dt>
+                                            <dd>{{ (col.isNullable ? 'Yes' : 'No') | localize }}</dd>
+                                            @if (col.maxLength) {
+                                                <dt>{{ 'HelpMaxLength' | localize }}</dt>
+                                                <dd>{{ col.maxLength }}</dd>
+                                            }
+                                            @if (col.isPrimaryKey) {
+                                                <dt>{{ 'HelpPrimaryKey' | localize }}</dt>
+                                                <dd>{{ 'Yes' | localize }}</dd>
+                                            }
+                                            @if (col.foreignKeyTable) {
+                                                <dt>{{ 'HelpReferences' | localize }}</dt>
+                                                <dd><code>{{ col.foreignKeyTable }}.{{ col.foreignKeyColumn }}</code></dd>
+                                            }
+                                        </dl>
+                                    } @else if (help.schemaFailed()) {
+                                        <div class="help-tech-muted">
+                                            {{ 'HelpEntityNotDescribable' | localize: help.content()!.entity }}
+                                        </div>
+                                    } @else {
+                                        <div class="help-tech-muted">…</div>
+                                    }
+                                </div>
                             }
 
                             @if (field.adminHtml) {

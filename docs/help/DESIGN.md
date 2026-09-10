@@ -1,8 +1,8 @@
 # HCMv3 Help System — Design
 
-Status: **approved, Phase 0 in progress**
+Status: **approved; Phases 0–2 implemented for the pilot screen**
 Owner: Documentation / Platform
-Last updated: 2026-09-09
+Last updated: 2026-09-10
 
 ---
 
