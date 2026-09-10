@@ -56,6 +56,26 @@ Append an entry to `docs/help/pages.json`, then run `extract` and read the outpu
 generating stubs. `unresolved labels: 0` means every label on the screen mapped to a real entity
 property; anything else needs an alias or a registry fix first.
 
+## Adding a whole module
+
+```bash
+node tools/help/help-tool.mjs discover <admin-module-folder> <help-id-prefix>
+```
+Registers every create/edit form in `angular/src/app/admin/<folder>` — any template whose labels
+use `for="Entity_Property"` — with its entity, a help id (`<prefix>.<entity>.edit`), a title and
+drawer group from the app's own strings, and the module's create/edit permissions. Safe to
+re-run. Then `extract` (expect `unresolved labels: 0`), `stubs`, write, `build`, `coverage`.
+
+Before writing a field's "why", find the code that **reads** it, not just where it is defined. A
+field nothing reads gets "Not read at present" — say so rather than describe what it was meant for
+as if it worked.
+
+## Shared default topics
+
+`docs/help/{lang}/_shared.md` holds topics with ids like `{#*.Code}`. Any entity's field of that
+name with no topic of its own uses it, and is never stubbed. Write only what is true for *every*
+entity there; per-entity behaviour (auto-assigned codes, uniqueness) comes from the Rules line.
+
 ## Screens that share fields
 
 A field shown on several screens is written **once**, in its home file — the first screen in

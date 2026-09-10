@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.separation-reason.edit",
+  "lang": "ar",
+  "title": "أسباب الفصل — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.SeparationReason",
+  "overviewHtml": "<p>الأسباب التي قد تنتهي بها خدمة الموظف — الاستقالة، والإنهاء، وانتهاء العقد، ونحو ذلك. ويسمّي كل سجل فصل سبباً منها.</p>",
+  "aliasIndex": {
+    "loc:Code": "SeparationReason.Code",
+    "dom:SeparationReason_Code": "SeparationReason.Code",
+    "loc:NameEn": "SeparationReason.NameEn",
+    "dom:SeparationReason_NameEn": "SeparationReason.NameEn",
+    "loc:NameAr": "SeparationReason.NameAr",
+    "dom:SeparationReason_NameAr": "SeparationReason.NameAr",
+    "loc:IsSystemRecord": "SeparationReason.IsSystemRecord",
+    "dom:SeparationReason_IsSystemRecord": "SeparationReason.IsSystemRecord",
+    "loc:AllowAdvanceEoS": "SeparationReason.AllowAdvanceEoS",
+    "dom:SeparationReason_AllowAdvanceEoS": "SeparationReason.AllowAdvanceEoS"
+  },
+  "fields": [
+    {
+      "id": "SeparationReason.Code",
+      "label": "Code",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:Code",
+        "dom:SeparationReason_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.NameEn",
+      "label": "NameEn",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:NameEn",
+        "dom:SeparationReason_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.NameAr",
+      "label": "NameAr",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:NameAr",
+        "dom:SeparationReason_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.IsSystemRecord",
+      "label": "IsSystemRecord",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:IsSystemRecord",
+        "dom:SeparationReason_IsSystemRecord"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يميّز السبب الذي جاء مع النظام.</p><p><strong>لماذا يهم.</strong> لا يستطيع تعديل سبب النظام أو حذفه إلا المسؤول.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.AllowAdvanceEoS",
+      "label": "AllowAdvanceEoS",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:AllowAdvanceEoS",
+        "dom:SeparationReason_AllowAdvanceEoS"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه السماح بصرف مكافأة نهاية الخدمة مقدماً لهذا السبب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

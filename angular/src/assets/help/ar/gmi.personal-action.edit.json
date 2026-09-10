@@ -1,0 +1,203 @@
+{
+  "helpId": "gmi.personal-action.edit",
+  "lang": "ar",
+  "title": "الإجراءات الشخصية — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.PersonalAction",
+  "overviewHtml": "<p>أنواع الإجراءات الشخصية التي تُسجَّل على الموظفين — التعيين، والنقل، والترقية، والفصل، ونحو ذلك. ويسمّي كل إجراء للموظف واحداً منها.</p><p>خانات المتطلبات في هذا النموذج محفوظة لكنها غير مطبّقة حالياً: فحفظ إجراء للموظف لا يتحقق منها.</p>",
+  "aliasIndex": {
+    "loc:Code": "PersonalAction.Code",
+    "dom:PersonalAction_Code": "PersonalAction.Code",
+    "loc:NameEn": "PersonalAction.NameEn",
+    "dom:PersonalAction_NameEn": "PersonalAction.NameEn",
+    "loc:NameAr": "PersonalAction.NameAr",
+    "dom:PersonalAction_NameAr": "PersonalAction.NameAr",
+    "loc:ReqOrgAssignment": "PersonalAction.ReqOrgAssignment",
+    "dom:PersonalAction_ReqOrgAssignment": "PersonalAction.ReqOrgAssignment",
+    "loc:ReqBasicPay": "PersonalAction.ReqBasicPay",
+    "dom:PersonalAction_ReqBasicPay": "PersonalAction.ReqBasicPay",
+    "loc:ReqContract": "PersonalAction.ReqContract",
+    "dom:PersonalAction_ReqContract": "PersonalAction.ReqContract",
+    "loc:ReqManager": "PersonalAction.ReqManager",
+    "dom:PersonalAction_ReqManager": "PersonalAction.ReqManager",
+    "loc:ReqOnHold": "PersonalAction.ReqOnHold",
+    "dom:PersonalAction_ReqOnHold": "PersonalAction.ReqOnHold",
+    "loc:ReqSeparation": "PersonalAction.ReqSeparation",
+    "dom:PersonalAction_ReqSeparation": "PersonalAction.ReqSeparation",
+    "loc:ReqFnFPayment": "PersonalAction.ReqFnFPayment",
+    "dom:PersonalAction_ReqFnFPayment": "PersonalAction.ReqFnFPayment",
+    "loc:IncludeInWorkflow": "PersonalAction.IncludeInWorkflow",
+    "dom:PersonalAction_IncludeInWorkflow": "PersonalAction.IncludeInWorkflow",
+    "loc:IsAttachmentRequired": "PersonalAction.IsAttachmentRequired",
+    "dom:PersonalAction_IsAttachmentRequired": "PersonalAction.IsAttachmentRequired"
+  },
+  "fields": [
+    {
+      "id": "PersonalAction.Code",
+      "label": "Code",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:Code",
+        "dom:PersonalAction_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.NameEn",
+      "label": "NameEn",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PersonalAction_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.NameAr",
+      "label": "NameAr",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PersonalAction_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqOrgAssignment",
+      "label": "ReqOrgAssignment",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqOrgAssignment",
+        "dom:PersonalAction_ReqOrgAssignment"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط تعيين تنظيمي جديد مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqBasicPay",
+      "label": "ReqBasicPay",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqBasicPay",
+        "dom:PersonalAction_ReqBasicPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط سجل راتب أساسي جديد مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqContract",
+      "label": "ReqContract",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqContract",
+        "dom:PersonalAction_ReqContract"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط عقد جديد مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqManager",
+      "label": "ReqManager",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqManager",
+        "dom:PersonalAction_ReqManager"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط تعيين مدير جديد مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqOnHold",
+      "label": "ReqOnHold",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqOnHold",
+        "dom:PersonalAction_ReqOnHold"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط سجل إيقاف مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqSeparation",
+      "label": "ReqSeparation",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqSeparation",
+        "dom:PersonalAction_ReqSeparation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط سجل فصل مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.ReqFnFPayment",
+      "label": "ReqFnFPayment",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:ReqFnFPayment",
+        "dom:PersonalAction_ReqFnFPayment"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط صرف التسوية النهائية مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:PersonalAction_IncludeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه إرسال إجراءات هذا النوع للاعتماد.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalAction.IsAttachmentRequired",
+      "label": "IsAttachmentRequired",
+      "section": "PersonalActions",
+      "aliases": [
+        "loc:IsAttachmentRequired",
+        "dom:PersonalAction_IsAttachmentRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه اشتراط إرفاق مستند مع الإجراء.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

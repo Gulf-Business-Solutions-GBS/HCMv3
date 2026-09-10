@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.currency-convertor.edit",
+  "lang": "en",
+  "title": "Currency Convertors — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.CurrencyConvertor",
+  "overviewHtml": "<p>Exchange rates between two currencies on a given date. The rates are stored for reference only: no calculation converts between currencies with them at present.</p>",
+  "aliasIndex": {
+    "loc:CalendarDate": "CurrencyConvertor.CalendarDate",
+    "dom:CurrencyConvertor_CalendarDate": "CurrencyConvertor.CalendarDate",
+    "loc:FromCurr": "CurrencyConvertor.FromCurrId",
+    "dom:CurrencyConvertor_FromCurrId": "CurrencyConvertor.FromCurrId",
+    "loc:ToCurr": "CurrencyConvertor.ToCurrId",
+    "dom:CurrencyConvertor_ToCurrId": "CurrencyConvertor.ToCurrId",
+    "loc:Rate": "CurrencyConvertor.Rate",
+    "dom:CurrencyConvertor_Rate": "CurrencyConvertor.Rate"
+  },
+  "fields": [
+    {
+      "id": "CurrencyConvertor.CalendarDate",
+      "label": "CalendarDate",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:CalendarDate",
+        "dom:CurrencyConvertor_CalendarDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the rate applies to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.FromCurrId",
+      "label": "FromCurr",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:FromCurr",
+        "dom:CurrencyConvertor_FromCurrId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency being converted from.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.ToCurrId",
+      "label": "ToCurr",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:ToCurr",
+        "dom:CurrencyConvertor_ToCurrId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency being converted to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CurrencyConvertor.Rate",
+      "label": "Rate",
+      "section": "CurrencyConvertors",
+      "aliases": [
+        "loc:Rate",
+        "dom:CurrencyConvertor_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The conversion rate between the two currencies on that date.</p><p><strong>Why it matters.</strong> It cannot be zero.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

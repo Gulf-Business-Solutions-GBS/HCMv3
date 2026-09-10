@@ -25,9 +25,9 @@ The fields are shown as text rather than inputs because the common case is looki
 
 **Example.** `001245`
 
-**Why it matters.** Left blank, the system assigns the next number when the record is saved (the highest existing numeric code plus one). A code already used by another employee is refused.
+**Why it matters.** The next number assigned to a blank code is the highest existing numeric code plus one.
 
-**Rules.** Optional. Maximum 64 characters.
+**Rules.** Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.
 
 ## FullNameEn {#Employee.FullNameEn}
 <!-- alias: loc:FullNameEn -->
@@ -75,7 +75,7 @@ Maintained under General Master Info → Titles.
 
 **Why it matters.** Set a leaver to Inactive rather than deleting them: deleting removes the employee from the system, while Inactive keeps the record and its history available. An inactive employee's Civil ID and Access ID can be given to a new record.
 
-**Rules.** Required. One of: Inactive, Active.
+**Rules.** Required. One of: Active, Inactive.
 
 ## EmploymentType {#Employee.EmploymentType}
 <!-- alias: loc:EmploymentType, dom:Employee_EmploymentType -->

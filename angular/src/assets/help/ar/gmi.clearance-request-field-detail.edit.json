@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.clearance-request-field-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل بنود براءة الذمة — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail",
+  "overviewHtml": "<p>يُسند بنداً واحداً من قائمة إخلاء الطرف عند المغادرة إلى إدارة معيّنة. ففي خطوة الاعتماد المتوازي ينظر معتمِد كل إدارة إلى طلب إخلاء الطرف نفسه في الوقت نفسه، ولا يُعرض على كلٍّ منهم إلا البنود المسندة إلى دوره — فتجيب تقنية المعلومات عن بنودها، والمالية عن بنودها. ويمكن إسناد البند الواحد إلى أكثر من إدارة.</p>",
+  "aliasIndex": {
+    "loc:ClearanceRequestField": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId": "ClearanceRequestFieldDetail.ClearanceRequestFieldId"
+  },
+  "fields": [
+    {
+      "id": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+      "label": "ClearanceRequestField",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:ClearanceRequestField",
+        "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بنود براءة الذمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بند القائمة الذي يجري إسناده.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

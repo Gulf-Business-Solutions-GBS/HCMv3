@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.personal-action-reason.edit",
+  "lang": "ar",
+  "title": "أسباب الإجراءات الشخصية — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.PersonalActionReason",
+  "overviewHtml": "<p>الأسباب التي يمكن ذكرها لإجراء شخصي — لماذا نُقل الموظف أو رُقّي، ونحو ذلك. ويُسجِّل كل إجراء للموظف الإجراءَ وسبباً له.</p>",
+  "aliasIndex": {
+    "loc:Code": "PersonalActionReason.Code",
+    "dom:PersonalActionReason_Code": "PersonalActionReason.Code",
+    "loc:NameEn": "PersonalActionReason.NameEn",
+    "dom:PersonalActionReason_NameEn": "PersonalActionReason.NameEn",
+    "loc:NameAr": "PersonalActionReason.NameAr",
+    "dom:PersonalActionReason_NameAr": "PersonalActionReason.NameAr",
+    "loc:PersonalAction": "PersonalActionReason.PersonalActionId",
+    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId"
+  },
+  "fields": [
+    {
+      "id": "PersonalActionReason.Code",
+      "label": "Code",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:Code",
+        "dom:PersonalActionReason_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NameEn",
+      "label": "NameEn",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PersonalActionReason_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NameAr",
+      "label": "NameAr",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PersonalActionReason_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.PersonalActionId",
+      "label": "PersonalAction",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:PersonalAction",
+        "dom:PersonalActionReason_PersonalActionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الإجراءات الشخصية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجراء الشخصي الذي ينتمي إليه هذا السبب.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

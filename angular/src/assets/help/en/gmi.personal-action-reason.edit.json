@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.personal-action-reason.edit",
+  "lang": "en",
+  "title": "Personal Action Reasons — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.PersonalActionReason",
+  "overviewHtml": "<p>The reasons that can be given for a personal action — why an employee was transferred, promoted and so on. Each employee action records its action and a reason.</p>",
+  "aliasIndex": {
+    "loc:Code": "PersonalActionReason.Code",
+    "dom:PersonalActionReason_Code": "PersonalActionReason.Code",
+    "loc:NameEn": "PersonalActionReason.NameEn",
+    "dom:PersonalActionReason_NameEn": "PersonalActionReason.NameEn",
+    "loc:NameAr": "PersonalActionReason.NameAr",
+    "dom:PersonalActionReason_NameAr": "PersonalActionReason.NameAr",
+    "loc:PersonalAction": "PersonalActionReason.PersonalActionId",
+    "dom:PersonalActionReason_PersonalActionId": "PersonalActionReason.PersonalActionId"
+  },
+  "fields": [
+    {
+      "id": "PersonalActionReason.Code",
+      "label": "Code",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:Code",
+        "dom:PersonalActionReason_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NameEn",
+      "label": "NameEn",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PersonalActionReason_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.NameAr",
+      "label": "NameAr",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PersonalActionReason_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PersonalActionReason.PersonalActionId",
+      "label": "PersonalAction",
+      "section": "PersonalActionReasons",
+      "aliases": [
+        "loc:PersonalAction",
+        "dom:PersonalActionReason_PersonalActionId"
+      ],
+      "rules": "Optional. Chosen from Personal Action master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The personal action this reason belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

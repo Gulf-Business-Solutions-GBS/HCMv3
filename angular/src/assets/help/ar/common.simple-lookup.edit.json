@@ -1,0 +1,59 @@
+{
+  "helpId": "common.simple-lookup.edit",
+  "lang": "ar",
+  "title": "القوائم البسيطة — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.SimpleLookupEntity",
+  "overviewHtml": "<p>النموذج المشترك للقوائم البسيطة في HCMv3 — وهي القوائم التي لا يحمل كل بند فيها إلا رمزاً واسماً بالإنجليزية واسماً بالعربية، مثل الألقاب والدول والديانات والحالات الاجتماعية والمسميات الوظيفية. وتستخدمه أكثر من تسعين قائمة في جميع الوحدات، لذا فالحقول والقواعد في هذا النموذج واحدة أياً كانت القائمة التي تعدّلها.</p><p>إذا تُرك الرمز فارغاً، يُمنح الرقم التالي عند حفظ البند. ويجب ألا يتكرر الرمز ولا الاسم بالإنجليزية ولا الاسم بالعربية داخل القائمة.</p>",
+  "aliasIndex": {
+    "loc:Code": "SimpleLookupEntity.Code",
+    "dom:SimpleLookup_Code": "SimpleLookupEntity.Code",
+    "loc:NameEn": "SimpleLookupEntity.NameEn",
+    "dom:SimpleLookup_NameEn": "SimpleLookupEntity.NameEn",
+    "loc:NameAr": "SimpleLookupEntity.NameAr",
+    "dom:SimpleLookup_NameAr": "SimpleLookupEntity.NameAr"
+  },
+  "fields": [
+    {
+      "id": "SimpleLookupEntity.Code",
+      "label": "Code",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:Code",
+        "dom:SimpleLookup_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimpleLookupEntity.NameEn",
+      "label": "NameEn",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:NameEn",
+        "dom:SimpleLookup_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimpleLookupEntity.NameAr",
+      "label": "NameAr",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:NameAr",
+        "dom:SimpleLookup_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

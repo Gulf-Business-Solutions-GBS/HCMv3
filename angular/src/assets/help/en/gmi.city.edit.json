@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.city.edit",
+  "lang": "en",
+  "title": "Cities — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.City",
+  "overviewHtml": "<p>The cities used across HCMv3 — most visibly as an employee's place of birth.</p>",
+  "aliasIndex": {
+    "loc:Code": "City.Code",
+    "dom:City_Code": "City.Code",
+    "loc:NameEn": "City.NameEn",
+    "dom:City_NameEn": "City.NameEn",
+    "loc:NameAr": "City.NameAr",
+    "dom:City_NameAr": "City.NameAr",
+    "loc:State": "City.StateId",
+    "dom:City_StateId": "City.StateId"
+  },
+  "fields": [
+    {
+      "id": "City.Code",
+      "label": "Code",
+      "section": "Cities",
+      "aliases": [
+        "loc:Code",
+        "dom:City_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.NameEn",
+      "label": "NameEn",
+      "section": "Cities",
+      "aliases": [
+        "loc:NameEn",
+        "dom:City_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.NameAr",
+      "label": "NameAr",
+      "section": "Cities",
+      "aliases": [
+        "loc:NameAr",
+        "dom:City_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "City.StateId",
+      "label": "State",
+      "section": "Cities",
+      "aliases": [
+        "loc:State",
+        "dom:City_StateId"
+      ],
+      "rules": "Optional. Chosen from State master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The state or region the city is in, from the states list.</p><p><strong>Why it matters.</strong> Recorded for reference; nothing else uses it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

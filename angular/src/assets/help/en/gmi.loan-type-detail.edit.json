@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.loan-type-detail.edit",
+  "lang": "en",
+  "title": "Loan Type Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.LoanTypeDetail",
+  "overviewHtml": "<p>Percentages attached to a loan type. Not used at present: they belong to the variable loan recovery, which the payroll calculation does not support yet.</p>",
+  "aliasIndex": {
+    "loc:LoanType": "LoanTypeDetail.LoanTypeId",
+    "dom:LoanTypeDetail_LoanTypeId": "LoanTypeDetail.LoanTypeId",
+    "loc:Percent": "LoanTypeDetail.Percent",
+    "dom:LoanTypeDetail_Percent": "LoanTypeDetail.Percent"
+  },
+  "fields": [
+    {
+      "id": "LoanTypeDetail.LoanTypeId",
+      "label": "LoanType",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:LoanType",
+        "dom:LoanTypeDetail_LoanTypeId"
+      ],
+      "rules": "Optional. Chosen from Loan Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The loan type the percentage belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanTypeDetail.Percent",
+      "label": "Percent",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:Percent",
+        "dom:LoanTypeDetail_Percent"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

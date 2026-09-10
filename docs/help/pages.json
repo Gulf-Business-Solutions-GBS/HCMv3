@@ -48,6 +48,613 @@
           "sectionTitleClass": "emp-acc-title"
         }
       }
+    },
+    {
+      "helpId": "gmi.access-unit.edit",
+      "title": "Access Units — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.AccessUnits.Create"
+      ],
+      "entity": {
+        "name": "AccessUnit",
+        "fullName": "HCMv3.GeneralMasterInfo.AccessUnit",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/AccessUnit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/access-units/create-or-edit-access-unit-modal.component.html"
+        }
+      },
+      "defaultSection": "AccessUnits"
+    },
+    {
+      "helpId": "gmi.asset.edit",
+      "title": "Assets — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Assets.Create"
+      ],
+      "entity": {
+        "name": "Asset",
+        "fullName": "HCMv3.GeneralMasterInfo.Asset",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/Asset.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/assets/create-or-edit-asset-modal.component.html"
+        }
+      },
+      "defaultSection": "Assets"
+    },
+    {
+      "helpId": "gmi.bank.edit",
+      "title": "Banks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Banks.Create"
+      ],
+      "entity": {
+        "name": "Bank",
+        "fullName": "HCMv3.GeneralMasterInfo.Bank",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/Bank.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/banks/create-or-edit-bank-modal.component.html"
+        }
+      },
+      "defaultSection": "Banks"
+    },
+    {
+      "helpId": "gmi.budgeting-group-rate-detail.edit",
+      "title": "Budgeting Group Rate Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.BudgetingGroupRateDetails.Create"
+      ],
+      "entity": {
+        "name": "BudgetingGroupRateDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.BudgetingGroupRateDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/BudgetingGroupRateDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/budgeting-group-rate-details/create-or-edit-budgeting-group-rate-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "BudgetingGroupRateDetails"
+    },
+    {
+      "helpId": "gmi.city.edit",
+      "title": "Cities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Cities.Create"
+      ],
+      "entity": {
+        "name": "City",
+        "fullName": "HCMv3.GeneralMasterInfo.City",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/City.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/cities/create-or-edit-city-modal.component.html"
+        }
+      },
+      "defaultSection": "Cities"
+    },
+    {
+      "helpId": "gmi.clearance-request-field-detail.edit",
+      "title": "Clearance Request Field Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.ClearanceRequestFieldDetails.Create"
+      ],
+      "entity": {
+        "name": "ClearanceRequestFieldDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/ClearanceRequestFieldDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/clearance-request-field-details/create-or-edit-clearance-request-field-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ClearanceRequestFieldDetails"
+    },
+    {
+      "helpId": "gmi.clearance-request-field.edit",
+      "title": "Clearance Request Fields — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.ClearanceRequestFields.Create"
+      ],
+      "entity": {
+        "name": "ClearanceRequestField",
+        "fullName": "HCMv3.GeneralMasterInfo.ClearanceRequestField",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/ClearanceRequestField.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/clearance-request-fields/create-or-edit-clearance-request-field-modal.component.html"
+        }
+      },
+      "defaultSection": "ClearanceRequestFields"
+    },
+    {
+      "helpId": "gmi.currency.edit",
+      "title": "Currencies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Currencies.Create"
+      ],
+      "entity": {
+        "name": "Currency",
+        "fullName": "HCMv3.GeneralMasterInfo.Currency",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/Currency.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/currencies/create-or-edit-currency-modal.component.html"
+        }
+      },
+      "defaultSection": "Currencies"
+    },
+    {
+      "helpId": "gmi.currency-convertor.edit",
+      "title": "Currency Convertors — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.CurrencyConvertors.Create"
+      ],
+      "entity": {
+        "name": "CurrencyConvertor",
+        "fullName": "HCMv3.GeneralMasterInfo.CurrencyConvertor",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/CurrencyConvertor.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/currency-convertors/create-or-edit-currency-convertor-modal.component.html"
+        }
+      },
+      "defaultSection": "CurrencyConvertors"
+    },
+    {
+      "helpId": "gmi.dependant-type.edit",
+      "title": "Dependant Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DependantTypes.Create"
+      ],
+      "entity": {
+        "name": "DependantType",
+        "fullName": "HCMv3.GeneralMasterInfo.DependantType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DependantType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/dependant-types/create-or-edit-dependant-type-modal.component.html"
+        }
+      },
+      "defaultSection": "DependantTypes"
+    },
+    {
+      "helpId": "gmi.disciplinary-deduction-type.edit",
+      "title": "Disciplinary Deduction Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DisciplinaryDeductionTypes.Create"
+      ],
+      "entity": {
+        "name": "DisciplinaryDeductionType",
+        "fullName": "HCMv3.GeneralMasterInfo.DisciplinaryDeductionType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DisciplinaryDeductionType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/disciplinary-deduction-types/create-or-edit-disciplinary-deduction-type-modal.component.html"
+        }
+      },
+      "defaultSection": "DisciplinaryDeductionTypes"
+    },
+    {
+      "helpId": "gmi.disciplinary-type-detail.edit",
+      "title": "Disciplinary Type Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DisciplinaryTypeDetails.Create"
+      ],
+      "entity": {
+        "name": "DisciplinaryTypeDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.DisciplinaryTypeDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DisciplinaryTypeDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/disciplinary-type-details/create-or-edit-disciplinary-type-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "DisciplinaryTypeDetails"
+    },
+    {
+      "helpId": "gmi.disciplinary-type.edit",
+      "title": "Disciplinary Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DisciplinaryTypes.Create"
+      ],
+      "entity": {
+        "name": "DisciplinaryType",
+        "fullName": "HCMv3.GeneralMasterInfo.DisciplinaryType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DisciplinaryType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/disciplinary-types/create-or-edit-disciplinary-type-modal.component.html"
+        }
+      },
+      "defaultSection": "DisciplinaryTypes"
+    },
+    {
+      "helpId": "gmi.document-print-form.edit",
+      "title": "Document Print Forms — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DocumentPrintForms.Create"
+      ],
+      "entity": {
+        "name": "DocumentPrintForm",
+        "fullName": "HCMv3.GeneralMasterInfo.DocumentPrintForm",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DocumentPrintForm.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/document-print-forms/create-or-edit-document-print-form-modal.component.html"
+        }
+      },
+      "defaultSection": "DocumentPrintForms"
+    },
+    {
+      "helpId": "gmi.document-type.edit",
+      "title": "Document Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.DocumentTypes.Create"
+      ],
+      "entity": {
+        "name": "DocumentType",
+        "fullName": "HCMv3.GeneralMasterInfo.DocumentType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/DocumentType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/document-types/create-or-edit-document-type-modal.component.html"
+        }
+      },
+      "defaultSection": "DocumentTypes"
+    },
+    {
+      "helpId": "gmi.institution.edit",
+      "title": "Institutions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Institutions.Create"
+      ],
+      "entity": {
+        "name": "Institution",
+        "fullName": "HCMv3.GeneralMasterInfo.Institution",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/Institution.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/institutions/create-or-edit-institution-modal.component.html"
+        }
+      },
+      "defaultSection": "Institutions"
+    },
+    {
+      "helpId": "gmi.loan-type-detail.edit",
+      "title": "Loan Type Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.LoanTypeDetails.Create"
+      ],
+      "entity": {
+        "name": "LoanTypeDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.LoanTypeDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/LoanTypeDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/loan-type-details/create-or-edit-loan-type-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "LoanTypeDetails"
+    },
+    {
+      "helpId": "gmi.loan-type.edit",
+      "title": "Loan Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.LoanTypes.Create"
+      ],
+      "entity": {
+        "name": "LoanType",
+        "fullName": "HCMv3.GeneralMasterInfo.LoanType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/LoanType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/loan-types/create-or-edit-loan-type-modal.component.html"
+        }
+      },
+      "defaultSection": "LoanTypes"
+    },
+    {
+      "helpId": "gmi.nationality.edit",
+      "title": "Nationalities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.Nationalities.Create"
+      ],
+      "entity": {
+        "name": "Nationality",
+        "fullName": "HCMv3.GeneralMasterInfo.Nationality",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/Nationality.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/nationalities/create-or-edit-nationality-modal.component.html"
+        }
+      },
+      "defaultSection": "Nationalities"
+    },
+    {
+      "helpId": "gmi.notification-config.edit",
+      "title": "Notification Configs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.NotificationConfigs.Create"
+      ],
+      "entity": {
+        "name": "NotificationConfig",
+        "fullName": "HCMv3.GeneralMasterInfo.NotificationConfig",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/NotificationConfig.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/notification-configs/create-or-edit-notification-config-modal.component.html"
+        }
+      },
+      "defaultSection": "NotificationConfigs"
+    },
+    {
+      "helpId": "gmi.notification-group.edit",
+      "title": "Notification Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.NotificationGroups.Create"
+      ],
+      "entity": {
+        "name": "NotificationGroup",
+        "fullName": "HCMv3.GeneralMasterInfo.NotificationGroup",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/NotificationGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/notification-groups/create-or-edit-notification-group-modal.component.html"
+        }
+      },
+      "defaultSection": "NotificationGroups"
+    },
+    {
+      "helpId": "gmi.number-series.edit",
+      "title": "Number Series — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "NumberSeries",
+        "fullName": "HCMv3.GeneralMasterInfo.NumberSeries",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/NumberSeries.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/number-series/create-or-edit-number-series-modal.component.html"
+        }
+      },
+      "defaultSection": "NumberSeries"
+    },
+    {
+      "helpId": "gmi.overtime-type-detail.edit",
+      "title": "Overtime Type Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.OvertimeTypeDetails.Create"
+      ],
+      "entity": {
+        "name": "OvertimeTypeDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.OvertimeTypeDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/OvertimeTypeDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/overtime-type-details/create-or-edit-overtime-type-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "OvertimeTypeDetails"
+    },
+    {
+      "helpId": "gmi.overtime-type.edit",
+      "title": "Overtime Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.OvertimeTypes.Create"
+      ],
+      "entity": {
+        "name": "OvertimeType",
+        "fullName": "HCMv3.GeneralMasterInfo.OvertimeType",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/OvertimeType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/overtime-types/create-or-edit-overtime-type-modal.component.html"
+        }
+      },
+      "defaultSection": "OvertimeTypes"
+    },
+    {
+      "helpId": "gmi.payee-bank-detail.edit",
+      "title": "Payee Bank Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.PayeeBankDetails.Create"
+      ],
+      "entity": {
+        "name": "PayeeBankDetail",
+        "fullName": "HCMv3.GeneralMasterInfo.PayeeBankDetail",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/PayeeBankDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/payee-bank-details/create-or-edit-payee-bank-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "PayeeBankDetails"
+    },
+    {
+      "helpId": "gmi.personal-action-reason.edit",
+      "title": "Personal Action Reasons — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.PersonalActionReasons.Create"
+      ],
+      "entity": {
+        "name": "PersonalActionReason",
+        "fullName": "HCMv3.GeneralMasterInfo.PersonalActionReason",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/PersonalActionReason.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/personal-action-reasons/create-or-edit-personal-action-reason-modal.component.html"
+        }
+      },
+      "defaultSection": "PersonalActionReasons"
+    },
+    {
+      "helpId": "gmi.personal-action.edit",
+      "title": "Personal Actions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.PersonalActions.Create"
+      ],
+      "entity": {
+        "name": "PersonalAction",
+        "fullName": "HCMv3.GeneralMasterInfo.PersonalAction",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/PersonalAction.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/personal-actions/create-or-edit-personal-action-modal.component.html"
+        }
+      },
+      "defaultSection": "PersonalActions"
+    },
+    {
+      "helpId": "gmi.separation-reason.edit",
+      "title": "Separation Reasons — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GeneralMasterInfo.SeparationReasons.Create"
+      ],
+      "entity": {
+        "name": "SeparationReason",
+        "fullName": "HCMv3.GeneralMasterInfo.SeparationReason",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/SeparationReason.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/separation-reasons/create-or-edit-separation-reason-modal.component.html"
+        }
+      },
+      "defaultSection": "SeparationReasons"
+    },
+    {
+      "helpId": "common.simple-lookup.edit",
+      "title": "Simple Lists — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "SimpleLookupEntity",
+        "fullName": "HCMv3.GeneralMasterInfo.SimpleLookupEntity",
+        "file": "aspnet-core/src/HCMv3.Core/GeneralMasterInfo/SimpleLookupEntity.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/general-master-info/shared/simple-lookup-modal.component.html"
+        }
+      },
+      "defaultSection": "HelpSimpleLists",
+      "service": "SimpleLookupAppServiceBase",
+      "domPrefix": "SimpleLookup"
     }
   ]
 }

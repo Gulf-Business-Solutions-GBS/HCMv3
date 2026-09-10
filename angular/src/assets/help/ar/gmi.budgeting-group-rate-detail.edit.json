@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.budgeting-group-rate-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل نسب مجموعة الموازنة — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.BudgetingGroupRateDetail",
+  "overviewHtml": "<p>نسب المكافأة لمجموعة موازنة خلال فترة زمنية. وهي مسجلة للرجوع إليها فقط: لا يقرأ أي احتساب هذه النسب حالياً.</p>",
+  "aliasIndex": {
+    "loc:BudgetingGroup": "BudgetingGroupRateDetail.BudgetingGroupId",
+    "dom:BudgetingGroupRateDetail_BudgetingGroupId": "BudgetingGroupRateDetail.BudgetingGroupId",
+    "loc:StartDate": "BudgetingGroupRateDetail.StartDate",
+    "dom:BudgetingGroupRateDetail_StartDate": "BudgetingGroupRateDetail.StartDate",
+    "loc:EndDate": "BudgetingGroupRateDetail.EndDate",
+    "dom:BudgetingGroupRateDetail_EndDate": "BudgetingGroupRateDetail.EndDate",
+    "loc:BonusRate": "BudgetingGroupRateDetail.BonusRate",
+    "dom:BudgetingGroupRateDetail_BonusRate": "BudgetingGroupRateDetail.BonusRate"
+  },
+  "fields": [
+    {
+      "id": "BudgetingGroupRateDetail.BudgetingGroupId",
+      "label": "BudgetingGroup",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:BudgetingGroup",
+        "dom:BudgetingGroupRateDetail_BudgetingGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مجموعات الموازنة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة الموازنة التي تنتمي إليها هذه النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.StartDate",
+      "label": "StartDate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BudgetingGroupRateDetail_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول تاريخ تنطبق عليه النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.EndDate",
+      "label": "EndDate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BudgetingGroupRateDetail_EndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر تاريخ تنطبق عليه النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.BonusRate",
+      "label": "BonusRate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:BonusRate",
+        "dom:BudgetingGroupRateDetail_BonusRate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة المكافأة للمجموعة خلال الفترة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

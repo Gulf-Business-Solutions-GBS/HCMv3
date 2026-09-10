@@ -1,0 +1,155 @@
+{
+  "helpId": "gmi.notification-config.edit",
+  "lang": "ar",
+  "title": "إعدادات الإخطار — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.NotificationConfig",
+  "overviewHtml": "<p>إعدادات تحدد هل يرسل HCMv3 بريداً إلكترونياً عن حدث ما، وإلى من. تشير إلى واحد منها أنواعُ الوثائق وإخطاراتُ النظام والإخطاراتُ المجدولة — مثل التهنئة بعيد الميلاد وبذكرى الالتحاق بالعمل. ومهما كثرت الخانات المحددة، لا يتلقى أحد الرسالة نفسها مرتين.</p>",
+  "aliasIndex": {
+    "loc:Name": "NotificationConfig.Name",
+    "dom:NotificationConfig_Name": "NotificationConfig.Name",
+    "loc:SendNotification": "NotificationConfig.SendNotification",
+    "dom:NotificationConfig_SendNotification": "NotificationConfig.SendNotification",
+    "loc:SendEmail": "NotificationConfig.SendEmail",
+    "dom:NotificationConfig_SendEmail": "NotificationConfig.SendEmail",
+    "loc:ToEmployee": "NotificationConfig.ToEmployee",
+    "dom:NotificationConfig_ToEmployee": "NotificationConfig.ToEmployee",
+    "loc:ToRequestCreator": "NotificationConfig.ToRequestCreator",
+    "dom:NotificationConfig_ToRequestCreator": "NotificationConfig.ToRequestCreator",
+    "loc:ToManager": "NotificationConfig.ToManager",
+    "dom:NotificationConfig_ToManager": "NotificationConfig.ToManager",
+    "loc:SendToAll": "NotificationConfig.SendToAll",
+    "dom:NotificationConfig_SendToAll": "NotificationConfig.SendToAll",
+    "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
+    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
+    "loc:SendToApprover": "NotificationConfig.SendToApprover",
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+  },
+  "fields": [
+    {
+      "id": "NotificationConfig.Name",
+      "label": "Name",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:Name",
+        "dom:NotificationConfig_Name"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم تتعرّف به على هذه الإعدادات.</p><p><strong>مثال.</strong> <code>التهنئة بعيد الميلاد</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendNotification",
+      "label": "SendNotification",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendNotification",
+        "dom:NotificationConfig_SendNotification"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه تشغيل الإخطارات داخل النظام.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendEmail",
+      "label": "SendEmail",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendEmail",
+        "dom:NotificationConfig_SendEmail"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرسل بريد إلكتروني أصلاً.</p><p><strong>لماذا يهم.</strong> لا تُرسل الإخطارات المجدولة مثل التهنئة بعيد الميلاد إلا عند تحديد هذه الخانة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToEmployee",
+      "label": "ToEmployee",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToEmployee",
+        "dom:NotificationConfig_ToEmployee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مراسلة الموظف المعني.</p><p><strong>لماذا يهم.</strong> تُتخطى إذا كان الموظف غير مفعّل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToRequestCreator",
+      "label": "ToRequestCreator",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToRequestCreator",
+        "dom:NotificationConfig_ToRequestCreator"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مراسلة الشخص الذي أنشأ الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToManager",
+      "label": "ToManager",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToManager",
+        "dom:NotificationConfig_ToManager"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مراسلة مدير الموظف.</p><p><strong>لماذا يهم.</strong> لا تُرسل إلا إذا كان الموظف والمدير كلاهما مفعّلين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToAll",
+      "label": "SendToAll",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToAll",
+        "dom:NotificationConfig_SendToAll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مراسلة كل موظف مفعّل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToAllApproved",
+      "label": "SendToAllApproved",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToAllApproved",
+        "dom:NotificationConfig_SendToAllApproved"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> في طلبات سير العمل، مراسلة كل من اعتمد الطلب.</p><p><strong>لماذا يهم.</strong> يُتخطى المعتمِدون الذين أصبحوا غير مفعّلين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToApprover",
+      "label": "SendToApprover",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToApprover",
+        "dom:NotificationConfig_SendToApprover"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كان المقصود منه مراسلة المعتمِد الحالي.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

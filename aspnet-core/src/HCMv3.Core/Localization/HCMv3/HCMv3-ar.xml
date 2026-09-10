@@ -5905,5 +5905,6 @@
     <text name="HelpReferences">يشير إلى</text>
     <text name="HelpPrimaryKey">المفتاح الأساسي</text>
     <text name="Copied">تم النسخ</text>
+    <text name="HelpSimpleLists">القوائم البسيطة</text>
   </texts>
 </localizationDictionary>

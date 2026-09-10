@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.overtime-type-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أنواع العمل الإضافي — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.OvertimeTypeDetail",
+  "overviewHtml": "<p>إعدادات أسعار مؤرخة لنوع عمل إضافي. عند صرف العمل الإضافي، يبحث احتساب الرواتب عن تفصيل نوع العمل الإضافي الذي تشمل تواريخه تاريخ الصرف.</p>",
+  "aliasIndex": {
+    "loc:OvertimeType": "OvertimeTypeDetail.OvertimeTypeId",
+    "dom:OvertimeTypeDetail_OvertimeTypeId": "OvertimeTypeDetail.OvertimeTypeId",
+    "loc:StartDate": "OvertimeTypeDetail.StartDate",
+    "dom:OvertimeTypeDetail_StartDate": "OvertimeTypeDetail.StartDate",
+    "loc:EndDate": "OvertimeTypeDetail.EndDate",
+    "dom:OvertimeTypeDetail_EndDate": "OvertimeTypeDetail.EndDate",
+    "loc:OvertimeRateType": "OvertimeTypeDetail.OvertimeRateType",
+    "dom:OvertimeTypeDetail_OvertimeRateType": "OvertimeTypeDetail.OvertimeRateType",
+    "loc:Rate": "OvertimeTypeDetail.Rate",
+    "dom:OvertimeTypeDetail_Rate": "OvertimeTypeDetail.Rate"
+  },
+  "fields": [
+    {
+      "id": "OvertimeTypeDetail.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:OvertimeTypeDetail_OvertimeTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع العمل الإضافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي الذي تنتمي إليه هذه الإعدادات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.StartDate",
+      "label": "StartDate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:OvertimeTypeDetail_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول تاريخ صرف تنطبق عليه هذه الإعدادات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.EndDate",
+      "label": "EndDate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:OvertimeTypeDetail_EndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر تاريخ صرف تنطبق عليه هذه الإعدادات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.OvertimeRateType",
+      "label": "OvertimeRateType",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:OvertimeRateType",
+        "dom:OvertimeTypeDetail_OvertimeRateType"
+      ],
+      "rules": "إلزامي. إحدى القيم: فعلي، ثابت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة تحديد سعر الساعة للعمل الإضافي.</p><p><strong>لماذا يهم.</strong> «ثابت»: السعر أدناه هو سعر الساعة. «فعلي»: يُحتسب سعر الساعة من عناصر الأجر المحددة للاحتساب في العمل الإضافي. وإذا لم يشمل أي تفصيل تاريخ الصرف، يُستخدم «فعلي».</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.Rate",
+      "label": "Rate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:OvertimeTypeDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سعر الساعة المستخدم عندما يكون نوع السعر «ثابت».</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

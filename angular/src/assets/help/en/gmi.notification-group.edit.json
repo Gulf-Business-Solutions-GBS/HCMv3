@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.notification-group.edit",
+  "lang": "en",
+  "title": "Notification Groups — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.NotificationGroup",
+  "overviewHtml": "<p>Groups linked to a notification configuration. Not used at present: sending notifications to groups was not carried over into HCMv3.</p>",
+  "aliasIndex": {
+    "loc:NotificationConfig": "NotificationGroup.NotificationConfigId",
+    "dom:NotificationGroup_NotificationConfigId": "NotificationGroup.NotificationConfigId"
+  },
+  "fields": [
+    {
+      "id": "NotificationGroup.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationGroup_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification configuration the group belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

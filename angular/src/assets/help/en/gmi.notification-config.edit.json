@@ -1,0 +1,155 @@
+{
+  "helpId": "gmi.notification-config.edit",
+  "lang": "en",
+  "title": "Notification Configs — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.NotificationConfig",
+  "overviewHtml": "<p>Settings that decide whether HCMv3 sends an email for an event, and to whom. Document types, system notifications and scheduled notifications — such as birthday and work-anniversary greetings — each point to one of these. However many boxes are ticked, nobody receives the same email twice.</p>",
+  "aliasIndex": {
+    "loc:Name": "NotificationConfig.Name",
+    "dom:NotificationConfig_Name": "NotificationConfig.Name",
+    "loc:SendNotification": "NotificationConfig.SendNotification",
+    "dom:NotificationConfig_SendNotification": "NotificationConfig.SendNotification",
+    "loc:SendEmail": "NotificationConfig.SendEmail",
+    "dom:NotificationConfig_SendEmail": "NotificationConfig.SendEmail",
+    "loc:ToEmployee": "NotificationConfig.ToEmployee",
+    "dom:NotificationConfig_ToEmployee": "NotificationConfig.ToEmployee",
+    "loc:ToRequestCreator": "NotificationConfig.ToRequestCreator",
+    "dom:NotificationConfig_ToRequestCreator": "NotificationConfig.ToRequestCreator",
+    "loc:ToManager": "NotificationConfig.ToManager",
+    "dom:NotificationConfig_ToManager": "NotificationConfig.ToManager",
+    "loc:SendToAll": "NotificationConfig.SendToAll",
+    "dom:NotificationConfig_SendToAll": "NotificationConfig.SendToAll",
+    "loc:SendToAllApproved": "NotificationConfig.SendToAllApproved",
+    "dom:NotificationConfig_SendToAllApproved": "NotificationConfig.SendToAllApproved",
+    "loc:SendToApprover": "NotificationConfig.SendToApprover",
+    "dom:NotificationConfig_SendToApprover": "NotificationConfig.SendToApprover"
+  },
+  "fields": [
+    {
+      "id": "NotificationConfig.Name",
+      "label": "Name",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:Name",
+        "dom:NotificationConfig_Name"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A name to recognise these settings by.</p><p><strong>Example.</strong> <code>Birthday greetings</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendNotification",
+      "label": "SendNotification",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendNotification",
+        "dom:NotificationConfig_SendNotification"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to switch in-app notifications on.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendEmail",
+      "label": "SendEmail",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendEmail",
+        "dom:NotificationConfig_SendEmail"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether an email is sent at all.</p><p><strong>Why it matters.</strong> Scheduled notifications such as birthday greetings are sent only when this is ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToEmployee",
+      "label": "ToEmployee",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToEmployee",
+        "dom:NotificationConfig_ToEmployee"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Email the employee concerned.</p><p><strong>Why it matters.</strong> Skipped when the employee is inactive.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToRequestCreator",
+      "label": "ToRequestCreator",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToRequestCreator",
+        "dom:NotificationConfig_ToRequestCreator"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Email the person who raised the request.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.ToManager",
+      "label": "ToManager",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:ToManager",
+        "dom:NotificationConfig_ToManager"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Email the employee's manager.</p><p><strong>Why it matters.</strong> Sent only when both the employee and the manager are active.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToAll",
+      "label": "SendToAll",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToAll",
+        "dom:NotificationConfig_SendToAll"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Email every active employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToAllApproved",
+      "label": "SendToAllApproved",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToAllApproved",
+        "dom:NotificationConfig_SendToAllApproved"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> For a workflow request, email everyone who approved it.</p><p><strong>Why it matters.</strong> Approvers who are now inactive are skipped.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationConfig.SendToApprover",
+      "label": "SendToApprover",
+      "section": "NotificationConfigs",
+      "aliases": [
+        "loc:SendToApprover",
+        "dom:NotificationConfig_SendToApprover"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to email the current approver.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

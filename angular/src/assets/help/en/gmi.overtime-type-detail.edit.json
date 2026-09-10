@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.overtime-type-detail.edit",
+  "lang": "en",
+  "title": "Overtime Type Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.OvertimeTypeDetail",
+  "overviewHtml": "<p>Dated rate settings for an overtime type. When overtime is paid, payroll looks for the detail of the overtime type whose dates cover the pay date.</p>",
+  "aliasIndex": {
+    "loc:OvertimeType": "OvertimeTypeDetail.OvertimeTypeId",
+    "dom:OvertimeTypeDetail_OvertimeTypeId": "OvertimeTypeDetail.OvertimeTypeId",
+    "loc:StartDate": "OvertimeTypeDetail.StartDate",
+    "dom:OvertimeTypeDetail_StartDate": "OvertimeTypeDetail.StartDate",
+    "loc:EndDate": "OvertimeTypeDetail.EndDate",
+    "dom:OvertimeTypeDetail_EndDate": "OvertimeTypeDetail.EndDate",
+    "loc:OvertimeRateType": "OvertimeTypeDetail.OvertimeRateType",
+    "dom:OvertimeTypeDetail_OvertimeRateType": "OvertimeTypeDetail.OvertimeRateType",
+    "loc:Rate": "OvertimeTypeDetail.Rate",
+    "dom:OvertimeTypeDetail_Rate": "OvertimeTypeDetail.Rate"
+  },
+  "fields": [
+    {
+      "id": "OvertimeTypeDetail.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:OvertimeTypeDetail_OvertimeTypeId"
+      ],
+      "rules": "Optional. Chosen from Overtime Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overtime type these settings belong to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.StartDate",
+      "label": "StartDate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:OvertimeTypeDetail_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first pay date these settings apply to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.EndDate",
+      "label": "EndDate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:OvertimeTypeDetail_EndDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last pay date these settings apply to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.OvertimeRateType",
+      "label": "OvertimeRateType",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:OvertimeRateType",
+        "dom:OvertimeTypeDetail_OvertimeRateType"
+      ],
+      "rules": "Required. One of: Actual, Fixed.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the hourly rate for overtime is found.</p><p><strong>Why it matters.</strong> Fixed: the rate below is the hourly rate. Actual: the hourly rate is worked out from the pay elements set to count towards overtime. When no detail covers the pay date, Actual is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OvertimeTypeDetail.Rate",
+      "label": "Rate",
+      "section": "OvertimeTypeDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:OvertimeTypeDetail_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hourly rate used when the rate type is Fixed.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

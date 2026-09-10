@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.separation-reason.edit",
+  "lang": "en",
+  "title": "Separation Reasons — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.SeparationReason",
+  "overviewHtml": "<p>The reasons an employee's service can end — resignation, termination, end of contract and so on. Each separation record names one.</p>",
+  "aliasIndex": {
+    "loc:Code": "SeparationReason.Code",
+    "dom:SeparationReason_Code": "SeparationReason.Code",
+    "loc:NameEn": "SeparationReason.NameEn",
+    "dom:SeparationReason_NameEn": "SeparationReason.NameEn",
+    "loc:NameAr": "SeparationReason.NameAr",
+    "dom:SeparationReason_NameAr": "SeparationReason.NameAr",
+    "loc:IsSystemRecord": "SeparationReason.IsSystemRecord",
+    "dom:SeparationReason_IsSystemRecord": "SeparationReason.IsSystemRecord",
+    "loc:AllowAdvanceEoS": "SeparationReason.AllowAdvanceEoS",
+    "dom:SeparationReason_AllowAdvanceEoS": "SeparationReason.AllowAdvanceEoS"
+  },
+  "fields": [
+    {
+      "id": "SeparationReason.Code",
+      "label": "Code",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:Code",
+        "dom:SeparationReason_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.NameEn",
+      "label": "NameEn",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:NameEn",
+        "dom:SeparationReason_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.NameAr",
+      "label": "NameAr",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:NameAr",
+        "dom:SeparationReason_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.IsSystemRecord",
+      "label": "IsSystemRecord",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:IsSystemRecord",
+        "dom:SeparationReason_IsSystemRecord"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks a reason that came with the system.</p><p><strong>Why it matters.</strong> Only an administrator can edit or delete a system reason.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SeparationReason.AllowAdvanceEoS",
+      "label": "AllowAdvanceEoS",
+      "section": "SeparationReasons",
+      "aliases": [
+        "loc:AllowAdvanceEoS",
+        "dom:SeparationReason_AllowAdvanceEoS"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Meant to allow end-of-service benefits to be paid in advance for this reason.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -6066,5 +6066,6 @@
     <text name="HelpReferences">References</text>
     <text name="HelpPrimaryKey">Primary key</text>
     <text name="Copied">Copied</text>
+    <text name="HelpSimpleLists">Simple lists</text>
   </texts>
 </localizationDictionary>

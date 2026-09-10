@@ -249,7 +249,11 @@ public virtual string FirstNameEn { get; set; }
 
 The build emits **Rules: Required. Maximum 128 characters.** Enum-typed properties emit their members. Nullability comes from the EF model.
 
-**"Required" means the reader cannot save without it** — `[Required]` on the entity, a form label marked required, or a date or choice that always holds a value. It does *not* follow from a non-nullable number: `long Mobile` left blank saves as 0, so calling it required told readers about a rule the system does not enforce. The first version made exactly that mistake for Mobile, Telephone, Permanent Telephone, Civil ID and Probation Days; it was corrected on 2026-09-10.
+**"Required" means the reader cannot save without it** — `[Required]` on the entity, a form label marked required, or a choice, which always holds a value. It does *not* follow from a non-nullable number or date: `long Mobile` left blank saves as 0 and `Asset.ExpiryDate` as the minimum date, so calling them required told readers about a rule the system does not enforce. Tick boxes are neither: they read "Yes or no".
+
+**Choices come from the form, not the enum.** An enum can hold a member the form hides (`EmploymentType.ALL`) or offer one that looks like a filter but is real (`RecoveryOption.All`, "recovered both through payroll and externally"). So the Rules line lists what the dropdown offers — literal `<option>`s or the `@for` array in the component — in the app's own wording, and falls back to the enum only when neither can be read.
+
+**What the service enforces is read from the service.** When an entity's own application service (`CitiesAppService` for City) auto-assigns codes (`AssignCodeIfEmptyAsync`) or refuses duplicates (`DuplicateCodeFound`, `NameAlreadyInUse` — the patterns 86 and 76 services use), the Rules line says so. A service managing several entities is never credited to the wrong one: only the entity's own service is consulted.
 
 This is the single largest reduction in authoring effort: a writer facing a field already has its name, its label, its type and its rules on the page, and only has to supply meaning and an example.
 
@@ -326,6 +330,11 @@ this choice does not foreclose it.
 | Arabic Rules line | Generated in Arabic from the same rule parts as English, so the two can never state different rules; choice values and master-data lists use the app's own Arabic strings from `HCMv3-ar.xml` | 2026-09-10 |
 | Arabic terminology | `docs/localization/arabic-glossary.md` first, then the Arabic the screen already shows — help must not name a field or menu differently from the UI | 2026-09-10 |
 | Page title per language | Taken from each file's own frontmatter `title:`; the registry title is only the English fallback | 2026-09-10 |
+| Shared default topics | `_shared.md` holds `{#*.Code}`, `{#*.NameEn}`, `{#*.NameAr}` — used by any entity without its own topic; may state only what is true of every entity | 2026-09-10 |
+| Module rollout | `discover` registers a module's forms; rolled out one module at a time, General Master Info first | 2026-09-10 |
+| Simple lists | The one shared form behind 91 code/name lists is a single page, `common.simple-lookup.edit` | 2026-09-10 |
+| Arabic register | Formal Arabic with Kuwaiti terminology, not dialect — confirmed by the owner after weighing a dialect rewrite | 2026-09-10 |
+| "Not used" fields | Said plainly ("Not read at present", "Not enforced at present") when no code reads a field; an admin must not configure a setting that does nothing without knowing it | 2026-09-10 |
 
 **On that last one.** Both the entry animation and the F1 scroll were first written the obvious way
 — `translateX(100%)` and `scrollIntoView({behavior: 'smooth'})` — and both failed the same way when

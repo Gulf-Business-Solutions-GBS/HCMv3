@@ -243,9 +243,9 @@
         "loc:Code",
         "dom:Employee_Code"
       ],
-      "rules": "Optional. Maximum 64 characters.",
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The employee's business identifier, unique across the organisation. It is how the employee is identified on lists, reports and printed forms.</p><p><strong>Example.</strong> <code>001245</code></p><p><strong>Why it matters.</strong> Left blank, the system assigns the next number when the record is saved (the highest existing numeric code plus one). A code already used by another employee is refused.</p>",
+      "html": "<p><strong>What it is.</strong> The employee's business identifier, unique across the organisation. It is how the employee is identified on lists, reports and printed forms.</p><p><strong>Example.</strong> <code>001245</code></p><p><strong>Why it matters.</strong> The next number assigned to a blank code is the highest existing numeric code plus one.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -845,7 +845,7 @@
         "loc:Status",
         "dom:Employee_Status"
       ],
-      "rules": "Required. One of: Inactive, Active.",
+      "rules": "Required. One of: Active, Inactive.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether this record is currently in service. Inactive employees keep their full record and history, but are left out of payroll runs, the bulk password and attendance tools, self-service lookups and many reports.</p><p><strong>Example.</strong> <code>Active</code></p><p><strong>Why it matters.</strong> Set a leaver to Inactive rather than deleting them: deleting removes the employee from the system, while Inactive keeps the record and its history available. An inactive employee's Civil ID and Access ID can be given to a new record.</p>",
       "adminHtml": "",

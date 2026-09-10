@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.dependant-type.edit",
+  "lang": "ar",
+  "title": "أنواع صفات العائل — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.DependantType",
+  "overviewHtml": "<p>صفات العائل التي يمكن أن تكون للموظف — زوج أو زوجة، ابن، ابنة، ونحو ذلك. لكل عائل مسجَّل على الموظف صفة من هذه الصفات، وتُحدَّد حدود استرداد المصاريف الصحية لكل صفة عائل.</p>",
+  "aliasIndex": {
+    "loc:Code": "DependantType.Code",
+    "dom:DependantType_Code": "DependantType.Code",
+    "loc:NameEn": "DependantType.NameEn",
+    "dom:DependantType_NameEn": "DependantType.NameEn",
+    "loc:NameAr": "DependantType.NameAr",
+    "dom:DependantType_NameAr": "DependantType.NameAr",
+    "loc:Gender": "DependantType.Gender",
+    "dom:DependantType_Gender": "DependantType.Gender",
+    "loc:IsEmployee": "DependantType.IsEmployee",
+    "dom:DependantType_IsEmployee": "DependantType.IsEmployee"
+  },
+  "fields": [
+    {
+      "id": "DependantType.Code",
+      "label": "Code",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DependantType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.NameEn",
+      "label": "NameEn",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DependantType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.NameAr",
+      "label": "NameAr",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DependantType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.Gender",
+      "label": "Gender",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:Gender",
+        "dom:DependantType_Gender"
+      ],
+      "rules": "إلزامي. إحدى القيم: ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجنس الذي تقتضيه صفة العائل — فالابن ذكر والابنة أنثى.</p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يطابق شيءٌ جنسَ العائل به.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DependantType.IsEmployee",
+      "label": "IsEmployee",
+      "section": "DependantTypes",
+      "aliases": [
+        "loc:IsEmployee",
+        "dom:DependantType_IsEmployee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يميّز الصفة التي تمثّل الموظف نفسه لا أحد أقاربه.</p><p><strong>لماذا يهم.</strong> يستخدمها استرداد المصاريف الصحية للتمييز بين حد الموظف نفسه وحدود عائليه. ولا يجوز تحديدها إلا لصفة عائل واحدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

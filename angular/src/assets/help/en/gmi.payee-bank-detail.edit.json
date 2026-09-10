@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.payee-bank-detail.edit",
+  "lang": "en",
+  "title": "Payee Bank Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.PayeeBankDetail",
+  "overviewHtml": "<p>For a paying bank, the code it uses for each other bank in its salary transfer file. When the transfer file is produced for a paying bank, each employee's bank is looked up here to find the code to write.</p>",
+  "aliasIndex": {
+    "loc:Bank": "PayeeBankDetail.BankId",
+    "dom:PayeeBankDetail_BankId": "PayeeBankDetail.BankId",
+    "loc:PayeeBank": "PayeeBankDetail.PayeeBankId",
+    "dom:PayeeBankDetail_PayeeBankId": "PayeeBankDetail.PayeeBankId",
+    "loc:BankCode": "PayeeBankDetail.BankCode",
+    "dom:PayeeBankDetail_BankCode": "PayeeBankDetail.BankCode",
+    "loc:BankFile": "PayeeBankDetail.BankFileId",
+    "dom:PayeeBankDetail_BankFileId": "PayeeBankDetail.BankFileId"
+  },
+  "fields": [
+    {
+      "id": "PayeeBankDetail.BankId",
+      "label": "Bank",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:Bank",
+        "dom:PayeeBankDetail_BankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The paying bank.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.PayeeBankId",
+      "label": "PayeeBank",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:PayeeBank",
+        "dom:PayeeBankDetail_PayeeBankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's bank — the bank being paid into.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.BankCode",
+      "label": "BankCode",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:BankCode",
+        "dom:PayeeBankDetail_BankCode"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The code the paying bank uses for the employee's bank.</p><p><strong>Why it matters.</strong> Written into the paying bank's salary transfer file for every employee paid into that bank.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayeeBankDetail.BankFileId",
+      "label": "BankFile",
+      "section": "PayeeBankDetails",
+      "aliases": [
+        "loc:BankFile",
+        "dom:PayeeBankDetail_BankFileId"
+      ],
+      "rules": "Optional. Chosen from Bank File master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A bank file format for this pairing.</p><p><strong>Why it matters.</strong> Not read at present — the salary transfer file does not use it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.number-series.edit",
+  "lang": "ar",
+  "title": "تسلسل الأرقام — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.NumberSeries",
+  "overviewHtml": "<p>تسلسلات أرقام لتوليد الرموز. لا تُستخدم حالياً: فرموز الموظفين مثلاً تُمنح بأعلى رقم موجود مضافاً إليه واحد، لا من تسلسل أرقام.</p>",
+  "aliasIndex": {
+    "loc:Code": "NumberSeries.Code",
+    "dom:NumberSeries_Code": "NumberSeries.Code",
+    "loc:Name": "NumberSeries.Name",
+    "dom:NumberSeries_Name": "NumberSeries.Name",
+    "loc:Start": "NumberSeries.Start",
+    "dom:NumberSeries_Start": "NumberSeries.Start",
+    "loc:Prefix": "NumberSeries.Prefix",
+    "dom:NumberSeries_Prefix": "NumberSeries.Prefix",
+    "loc:Formatting": "NumberSeries.Formatting",
+    "dom:NumberSeries_Formatting": "NumberSeries.Formatting"
+  },
+  "fields": [
+    {
+      "id": "NumberSeries.Code",
+      "label": "Code",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:Code",
+        "dom:NumberSeries_Code"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.Name",
+      "label": "Name",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:Name",
+        "dom:NumberSeries_Name"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم تتعرّف به على التسلسل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.Start",
+      "label": "Start",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:Start",
+        "dom:NumberSeries_Start"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول رقم في التسلسل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.Prefix",
+      "label": "Prefix",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:Prefix",
+        "dom:NumberSeries_Prefix"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نص يسبق كل رقم.</p><p><strong>مثال.</strong> <code>EMP-</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NumberSeries.Formatting",
+      "label": "Formatting",
+      "section": "NumberSeries",
+      "aliases": [
+        "loc:Formatting",
+        "dom:NumberSeries_Formatting"
+      ],
+      "rules": "إلزامي. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النمط الذي تُكتب به الأرقام.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

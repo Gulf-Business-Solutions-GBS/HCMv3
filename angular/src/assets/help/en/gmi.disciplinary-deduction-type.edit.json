@@ -1,0 +1,91 @@
+{
+  "helpId": "gmi.disciplinary-deduction-type.edit",
+  "lang": "en",
+  "title": "Disciplinary Deduction Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DisciplinaryDeductionType",
+  "overviewHtml": "<p>The deductions a disciplinary action can carry — a number of days' or hours' pay, a fixed amount, or a percentage. Disciplinary types list which deduction applies to which offence.</p>",
+  "aliasIndex": {
+    "loc:Code": "DisciplinaryDeductionType.Code",
+    "dom:DisciplinaryDeductionType_Code": "DisciplinaryDeductionType.Code",
+    "loc:NameEn": "DisciplinaryDeductionType.NameEn",
+    "dom:DisciplinaryDeductionType_NameEn": "DisciplinaryDeductionType.NameEn",
+    "loc:NameAr": "DisciplinaryDeductionType.NameAr",
+    "dom:DisciplinaryDeductionType_NameAr": "DisciplinaryDeductionType.NameAr",
+    "loc:DisciplinaryDeductionUnit": "DisciplinaryDeductionType.DisciplinaryDeductionUnit",
+    "dom:DisciplinaryDeductionType_DisciplinaryDeductionUnit": "DisciplinaryDeductionType.DisciplinaryDeductionUnit",
+    "loc:DeductionValue": "DisciplinaryDeductionType.DeductionValue",
+    "dom:DisciplinaryDeductionType_DeductionValue": "DisciplinaryDeductionType.DeductionValue"
+  },
+  "fields": [
+    {
+      "id": "DisciplinaryDeductionType.Code",
+      "label": "Code",
+      "section": "DisciplinaryDeductionTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DisciplinaryDeductionType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryDeductionType.NameEn",
+      "label": "NameEn",
+      "section": "DisciplinaryDeductionTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DisciplinaryDeductionType_NameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryDeductionType.NameAr",
+      "label": "NameAr",
+      "section": "DisciplinaryDeductionTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DisciplinaryDeductionType_NameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryDeductionType.DisciplinaryDeductionUnit",
+      "label": "DisciplinaryDeductionUnit",
+      "section": "DisciplinaryDeductionTypes",
+      "aliases": [
+        "loc:DisciplinaryDeductionUnit",
+        "dom:DisciplinaryDeductionType_DisciplinaryDeductionUnit"
+      ],
+      "rules": "Required. One of: Days, Hours, Fixed Amount, Percentage.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the deduction value is measured in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryDeductionType.DeductionValue",
+      "label": "DeductionValue",
+      "section": "DisciplinaryDeductionTypes",
+      "aliases": [
+        "loc:DeductionValue",
+        "dom:DisciplinaryDeductionType_DeductionValue"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How much is deducted, in the chosen unit.</p><p><strong>Example.</strong> <code>1</code> with the unit Days, for one day's pay</p><p><strong>Why it matters.</strong> For a percentage it must be between 0 and 100.</p>",
+      "adminHtml": "<p>Stored only: no payroll calculation reads the unit or the value at present, so recording a disciplinary action does not reduce pay by itself.</p>",
+      "stub": false
+    }
+  ]
+}

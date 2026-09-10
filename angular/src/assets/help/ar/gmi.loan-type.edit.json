@@ -1,0 +1,171 @@
+{
+  "helpId": "gmi.loan-type.edit",
+  "lang": "ar",
+  "title": "أنواع القروض — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.LoanType",
+  "overviewHtml": "<p>أنواع القروض التي يمكن للموظفين الحصول عليها. يسمّي كل قرض للموظف نوعاً من هذه الأنواع، ويسترد احتساب الرواتب الأقساط وفق نوع الخصم وخيار الاسترداد الخاصين بالنوع.</p><p>إعدادات الأهلية محفوظة لكنها غير مطبّقة حالياً: فلا يُرفض القرض إذا تجاوزها.</p>",
+  "aliasIndex": {
+    "loc:Code": "LoanType.Code",
+    "dom:LoanType_Code": "LoanType.Code",
+    "loc:NameEn": "LoanType.NameEn",
+    "dom:LoanType_NameEn": "LoanType.NameEn",
+    "loc:NameAr": "LoanType.NameAr",
+    "dom:LoanType_NameAr": "LoanType.NameAr",
+    "loc:LoanDeductionType": "LoanType.LoanDeductionType",
+    "dom:LoanType_LoanDeductionType": "LoanType.LoanDeductionType",
+    "loc:RecoveryOption": "LoanType.RecoveryOption",
+    "dom:LoanType_RecoveryOption": "LoanType.RecoveryOption",
+    "loc:EligiblePeriod": "LoanType.EligiblePeriod",
+    "dom:LoanType_EligiblePeriod": "LoanType.EligiblePeriod",
+    "loc:EligibleCountPerYear": "LoanType.EligibleCountPerYear",
+    "dom:LoanType_EligibleCountPerYear": "LoanType.EligibleCountPerYear",
+    "loc:MaxInstallments": "LoanType.MaxInstallments",
+    "dom:LoanType_MaxInstallments": "LoanType.MaxInstallments",
+    "loc:EligibleAmount": "LoanType.EligibleAmount",
+    "dom:LoanType_EligibleAmount": "LoanType.EligibleAmount",
+    "loc:EligibleAmountNumber": "LoanType.EligibleAmountNumber",
+    "dom:LoanType_EligibleAmountNumber": "LoanType.EligibleAmountNumber"
+  },
+  "fields": [
+    {
+      "id": "LoanType.Code",
+      "label": "Code",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:LoanType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.NameEn",
+      "label": "NameEn",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:LoanType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.NameAr",
+      "label": "NameAr",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:LoanType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.LoanDeductionType",
+      "label": "LoanDeductionType",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:LoanDeductionType",
+        "dom:LoanType_LoanDeductionType"
+      ],
+      "rules": "إلزامي. إحدى القيم: ثابت، متغير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة احتساب كل قسط.</p><p><strong>لماذا يهم.</strong> مع «ثابت»، يخصم احتساب الرواتب مبلغ القسط المحدد في قرض الموظف، ولا يتجاوز أبداً الرصيد المتبقي.</p>",
+      "adminHtml": "<p>لا تستخدم «متغير» بعدُ. فاحتساب الرواتب لا يدعمه، ويتوقف بخطأ لأي موظف لديه قرض من نوع متغير بدلاً من ألا يخصم شيئاً.</p>",
+      "stub": false
+    },
+    {
+      "id": "LoanType.RecoveryOption",
+      "label": "RecoveryOption",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:RecoveryOption",
+        "dom:LoanType_RecoveryOption"
+      ],
+      "rules": "إلزامي. إحدى القيم: الجميع، عن طريق الرواتب، عن طريق جهة خارجية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة سداد القرض.</p><p><strong>لماذا يهم.</strong> يسترد احتساب الرواتب القروض التي نوعها «عن طريق الرواتب» أو «الجميع». أما مع «عن طريق جهة خارجية» فلا يخصمها احتساب الرواتب، ويجري السداد خارج HCMv3.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligiblePeriod",
+      "label": "EligiblePeriod",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligiblePeriod",
+        "dom:LoanType_EligiblePeriod"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة الخدمة التي يحتاجها الموظف قبل أن يصبح مؤهلاً لهذا القرض.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleCountPerYear",
+      "label": "EligibleCountPerYear",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleCountPerYear",
+        "dom:LoanType_EligibleCountPerYear"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد القروض من هذا النوع التي يجوز للموظف الحصول عليها في السنة.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.MaxInstallments",
+      "label": "MaxInstallments",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:MaxInstallments",
+        "dom:LoanType_MaxInstallments"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحد الأقصى لعدد الأقساط التي يُسدَّد عليها قرض من هذا النوع.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleAmount",
+      "label": "EligibleAmount",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleAmount",
+        "dom:LoanType_EligibleAmount"
+      ],
+      "rules": "إلزامي. إحدى القيم: افتراضي، الراتب الأساسي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأساس الذي يُحتسب عليه المبلغ المؤهَّل: مبلغ افتراضي، أو الراتب الأساسي للموظف.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleAmountNumber",
+      "label": "EligibleAmountNumber",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleAmountNumber",
+        "dom:LoanType_EligibleAmountNumber"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المرافق للأساس المذكور أعلاه.</p><p><strong>لماذا يهم.</strong> غير مطبّق حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "helpId": "gmi.loan-type.edit",
+  "lang": "en",
+  "title": "Loan Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.LoanType",
+  "overviewHtml": "<p>The kinds of loan employees can take. Every employee loan names a loan type, and payroll recovers instalments according to the type's deduction type and recovery option.</p><p>The eligibility settings are stored but not enforced at present: a loan is not refused for going beyond them.</p>",
+  "aliasIndex": {
+    "loc:Code": "LoanType.Code",
+    "dom:LoanType_Code": "LoanType.Code",
+    "loc:NameEn": "LoanType.NameEn",
+    "dom:LoanType_NameEn": "LoanType.NameEn",
+    "loc:NameAr": "LoanType.NameAr",
+    "dom:LoanType_NameAr": "LoanType.NameAr",
+    "loc:LoanDeductionType": "LoanType.LoanDeductionType",
+    "dom:LoanType_LoanDeductionType": "LoanType.LoanDeductionType",
+    "loc:RecoveryOption": "LoanType.RecoveryOption",
+    "dom:LoanType_RecoveryOption": "LoanType.RecoveryOption",
+    "loc:EligiblePeriod": "LoanType.EligiblePeriod",
+    "dom:LoanType_EligiblePeriod": "LoanType.EligiblePeriod",
+    "loc:EligibleCountPerYear": "LoanType.EligibleCountPerYear",
+    "dom:LoanType_EligibleCountPerYear": "LoanType.EligibleCountPerYear",
+    "loc:MaxInstallments": "LoanType.MaxInstallments",
+    "dom:LoanType_MaxInstallments": "LoanType.MaxInstallments",
+    "loc:EligibleAmount": "LoanType.EligibleAmount",
+    "dom:LoanType_EligibleAmount": "LoanType.EligibleAmount",
+    "loc:EligibleAmountNumber": "LoanType.EligibleAmountNumber",
+    "dom:LoanType_EligibleAmountNumber": "LoanType.EligibleAmountNumber"
+  },
+  "fields": [
+    {
+      "id": "LoanType.Code",
+      "label": "Code",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:LoanType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.NameEn",
+      "label": "NameEn",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:LoanType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.NameAr",
+      "label": "NameAr",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:LoanType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.LoanDeductionType",
+      "label": "LoanDeductionType",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:LoanDeductionType",
+        "dom:LoanType_LoanDeductionType"
+      ],
+      "rules": "Required. One of: Fixed, Variable.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How each instalment is worked out.</p><p><strong>Why it matters.</strong> With Fixed, payroll deducts the instalment amount set on the employee's loan, and never more than the balance still owed.</p>",
+      "adminHtml": "<p>Do not use Variable yet. The payroll calculation does not support it, and stops with an error for any employee with a loan of a Variable type rather than deducting nothing.</p>",
+      "stub": false
+    },
+    {
+      "id": "LoanType.RecoveryOption",
+      "label": "RecoveryOption",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:RecoveryOption",
+        "dom:LoanType_RecoveryOption"
+      ],
+      "rules": "Required. One of: All, Through Payroll, Through External.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the loan is repaid.</p><p><strong>Why it matters.</strong> Payroll recovers loans whose type is Through Payroll or All. With Through External, payroll does not deduct it and repayment is handled outside HCMv3.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligiblePeriod",
+      "label": "EligiblePeriod",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligiblePeriod",
+        "dom:LoanType_EligiblePeriod"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period of service an employee needs before becoming eligible for this loan.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleCountPerYear",
+      "label": "EligibleCountPerYear",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleCountPerYear",
+        "dom:LoanType_EligibleCountPerYear"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many loans of this type an employee may take in a year.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.MaxInstallments",
+      "label": "MaxInstallments",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:MaxInstallments",
+        "dom:LoanType_MaxInstallments"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most instalments a loan of this type may be repaid over.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleAmount",
+      "label": "EligibleAmount",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleAmount",
+        "dom:LoanType_EligibleAmount"
+      ],
+      "rules": "Required. One of: Default, Basic Salary.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the eligible amount is based on: a default amount, or the employee's basic salary.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanType.EligibleAmountNumber",
+      "label": "EligibleAmountNumber",
+      "section": "LoanTypes",
+      "aliases": [
+        "loc:EligibleAmountNumber",
+        "dom:LoanType_EligibleAmountNumber"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The figure that goes with the basis above.</p><p><strong>Why it matters.</strong> Not enforced at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

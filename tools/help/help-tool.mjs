@@ -57,7 +57,8 @@ function parseEntity(file) {
             /^public\s+(?:virtual\s+)?([A-Za-z0-9_<>?.[\]]+)\s+([A-Za-z0-9_]+)\s*\{\s*get;\s*set;\s*\}/
         );
         if (m) {
-            props.set(m[2], { name: m[2], type: m[1], attrs: attrs.slice() });
+            // `System.DateTime` and `DateTime` are the same type; some entities spell it out.
+            props.set(m[2], { name: m[2], type: m[1].replace(/^System\./, ''), attrs: attrs.slice() });
             attrs = [];
             continue;
         }
@@ -78,6 +79,10 @@ function parseEntity(file) {
         // names the master-data list rather than calling it a whole number.
         const navBase = p.name.endsWith('Id') ? p.name.slice(0, -2) : null;
         p.lookupTarget = navBase && props.has(navBase) ? props.get(navBase).type : null;
+        // Most entities follow the flat-FK convention -- `StateId` with no `State` navigation --
+        // so the list cannot be named, but it is still a choice and not a number to type.
+        p.isFkWithoutNav = !p.lookupTarget && /[a-z]Id$/.test(p.name) &&
+            ['int', 'long'].includes(bare) && p.name !== 'TenantId';
     }
     return props;
 }
@@ -130,17 +135,60 @@ function enumMembers(typeName) {
 }
 
 /**
+ * What an entity's application service enforces on save, read from its source.
+ *
+ * Only the entity's OWN service is consulted -- `CitiesAppService` for City -- so a rule found in a
+ * service that manages several entities is never credited to the wrong one; when no service of
+ * that name exists, nothing is claimed. The patterns are the ones the whole codebase uses: 86
+ * services refuse duplicates with DuplicateCodeFound, 76 with NameAlreadyInUse. A simple-lookup
+ * service inherits all three behaviours from SimpleLookupAppServiceBase.
+ */
+let appServiceIndex = null;
+function serviceBehaviour(entityName, serviceOverride) {
+    if (!appServiceIndex) {
+        appServiceIndex = new Map();
+        const walk = (dir) => {
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+                if (e.isDirectory()) {
+                    if (!['bin', 'obj'].includes(e.name)) walk(path.join(dir, e.name));
+                } else if (/AppService(Base)?\.cs$/.test(e.name)) {
+                    appServiceIndex.set(e.name.slice(0, -3), path.join(dir, e.name));
+                }
+            }
+        };
+        walk(abs('aspnet-core/src/HCMv3.Application'));
+    }
+    const name = serviceOverride ?? `${pluralKey(entityName)}AppService`;
+    const file = appServiceIndex.get(name);
+    if (!file) return null;
+    let text = fs.readFileSync(file, 'utf8');
+    if (/SimpleLookupAppServiceBase</.test(text) && appServiceIndex.has('SimpleLookupAppServiceBase')) {
+        text += fs.readFileSync(appServiceIndex.get('SimpleLookupAppServiceBase'), 'utf8');
+    }
+    return {
+        service: name,
+        autoCode: /AssignCodeIfEmptyAsync/.test(text),
+        uniqueCode: /L\("DuplicateCodeFound"\)/.test(text),
+        // The name check refuses a record whose English OR Arabic name matches another's, so
+        // each of the two names must be unique on its own.
+        uniqueName: /L\("NameAlreadyInUse"\)/.test(text),
+    };
+}
+
+/**
  * The app's own translations, so Arabic rules name choices and master-data lists exactly as the
  * screen does ("مفعّل", "الجنسيات") instead of the help inventing its own words for them.
  */
-let arTexts = null;
-function arText(key) {
-    if (!arTexts) {
-        const xml = read('aspnet-core/src/HCMv3.Core/Localization/HCMv3/HCMv3-ar.xml');
-        arTexts = new Map([...xml.matchAll(/<text name="([^"]+)">([^<]*)<\/text>/g)].map((m) => [m[1], m[2]]));
+const locTexts = {};
+function locText(lang, key) {
+    if (!locTexts[lang]) {
+        const file = lang === 'en' ? 'HCMv3.xml' : `HCMv3-${lang}.xml`;
+        const xml = read(`aspnet-core/src/HCMv3.Core/Localization/HCMv3/${file}`);
+        locTexts[lang] = new Map([...xml.matchAll(/<text name="([^"]+)">([^<]*)<\/text>/g)].map((m) => [m[1], m[2]]));
     }
-    return arTexts.get(key);
+    return locTexts[lang].get(key);
 }
+const arText = (key) => locText('ar', key);
 
 /** Title -> Titles, City -> Cities, MaritalStatus -> MaritalStatuses: the master-data menu keys. */
 const pluralKey = (type) =>
@@ -167,9 +215,15 @@ const RULE_TEXT = {
         maxLen: (r) => `Maximum ${r.n} characters.`,
         range: (r) => `Between ${r.a} and ${r.b}.`,
         oneOf: (r) => `One of: ${r.members.join(', ')}.`,
+        oneOfKeys: (r) => `One of: ${r.keys.map((k) => locText('en', k) ?? k).join(', ')}.`,
         lookup: (r) => `Chosen from ${r.target.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`,
+        lookupGeneric: () => 'Chosen from a list.',
+        autoCode: () => 'Left blank, the next number is assigned when the record is saved.',
+        unique: () => 'Must be unique in this list.',
         date: () => 'Date value.',
         whole: () => 'Whole number.',
+        number: () => 'Number.',
+        yesNo: () => 'Yes or no.',
     },
     ar: {
         system: () => 'يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.',
@@ -178,9 +232,15 @@ const RULE_TEXT = {
         maxLen: (r) => `الحد الأقصى ${r.n} ${arCountedNoun(Number(r.n))}.`,
         range: (r) => `بين ${r.a} و${r.b}.`,
         oneOf: (r) => `إحدى القيم: ${r.members.map((m) => arText(m) ?? m).join('، ')}.`,
+        oneOfKeys: (r) => `إحدى القيم: ${r.keys.map((k) => arText(k) ?? k).join('، ')}.`,
         lookup: (r) => `يُختار من قائمة ${arText(pluralKey(r.target)) ?? r.target}.`,
+        lookupGeneric: () => 'يُختار من قائمة.',
+        autoCode: () => 'إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل.',
+        unique: () => 'يجب ألا يتكرر في هذه القائمة.',
         date: () => 'تاريخ.',
         whole: () => 'رقم صحيح.',
+        number: () => 'رقم.',
+        yesNo: () => 'نعم أو لا.',
     },
 };
 
@@ -192,7 +252,7 @@ const RULES_LINE = /^\*\*(?:Rules|القواعد)\.\*\*.*$/m;
  * DESIGN.md §10 -- the Rules block, derived and never hand-written. Decided once as a list of
  * rule parts, then rendered per language, so the Arabic can never state a different rule.
  */
-function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
+function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviour = null, formOptions = null } = {}) {
     if (!prop) return null;
     const parts = [];
     const attrText = prop.attrs.join(' ');
@@ -204,11 +264,13 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
     } else {
         // "Required" must mean the reader cannot save without it. A non-nullable NUMBER is not
         // that: left blank it saves as 0, so Mobile, Civil ID and Probation Days all save empty.
-        // Required is therefore [Required], a form label marked required, or a date/choice that
-        // always holds a value.
-        const alwaysHasValue =
-            !prop.isNullable && (prop.bareType === 'DateTime' || (prop.isEnumCandidate && !prop.lookupTarget));
-        parts.push({ k: /\[Required\]/.test(attrText) || uiRequired || alwaysHasValue ? 'required' : 'optional' });
+        // Nor is a non-nullable DATE: Asset.ExpiryDate left blank saves as the minimum date. Only
+        // a choice always holds a value. Required is therefore [Required], a form label marked
+        // required, or a choice.
+        const alwaysHasValue = !prop.isNullable && prop.isEnumCandidate && !prop.lookupTarget;
+        // A tick box is always either ticked or not -- neither required nor optional.
+        if (prop.bareType === 'bool') parts.push({ k: 'yesNo' });
+        else parts.push({ k: /\[Required\]/.test(attrText) || uiRequired || alwaysHasValue ? 'required' : 'optional' });
 
         const len = attrText.match(/\[(?:StringLength|MaxLength)\((\d+)\)/);
         if (len) parts.push({ k: 'maxLen', n: len[1] });
@@ -217,18 +279,33 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false } = {}) {
         if (range) parts.push({ k: 'range', a: range[1].trim(), b: range[2].trim() });
 
         if (prop.isEnumCandidate) {
-            // "All" is a filter value (EmploymentType.ALL, LeaveReligion.All), never something a
-            // record can be -- the form does not offer it, so neither does the help.
-            const members = enumMembers(prop.bareType)?.filter((m) => !/^all$/i.test(m));
-            if (members?.length) parts.push({ k: 'oneOf', members });
+            if (formOptions?.length) {
+                // What the form offers, by its own localization keys -- shown as the screen shows them.
+                parts.push({ k: 'oneOfKeys', keys: formOptions });
+            } else {
+                // No readable option list: fall back to the enum. There "All" is usually a filter
+                // value (EmploymentType.ALL) that no form offers, so it is left out.
+                const members = enumMembers(prop.bareType)?.filter((m) => !/^all$/i.test(m));
+                if (members?.length) parts.push({ k: 'oneOf', members });
+            }
+        }
+
+        if (prop.name === 'Code' && behaviour?.autoCode) parts.push({ k: 'autoCode' });
+        if ((prop.name === 'Code' && behaviour?.uniqueCode) ||
+            ((prop.name === 'NameEn' || prop.name === 'NameAr') && behaviour?.uniqueName)) {
+            parts.push({ k: 'unique' });
         }
 
         if (prop.lookupTarget) {
             parts.push({ k: 'lookup', target: prop.lookupTarget });
+        } else if (prop.isFkWithoutNav) {
+            parts.push({ k: 'lookupGeneric' });
         } else if (prop.bareType === 'DateTime') {
             parts.push({ k: 'date' });
         } else if ((prop.bareType === 'int' || prop.bareType === 'long') && !prop.isEnumCandidate) {
             parts.push({ k: 'whole' });
+        } else if (['decimal', 'double', 'float'].includes(prop.bareType)) {
+            parts.push({ k: 'number' });
         }
     }
 
@@ -283,8 +360,32 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
             property: domId.slice(entityName.length + 1),
             uiRequired: /class="[^"]*\brequired\b/.test(`${m[1 + o]} ${m[3 + o]}`),
             section,
+            at: m.index,
         });
     }
+
+    // The choices a dropdown actually offers, read from the form rather than the enum: an enum can
+    // hold members the form hides (EmploymentType.ALL) or offer ones that look like filters but are
+    // real (RecoveryOption.All -- "recovered by payroll and externally"). Options are either
+    // literal `<option>`s or an `@for` over an array in the component.
+    const tsFile = rel.replace(/\.html$/, '.ts');
+    const ts = exists(tsFile) ? read(tsFile) : '';
+    out.forEach((f, i) => {
+        const control = html.slice(f.at, i + 1 < out.length ? out[i + 1].at : html.length);
+        const select = control.match(/<select[\s\S]*?<\/select>/)?.[0];
+        if (!select) return;
+        const literal = [...select.matchAll(/<option[^>]*\[ngValue\]="[^"]+"[^>]*>\s*\{\{\s*'([^']+)'\s*\|\s*localize/g)]
+            .map((x) => x[1]);
+        if (literal.length) {
+            f.options = literal;
+            return;
+        }
+        const list = select.match(/@for\s*\(\s*\w+\s+of\s+(\w+)/)?.[1];
+        const arr = list && ts.match(new RegExp(`\\b${list}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s*;`))?.[1];
+        const names = arr ? [...arr.matchAll(/\b(?:name|label)\s*:\s*'([^']+)'/g)].map((x) => x[1]) : [];
+        if (names.length) f.options = names;
+    });
+    for (const f of out) delete f.at;
     return out;
 }
 
@@ -320,8 +421,9 @@ function parseReadTemplate(rel, sectionTitleClass) {
 function findProp(props, name) {
     if (!name) return null;
     if (props.has(name)) return name;
-    const lower = name.toLowerCase();
-    const hits = [...props.keys()].filter((k) => k.toLowerCase() === lower);
+    // Underscores too: Asset's input is `Asset_VinNumber` for the property `VIN_Number`.
+    const fold = (s) => s.toLowerCase().replace(/_/g, '');
+    const hits = [...props.keys()].filter((k) => fold(k) === fold(name));
     return hits.length === 1 ? hits[0] : null;
 }
 
@@ -356,10 +458,11 @@ function buildInventory() {
 
     for (const page of registry.pages) {
         const props = parseEntity(page.entity.file);
+        const behaviour = serviceBehaviour(page.entity.name, page.service);
         const editFields = page.surfaces.edit
             ? parseEditTemplate(
                   page.surfaces.edit.template,
-                  page.entity.name,
+                  page.domPrefix ?? page.entity.name,
                   page.surfaces.edit.sectionTitleClass
               )
             : [];
@@ -406,12 +509,14 @@ function buildInventory() {
             const rulesByLang = rulesFor(prop, {
                 uiRequired: onForm?.uiRequired,
                 systemMaintained: editFields.length > 0 && !onForm,
+                behaviour,
+                formOptions: onForm?.options,
             });
             fields.push({
                 canonicalId,
                 property: hit.property,
                 locKey: rf.locKey,
-                section: rf.section,
+                section: rf.section ?? page.defaultSection ?? null,
                 order: order++,
                 aliases: [...aliases],
                 resolvedVia: hit.via,
@@ -442,6 +547,7 @@ function buildInventory() {
             title: page.title,
             audience: page.audience || ['end-user'],
             permissions: page.permissions || [],
+            defaultSection: page.defaultSection ?? null,
             entity: page.entity,
             surfaces: page.surfaces,
             fields,
@@ -498,13 +604,23 @@ function sectionMarkdown(field, lang) {
     ].filter((l) => l !== null).join('\n');
 }
 
+/**
+ * The page's title in a language. A discovered form is titled "<list> — Create / Edit"; its list
+ * name is the page's section key, which the app already translates.
+ */
+function titleIn(page, lang) {
+    if (lang === 'en' || !/— Create \/ Edit$/.test(page.title)) return page.title;
+    const list = page.defaultSection && locText(lang, page.defaultSection);
+    return list ? `${list} — ${lang === 'ar' ? 'إنشاء / تحرير' : 'Create / Edit'}` : page.title;
+}
+
 function frontmatter(page, lang) {
     const surfaces = Object.values(page.surfaces).map((s) => `  - ${s.template}`);
     return [
         '---',
         `helpId: ${page.helpId}`,
         `lang: ${lang}`,
-        `title: ${page.title}`,
+        `title: ${titleIn(page, lang)}`,
         `entity: ${page.entity.fullName}`,
         'surfaces:',
         ...surfaces,
@@ -575,6 +691,19 @@ function loadTopicPool(lang) {
     return { pool, duplicates };
 }
 
+/**
+ * A field's topic: its own (`City.Code`), or failing that the shared default for its property
+ * name (`*.Code`, kept in `_shared.md`).
+ *
+ * Code, NameEn and NameAr sit on almost every form -- 75 of General Master Info's 151 fields --
+ * and mean the same thing on each. Writing them once per entity would be the duplication
+ * DESIGN.md §2.1 forbids; a default written once is not. A default may only say what is true of
+ * EVERY entity: what differs, such as whether a code is auto-assigned, comes from the Rules line,
+ * which is generated per entity, or from an entity's own topic, which always wins.
+ */
+const wildcardId = (id) => `*.${id.slice(id.indexOf('.') + 1)}`;
+const topicFor = (pool, id) => pool.get(id) ?? pool.get(wildcardId(id));
+
 /** First definition of each field across all pages -- its rules and aliases are the same everywhere. */
 function fieldsById(inv) {
     const byId = new Map();
@@ -603,12 +732,16 @@ function cmdStubs(argv) {
 
         // A topic's home is the file already holding it; failing that, the first page in the
         // registry that shows the field. Stubs are only ever written into a field's home.
+        // A field covered by a shared default has no home and is never stubbed; writing it an
+        // entity-specific topic later is still possible, and that topic then wins.
         const home = new Map();
         for (const page of inv.pages) {
             for (const f of page.fields) {
-                if (!home.has(f.canonicalId)) {
-                    home.set(f.canonicalId, pool.get(f.canonicalId)?.file ?? pageFile(page, lang));
-                }
+                if (home.has(f.canonicalId)) continue;
+                const own = pool.get(f.canonicalId)?.file;
+                if (own) home.set(f.canonicalId, own);
+                else if (pool.has(wildcardId(f.canonicalId))) home.set(f.canonicalId, null);
+                else home.set(f.canonicalId, pageFile(page, lang));
             }
         }
 
@@ -765,8 +898,9 @@ function cmdBuild(argv) {
             const fields = [];
             const aliasIndex = {};
             for (const f of page.fields) {
-                // From whichever file is the topic's home -- not necessarily this page's.
-                const section = pool.get(f.canonicalId)?.body;
+                // From whichever file is the topic's home -- not necessarily this page's -- or
+                // the shared default for the property.
+                const section = topicFor(pool, f.canonicalId)?.body;
                 const parsed = section
                     ? parseSectionBody(section)
                     : { html: '', adminHtml: '', when: null };
@@ -842,7 +976,7 @@ function cmdCoverage(argv) {
             let stubbed = 0;
             let borrowed = 0;
             for (const f of page.fields) {
-                const topic = pool.get(f.canonicalId);
+                const topic = topicFor(pool, f.canonicalId);
                 if (!topic) {
                     console.log(`  warn   undocumented field: ${f.canonicalId} (${f.locKey})`);
                     warnings++;
@@ -863,7 +997,7 @@ function cmdCoverage(argv) {
 
         // Whole-language checks: a topic belongs to no single screen, so these cannot be per page.
         for (const [id, topic] of pool) {
-            if (onAnyScreen.has(id)) continue;
+            if (onAnyScreen.has(id) || id.startsWith('*.')) continue;
             if (/<!--\s*when:/.test(topic.body)) {
                 console.log(`  ok     [${lang}] conditional field not on screen: ${id}`);
                 continue;
@@ -891,12 +1025,120 @@ function cmdCoverage(argv) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// discover -- register a module's forms without hand-writing pages.json
+// ---------------------------------------------------------------------------------------------
+
+const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+
+/**
+ * Registers every create/edit form in one admin module as a help page.
+ *
+ * A form is any template whose labels follow the ASP.NET Zero `for="Entity_Property"`
+ * convention; the prefix names the entity. Titles come from the app's own English strings, so the
+ * page is called what the menu calls it. Forms already registered are left untouched, so this is
+ * safe to re-run as a module grows. Nothing is written for a form whose entity file cannot be
+ * found -- it is reported instead, because a guessed entity would give every field the wrong id.
+ */
+function cmdDiscover(argv) {
+    const [moduleDir, prefix] = argv;
+    if (!moduleDir || !prefix) {
+        console.error('usage: help-tool.mjs discover <admin-module-folder> <help-id-prefix>');
+        return 2;
+    }
+    const root = `angular/src/app/admin/${moduleDir}`;
+    if (!exists(root)) {
+        console.error(`no such module folder: ${root}`);
+        return 2;
+    }
+
+    const registry = loadRegistry();
+    const norm = (p) => p.replace(/\\/g, '/');
+    const known = new Set(registry.pages.flatMap((p) => Object.values(p.surfaces).map((s) => norm(s.template))));
+    const templates = [];
+    const walk = (dir) => {
+        for (const e of fs.readdirSync(abs(dir), { withFileTypes: true })) {
+            const rel = `${dir}/${e.name}`;
+            if (e.isDirectory()) walk(rel);
+            else if (e.name.endsWith('.component.html')) templates.push(rel);
+        }
+    };
+    walk(root);
+
+    // Permissions named anywhere in the module's templates; a page lists the create/edit ones.
+    const modulePermissions = new Set();
+    for (const t of templates) {
+        for (const m of read(t).matchAll(/'(Pages\.[A-Za-z0-9_.]+\.(?:Create|Edit))'\s*\|\s*permission/g)) {
+            modulePermissions.add(m[1]);
+        }
+    }
+
+    let added = 0;
+    const skipped = [];
+    for (const t of templates) {
+        const labels = [...read(t).matchAll(/for="([A-Z][A-Za-z0-9]*)_[A-Za-z0-9]+"/g)];
+        if (!labels.length || known.has(norm(t))) continue;
+
+        const entityName = labels[0][1];
+        const csIndex = indexCsFiles();
+        const coreFile = [entityName, `${entityName}Entity`]
+            .map((n) => csIndex.get(n))
+            .find((f) => f && norm(f).includes('/HCMv3.Core/'));
+        if (!coreFile) {
+            skipped.push(`${t} (no entity ${entityName} in HCMv3.Core)`);
+            continue;
+        }
+        const src = fs.readFileSync(coreFile, 'utf8');
+        const className = path.basename(coreFile, '.cs');
+        const ns = src.match(/namespace\s+([\w.]+)/)?.[1];
+
+        // The menu usually names the plural ("Cities"), but not always ("Number Series").
+        const titleKey = [pluralKey(entityName), entityName].find((k) => locText('en', k));
+        const enTitle = titleKey ? locText('en', titleKey) : entityName.replace(/([a-z])([A-Z])/g, '$1 $2');
+        const permissionBase = [...modulePermissions].find((p) =>
+            p.toLowerCase().includes(`.${pluralKey(entityName).toLowerCase()}.`)
+        );
+
+        const page = {
+            helpId: `${prefix}.${kebab(entityName)}.edit`,
+            title: `${enTitle} — Create / Edit`,
+            audience: ['admin'],
+            permissions: permissionBase
+                ? [...modulePermissions].filter((p) => p.startsWith(permissionBase.replace(/\.(Create|Edit)$/, '.')))
+                : [],
+            entity: { name: className, fullName: `${ns}.${className}`, file: norm(path.relative(ROOT, coreFile)) },
+            surfaces: { edit: { template: norm(t) } },
+        };
+        // A form with no section headings still needs a group title in the drawer: the form's own
+        // title, or failing that the module's ("General Master Info").
+        const moduleKey = moduleDir.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase());
+        const sectionKey = titleKey ?? (locText('en', moduleKey) ? moduleKey : null);
+        if (sectionKey) page.defaultSection = sectionKey;
+        // The shared simple-lookup form edits an abstract base; its rules live in the base service.
+        if (/abstract class/.test(src) && csIndex.has(`${entityName}AppServiceBase`)) {
+            page.service = `${entityName}AppServiceBase`;
+        }
+        // The DOM prefix is not always the class name (SimpleLookup_Code edits SimpleLookupEntity).
+        if (className !== entityName) page.domPrefix = entityName;
+
+        registry.pages.push(page);
+        known.add(norm(t));
+        added++;
+        console.log(`added    ${page.helpId.padEnd(44)} ${page.entity.fullName}`);
+    }
+
+    fs.writeFileSync(abs(REGISTRY), JSON.stringify(registry, null, 2) + '\n');
+    for (const s of skipped) console.log(`SKIPPED  ${s}`);
+    console.log(`\n${added} page(s) registered, ${skipped.length} skipped`);
+    return 0;
+}
+
+// ---------------------------------------------------------------------------------------------
 
 const [, , cmd, ...argv] = process.argv;
-const commands = { extract: cmdExtract, stubs: cmdStubs, build: cmdBuild, coverage: cmdCoverage };
+const commands = { extract: cmdExtract, stubs: cmdStubs, build: cmdBuild, coverage: cmdCoverage, discover: cmdDiscover };
 
 if (!commands[cmd]) {
-    console.error('usage: help-tool.mjs <extract|stubs|build|coverage> [--lang en,ar] [--check]');
+    console.error('usage: help-tool.mjs <extract|stubs|build|coverage|discover> [--lang en,ar] [--check]');
     process.exit(2);
 }
 process.exit(commands[cmd](argv));

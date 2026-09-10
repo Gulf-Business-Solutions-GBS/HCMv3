@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.clearance-request-field-detail.edit",
+  "lang": "en",
+  "title": "Clearance Request Field Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.ClearanceRequestFieldDetail",
+  "overviewHtml": "<p>Assigns one line of the exit clearance checklist to a department. On a parallel approval step, every department's approver looks at the same clearance at the same time, and each is shown only the lines assigned to their role — IT answers the IT lines, Finance the Finance lines. One line can be assigned to more than one department.</p>",
+  "aliasIndex": {
+    "loc:ClearanceRequestField": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+    "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId": "ClearanceRequestFieldDetail.ClearanceRequestFieldId"
+  },
+  "fields": [
+    {
+      "id": "ClearanceRequestFieldDetail.ClearanceRequestFieldId",
+      "label": "ClearanceRequestField",
+      "section": "ClearanceRequestFieldDetails",
+      "aliases": [
+        "loc:ClearanceRequestField",
+        "dom:ClearanceRequestFieldDetail_ClearanceRequestFieldId"
+      ],
+      "rules": "Optional. Chosen from Clearance Request Field master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The checklist line being assigned.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

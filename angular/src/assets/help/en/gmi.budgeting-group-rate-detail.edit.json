@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.budgeting-group-rate-detail.edit",
+  "lang": "en",
+  "title": "Budgeting Group Rate Details — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.BudgetingGroupRateDetail",
+  "overviewHtml": "<p>Bonus rates for a budgeting group over a period of time. They are recorded for reference only: no calculation reads these rates at present.</p>",
+  "aliasIndex": {
+    "loc:BudgetingGroup": "BudgetingGroupRateDetail.BudgetingGroupId",
+    "dom:BudgetingGroupRateDetail_BudgetingGroupId": "BudgetingGroupRateDetail.BudgetingGroupId",
+    "loc:StartDate": "BudgetingGroupRateDetail.StartDate",
+    "dom:BudgetingGroupRateDetail_StartDate": "BudgetingGroupRateDetail.StartDate",
+    "loc:EndDate": "BudgetingGroupRateDetail.EndDate",
+    "dom:BudgetingGroupRateDetail_EndDate": "BudgetingGroupRateDetail.EndDate",
+    "loc:BonusRate": "BudgetingGroupRateDetail.BonusRate",
+    "dom:BudgetingGroupRateDetail_BonusRate": "BudgetingGroupRateDetail.BonusRate"
+  },
+  "fields": [
+    {
+      "id": "BudgetingGroupRateDetail.BudgetingGroupId",
+      "label": "BudgetingGroup",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:BudgetingGroup",
+        "dom:BudgetingGroupRateDetail_BudgetingGroupId"
+      ],
+      "rules": "Optional. Chosen from Budgeting Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeting group this rate belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.StartDate",
+      "label": "StartDate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BudgetingGroupRateDetail_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first date the rate applies to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.EndDate",
+      "label": "EndDate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BudgetingGroupRateDetail_EndDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last date the rate applies to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BudgetingGroupRateDetail.BonusRate",
+      "label": "BonusRate",
+      "section": "BudgetingGroupRateDetails",
+      "aliases": [
+        "loc:BonusRate",
+        "dom:BudgetingGroupRateDetail_BonusRate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bonus rate for the group during the period.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

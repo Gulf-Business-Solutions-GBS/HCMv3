@@ -1,0 +1,75 @@
+{
+  "helpId": "gmi.disciplinary-type.edit",
+  "lang": "en",
+  "title": "Disciplinary Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DisciplinaryType",
+  "overviewHtml": "<p>The kinds of disciplinary offence — late arrival, absence without leave and so on. Each disciplinary action recorded against an employee names one, and the type's escalation ladder decides which deduction the offence carries.</p>",
+  "aliasIndex": {
+    "loc:Code": "DisciplinaryType.Code",
+    "dom:DisciplinaryType_Code": "DisciplinaryType.Code",
+    "loc:NameEn": "DisciplinaryType.NameEn",
+    "dom:DisciplinaryType_NameEn": "DisciplinaryType.NameEn",
+    "loc:NameAr": "DisciplinaryType.NameAr",
+    "dom:DisciplinaryType_NameAr": "DisciplinaryType.NameAr",
+    "loc:RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays",
+    "dom:DisciplinaryType_RepeatDurationInDays": "DisciplinaryType.RepeatDurationInDays"
+  },
+  "fields": [
+    {
+      "id": "DisciplinaryType.Code",
+      "label": "Code",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DisciplinaryType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryType.NameEn",
+      "label": "NameEn",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DisciplinaryType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryType.NameAr",
+      "label": "NameAr",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DisciplinaryType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DisciplinaryType.RepeatDurationInDays",
+      "label": "RepeatDurationInDays",
+      "section": "DisciplinaryTypes",
+      "aliases": [
+        "loc:RepeatDurationInDays",
+        "dom:DisciplinaryType_RepeatDurationInDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far back, in days, earlier offences of this type count towards escalation.</p><p><strong>Example.</strong> <code>365</code></p><p><strong>Why it matters.</strong> An earlier offence counts if it falls within this many days before the new one, counting both ends. With 0, only offences on the same day count, so the type never escalates.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

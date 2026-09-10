@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.document-print-form.edit",
+  "lang": "ar",
+  "title": "نماذج طباعة الوثائق — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentPrintForm",
+  "overviewHtml": "<p>نماذج طباعة مرتبطة بنوع وثيقة. لا تستخدمها أي عملية حالياً.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "DocumentPrintForm.DocumentTypeId",
+    "dom:DocumentPrintForm_DocumentTypeId": "DocumentPrintForm.DocumentTypeId"
+  },
+  "fields": [
+    {
+      "id": "DocumentPrintForm.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "DocumentPrintForms",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:DocumentPrintForm_DocumentTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الوثائق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الوثيقة الذي ينتمي إليه نموذج الطباعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

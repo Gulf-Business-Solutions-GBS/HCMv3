@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.notification-group.edit",
+  "lang": "ar",
+  "title": "مجموعات الإخطار — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.NotificationGroup",
+  "overviewHtml": "<p>مجموعات مرتبطة بإعدادات إخطار. لا تُستخدم حالياً: فإرسال الإخطارات إلى المجموعات لم يُنقل إلى HCMv3.</p>",
+  "aliasIndex": {
+    "loc:NotificationConfig": "NotificationGroup.NotificationConfigId",
+    "dom:NotificationGroup_NotificationConfigId": "NotificationGroup.NotificationConfigId"
+  },
+  "fields": [
+    {
+      "id": "NotificationGroup.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationGroups",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationGroup_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعدادات الإخطار التي تنتمي إليها المجموعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

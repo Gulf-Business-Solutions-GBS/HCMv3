@@ -1,0 +1,267 @@
+{
+  "helpId": "gmi.asset.edit",
+  "lang": "en",
+  "title": "Assets — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.Asset",
+  "overviewHtml": "<p>Company assets that can be issued to employees — vehicles and equipment. Assets issued to an employee are recorded on the employee's record, and employees can request assets through self-service, which offers only active assets.</p><p>The descriptive details below are printed on the employee asset report.</p>",
+  "aliasIndex": {
+    "loc:Code": "Asset.Code",
+    "dom:Asset_Code": "Asset.Code",
+    "loc:NameEn": "Asset.NameEn",
+    "dom:Asset_NameEn": "Asset.NameEn",
+    "loc:NameAr": "Asset.NameAr",
+    "dom:Asset_NameAr": "Asset.NameAr",
+    "loc:Brand": "Asset.Brand",
+    "dom:Asset_Brand": "Asset.Brand",
+    "loc:Model": "Asset.Model",
+    "dom:Asset_Model": "Asset.Model",
+    "loc:Color": "Asset.Color",
+    "dom:Asset_Color": "Asset.Color",
+    "loc:VIN_Number": "Asset.VIN_Number",
+    "dom:Asset_VinNumber": "Asset.VIN_Number",
+    "loc:Serial": "Asset.Serial",
+    "dom:Asset_Serial": "Asset.Serial",
+    "loc:PlateNumber": "Asset.PlateNumber",
+    "dom:Asset_PlateNumber": "Asset.PlateNumber",
+    "loc:Barcode": "Asset.Barcode",
+    "dom:Asset_Barcode": "Asset.Barcode",
+    "loc:Year": "Asset.Year",
+    "dom:Asset_Year": "Asset.Year",
+    "loc:ExpiryDate": "Asset.ExpiryDate",
+    "dom:Asset_ExpiryDate": "Asset.ExpiryDate",
+    "loc:Value": "Asset.Value",
+    "dom:Asset_Value": "Asset.Value",
+    "loc:AssetType": "Asset.AssetTypeId",
+    "dom:Asset_AssetTypeId": "Asset.AssetTypeId",
+    "loc:Status": "Asset.Status",
+    "dom:Asset_Status": "Asset.Status",
+    "loc:AssetAllocationStatus": "Asset.AssetAllocationStatus",
+    "dom:Asset_AssetAllocationStatus": "Asset.AssetAllocationStatus"
+  },
+  "fields": [
+    {
+      "id": "Asset.Code",
+      "label": "Code",
+      "section": "Assets",
+      "aliases": [
+        "loc:Code",
+        "dom:Asset_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.NameEn",
+      "label": "NameEn",
+      "section": "Assets",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Asset_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.NameAr",
+      "label": "NameAr",
+      "section": "Assets",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Asset_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Brand",
+      "label": "Brand",
+      "section": "Assets",
+      "aliases": [
+        "loc:Brand",
+        "dom:Asset_Brand"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset's make.</p><p><strong>Example.</strong> <code>Toyota</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Model",
+      "label": "Model",
+      "section": "Assets",
+      "aliases": [
+        "loc:Model",
+        "dom:Asset_Model"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset's model.</p><p><strong>Example.</strong> <code>Land Cruiser</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Color",
+      "label": "Color",
+      "section": "Assets",
+      "aliases": [
+        "loc:Color",
+        "dom:Asset_Color"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset's colour.</p><p><strong>Example.</strong> <code>White</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.VIN_Number",
+      "label": "VIN_Number",
+      "section": "Assets",
+      "aliases": [
+        "loc:VIN_Number",
+        "dom:Asset_VinNumber"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The vehicle identification number, for vehicles.</p><p><strong>Example.</strong> <code>JTMHV05J804012345</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Serial",
+      "label": "Serial",
+      "section": "Assets",
+      "aliases": [
+        "loc:Serial",
+        "dom:Asset_Serial"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The manufacturer's serial number, for equipment.</p><p><strong>Example.</strong> <code>SN-4471902</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.PlateNumber",
+      "label": "PlateNumber",
+      "section": "Assets",
+      "aliases": [
+        "loc:PlateNumber",
+        "dom:Asset_PlateNumber"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The registration plate, for vehicles.</p><p><strong>Example.</strong> <code>12/34567</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Barcode",
+      "label": "Barcode",
+      "section": "Assets",
+      "aliases": [
+        "loc:Barcode",
+        "dom:Asset_Barcode"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset tag or barcode the organisation has fixed to the asset.</p><p><strong>Example.</strong> <code>AST-000312</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Year",
+      "label": "Year",
+      "section": "Assets",
+      "aliases": [
+        "loc:Year",
+        "dom:Asset_Year"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The year associated with the asset, typically a vehicle's model year.</p><p><strong>Example.</strong> <code>2022</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "Assets",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:Asset_ExpiryDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date something about the asset expires, such as a vehicle's registration or an equipment warranty.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.Value",
+      "label": "Value",
+      "section": "Assets",
+      "aliases": [
+        "loc:Value",
+        "dom:Asset_Value"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset's value.</p><p><strong>Example.</strong> <code>8500</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.AssetTypeId",
+      "label": "AssetType",
+      "section": "Assets",
+      "aliases": [
+        "loc:AssetType",
+        "dom:Asset_AssetTypeId"
+      ],
+      "rules": "Optional. Chosen from Asset Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of asset, from the asset types list.</p>",
+      "adminHtml": "<p>Asset types are maintained under General Master Info → Asset Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "Asset.Status",
+      "label": "Status",
+      "section": "Assets",
+      "aliases": [
+        "loc:Status",
+        "dom:Asset_Status"
+      ],
+      "rules": "Required. One of: Active, Inactive.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the asset is in use.</p><p><strong>Why it matters.</strong> Only active assets are offered when employees request an asset through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Asset.AssetAllocationStatus",
+      "label": "AssetAllocationStatus",
+      "section": "Assets",
+      "aliases": [
+        "loc:AssetAllocationStatus",
+        "dom:Asset_AssetAllocationStatus"
+      ],
+      "rules": "Required. One of: Occupied, Unoccupied.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the asset is currently issued to someone.</p><p><strong>Why it matters.</strong> Set by hand — issuing the asset to an employee does not change it. It is shown on the asset report.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

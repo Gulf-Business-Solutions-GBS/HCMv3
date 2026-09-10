@@ -1,0 +1,59 @@
+{
+  "helpId": "common.simple-lookup.edit",
+  "lang": "en",
+  "title": "Simple Lists — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.SimpleLookupEntity",
+  "overviewHtml": "<p>The shared form for HCMv3's simple lists — lists whose entries have only a code, an English name and an Arabic name, such as titles, countries, religions, marital statuses and job titles. More than ninety lists across every module use it, so the fields and rules on this form are the same whichever list you are editing.</p><p>Left blank, the code is filled with the next number when the entry is saved. The code, the English name and the Arabic name must each be unique within the list.</p>",
+  "aliasIndex": {
+    "loc:Code": "SimpleLookupEntity.Code",
+    "dom:SimpleLookup_Code": "SimpleLookupEntity.Code",
+    "loc:NameEn": "SimpleLookupEntity.NameEn",
+    "dom:SimpleLookup_NameEn": "SimpleLookupEntity.NameEn",
+    "loc:NameAr": "SimpleLookupEntity.NameAr",
+    "dom:SimpleLookup_NameAr": "SimpleLookupEntity.NameAr"
+  },
+  "fields": [
+    {
+      "id": "SimpleLookupEntity.Code",
+      "label": "Code",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:Code",
+        "dom:SimpleLookup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimpleLookupEntity.NameEn",
+      "label": "NameEn",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:NameEn",
+        "dom:SimpleLookup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SimpleLookupEntity.NameAr",
+      "label": "NameAr",
+      "section": "HelpSimpleLists",
+      "aliases": [
+        "loc:NameAr",
+        "dom:SimpleLookup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

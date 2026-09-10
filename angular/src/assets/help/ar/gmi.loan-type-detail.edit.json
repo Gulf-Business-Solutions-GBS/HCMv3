@@ -1,0 +1,43 @@
+{
+  "helpId": "gmi.loan-type-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أنواع القروض — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.LoanTypeDetail",
+  "overviewHtml": "<p>نسب مرتبطة بنوع قرض. لا تُستخدم حالياً: فهي تخص الاسترداد المتغير للقرض، الذي لا يدعمه احتساب الرواتب بعدُ.</p>",
+  "aliasIndex": {
+    "loc:LoanType": "LoanTypeDetail.LoanTypeId",
+    "dom:LoanTypeDetail_LoanTypeId": "LoanTypeDetail.LoanTypeId",
+    "loc:Percent": "LoanTypeDetail.Percent",
+    "dom:LoanTypeDetail_Percent": "LoanTypeDetail.Percent"
+  },
+  "fields": [
+    {
+      "id": "LoanTypeDetail.LoanTypeId",
+      "label": "LoanType",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:LoanType",
+        "dom:LoanTypeDetail_LoanTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع القروض.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع القرض الذي تنتمي إليه النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanTypeDetail.Percent",
+      "label": "Percent",
+      "section": "LoanTypeDetails",
+      "aliases": [
+        "loc:Percent",
+        "dom:LoanTypeDetail_Percent"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النسبة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

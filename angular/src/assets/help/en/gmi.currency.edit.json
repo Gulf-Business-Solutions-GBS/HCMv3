@@ -1,0 +1,139 @@
+{
+  "helpId": "gmi.currency.edit",
+  "lang": "en",
+  "title": "Currencies — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.Currency",
+  "overviewHtml": "<p>The currencies pay is made in. Each payroll area has a currency, and payroll rounds amounts to that currency's number of decimal places.</p>",
+  "aliasIndex": {
+    "loc:Code": "Currency.Code",
+    "dom:Currency_Code": "Currency.Code",
+    "loc:NameEn": "Currency.NameEn",
+    "dom:Currency_NameEn": "Currency.NameEn",
+    "loc:NameAr": "Currency.NameAr",
+    "dom:Currency_NameAr": "Currency.NameAr",
+    "loc:DecimalCount": "Currency.DecimalCount",
+    "dom:Currency_DecimalCount": "Currency.DecimalCount",
+    "loc:CurrencyShortFormEn": "Currency.CurrencyShortFormEn",
+    "dom:Currency_CurrencyShortFormEn": "Currency.CurrencyShortFormEn",
+    "loc:CurrencyDenominationFormEn": "Currency.CurrencyDenominationFormEn",
+    "dom:Currency_CurrencyDenominationFormEn": "Currency.CurrencyDenominationFormEn",
+    "loc:CurrencyShortFormAr": "Currency.CurrencyShortFormAr",
+    "dom:Currency_CurrencyShortFormAr": "Currency.CurrencyShortFormAr",
+    "loc:CurrencyDenominationFormAr": "Currency.CurrencyDenominationFormAr",
+    "dom:Currency_CurrencyDenominationFormAr": "Currency.CurrencyDenominationFormAr"
+  },
+  "fields": [
+    {
+      "id": "Currency.Code",
+      "label": "Code",
+      "section": "Currencies",
+      "aliases": [
+        "loc:Code",
+        "dom:Currency_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.NameEn",
+      "label": "NameEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Currency_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.NameAr",
+      "label": "NameAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Currency_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.DecimalCount",
+      "label": "DecimalCount",
+      "section": "Currencies",
+      "aliases": [
+        "loc:DecimalCount",
+        "dom:Currency_DecimalCount"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many decimal places the currency uses.</p><p><strong>Example.</strong> <code>3</code> for the Kuwaiti dinar</p><p><strong>Why it matters.</strong> Payroll rounds amounts to this many places for payroll areas paid in this currency.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyShortFormEn",
+      "label": "CurrencyShortFormEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyShortFormEn",
+        "dom:Currency_CurrencyShortFormEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency's short form in English.</p><p><strong>Example.</strong> <code>KWD</code></p><p><strong>Why it matters.</strong> Shown next to amounts on reports such as the employee information and basic pay reports, and used in journal vouchers.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyDenominationFormEn",
+      "label": "CurrencyDenominationFormEn",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyDenominationFormEn",
+        "dom:Currency_CurrencyDenominationFormEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency's denomination form in English.</p><p><strong>Why it matters.</strong> Not used by any report or calculation at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyShortFormAr",
+      "label": "CurrencyShortFormAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyShortFormAr",
+        "dom:Currency_CurrencyShortFormAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency's short form in Arabic.</p><p><strong>Example.</strong> <code>د.ك</code></p><p><strong>Why it matters.</strong> Shown instead of the English short form when a report is produced with Arabic names.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Currency.CurrencyDenominationFormAr",
+      "label": "CurrencyDenominationFormAr",
+      "section": "Currencies",
+      "aliases": [
+        "loc:CurrencyDenominationFormAr",
+        "dom:Currency_CurrencyDenominationFormAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency's denomination form in Arabic.</p><p><strong>Why it matters.</strong> Not used by any report or calculation at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

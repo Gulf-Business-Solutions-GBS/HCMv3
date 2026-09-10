@@ -1,0 +1,139 @@
+{
+  "helpId": "gmi.document-type.edit",
+  "lang": "en",
+  "title": "Document Types — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentType",
+  "overviewHtml": "<p>The kinds of document HCMv3 keeps — for employees and for the organisation. Employee documents, organisation documents and self-service letter requests each name a document type.</p><p>The reminder settings on this form are stored, but no process reads them at present, so they do not yet send reminders before a document expires.</p>",
+  "aliasIndex": {
+    "loc:Code": "DocumentType.Code",
+    "dom:DocumentType_Code": "DocumentType.Code",
+    "loc:NameEn": "DocumentType.NameEn",
+    "dom:DocumentType_NameEn": "DocumentType.NameEn",
+    "loc:NameAr": "DocumentType.NameAr",
+    "dom:DocumentType_NameAr": "DocumentType.NameAr",
+    "loc:NotificationPeriod": "DocumentType.NotificationPeriod",
+    "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:NotificationConfig": "DocumentType.NotificationConfigId",
+    "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
+    "loc:NotificationFrequency": "DocumentType.NotificationFrequency",
+    "dom:DocumentType_NotificationFrequency": "DocumentType.NotificationFrequency",
+    "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo"
+  },
+  "fields": [
+    {
+      "id": "DocumentType.Code",
+      "label": "Code",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DocumentType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameEn",
+      "label": "NameEn",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DocumentType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameAr",
+      "label": "NameAr",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DocumentType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationPeriod",
+      "label": "NotificationPeriod",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationPeriod",
+        "dom:DocumentType_NotificationPeriod"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How long before a document's expiry reminders were meant to start.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:DocumentType_NotificationConfigId"
+      ],
+      "rules": "Optional. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification settings meant for this document type's reminders.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationFrequency",
+      "label": "NotificationFrequency",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationFrequency",
+        "dom:DocumentType_NotificationFrequency"
+      ],
+      "rules": "Required. One of: Once, Daily, Weekly, Monthly.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How often a reminder was meant to repeat.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationCountLimit",
+      "label": "NotificationCountLimit",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationCountLimit",
+        "dom:DocumentType_NotificationCountLimit"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most reminders meant to be sent for one document.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.DocumentBelongsTo",
+      "label": "DocumentBelongsTo",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:DocumentBelongsTo",
+        "dom:DocumentType_DocumentBelongsTo"
+      ],
+      "rules": "Required. One of: All, Employee, Organization.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether documents of this type belong to employees or to the organisation.</p><p><strong>Why it matters.</strong> Recorded for information; nothing filters document types by it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "helpId": "gmi.document-print-form.edit",
+  "lang": "en",
+  "title": "Document Print Forms — Create / Edit",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentPrintForm",
+  "overviewHtml": "<p>Print forms linked to a document type. Not used by any process at present.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "DocumentPrintForm.DocumentTypeId",
+    "dom:DocumentPrintForm_DocumentTypeId": "DocumentPrintForm.DocumentTypeId"
+  },
+  "fields": [
+    {
+      "id": "DocumentPrintForm.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "DocumentPrintForms",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:DocumentPrintForm_DocumentTypeId"
+      ],
+      "rules": "Optional. Chosen from Document Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The document type the print form belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

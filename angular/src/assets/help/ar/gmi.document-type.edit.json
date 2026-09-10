@@ -1,0 +1,139 @@
+{
+  "helpId": "gmi.document-type.edit",
+  "lang": "ar",
+  "title": "أنواع الوثائق — إنشاء / تحرير",
+  "entity": "HCMv3.GeneralMasterInfo.DocumentType",
+  "overviewHtml": "<p>أنواع الوثائق التي يحتفظ بها HCMv3 — للموظفين وللشركة. تسمّي وثائق الموظفين ووثائق الشركة وطلبات الخطابات في الخدمة الذاتية كلٌّ منها نوعاً من أنواع الوثائق.</p><p>إعدادات التذكير في هذا النموذج محفوظة، لكن لا تقرؤها أي عملية حالياً، فهي لا ترسل بعدُ تذكيرات قبل انتهاء صلاحية الوثيقة.</p>",
+  "aliasIndex": {
+    "loc:Code": "DocumentType.Code",
+    "dom:DocumentType_Code": "DocumentType.Code",
+    "loc:NameEn": "DocumentType.NameEn",
+    "dom:DocumentType_NameEn": "DocumentType.NameEn",
+    "loc:NameAr": "DocumentType.NameAr",
+    "dom:DocumentType_NameAr": "DocumentType.NameAr",
+    "loc:NotificationPeriod": "DocumentType.NotificationPeriod",
+    "dom:DocumentType_NotificationPeriod": "DocumentType.NotificationPeriod",
+    "loc:NotificationConfig": "DocumentType.NotificationConfigId",
+    "dom:DocumentType_NotificationConfigId": "DocumentType.NotificationConfigId",
+    "loc:NotificationFrequency": "DocumentType.NotificationFrequency",
+    "dom:DocumentType_NotificationFrequency": "DocumentType.NotificationFrequency",
+    "loc:NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "dom:DocumentType_NotificationCountLimit": "DocumentType.NotificationCountLimit",
+    "loc:DocumentBelongsTo": "DocumentType.DocumentBelongsTo",
+    "dom:DocumentType_DocumentBelongsTo": "DocumentType.DocumentBelongsTo"
+  },
+  "fields": [
+    {
+      "id": "DocumentType.Code",
+      "label": "Code",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:DocumentType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameEn",
+      "label": "NameEn",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DocumentType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NameAr",
+      "label": "NameAr",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DocumentType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationPeriod",
+      "label": "NotificationPeriod",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationPeriod",
+        "dom:DocumentType_NotificationPeriod"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المدة التي كان يُفترض أن تبدأ فيها التذكيرات قبل انتهاء صلاحية الوثيقة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:DocumentType_NotificationConfigId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعدادات الإخطار المخصصة لتذكيرات هذا النوع من الوثائق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationFrequency",
+      "label": "NotificationFrequency",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationFrequency",
+        "dom:DocumentType_NotificationFrequency"
+      ],
+      "rules": "إلزامي. إحدى القيم: مرة واحدة، يومي، إسبوعي، شهري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد مرات تكرار التذكير التي كانت مقصودة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.NotificationCountLimit",
+      "label": "NotificationCountLimit",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:NotificationCountLimit",
+        "dom:DocumentType_NotificationCountLimit"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحد الأقصى المقصود لعدد التذكيرات للوثيقة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DocumentType.DocumentBelongsTo",
+      "label": "DocumentBelongsTo",
+      "section": "DocumentTypes",
+      "aliases": [
+        "loc:DocumentBelongsTo",
+        "dom:DocumentType_DocumentBelongsTo"
+      ],
+      "rules": "إلزامي. إحدى القيم: الكل، الموظف، الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل وثائق هذا النوع تخص الموظفين أم الشركة.</p><p><strong>لماذا يهم.</strong> يُسجَّل للعلم، ولا يُصفّى به أي شيء حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
