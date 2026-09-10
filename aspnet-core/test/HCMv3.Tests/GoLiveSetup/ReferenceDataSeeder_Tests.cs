@@ -51,9 +51,9 @@ public class ReferenceDataSeeder_Tests : AppTestBase
     }
 
     [Fact]
-    public void Should_Ship_Both_Default_Packs()
+    public void Should_Ship_Every_Default_Pack()
     {
-        _seeder.GetAvailablePackIds().ShouldBe(new[] { "universal", "kuwait" });
+        _seeder.GetAvailablePackIds().ShouldBe(new[] { "universal", "kuwait", "payroll" });
     }
 
     /// <summary>
@@ -258,7 +258,7 @@ public class ReferenceDataSeeder_Tests : AppTestBase
     {
         var results = await _seeder.SeedDefaultsAsync(TenantId);
 
-        results.Select(r => r.PackId).ShouldBe(new[] { "universal", "kuwait" });
+        results.Select(r => r.PackId).ShouldBe(new[] { "universal", "kuwait", "payroll" });
         results.Sum(r => r.TotalInserted).ShouldBeGreaterThan(450);
     }
 }

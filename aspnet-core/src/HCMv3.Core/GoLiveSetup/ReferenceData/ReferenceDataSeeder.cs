@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.PayrollManagement;
@@ -15,11 +16,16 @@ using HCMv3.TimeManagement;
 namespace HCMv3.GoLiveSetup.ReferenceData;
 
 /// <inheritdoc cref="IReferenceDataSeeder"/>
+/// <remarks>
+/// A unit of work per call, so a pack lands whole or not at all: a catalogue that stopped half way would
+/// leave a tenant with wage types but no Net Pay. Inside tenant creation it joins the caller's transaction.
+/// </remarks>
+[UnitOfWork]
 public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
 {
     /// <summary>Applied in this order; nothing here depends on another pack, but the order is the order
     /// the results are reported in.</summary>
-    private static readonly string[] DefaultPackIds = { "universal", "kuwait" };
+    private static readonly string[] DefaultPackIds = { "universal", "kuwait", "payroll" };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -40,6 +46,8 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
     private readonly IRepository<Currency> _currencies;
     private readonly IRepository<TimeTransferType> _timeTransferTypes;
     private readonly IRepository<PayrollPeriod> _payrollPeriods;
+    private readonly IRepository<WageType> _wageTypes;
+    private readonly IRepository<AbsenceType> _absenceTypes;
 
     public ReferenceDataSeeder(
         IRepository<Country> countries,
@@ -55,7 +63,9 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         IRepository<ContractType> contractTypes,
         IRepository<Currency> currencies,
         IRepository<TimeTransferType> timeTransferTypes,
-        IRepository<PayrollPeriod> payrollPeriods)
+        IRepository<PayrollPeriod> payrollPeriods,
+        IRepository<WageType> wageTypes,
+        IRepository<AbsenceType> absenceTypes)
     {
         _countries = countries;
         _nationalities = nationalities;
@@ -71,6 +81,8 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         _currencies = currencies;
         _timeTransferTypes = timeTransferTypes;
         _payrollPeriods = payrollPeriods;
+        _wageTypes = wageTypes;
+        _absenceTypes = absenceTypes;
     }
 
     public IReadOnlyList<string> GetAvailablePackIds() => DefaultPackIds;
@@ -126,6 +138,22 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         if (pack.Currencies.Any())
         {
             result.Counts.Add(await SeedCurrenciesAsync(pack.Currencies, tenantId, apply));
+        }
+
+        // Wage types before leave types: every leave type is paid through one.
+        if (pack.WageTypes.Any() || pack.AbsenceTypes.Any())
+        {
+            var wageTypesByCode = await LoadByCodeAsync(_wageTypes, w => w.Code);
+
+            if (pack.WageTypes.Any())
+            {
+                result.Counts.Add(await SeedWageTypesAsync(pack.WageTypes, wageTypesByCode, tenantId, apply));
+            }
+
+            if (pack.AbsenceTypes.Any())
+            {
+                result.Counts.Add(await SeedAbsenceTypesAsync(pack.AbsenceTypes, wageTypesByCode, tenantId, apply));
+            }
         }
 
         result.TotalInserted = result.Counts.Sum(c => c.Inserted);
@@ -255,14 +283,121 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         return count;
     }
 
-    private static string Truncate(string value, int maxLength)
+    /// <summary>
+    /// The standard wage types. Unlike the lookups these are matched on <c>Code</c>, not name: the engines
+    /// dispatch on the code (Net Pay is <c>9000</c>), and a tenant that has renamed "Basic Salary" to
+    /// "Basic Pay" still has the row. An existing code is never touched -- a tenant may have tuned its
+    /// payroll order or flags, and the seeder must not undo that.
+    ///
+    /// <para>Two passes, because 162 of these point at another wage type as their arrear source and the
+    /// target may be inserted later in the same run. The links are only set on rows this run created.</para>
+    /// </summary>
+    private async Task<ReferenceDataSeedCount> SeedWageTypesAsync(
+        List<ReferenceWageTypeEntry> rows,
+        Dictionary<string, WageType> byCode,
+        int tenantId,
+        bool apply)
     {
-        if (string.IsNullOrEmpty(value))
+        var count = new ReferenceDataSeedCount { Lookup = nameof(WageType) };
+        var inserted = new List<(WageType Entity, string ArrearSourceCode)>();
+
+        foreach (var row in rows)
         {
-            return value;
+            if (string.IsNullOrWhiteSpace(row.Code) || byCode.ContainsKey(row.Code.Trim()))
+            {
+                count.Skipped++;
+                continue;
+            }
+
+            var entity = row.ToEntity(tenantId);
+            byCode[entity.Code] = entity;
+            count.Inserted++;
+
+            if (apply)
+            {
+                await _wageTypes.InsertAsync(entity);
+                inserted.Add((entity, row.ArrearSourceCode));
+            }
         }
 
-        var trimmed = value.Trim();
-        return trimmed.Length <= maxLength ? trimmed : trimmed.Substring(0, maxLength);
+        if (apply && inserted.Count > 0)
+        {
+            // Ids are needed for the links below, and for the leave types that follow.
+            await SaveChangesAsync();
+
+            foreach (var (entity, sourceCode) in inserted)
+            {
+                if (!string.IsNullOrWhiteSpace(sourceCode) && byCode.TryGetValue(sourceCode.Trim(), out var source))
+                {
+                    entity.ArrearSourceWageTypeId = source.Id;
+                }
+            }
+
+            await SaveChangesAsync();
+        }
+
+        return count;
     }
+
+    /// <summary>
+    /// The standard leave types, matched on <c>Code</c> for the same reason as wage types -- the time engine
+    /// finds Annual Leave as code <c>1</c>. Each is linked to the wage type it is paid through.
+    /// </summary>
+    private async Task<ReferenceDataSeedCount> SeedAbsenceTypesAsync(
+        List<ReferenceAbsenceTypeEntry> rows,
+        Dictionary<string, WageType> wageTypesByCode,
+        int tenantId,
+        bool apply)
+    {
+        var existing = await LoadByCodeAsync(_absenceTypes, a => a.Code);
+        var count = new ReferenceDataSeedCount { Lookup = nameof(AbsenceType) };
+
+        foreach (var row in rows)
+        {
+            if (string.IsNullOrWhiteSpace(row.Code) || existing.ContainsKey(row.Code.Trim()))
+            {
+                count.Skipped++;
+                continue;
+            }
+
+            var entity = row.ToEntity(tenantId);
+            existing[entity.Code] = entity;
+            count.Inserted++;
+
+            if (!apply)
+            {
+                continue;
+            }
+
+            if (!string.IsNullOrWhiteSpace(row.WageTypeCode) &&
+                wageTypesByCode.TryGetValue(row.WageTypeCode.Trim(), out var wageType))
+            {
+                entity.WageTypeId = wageType.Id;
+            }
+
+            await _absenceTypes.InsertAsync(entity);
+        }
+
+        return count;
+    }
+
+    private static async Task<Dictionary<string, TEntity>> LoadByCodeAsync<TEntity>(
+        IRepository<TEntity> repository,
+        Func<TEntity, string> code)
+        where TEntity : class, IEntity<int>
+    {
+        return (await repository.GetAllListAsync())
+            .Where(e => !string.IsNullOrWhiteSpace(code(e)))
+            .GroupBy(e => code(e).Trim(), StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Flushes inserts so their ids are known. The class-level unit of work means there is always one when
+    /// this is reached through the interface; the guard only matters if the class is constructed directly.
+    /// </summary>
+    private Task SaveChangesAsync() =>
+        CurrentUnitOfWork == null ? Task.CompletedTask : CurrentUnitOfWork.SaveChangesAsync();
+
+    private static string Truncate(string value, int maxLength) => ReferenceText.Truncate(value, maxLength);
 }

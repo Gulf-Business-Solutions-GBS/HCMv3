@@ -130,6 +130,53 @@ public class GoLiveApplySalaries_Tests : AppTestBase
         UsingDbContext(context => context.WageTypes.Count(w => w.NameEn == "Basic Salary").ShouldBe(1));
     }
 
+    /// <summary>
+    /// Once the payroll catalogue is seeded, a customer who lists "Basic Salary" is naming wage code 1000.
+    /// The engines find it by that code and order, and "Basic Salary Arrear" points at it -- so its identity
+    /// stays, and only what the customer answered is applied.
+    /// </summary>
+    [Fact]
+    public async Task Should_Not_Rewrite_A_Standard_Wage_Type_A_Pay_Element_Names()
+    {
+        await Resolve<IReferenceDataSeeder>().SeedPackAsync("payroll", AbpSession.TenantId ?? 1);
+        await SaveAnswers("S1.2", "{\"Q2.04\":\"Fixed30\"}");
+        await SaveStep("S1.3", PayElement("Basic Salary"));
+
+        var result = await _apply.Apply();
+
+        Stage(result, "S1.3").Updated.ShouldBe(1);
+        Stage(result, "S1.3").Created.ShouldBe(0);
+
+        UsingDbContext(context =>
+        {
+            var basic = context.WageTypes.Single(w => w.NameEn == "Basic Salary");
+            basic.Code.ShouldBe("1000");
+            basic.PayrollOrder.ShouldBe(20010);
+            basic.IncludeInSocialSecurity.ShouldBeTrue();
+
+            // What the customer answered does land.
+            basic.BillingMethod.ShouldBe(BillingMethod.FixedDaysPerMonth);
+            basic.FixedDays.ShouldBe(30);
+            basic.NameAr.ShouldBe("بند");
+
+            context.WageTypes.Single(w => w.Code == "7000").ArrearSourceWageTypeId.ShouldBe(basic.Id);
+        });
+    }
+
+    [Fact]
+    public async Task Should_Refuse_To_Turn_A_Standard_Earning_Into_A_Deduction()
+    {
+        await Resolve<IReferenceDataSeeder>().SeedPackAsync("payroll", AbpSession.TenantId ?? 1);
+        await SaveStep("S1.3", PayElement("Basic Salary", kind: "Deduction"));
+
+        var result = await _apply.Apply();
+
+        Stage(result, "S1.3").Failed.ShouldBe(1);
+        Stage(result, "S1.3").Issues.Single().Message.ShouldContain("standard pay element");
+        UsingDbContext(context =>
+            context.WageTypes.Single(w => w.Code == "1000").BillingType.ShouldBe(BillingType.Earning));
+    }
+
     // ---------------------------------------------------------------- Q2.04 becomes a setting
 
     [Fact]

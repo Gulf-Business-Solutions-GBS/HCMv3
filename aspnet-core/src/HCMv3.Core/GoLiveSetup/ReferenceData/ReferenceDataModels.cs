@@ -33,6 +33,15 @@ public class ReferenceDataPack
     /// and getting the decimal count wrong silently mis-rounds every payslip.
     /// </summary>
     public List<ReferenceCurrencyEntry> Currencies { get; set; } = new();
+
+    /// <summary>
+    /// The standard payroll catalogue. Wage types carry some thirty engine flags and are matched on
+    /// <c>Code</c> rather than name, so they cannot share the three-column lookup shape above.
+    /// </summary>
+    public List<ReferenceWageTypeEntry> WageTypes { get; set; } = new();
+
+    /// <summary>Leave types, matched on <c>Code</c> for the same reason. Seeded after the wage types they pay through.</summary>
+    public List<ReferenceAbsenceTypeEntry> AbsenceTypes { get; set; } = new();
 }
 
 /// <summary>A single bilingual lookup row.</summary>
