@@ -1,0 +1,122 @@
+<div [@routerTransition]>
+    <sub-header [title]="'GoLiveSetupV2' | localize" [description]="'GoLiveV2Intro' | localize" />
+
+    <div [class]="containerClass">
+        <div class="card card-custom v2-step">
+            <div class="card-body">
+                <div class="v2-step-head">
+                    <div>
+                        <h3 class="v2-step-title">{{ 'GoLiveV2RunPayroll' | localize }}</h3>
+                        <p class="v2-step-hint">{{ 'GoLiveV2RunPayrollHint' | localize }}</p>
+                    </div>
+
+                    <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
+                        @if (running()) {
+                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            {{ 'GoLiveV2Running' | localize }}
+                        } @else {
+                            <i class="fa fa-play me-2" aria-hidden="true"></i>
+                            {{ 'GoLiveV2RunPayroll' | localize }}
+                        }
+                    </button>
+                </div>
+
+                <div class="v2-fields">
+                    <div class="v2-field">
+                        <label class="form-label" for="v2-pay-month">{{ 'GoLiveV2PayMonth' | localize }}</label>
+                        <input
+                            id="v2-pay-month"
+                            type="month"
+                            class="form-control"
+                            [value]="payMonth()"
+                            (input)="onPayMonthChange($event)" />
+                        @if (monthEnd(); as end) {
+                            <div class="v2-field-note">{{ l('GoLiveV2PaysUpTo', end.toFormat('dd/MM/yyyy')) }}</div>
+                        }
+                        <div class="v2-field-why">{{ 'GoLiveV2WhyPayDate' | localize }}</div>
+                    </div>
+                </div>
+
+                @if (latest(); as result) {
+                    <div class="v2-result" [class.v2-ok]="result.succeeded" [class.v2-stop]="!result.succeeded" role="status">
+                        <div class="v2-outcome">
+                            <i
+                                class="fa"
+                                [class.fa-check-circle]="result.succeeded"
+                                [class.fa-hand-paper]="!result.succeeded"
+                                aria-hidden="true"></i>
+                            {{ outcomeKey(result) | localize }}
+                        </div>
+
+                        @if (result.message) {
+                            <div class="v2-said-label">{{ 'GoLiveV2EngineSaid' | localize }}</div>
+                            <blockquote class="v2-said">{{ result.message }}</blockquote>
+                        }
+
+                        @if (payPeriod(result); as period) {
+                            <div class="v2-period">{{ period }}</div>
+                        }
+
+                        @if (result.employees?.length) {
+                            <div class="v2-said-label">{{ 'GoLiveV2EmployeeResults' | localize }}</div>
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle v2-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'GoLiveV2ColEmployee' | localize }}</th>
+                                            <th>{{ 'GoLiveV2ColResult' | localize }}</th>
+                                            <th>{{ 'GoLiveV2ColMessage' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (employee of result.employees; track employee.employeeCode) {
+                                            <tr>
+                                                <td class="v2-code">{{ employee.employeeCode }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge"
+                                                        [class.badge-light-success]="employee.succeeded"
+                                                        [class.badge-light-danger]="!employee.succeeded">
+                                                        {{ (employee.succeeded ? 'GoLiveV2Paid' : 'GoLiveV2NotPaid') | localize }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ employee.message }}</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-custom v2-log">
+            <div class="card-body">
+                <h4 class="v2-log-title">{{ 'GoLiveV2Attempts' | localize }}</h4>
+
+                @if (attempts().length === 0) {
+                    <p class="v2-empty">{{ 'GoLiveV2NoAttempts' | localize }}</p>
+                } @else {
+                    <ol class="v2-attempts" reversed>
+                        @for (attempt of attempts(); track attempt.at) {
+                            <li class="v2-attempt">
+                                <span class="v2-time">{{ attempt.at | date: 'HH:mm:ss' }}</span>
+                                <span
+                                    class="badge"
+                                    [class.badge-light-success]="attempt.result.succeeded"
+                                    [class.badge-light-warning]="!attempt.result.succeeded">
+                                    {{ outcomeKey(attempt.result) | localize }}
+                                </span>
+                                @if (attempt.result.message) {
+                                    <span class="v2-attempt-said">{{ attempt.result.message }}</span>
+                                }
+                            </li>
+                        }
+                    </ol>
+                }
+            </div>
+        </div>
+    </div>
+</div>

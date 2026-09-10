@@ -66173,6 +66173,74 @@ export class GoLiveStateServiceProxy {
 }
 
 @Injectable()
+export class GoLiveV2ServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    runPayroll(body?: GoLiveV2RunPayrollInput | undefined): Observable<GoLiveV2RunPayrollOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/RunPayroll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRunPayroll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRunPayroll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2RunPayrollOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2RunPayrollOutput>;
+        }));
+    }
+
+    protected processRunPayroll(response: HttpResponseBase): Observable<GoLiveV2RunPayrollOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2RunPayrollOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class GovernoratesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -260029,6 +260097,158 @@ export interface IGoLiveStepStateDto {
     stepId: string | undefined;
     payload: string | undefined;
     lastSavedUtc: DateTime;
+}
+
+export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
+    employeeCode!: string | undefined;
+    succeeded!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: IGoLiveV2EmployeeResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.succeeded = _data["succeeded"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2EmployeeResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2EmployeeResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["succeeded"] = this.succeeded;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IGoLiveV2EmployeeResultDto {
+    employeeCode: string | undefined;
+    succeeded: boolean;
+    message: string | undefined;
+}
+
+export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
+    payDate!: DateTime | undefined;
+    payrollAreaName!: string | undefined;
+
+    constructor(data?: IGoLiveV2RunPayrollInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2RunPayrollInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2RunPayrollInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        return data;
+    }
+}
+
+export interface IGoLiveV2RunPayrollInput {
+    payDate: DateTime | undefined;
+    payrollAreaName: string | undefined;
+}
+
+export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
+    succeeded!: boolean;
+    stoppedAt!: GoLiveV2StoppedAt;
+    message!: string | undefined;
+    payInDate!: DateTime | undefined;
+    employees!: GoLiveV2EmployeeResultDto[] | undefined;
+
+    constructor(data?: IGoLiveV2RunPayrollOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.succeeded = _data["succeeded"];
+            this.stoppedAt = _data["stoppedAt"];
+            this.message = _data["message"];
+            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(GoLiveV2EmployeeResultDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2RunPayrollOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2RunPayrollOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["succeeded"] = this.succeeded;
+        data["stoppedAt"] = this.stoppedAt;
+        data["message"] = this.message;
+        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2RunPayrollOutput {
+    succeeded: boolean;
+    stoppedAt: GoLiveV2StoppedAt;
+    message: string | undefined;
+    payInDate: DateTime | undefined;
+    employees: GoLiveV2EmployeeResultDto[] | undefined;
+}
+
+export enum GoLiveV2StoppedAt {
+    None = 0,
+    Input = 1,
+    Engine = 2,
+    Employees = 3,
+    NoEmployees = 4,
 }
 
 export class GoogleExternalLoginProviderSettings implements IGoogleExternalLoginProviderSettings {

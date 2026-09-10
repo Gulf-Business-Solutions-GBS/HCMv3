@@ -1,0 +1,150 @@
+.v2-step,
+.v2-log {
+    margin-bottom: 1.5rem;
+}
+
+.v2-step-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.v2-step-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+}
+
+.v2-step-hint {
+    margin: 0;
+    color: var(--bs-gray-600);
+}
+
+.v2-run {
+    min-width: 11rem;
+}
+
+.v2-result {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.6rem;
+    border-inline-start: 4px solid var(--bs-warning);
+    background: var(--bs-warning-bg-subtle, #fff8e6);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.v2-result.v2-ok {
+    border-inline-start-color: var(--bs-success);
+    background: var(--bs-success-bg-subtle, #e8fff3);
+}
+
+.v2-outcome {
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.v2-said-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bs-gray-600);
+    margin-top: 0.4rem;
+}
+
+/* The engine's own words are the point of this screen, so they are set apart and never reworded. */
+.v2-said {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.4rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+}
+
+.v2-period {
+    color: var(--bs-gray-700);
+}
+
+.v2-table {
+    margin: 0;
+}
+
+.v2-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: nowrap;
+}
+
+.v2-log-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.v2-empty {
+    margin: 0;
+    color: var(--bs-gray-600);
+}
+
+.v2-attempts {
+    margin: 0;
+    padding-inline-start: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.v2-attempt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.v2-time {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--bs-gray-600);
+}
+
+.v2-attempt-said {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9rem;
+}
+
+.v2-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem 1.5rem;
+    margin-top: 1.25rem;
+}
+
+.v2-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.v2-field .form-label {
+    margin: 0;
+    font-weight: 600;
+}
+
+.v2-field-note {
+    color: var(--bs-gray-700);
+    font-size: 0.9rem;
+}
+
+/* Every V2 field records which engine refusal it was added for. */
+.v2-field-why {
+    color: var(--bs-gray-500);
+    font-size: 0.8rem;
+    font-style: italic;
+}

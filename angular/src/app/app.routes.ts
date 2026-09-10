@@ -3860,6 +3860,14 @@ export const appRoutes: Routes = [
                         ],
                     },
                     {
+                        // Go-Live Setup V2 -- built backwards from Run payroll. Kept beside V1, not in place of it,
+                        // so the two approaches can be shown side by side.
+                        path: 'go-live-setup-v2',
+                        loadComponent: () =>
+                            import('./admin/go-live-setup-v2/go-live-v2.component').then((m) => m.GoLiveV2Component),
+                        data: { permission: 'Pages.GoLiveSetup' },
+                    },
+                    {
                         path: 'screen-codes',
                         loadComponent: () =>
                             import('./admin/navigation/screen-codes/screen-codes.component').then(

@@ -732,6 +732,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.YearlyLeaveIndemnityDetailCustom023ReportServiceProxy,
     ApiServiceProxies.GoLiveApplyServiceProxy,
     ApiServiceProxies.GoLiveStateServiceProxy,
+    ApiServiceProxies.GoLiveV2ServiceProxy,
     ApiServiceProxies.ReferenceDataServiceProxy,
     ApiServiceProxies.HelpMetadataServiceProxy,
     { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
