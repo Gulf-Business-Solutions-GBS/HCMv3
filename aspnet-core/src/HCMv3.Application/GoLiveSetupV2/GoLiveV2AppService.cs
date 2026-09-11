@@ -7,8 +7,10 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.Dto;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
@@ -50,6 +52,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly GoLiveV2TimeEngineStep _timeEngineStep;
     private readonly GoLiveV2WorkingTime _workingTime;
     private readonly GoLiveV2LoadedEmployeesReader _loadedEmployees;
+    private readonly GoLiveV2PayrollResultsReader _payrollResults;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -68,7 +71,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         GoLiveV2EmployeeLoader employeeLoader,
         GoLiveV2TimeEngineStep timeEngineStep,
         GoLiveV2WorkingTime workingTime,
-        GoLiveV2LoadedEmployeesReader loadedEmployees)
+        GoLiveV2LoadedEmployeesReader loadedEmployees,
+        GoLiveV2PayrollResultsReader payrollResults)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -87,6 +91,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _timeEngineStep = timeEngineStep;
         _workingTime = workingTime;
         _loadedEmployees = loadedEmployees;
+        _payrollResults = payrollResults;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -344,6 +349,22 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees)]
     public Task<GoLiveV2LoadedEmployeesOutput> GetLoadedEmployees(string payrollAreaName) =>
         _loadedEmployees.ReadAsync(payrollAreaName);
+
+    /// <remarks>Shows what people were paid, so it needs the salary register screen's permission.</remarks>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<GoLiveV2PayrollResultsOutput> GetPayrollResults(GoLiveV2PayrollResultsInput input) =>
+        _payrollResults.GetResultsAsync(input.PayrollAreaName, MonthEnd(input.PayDate.Value));
+
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<GoLiveV2SalaryRegisterDto> GetSalaryRegister(GoLiveV2SalaryRegisterInput input) =>
+        _payrollResults.GetRegisterAsync(input.EmployeeId, MonthEnd(input.PayDate.Value));
+
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<FileDto> GetSalaryRegisterExcel(GoLiveV2PayrollResultsInput input) =>
+        _payrollResults.ExportRegisterLinesAsync(input.PayrollAreaName, MonthEnd(input.PayDate.Value));
 
     public async Task<ListResultDto<string>> GetPayrollAreaNames()
     {

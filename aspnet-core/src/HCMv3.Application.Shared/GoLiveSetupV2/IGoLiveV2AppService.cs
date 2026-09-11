@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using HCMv3.Dto;
 using HCMv3.GoLiveSetupV2.Dto;
 
 namespace HCMv3.GoLiveSetupV2;
@@ -57,6 +58,18 @@ public interface IGoLiveV2AppService : IApplicationService
     /// payroll area in the grid's columns.
     /// </summary>
     Task<GoLiveV2LoadedEmployeesOutput> GetLoadedEmployees(string payrollAreaName);
+
+    /// <summary>
+    /// Step 3: what the month's payroll paid -- one line per employee in the payroll area with earnings,
+    /// deductions and net pay, including anyone the payroll did not reach, and the totals.
+    /// </summary>
+    Task<GoLiveV2PayrollResultsOutput> GetPayrollResults(GoLiveV2PayrollResultsInput input);
+
+    /// <summary>One employee's Salary Register for the month: every wage type with rate, number and amount.</summary>
+    Task<GoLiveV2SalaryRegisterDto> GetSalaryRegister(GoLiveV2SalaryRegisterInput input);
+
+    /// <summary>The month's register lines for everyone in the payroll area, one row per wage type, as Excel.</summary>
+    Task<FileDto> GetSalaryRegisterExcel(GoLiveV2PayrollResultsInput input);
 
     /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
     Task<ListResultDto<string>> GetPayrollAreaNames();

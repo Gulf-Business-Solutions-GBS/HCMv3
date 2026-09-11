@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -7,12 +7,20 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
+    BillingType,
     EngineRunStatusDto,
+    GetPayrollSheetReportInput,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
     GoLiveV2LoadEmployeesOutput,
     GoLiveV2NextStep,
+    GoLiveV2PayrollResultsInput,
+    GoLiveV2PayrollResultsOutput,
+    GoLiveV2PayrollResultRowDto,
+    GoLiveV2SalaryRegisterDto,
+    GoLiveV2SalaryRegisterInput,
+    GoLiveV2SalaryRegisterLineDto,
     GoLiveV2RunPayrollInput,
     GoLiveV2RunPayrollOutput,
     GoLiveV2ServiceProxy,
@@ -20,8 +28,11 @@ import {
     GoLiveV2SetUpPayrollMonthOutput,
     GoLiveV2StoppedAt,
     PayrollEngineServiceProxy,
+    PayrollRunType,
+    PayrollSheetReportServiceProxy,
     TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from '../go-live-setup/shared/paste-grid/paste-grid.component';
 import {
@@ -93,12 +104,14 @@ const DefaultPayrollArea = 'Default Payroll Area';
     templateUrl: './go-live-v2.component.html',
     styleUrl: './go-live-v2.component.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, LocalizePipe, DatePipe, PasteGridComponent],
+    imports: [SubHeaderComponent, LocalizePipe, DatePipe, DecimalPipe, PasteGridComponent],
 })
 export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
     private readonly payrollEngineProxy = inject(PayrollEngineServiceProxy);
     private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
+    private readonly payrollSheetProxy = inject(PayrollSheetReportServiceProxy);
+    private readonly fileDownload = inject(FileDownloadService);
     private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
 
@@ -203,6 +216,23 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     readonly running = signal(false);
     readonly runProgress = signal<RunProgress | null>(null);
+    readonly BillingType = BillingType;
+
+    // ---------------------------------------------------------------- step 3: see the results
+
+    readonly results = signal<GoLiveV2PayrollResultsOutput | null>(null);
+    readonly loadingResults = signal(false);
+    readonly exporting = signal<'sheet' | 'register' | null>(null);
+    readonly register = signal<GoLiveV2SalaryRegisterDto | null>(null);
+    readonly registerFor = signal<GoLiveV2PayrollResultRowDto | null>(null);
+
+    /** The register's lines by group, in the order a payslip reads: earnings, deductions, provisions, day counters. */
+    readonly registerGroups = computed(() => {
+        const lines = this.register()?.lines ?? [];
+        return [BillingType.Earning, BillingType.Deduction, BillingType.Provision, BillingType.TimeType]
+            .map((group) => ({ group, lines: lines.filter((l) => l.group === group) }))
+            .filter((g) => g.lines.length > 0);
+    });
     readonly settingUp = signal(false);
     readonly latest = signal<GoLiveV2RunPayrollOutput | null>(null);
     readonly lastSetUp = signal<GoLiveV2SetUpPayrollMonthOutput | null>(null);
@@ -463,6 +493,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     this.latest.set(result);
                     this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
                     this.refreshPayrollAreas();
+                    // Whatever the run did, the results below now describe it.
+                    this.showResults();
                 },
                 error: () => this.runProgress.set(null),
             });
@@ -510,6 +542,86 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     closeRunProgress(): void {
         this.runProgress.set(null);
+    }
+
+    // ---------------------------------------------------------------- step 3
+
+    /** The month and payroll area chosen under Run payroll -- the results are that run's. */
+    showResults(): void {
+        const input = this.resultsInput();
+        if (!input || this.loadingResults()) {
+            return;
+        }
+        this.loadingResults.set(true);
+        this.proxy
+            .getPayrollResults(input)
+            .pipe(finalize(() => this.loadingResults.set(false)))
+            .subscribe((results) => this.results.set(results));
+    }
+
+    viewRegister(row: GoLiveV2PayrollResultRowDto): void {
+        const end = this.monthEnd();
+        if (!end) {
+            return;
+        }
+        const input = new GoLiveV2SalaryRegisterInput();
+        input.payDate = end.plus({ hours: 12 });
+        input.employeeId = row.employeeId;
+        this.registerFor.set(row);
+        this.register.set(null);
+        this.proxy.getSalaryRegister(input).subscribe((register) => this.register.set(register));
+    }
+
+    closeRegister(): void {
+        this.registerFor.set(null);
+        this.register.set(null);
+    }
+
+    /** The ported legacy Payroll Sheet, for the month and payroll area, as Excel. */
+    downloadPayrollSheet(): void {
+        const end = this.monthEnd();
+        if (!end || this.exporting()) {
+            return;
+        }
+        const input = new GetPayrollSheetReportInput();
+        input.month = end.month;
+        input.year = end.year;
+        input.payrollRunType = PayrollRunType.Regular;
+        input.payrollAreaId = this.results()?.payrollAreaId ?? undefined;
+        input.skipCount = 0;
+        input.maxResultCount = 100000;
+
+        this.exporting.set('sheet');
+        this.payrollSheetProxy
+            .getPayrollSheetReportToExcel(input)
+            .pipe(finalize(() => this.exporting.set(null)))
+            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+    }
+
+    /** Every register line of the month, one row per employee and wage type, as Excel. */
+    downloadSalaryRegister(): void {
+        const input = this.resultsInput();
+        if (!input || this.exporting()) {
+            return;
+        }
+        this.exporting.set('register');
+        this.proxy
+            .getSalaryRegisterExcel(input)
+            .pipe(finalize(() => this.exporting.set(null)))
+            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+    }
+
+    groupKey(group: BillingType): string {
+        return 'GoLiveV2RegisterGroup' + BillingType[group];
+    }
+
+    groupTotal(lines: GoLiveV2SalaryRegisterLineDto[]): number {
+        return lines.reduce((sum, l) => sum + (l.amount ?? 0), 0);
+    }
+
+    resultsMonth(): string {
+        const end = this.monthEnd();
+        return end ? end.toFormat('MMMM yyyy') : '';
     }
 
     /** Answers the control record and pay calendar refusals with the same month and payroll area the run was given. */
@@ -646,6 +758,18 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         const s = total % 60;
         const mmss = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         return h > 0 ? `${h}:${mmss}` : mmss;
+    }
+
+    private resultsInput(): GoLiveV2PayrollResultsInput | null {
+        const end = this.monthEnd();
+        const area = this.payrollAreaName().trim();
+        if (!end || !area) {
+            return null;
+        }
+        const input = new GoLiveV2PayrollResultsInput();
+        input.payDate = end.plus({ hours: 12 });
+        input.payrollAreaName = area;
+        return input;
     }
 
     private startRunPoll(): void {

@@ -251,6 +251,122 @@
             </div>
         </div>
 
+        <!-- Step 3: See the results -- what the payroll paid, to check against the legacy payroll. -->
+        <div class="card card-custom v2-step">
+            <div class="card-body">
+                <div class="v2-step-head">
+                    <div>
+                        <div class="v2-step-number">{{ l('GoLiveV2Step', 3) }}</div>
+                        <h3 class="v2-step-title">{{ 'GoLiveV2SeeResults' | localize }}</h3>
+                        <p class="v2-step-hint">{{ 'GoLiveV2SeeResultsHint' | localize }}</p>
+                    </div>
+
+                    <div class="v2-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveV2PayrollSheetHint' | localize"
+                            (click)="downloadPayrollSheet()">
+                            @if (exporting() === 'sheet') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2PayrollSheet' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveV2SalaryRegisterHint' | localize"
+                            (click)="downloadSalaryRegister()">
+                            @if (exporting() === 'register') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2SalaryRegister' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary v2-run"
+                            [disabled]="!monthEnd() || loadingResults()"
+                            (click)="showResults()">
+                            @if (loadingResults()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-table me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2ShowResults' | localize }}
+                        </button>
+                    </div>
+                </div>
+
+                @if (!monthEnd()) {
+                    <p class="v2-progress-note mt-3">{{ 'GoLiveV2ResultsPickMonth' | localize }}</p>
+                }
+
+                @if (results(); as res) {
+                    <p class="v2-results-summary">
+                        {{ l('GoLiveV2ResultsPaidCount', res.employeesPaid, res.employees.length, resultsMonth()) }}
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-row-bordered align-middle v2-results-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'GoLiveV2ColCode' | localize }}</th>
+                                    <th>{{ 'GoLiveV2ColFullName' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveV2ColEarnings' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveV2ColDeductions' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveV2ColNetPay' | localize }}</th>
+                                    <th>{{ 'GoLiveV2ColResult' | localize }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (row of res.employees; track row.employeeId) {
+                                    <tr>
+                                        <td class="v2-code">{{ row.employeeCode }}</td>
+                                        <td>{{ row.employeeName }}</td>
+                                        <td class="text-end v2-num">{{ row.earnings | number: '1.3-3' }}</td>
+                                        <td class="text-end v2-num">{{ row.deductions | number: '1.3-3' }}</td>
+                                        <td class="text-end v2-num fw-semibold">{{ row.netPay | number: '1.3-3' }}</td>
+                                        <td>
+                                            <span
+                                                class="badge"
+                                                [class.badge-light-success]="row.hasRegister"
+                                                [class.badge-light-danger]="!row.hasRegister">
+                                                {{ (row.hasRegister ? 'GoLiveV2Paid' : 'GoLiveV2NotPaid') | localize }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light"
+                                                [disabled]="!row.hasRegister"
+                                                (click)="viewRegister(row)">
+                                                {{ 'GoLiveV2View' | localize }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="2">{{ 'GoLiveV2Total' | localize }}</td>
+                                    <td class="text-end v2-num">{{ res.totalEarnings | number: '1.3-3' }}</td>
+                                    <td class="text-end v2-num">{{ res.totalDeductions | number: '1.3-3' }}</td>
+                                    <td class="text-end v2-num">{{ res.totalNetPay | number: '1.3-3' }}</td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+
         <div class="card card-custom v2-log">
             <div class="card-body">
                 <h4 class="v2-log-title">{{ 'GoLiveV2Attempts' | localize }}</h4>
@@ -295,6 +411,93 @@
             </div>
         </div>
     </div>
+
+    @if (registerFor(); as who) {
+        <!-- Salary Register of one employee: every wage type the engine wrote for the month. -->
+        <div class="v2-drawer-backdrop" (click)="closeRegister()"></div>
+        <aside class="v2-drawer" role="dialog" aria-modal="true" aria-labelledby="v2-register-title">
+            <div class="v2-drawer-head">
+                <div>
+                    <div class="v2-step-number">{{ 'GoLiveV2SalaryRegister' | localize }} · {{ resultsMonth() }}</div>
+                    <h4 class="v2-modal-title" id="v2-register-title">
+                        {{ who.employeeCode }} · {{ who.employeeName }}
+                    </h4>
+                </div>
+                <button type="button" class="btn btn-sm btn-light" (click)="closeRegister()">
+                    {{ 'GoLiveV2ProgressClose' | localize }}
+                </button>
+            </div>
+
+            @if (register(); as reg) {
+                @if (reg.lines.length === 0) {
+                    <p class="v2-empty">{{ 'GoLiveV2RegisterNone' | localize }}</p>
+                }
+                @for (g of registerGroups(); track g.group) {
+                    <div class="v2-said-label">{{ groupKey(g.group) | localize }}</div>
+                    <table class="table table-sm align-middle v2-register-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'GoLiveV2RegisterWageCode' | localize }}</th>
+                                <th>{{ 'GoLiveV2RegisterWageType' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterRate' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterNumber' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterAmount' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (line of g.lines; track line.wageCode) {
+                                <tr>
+                                    <td class="v2-code">{{ line.wageCode }}</td>
+                                    <td>{{ line.wageName }}</td>
+                                    <td class="text-end v2-num">{{ line.rate | number: '1.3-3' }}</td>
+                                    <td class="text-end v2-num">{{ line.number | number: '1.0-3' }}</td>
+                                    <td class="text-end v2-num">{{ line.amount | number: '1.3-3' }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                        @if (g.group !== BillingType.TimeType) {
+                            <tfoot>
+                                <tr class="fw-semibold">
+                                    <td colspan="4">{{ 'GoLiveV2Total' | localize }}</td>
+                                    <td class="text-end v2-num">{{ groupTotal(g.lines) | number: '1.3-3' }}</td>
+                                </tr>
+                            </tfoot>
+                        }
+                    </table>
+                }
+
+                @if (reg.days.length > 0) {
+                    <div class="v2-said-label">{{ 'GoLiveV2RegisterDays' | localize }}</div>
+                    <table class="table table-sm align-middle v2-register-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'GoLiveV2RegisterWageCode' | localize }}</th>
+                                <th>{{ 'GoLiveV2RegisterPeriod' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterRate' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterNumber' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveV2RegisterAmount' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (d of reg.days; track $index) {
+                                <tr>
+                                    <td class="v2-code">{{ d.wageCode }}</td>
+                                    <td>{{ d.period.toFormat('dd-MM-yyyy') }}</td>
+                                    <td class="text-end v2-num">{{ d.rate | number: '1.3-3' }}</td>
+                                    <td class="text-end v2-num">{{ d.number | number: '1.0-3' }}</td>
+                                    <td class="text-end v2-num">{{ d.amount | number: '1.3-3' }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            } @else {
+                <div class="v2-progress-now">
+                    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                </div>
+            }
+        </aside>
+    }
 
     @if (runProgress(); as rp) {
         <!-- Run payroll's progress: which engine is working, how far it has got, how long is left. -->

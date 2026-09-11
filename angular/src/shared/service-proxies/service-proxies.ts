@@ -66406,6 +66406,174 @@ export class GoLiveV2ServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollResults(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2PayrollResultsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollResults";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollResults(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollResults(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollResultsOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollResultsOutput>;
+        }));
+    }
+
+    protected processGetPayrollResults(response: HttpResponseBase): Observable<GoLiveV2PayrollResultsOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2PayrollResultsOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getSalaryRegister(body?: GoLiveV2SalaryRegisterInput | undefined): Observable<GoLiveV2SalaryRegisterDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegister";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSalaryRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSalaryRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2SalaryRegisterDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2SalaryRegisterDto>;
+        }));
+    }
+
+    protected processGetSalaryRegister(response: HttpResponseBase): Observable<GoLiveV2SalaryRegisterDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2SalaryRegisterDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getSalaryRegisterExcel(body?: GoLiveV2PayrollResultsInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegisterExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSalaryRegisterExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSalaryRegisterExcel(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processGetSalaryRegisterExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getPayrollAreaNames(): Observable<ListResultDtoOfString> {
@@ -260699,6 +260867,174 @@ export enum GoLiveV2NextStep {
     LoadEmployees = 2,
 }
 
+export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto {
+    employeeId!: number;
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    hasRegister!: boolean;
+    earnings!: number;
+    deductions!: number;
+    netPay!: number;
+
+    constructor(data?: IGoLiveV2PayrollResultRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.hasRegister = _data["hasRegister"];
+            this.earnings = _data["earnings"];
+            this.deductions = _data["deductions"];
+            this.netPay = _data["netPay"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayrollResultRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayrollResultRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["hasRegister"] = this.hasRegister;
+        data["earnings"] = this.earnings;
+        data["deductions"] = this.deductions;
+        data["netPay"] = this.netPay;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayrollResultRowDto {
+    employeeId: number;
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    hasRegister: boolean;
+    earnings: number;
+    deductions: number;
+    netPay: number;
+}
+
+export class GoLiveV2PayrollResultsInput implements IGoLiveV2PayrollResultsInput {
+    payDate!: DateTime;
+    payrollAreaName!: string;
+
+    constructor(data?: IGoLiveV2PayrollResultsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayrollResultsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayrollResultsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayrollResultsInput {
+    payDate: DateTime;
+    payrollAreaName: string;
+}
+
+export class GoLiveV2PayrollResultsOutput implements IGoLiveV2PayrollResultsOutput {
+    payInDate!: DateTime;
+    payrollAreaId!: number | undefined;
+    employees!: GoLiveV2PayrollResultRowDto[] | undefined;
+    totalEarnings!: number;
+    totalDeductions!: number;
+    totalNetPay!: number;
+    employeesPaid!: number;
+
+    constructor(data?: IGoLiveV2PayrollResultsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
+            this.payrollAreaId = _data["payrollAreaId"];
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(GoLiveV2PayrollResultRowDto.fromJS(item));
+            }
+            this.totalEarnings = _data["totalEarnings"];
+            this.totalDeductions = _data["totalDeductions"];
+            this.totalNetPay = _data["totalNetPay"];
+            this.employeesPaid = _data["employeesPaid"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayrollResultsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayrollResultsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
+        data["payrollAreaId"] = this.payrollAreaId;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["totalEarnings"] = this.totalEarnings;
+        data["totalDeductions"] = this.totalDeductions;
+        data["totalNetPay"] = this.totalNetPay;
+        data["employeesPaid"] = this.employeesPaid;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayrollResultsOutput {
+    payInDate: DateTime;
+    payrollAreaId: number | undefined;
+    employees: GoLiveV2PayrollResultRowDto[] | undefined;
+    totalEarnings: number;
+    totalDeductions: number;
+    totalNetPay: number;
+    employeesPaid: number;
+}
+
 export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
     payDate!: DateTime | undefined;
     payrollAreaName!: string | undefined;
@@ -260805,6 +261141,230 @@ export interface IGoLiveV2RunPayrollOutput {
     payInDate: DateTime | undefined;
     employees: GoLiveV2EmployeeResultDto[] | undefined;
     monthSetUp: GoLiveV2SetUpPayrollMonthOutput;
+}
+
+export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDaysDto {
+    wageCode!: string | undefined;
+    wageName!: string | undefined;
+    period!: DateTime;
+    rate!: number;
+    number!: number;
+    amount!: number;
+
+    constructor(data?: IGoLiveV2SalaryRegisterDaysDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.wageCode = _data["wageCode"];
+            this.wageName = _data["wageName"];
+            this.period = _data["period"] ? DateTime.fromISO(_data["period"].toString()) : undefined as any;
+            this.rate = _data["rate"];
+            this.number = _data["number"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SalaryRegisterDaysDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SalaryRegisterDaysDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["wageCode"] = this.wageCode;
+        data["wageName"] = this.wageName;
+        data["period"] = this.period ? this.period.toString() : undefined as any;
+        data["rate"] = this.rate;
+        data["number"] = this.number;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IGoLiveV2SalaryRegisterDaysDto {
+    wageCode: string | undefined;
+    wageName: string | undefined;
+    period: DateTime;
+    rate: number;
+    number: number;
+    amount: number;
+}
+
+export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    forPeriod!: DateTime;
+    inPeriod!: DateTime;
+    lines!: GoLiveV2SalaryRegisterLineDto[] | undefined;
+    days!: GoLiveV2SalaryRegisterDaysDto[] | undefined;
+
+    constructor(data?: IGoLiveV2SalaryRegisterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.forPeriod = _data["forPeriod"] ? DateTime.fromISO(_data["forPeriod"].toString()) : undefined as any;
+            this.inPeriod = _data["inPeriod"] ? DateTime.fromISO(_data["inPeriod"].toString()) : undefined as any;
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(GoLiveV2SalaryRegisterLineDto.fromJS(item));
+            }
+            if (Array.isArray(_data["days"])) {
+                this.days = [] as any;
+                for (let item of _data["days"])
+                    this.days!.push(GoLiveV2SalaryRegisterDaysDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SalaryRegisterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SalaryRegisterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["forPeriod"] = this.forPeriod ? this.forPeriod.toString() : undefined as any;
+        data["inPeriod"] = this.inPeriod ? this.inPeriod.toString() : undefined as any;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.days)) {
+            data["days"] = [];
+            for (let item of this.days)
+                data["days"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2SalaryRegisterDto {
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    forPeriod: DateTime;
+    inPeriod: DateTime;
+    lines: GoLiveV2SalaryRegisterLineDto[] | undefined;
+    days: GoLiveV2SalaryRegisterDaysDto[] | undefined;
+}
+
+export class GoLiveV2SalaryRegisterInput implements IGoLiveV2SalaryRegisterInput {
+    payDate!: DateTime;
+    employeeId!: number;
+
+    constructor(data?: IGoLiveV2SalaryRegisterInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SalaryRegisterInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SalaryRegisterInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface IGoLiveV2SalaryRegisterInput {
+    payDate: DateTime;
+    employeeId: number;
+}
+
+export class GoLiveV2SalaryRegisterLineDto implements IGoLiveV2SalaryRegisterLineDto {
+    wageCode!: string | undefined;
+    wageName!: string | undefined;
+    group!: BillingType;
+    rate!: number;
+    number!: number;
+    amount!: number;
+
+    constructor(data?: IGoLiveV2SalaryRegisterLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.wageCode = _data["wageCode"];
+            this.wageName = _data["wageName"];
+            this.group = _data["group"];
+            this.rate = _data["rate"];
+            this.number = _data["number"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SalaryRegisterLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SalaryRegisterLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["wageCode"] = this.wageCode;
+        data["wageName"] = this.wageName;
+        data["group"] = this.group;
+        data["rate"] = this.rate;
+        data["number"] = this.number;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IGoLiveV2SalaryRegisterLineDto {
+    wageCode: string | undefined;
+    wageName: string | undefined;
+    group: BillingType;
+    rate: number;
+    number: number;
+    amount: number;
 }
 
 export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMonthInput {
