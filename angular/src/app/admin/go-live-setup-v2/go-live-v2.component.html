@@ -151,6 +151,15 @@
                             {{ outcomeKey(result) | localize }}
                         </div>
 
+                        @if (result.monthSetUp; as setUp) {
+                            @for (line of describeSetUp(setUp); track line) {
+                                <div class="v2-setup-line">
+                                    <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                    {{ line }}
+                                </div>
+                            }
+                        }
+
                         @if (result.message) {
                             <div class="v2-said-label">{{ saidLabel(result) | localize }}</div>
                             <blockquote class="v2-said">{{ result.message }}</blockquote>
@@ -272,8 +281,8 @@
                                     <span class="badge badge-light-primary">{{ 'GoLiveV2LoadLog' | localize }}</span>
                                     <!-- The counts only: what was created is in the green panel above. -->
                                     <span class="v2-attempt-said">
-                                        {{ 'GoLiveV2ProgressLoaded' | localize }}: {{ load.employeesCreated }}
-                                        · {{ 'GoLiveV2ProgressFailed' | localize }}: {{ failedRows(load).length }}
+                                        {{ 'GoLiveV2ProgressLoaded' | localize }}: {{ load.employeesCreated }} ·
+                                        {{ 'GoLiveV2ProgressFailed' | localize }}: {{ failedRows(load).length }}
                                         @if (load.employeesAlreadyLoaded > 0) {
                                             · {{ l('GoLiveV2LoadAlreadyLoaded', load.employeesAlreadyLoaded) }}
                                         }
@@ -286,6 +295,96 @@
             </div>
         </div>
     </div>
+
+    @if (runProgress(); as rp) {
+        <!-- Run payroll's progress: which engine is working, how far it has got, how long is left. -->
+        <div class="v2-modal-backdrop">
+            <div class="v2-modal" role="dialog" aria-modal="true" aria-labelledby="v2-run-title">
+                <h4 class="v2-modal-title" id="v2-run-title">{{ l('GoLiveV2RunProgressTitle', rp.month) }}</h4>
+
+                @if (runStatus(rp); as s) {
+                    <div
+                        class="v2-progress-bar"
+                        role="progressbar"
+                        [attr.aria-valuenow]="s.progressPercent ?? 0"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                        <div class="v2-progress-fill" [style.width.%]="s.progressPercent ?? 0"></div>
+                    </div>
+                    <div class="v2-progress-caption">
+                        {{ l('GoLiveV2ProgressOf', s.processedEmployees + s.skippedEmployees, s.totalEmployees) }} ·
+                        {{ s.progressPercent ?? 0 }}%
+                    </div>
+                }
+
+                <div class="v2-progress-now">
+                    @if (!rp.finishedAt) {
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                    }
+                    @switch (runPhase(rp)) {
+                        @case ('payroll') {
+                            {{ 'GoLiveV2RunPhasePayroll' | localize }}
+                        }
+                        @case ('time') {
+                            {{ 'GoLiveV2RunPhaseTime' | localize }}
+                        }
+                        @default {
+                            {{ 'GoLiveV2RunPhaseStarting' | localize }}
+                        }
+                    }
+                </div>
+
+                <div class="v2-progress-stats">
+                    <div>
+                        <span>{{ 'GoLiveV2RunSucceeded' | localize }}</span>
+                        <strong>{{ runStatus(rp)?.succeededEmployees ?? 0 }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2RunFailed' | localize }}</span>
+                        <strong [class.text-danger]="(runStatus(rp)?.failedEmployees ?? 0) > 0">
+                            {{ runStatus(rp)?.failedEmployees ?? 0 }}
+                        </strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressRemaining' | localize }}</span>
+                        <strong>{{ runStatus(rp)?.remainingEmployees ?? '—' }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressAverage' | localize }}</span>
+                        <strong>{{ runAverageText(runStatus(rp)) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressElapsed' | localize }}</span>
+                        <strong>{{ runElapsedText(rp) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressLeft' | localize }}</span>
+                        <strong>{{ rp.finishedAt ? '—' : runTimeLeftText(runStatus(rp)) }}</strong>
+                    </div>
+                </div>
+
+                @if (rp.finishedAt) {
+                    <div class="v2-progress-note">{{ l('GoLiveV2RunFinished', runElapsedText(rp)) }}</div>
+                }
+
+                <div class="v2-modal-actions">
+                    @if (!rp.finishedAt) {
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            [disabled]="stopRequested() || runPhase(rp) === 'starting'"
+                            (click)="stopRun()">
+                            {{ (stopRequested() ? 'GoLiveV2ProgressStopping' : 'GoLiveV2ProgressStop') | localize }}
+                        </button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" (click)="closeRunProgress()">
+                            {{ 'GoLiveV2ProgressClose' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 
     @if (progress(); as p) {
         <!-- The load's progress: who is being loaded now, how far it has got, how long it is taking. -->

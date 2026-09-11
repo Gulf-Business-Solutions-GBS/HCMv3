@@ -301,3 +301,9 @@
     justify-content: flex-end;
     margin-top: 0.25rem;
 }
+
+/* What Run payroll set up for the month before running, at the top of its result. */
+.v2-setup-line {
+    color: var(--bs-success-text-emphasis, #0a3622);
+    font-size: 0.95rem;
+}

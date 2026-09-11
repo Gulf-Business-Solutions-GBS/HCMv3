@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
+    EngineRunStatusDto,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
@@ -18,6 +19,8 @@ import {
     GoLiveV2SetUpPayrollMonthInput,
     GoLiveV2SetUpPayrollMonthOutput,
     GoLiveV2StoppedAt,
+    PayrollEngineServiceProxy,
+    TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from '../go-live-setup/shared/paste-grid/paste-grid.component';
@@ -52,6 +55,21 @@ interface LoadProgress {
     recent: GoLiveV2EmployeeRowResultDto[];
 }
 
+/**
+ * Live state of Run payroll, for its progress window. The run itself is one request; while it is open the
+ * two engines' own progress records -- written on a separate connection so they can be read mid-run -- are
+ * polled. Only runs newer than the ones there before the click are this run's.
+ */
+interface RunProgress {
+    month: string;
+    startedAt: number;
+    finishedAt: number | null;
+    baselineTimeRunId: number;
+    baselinePayrollRunId: number;
+    time: EngineRunStatusDto | null;
+    payroll: EngineRunStatusDto | null;
+}
+
 /** The payroll area every new tenant gets, created on first use. */
 const DefaultPayrollArea = 'Default Payroll Area';
 
@@ -79,6 +97,9 @@ const DefaultPayrollArea = 'Default Payroll Area';
 })
 export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
+    private readonly payrollEngineProxy = inject(PayrollEngineServiceProxy);
+    private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
+    private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
 
     readonly StoppedAt = GoLiveV2StoppedAt;
@@ -181,6 +202,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     readonly payrollAreaOptions = signal<string[]>([DefaultPayrollArea]);
 
     readonly running = signal(false);
+    readonly runProgress = signal<RunProgress | null>(null);
     readonly settingUp = signal(false);
     readonly latest = signal<GoLiveV2RunPayrollOutput | null>(null);
     readonly lastSetUp = signal<GoLiveV2SetUpPayrollMonthOutput | null>(null);
@@ -196,6 +218,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     ngOnDestroy(): void {
         this.stopTicker();
+        this.stopRunPoll();
     }
 
     // ---------------------------------------------------------------- step 1
@@ -392,22 +415,101 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     // ---------------------------------------------------------------- step 2
 
-    runPayroll(): void {
+    /**
+     * Sets up the month if it needs it, runs the time engine, then the payroll engine -- all in one request --
+     * while a progress window shows each engine's own progress, employee by employee.
+     */
+    async runPayroll(): Promise<void> {
         if (this.running()) {
             return;
         }
 
         this.running.set(true);
+        this.stopRequested.set(false);
+
+        // The engines' latest runs before this click: anything newer is this run.
+        const baseline = await firstValueFrom(
+            forkJoin([this.timeEngineProxy.getTimeEngineStatus(), this.payrollEngineProxy.getPayrollEngineStatus()])
+        ).catch(() => null);
+
+        const end = this.monthEnd();
+        this.runProgress.set({
+            month: end ? end.toFormat('MMMM yyyy') : '',
+            startedAt: Date.now(),
+            finishedAt: null,
+            baselineTimeRunId: baseline?.[0]?.hasRun ? baseline[0].runId : 0,
+            baselinePayrollRunId: baseline?.[1]?.hasRun ? baseline[1].runId : 0,
+            time: null,
+            payroll: null,
+        });
+        this.startTicker();
+        this.startRunPoll();
 
         this.proxy
             .runPayroll(this.buildRunInput())
-            .pipe(finalize(() => this.running.set(false)))
-            .subscribe((result) => {
-                this.lastSetUp.set(null);
-                this.lastLoad.set(null);
-                this.latest.set(result);
-                this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
+            .pipe(
+                finalize(() => {
+                    this.stopRunPoll();
+                    this.stopTicker();
+                    this.running.set(false);
+                    this.pollRunProgress();
+                    this.runProgress.update((p) => (p ? { ...p, finishedAt: Date.now() } : p));
+                })
+            )
+            .subscribe({
+                next: (result) => {
+                    this.lastSetUp.set(null);
+                    this.lastLoad.set(null);
+                    this.latest.set(result);
+                    this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
+                    this.refreshPayrollAreas();
+                },
+                error: () => this.runProgress.set(null),
             });
+    }
+
+    /** Which engine is working now: the payroll engine once it has started, the time engine before that. */
+    runPhase(p: RunProgress): 'starting' | 'time' | 'payroll' {
+        if (p.payroll) {
+            return 'payroll';
+        }
+        return p.time ? 'time' : 'starting';
+    }
+
+    runStatus(p: RunProgress): EngineRunStatusDto | null {
+        return p.payroll ?? p.time;
+    }
+
+    runElapsedText(p: RunProgress): string {
+        return this.duration((p.finishedAt ?? this.now()) - p.startedAt);
+    }
+
+    runAverageText(s: EngineRunStatusDto | null): string {
+        return s?.averageSecondsPerEmployee
+            ? this.l('GoLiveV2ProgressSeconds', s.averageSecondsPerEmployee.toFixed(1))
+            : '—';
+    }
+
+    runTimeLeftText(s: EngineRunStatusDto | null): string {
+        return s?.estimatedSecondsRemaining ? this.duration(s.estimatedSecondsRemaining * 1000) : '—';
+    }
+
+    /** Asks whichever engine is running to stop after the employee it is on; both check between employees. */
+    stopRun(): void {
+        const p = this.runProgress();
+        if (!p) {
+            return;
+        }
+        this.stopRequested.set(true);
+        const stop =
+            this.runPhase(p) === 'payroll'
+                ? this.payrollEngineProxy.stopPayrollEngine()
+                : this.timeEngineProxy.stopTimeEngine();
+        stop.subscribe();
+    }
+
+    closeRunProgress(): void {
+        this.runProgress.set(null);
     }
 
     /** Answers the control record and pay calendar refusals with the same month and payroll area the run was given. */
@@ -455,6 +557,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 return 'GoLiveV2StoppedAtNoEmployees';
             case GoLiveV2StoppedAt.TimeEngine:
                 return 'GoLiveV2StoppedAtTimeEngine';
+            case GoLiveV2StoppedAt.MonthSetUp:
+                return 'GoLiveV2StoppedAtMonthSetUp';
             default:
                 return 'GoLiveV2Succeeded';
         }
@@ -542,6 +646,45 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         const s = total % 60;
         const mmss = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         return h > 0 ? `${h}:${mmss}` : mmss;
+    }
+
+    private startRunPoll(): void {
+        this.stopRunPoll();
+        this.runPoll = setInterval(() => this.pollRunProgress(), 1500);
+    }
+
+    private stopRunPoll(): void {
+        if (this.runPoll !== null) {
+            clearInterval(this.runPoll);
+            this.runPoll = null;
+        }
+    }
+
+    private pollRunProgress(): void {
+        const p = this.runProgress();
+        if (!p) {
+            return;
+        }
+        forkJoin([
+            this.timeEngineProxy.getTimeEngineStatus(),
+            this.payrollEngineProxy.getPayrollEngineStatus(),
+        ]).subscribe({
+            next: ([time, payroll]) =>
+                this.runProgress.update((current) =>
+                    current
+                        ? {
+                              ...current,
+                              time: time.hasRun && time.runId > current.baselineTimeRunId ? time : current.time,
+                              payroll:
+                                  payroll.hasRun && payroll.runId > current.baselinePayrollRunId
+                                      ? payroll
+                                      : current.payroll,
+                          }
+                        : current
+                ),
+            // A missed poll is not worth a dialog: the next one, a second and a half later, will do.
+            error: () => undefined,
+        });
     }
 
     private startTicker(): void {

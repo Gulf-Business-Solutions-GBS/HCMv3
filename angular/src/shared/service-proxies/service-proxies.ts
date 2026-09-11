@@ -260746,6 +260746,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
     nextStep!: GoLiveV2NextStep;
     payInDate!: DateTime | undefined;
     employees!: GoLiveV2EmployeeResultDto[] | undefined;
+    monthSetUp!: GoLiveV2SetUpPayrollMonthOutput;
 
     constructor(data?: IGoLiveV2RunPayrollOutput) {
         if (data) {
@@ -260768,6 +260769,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
                 for (let item of _data["employees"])
                     this.employees!.push(GoLiveV2EmployeeResultDto.fromJS(item));
             }
+            this.monthSetUp = _data["monthSetUp"] ? GoLiveV2SetUpPayrollMonthOutput.fromJS(_data["monthSetUp"]) : undefined as any;
         }
     }
 
@@ -260790,6 +260792,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
             for (let item of this.employees)
                 data["employees"].push(item ? item.toJSON() : undefined as any);
         }
+        data["monthSetUp"] = this.monthSetUp ? this.monthSetUp.toJSON() : undefined as any;
         return data;
     }
 }
@@ -260801,6 +260804,7 @@ export interface IGoLiveV2RunPayrollOutput {
     nextStep: GoLiveV2NextStep;
     payInDate: DateTime | undefined;
     employees: GoLiveV2EmployeeResultDto[] | undefined;
+    monthSetUp: GoLiveV2SetUpPayrollMonthOutput;
 }
 
 export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMonthInput {
@@ -260922,6 +260926,7 @@ export enum GoLiveV2StoppedAt {
     Employees = 3,
     NoEmployees = 4,
     TimeEngine = 5,
+    MonthSetUp = 6,
 }
 
 export class GoogleExternalLoginProviderSettings implements IGoogleExternalLoginProviderSettings {
