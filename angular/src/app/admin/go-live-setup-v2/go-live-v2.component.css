@@ -177,13 +177,6 @@
     margin-top: 1.25rem;
 }
 
-/* What the step sets without asking is stated where the data is entered, not hidden in a help page. */
-.v2-defaults {
-    margin: 0.75rem 0 0;
-    color: var(--bs-gray-700);
-    font-size: 0.9rem;
-}
-
 .v2-grid-blocked {
     margin: 0.5rem 0 0;
     color: var(--bs-danger);
@@ -202,4 +195,109 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+}
+
+/* ---------- load progress window ---------- */
+.v2-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.v2-modal {
+    width: min(34rem, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.75rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.v2-modal-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.v2-progress-bar {
+    height: 0.6rem;
+    border-radius: 1rem;
+    background: var(--bs-gray-200);
+    overflow: hidden;
+}
+
+.v2-progress-fill {
+    height: 100%;
+    background: var(--bs-primary);
+    transition: width 0.3s ease;
+}
+
+.v2-progress-caption {
+    font-size: 0.85rem;
+    color: var(--bs-gray-600);
+    font-variant-numeric: tabular-nums;
+}
+
+.v2-progress-now {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.v2-progress-warn {
+    color: var(--bs-warning-text-emphasis, #997404);
+}
+
+.v2-progress-note {
+    font-size: 0.85rem;
+    color: var(--bs-gray-600);
+}
+
+.v2-progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem 1rem;
+}
+
+.v2-progress-stats div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0.75rem;
+    background: var(--bs-gray-100);
+    border-radius: 0.4rem;
+}
+
+.v2-progress-stats span {
+    font-size: 0.75rem;
+    color: var(--bs-gray-600);
+}
+
+.v2-progress-stats strong {
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.v2-progress-recent {
+    margin: 0;
+    padding-inline-start: 1rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.v2-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
 }

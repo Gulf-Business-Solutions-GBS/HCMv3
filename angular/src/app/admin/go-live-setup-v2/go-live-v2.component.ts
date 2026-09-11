@@ -1,12 +1,14 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
+import { firstValueFrom } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
     GoLiveV2EmployeeRowDto,
+    GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
     GoLiveV2LoadEmployeesOutput,
     GoLiveV2NextStep,
@@ -34,6 +36,22 @@ interface Attempt {
     load?: GoLiveV2LoadEmployeesOutput;
 }
 
+/** Live state of a load, for the progress window. One employee is sent per request, so this is exact. */
+interface LoadProgress {
+    total: number;
+    done: number;
+    loaded: number;
+    failed: number;
+    current: { row: number; code: string; name: string } | null;
+    startedAt: number;
+    finishedAt: number | null;
+    /** How it ended: every row done, stopped by the user, or stopped by a server error on this row. */
+    outcome: 'running' | 'finished' | 'stopped' | 'error';
+    errorRow: number | null;
+    /** The latest results, newest first -- enough to see a failure without scrolling a list. */
+    recent: GoLiveV2EmployeeRowResultDto[];
+}
+
 /** The payroll area every new tenant gets, created on first use. */
 const DefaultPayrollArea = 'Default Payroll Area';
 
@@ -59,8 +77,9 @@ const DefaultPayrollArea = 'Default Payroll Area';
     animations: [appModuleAnimation()],
     imports: [SubHeaderComponent, LocalizePipe, DatePipe, PasteGridComponent],
 })
-export class GoLiveV2Component extends AppComponentBase implements OnInit {
+export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
+    private ticker: ReturnType<typeof setInterval> | null = null;
 
     readonly StoppedAt = GoLiveV2StoppedAt;
     readonly NextStep = GoLiveV2NextStep;
@@ -74,6 +93,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit {
     readonly gridIssues = signal<PasteGridIssue[]>([]);
     readonly loading = signal(false);
     readonly lastLoad = signal<GoLiveV2LoadEmployeesOutput | null>(null);
+    readonly progress = signal<LoadProgress | null>(null);
+    readonly stopRequested = signal(false);
+
+    /** Ticks once a second while a load runs, so elapsed and time-left count down on their own. */
+    readonly now = signal(Date.now());
 
     readonly employeeColumns: PasteGridColumn[] = [
         { key: 'code', header: this.l('GoLiveV2ColCode'), type: 'text', required: true, maxLength: 64, width: 140 },
@@ -169,31 +193,138 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit {
         this.refreshPayrollAreas();
     }
 
+    ngOnDestroy(): void {
+        this.stopTicker();
+    }
+
     // ---------------------------------------------------------------- step 1
 
-    loadEmployees(): void {
+    /**
+     * One employee per request, so the progress window can say exactly who is being loaded, how long each takes
+     * and how long is left -- and so a slow moment or a server error costs one employee, not the whole sheet.
+     * Each request is its own transaction; what was loaded stays loaded, and loading again skips it.
+     */
+    async loadEmployees(): Promise<void> {
         if (this.loading() || !this.canLoad()) {
             return;
         }
 
-        const input = new GoLiveV2LoadEmployeesInput();
-        input.organizationUnitName = this.organizationUnitName().trim();
-        input.payrollAreaName = this.payrollAreaName().trim();
-        input.employees = this.buildEmployeeRows();
+        const items = this.buildEmployeeRows()
+            .map((dto, i) => ({ dto, row: i + 1 }))
+            .filter((item) => !this.isEmptyRow(item.dto));
+
+        const combined = new GoLiveV2LoadEmployeesOutput();
+        combined.rows = [];
 
         this.loading.set(true);
+        this.stopRequested.set(false);
+        this.progress.set({
+            total: items.length,
+            done: 0,
+            loaded: 0,
+            failed: 0,
+            current: null,
+            startedAt: Date.now(),
+            finishedAt: null,
+            outcome: 'running',
+            errorRow: null,
+            recent: [],
+        });
+        this.startTicker();
 
-        this.proxy
-            .loadEmployees(input)
-            .pipe(finalize(() => this.loading.set(false)))
-            .subscribe((load) => {
-                // Whatever the last run said is out of date now that there are people to pay.
-                this.latest.set(null);
-                this.lastSetUp.set(null);
-                this.lastLoad.set(load);
-                this.attempts.update((list) => [{ at: new Date(), load }, ...list]);
-                this.refreshPayrollAreas();
-            });
+        let outcome: LoadProgress['outcome'] = 'finished';
+        let errorRow: number | null = null;
+
+        try {
+            for (const item of items) {
+                if (this.stopRequested()) {
+                    outcome = 'stopped';
+                    break;
+                }
+
+                this.progress.update((p) => ({
+                    ...p,
+                    current: { row: item.row, code: item.dto.code ?? '', name: item.dto.fullName ?? '' },
+                }));
+
+                const input = new GoLiveV2LoadEmployeesInput();
+                input.organizationUnitName = this.organizationUnitName().trim();
+                input.payrollAreaName = this.payrollAreaName().trim();
+                input.employees = [item.dto];
+
+                let out: GoLiveV2LoadEmployeesOutput;
+                try {
+                    out = await firstValueFrom(this.proxy.loadEmployees(input));
+                } catch {
+                    // The server's own error dialog has already said what went wrong.
+                    outcome = 'error';
+                    errorRow = item.row;
+                    break;
+                }
+
+                this.merge(combined, out, item.row);
+                const result = out.rows?.[0];
+                this.progress.update((p) => ({
+                    ...p,
+                    done: p.done + 1,
+                    loaded: p.loaded + (result?.succeeded ? 1 : 0),
+                    failed: p.failed + (result && !result.succeeded ? 1 : 0),
+                    recent: result ? [result, ...p.recent].slice(0, 5) : p.recent,
+                }));
+            }
+        } finally {
+            this.stopTicker();
+            this.loading.set(false);
+            this.progress.update((p) => ({ ...p, current: null, finishedAt: Date.now(), outcome, errorRow }));
+        }
+
+        if (combined.rows.length > 0) {
+            // Whatever the last run said is out of date now that there are people to pay.
+            this.latest.set(null);
+            this.lastSetUp.set(null);
+            this.lastLoad.set(combined);
+            this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
+        }
+        this.refreshPayrollAreas();
+    }
+
+    stopLoading(): void {
+        this.stopRequested.set(true);
+    }
+
+    closeProgress(): void {
+        this.progress.set(null);
+    }
+
+    progressPercent(p: LoadProgress): number {
+        return p.total === 0 ? 100 : Math.round((p.done / p.total) * 100);
+    }
+
+    elapsedText(p: LoadProgress): string {
+        return this.duration((p.finishedAt ?? this.now()) - p.startedAt);
+    }
+
+    /** The average so far. The first employee also sets up the company, so the estimate settles after a few. */
+    averageText(p: LoadProgress): string {
+        return p.done === 0 ? '—' : this.l('GoLiveV2ProgressSeconds', (this.elapsedMs(p) / p.done / 1000).toFixed(1));
+    }
+
+    timeLeftText(p: LoadProgress): string {
+        if (p.done === 0) {
+            return '—';
+        }
+        return this.duration((this.elapsedMs(p) / p.done) * (p.total - p.done));
+    }
+
+    progressEndText(p: LoadProgress): string {
+        switch (p.outcome) {
+            case 'stopped':
+                return this.l('GoLiveV2ProgressStopped', p.done, p.total);
+            case 'error':
+                return this.l('GoLiveV2ProgressServerError', p.errorRow);
+            default:
+                return this.l('GoLiveV2ProgressFinished', this.elapsedText(p));
+        }
     }
 
     onOrganizationUnitChange(event: Event): void {
@@ -247,7 +378,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit {
     }
 
     loadButtonLabel(): string {
-        return this.l('GoLiveV2LoadButton', this.filledEmployeeCount());
+        const p = this.progress();
+        return this.loading() && p
+            ? this.l('GoLiveV2LoadingCount', p.done + 1 > p.total ? p.total : p.done + 1, p.total)
+            : this.l('GoLiveV2LoadButton', this.filledEmployeeCount());
     }
 
     /** Scrolls up to step 1 -- a plain "#" link would be taken by the router as a new page. */
@@ -366,6 +500,61 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit {
     }
 
     // ---------------------------------------------------------------- internals
+
+    /** One employee's output folded into the whole load's, with the row number the grid shows. */
+    private merge(into: GoLiveV2LoadEmployeesOutput, out: GoLiveV2LoadEmployeesOutput, row: number): void {
+        into.organizationUnitName = out.organizationUnitName;
+        into.payrollAreaName = out.payrollAreaName;
+        into.employeeGroupName = out.employeeGroupName;
+        into.employeeSubGroupName = out.employeeSubGroupName;
+        into.organizationUnitCreated ||= out.organizationUnitCreated;
+        into.payrollAreaCreated ||= out.payrollAreaCreated;
+        into.employeeGroupCreated ||= out.employeeGroupCreated;
+        into.employeeSubGroupCreated ||= out.employeeSubGroupCreated;
+        into.sickLeaveRuleCreated ||= out.sickLeaveRuleCreated;
+        into.workingTimeCreated ||= out.workingTimeCreated;
+        into.gratuitySlabsCreated = (into.gratuitySlabsCreated ?? 0) + out.gratuitySlabsCreated;
+        into.leaveEntitlementsCreated = (into.leaveEntitlementsCreated ?? 0) + out.leaveEntitlementsCreated;
+        into.placeholdersCreated = (into.placeholdersCreated ?? 0) + out.placeholdersCreated;
+        into.employeesCreated = (into.employeesCreated ?? 0) + out.employeesCreated;
+        into.employeesAlreadyLoaded = (into.employeesAlreadyLoaded ?? 0) + out.employeesAlreadyLoaded;
+
+        for (const result of out.rows ?? []) {
+            result.rowNumber = row;
+            into.rows.push(result);
+        }
+    }
+
+    private isEmptyRow(dto: GoLiveV2EmployeeRowDto): boolean {
+        return !dto.code && !dto.fullName && !dto.civilId && !dto.joiningDate && dto.basicSalary === undefined;
+    }
+
+    private elapsedMs(p: LoadProgress): number {
+        return (p.finishedAt ?? this.now()) - p.startedAt;
+    }
+
+    /** mm:ss, or h:mm:ss past the hour. */
+    private duration(ms: number): string {
+        const total = Math.max(0, Math.round(ms / 1000));
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        const mmss = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        return h > 0 ? `${h}:${mmss}` : mmss;
+    }
+
+    private startTicker(): void {
+        this.stopTicker();
+        this.now.set(Date.now());
+        this.ticker = setInterval(() => this.now.set(Date.now()), 1000);
+    }
+
+    private stopTicker(): void {
+        if (this.ticker !== null) {
+            clearInterval(this.ticker);
+            this.ticker = null;
+        }
+    }
 
     private refreshPayrollAreas(): void {
         this.proxy.getPayrollAreaNames().subscribe((names) => {

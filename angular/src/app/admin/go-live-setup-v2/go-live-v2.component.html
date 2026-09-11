@@ -41,11 +41,6 @@
                             (input)="onOrganizationUnitChange($event)" />
                         <div class="v2-field-note">{{ 'GoLiveV2OrganizationUnitHint' | localize }}</div>
                     </div>
-
-                    <div class="v2-field">
-                        <span class="form-label">{{ 'GoLiveV2PayrollArea' | localize }}</span>
-                        <div class="v2-field-note">{{ l('GoLiveV2LoadGoesInto', payrollAreaName()) }}</div>
-                    </div>
                 </div>
 
                 <div class="v2-grid">
@@ -56,11 +51,6 @@
                         [viewportHeight]="320"
                         (issuesChange)="gridIssues.set($event)" />
                 </div>
-
-                <p class="v2-defaults">
-                    <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
-                    {{ 'GoLiveV2DefaultsNote' | localize }}
-                </p>
 
                 @if (gridIssues().length > 0) {
                     <p class="v2-grid-blocked">{{ 'GoLiveV2FixGridFirst' | localize }}</p>
@@ -294,4 +284,101 @@
             </div>
         </div>
     </div>
+
+    @if (progress(); as p) {
+        <!-- The load's progress: who is being loaded now, how far it has got, how long it is taking. -->
+        <div class="v2-modal-backdrop">
+            <div class="v2-modal" role="dialog" aria-modal="true" aria-labelledby="v2-progress-title">
+                <h4 class="v2-modal-title" id="v2-progress-title">{{ 'GoLiveV2ProgressTitle' | localize }}</h4>
+
+                <div
+                    class="v2-progress-bar"
+                    role="progressbar"
+                    [attr.aria-valuenow]="progressPercent(p)"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                    <div class="v2-progress-fill" [style.width.%]="progressPercent(p)"></div>
+                </div>
+                <div class="v2-progress-caption">
+                    {{ l('GoLiveV2ProgressOf', p.done, p.total) }} · {{ progressPercent(p) }}%
+                </div>
+
+                @if (p.current; as current) {
+                    <div class="v2-progress-now">
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                        {{ l('GoLiveV2ProgressNow', current.row, current.code, current.name) }}
+                    </div>
+                    @if (p.done === 0) {
+                        <div class="v2-progress-note">{{ 'GoLiveV2ProgressPreparing' | localize }}</div>
+                    }
+                } @else if (p.outcome !== 'running') {
+                    <div class="v2-progress-now" [class.v2-progress-warn]="p.outcome !== 'finished'">
+                        {{ progressEndText(p) }}
+                    </div>
+                }
+
+                <div class="v2-progress-stats">
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressLoaded' | localize }}</span>
+                        <strong>{{ p.loaded }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressFailed' | localize }}</span>
+                        <strong [class.text-danger]="p.failed > 0">{{ p.failed }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressRemaining' | localize }}</span>
+                        <strong>{{ p.total - p.done }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressAverage' | localize }}</span>
+                        <strong>{{ averageText(p) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressElapsed' | localize }}</span>
+                        <strong>{{ elapsedText(p) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveV2ProgressLeft' | localize }}</span>
+                        <strong>{{ p.outcome === 'running' ? timeLeftText(p) : '—' }}</strong>
+                    </div>
+                </div>
+
+                @if (p.recent.length > 0) {
+                    <div class="v2-said-label">{{ 'GoLiveV2ProgressRecent' | localize }}</div>
+                    <ul class="v2-progress-recent">
+                        @for (r of p.recent; track r.rowNumber + '|' + r.code) {
+                            <li [class.text-danger]="!r.succeeded">
+                                <i
+                                    class="fa me-1"
+                                    [class.fa-check]="r.succeeded"
+                                    [class.fa-times]="!r.succeeded"
+                                    aria-hidden="true"></i>
+                                <span class="v2-code">{{ l('GoLiveV2RowLabel', r.rowNumber) }} · {{ r.code }}</span>
+                                @if (!r.succeeded) {
+                                    — {{ r.message }}
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class="v2-modal-actions">
+                    @if (p.outcome === 'running') {
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            [disabled]="stopRequested()"
+                            (click)="stopLoading()">
+                            {{ (stopRequested() ? 'GoLiveV2ProgressStopping' : 'GoLiveV2ProgressStop') | localize }}
+                        </button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" (click)="closeProgress()">
+                            {{ 'GoLiveV2ProgressClose' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 </div>

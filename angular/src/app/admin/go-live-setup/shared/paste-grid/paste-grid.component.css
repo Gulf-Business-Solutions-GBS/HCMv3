@@ -111,8 +111,13 @@
     align-items: stretch;
 }
 
+/* The spare room on the right lets the header scroll as far as the body does. Without it the header's own
+   maximum scroll is shorter than the body's by the scrollbar gutter, so at the right-hand end the browser clamps
+   it -- and every heading sits a gutter's width to the right of its column. */
 .pg-head {
     background: var(--pg-head-bg);
+    box-sizing: content-box;
+    padding-inline-end: 40px;
 }
 
 .pg-cell {
