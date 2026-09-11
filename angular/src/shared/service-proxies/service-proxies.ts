@@ -66238,6 +66238,62 @@ export class GoLiveV2ServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    setUpPayrollMonth(body?: GoLiveV2SetUpPayrollMonthInput | undefined): Observable<GoLiveV2SetUpPayrollMonthOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/SetUpPayrollMonth";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetUpPayrollMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetUpPayrollMonth(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+        }));
+    }
+
+    protected processSetUpPayrollMonth(response: HttpResponseBase): Observable<GoLiveV2SetUpPayrollMonthOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2SetUpPayrollMonthOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -260143,6 +260199,11 @@ export interface IGoLiveV2EmployeeResultDto {
     message: string | undefined;
 }
 
+export enum GoLiveV2NextStep {
+    None = 0,
+    SetUpPayrollMonth = 1,
+}
+
 export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
     payDate!: DateTime | undefined;
     payrollAreaName!: string | undefined;
@@ -260187,6 +260248,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
     succeeded!: boolean;
     stoppedAt!: GoLiveV2StoppedAt;
     message!: string | undefined;
+    nextStep!: GoLiveV2NextStep;
     payInDate!: DateTime | undefined;
     employees!: GoLiveV2EmployeeResultDto[] | undefined;
 
@@ -260204,6 +260266,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
             this.succeeded = _data["succeeded"];
             this.stoppedAt = _data["stoppedAt"];
             this.message = _data["message"];
+            this.nextStep = _data["nextStep"];
             this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
@@ -260225,6 +260288,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
         data["succeeded"] = this.succeeded;
         data["stoppedAt"] = this.stoppedAt;
         data["message"] = this.message;
+        data["nextStep"] = this.nextStep;
         data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
         if (Array.isArray(this.employees)) {
             data["employees"] = [];
@@ -260239,8 +260303,113 @@ export interface IGoLiveV2RunPayrollOutput {
     succeeded: boolean;
     stoppedAt: GoLiveV2StoppedAt;
     message: string | undefined;
+    nextStep: GoLiveV2NextStep;
     payInDate: DateTime | undefined;
     employees: GoLiveV2EmployeeResultDto[] | undefined;
+}
+
+export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMonthInput {
+    payDate!: DateTime;
+    payrollAreaName!: string;
+
+    constructor(data?: IGoLiveV2SetUpPayrollMonthInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SetUpPayrollMonthInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SetUpPayrollMonthInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        return data;
+    }
+}
+
+export interface IGoLiveV2SetUpPayrollMonthInput {
+    payDate: DateTime;
+    payrollAreaName: string;
+}
+
+export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMonthOutput {
+    payrollAreaName!: string | undefined;
+    payrollAreaCreated!: boolean;
+    currencyCode!: string | undefined;
+    payYear!: string | undefined;
+    cutOffDay!: number;
+    controlRecordCreated!: boolean;
+    monthStart!: DateTime;
+    monthEnd!: DateTime;
+
+    constructor(data?: IGoLiveV2SetUpPayrollMonthOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payrollAreaCreated = _data["payrollAreaCreated"];
+            this.currencyCode = _data["currencyCode"];
+            this.payYear = _data["payYear"];
+            this.cutOffDay = _data["cutOffDay"];
+            this.controlRecordCreated = _data["controlRecordCreated"];
+            this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
+            this.monthEnd = _data["monthEnd"] ? DateTime.fromISO(_data["monthEnd"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2SetUpPayrollMonthOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2SetUpPayrollMonthOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payrollAreaCreated"] = this.payrollAreaCreated;
+        data["currencyCode"] = this.currencyCode;
+        data["payYear"] = this.payYear;
+        data["cutOffDay"] = this.cutOffDay;
+        data["controlRecordCreated"] = this.controlRecordCreated;
+        data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
+        data["monthEnd"] = this.monthEnd ? this.monthEnd.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGoLiveV2SetUpPayrollMonthOutput {
+    payrollAreaName: string | undefined;
+    payrollAreaCreated: boolean;
+    currencyCode: string | undefined;
+    payYear: string | undefined;
+    cutOffDay: number;
+    controlRecordCreated: boolean;
+    monthStart: DateTime;
+    monthEnd: DateTime;
 }
 
 export enum GoLiveV2StoppedAt {

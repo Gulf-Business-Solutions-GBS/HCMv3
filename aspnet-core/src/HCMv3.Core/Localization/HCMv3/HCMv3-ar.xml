@@ -5431,6 +5431,17 @@
     <text name="GoLiveV2PayrollArea">منطقة الرواتب</text>
     <text name="GoLiveV2PayrollAreaHint">مجموعة الموظفين الذين تُصرف رواتبهم معاً. تحتاج معظم الشركات إلى منطقة واحدة فقط.</text>
     <text name="GoLiveV2WhyPayrollArea">أُضيف لأن المحرك طلب منطقة رواتب.</text>
+    <text name="GoLiveV2NextSetUpMonth">لا يوجد سجل تحكم لمنطقة الرواتب هذه بعد، لذا لا يستطيع المحرك البدء. يمكن للإصدار 2 إعداده الآن:</text>
+    <text name="GoLiveV2SetUpMonthButton">إعداد {0} لـ {1}</text>
+    <text name="GoLiveV2SettingUp">جارٍ الإعداد…</text>
+    <text name="GoLiveV2SetUpCreatedArea">تم إنشاء منطقة الرواتب «{0}»: تُصرف بـ {1}، سنة الرواتب {2}، يوم الإقفال {3}.</text>
+    <text name="GoLiveV2SetUpUsedArea">تم استخدام منطقة الرواتب الموجودة «{0}».</text>
+    <text name="GoLiveV2SetUpCreatedControlRecord">تم إنشاء سجل التحكم الخاص بها من {0} إلى {1}، مقفلاً لتشغيل الرواتب.</text>
+    <text name="GoLiveV2SetUpKeptControlRecord">كان لديها سجل تحكم بالفعل، من {0} إلى {1}، وقد تُرك كما هو.</text>
+    <text name="GoLiveV2PressRunAgain">اضغط «تشغيل الرواتب» مرة أخرى لمعرفة ما يطلبه المحرك بعد ذلك.</text>
+    <text name="GoLiveV2SetUpLog">إعداد</text>
+    <text name="GoLiveV2CurrencyMissing">الدينار الكويتي (KWD) غير مُعرَّف لهذه الشركة، لذا لا يمكن إنشاء منطقة رواتب بعد.</text>
+    <text name="GoLiveV2PayYearMissing">سنة الرواتب من يناير إلى ديسمبر غير مُعرَّفة لهذه الشركة، لذا لا يمكن إنشاء منطقة رواتب بعد.</text>
     <text name="GoLiveV2Running">جارٍ التشغيل…</text>
     <text name="GoLiveV2EngineSaid">ما قاله محرك الرواتب</text>
     <text name="GoLiveV2StoppedAtInput">توقف قبل البدء — لم يُقدَّم شيء يحتاجه</text>

@@ -6,16 +6,21 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
+    GoLiveV2NextStep,
     GoLiveV2RunPayrollInput,
     GoLiveV2RunPayrollOutput,
     GoLiveV2ServiceProxy,
+    GoLiveV2SetUpPayrollMonthInput,
+    GoLiveV2SetUpPayrollMonthOutput,
     GoLiveV2StoppedAt,
 } from '@shared/service-proxies/service-proxies';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 
+/** One line in the log: a press of Run payroll, or a set-up step taken in answer to one. */
 interface Attempt {
     at: Date;
-    result: GoLiveV2RunPayrollOutput;
+    result?: GoLiveV2RunPayrollOutput;
+    setUp?: GoLiveV2SetUpPayrollMonthOutput;
 }
 
 /**
@@ -28,7 +33,8 @@ interface Attempt {
  *
  * Each field is added only once the engine has asked for it, and says so on screen. The first press sent
  * nothing and was refused for want of a pay date, so the month is the first field; with a month, it asked
- * for a payroll area, so that is the second.
+ * for a payroll area, so that is the second. With both, the engine found no control record, so a refusal
+ * can now come with the step that answers it: here, setting up the month.
  */
 @Component({
     templateUrl: './go-live-v2.component.html',
@@ -52,10 +58,16 @@ export class GoLiveV2Component extends AppComponentBase {
     readonly payrollAreaName = signal('Default Payroll Area');
 
     readonly running = signal(false);
+    readonly settingUp = signal(false);
     readonly latest = signal<GoLiveV2RunPayrollOutput | null>(null);
+    readonly lastSetUp = signal<GoLiveV2SetUpPayrollMonthOutput | null>(null);
     readonly attempts = signal<Attempt[]>([]);
 
+    /** A set-up needs the same two things a run does. */
+    readonly canSetUp = computed(() => !!this.monthEnd() && this.payrollAreaName().trim().length > 0);
+
     readonly StoppedAt = GoLiveV2StoppedAt;
+    readonly NextStep = GoLiveV2NextStep;
 
     runPayroll(): void {
         if (this.running()) {
@@ -68,8 +80,32 @@ export class GoLiveV2Component extends AppComponentBase {
             .runPayroll(this.buildInput())
             .pipe(finalize(() => this.running.set(false)))
             .subscribe((result) => {
+                this.lastSetUp.set(null);
                 this.latest.set(result);
                 this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
+            });
+    }
+
+    /** Answers "Payroll Control Record not found" with the same month and payroll area the run was given. */
+    setUpPayrollMonth(): void {
+        if (this.settingUp() || !this.canSetUp()) {
+            return;
+        }
+
+        const input = new GoLiveV2SetUpPayrollMonthInput();
+        input.payDate = this.monthEnd().plus({ hours: 12 });
+        input.payrollAreaName = this.payrollAreaName().trim();
+
+        this.settingUp.set(true);
+
+        this.proxy
+            .setUpPayrollMonth(input)
+            .pipe(finalize(() => this.settingUp.set(false)))
+            .subscribe((setUp) => {
+                // The refusal it answered is now out of date, so it gives way to what was done about it.
+                this.latest.set(null);
+                this.lastSetUp.set(setUp);
+                this.attempts.update((list) => [{ at: new Date(), setUp }, ...list]);
             });
     }
 
@@ -99,6 +135,33 @@ export class GoLiveV2Component extends AppComponentBase {
 
     payPeriod(result: GoLiveV2RunPayrollOutput): string | null {
         return result.payInDate ? this.l('GoLiveV2PaidUpTo', result.payInDate.toFormat('dd/MM/yyyy')) : null;
+    }
+
+    /** "Set up September 2026 for Default Payroll Area" -- the button says exactly what it will do. */
+    setUpLabel(): string {
+        const end = this.monthEnd();
+        return this.l('GoLiveV2SetUpMonthButton', end ? end.toFormat('MMMM yyyy') : '', this.payrollAreaName().trim());
+    }
+
+    /** What a set-up did, one sentence per record, including the defaults it chose. */
+    describeSetUp(setUp: GoLiveV2SetUpPayrollMonthOutput): string[] {
+        const area = setUp.payrollAreaCreated
+            ? this.l(
+                  'GoLiveV2SetUpCreatedArea',
+                  setUp.payrollAreaName,
+                  setUp.currencyCode,
+                  setUp.payYear,
+                  setUp.cutOffDay
+              )
+            : this.l('GoLiveV2SetUpUsedArea', setUp.payrollAreaName);
+
+        const from = setUp.monthStart.toFormat('dd/MM/yyyy');
+        const to = setUp.monthEnd.toFormat('dd/MM/yyyy');
+        const record = setUp.controlRecordCreated
+            ? this.l('GoLiveV2SetUpCreatedControlRecord', from, to)
+            : this.l('GoLiveV2SetUpKeptControlRecord', from, to);
+
+        return [area, record];
     }
 
     /**

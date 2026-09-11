@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using HCMv3.GeneralMasterInfo;
 
 namespace HCMv3.GoLiveSetupV2.Dto;
 
@@ -49,6 +51,12 @@ public class GoLiveV2RunPayrollOutput
     /// </summary>
     public string Message { get; set; }
 
+    /// <summary>
+    /// The V2 step that answers this refusal, when V2 has one. Worked out from what is actually missing, not
+    /// by matching the message, so a reworded engine message cannot silently hide the step.
+    /// </summary>
+    public GoLiveV2NextStep NextStep { get; set; }
+
     /// <summary>The month end the engine actually paid up to, once it got as far as starting.</summary>
     public DateTime? PayInDate { get; set; }
 
@@ -64,4 +72,46 @@ public class GoLiveV2EmployeeResultDto
 
     /// <summary>The engine's own message for this employee.</summary>
     public string Message { get; set; }
+}
+
+/// <summary>A step V2 can take to answer the engine's latest refusal. Grows one member per link answered.</summary>
+public enum GoLiveV2NextStep
+{
+    None = 0,
+
+    /// <summary>"Payroll Control Record not found": create the payroll area if needed, and its control record.</summary>
+    SetUpPayrollMonth = 1,
+}
+
+/// <summary>The month and payroll area to set up -- the same two things the run was given.</summary>
+public class GoLiveV2SetUpPayrollMonthInput
+{
+    [Required]
+    public DateTime? PayDate { get; set; }
+
+    [Required]
+    [StringLength(SimpleLookupConsts.MaxNameLength)]
+    public string PayrollAreaName { get; set; }
+}
+
+/// <summary>What the set-up did, so the screen can say so -- including the defaults it chose.</summary>
+public class GoLiveV2SetUpPayrollMonthOutput
+{
+    public string PayrollAreaName { get; set; }
+
+    /// <summary>False when a payroll area of that name already existed and was used as it was.</summary>
+    public bool PayrollAreaCreated { get; set; }
+
+    public string CurrencyCode { get; set; }
+
+    public string PayYear { get; set; }
+
+    public int CutOffDay { get; set; }
+
+    /// <summary>False when the area already had a control record, which was left as it was.</summary>
+    public bool ControlRecordCreated { get; set; }
+
+    public DateTime MonthStart { get; set; }
+
+    public DateTime MonthEnd { get; set; }
 }

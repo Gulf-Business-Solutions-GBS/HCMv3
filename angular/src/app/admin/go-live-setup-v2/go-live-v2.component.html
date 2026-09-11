@@ -66,6 +66,25 @@
                             <blockquote class="v2-said">{{ result.message }}</blockquote>
                         }
 
+                        @if (result.nextStep === NextStep.SetUpPayrollMonth) {
+                            <div class="v2-next">
+                                <p class="v2-next-text">{{ 'GoLiveV2NextSetUpMonth' | localize }}</p>
+                                <button
+                                    type="button"
+                                    class="btn btn-success v2-next-button"
+                                    [disabled]="settingUp() || !canSetUp()"
+                                    (click)="setUpPayrollMonth()">
+                                    @if (settingUp()) {
+                                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                        {{ 'GoLiveV2SettingUp' | localize }}
+                                    } @else {
+                                        <i class="fa fa-tools me-2" aria-hidden="true"></i>
+                                        {{ setUpLabel() }}
+                                    }
+                                </button>
+                            </div>
+                        }
+
                         @if (payPeriod(result); as period) {
                             <div class="v2-period">{{ period }}</div>
                         }
@@ -102,6 +121,18 @@
                         }
                     </div>
                 }
+
+                @if (lastSetUp(); as setUp) {
+                    <div class="v2-result v2-ok" role="status">
+                        @for (line of describeSetUp(setUp); track line) {
+                            <div class="v2-outcome">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                {{ line }}
+                            </div>
+                        }
+                        <p class="v2-next-text">{{ 'GoLiveV2PressRunAgain' | localize }}</p>
+                    </div>
+                }
             </div>
         </div>
 
@@ -116,14 +147,20 @@
                         @for (attempt of attempts(); track attempt.at) {
                             <li class="v2-attempt">
                                 <span class="v2-time">{{ attempt.at | date: 'HH:mm:ss' }}</span>
-                                <span
-                                    class="badge"
-                                    [class.badge-light-success]="attempt.result.succeeded"
-                                    [class.badge-light-warning]="!attempt.result.succeeded">
-                                    {{ outcomeKey(attempt.result) | localize }}
-                                </span>
-                                @if (attempt.result.message) {
-                                    <span class="v2-attempt-said">{{ attempt.result.message }}</span>
+                                @if (attempt.result; as result) {
+                                    <span
+                                        class="badge"
+                                        [class.badge-light-success]="result.succeeded"
+                                        [class.badge-light-warning]="!result.succeeded">
+                                        {{ outcomeKey(result) | localize }}
+                                    </span>
+                                    @if (result.message) {
+                                        <span class="v2-attempt-said">{{ result.message }}</span>
+                                    }
+                                }
+                                @if (attempt.setUp; as setUp) {
+                                    <span class="badge badge-light-primary">{{ 'GoLiveV2SetUpLog' | localize }}</span>
+                                    <span class="v2-attempt-said">{{ describeSetUp(setUp).join(' ') }}</span>
                                 }
                             </li>
                         }

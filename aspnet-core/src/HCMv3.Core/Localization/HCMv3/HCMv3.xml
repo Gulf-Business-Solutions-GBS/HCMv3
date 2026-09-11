@@ -5581,6 +5581,17 @@
     <text name="GoLiveV2PayrollArea">Payroll area</text>
     <text name="GoLiveV2PayrollAreaHint">The group of employees paid together. Most companies need only one.</text>
     <text name="GoLiveV2WhyPayrollArea">Added because the engine asked for a payroll area.</text>
+    <text name="GoLiveV2NextSetUpMonth">This payroll area has no control record yet, so the engine cannot start. V2 can set it up now:</text>
+    <text name="GoLiveV2SetUpMonthButton">Set up {0} for {1}</text>
+    <text name="GoLiveV2SettingUp">Setting up…</text>
+    <text name="GoLiveV2SetUpCreatedArea">Created payroll area "{0}": pays in {1}, pay year {2}, cut-off day {3}.</text>
+    <text name="GoLiveV2SetUpUsedArea">Used the existing payroll area "{0}".</text>
+    <text name="GoLiveV2SetUpCreatedControlRecord">Created its control record for {0} to {1}, locked for payroll.</text>
+    <text name="GoLiveV2SetUpKeptControlRecord">It already had a control record, for {0} to {1}, and it was left as it was.</text>
+    <text name="GoLiveV2PressRunAgain">Press Run payroll again to see what the engine asks for next.</text>
+    <text name="GoLiveV2SetUpLog">Set up</text>
+    <text name="GoLiveV2CurrencyMissing">Kuwaiti Dinar (KWD) is not set up for this company, so a payroll area cannot be created yet.</text>
+    <text name="GoLiveV2PayYearMissing">The January to December pay year is not set up for this company, so a payroll area cannot be created yet.</text>
     <text name="GoLiveV2Running">Running…</text>
     <text name="GoLiveV2EngineSaid">What the payroll engine said</text>
     <text name="GoLiveV2StoppedAtInput">Stopped before starting — something it needs was not given</text>

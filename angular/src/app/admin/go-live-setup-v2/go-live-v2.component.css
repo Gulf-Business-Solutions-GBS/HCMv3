@@ -148,3 +148,18 @@
     font-size: 0.8rem;
     font-style: italic;
 }
+
+/* The step that answers the refusal sits inside it, so the two read as question and answer. */
+.v2-next {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--bs-gray-400);
+}
+
+.v2-next-text {
+    margin: 0;
+}

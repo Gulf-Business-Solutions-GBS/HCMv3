@@ -26,4 +26,15 @@ public interface IGoLiveV2AppService : IApplicationService
     /// <c>IPayrollEngineAppService.RunPayrollEngine</c>.</para>
     /// </summary>
     Task<GoLiveV2RunPayrollOutput> RunPayroll(GoLiveV2RunPayrollInput input);
+
+    /// <summary>
+    /// Answers "Payroll Control Record not found": makes the payroll area the run named, if the tenant does not
+    /// have it, and its control record for the month, locked as the engine requires for a regular run. An area
+    /// that already exists is used as it is, and one that already has a control record keeps it.
+    ///
+    /// <para>A new area gets Kuwait defaults -- Kuwaiti Dinar, a January to December pay year, cut-off at month
+    /// end -- and the result names them. Both records go through their own services, so every check those
+    /// screens make applies here too.</para>
+    /// </summary>
+    Task<GoLiveV2SetUpPayrollMonthOutput> SetUpPayrollMonth(GoLiveV2SetUpPayrollMonthInput input);
 }
