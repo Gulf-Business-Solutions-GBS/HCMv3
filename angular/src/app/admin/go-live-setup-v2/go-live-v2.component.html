@@ -35,6 +35,19 @@
                         }
                         <div class="v2-field-why">{{ 'GoLiveV2WhyPayDate' | localize }}</div>
                     </div>
+
+                    <div class="v2-field">
+                        <label class="form-label" for="v2-payroll-area">{{ 'GoLiveV2PayrollArea' | localize }}</label>
+                        <input
+                            id="v2-payroll-area"
+                            type="text"
+                            class="form-control"
+                            maxlength="128"
+                            [value]="payrollAreaName()"
+                            (input)="onPayrollAreaChange($event)" />
+                        <div class="v2-field-note">{{ 'GoLiveV2PayrollAreaHint' | localize }}</div>
+                        <div class="v2-field-why">{{ 'GoLiveV2WhyPayrollArea' | localize }}</div>
+                    </div>
                 </div>
 
                 @if (latest(); as result) {

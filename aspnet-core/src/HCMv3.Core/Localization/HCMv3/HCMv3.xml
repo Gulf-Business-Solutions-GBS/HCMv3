@@ -5578,6 +5578,9 @@
     <text name="GoLiveV2PayMonth">Month to pay</text>
     <text name="GoLiveV2PaysUpTo">Pays up to {0}, the last day of the month</text>
     <text name="GoLiveV2WhyPayDate">Added because the engine asked for a pay date.</text>
+    <text name="GoLiveV2PayrollArea">Payroll area</text>
+    <text name="GoLiveV2PayrollAreaHint">The group of employees paid together. Most companies need only one.</text>
+    <text name="GoLiveV2WhyPayrollArea">Added because the engine asked for a payroll area.</text>
     <text name="GoLiveV2Running">Running…</text>
     <text name="GoLiveV2EngineSaid">What the payroll engine said</text>
     <text name="GoLiveV2StoppedAtInput">Stopped before starting — something it needs was not given</text>

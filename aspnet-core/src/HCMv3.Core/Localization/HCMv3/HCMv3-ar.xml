@@ -5428,6 +5428,9 @@
     <text name="GoLiveV2PayMonth">شهر الرواتب</text>
     <text name="GoLiveV2PaysUpTo">يُصرف حتى {0}، آخر يوم في الشهر</text>
     <text name="GoLiveV2WhyPayDate">أُضيف لأن المحرك طلب تاريخ صرف.</text>
+    <text name="GoLiveV2PayrollArea">منطقة الرواتب</text>
+    <text name="GoLiveV2PayrollAreaHint">مجموعة الموظفين الذين تُصرف رواتبهم معاً. تحتاج معظم الشركات إلى منطقة واحدة فقط.</text>
+    <text name="GoLiveV2WhyPayrollArea">أُضيف لأن المحرك طلب منطقة رواتب.</text>
     <text name="GoLiveV2Running">جارٍ التشغيل…</text>
     <text name="GoLiveV2EngineSaid">ما قاله محرك الرواتب</text>
     <text name="GoLiveV2StoppedAtInput">توقف قبل البدء — لم يُقدَّم شيء يحتاجه</text>

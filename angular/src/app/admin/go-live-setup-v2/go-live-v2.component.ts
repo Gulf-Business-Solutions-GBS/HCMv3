@@ -27,7 +27,8 @@ interface Attempt {
  * as it happened.
  *
  * Each field is added only once the engine has asked for it, and says so on screen. The first press sent
- * nothing and was refused for want of a pay date, so the month is the first field.
+ * nothing and was refused for want of a pay date, so the month is the first field; with a month, it asked
+ * for a payroll area, so that is the second.
  */
 @Component({
     templateUrl: './go-live-v2.component.html',
@@ -46,6 +47,9 @@ export class GoLiveV2Component extends AppComponentBase {
         const month = this.payMonth();
         return month ? DateTime.fromISO(`${month}-01`).endOf('month').startOf('day') : null;
     });
+
+    /** The payroll area to run, by name -- the engine matches it by name. Pre-filled so one press is enough. */
+    readonly payrollAreaName = signal('Default Payroll Area');
 
     readonly running = signal(false);
     readonly latest = signal<GoLiveV2RunPayrollOutput | null>(null);
@@ -71,6 +75,10 @@ export class GoLiveV2Component extends AppComponentBase {
 
     onPayMonthChange(event: Event): void {
         this.payMonth.set((event.target as HTMLInputElement).value);
+    }
+
+    onPayrollAreaChange(event: Event): void {
+        this.payrollAreaName.set((event.target as HTMLInputElement).value);
     }
 
     /** Where the run stopped, as a sentence the customer recognises. */
@@ -105,6 +113,11 @@ export class GoLiveV2Component extends AppComponentBase {
 
         if (end) {
             input.payDate = end.plus({ hours: 12 });
+        }
+
+        const payrollArea = this.payrollAreaName().trim();
+        if (payrollArea) {
+            input.payrollAreaName = payrollArea;
         }
 
         return input;
