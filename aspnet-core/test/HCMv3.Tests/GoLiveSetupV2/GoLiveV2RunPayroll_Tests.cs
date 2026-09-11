@@ -198,18 +198,19 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
         });
     }
 
-    /// <summary>The point of the step: the same press that was refused now gets one link further.</summary>
+    /// <summary>
+    /// The point of the step: the same press that was refused gets further. Set-up lays down the control record
+    /// and the pay calendar, so the engine passes both and runs -- and finds nobody in the payroll area yet.
+    /// </summary>
     [Fact]
-    public async Task Should_Get_Past_The_Control_Record_Once_The_Month_Is_Set_Up()
+    public async Task Should_Get_Past_The_Control_Record_And_The_Calendar_Once_The_Month_Is_Set_Up()
     {
         GivenTheReferenceData();
         await _goLive.SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
-        result.Message.ShouldNotBe("Payroll Control Record not found, Cannot Run Payroll Engine.");
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Engine);
-        result.Message.ShouldBe("Payroll Calender does not have record for Payroll month you are running.");
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.NoEmployees);
         result.NextStep.ShouldBe(GoLiveV2NextStep.None);
     }
 
@@ -266,10 +267,125 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
         ex.Message.ShouldContain("KWD");
     }
 
+    // ---------------------------------------------------------------- link 4 answered: the pay calendar
+
+    /// <summary>
+    /// A tenant whose payroll area and control record exist -- set up by hand, or by an earlier V2 -- but that
+    /// has no calendar. The engine refuses, and the same set-up step is offered, because it fills in whatever
+    /// the month is still missing.
+    /// </summary>
+    [Fact]
+    public async Task Should_Point_To_Setting_Up_The_Month_When_The_Pay_Calendar_Is_Missing()
+    {
+        GivenTheReferenceData();
+        GivenAPayrollAreaWithAControlRecordButNoCalendar(DefaultArea);
+
+        var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Engine);
+        result.Message.ShouldBe("Payroll Calender does not have record for Payroll month you are running.");
+        result.NextStep.ShouldBe(GoLiveV2NextStep.SetUpPayrollMonth);
+    }
+
+    /// <summary>
+    /// No questions asked: the year is assumed to run January to December, so the calendar is the twelve
+    /// calendar months of the year being paid.
+    /// </summary>
+    [Fact]
+    public async Task Should_Lay_Down_A_January_To_December_Calendar_For_The_Year()
+    {
+        GivenTheReferenceData();
+
+        var setUp = await _goLive.SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        setUp.CalendarYear.ShouldBe(2026);
+        setUp.CalendarMonthsCreated.ShouldBe(12);
+
+        UsingDbContext(context =>
+        {
+            var months = context.PayrollCalendars
+                .Where(c => c.TenantId == TenantId && c.PayrollYear == 2026)
+                .OrderBy(c => c.PayrollMonth)
+                .ToList();
+
+            months.Select(c => c.PayrollMonth).ShouldBe(Enumerable.Range(1, 12));
+            months.First().StartDate.ShouldBe(new DateTime(2026, 1, 1));
+            months.First().EndDate.ShouldBe(new DateTime(2026, 1, 31));
+            months.Single(c => c.PayrollMonth == 2).EndDate.ShouldBe(new DateTime(2026, 2, 28));
+            months.Last().EndDate.ShouldBe(new DateTime(2026, 12, 31));
+        });
+    }
+
+    [Fact]
+    public async Task Should_Only_Add_The_Calendar_Months_That_Are_Missing()
+    {
+        // September already there -- say, keyed in by hand. The rest of the year is added around it.
+        GivenTheReferenceData();
+        GivenAPayrollAreaWithAControlRecordButNoCalendar(DefaultArea);
+        GivenACalendarMonth(DefaultArea, 9);
+
+        var setUp = await _goLive.SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        setUp.CalendarMonthsCreated.ShouldBe(11);
+        UsingDbContext(context => context.PayrollCalendars.Count(c => c.TenantId == TenantId && c.PayrollYear == 2026).ShouldBe(12));
+    }
+
+    [Fact]
+    public async Task Should_Leave_A_Complete_Calendar_Alone()
+    {
+        GivenTheReferenceData();
+        await _goLive.SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        var again = await _goLive.SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        again.CalendarMonthsCreated.ShouldBe(0);
+        UsingDbContext(context => context.PayrollCalendars.Count(c => c.TenantId == TenantId).ShouldBe(12));
+    }
+
     // ---------------------------------------------------------------- arrange
 
     private void GivenTheReferenceData() =>
         AsyncHelper.RunSync(() => Resolve<IReferenceDataSeeder>().SeedPackAsync("universal", TenantId));
+
+    /// <summary>The state IT4's set-up used to leave behind: an area and a locked control record, no calendar.</summary>
+    private void GivenAPayrollAreaWithAControlRecordButNoCalendar(string name)
+    {
+        GivenAPayrollAreaWithoutAControlRecord(name, "Jan-Dec");
+
+        UsingDbContext(context =>
+        {
+            var area = context.PayrollAreas.Single(a => a.TenantId == TenantId && a.Name == name);
+            context.PayrollControlRecords.Add(new PayrollControlRecord
+            {
+                TenantId = TenantId,
+                PayrollAreaId = area.Id,
+                PayrollMonth = PayDate.Month,
+                PayrollYear = PayDate.Year,
+                CalendarMonthStart = new DateTime(PayDate.Year, PayDate.Month, 1),
+                CalendarMonthEnd = PayDate,
+                PeriodLocked = true,
+            });
+            context.SaveChanges();
+        });
+    }
+
+    private void GivenACalendarMonth(string areaName, int month)
+    {
+        UsingDbContext(context =>
+        {
+            var area = context.PayrollAreas.Single(a => a.TenantId == TenantId && a.Name == areaName);
+            context.PayrollCalendars.Add(new PayrollCalendar
+            {
+                TenantId = TenantId,
+                PayrollAreaId = area.Id,
+                PayrollMonth = month,
+                PayrollYear = 2026,
+                StartDate = new DateTime(2026, month, 1),
+                EndDate = new DateTime(2026, month, DateTime.DaysInMonth(2026, month)),
+            });
+            context.SaveChanges();
+        });
+    }
 
     /// <summary>A payroll area set up by hand on the payroll screens, before V2 was ever opened.</summary>
     private void GivenAPayrollAreaWithoutAControlRecord(string name, string payYearCode)

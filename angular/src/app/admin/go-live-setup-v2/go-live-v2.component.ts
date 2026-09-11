@@ -34,7 +34,8 @@ interface Attempt {
  * Each field is added only once the engine has asked for it, and says so on screen. The first press sent
  * nothing and was refused for want of a pay date, so the month is the first field; with a month, it asked
  * for a payroll area, so that is the second. With both, the engine found no control record, so a refusal
- * can now come with the step that answers it: here, setting up the month.
+ * can now come with the step that answers it: here, setting up the month. Once it had one, it asked for a
+ * pay calendar, so the same step now lays one down too -- January to December, without asking.
  */
 @Component({
     templateUrl: './go-live-v2.component.html',
@@ -86,7 +87,7 @@ export class GoLiveV2Component extends AppComponentBase {
             });
     }
 
-    /** Answers "Payroll Control Record not found" with the same month and payroll area the run was given. */
+    /** Answers the control record and pay calendar refusals with the same month and payroll area the run was given. */
     setUpPayrollMonth(): void {
         if (this.settingUp() || !this.canSetUp()) {
             return;
@@ -161,7 +162,11 @@ export class GoLiveV2Component extends AppComponentBase {
             ? this.l('GoLiveV2SetUpCreatedControlRecord', from, to)
             : this.l('GoLiveV2SetUpKeptControlRecord', from, to);
 
-        return [area, record];
+        const calendar = setUp.calendarMonthsCreated
+            ? this.l('GoLiveV2SetUpCreatedCalendar', setUp.calendarYear, setUp.calendarMonthsCreated)
+            : this.l('GoLiveV2SetUpKeptCalendar', setUp.calendarYear);
+
+        return [area, record, calendar];
     }
 
     /**

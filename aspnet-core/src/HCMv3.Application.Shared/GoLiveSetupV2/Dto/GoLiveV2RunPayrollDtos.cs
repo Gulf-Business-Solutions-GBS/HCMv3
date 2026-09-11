@@ -79,7 +79,10 @@ public enum GoLiveV2NextStep
 {
     None = 0,
 
-    /// <summary>"Payroll Control Record not found": create the payroll area if needed, and its control record.</summary>
+    /// <summary>
+    /// "Payroll Control Record not found" or "Payroll Calender does not have record for Payroll month": create
+    /// whichever of the payroll area, its control record and the year's pay calendar is missing.
+    /// </summary>
     SetUpPayrollMonth = 1,
 }
 
@@ -114,4 +117,10 @@ public class GoLiveV2SetUpPayrollMonthOutput
     public DateTime MonthStart { get; set; }
 
     public DateTime MonthEnd { get; set; }
+
+    /// <summary>The year whose pay calendar was laid down, January to December.</summary>
+    public int CalendarYear { get; set; }
+
+    /// <summary>How many of its twelve months were added; 0 when the calendar was already complete.</summary>
+    public int CalendarMonthsCreated { get; set; }
 }

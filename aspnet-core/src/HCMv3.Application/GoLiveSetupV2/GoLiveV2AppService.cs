@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.Authorization;
+using Microsoft.EntityFrameworkCore;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
@@ -30,8 +31,10 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IPayrollEngineService _payrollEngine;
     private readonly IPayrollAreasAppService _payrollAreas;
     private readonly IPayrollControlRecordsAppService _controlRecords;
+    private readonly IPayrollCalendarsAppService _calendars;
     private readonly IRepository<PayrollArea> _payrollAreaRepository;
     private readonly IRepository<PayrollControlRecord> _controlRecordRepository;
+    private readonly IRepository<PayrollCalendar> _calendarRepository;
     private readonly IRepository<Currency> _currencyRepository;
     private readonly IRepository<PayrollPeriod> _payYearRepository;
 
@@ -39,16 +42,20 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         IPayrollEngineService payrollEngine,
         IPayrollAreasAppService payrollAreas,
         IPayrollControlRecordsAppService controlRecords,
+        IPayrollCalendarsAppService calendars,
         IRepository<PayrollArea> payrollAreaRepository,
         IRepository<PayrollControlRecord> controlRecordRepository,
+        IRepository<PayrollCalendar> calendarRepository,
         IRepository<Currency> currencyRepository,
         IRepository<PayrollPeriod> payYearRepository)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
         _controlRecords = controlRecords;
+        _calendars = calendars;
         _payrollAreaRepository = payrollAreaRepository;
         _controlRecordRepository = controlRecordRepository;
+        _calendarRepository = calendarRepository;
         _currencyRepository = currencyRepository;
         _payYearRepository = payYearRepository;
     }
@@ -71,6 +78,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         }
 
         var areaName = input.PayrollAreaName.Trim();
+        var payInDate = MonthEnd(input.PayDate.Value);
 
         PayrollEngineRunResult run;
         try
@@ -78,7 +86,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             run = await _payrollEngine.RunAsync(new PayrollEngineRunInput
             {
                 PayrollRunType = PayrollRunType.Regular,
-                PayInDate = MonthEnd(input.PayDate.Value),
+                PayInDate = payInDate,
                 PayrollAreaName = areaName,
                 RegisterTarget = PayrollRegisterTarget.Live,
             });
@@ -88,7 +96,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             // Every run-level refusal the engine makes is a UserFriendlyException with its own wording. Anything
             // else is a genuine fault and is allowed to surface as one.
             var stopped = Stopped(GoLiveV2StoppedAt.Engine, ex.Message);
-            stopped.NextStep = await NextStepAsync(areaName);
+            stopped.NextStep = await NextStepAsync(areaName, payInDate);
             return stopped;
         }
 
@@ -175,14 +183,17 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         output.MonthStart = record.CalendarMonthStart;
         output.MonthEnd = record.CalendarMonthEnd;
 
+        output.CalendarYear = monthEnd.Year;
+        output.CalendarMonthsCreated = await CreateCalendarYearAsync(area.Id, monthEnd.Year);
+
         return output;
     }
 
     /// <summary>
-    /// The V2 step for a refusal, decided by what is actually missing. Only the control record is answered so
-    /// far; each later link adds its own check here.
+    /// The V2 step for a refusal, decided by what is actually missing -- the same records, looked up the same
+    /// way, as the engine checks them. Each later link adds its own check here.
     /// </summary>
-    private async Task<GoLiveV2NextStep> NextStepAsync(string areaName)
+    private async Task<GoLiveV2NextStep> NextStepAsync(string areaName, DateTime payInDate)
     {
         var area = await _payrollAreaRepository.FirstOrDefaultAsync(a => a.Name == areaName);
         if (area == null || await _controlRecordRepository.FirstOrDefaultAsync(r => r.PayrollAreaId == area.Id) == null)
@@ -190,7 +201,57 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             return GoLiveV2NextStep.SetUpPayrollMonth;
         }
 
+        // The engine looks for the pay month in the calendar across the whole tenant, not per payroll area.
+        if (!await _calendarRepository.GetAll().AnyAsync(c => c.PayrollMonth == payInDate.Month && c.PayrollYear == payInDate.Year))
+        {
+            return GoLiveV2NextStep.SetUpPayrollMonth;
+        }
+
         return GoLiveV2NextStep.None;
+    }
+
+    /// <summary>
+    /// The pay calendar for a whole year, January to December, one row per calendar month from the 1st to the
+    /// last day -- the assumption V2 makes rather than asking. A whole year, not just the month being paid, so
+    /// the next eleven runs do not stop on the same refusal.
+    /// A month the area already has is left alone, and so is any month whose dates would overlap a row keyed in
+    /// by hand: the calendar service refuses overlaps, and a hand-made calendar is the customer's to keep.
+    /// </summary>
+    private async Task<int> CreateCalendarYearAsync(int payrollAreaId, int year)
+    {
+        var existing = await _calendarRepository.GetAll()
+            .Where(c => c.PayrollAreaId == payrollAreaId)
+            .Select(c => new { c.PayrollMonth, c.PayrollYear, c.StartDate, c.EndDate })
+            .ToListAsync();
+
+        var created = 0;
+
+        for (var month = 1; month <= 12; month++)
+        {
+            var start = new DateTime(year, month, 1);
+            var end = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+            if (existing.Any(c => (c.PayrollMonth == month && c.PayrollYear == year)
+                                  || (c.StartDate.Date <= end && c.EndDate.Date >= start)))
+            {
+                continue;
+            }
+
+            await _calendars.CreateOrEdit(new CreateOrEditPayrollCalendarDto
+            {
+                PayrollAreaId = payrollAreaId,
+                PayrollMonth = month,
+                PayrollYear = year,
+                StartDate = start,
+                EndDate = end,
+            });
+
+            // Saved one at a time: the service checks for overlaps against what is already in the database.
+            await CurrentUnitOfWork.SaveChangesAsync();
+            created++;
+        }
+
+        return created;
     }
 
     /// <summary>

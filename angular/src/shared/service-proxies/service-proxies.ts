@@ -260357,6 +260357,8 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
     controlRecordCreated!: boolean;
     monthStart!: DateTime;
     monthEnd!: DateTime;
+    calendarYear!: number;
+    calendarMonthsCreated!: number;
 
     constructor(data?: IGoLiveV2SetUpPayrollMonthOutput) {
         if (data) {
@@ -260377,6 +260379,8 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
             this.controlRecordCreated = _data["controlRecordCreated"];
             this.monthStart = _data["monthStart"] ? DateTime.fromISO(_data["monthStart"].toString()) : undefined as any;
             this.monthEnd = _data["monthEnd"] ? DateTime.fromISO(_data["monthEnd"].toString()) : undefined as any;
+            this.calendarYear = _data["calendarYear"];
+            this.calendarMonthsCreated = _data["calendarMonthsCreated"];
         }
     }
 
@@ -260397,6 +260401,8 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
         data["controlRecordCreated"] = this.controlRecordCreated;
         data["monthStart"] = this.monthStart ? this.monthStart.toString() : undefined as any;
         data["monthEnd"] = this.monthEnd ? this.monthEnd.toString() : undefined as any;
+        data["calendarYear"] = this.calendarYear;
+        data["calendarMonthsCreated"] = this.calendarMonthsCreated;
         return data;
     }
 }
@@ -260410,6 +260416,8 @@ export interface IGoLiveV2SetUpPayrollMonthOutput {
     controlRecordCreated: boolean;
     monthStart: DateTime;
     monthEnd: DateTime;
+    calendarYear: number;
+    calendarMonthsCreated: number;
 }
 
 export enum GoLiveV2StoppedAt {
