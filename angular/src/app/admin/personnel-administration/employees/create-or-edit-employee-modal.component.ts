@@ -140,6 +140,7 @@ export class CreateOrEditEmployeeModalComponent extends AppComponentBase {
     readonly genders = [
         { value: Gender.Male, name: 'Male' },
         { value: Gender.Female, name: 'Female' },
+        { value: Gender.NotSpecified, name: 'GenderNotSpecified' },
     ];
 
     readonly statuses = [

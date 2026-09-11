@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
@@ -25,6 +27,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private const string DefaultCurrencyCode = "KWD";
     private const string DefaultPayYearCode = "Jan-Dec";
 
+    /// <summary>The Kuwait pack's open-ended contract type, matching the 31/12/9999 end date every contract gets.</summary>
+    private const string DefaultContractType = "Unlimited";
+
     /// <summary>Month end: everything entered during the month is included, which is the least surprising.</summary>
     private const int MonthEndCutOff = 31;
 
@@ -37,6 +42,13 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IRepository<PayrollCalendar> _calendarRepository;
     private readonly IRepository<Currency> _currencyRepository;
     private readonly IRepository<PayrollPeriod> _payYearRepository;
+    private readonly IRepository<ContractType> _contractTypeRepository;
+    private readonly IRepository<WageType> _wageTypeRepository;
+    private readonly GoLiveV2EmployeeDefaults _employeeDefaults;
+    private readonly GoLiveV2PlaceholderLookups _placeholders;
+    private readonly GoLiveV2EmployeeLoader _employeeLoader;
+    private readonly GoLiveV2TimeEngineStep _timeEngineStep;
+    private readonly GoLiveV2WorkingTime _workingTime;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -47,7 +59,14 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         IRepository<PayrollControlRecord> controlRecordRepository,
         IRepository<PayrollCalendar> calendarRepository,
         IRepository<Currency> currencyRepository,
-        IRepository<PayrollPeriod> payYearRepository)
+        IRepository<PayrollPeriod> payYearRepository,
+        IRepository<ContractType> contractTypeRepository,
+        IRepository<WageType> wageTypeRepository,
+        GoLiveV2EmployeeDefaults employeeDefaults,
+        GoLiveV2PlaceholderLookups placeholders,
+        GoLiveV2EmployeeLoader employeeLoader,
+        GoLiveV2TimeEngineStep timeEngineStep,
+        GoLiveV2WorkingTime workingTime)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -58,9 +77,20 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _calendarRepository = calendarRepository;
         _currencyRepository = currencyRepository;
         _payYearRepository = payYearRepository;
+        _contractTypeRepository = contractTypeRepository;
+        _wageTypeRepository = wageTypeRepository;
+        _employeeDefaults = employeeDefaults;
+        _placeholders = placeholders;
+        _employeeLoader = employeeLoader;
+        _timeEngineStep = timeEngineStep;
+        _workingTime = workingTime;
     }
 
-    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
+    /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
+    [AbpAuthorize(
+        AppPermissions.Pages_PayrollManagement_PayrollEngine_Run,
+        AppPermissions.Pages_TimeManagement_TimeEngine_Run,
+        RequireAllPermissions = true)]
     public async Task<GoLiveV2RunPayrollOutput> RunPayroll(GoLiveV2RunPayrollInput input)
     {
         input ??= new GoLiveV2RunPayrollInput();
@@ -79,6 +109,15 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
 
         var areaName = input.PayrollAreaName.Trim();
         var payInDate = MonthEnd(input.PayDate.Value);
+
+        // The time engine first: the payroll pays days from the time registers it writes for the month. With
+        // nobody in the area it has nothing to do, and the payroll engine says so in its own words.
+        var timeEngineStopped = await _timeEngineStep.RunAsync(areaName, payInDate, (await GetCurrentUserAsync()).UserName);
+        if (timeEngineStopped != null)
+        {
+            timeEngineStopped.PayInDate = payInDate;
+            return timeEngineStopped;
+        }
 
         PayrollEngineRunResult run;
         try
@@ -125,6 +164,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         {
             // The engine treats an empty payroll area as a finished run. For go-live it is the opposite.
             output.StoppedAt = GoLiveV2StoppedAt.NoEmployees;
+            output.NextStep = GoLiveV2NextStep.LoadEmployees;
         }
         else
         {
@@ -187,6 +227,100 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         output.CalendarMonthsCreated = await CreateCalendarYearAsync(area.Id, monthEnd.Year);
 
         return output;
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees_Create)]
+    public async Task<GoLiveV2LoadEmployeesOutput> LoadEmployees(GoLiveV2LoadEmployeesInput input)
+    {
+        // The reference records every employee needs, checked before anything is created: refusing half-way
+        // would leave an org unit and a grade behind with nobody in them.
+        var contractType = await _contractTypeRepository.FirstOrDefaultAsync(c => c.NameEn == DefaultContractType)
+                           ?? throw new UserFriendlyException(L("GoLiveV2ContractTypeMissing"));
+        var currency = await _currencyRepository.FirstOrDefaultAsync(c => c.Code == DefaultCurrencyCode)
+                       ?? throw new UserFriendlyException(L("GoLiveV2CurrencyMissing"));
+        var salaryWageTypeIds = await ResolveSalaryWageTypesAsync();
+
+        var areaName = input.PayrollAreaName.Trim();
+        var unitName = input.OrganizationUnitName.Trim();
+
+        var output = new GoLiveV2LoadEmployeesOutput
+        {
+            PayrollAreaName = areaName,
+            OrganizationUnitName = unitName,
+            EmployeeGroupName = GoLiveV2EmployeeDefaults.EmployeeGroupName,
+            EmployeeSubGroupName = GoLiveV2EmployeeDefaults.EmployeeSubGroupName,
+        };
+
+        var area = await _payrollAreaRepository.FirstOrDefaultAsync(a => a.Name == areaName);
+        if (area == null)
+        {
+            area = await CreatePayrollAreaAsync(areaName);
+            output.PayrollAreaCreated = true;
+        }
+
+        var (unitId, unitCreated) = await _employeeDefaults.EnsureOrganizationUnitAsync(unitName, area.Id);
+        output.OrganizationUnitCreated = unitCreated;
+
+        var grade = await _employeeDefaults.EnsureGradeAsync();
+        var placeholders = await _placeholders.EnsureAsync();
+        output.PlaceholdersCreated = placeholders.Created;
+
+        var workingTime = await _workingTime.EnsureCompanyAsync();
+        output.WorkingTimeCreated = workingTime.Created;
+        output.EmployeeGroupCreated = grade.GroupCreated;
+        output.EmployeeSubGroupCreated = grade.SubGroupCreated;
+        output.GratuitySlabsCreated = grade.GratuitySlabsCreated;
+        output.LeaveEntitlementsCreated = grade.LeaveEntitlementsCreated;
+        output.SickLeaveRuleCreated = grade.SickLeaveRuleCreated;
+
+        await _employeeLoader.LoadAsync(
+            input.Employees ?? new List<GoLiveV2EmployeeRowDto>(),
+            new GoLiveV2EmployeeTargets
+            {
+                OrganizationUnitId = unitId,
+                PayrollAreaId = area.Id,
+                EmployeeGroupId = grade.GroupId,
+                EmployeeSubGroupId = grade.SubGroupId,
+                ContractTypeId = contractType.Id,
+                CurrencyId = currency.Id,
+                SalaryWageTypeIds = salaryWageTypeIds,
+                Placeholders = placeholders,
+                WorkingTime = workingTime,
+            },
+            output);
+
+        return output;
+    }
+
+    /// <summary>
+    /// The grid's salary columns' wage types, by catalogue code. All must exist and be active before anything is
+    /// loaded: a salary line on a missing or inactive wage type is one the engine would silently never pay.
+    /// </summary>
+    private async Task<IReadOnlyDictionary<string, int>> ResolveSalaryWageTypesAsync()
+    {
+        var codes = GoLiveV2EmployeeLoader.SalaryColumns.Select(c => c.WageCode).ToList();
+        var found = await _wageTypeRepository.GetAll()
+            .Where(w => codes.Contains(w.Code) && w.Status)
+            .Select(w => new { w.Code, w.Id })
+            .ToListAsync();
+
+        var missing = codes.Where(c => found.All(w => w.Code != c)).ToList();
+        if (missing.Count > 0)
+        {
+            throw new UserFriendlyException(L("GoLiveV2WageTypesMissing", string.Join(", ", missing)));
+        }
+
+        return found.GroupBy(w => w.Code).ToDictionary(g => g.Key, g => g.First().Id);
+    }
+
+    public async Task<ListResultDto<string>> GetPayrollAreaNames()
+    {
+        var names = await _payrollAreaRepository.GetAll()
+            .OrderBy(a => a.Name)
+            .Select(a => a.Name)
+            .ToListAsync();
+
+        return new ListResultDto<string>(names);
     }
 
     /// <summary>

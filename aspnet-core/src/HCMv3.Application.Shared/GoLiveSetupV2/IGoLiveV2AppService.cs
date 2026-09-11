@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using HCMv3.GoLiveSetupV2.Dto;
 
 namespace HCMv3.GoLiveSetupV2;
@@ -37,4 +38,20 @@ public interface IGoLiveV2AppService : IApplicationService
     /// screens make applies here too.</para>
     /// </summary>
     Task<GoLiveV2SetUpPayrollMonthOutput> SetUpPayrollMonth(GoLiveV2SetUpPayrollMonthInput input);
+
+    /// <summary>
+    /// Answers an empty payroll area. From four columns per employee -- code, full name, joining date, civil ID
+    /// -- and one organisation unit name, creates each employee with an open-ended contract and org assignment
+    /// from the joining date, and around them whatever the tenant does not yet have: the organisation unit, the
+    /// payroll area, and an employee group "Default Normal Staff" with sub-group "Default Grade" set up as
+    /// Kuwait labour law says (indemnity 15 then 26 days a year, capped at 18 months; 30 days' annual leave;
+    /// 15 days' sick leave).
+    ///
+    /// <para>A bad row is reported and skipped; the rest load. An employee code already in the system is left
+    /// alone, so loading the same sheet again is safe. Every record goes through its own service.</para>
+    /// </summary>
+    Task<GoLiveV2LoadEmployeesOutput> LoadEmployees(GoLiveV2LoadEmployeesInput input);
+
+    /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
+    Task<ListResultDto<string>> GetPayrollAreaNames();
 }

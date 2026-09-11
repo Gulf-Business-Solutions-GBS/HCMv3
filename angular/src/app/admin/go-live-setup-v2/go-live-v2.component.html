@@ -2,10 +2,108 @@
     <sub-header [title]="'GoLiveSetupV2' | localize" [description]="'GoLiveV2Intro' | localize" />
 
     <div [class]="containerClass">
+        <!-- Step 1: Load employee data. Added because the engine found nobody to pay. -->
+        <div class="card card-custom v2-step" id="v2-load-employees">
+            <div class="card-body">
+                <div class="v2-step-head">
+                    <div>
+                        <div class="v2-step-number">{{ l('GoLiveV2Step', 1) }}</div>
+                        <h3 class="v2-step-title">{{ 'GoLiveV2LoadEmployees' | localize }}</h3>
+                        <p class="v2-step-hint">{{ 'GoLiveV2LoadEmployeesHint' | localize }}</p>
+                        <div class="v2-field-why">{{ 'GoLiveV2WhyLoadEmployees' | localize }}</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary v2-run"
+                        [disabled]="loading() || !canLoad()"
+                        (click)="loadEmployees()">
+                        @if (loading()) {
+                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            {{ 'GoLiveV2Loading' | localize }}
+                        } @else {
+                            <i class="fa fa-user-plus me-2" aria-hidden="true"></i>
+                            {{ loadButtonLabel() }}
+                        }
+                    </button>
+                </div>
+
+                <div class="v2-fields">
+                    <div class="v2-field">
+                        <label class="form-label" for="v2-org-unit">{{ 'GoLiveV2OrganizationUnit' | localize }}</label>
+                        <input
+                            id="v2-org-unit"
+                            type="text"
+                            class="form-control"
+                            maxlength="128"
+                            [placeholder]="'GoLiveV2OrganizationUnitPlaceholder' | localize"
+                            [value]="organizationUnitName()"
+                            (input)="onOrganizationUnitChange($event)" />
+                        <div class="v2-field-note">{{ 'GoLiveV2OrganizationUnitHint' | localize }}</div>
+                    </div>
+
+                    <div class="v2-field">
+                        <span class="form-label">{{ 'GoLiveV2PayrollArea' | localize }}</span>
+                        <div class="v2-field-note">{{ l('GoLiveV2LoadGoesInto', payrollAreaName()) }}</div>
+                    </div>
+                </div>
+
+                <div class="v2-grid">
+                    <app-paste-grid
+                        [columns]="employeeColumns"
+                        [(rows)]="employeeRows"
+                        [padRows]="20"
+                        [viewportHeight]="320"
+                        (issuesChange)="gridIssues.set($event)" />
+                </div>
+
+                <p class="v2-defaults">
+                    <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+                    {{ 'GoLiveV2DefaultsNote' | localize }}
+                </p>
+
+                @if (gridIssues().length > 0) {
+                    <p class="v2-grid-blocked">{{ 'GoLiveV2FixGridFirst' | localize }}</p>
+                }
+
+                @if (lastLoad(); as load) {
+                    <div class="v2-result v2-ok" [class.v2-partial]="failedRows(load).length > 0" role="status">
+                        @for (line of describeLoad(load); track line) {
+                            <div class="v2-outcome">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                {{ line }}
+                            </div>
+                        }
+
+                        @if (failedRows(load); as failed) {
+                            @if (failed.length > 0) {
+                                <div class="v2-said-label">{{ l('GoLiveV2LoadRowsFailed', failed.length) }}</div>
+                                <ul class="v2-failed-rows">
+                                    @for (row of failed; track row.rowNumber) {
+                                        <li>
+                                            <span class="v2-code">{{ l('GoLiveV2RowLabel', row.rowNumber) }}</span>
+                                            @if (row.code) {
+                                                <span class="v2-code">· {{ row.code }}</span>
+                                            }
+                                            — {{ row.message }}
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        }
+
+                        <p class="v2-next-text">{{ 'GoLiveV2PressRunAgain' | localize }}</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Step 2: Run payroll -- the goal every other step was added for. -->
         <div class="card card-custom v2-step">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
+                        <div class="v2-step-number">{{ l('GoLiveV2Step', 2) }}</div>
                         <h3 class="v2-step-title">{{ 'GoLiveV2RunPayroll' | localize }}</h3>
                         <p class="v2-step-hint">{{ 'GoLiveV2RunPayrollHint' | localize }}</p>
                     </div>
@@ -38,20 +136,22 @@
 
                     <div class="v2-field">
                         <label class="form-label" for="v2-payroll-area">{{ 'GoLiveV2PayrollArea' | localize }}</label>
-                        <input
-                            id="v2-payroll-area"
-                            type="text"
-                            class="form-control"
-                            maxlength="128"
-                            [value]="payrollAreaName()"
-                            (input)="onPayrollAreaChange($event)" />
+                        <select id="v2-payroll-area" class="form-select" (change)="onPayrollAreaChange($event)">
+                            @for (name of payrollAreaOptions(); track name) {
+                                <option [value]="name" [selected]="name === payrollAreaName()">{{ name }}</option>
+                            }
+                        </select>
                         <div class="v2-field-note">{{ 'GoLiveV2PayrollAreaHint' | localize }}</div>
                         <div class="v2-field-why">{{ 'GoLiveV2WhyPayrollArea' | localize }}</div>
                     </div>
                 </div>
 
                 @if (latest(); as result) {
-                    <div class="v2-result" [class.v2-ok]="result.succeeded" [class.v2-stop]="!result.succeeded" role="status">
+                    <div
+                        class="v2-result"
+                        [class.v2-ok]="result.succeeded"
+                        [class.v2-stop]="!result.succeeded"
+                        role="status">
                         <div class="v2-outcome">
                             <i
                                 class="fa"
@@ -62,7 +162,7 @@
                         </div>
 
                         @if (result.message) {
-                            <div class="v2-said-label">{{ 'GoLiveV2EngineSaid' | localize }}</div>
+                            <div class="v2-said-label">{{ saidLabel(result) | localize }}</div>
                             <blockquote class="v2-said">{{ result.message }}</blockquote>
                         }
 
@@ -81,6 +181,19 @@
                                         <i class="fa fa-tools me-2" aria-hidden="true"></i>
                                         {{ setUpLabel() }}
                                     }
+                                </button>
+                            </div>
+                        }
+
+                        @if (result.nextStep === NextStep.LoadEmployees) {
+                            <div class="v2-next">
+                                <p class="v2-next-text">{{ 'GoLiveV2NextLoadEmployees' | localize }}</p>
+                                <button
+                                    type="button"
+                                    class="btn btn-success v2-next-button"
+                                    (click)="goToLoadEmployees()">
+                                    <i class="fa fa-arrow-up me-2" aria-hidden="true"></i>
+                                    {{ 'GoLiveV2LoadEmployees' | localize }}
                                 </button>
                             </div>
                         }
@@ -109,7 +222,10 @@
                                                         class="badge"
                                                         [class.badge-light-success]="employee.succeeded"
                                                         [class.badge-light-danger]="!employee.succeeded">
-                                                        {{ (employee.succeeded ? 'GoLiveV2Paid' : 'GoLiveV2NotPaid') | localize }}
+                                                        {{
+                                                            (employee.succeeded ? 'GoLiveV2Paid' : 'GoLiveV2NotPaid')
+                                                                | localize
+                                                        }}
                                                     </span>
                                                 </td>
                                                 <td>{{ employee.message }}</td>
@@ -161,6 +277,15 @@
                                 @if (attempt.setUp; as setUp) {
                                     <span class="badge badge-light-primary">{{ 'GoLiveV2SetUpLog' | localize }}</span>
                                     <span class="v2-attempt-said">{{ describeSetUp(setUp).join(' ') }}</span>
+                                }
+                                @if (attempt.load; as load) {
+                                    <span class="badge badge-light-primary">{{ 'GoLiveV2LoadLog' | localize }}</span>
+                                    <span class="v2-attempt-said">
+                                        {{ describeLoad(load).join(' ') }}
+                                        @if (failedRows(load).length > 0) {
+                                            {{ l('GoLiveV2LoadRowsFailed', failedRows(load).length) }}
+                                        }
+                                    </span>
                                 }
                             </li>
                         }

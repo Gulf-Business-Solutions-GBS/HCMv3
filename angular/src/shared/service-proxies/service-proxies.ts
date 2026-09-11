@@ -66294,6 +66294,113 @@ export class GoLiveV2ServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    loadEmployees(body?: GoLiveV2LoadEmployeesInput | undefined): Observable<GoLiveV2LoadEmployeesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/LoadEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLoadEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLoadEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+        }));
+    }
+
+    protected processLoadEmployees(response: HttpResponseBase): Observable<GoLiveV2LoadEmployeesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2LoadEmployeesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getPayrollAreaNames(): Observable<ListResultDtoOfString> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollAreaNames";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollAreaNames(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollAreaNames(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfString>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfString>;
+        }));
+    }
+
+    protected processGetPayrollAreaNames(response: HttpResponseBase): Observable<ListResultDtoOfString> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfString.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -214533,6 +214640,7 @@ export interface IGatePassVendorDto {
 export enum Gender {
     Male = 0,
     Female = 1,
+    NotSpecified = 2,
 }
 
 export class GeneralSettingsEditDto implements IGeneralSettingsEditDto {
@@ -260199,9 +260307,294 @@ export interface IGoLiveV2EmployeeResultDto {
     message: string | undefined;
 }
 
+export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
+    code!: string | undefined;
+    fullName!: string | undefined;
+    joiningDate!: DateTime | undefined;
+    civilId!: string | undefined;
+    basicSalary!: number | undefined;
+    accommodationAllowance!: number | undefined;
+    mobileAllowance!: number | undefined;
+    transportAllowance!: number | undefined;
+    foodAllowance!: number | undefined;
+    housingAllowance!: number | undefined;
+    otherAllowance!: number | undefined;
+
+    constructor(data?: IGoLiveV2EmployeeRowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.fullName = _data["fullName"];
+            this.joiningDate = _data["joiningDate"] ? DateTime.fromISO(_data["joiningDate"].toString()) : undefined as any;
+            this.civilId = _data["civilId"];
+            this.basicSalary = _data["basicSalary"];
+            this.accommodationAllowance = _data["accommodationAllowance"];
+            this.mobileAllowance = _data["mobileAllowance"];
+            this.transportAllowance = _data["transportAllowance"];
+            this.foodAllowance = _data["foodAllowance"];
+            this.housingAllowance = _data["housingAllowance"];
+            this.otherAllowance = _data["otherAllowance"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2EmployeeRowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2EmployeeRowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["fullName"] = this.fullName;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toString() : undefined as any;
+        data["civilId"] = this.civilId;
+        data["basicSalary"] = this.basicSalary;
+        data["accommodationAllowance"] = this.accommodationAllowance;
+        data["mobileAllowance"] = this.mobileAllowance;
+        data["transportAllowance"] = this.transportAllowance;
+        data["foodAllowance"] = this.foodAllowance;
+        data["housingAllowance"] = this.housingAllowance;
+        data["otherAllowance"] = this.otherAllowance;
+        return data;
+    }
+}
+
+export interface IGoLiveV2EmployeeRowDto {
+    code: string | undefined;
+    fullName: string | undefined;
+    joiningDate: DateTime | undefined;
+    civilId: string | undefined;
+    basicSalary: number | undefined;
+    accommodationAllowance: number | undefined;
+    mobileAllowance: number | undefined;
+    transportAllowance: number | undefined;
+    foodAllowance: number | undefined;
+    housingAllowance: number | undefined;
+    otherAllowance: number | undefined;
+}
+
+export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultDto {
+    rowNumber!: number;
+    code!: string | undefined;
+    succeeded!: boolean;
+    created!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: IGoLiveV2EmployeeRowResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.rowNumber = _data["rowNumber"];
+            this.code = _data["code"];
+            this.succeeded = _data["succeeded"];
+            this.created = _data["created"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2EmployeeRowResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2EmployeeRowResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["rowNumber"] = this.rowNumber;
+        data["code"] = this.code;
+        data["succeeded"] = this.succeeded;
+        data["created"] = this.created;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IGoLiveV2EmployeeRowResultDto {
+    rowNumber: number;
+    code: string | undefined;
+    succeeded: boolean;
+    created: boolean;
+    message: string | undefined;
+}
+
+export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
+    organizationUnitName!: string;
+    payrollAreaName!: string;
+    employees!: GoLiveV2EmployeeRowDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LoadEmployeesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LoadEmployeesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LoadEmployeesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["payrollAreaName"] = this.payrollAreaName;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LoadEmployeesInput {
+    organizationUnitName: string;
+    payrollAreaName: string;
+    employees: GoLiveV2EmployeeRowDto[] | undefined;
+}
+
+export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput {
+    organizationUnitName!: string | undefined;
+    organizationUnitCreated!: boolean;
+    payrollAreaName!: string | undefined;
+    payrollAreaCreated!: boolean;
+    employeeGroupName!: string | undefined;
+    employeeGroupCreated!: boolean;
+    employeeSubGroupName!: string | undefined;
+    employeeSubGroupCreated!: boolean;
+    gratuitySlabsCreated!: number;
+    leaveEntitlementsCreated!: number;
+    sickLeaveRuleCreated!: boolean;
+    workingTimeCreated!: boolean;
+    placeholdersCreated!: number;
+    employeesCreated!: number;
+    employeesAlreadyLoaded!: number;
+    rows!: GoLiveV2EmployeeRowResultDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LoadEmployeesOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizationUnitName = _data["organizationUnitName"];
+            this.organizationUnitCreated = _data["organizationUnitCreated"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payrollAreaCreated = _data["payrollAreaCreated"];
+            this.employeeGroupName = _data["employeeGroupName"];
+            this.employeeGroupCreated = _data["employeeGroupCreated"];
+            this.employeeSubGroupName = _data["employeeSubGroupName"];
+            this.employeeSubGroupCreated = _data["employeeSubGroupCreated"];
+            this.gratuitySlabsCreated = _data["gratuitySlabsCreated"];
+            this.leaveEntitlementsCreated = _data["leaveEntitlementsCreated"];
+            this.sickLeaveRuleCreated = _data["sickLeaveRuleCreated"];
+            this.workingTimeCreated = _data["workingTimeCreated"];
+            this.placeholdersCreated = _data["placeholdersCreated"];
+            this.employeesCreated = _data["employeesCreated"];
+            this.employeesAlreadyLoaded = _data["employeesAlreadyLoaded"];
+            if (Array.isArray(_data["rows"])) {
+                this.rows = [] as any;
+                for (let item of _data["rows"])
+                    this.rows!.push(GoLiveV2EmployeeRowResultDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LoadEmployeesOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LoadEmployeesOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitName"] = this.organizationUnitName;
+        data["organizationUnitCreated"] = this.organizationUnitCreated;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payrollAreaCreated"] = this.payrollAreaCreated;
+        data["employeeGroupName"] = this.employeeGroupName;
+        data["employeeGroupCreated"] = this.employeeGroupCreated;
+        data["employeeSubGroupName"] = this.employeeSubGroupName;
+        data["employeeSubGroupCreated"] = this.employeeSubGroupCreated;
+        data["gratuitySlabsCreated"] = this.gratuitySlabsCreated;
+        data["leaveEntitlementsCreated"] = this.leaveEntitlementsCreated;
+        data["sickLeaveRuleCreated"] = this.sickLeaveRuleCreated;
+        data["workingTimeCreated"] = this.workingTimeCreated;
+        data["placeholdersCreated"] = this.placeholdersCreated;
+        data["employeesCreated"] = this.employeesCreated;
+        data["employeesAlreadyLoaded"] = this.employeesAlreadyLoaded;
+        if (Array.isArray(this.rows)) {
+            data["rows"] = [];
+            for (let item of this.rows)
+                data["rows"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LoadEmployeesOutput {
+    organizationUnitName: string | undefined;
+    organizationUnitCreated: boolean;
+    payrollAreaName: string | undefined;
+    payrollAreaCreated: boolean;
+    employeeGroupName: string | undefined;
+    employeeGroupCreated: boolean;
+    employeeSubGroupName: string | undefined;
+    employeeSubGroupCreated: boolean;
+    gratuitySlabsCreated: number;
+    leaveEntitlementsCreated: number;
+    sickLeaveRuleCreated: boolean;
+    workingTimeCreated: boolean;
+    placeholdersCreated: number;
+    employeesCreated: number;
+    employeesAlreadyLoaded: number;
+    rows: GoLiveV2EmployeeRowResultDto[] | undefined;
+}
+
 export enum GoLiveV2NextStep {
     None = 0,
     SetUpPayrollMonth = 1,
+    LoadEmployees = 2,
 }
 
 export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
@@ -260426,6 +260819,7 @@ export enum GoLiveV2StoppedAt {
     Engine = 2,
     Employees = 3,
     NoEmployees = 4,
+    TimeEngine = 5,
 }
 
 export class GoogleExternalLoginProviderSettings implements IGoogleExternalLoginProviderSettings {
@@ -266851,6 +267245,50 @@ export class ListResultDtoOfSchedulableReportDto implements IListResultDtoOfSche
 
 export interface IListResultDtoOfSchedulableReportDto {
     items: SchedulableReportDto[] | undefined;
+}
+
+export class ListResultDtoOfString implements IListResultDtoOfString {
+    items!: string[] | undefined;
+
+    constructor(data?: IListResultDtoOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfString {
+    items: string[] | undefined;
 }
 
 export class ListResultDtoOfSubscribableEditionComboboxItemDto implements IListResultDtoOfSubscribableEditionComboboxItemDto {

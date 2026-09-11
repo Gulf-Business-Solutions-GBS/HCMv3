@@ -22,80 +22,82 @@
         </button>
     </div>
 
-    <div class="pg-scroll-x">
-        <div class="pg-inner" [style.width.px]="totalWidth()">
-            <div class="pg-head" [style.grid-template-columns]="gridTemplate()">
-                <div class="pg-cell pg-th pg-num"></div>
-                @for (col of columns(); track col.key) {
-                    <div class="pg-cell pg-th" [class.pg-th-req]="col.required" [title]="col.hint ?? ''">
-                        <span class="pg-th-text">{{ col.header }}</span>
-                        @if (col.required) {
-                            <span class="pg-req-dot" aria-hidden="true">*</span>
-                        }
-                    </div>
-                }
-            </div>
-
-            <cdk-virtual-scroll-viewport
-                class="pg-body"
-                tabindex="0"
-                [itemSize]="rowHeight"
-                [style.height.px]="viewportHeight()"
-                (paste)="onPaste($event)"
-                (copy)="onCopy($event)"
-                (keydown)="onKeyDown($event)"
-                (focusin)="hasFocus.set(true)"
-                (focusout)="hasFocus.set(false)">
-                <div
-                    class="pg-row"
-                    *cdkVirtualFor="let row of rows(); let r = index; trackBy: trackByIndex"
-                    [style.grid-template-columns]="gridTemplate()"
-                    [style.height.px]="rowHeight">
-                    <div class="pg-cell pg-num" [class.pg-num-active]="active().r === r">{{ r + 1 }}</div>
-
-                    @for (col of columns(); track col.key; let c = $index) {
-                        <div
-                            class="pg-cell pg-td"
-                            [class.pg-sel]="inSelection(r, c)"
-                            [class.pg-active]="active().r === r && active().c === c"
-                            [class.pg-err]="hasIssue(r, col.key)"
-                            [class.pg-ro]="col.type === 'readonly'"
-                            [title]="issueText(r, col.key)"
-                            (mousedown)="onCellMouseDown($event, r, c)"
-                            (dblclick)="startEdit(r, c)">
-                            @if (isEditing(r, c)) {
-                                @if (col.type === 'choice') {
-                                    <select
-                                        class="pg-input"
-                                        [value]="editValue()"
-                                        (change)="onEditorInput($event)"
-                                        (blur)="commitEdit()"
-                                        (keydown)="onEditorKeyDown($event)">
-                                        <option value=""></option>
-                                        @for (option of col.options ?? []; track option) {
-                                            <option [value]="option">{{ option }}</option>
-                                        }
-                                    </select>
-                                } @else {
-                                    <input
-                                        class="pg-input"
-                                        type="text"
-                                        [value]="editValue()"
-                                        (input)="onEditorInput($event)"
-                                        (blur)="commitEdit()"
-                                        (keydown)="onEditorKeyDown($event)" />
-                                }
-                            } @else {
-                                <span class="pg-text" [class.pg-text-num]="col.type === 'number'">
-                                    {{ display(row, col) }}
-                                </span>
-                            }
-                        </div>
+    <!-- One scroller, the body, in both directions; the header only follows it (see syncHeader). -->
+    <div class="pg-head-clip">
+        <div class="pg-head" [style.grid-template-columns]="gridTemplate()" [style.width.px]="totalWidth()">
+            <div class="pg-cell pg-th pg-num"></div>
+            @for (col of columns(); track col.key) {
+                <div class="pg-cell pg-th" [class.pg-th-req]="col.required" [title]="col.hint ?? ''">
+                    <span class="pg-th-text">{{ col.header }}</span>
+                    @if (col.required) {
+                        <span class="pg-req-dot" aria-hidden="true">*</span>
                     }
                 </div>
-            </cdk-virtual-scroll-viewport>
+            }
         </div>
     </div>
+
+    <cdk-virtual-scroll-viewport
+        class="pg-body"
+        tabindex="0"
+        [itemSize]="rowHeight"
+        [style.height.px]="viewportHeight()"
+        (scroll)="syncHeader()"
+        (paste)="onPaste($event)"
+        (copy)="onCopy($event)"
+        (keydown)="onKeyDown($event)"
+        (focusin)="hasFocus.set(true)"
+        (focusout)="hasFocus.set(false)">
+        <div
+            class="pg-row"
+            *cdkVirtualFor="let row of rows(); let r = index; trackBy: trackByIndex"
+            [style.grid-template-columns]="gridTemplate()"
+            [style.width.px]="totalWidth()"
+            [style.height.px]="rowHeight">
+            <div class="pg-cell pg-num" [class.pg-num-active]="active().r === r">{{ r + 1 }}</div>
+
+            @for (col of columns(); track col.key; let c = $index) {
+                <div
+                    class="pg-cell pg-td"
+                    [class.pg-sel]="inSelection(r, c)"
+                    [class.pg-active]="active().r === r && active().c === c"
+                    [class.pg-err]="hasIssue(r, col.key)"
+                    [class.pg-ro]="col.type === 'readonly'"
+                    [title]="issueText(r, col.key)"
+                    (mousedown)="onCellMouseDown($event, r, c)"
+                    (dblclick)="startEdit(r, c)">
+                    @if (isEditing(r, c)) {
+                        @if (col.type === 'choice') {
+                            <select
+                                class="pg-input"
+                                [value]="editValue()"
+                                (change)="onEditorInput($event)"
+                                (blur)="onEditorBlur(r, c)"
+                                (keydown)="onEditorKeyDown($event)">
+                                <option value=""></option>
+                                @for (option of col.options ?? []; track option) {
+                                    <option [value]="option">{{ option }}</option>
+                                }
+                            </select>
+                        } @else {
+                            <input
+                                class="pg-input"
+                                type="text"
+                                [value]="editValue()"
+                                (input)="onEditorInput($event)"
+                                (blur)="onEditorBlur(r, c)"
+                                (paste)="onEditorPaste($event)"
+                                (keydown)="onEditorKeyDown($event)" />
+                        }
+                    } @else {
+                        <span class="pg-text" [class.pg-text-num]="col.type === 'number'">
+                            {{ display(row, col) }}
+                        </span>
+                    }
+                </div>
+            }
+        </div>
+    </cdk-virtual-scroll-viewport>
 
     @if (issueCount() > 0) {
         <div class="pg-issues">

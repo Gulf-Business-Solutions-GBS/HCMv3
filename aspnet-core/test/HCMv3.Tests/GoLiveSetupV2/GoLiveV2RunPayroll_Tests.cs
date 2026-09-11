@@ -9,6 +9,7 @@ using HCMv3.GoLiveSetupV2;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PersonnelAdministration;
+using HCMv3.SystemSettings;
 using Shouldly;
 using Xunit;
 
@@ -107,7 +108,10 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
     [Fact]
     public async Task Should_Report_Each_Employee_The_Engine_Could_Not_Pay()
     {
+        // The time engine now runs first and meets the missing contract before the payroll engine does. The
+        // refusal is the same fact, in the time engine's words.
         var area = GivenARunnablePayrollArea("Lab");
+        GivenTheTimeEngineSettings();
         GivenAnEmployeeInPayrollArea(area, "V2-001");
 
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput
@@ -117,12 +121,12 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
         });
 
         result.Succeeded.ShouldBeFalse();
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Employees);
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.TimeEngine);
 
         var employee = result.Employees.Single();
         employee.EmployeeCode.ShouldBe("V2-001");
         employee.Succeeded.ShouldBeFalse();
-        employee.Message.ShouldContain("Employee Contract not found");
+        employee.Message.ShouldContain("Contract not found");
     }
 
     [Fact]
@@ -137,8 +141,25 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
             PayrollAreaName = area.Name,
         });
 
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Employees);
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.TimeEngine);
         result.PayInDate.ShouldBe(PayDate);
+    }
+
+    /// <summary>
+    /// The time engine reads four settings records and would crash on a missing one. A company set up by hand,
+    /// without them, is told which -- rather than shown a null reference.
+    /// </summary>
+    [Fact]
+    public async Task Should_Name_The_Settings_The_Time_Engine_Lacks()
+    {
+        var area = GivenARunnablePayrollArea("Lab");
+        GivenAnEmployeeInPayrollArea(area, "V2-001");
+
+        var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = area.Name });
+
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.TimeEngine);
+        result.Message.ShouldContain("Time settings");
+        result.Message.ShouldContain("Security settings");
     }
 
     // ---------------------------------------------------------------- link 3 answered: set up the month
@@ -211,7 +232,7 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
         result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.NoEmployees);
-        result.NextStep.ShouldBe(GoLiveV2NextStep.None);
+        result.NextStep.ShouldBe(GoLiveV2NextStep.LoadEmployees);
     }
 
     [Fact]
@@ -383,6 +404,19 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
                 StartDate = new DateTime(2026, month, 1),
                 EndDate = new DateTime(2026, month, DateTime.DaysInMonth(2026, month)),
             });
+            context.SaveChanges();
+        });
+    }
+
+    /// <summary>The four settings records the time engine reads, each left at its defaults.</summary>
+    private void GivenTheTimeEngineSettings()
+    {
+        UsingDbContext(context =>
+        {
+            context.ManageTimeSettingses.Add(new ManageTimeSettings { TenantId = TenantId });
+            context.ManagePayrollSettingses.Add(new ManagePayrollSettings { TenantId = TenantId });
+            context.ManagePersonnelSettingses.Add(new ManagePersonnelSettings { TenantId = TenantId });
+            context.ManageSecuritySettingses.Add(new ManageSecuritySettings { TenantId = TenantId });
             context.SaveChanges();
         });
     }

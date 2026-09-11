@@ -93,14 +93,16 @@
 }
 
 /* ---------- grid frame ----------
-   The header and the virtual viewport share one horizontally scrolling parent, so a sideways scroll
-   moves them together while the viewport keeps its own vertical scroll. */
-.pg-scroll-x {
-    overflow-x: auto;
-}
-
-.pg-inner {
-    min-width: 100%;
+   The virtual viewport is the ONLY scroller, in both directions, so there is one horizontal scrollbar and
+   the vertical one stays in view however wide the sheet is. The header sits in a clip that never scrolls
+   by itself: the component copies the viewport's scrollLeft onto it. (An outer horizontal scroller around
+   both, as this used to be, gave two scrollbars once the viewport's vertical bar took width from the rows,
+   and let the header and the rows drift apart.)
+   Both reserve the same scrollbar gutter, so the header's columns line up with the rows' exactly. */
+.pg-head-clip {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+    border-bottom: 1px solid var(--pg-line-strong);
 }
 
 .pg-head,
@@ -111,10 +113,6 @@
 
 .pg-head {
     background: var(--pg-head-bg);
-    border-bottom: 1px solid var(--pg-line-strong);
-    position: sticky;
-    top: 0;
-    z-index: 2;
 }
 
 .pg-cell {
@@ -169,6 +167,8 @@
 .pg-body {
     /* height is bound from the component */
     background: #fff;
+    overflow: auto;
+    scrollbar-gutter: stable;
 }
 
 .pg-body:focus {

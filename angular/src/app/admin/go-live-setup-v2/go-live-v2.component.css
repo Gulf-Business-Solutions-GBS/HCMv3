@@ -163,3 +163,43 @@
 .v2-next-text {
     margin: 0;
 }
+
+.v2-step-number {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bs-primary);
+    margin-bottom: 0.2rem;
+}
+
+.v2-grid {
+    margin-top: 1.25rem;
+}
+
+/* What the step sets without asking is stated where the data is entered, not hidden in a help page. */
+.v2-defaults {
+    margin: 0.75rem 0 0;
+    color: var(--bs-gray-700);
+    font-size: 0.9rem;
+}
+
+.v2-grid-blocked {
+    margin: 0.5rem 0 0;
+    color: var(--bs-danger);
+    font-weight: 600;
+}
+
+/* Some rows loaded and some did not: amber, not green, so the failures are not missed. */
+.v2-result.v2-ok.v2-partial {
+    border-inline-start-color: var(--bs-warning);
+    background: var(--bs-warning-bg-subtle, #fff8e6);
+}
+
+.v2-failed-rows {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}

@@ -112,9 +112,15 @@ public class AbsenceDedRuleDetailsAppService : HCMv3AppServiceBase, IAbsenceDedR
     }
 
     /// <summary>
-    /// Legacy <c>PerformValidation</c> parity: EndDate &gt;= StartDate and no overlapping date range with a
-    /// sibling detail under the same parent rule (the legacy source ran this overlap check twice with
-    /// equivalent predicates — only run once here).
+    /// EndDate &gt;= StartDate, and no overlapping date range with another version of the same SLAB -- a sibling
+    /// detail under the same rule with the same <c>DaysCount</c>.
+    ///
+    /// <para><b>Deliberately narrower than legacy.</b> Legacy <c>PerformValidation</c> refused any date overlap
+    /// under one rule (it even ran the check twice). But the engine reads a rule as several slabs in force at
+    /// the same time -- <c>EmployeeLeavePayCalculationService.GetActualSickLeaveDaysAsync</c> picks the first
+    /// detail whose DaysCount covers the running count of unpaid sick days -- so legacy's check made every
+    /// multi-slab rule, Kuwait's own art. 69 sick leave among them, impossible to enter. Slabs now share dates;
+    /// only two versions of the same slab are kept apart.</para>
     /// </summary>
     private async Task ValidateAsync(AbsenceDedRuleDetail entity)
     {
@@ -126,6 +132,7 @@ public class AbsenceDedRuleDetailsAppService : HCMv3AppServiceBase, IAbsenceDedR
         var overlap = await _absenceDedRuleDetailRepository.GetAll()
             .AnyAsync(d => d.Id != entity.Id &&
                            d.AbsenceDeductionRuleId == entity.AbsenceDeductionRuleId &&
+                           d.DaysCount == entity.DaysCount &&
                            d.StartDate.Date <= entity.EndDate.Date &&
                            d.EndDate.Date >= entity.StartDate.Date);
         if (overlap)

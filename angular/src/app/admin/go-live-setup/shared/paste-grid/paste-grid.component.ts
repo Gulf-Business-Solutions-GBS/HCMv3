@@ -7,6 +7,10 @@ import { parseTsv, toTsv } from './tsv';
 import { validateCell } from './paste-grid.coercion';
 import { CellIssue, CellRef, PasteGridColumn, PasteGridIssue, PasteGridRow, isRowEmpty } from './paste-grid.types';
 
+/** The pinned row-number column on the left, and a column's width when it does not say. */
+const RowNumberWidth = 56;
+const DefaultColumnWidth = 150;
+
 /**
  * Spreadsheet-style grid for the Go-Live Setup's bulk sheets (employees, salaries, bank
  * details, opening balances).
@@ -18,7 +22,8 @@ import { CellIssue, CellRef, PasteGridColumn, PasteGridIssue, PasteGridRow, isRo
  *
  * Rendering notes:
  *  - CSS grid rather than a <table>, so the CDK viewport can virtualise rows while the header stays
- *    aligned; header and body share one grid-template-columns and one horizontally scrolling parent.
+ *    aligned; header and body share one grid-template-columns. The body is the only scroller, both ways;
+ *    the header follows its scrollLeft, so there is one horizontal scrollbar and the columns cannot drift.
  *  - Cells render as text. Exactly one editor input is mounted, over the active cell, so the DOM stays
  *    small and focus does not thrash while arrowing around.
  *
@@ -73,11 +78,13 @@ export class PasteGridComponent {
 
     readonly gridTemplate = computed(
         () =>
-            `56px ${this.columns()
-                .map((c) => `${c.width ?? 150}px`)
+            `${RowNumberWidth}px ${this.columns()
+                .map((c) => `${c.width ?? DefaultColumnWidth}px`)
                 .join(' ')}`
     );
-    readonly totalWidth = computed(() => 56 + this.columns().reduce((sum, c) => sum + (c.width ?? 150), 0));
+    readonly totalWidth = computed(
+        () => RowNumberWidth + this.columns().reduce((sum, c) => sum + (c.width ?? DefaultColumnWidth), 0)
+    );
 
     /** Flattened for the summary strip; the caller gets the same list through issuesChange. */
     readonly issueList = computed<PasteGridIssue[]>(() => {
@@ -114,14 +121,7 @@ export class PasteGridComponent {
 
         effect(() => {
             if (this.editing()) {
-                // The editor is created by the same change detection pass that set this signal.
-                setTimeout(() => {
-                    const el = this.host.nativeElement.querySelector<HTMLElement>('.pg-input');
-                    el?.focus();
-                    if (el instanceof HTMLInputElement) {
-                        el.select();
-                    }
-                }, 0);
+                this.focusEditor();
             }
         });
     }
@@ -160,16 +160,34 @@ export class PasteGridComponent {
 
     // ---------------------------------------------------------------- mouse and keyboard
 
+    /** The body is the only scroller; the header follows it sideways, so the two columns can never drift apart. */
+    syncHeader(): void {
+        const viewport = this.viewportElement();
+        const head = this.host.nativeElement.querySelector<HTMLElement>('.pg-head-clip');
+        if (viewport && head && head.scrollLeft !== viewport.scrollLeft) {
+            head.scrollLeft = viewport.scrollLeft;
+        }
+    }
+
+    /**
+     * A click opens the cell for editing with what is already in it, as a data-entry sheet should; there is no
+     * separate "select, then F2" step. Shift-click still extends a selection, for copying or clearing a range.
+     */
     onCellMouseDown(event: MouseEvent, r: number, c: number): void {
+        if (this.isEditing(r, c)) {
+            // A click inside the open editor only moves the caret.
+            return;
+        }
         if (this.editing()) {
             this.commitEdit();
         }
         if (event.shiftKey) {
             this.selectionEnd.set({ r, c });
-        } else {
-            this.active.set({ r, c });
-            this.selectionEnd.set(null);
+            return;
         }
+        this.active.set({ r, c });
+        this.selectionEnd.set(null);
+        this.startEdit(r, c);
     }
 
     onKeyDown(event: KeyboardEvent): void {
@@ -255,20 +273,78 @@ export class PasteGridComponent {
         this.editValue.set((event.target as HTMLInputElement | HTMLSelectElement).value);
     }
 
+    /**
+     * Keys inside an open cell, as in Excel: Enter, Tab and the up/down arrows save it and open the next one, so a
+     * row can be typed straight through; left/right move the caret, and step to the next cell only from the
+     * text's edge. Escape throws the change away and leaves the cell selected.
+     */
     onEditorKeyDown(event: KeyboardEvent): void {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            this.commitEdit();
-            this.move(1, 0, false);
-        } else if (event.key === 'Escape') {
-            event.preventDefault();
-            this.editing.set(null);
-        } else if (event.key === 'Tab') {
-            event.preventDefault();
-            this.commitEdit();
-            this.move(0, event.shiftKey ? -1 : 1, false);
+        const input = event.target as HTMLInputElement | HTMLSelectElement;
+        const isText = input instanceof HTMLInputElement;
+        const caret = isText ? input.selectionStart : null;
+        const atStart = isText && caret === 0 && input.selectionEnd === 0;
+        const atEnd = isText && caret === input.value.length && input.selectionEnd === input.value.length;
+
+        switch (event.key) {
+            case 'Enter':
+                event.preventDefault();
+                this.commitAndMove(event.shiftKey ? -1 : 1, 0);
+                break;
+            case 'Tab':
+                event.preventDefault();
+                this.commitAndMove(0, event.shiftKey ? -1 : 1);
+                break;
+            case 'ArrowUp':
+            case 'ArrowDown':
+                // A dropdown uses its arrows to pick an option.
+                if (isText) {
+                    event.preventDefault();
+                    this.commitAndMove(event.key === 'ArrowUp' ? -1 : 1, 0);
+                }
+                break;
+            case 'ArrowLeft':
+                if (atStart) {
+                    event.preventDefault();
+                    this.commitAndMove(0, -1);
+                }
+                break;
+            case 'ArrowRight':
+                if (atEnd) {
+                    event.preventDefault();
+                    this.commitAndMove(0, 1);
+                }
+                break;
+            case 'Escape':
+                event.preventDefault();
+                this.editing.set(null);
+                this.focusGrid();
+                break;
         }
         event.stopPropagation();
+    }
+
+    /** The blur of the editor being closed by a move must not commit, and so close, the one opened next. */
+    onEditorBlur(r: number, c: number): void {
+        if (this.isEditing(r, c)) {
+            this.commitEdit();
+        }
+    }
+
+    /**
+     * A block copied from Excel -- anything with a tab or a line break in it -- is pasted as a block even from
+     * inside an open cell, across the cells from this one on. Plain text goes into the cell as normal.
+     */
+    onEditorPaste(event: ClipboardEvent): void {
+        const text = event.clipboardData?.getData('text/plain') ?? '';
+        if (!/[\t\r\n]/.test(text.replace(/[\r\n]+$/, ''))) {
+            event.stopPropagation();
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        this.editing.set(null);
+        this.pasteText(text);
+        this.focusGrid();
     }
 
     commitEdit(): void {
@@ -302,7 +378,11 @@ export class PasteGridComponent {
         if (!text) {
             return;
         }
+        this.pasteText(text);
+    }
 
+    /** Excel range-paste semantics, from the active cell (or over the selected range for a single value). */
+    pasteText(text: string): void {
         const parsed = parseTsv(text);
         const cols = this.columns();
         const start = this.active();
@@ -497,10 +577,75 @@ export class PasteGridComponent {
             this.selectionEnd.set(null);
         }
         this.scrollRowIntoView(r);
+        this.scrollColumnIntoView(c);
+    }
+
+    private commitAndMove(dr: number, dc: number): void {
+        this.commitEdit();
+        this.move(dr, dc, false);
+        const next = this.active();
+        this.startEdit(next.r, next.c);
+    }
+
+    /**
+     * Focuses the open editor, caret at the end of what is there. Retried briefly: moving into a row the virtual
+     * viewport has not drawn yet leaves no editor to focus until it has.
+     */
+    private focusEditor(attempt = 0): void {
+        setTimeout(
+            () => {
+                const el = this.host.nativeElement.querySelector<HTMLElement>('.pg-input');
+                if (!el) {
+                    if (attempt < 5) {
+                        this.focusEditor(attempt + 1);
+                    }
+                    return;
+                }
+                el.focus();
+                if (el instanceof HTMLInputElement) {
+                    const end = el.value.length;
+                    el.setSelectionRange(end, end);
+                }
+            },
+            attempt === 0 ? 0 : 30
+        );
+    }
+
+    /** Keeps the keyboard in the grid once an editor closes, so arrows and typing carry on working. */
+    private focusGrid(): void {
+        setTimeout(() => this.viewportElement()?.focus({ preventScroll: true }), 0);
+    }
+
+    private viewportElement(): HTMLElement | null {
+        return this.host.nativeElement.querySelector<HTMLElement>('.cdk-virtual-scroll-viewport');
+    }
+
+    /**
+     * Arrowing or tabbing to a column off either edge brings it into view -- Home-row behaviour in Excel. The
+     * row-number column stays pinned on the left, so a cell counts as hidden once it slides under it.
+     */
+    private scrollColumnIntoView(c: number): void {
+        const viewport = this.viewportElement();
+        if (!viewport) {
+            return;
+        }
+
+        const cols = this.columns();
+        let left = RowNumberWidth;
+        for (let i = 0; i < c; i++) {
+            left += cols[i].width ?? DefaultColumnWidth;
+        }
+        const right = left + (cols[c]?.width ?? DefaultColumnWidth);
+
+        if (left - RowNumberWidth < viewport.scrollLeft) {
+            viewport.scrollLeft = left - RowNumberWidth;
+        } else if (right > viewport.scrollLeft + viewport.clientWidth) {
+            viewport.scrollLeft = right - viewport.clientWidth;
+        }
     }
 
     private scrollRowIntoView(r: number): void {
-        const viewport = this.host.nativeElement.querySelector<HTMLElement>('.cdk-virtual-scroll-viewport');
+        const viewport = this.viewportElement();
         if (!viewport) {
             return;
         }

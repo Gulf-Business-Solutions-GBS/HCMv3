@@ -37,6 +37,12 @@ public enum GoLiveV2StoppedAt
 
     /// <summary>The run went ahead and finished, but found nobody in the payroll area to pay.</summary>
     NoEmployees = 4,
+
+    /// <summary>
+    /// The time engine, run first for the month, could not start or failed for some employee's days -- so the
+    /// payroll engine was not run: it pays days from the time registers the time engine writes.
+    /// </summary>
+    TimeEngine = 5,
 }
 
 public class GoLiveV2RunPayrollOutput
@@ -84,6 +90,9 @@ public enum GoLiveV2NextStep
     /// whichever of the payroll area, its control record and the year's pay calendar is missing.
     /// </summary>
     SetUpPayrollMonth = 1,
+
+    /// <summary>The run went through but found nobody in the payroll area: load the employees.</summary>
+    LoadEmployees = 2,
 }
 
 /// <summary>The month and payroll area to set up -- the same two things the run was given.</summary>
