@@ -5528,6 +5528,16 @@
     <text name="GoLiveV2SettingsSecurity">إعدادات الأمان</text>
     <text name="GoLiveV2TimeEngineMoreDays">{0} (و{1} أيام أخرى)</text>
     <text name="GoLiveV2StoppedAtTimeEngine">توقف محرك الوقت، الذي يعمل أولاً للشهر — لذا لم تُشغَّل الرواتب</text>
+    <text name="GoLiveV2StoppedAtMonthSetUp">تعذّر إعداد الشهر، لذا لم تُشغَّل الرواتب</text>
+    <text name="GoLiveV2RunProgressTitle">تشغيل الرواتب لشهر {0}</text>
+    <text name="GoLiveV2RunPhaseStarting">جارٍ إعداد الشهر والبدء…</text>
+    <text name="GoLiveV2RunPhaseTime">الخطوة 1 من 2 · محرك الوقت: احتساب أيام كل موظف</text>
+    <text name="GoLiveV2RunPhasePayroll">الخطوة 2 من 2 · محرك الرواتب: احتساب راتب كل موظف</text>
+    <text name="GoLiveV2RunProgressLast">آخر من اكتمل: {0}</text>
+    <text name="GoLiveV2RunSucceeded">مكتمل</text>
+    <text name="GoLiveV2RunFailed">فشل</text>
+    <text name="GoLiveV2RunFinished">اكتمل خلال {0}. النتيجة أدناه.</text>
+    <text name="GoLiveV2RunSetUpDone">تم إعداد الشهر أولاً: {0}</text>
     <text name="GoLiveV2TimeEngineSaid">ما قاله محرك الوقت</text>
     <text name="GoLiveV2Succeeded">تم تشغيل الرواتب — صُرفت رواتب جميع الموظفين</text>
     <text name="GoLiveV2PaidUpTo">فترة الرواتب المنتهية في {0}</text>

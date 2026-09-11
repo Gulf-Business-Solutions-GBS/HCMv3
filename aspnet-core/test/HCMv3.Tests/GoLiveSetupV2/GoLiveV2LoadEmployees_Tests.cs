@@ -407,6 +407,48 @@ public class GoLiveV2LoadEmployees_Tests : AppTestBase
         ex.Message.ShouldContain("Unlimited");
     }
 
+    // ---------------------------------------------------------------- coming back to the step
+
+    /**
+     * Opening the step again shows what was loaded before -- the company and each employee with the grid's own
+     * columns -- so the customer adds to the sheet rather than typing it again.
+     */
+    [Fact]
+    public async Task Should_Give_Back_What_Was_Loaded_Before()
+    {
+        GivenTheReferenceData();
+        var ahmed = Row("E001", "Ahmed Ali Hassan", Joined, "290011501234", basic: 600);
+        ahmed.AccommodationAllowance = 150;
+        ahmed.MobileAllowance = 10;
+        await _goLive.LoadEmployees(Input(ahmed, Row("E002", "Sara Khalid", new DateTime(2021, 3, 1), "290011501235")));
+
+        var loaded = await _goLive.GetLoadedEmployees(DefaultArea);
+
+        loaded.OrganizationUnitName.ShouldBe(Company);
+        loaded.Employees.Select(e => e.Code).ShouldBe(new[] { "E001", "E002" });
+
+        var first = loaded.Employees[0];
+        first.FullName.ShouldBe("Ahmed Ali Hassan");
+        first.JoiningDate.ShouldBe(Joined);
+        first.CivilId.ShouldBe("290011501234");
+        first.BasicSalary.ShouldBe(600);
+        first.AccommodationAllowance.ShouldBe(150);
+        first.MobileAllowance.ShouldBe(10);
+        first.TransportAllowance.ShouldBeNull();
+
+        loaded.Employees[1].JoiningDate.ShouldBe(new DateTime(2021, 3, 1));
+        loaded.Employees[1].BasicSalary.ShouldBe(500);
+    }
+
+    [Fact]
+    public async Task Should_Give_Back_Nothing_Before_Anything_Is_Loaded()
+    {
+        var loaded = await _goLive.GetLoadedEmployees(DefaultArea);
+
+        loaded.OrganizationUnitName.ShouldBeNull();
+        loaded.Employees.ShouldBeEmpty();
+    }
+
     // ---------------------------------------------------------------- the payroll area dropdown
 
     [Fact]

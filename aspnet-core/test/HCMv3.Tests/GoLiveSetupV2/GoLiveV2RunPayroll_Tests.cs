@@ -61,10 +61,14 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
 
     // ---------------------------------------------------------------- link 3: the engine itself refuses
 
+    /// <summary>
+    /// Run payroll sets up a month that is missing its control record or calendar before the engine looks for
+    /// them. On a company with no reference data it cannot -- there is no Kuwaiti Dinar to pay in -- and says
+    /// so, rather than letting the engine refuse for want of a record V2 could not make.
+    /// </summary>
     [Fact]
-    public async Task Should_Report_The_Engines_Own_Words_When_It_Refuses_To_Start()
+    public async Task Should_Say_Why_The_Month_Could_Not_Be_Set_Up()
     {
-        // A payroll area the tenant does not have. The engine looks for its control record first.
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput
         {
             PayDate = PayDate,
@@ -72,8 +76,8 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
         });
 
         result.Succeeded.ShouldBeFalse();
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Engine);
-        result.Message.ShouldBe("Payroll Control Record not found, Cannot Run Payroll Engine.");
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.MonthSetUp);
+        result.Message.ShouldContain("KWD");
     }
 
     // ---------------------------------------------------------------- link 4: the run starts, nobody to pay
@@ -167,17 +171,34 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
     private const string DefaultArea = "Default Payroll Area";
 
     /// <summary>
-    /// The engine finds a control record through its payroll area's name, and a new tenant has neither. The
-    /// refusal is only useful if the screen can offer the step that answers it, so the result says which.
+    /// The engine refused a new company for want of a control record, and then a pay calendar -- links 3 and 4.
+    /// Both are answered by setting up the month, which needs nothing the customer has not already given, so
+    /// Run payroll now does it itself, first, and says what it did. The run goes on to the next link.
     /// </summary>
     [Fact]
-    public async Task Should_Point_To_Setting_Up_The_Month_When_The_Control_Record_Is_Missing()
+    public async Task Should_Set_Up_The_Month_Itself_Before_Running()
     {
+        GivenTheReferenceData();
+
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Engine);
-        result.Message.ShouldBe("Payroll Control Record not found, Cannot Run Payroll Engine.");
-        result.NextStep.ShouldBe(GoLiveV2NextStep.SetUpPayrollMonth);
+        result.MonthSetUp.ShouldNotBeNull();
+        result.MonthSetUp.PayrollAreaCreated.ShouldBeTrue();
+        result.MonthSetUp.ControlRecordCreated.ShouldBeTrue();
+        result.MonthSetUp.CalendarMonthsCreated.ShouldBe(12);
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.NoEmployees);
+    }
+
+    [Fact]
+    public async Task Should_Not_Set_Up_A_Month_That_Is_Already_Set_Up()
+    {
+        GivenTheReferenceData();
+        await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        var again = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        again.MonthSetUp.ShouldBeNull();
+        again.StoppedAt.ShouldBe(GoLiveV2StoppedAt.NoEmployees);
     }
 
     [Fact]
@@ -292,20 +313,20 @@ public class GoLiveV2RunPayroll_Tests : AppTestBase
 
     /// <summary>
     /// A tenant whose payroll area and control record exist -- set up by hand, or by an earlier V2 -- but that
-    /// has no calendar. The engine refuses, and the same set-up step is offered, because it fills in whatever
-    /// the month is still missing.
+    /// has no calendar. Run payroll lays the calendar down itself and leaves the control record as it was.
     /// </summary>
     [Fact]
-    public async Task Should_Point_To_Setting_Up_The_Month_When_The_Pay_Calendar_Is_Missing()
+    public async Task Should_Lay_Down_A_Missing_Calendar_Itself_Before_Running()
     {
         GivenTheReferenceData();
         GivenAPayrollAreaWithAControlRecordButNoCalendar(DefaultArea);
 
         var result = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
-        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.Engine);
-        result.Message.ShouldBe("Payroll Calender does not have record for Payroll month you are running.");
-        result.NextStep.ShouldBe(GoLiveV2NextStep.SetUpPayrollMonth);
+        result.MonthSetUp.ShouldNotBeNull();
+        result.MonthSetUp.ControlRecordCreated.ShouldBeFalse();
+        result.MonthSetUp.CalendarMonthsCreated.ShouldBe(12);
+        result.StoppedAt.ShouldBe(GoLiveV2StoppedAt.NoEmployees);
     }
 
     /// <summary>

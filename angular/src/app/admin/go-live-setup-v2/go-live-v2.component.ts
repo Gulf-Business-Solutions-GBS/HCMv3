@@ -191,6 +191,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     ngOnInit(): void {
         this.refreshPayrollAreas();
+        this.showPreviouslyLoaded();
     }
 
     ngOnDestroy(): void {
@@ -554,6 +555,38 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             clearInterval(this.ticker);
             this.ticker = null;
         }
+    }
+
+    /**
+     * Opens the step as it was left: the company, and every employee already loaded into the payroll area, in the
+     * grid's columns. Only into an untouched step -- anything typed since the page opened is never overwritten.
+     */
+    private showPreviouslyLoaded(): void {
+        this.proxy.getLoadedEmployees(this.payrollAreaName()).subscribe((loaded) => {
+            if (!this.organizationUnitName().trim() && loaded.organizationUnitName) {
+                this.organizationUnitName.set(loaded.organizationUnitName);
+            }
+
+            if (this.filledEmployeeCount() === 0 && loaded.employees?.length) {
+                this.employeeRows.set(loaded.employees.map((e) => this.toGridRow(e)));
+            }
+        });
+    }
+
+    private toGridRow(e: GoLiveV2EmployeeRowDto): PasteGridRow {
+        return {
+            code: e.code ?? null,
+            fullName: e.fullName ?? null,
+            joiningDate: e.joiningDate ? e.joiningDate.toISODate() : null,
+            civilId: e.civilId ?? null,
+            basicSalary: e.basicSalary ?? null,
+            accommodationAllowance: e.accommodationAllowance ?? null,
+            mobileAllowance: e.mobileAllowance ?? null,
+            transportAllowance: e.transportAllowance ?? null,
+            foodAllowance: e.foodAllowance ?? null,
+            housingAllowance: e.housingAllowance ?? null,
+            otherAllowance: e.otherAllowance ?? null,
+        };
     }
 
     private refreshPayrollAreas(): void {

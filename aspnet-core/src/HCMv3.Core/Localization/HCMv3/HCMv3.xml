@@ -5678,6 +5678,16 @@
     <text name="GoLiveV2SettingsSecurity">Security settings</text>
     <text name="GoLiveV2TimeEngineMoreDays">{0} (and {1} more days)</text>
     <text name="GoLiveV2StoppedAtTimeEngine">The time engine, run first for the month, stopped — so payroll was not run</text>
+    <text name="GoLiveV2StoppedAtMonthSetUp">The month could not be set up, so payroll was not run</text>
+    <text name="GoLiveV2RunProgressTitle">Running payroll for {0}</text>
+    <text name="GoLiveV2RunPhaseStarting">Setting up the month and starting…</text>
+    <text name="GoLiveV2RunPhaseTime">Step 1 of 2 · Time engine: working out each employee's days</text>
+    <text name="GoLiveV2RunPhasePayroll">Step 2 of 2 · Payroll engine: calculating each employee's pay</text>
+    <text name="GoLiveV2RunProgressLast">Last done: {0}</text>
+    <text name="GoLiveV2RunSucceeded">Done</text>
+    <text name="GoLiveV2RunFailed">Failed</text>
+    <text name="GoLiveV2RunFinished">Finished in {0}. The result is below.</text>
+    <text name="GoLiveV2RunSetUpDone">Set up the month first: {0}</text>
     <text name="GoLiveV2TimeEngineSaid">What the time engine said</text>
     <text name="GoLiveV2Succeeded">Payroll ran — every employee was paid</text>
     <text name="GoLiveV2PaidUpTo">Pay period ending {0}</text>

@@ -43,6 +43,9 @@ public enum GoLiveV2StoppedAt
     /// payroll engine was not run: it pays days from the time registers the time engine writes.
     /// </summary>
     TimeEngine = 5,
+
+    /// <summary>The month's control record or pay calendar was missing, and V2 could not set them up.</summary>
+    MonthSetUp = 6,
 }
 
 public class GoLiveV2RunPayrollOutput
@@ -68,6 +71,12 @@ public class GoLiveV2RunPayrollOutput
 
     /// <summary>One row per employee the run reached, paid or not.</summary>
     public List<GoLiveV2EmployeeResultDto> Employees { get; set; } = new();
+
+    /// <summary>
+    /// What Run payroll set up for the month before running -- payroll area, control record, pay calendar --
+    /// when any of it was missing. Null when the month was already set up.
+    /// </summary>
+    public GoLiveV2SetUpPayrollMonthOutput MonthSetUp { get; set; }
 }
 
 public class GoLiveV2EmployeeResultDto

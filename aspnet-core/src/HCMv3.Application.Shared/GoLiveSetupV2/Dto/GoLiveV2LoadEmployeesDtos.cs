@@ -60,6 +60,15 @@ public class GoLiveV2EmployeeRowDto
     public double? OtherAllowance { get; set; }
 }
 
+/// <summary>What was loaded before, in the grid's shape: the company, and the payroll area's employees.</summary>
+public class GoLiveV2LoadedEmployeesOutput
+{
+    /// <summary>Null until a load has put someone in an organisation unit.</summary>
+    public string OrganizationUnitName { get; set; }
+
+    public List<GoLiveV2EmployeeRowDto> Employees { get; set; } = new();
+}
+
 /// <summary>What the load did -- including each default it created -- so the screen can say so.</summary>
 public class GoLiveV2LoadEmployeesOutput
 {

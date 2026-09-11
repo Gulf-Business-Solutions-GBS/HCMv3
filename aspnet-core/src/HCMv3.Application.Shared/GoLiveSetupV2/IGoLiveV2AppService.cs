@@ -52,6 +52,12 @@ public interface IGoLiveV2AppService : IApplicationService
     /// </summary>
     Task<GoLiveV2LoadEmployeesOutput> LoadEmployees(GoLiveV2LoadEmployeesInput input);
 
+    /// <summary>
+    /// What Load Employee Data loaded before, so the step opens with it: the company, and each employee in the
+    /// payroll area in the grid's columns.
+    /// </summary>
+    Task<GoLiveV2LoadedEmployeesOutput> GetLoadedEmployees(string payrollAreaName);
+
     /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
     Task<ListResultDto<string>> GetPayrollAreaNames();
 }

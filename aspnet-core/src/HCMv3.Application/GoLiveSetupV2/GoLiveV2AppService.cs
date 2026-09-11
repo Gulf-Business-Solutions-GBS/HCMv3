@@ -49,6 +49,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly GoLiveV2EmployeeLoader _employeeLoader;
     private readonly GoLiveV2TimeEngineStep _timeEngineStep;
     private readonly GoLiveV2WorkingTime _workingTime;
+    private readonly GoLiveV2LoadedEmployeesReader _loadedEmployees;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -66,7 +67,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         GoLiveV2PlaceholderLookups placeholders,
         GoLiveV2EmployeeLoader employeeLoader,
         GoLiveV2TimeEngineStep timeEngineStep,
-        GoLiveV2WorkingTime workingTime)
+        GoLiveV2WorkingTime workingTime,
+        GoLiveV2LoadedEmployeesReader loadedEmployees)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -84,6 +86,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _employeeLoader = employeeLoader;
         _timeEngineStep = timeEngineStep;
         _workingTime = workingTime;
+        _loadedEmployees = loadedEmployees;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -110,6 +113,30 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         var areaName = input.PayrollAreaName.Trim();
         var payInDate = MonthEnd(input.PayDate.Value);
 
+        // The month first. A missing control record or pay calendar was the engine's third and fourth refusal,
+        // and answering them needs nothing the customer has not already given -- so it is done here, once, and
+        // reported, instead of being a separate button to press between two runs.
+        GoLiveV2SetUpPayrollMonthOutput monthSetUp = null;
+        if (await NextStepAsync(areaName, payInDate) == GoLiveV2NextStep.SetUpPayrollMonth)
+        {
+            try
+            {
+                monthSetUp = await SetUpPayrollMonth(new GoLiveV2SetUpPayrollMonthInput { PayDate = payInDate, PayrollAreaName = areaName });
+            }
+            catch (UserFriendlyException ex)
+            {
+                return Stopped(GoLiveV2StoppedAt.MonthSetUp, ex.Message);
+            }
+        }
+
+        var output = await RunEnginesAsync(areaName, payInDate);
+        output.MonthSetUp = monthSetUp;
+        return output;
+    }
+
+    /// <summary>The time engine, then the payroll engine, for a month that is set up.</summary>
+    private async Task<GoLiveV2RunPayrollOutput> RunEnginesAsync(string areaName, DateTime payInDate)
+    {
         // The time engine first: the payroll pays days from the time registers it writes for the month. With
         // nobody in the area it has nothing to do, and the payroll engine says so in its own words.
         var timeEngineStopped = await _timeEngineStep.RunAsync(areaName, payInDate, (await GetCurrentUserAsync()).UserName);
@@ -312,6 +339,11 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
 
         return found.GroupBy(w => w.Code).ToDictionary(g => g.Key, g => g.First().Id);
     }
+
+    /// <remarks>Shows employee records, so it needs the employee screen's permission too.</remarks>
+    [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees)]
+    public Task<GoLiveV2LoadedEmployeesOutput> GetLoadedEmployees(string payrollAreaName) =>
+        _loadedEmployees.ReadAsync(payrollAreaName);
 
     public async Task<ListResultDto<string>> GetPayrollAreaNames()
     {

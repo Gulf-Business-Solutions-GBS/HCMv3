@@ -49,6 +49,9 @@ export class PasteGridComponent {
     private readonly undoDepth = signal(0);
     private undoStack: PasteGridRow[][] = [];
 
+    /** Arriving at a cell selects what is in it, so typing replaces it; typing a character first does not. */
+    private selectOnFocus = false;
+
     readonly columns = input.required<PasteGridColumn[]>();
 
     /** Two-way. The caller owns the data; the grid replaces the array on every committed change. */
@@ -134,9 +137,15 @@ export class PasteGridComponent {
         return index;
     }
 
+    /** Dates are kept as yyyy-MM-dd and shown dd-MM-yyyy, the way the customer writes them. */
     display(row: PasteGridRow, col: PasteGridColumn): string {
         const v = row[col.key];
-        return v === null || v === undefined ? '' : String(v);
+        if (v === null || v === undefined) {
+            return '';
+        }
+        const text = String(v);
+        const iso = col.type === 'date' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(text) : null;
+        return iso ? `${iso[3]}-${iso[2]}-${iso[1]}` : text;
     }
 
     isEditing(r: number, c: number): boolean {
@@ -265,6 +274,7 @@ export class PasteGridComponent {
         }
         this.active.set({ r, c });
         this.selectionEnd.set(null);
+        this.selectOnFocus = seed === undefined;
         this.editValue.set(seed ?? this.display(this.rows()[r] ?? {}, col));
         this.editing.set({ r, c });
     }
@@ -603,8 +613,12 @@ export class PasteGridComponent {
                 }
                 el.focus();
                 if (el instanceof HTMLInputElement) {
-                    const end = el.value.length;
-                    el.setSelectionRange(end, end);
+                    if (this.selectOnFocus) {
+                        el.select();
+                    } else {
+                        const end = el.value.length;
+                        el.setSelectionRange(end, end);
+                    }
                 }
             },
             attempt === 0 ? 0 : 30

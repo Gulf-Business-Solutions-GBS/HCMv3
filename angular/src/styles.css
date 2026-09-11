@@ -446,3 +446,12 @@ ul.p-autocomplete-items{
     margin-right: 10px;
     color: var(--p-message-error-color);
 }
+/* Fixed header, solid background.
+   The default theme fixes the header to the top of the screen but gives it a transparent background in
+   light mode, so page content scrolled up behind it showed through -- the search box looked as if it
+   floated down over the page. The ID keeps this ahead of the theme bundle, which loads after this file.
+   var(--bs-body-bg) follows the light/dark theme on its own. */
+[data-kt-app-header-fixed='true'] #kt_app_header.app-header {
+    background-color: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}

@@ -270,10 +270,12 @@
                                 }
                                 @if (attempt.load; as load) {
                                     <span class="badge badge-light-primary">{{ 'GoLiveV2LoadLog' | localize }}</span>
+                                    <!-- The counts only: what was created is in the green panel above. -->
                                     <span class="v2-attempt-said">
-                                        {{ describeLoad(load).join(' ') }}
-                                        @if (failedRows(load).length > 0) {
-                                            {{ l('GoLiveV2LoadRowsFailed', failedRows(load).length) }}
+                                        {{ 'GoLiveV2ProgressLoaded' | localize }}: {{ load.employeesCreated }}
+                                        · {{ 'GoLiveV2ProgressFailed' | localize }}: {{ failedRows(load).length }}
+                                        @if (load.employeesAlreadyLoaded > 0) {
+                                            · {{ l('GoLiveV2LoadAlreadyLoaded', load.employeesAlreadyLoaded) }}
                                         }
                                     </span>
                                 }
