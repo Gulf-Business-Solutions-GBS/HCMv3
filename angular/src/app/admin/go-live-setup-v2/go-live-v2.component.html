@@ -8,23 +8,19 @@
                 <button
                     type="button"
                     class="v2-step-dot"
+                    [class]="'v2-step-' + step.number"
                     [class.v2-step-current]="step.number === currentStep()"
                     [class.v2-step-done]="step.done"
                     [disabled]="!step.ready"
-                    [title]="step.ready ? step.title : step.why"
+                    [title]="step.ready ? step.what : step.why"
                     [attr.aria-current]="step.number === currentStep() ? 'step' : null"
                     (click)="goToStep(step.number)">
+                    <span class="v2-step-name">{{ l('GoLiveV2StepNumbered', step.number, step.title) }}</span>
+                    <span class="v2-step-what">{{ step.ready ? step.what : step.why }}</span>
                     <span class="v2-step-circle">
+                        <i class="fa" [class]="'fa ' + step.icon" aria-hidden="true"></i>
                         @if (step.done) {
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                        } @else {
-                            {{ step.number }}
-                        }
-                    </span>
-                    <span class="v2-step-label">
-                        {{ step.title }}
-                        @if (!step.ready) {
-                            <small class="v2-step-why">{{ step.why }}</small>
+                            <span class="v2-step-tick"><i class="fa fa-check" aria-hidden="true"></i></span>
                         }
                     </span>
                 </button>

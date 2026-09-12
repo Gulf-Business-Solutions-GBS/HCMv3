@@ -158,17 +158,29 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         const made = this.bankFile() != null;
 
         return [
-            { number: 1, title: this.l('GoLiveV2LoadEmployees'), done: loaded > 0, ready: true, why: '' },
+            {
+                number: 1,
+                title: this.l('GoLiveV2StepLoadName'),
+                what: this.l('GoLiveV2StepLoadWhat'),
+                icon: 'fa-user-plus',
+                done: loaded > 0,
+                ready: true,
+                why: '',
+            },
             {
                 number: 2,
-                title: this.l('GoLiveV2RunAndResults'),
+                title: this.l('GoLiveV2StepRunName'),
+                what: this.l('GoLiveV2StepRunWhat'),
+                icon: 'fa-play',
                 done: paid > 0,
                 ready: loaded > 0,
                 why: this.l('GoLiveV2StepNeedsEmployees'),
             },
             {
                 number: 3,
-                title: this.l('GoLiveV2BankFileTitle'),
+                title: this.l('GoLiveV2StepBankFileName'),
+                what: this.l('GoLiveV2StepBankFileWhat'),
+                icon: 'fa-university',
                 done: made,
                 ready: paid > 0,
                 why: this.l('GoLiveV2StepNeedsPayroll'),
@@ -369,12 +381,28 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             return;
         }
 
-        this.openDocument.set({ title, fileName, kind: 'sheet', blob, sheets: await this.readSheets(blob) });
+        try {
+            this.openDocument.set({ title, fileName, kind: 'sheet', blob, sheets: await this.readSheets(blob) });
+        } catch (error) {
+            // Rather than a button that appears to do nothing: say why, and hand the file over.
+            console.error('Could not read the workbook', error);
+            this.message.warn(this.l('GoLiveV2DocCannotPreview'));
+            this.saveBlob(fileName, blob);
+        }
     }
 
-    /** Reads the generated workbook back. Loaded only when a spreadsheet is actually opened. */
+    /**
+     * Reads the generated workbook back. Loaded only when a spreadsheet is actually opened -- and loaded
+     * as the UMD bundle it is: exceljs's browser build exports nothing and defines window.ExcelJS, so
+     * importing it as a module hands back an empty object.
+     */
     private async readSheets(blob: Blob): Promise<V2DocSheet[]> {
-        const ExcelJS = await import('exceljs');
+        await import('exceljs/dist/exceljs.min.js');
+        const ExcelJS = (window as unknown as { ExcelJS?: { Workbook: new () => any } }).ExcelJS;
+        if (!ExcelJS) {
+            throw new Error('ExcelJS did not load.');
+        }
+
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(await blob.arrayBuffer());
 
@@ -1042,7 +1070,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     blob,
                     blob.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ).finally(() => this.exporting.set(null)),
-            error: () => this.exporting.set(null),
+            error: (error) => {
+                console.error('Could not fetch the report', error);
+                this.message.error(this.l('GoLiveV2DocCannotFetch'));
+                this.exporting.set(null);
+            },
         });
     }
 

@@ -6292,5 +6292,14 @@
     <text name="GoLiveV2DocNothingMatches">Nothing in this file matches.</text>
     <text name="GoLiveV2StepNeedsEmployees">Load employees first</text>
     <text name="GoLiveV2StepNeedsPayroll">Run the payroll first</text>
+    <text name="GoLiveV2StepNumbered">#{0}. {1}</text>
+    <text name="GoLiveV2StepLoadName">Load Employees</text>
+    <text name="GoLiveV2StepLoadWhat">Who they are, what they are paid, and where the salary goes.</text>
+    <text name="GoLiveV2StepRunName">Run Payroll</text>
+    <text name="GoLiveV2StepRunWhat">Run the engines for the month and check what they paid.</text>
+    <text name="GoLiveV2StepBankFileName">Generate Bank File</text>
+    <text name="GoLiveV2StepBankFileWhat">The salary transfer file, in the layout your bank accepts.</text>
+    <text name="GoLiveV2DocCannotPreview">This file could not be shown, so it has been downloaded instead.</text>
+    <text name="GoLiveV2DocCannotFetch">The report could not be fetched. Try again.</text>
   </texts>
 </localizationDictionary>

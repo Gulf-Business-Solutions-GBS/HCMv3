@@ -6131,5 +6131,14 @@
     <text name="GoLiveV2DocNothingMatches">لا يوجد ما يطابق البحث في هذا الملف.</text>
     <text name="GoLiveV2StepNeedsEmployees">حمّل الموظفين أولًا</text>
     <text name="GoLiveV2StepNeedsPayroll">شغّل الرواتب أولًا</text>
+    <text name="GoLiveV2StepNumbered">#{0}. {1}</text>
+    <text name="GoLiveV2StepLoadName">تحميل الموظفين</text>
+    <text name="GoLiveV2StepLoadWhat">من هم، وما يتقاضونه، وإلى أين يُحوَّل الراتب.</text>
+    <text name="GoLiveV2StepRunName">تشغيل الرواتب</text>
+    <text name="GoLiveV2StepRunWhat">شغّل المحركات للشهر وتحقق مما تم صرفه.</text>
+    <text name="GoLiveV2StepBankFileName">إنشاء الملف البنكي</text>
+    <text name="GoLiveV2StepBankFileWhat">ملف تحويل الرواتب بالنموذج الذي يقبله البنك.</text>
+    <text name="GoLiveV2DocCannotPreview">تعذر عرض هذا الملف، لذا تم تنزيله بدلًا من ذلك.</text>
+    <text name="GoLiveV2DocCannotFetch">تعذر جلب التقرير. حاول مرة أخرى.</text>
   </texts>
 </localizationDictionary>
