@@ -11,7 +11,10 @@ using HCMv3.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.Storage;
 using HCMv3.Dto;
+using HCMv3.GridReports.PayrollReport;
+using HCMv3.GridReports.PayrollReport.Dto;
 using HCMv3.GoLiveSetup.ReferenceData;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
@@ -40,6 +43,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     /// <summary>Month end: everything entered during the month is included, which is the least surprising.</summary>
     private const int MonthEndCutOff = 31;
 
+    /// <summary>A go-live company is one payroll area; no page of it is worth splitting a report over.</summary>
+    private const int MaxReportRows = 100000;
+
     private readonly IPayrollEngineService _payrollEngine;
     private readonly IPayrollAreasAppService _payrollAreas;
     private readonly IPayrollControlRecordsAppService _controlRecords;
@@ -62,6 +68,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IRepository<WageTypeLeave> _wageTypeLeaveRepository;
     private readonly IRepository<Bank> _bankRepository;
     private readonly GoLiveV2BankFileStep _bankFileStep;
+    private readonly GoLiveV2GridReader _gridReader;
+    private readonly IPayrollSheetReportAppService _payrollSheetReport;
+    private readonly ITempFileCacheManager _tempFiles;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -85,7 +94,10 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         IReferenceDataSeeder referenceData,
         IRepository<WageTypeLeave> wageTypeLeaveRepository,
         IRepository<Bank> bankRepository,
-        GoLiveV2BankFileStep bankFileStep)
+        GoLiveV2BankFileStep bankFileStep,
+        GoLiveV2GridReader gridReader,
+        IPayrollSheetReportAppService payrollSheetReport,
+        ITempFileCacheManager tempFiles)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -109,6 +121,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _wageTypeLeaveRepository = wageTypeLeaveRepository;
         _bankRepository = bankRepository;
         _bankFileStep = bankFileStep;
+        _gridReader = gridReader;
+        _payrollSheetReport = payrollSheetReport;
+        _tempFiles = tempFiles;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -404,6 +419,40 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
     public Task<FileDto> GetSalaryRegisterExcel(GoLiveV2PayrollResultsInput input) =>
         _payrollResults.ExportRegisterLinesAsync(input.PayrollAreaName, MonthEnd(input.PayDate.Value));
+
+    /// <remarks>
+    /// The report writes an Excel file; this reads that same file back as rows. Going through the file
+    /// rather than the report's own DTO keeps the screen and the download identical -- one column list,
+    /// one set of formats -- and the report's permission still applies, because it is its own service
+    /// that produces the file.
+    /// </remarks>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public async Task<GoLiveV2GridDto> GetPayrollSheetGrid(GoLiveV2PayrollResultsInput input)
+    {
+        var monthEnd = MonthEnd(input.PayDate.Value);
+        var area = await _payrollAreaRepository.FirstOrDefaultAsync(a => a.Name == input.PayrollAreaName.Trim());
+
+        var file = await _payrollSheetReport.GetPayrollSheetReportToExcel(new GetPayrollSheetReportInput
+        {
+            Month = monthEnd.Month,
+            Year = monthEnd.Year,
+            PayrollRunType = PayrollRunType.Regular,
+            PayrollAreaId = area?.Id,
+            SkipCount = 0,
+            MaxResultCount = MaxReportRows,
+        });
+
+        return _gridReader.Read(_tempFiles.GetFile(file.FileToken), L("GoLiveV2PayrollSheet"));
+    }
+
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public async Task<GoLiveV2GridDto> GetSalaryRegisterGrid(GoLiveV2PayrollResultsInput input)
+    {
+        var file = await GetSalaryRegisterExcel(input);
+        return _gridReader.Read(_tempFiles.GetFile(file.FileToken), L("GoLiveV2SalaryRegister"));
+    }
 
     public async Task<ListResultDto<string>> GetBankNames()
     {

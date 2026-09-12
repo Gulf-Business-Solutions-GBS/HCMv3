@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
@@ -135,6 +136,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
     private readonly GoLiveV2PayrollResultsReader _payrollResults;
     private readonly GoLiveV2CompanySponsor _companySponsor;
+    private readonly GoLiveV2GridReader _gridReader;
     private readonly IRepository<Bank> _bankRepository;
     private readonly IRepository<BankFile> _bankFileRepository;
     private readonly IRepository<OrganizationBankInfo> _organizationBankInfoRepository;
@@ -150,6 +152,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         IEmployeePayrollAreaResolver payrollAreaResolver,
         GoLiveV2PayrollResultsReader payrollResults,
         GoLiveV2CompanySponsor companySponsor,
+        GoLiveV2GridReader gridReader,
         IRepository<Bank> bankRepository,
         IRepository<BankFile> bankFileRepository,
         IRepository<OrganizationBankInfo> organizationBankInfoRepository,
@@ -166,6 +169,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         _payrollAreaResolver = payrollAreaResolver;
         _payrollResults = payrollResults;
         _companySponsor = companySponsor;
+        _gridReader = gridReader;
         _bankRepository = bankRepository;
         _bankFileRepository = bankFileRepository;
         _organizationBankInfoRepository = organizationBankInfoRepository;
@@ -353,8 +357,31 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         output.FormatCode = file.FormatCode;
         output.RecordCount = file.RecordCount;
         output.TotalAmount = file.TotalAmount;
+        output.Contents = ReadContents(file);
 
         return output;
+    }
+
+    /// <summary>
+    /// What the generated file holds, so the screen can show it before anyone sends it to the bank: the
+    /// rows of a spreadsheet, the lines of a fixed-width file, and nothing for a zip of several.
+    /// </summary>
+    private GoLiveV2GridDto ReadContents(BankFileOutput file)
+    {
+        if (string.IsNullOrEmpty(file.Base64Content))
+        {
+            return null;
+        }
+
+        var bytes = Convert.FromBase64String(file.Base64Content);
+        var contentType = file.ContentType ?? string.Empty;
+
+        if (contentType.Contains("text"))
+        {
+            return _gridReader.ReadText(Encoding.UTF8.GetString(bytes), file.FormatCode);
+        }
+
+        return contentType.Contains("zip") ? null : _gridReader.Read(bytes, file.FormatCode);
     }
 
     /// <summary>

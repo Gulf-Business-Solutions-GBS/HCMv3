@@ -28,34 +28,51 @@
     border-bottom: 1px solid var(--bs-gray-300);
 }
 
+.v2-doc-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
 .v2-doc-title {
     margin: 0;
     font-size: 1.15rem;
     font-weight: 600;
 }
 
-.v2-doc-file {
+.v2-doc-count {
     color: var(--bs-gray-600);
     font-size: 0.85rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+/* One row, always: the buttons are icons so they fit beside the search box. */
 .v2-doc-actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
 }
 
 .v2-doc-find {
-    width: min(100%, 220px);
+    width: min(40vw, 220px);
 }
 
-.v2-doc-sheets {
-    display: flex;
-    gap: 0.35rem;
-    padding: 0.6rem 1.25rem 0;
-    flex-wrap: wrap;
+.v2-doc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    flex: none;
+}
+
+.v2-doc-excel {
+    color: #1d6f42;
+}
+
+.v2-doc-pdf {
+    color: #b30b00;
 }
 
 .v2-doc-body {

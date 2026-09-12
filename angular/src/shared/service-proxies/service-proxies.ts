@@ -66574,6 +66574,118 @@ export class GoLiveV2ServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPayrollSheetGrid(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2GridDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollSheetGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollSheetGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollSheetGrid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2GridDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2GridDto>;
+        }));
+    }
+
+    protected processGetPayrollSheetGrid(response: HttpResponseBase): Observable<GoLiveV2GridDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2GridDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getSalaryRegisterGrid(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2GridDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegisterGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSalaryRegisterGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSalaryRegisterGrid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2GridDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2GridDto>;
+        }));
+    }
+
+    protected processGetSalaryRegisterGrid(response: HttpResponseBase): Observable<GoLiveV2GridDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2GridDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getBankNames(): Observable<ListResultDtoOfString> {
@@ -260764,7 +260876,6 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     formatCode!: string | undefined;
     isText!: boolean;
     needsCompanyAccount!: boolean;
-    needsBankCode!: boolean;
     needsCompanyCode!: boolean;
     needsEmployeeAccountNumber!: boolean;
     writesPayeeBankCodes!: boolean;
@@ -260784,7 +260895,6 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
             this.formatCode = _data["formatCode"];
             this.isText = _data["isText"];
             this.needsCompanyAccount = _data["needsCompanyAccount"];
-            this.needsBankCode = _data["needsBankCode"];
             this.needsCompanyCode = _data["needsCompanyCode"];
             this.needsEmployeeAccountNumber = _data["needsEmployeeAccountNumber"];
             this.writesPayeeBankCodes = _data["writesPayeeBankCodes"];
@@ -260804,7 +260914,6 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
         data["formatCode"] = this.formatCode;
         data["isText"] = this.isText;
         data["needsCompanyAccount"] = this.needsCompanyAccount;
-        data["needsBankCode"] = this.needsBankCode;
         data["needsCompanyCode"] = this.needsCompanyCode;
         data["needsEmployeeAccountNumber"] = this.needsEmployeeAccountNumber;
         data["writesPayeeBankCodes"] = this.writesPayeeBankCodes;
@@ -260817,7 +260926,6 @@ export interface IGoLiveV2BankFileLayoutDto {
     formatCode: string | undefined;
     isText: boolean;
     needsCompanyAccount: boolean;
-    needsBankCode: boolean;
     needsCompanyCode: boolean;
     needsEmployeeAccountNumber: boolean;
     writesPayeeBankCodes: boolean;
@@ -261132,7 +261240,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
     paymentBankId!: number;
     formatCode!: string;
     companyAccountNo!: string | undefined;
-    bankCode!: string | undefined;
     companyCode!: string | undefined;
     mosalId!: number | undefined;
 
@@ -261152,7 +261259,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
             this.paymentBankId = _data["paymentBankId"];
             this.formatCode = _data["formatCode"];
             this.companyAccountNo = _data["companyAccountNo"];
-            this.bankCode = _data["bankCode"];
             this.companyCode = _data["companyCode"];
             this.mosalId = _data["mosalId"];
         }
@@ -261172,7 +261278,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
         data["paymentBankId"] = this.paymentBankId;
         data["formatCode"] = this.formatCode;
         data["companyAccountNo"] = this.companyAccountNo;
-        data["bankCode"] = this.bankCode;
         data["companyCode"] = this.companyCode;
         data["mosalId"] = this.mosalId;
         return data;
@@ -261185,7 +261290,6 @@ export interface IGoLiveV2GenerateBankFileInput {
     paymentBankId: number;
     formatCode: string;
     companyAccountNo: string | undefined;
-    bankCode: string | undefined;
     companyCode: string | undefined;
     mosalId: number | undefined;
 }
@@ -261199,6 +261303,7 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
     totalAmount!: number;
     bankCodeCorrectedFrom!: string | undefined;
     leftOut!: GoLiveV2BankFileEmployeeDto[] | undefined;
+    contents!: GoLiveV2GridDto;
 
     constructor(data?: IGoLiveV2GenerateBankFileOutput) {
         if (data) {
@@ -261223,6 +261328,7 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
                 for (let item of _data["leftOut"])
                     this.leftOut!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
             }
+            this.contents = _data["contents"] ? GoLiveV2GridDto.fromJS(_data["contents"]) : undefined as any;
         }
     }
 
@@ -261247,6 +261353,7 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
             for (let item of this.leftOut)
                 data["leftOut"].push(item ? item.toJSON() : undefined as any);
         }
+        data["contents"] = this.contents ? this.contents.toJSON() : undefined as any;
         return data;
     }
 }
@@ -261260,6 +261367,71 @@ export interface IGoLiveV2GenerateBankFileOutput {
     totalAmount: number;
     bankCodeCorrectedFrom: string | undefined;
     leftOut: GoLiveV2BankFileEmployeeDto[] | undefined;
+    contents: GoLiveV2GridDto;
+}
+
+export class GoLiveV2GridDto implements IGoLiveV2GridDto {
+    title!: string | undefined;
+    columns!: string[] | undefined;
+    rows!: string[][] | undefined;
+    text!: string | undefined;
+
+    constructor(data?: IGoLiveV2GridDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(item);
+            }
+            if (Array.isArray(_data["rows"])) {
+                this.rows = [] as any;
+                for (let item of _data["rows"])
+                    this.rows!.push(item);
+            }
+            this.text = _data["text"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2GridDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2GridDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item);
+        }
+        if (Array.isArray(this.rows)) {
+            data["rows"] = [];
+            for (let item of this.rows)
+                data["rows"].push(item);
+        }
+        data["text"] = this.text;
+        return data;
+    }
+}
+
+export interface IGoLiveV2GridDto {
+    title: string | undefined;
+    columns: string[] | undefined;
+    rows: string[][] | undefined;
+    text: string | undefined;
 }
 
 export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {

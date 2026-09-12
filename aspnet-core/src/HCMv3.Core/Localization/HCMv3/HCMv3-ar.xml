@@ -6141,5 +6141,7 @@
     <text name="GoLiveV2DocCannotPreview">تعذر عرض هذا الملف، لذا تم تنزيله بدلًا من ذلك.</text>
     <text name="GoLiveV2DocCannotFetch">تعذر جلب التقرير. حاول مرة أخرى.</text>
     <text name="GoLiveV2DocPrint">طباعة / PDF</text>
+    <text name="GoLiveV2DocExcel">تنزيل إكسل</text>
+    <text name="GoLiveV2DocPdf">حفظ بصيغة PDF</text>
   </texts>
 </localizationDictionary>

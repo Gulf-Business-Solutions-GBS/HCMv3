@@ -141,7 +141,7 @@
                             class="btn btn-light-primary"
                             [disabled]="!monthEnd() || exporting() !== null"
                             [title]="'GoLiveV2PayrollSheetHint' | localize"
-                            (click)="downloadPayrollSheet()">
+                            (click)="openPayrollSheet()">
                             @if (exporting() === 'sheet') {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                             } @else {
@@ -154,7 +154,7 @@
                             class="btn btn-light-primary"
                             [disabled]="!monthEnd() || exporting() !== null"
                             [title]="'GoLiveV2SalaryRegisterHint' | localize"
-                            (click)="downloadSalaryRegister()">
+                            (click)="openSalaryRegister()">
                             @if (exporting() === 'register') {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                             } @else {

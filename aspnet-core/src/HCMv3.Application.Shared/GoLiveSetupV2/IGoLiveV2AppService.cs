@@ -71,6 +71,12 @@ public interface IGoLiveV2AppService : IApplicationService
     /// <summary>The month's register lines for everyone in the payroll area, one row per wage type, as Excel.</summary>
     Task<FileDto> GetSalaryRegisterExcel(GoLiveV2PayrollResultsInput input);
 
+    /// <summary>The ported Payroll Sheet as a table, read out of the file it generates, to show before saving.</summary>
+    Task<GoLiveV2GridDto> GetPayrollSheetGrid(GoLiveV2PayrollResultsInput input);
+
+    /// <summary>The month's register lines as a table, read out of the file they generate.</summary>
+    Task<GoLiveV2GridDto> GetSalaryRegisterGrid(GoLiveV2PayrollResultsInput input);
+
     /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
     Task<ListResultDto<string>> GetPayrollAreaNames();
 

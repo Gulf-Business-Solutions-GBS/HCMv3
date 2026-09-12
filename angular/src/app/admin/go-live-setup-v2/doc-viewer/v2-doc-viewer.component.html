@@ -2,14 +2,11 @@
 
 <section class="v2-doc" role="dialog" aria-modal="true" aria-labelledby="v2-doc-title">
     <header class="v2-doc-head">
-        <div>
+        <div class="v2-doc-heading">
             <h4 class="v2-doc-title" id="v2-doc-title">{{ doc().title }}</h4>
-            <div class="v2-doc-file">
-                {{ doc().fileName }}
-                @if (doc().kind !== 'pdf') {
-                    &middot; {{ l('GoLiveV2DocRows', rowCount()) }}
-                }
-            </div>
+            @if (doc().kind !== 'pdf') {
+                <span class="v2-doc-count">{{ l('GoLiveV2DocRows', rowCount()) }}</span>
+            }
         </div>
 
         <div class="v2-doc-actions">
@@ -21,47 +18,48 @@
                     [placeholder]="'GoLiveV2DocFind' | localize"
                     [attr.aria-label]="'GoLiveV2DocFind' | localize"
                     (input)="onFind($event)" />
-                <div class="btn-group btn-group-sm" role="group" [attr.aria-label]="'GoLiveV2DocZoom' | localize">
-                    <button type="button" class="btn btn-light" [title]="'GoLiveV2DocZoomOut' | localize" (click)="zoom(-0.1)">
-                        <i class="fa fa-search-minus" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-light" [title]="'GoLiveV2DocZoomIn' | localize" (click)="zoom(0.1)">
-                        <i class="fa fa-search-plus" aria-hidden="true"></i>
-                    </button>
-                </div>
-            }
-            @if (doc().kind !== 'pdf') {
-                <button type="button" class="btn btn-sm btn-light" (click)="print()">
-                    <i class="fa fa-print me-2" aria-hidden="true"></i>
-                    {{ 'GoLiveV2DocPrint' | localize }}
+                <button
+                    type="button"
+                    class="btn btn-sm btn-light v2-doc-icon"
+                    [title]="'GoLiveV2DocZoomOut' | localize"
+                    (click)="zoom(-0.1)">
+                    <i class="fa fa-search-minus" aria-hidden="true"></i>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-light v2-doc-icon"
+                    [title]="'GoLiveV2DocZoomIn' | localize"
+                    (click)="zoom(0.1)">
+                    <i class="fa fa-search-plus" aria-hidden="true"></i>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-light v2-doc-icon v2-doc-excel"
+                    [title]="'GoLiveV2DocExcel' | localize"
+                    (click)="doc().download()">
+                    <i class="fa fa-file-excel" aria-hidden="true"></i>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-light v2-doc-icon v2-doc-pdf"
+                    [title]="'GoLiveV2DocPdf' | localize"
+                    (click)="saveAsPdf()">
+                    <i class="fa fa-file-pdf" aria-hidden="true"></i>
+                </button>
+            } @else {
+                <button
+                    type="button"
+                    class="btn btn-sm btn-light v2-doc-icon v2-doc-pdf"
+                    [title]="'GoLiveV2DocPdf' | localize"
+                    (click)="doc().download()">
+                    <i class="fa fa-file-pdf" aria-hidden="true"></i>
                 </button>
             }
-            <button type="button" class="btn btn-sm btn-primary" (click)="download()">
-                <i class="fa fa-download me-2" aria-hidden="true"></i>
-                {{ 'GoLiveV2DocDownload' | localize }}
-            </button>
-            <button type="button" class="btn btn-sm btn-light" [title]="'Close' | localize" (click)="close()">
+            <button type="button" class="btn btn-sm btn-light v2-doc-icon" [title]="'Close' | localize" (click)="close()">
                 <i class="fa fa-times" aria-hidden="true"></i>
             </button>
         </div>
     </header>
-
-    @if (doc().sheets; as sheets) {
-        @if (sheets.length > 1) {
-            <nav class="v2-doc-sheets" [attr.aria-label]="'GoLiveV2DocSheets' | localize">
-                @for (s of sheets; track s.name; let i = $index) {
-                    <button
-                        type="button"
-                        class="btn btn-sm"
-                        [class.btn-primary]="i === sheetIndex()"
-                        [class.btn-light]="i !== sheetIndex()"
-                        (click)="pickSheet(i)">
-                        {{ s.name }}
-                    </button>
-                }
-            </nav>
-        }
-    }
 
     <div class="v2-doc-body">
         @switch (doc().kind) {

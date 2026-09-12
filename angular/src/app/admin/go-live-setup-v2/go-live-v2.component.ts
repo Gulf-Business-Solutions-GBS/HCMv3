@@ -21,6 +21,7 @@ import {
     GoLiveV2LoadEmployeesInput,
     GoLiveV2LoadEmployeesOutput,
     GoLiveV2NextStep,
+    GoLiveV2GridDto,
     GoLiveV2PayrollResultsInput,
     GoLiveV2PayslipsInput,
     GoLiveV2PayslipsServiceProxy,
@@ -40,10 +41,8 @@ import {
     PayrollSheetReportServiceProxy,
     TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import { HttpClient } from '@angular/common/http';
-import { AppConsts } from '@shared/AppConsts';
-import { FileDto } from '@shared/service-proxies/service-proxies';
-import { V2DocViewerComponent, V2Document, V2DocSheet } from './doc-viewer/v2-doc-viewer.component';
+import { V2DocViewerComponent, V2Document } from './doc-viewer/v2-doc-viewer.component';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from '../go-live-setup/shared/paste-grid/paste-grid.component';
 import {
@@ -128,7 +127,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     private readonly payrollEngineProxy = inject(PayrollEngineServiceProxy);
     private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
     private readonly payrollSheetProxy = inject(PayrollSheetReportServiceProxy);
-    private readonly http = inject(HttpClient);
+    private readonly fileDownload = inject(FileDownloadService);
     private readonly payslipsProxy = inject(GoLiveV2PayslipsServiceProxy);
     private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
@@ -364,53 +363,18 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.openDocument.set(null);
     }
 
-    /**
-     * Shows the file itself, not a second rendering of the same data: a PDF in the browser's own
-     * viewer, a spreadsheet read back out of the bytes that were generated.
-     */
-    private async showDocument(title: string, fileName: string, blob: Blob, contentType: string): Promise<void> {
-        if (contentType.includes('pdf')) {
-            this.openDocument.set({ title, fileName, kind: 'pdf', blob, pdfUrl: URL.createObjectURL(blob) });
-            return;
-        }
-
-        if (contentType.includes('text')) {
-            this.openDocument.set({ title, fileName, kind: 'text', blob, text: await blob.text() });
-            return;
-        }
-
-        if (contentType.includes('zip')) {
-            // One file per payee bank, zipped: there is nothing to show, so hand it straight over.
-            this.saveBlob(fileName, blob);
-            return;
-        }
-
-        try {
-            this.openDocument.set({ title, fileName, kind: 'sheet', blob, sheets: await this.readSheets(blob) });
-        } catch (error) {
-            // Rather than a button that appears to do nothing: say why, and hand the file over.
-            console.error('Could not read the workbook', error);
-            this.message.warn(this.l('GoLiveV2DocCannotPreview'));
-            this.saveBlob(fileName, blob);
-        }
-    }
-
-    /** Reads the generated workbook back. The reader is loaded only when a spreadsheet is opened. */
-    private async readSheets(blob: Blob): Promise<V2DocSheet[]> {
-        const { readXlsx } = await import('./doc-viewer/read-xlsx');
-        return readXlsx(new Uint8Array(await blob.arrayBuffer()));
-    }
-
-    /** The temp-file endpoint the Excel reports hand back, fetched rather than navigated to. */
-    private tempFileUrl(file: FileDto): string {
-        return (
-            AppConsts.remoteServiceBaseUrl +
-            '/File/DownloadTempFile?fileType=' +
-            file.fileType +
-            '&fileToken=' +
-            file.fileToken +
-            '&fileName=' +
-            file.fileName
+    /** A report the server has read back out of its own file: shown as a table, saved as the file. */
+    private showGrid(grid: GoLiveV2GridDto, download: () => void): void {
+        this.openDocument.set(
+            grid.text
+                ? { title: grid.title ?? '', kind: 'text', text: grid.text, download }
+                : {
+                      title: grid.title ?? '',
+                      kind: 'grid',
+                      columns: grid.columns ?? [],
+                      rows: (grid.rows ?? []).map((row) => row ?? []),
+                      download,
+                  }
         );
     }
 
@@ -928,12 +892,15 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             .subscribe((file) => {
                 this.bankFile.set(file);
                 const contentType = file.contentType ?? 'application/octet-stream';
-                this.showDocument(
-                    this.l('GoLiveV2BankFileTitle'),
-                    file.fileName ?? 'BankFile',
-                    this.base64Blob(file.base64Content ?? '', contentType),
-                    contentType
-                );
+                const save = () =>
+                    this.saveBlob(file.fileName ?? 'BankFile', this.base64Blob(file.base64Content ?? '', contentType));
+
+                if (file.contents) {
+                    this.showGrid(file.contents, save);
+                } else {
+                    // A zip of one file per payee bank has nothing to show.
+                    save();
+                }
                 this.refreshBankFileSetup();
             });
     }
@@ -1020,40 +987,39 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.payslipsProxy
             .getPayslipsPdf(input)
             .pipe(finalize(() => this.exporting.set(null)))
-            .subscribe((pdf) =>
-                this.showDocument(
-                    this.l('GoLiveV2Payslips'),
-                    pdf.fileName ?? 'Payslips.pdf',
-                    this.base64Blob(pdf.base64Content ?? '', 'application/pdf'),
-                    'application/pdf'
-                )
-            );
+            .subscribe((pdf) => {
+                const fileName = pdf.fileName ?? 'Payslips.pdf';
+                const blob = this.base64Blob(pdf.base64Content ?? '', 'application/pdf');
+                this.openDocument.set({
+                    title: this.l('GoLiveV2Payslips'),
+                    kind: 'pdf',
+                    pdfUrl: URL.createObjectURL(blob),
+                    download: () => this.saveBlob(fileName, blob),
+                });
+            });
     }
 
-    /** An Excel report comes back as a token for a temporary file; fetch it and show what it holds. */
-    private showTempFile(title: string, file: FileDto): void {
-        this.http.get(this.tempFileUrl(file), { responseType: 'blob' }).subscribe({
-            next: (blob) =>
-                this.showDocument(
-                    title,
-                    file.fileName ?? 'report.xlsx',
-                    blob,
-                    blob.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                ).finally(() => this.exporting.set(null)),
-            error: (error) => {
-                console.error('Could not fetch the report', error);
-                this.message.error(this.l('GoLiveV2DocCannotFetch'));
-                this.exporting.set(null);
-            },
-        });
-    }
-
-    /** The ported legacy Payroll Sheet, for the month and payroll area, as Excel. */
-    downloadPayrollSheet(): void {
-        const end = this.monthEnd();
-        if (!end || this.exporting()) {
+    /** The ported legacy Payroll Sheet, for the month and payroll area. */
+    openPayrollSheet(): void {
+        const input = this.resultsInput();
+        if (!input || this.exporting()) {
             return;
         }
+
+        this.exporting.set('sheet');
+        this.proxy
+            .getPayrollSheetGrid(input)
+            .pipe(finalize(() => this.exporting.set(null)))
+            .subscribe((grid) => this.showGrid(grid, () => this.downloadPayrollSheet()));
+    }
+
+    /** The ported legacy Payroll Sheet as the Excel file itself. */
+    downloadPayrollSheet(): void {
+        const end = this.monthEnd();
+        if (!end) {
+            return;
+        }
+
         const input = new GetPayrollSheetReportInput();
         input.month = end.month;
         input.year = end.year;
@@ -1062,22 +1028,28 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         input.skipCount = 0;
         input.maxResultCount = 100000;
 
-        this.exporting.set('sheet');
-        this.payrollSheetProxy
-            .getPayrollSheetReportToExcel(input)
-            .subscribe((file) => this.showTempFile(this.l('GoLiveV2PayrollSheet'), file));
+        this.payrollSheetProxy.getPayrollSheetReportToExcel(input).subscribe((file) => this.fileDownload.downloadTempFile(file));
     }
 
-    /** Every register line of the month, one row per employee and wage type, as Excel. */
-    downloadSalaryRegister(): void {
+    /** Every register line of the month, one row per employee and wage type. */
+    openSalaryRegister(): void {
         const input = this.resultsInput();
         if (!input || this.exporting()) {
             return;
         }
         this.exporting.set('register');
         this.proxy
-            .getSalaryRegisterExcel(input)
-            .subscribe((file) => this.showTempFile(this.l('GoLiveV2SalaryRegister'), file));
+            .getSalaryRegisterGrid(input)
+            .pipe(finalize(() => this.exporting.set(null)))
+            .subscribe((grid) => this.showGrid(grid, () => this.downloadSalaryRegister()));
+    }
+
+    /** Every register line of the month as the Excel file itself. */
+    downloadSalaryRegister(): void {
+        const input = this.resultsInput();
+        if (input) {
+            this.proxy.getSalaryRegisterExcel(input).subscribe((file) => this.fileDownload.downloadTempFile(file));
+        }
     }
 
     groupKey(group: BillingType): string {

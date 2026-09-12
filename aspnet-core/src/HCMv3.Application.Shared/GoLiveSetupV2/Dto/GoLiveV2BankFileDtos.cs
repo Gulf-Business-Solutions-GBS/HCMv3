@@ -160,6 +160,9 @@ public class GoLiveV2GenerateBankFileOutput
 
     /// <summary>Employees in the payroll area the file does not pay, and why.</summary>
     public List<GoLiveV2BankFileEmployeeDto> LeftOut { get; set; } = new();
+
+    /// <summary>What the file holds, to show before it is saved: its rows, or its lines when it is text.</summary>
+    public GoLiveV2GridDto Contents { get; set; }
 }
 
 public class GoLiveV2BankFileEmployeeDto
