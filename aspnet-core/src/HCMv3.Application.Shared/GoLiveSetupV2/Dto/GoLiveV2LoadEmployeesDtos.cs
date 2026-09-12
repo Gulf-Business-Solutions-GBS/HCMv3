@@ -67,6 +67,12 @@ public class GoLiveV2EmployeeRowDto
 
     /// <summary>Needed with a bank. Spaces are dropped and letters capitalised; a Kuwaiti IBAN is 30 characters.</summary>
     public string Iban { get; set; }
+
+    /// <summary>
+    /// The account number at that bank, as the bank writes it. Optional -- but some banks' file layouts pay
+    /// into the account number rather than the IBAN, and leave out anyone without one.
+    /// </summary>
+    public string AccountNumber { get; set; }
 }
 
 /// <summary>What was loaded before, in the grid's shape: the company, and the payroll area's employees.</summary>

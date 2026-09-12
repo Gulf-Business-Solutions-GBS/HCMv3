@@ -6267,5 +6267,9 @@
     <text name="GoLiveV2BankFileLeftOut">Not in the file ({0})</text>
     <text name="GoLiveV2LeftOutNoBank">no bank or IBAN</text>
     <text name="GoLiveV2LeftOutNotPaid">not paid this month</text>
+    <text name="GoLiveV2ColAccountNumber">Account number</text>
+    <text name="GoLiveV2ColAccountNumberHint">The account number at that bank. Some banks' file layouts pay into this rather than the IBAN.</text>
+    <text name="GoLiveV2LayoutPaysIntoAccountNumbers">This layout pays into account numbers, not IBANs: {0} of {1} employees have one on record.</text>
+    <text name="GoLiveV2LeftOutNoAccountNumber">no account number</text>
   </texts>
 </localizationDictionary>

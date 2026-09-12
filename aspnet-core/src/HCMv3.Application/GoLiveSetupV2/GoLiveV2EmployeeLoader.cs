@@ -237,12 +237,13 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     /// offers them as a list -- and the IBAN must have an IBAN's shape once spaces are dropped and letters
     /// capitalised, which is how it is kept. Null when neither is given: the employee is paid, not by bank file.
     /// </summary>
-    private (int BankId, string Iban)? CheckBank(GoLiveV2EmployeeRowDto row, IReadOnlyDictionary<string, int> bankIdsByName)
+    private SalaryBank CheckBank(GoLiveV2EmployeeRowDto row, IReadOnlyDictionary<string, int> bankIdsByName)
     {
         var bankName = row.BankName?.Trim();
         var iban = string.IsNullOrWhiteSpace(row.Iban) ? null : row.Iban.Trim();
+        var accountNumber = string.IsNullOrWhiteSpace(row.AccountNumber) ? null : row.AccountNumber.Trim();
 
-        if (string.IsNullOrEmpty(bankName) && iban == null)
+        if (string.IsNullOrEmpty(bankName) && iban == null && accountNumber == null)
         {
             return null;
         }
@@ -268,7 +269,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
             throw new GoLiveV2RowException(L("GoLiveV2RowIbanInvalid", iban));
         }
 
-        return (bankId, normalized);
+        return new SalaryBank(bankId, normalized, accountNumber);
     }
 
     private async Task<Employee> CreateEmployeeAsync(
@@ -426,20 +427,24 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     /// with a different bank or IBAN corrects that record rather than adding a second -- the grid is where a
     /// mistyped IBAN gets fixed. A row with no bank leaves any bank record there as it is.
     /// </summary>
-    private async Task EnsureBankAsync(Employee employee, (int BankId, string Iban)? salaryBank)
+    private async Task EnsureBankAsync(Employee employee, SalaryBank salaryBank)
     {
         if (salaryBank == null)
         {
             return;
         }
 
-        var (bankId, iban) = salaryBank.Value;
+        var (bankId, iban, accountNumber) = salaryBank;
         var existing = await _employeeBankRepository.GetAll()
             .Where(b => b.EmployeeId == employee.Id)
             .OrderByDescending(b => b.StartDate)
             .FirstOrDefaultAsync();
 
-        if (existing != null && existing.BankId == bankId && existing.IBAN == iban && existing.PaymentType == PaymentType.Bank)
+        // An account number the sheet leaves blank is kept: it may have been filled in on the employee screen.
+        accountNumber ??= existing?.AccountNum;
+
+        if (existing != null && existing.BankId == bankId && existing.IBAN == iban
+            && existing.AccountNum == accountNumber && existing.PaymentType == PaymentType.Bank)
         {
             return;
         }
@@ -451,7 +456,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
             BankId = bankId,
             PaymentType = PaymentType.Bank,
             IBAN = iban,
-            AccountNum = existing?.AccountNum,
+            AccountNum = accountNumber,
             BankBranch = existing?.BankBranch,
             BankCountryId = existing?.BankCountryId,
             PaymentCurrencyId = existing?.PaymentCurrencyId,
@@ -476,8 +481,12 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         && string.IsNullOrWhiteSpace(row.CivilId)
         && SalaryColumns.All(c => c.Amount(row) == null)
         && string.IsNullOrWhiteSpace(row.BankName)
-        && string.IsNullOrWhiteSpace(row.Iban);
+        && string.IsNullOrWhiteSpace(row.Iban)
+        && string.IsNullOrWhiteSpace(row.AccountNumber);
 }
+
+/// <summary>Where one employee's salary is paid: the bank, the IBAN, and the account number if it was given.</summary>
+public record SalaryBank(int BankId, string Iban, string AccountNumber);
 
 /// <summary>Where every loaded employee goes: the records <see cref="GoLiveV2EmployeeLoader"/> attaches them to.</summary>
 public class GoLiveV2EmployeeTargets

@@ -26,10 +26,11 @@ namespace HCMv3.GoLiveSetupV2;
 /// which layout, with which company account -- and saves those choices where the screen reads them, so the two
 /// make the same file.
 ///
-/// <para><b>Which layouts are offered.</b> Only those that work from what V2 records per employee: a bank and
-/// an IBAN. Layouts keyed off the employee's own account number (CBK-T1, CBK-T2, BUR-G1, the Burgan B-Dinar
-/// pair, NBK-G2 for NBK customers), off a sponsor's bank account (CBK-T7), or hard-coded for one client
-/// (GBK-T1) would come out with empty lines, so they are left to the Bank File screen.</para>
+/// <para><b>Which layouts are offered.</b> Those that work from what V2 records per employee: the bank, the
+/// IBAN, and the account number where the sheet gives one. A layout that pays into account numbers rather
+/// than IBANs -- CBK-T1 and T2, BUR-G1, the Burgan B-Dinar pair, NBK-G2 -- says so, and leaves out anyone
+/// without one. Two are still left to the Bank File screen: CBK-T7 keys off a sponsor's bank account, and
+/// GBK-T1 has one client's own values written into it.</para>
 /// </summary>
 public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
 {
@@ -40,7 +41,12 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private static readonly IReadOnlyDictionary<string, Layout[]> LayoutsByBankCode =
         new Dictionary<string, Layout[]>(StringComparer.OrdinalIgnoreCase)
         {
-            ["NBK"] = new[] { Grid(BankFileFormatCodes.NbkG1), Grid(BankFileFormatCodes.NbkG3) },
+            ["NBK"] = new[]
+            {
+                Grid(BankFileFormatCodes.NbkG1),
+                Grid(BankFileFormatCodes.NbkG3),
+                Grid(BankFileFormatCodes.NbkG2, employeeAccount: true),
+            },
             ["CBK"] = new[]
             {
                 Grid(BankFileFormatCodes.CbkG1),
@@ -49,6 +55,8 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
                 Text(BankFileFormatCodes.CbkT4, companyAccount: true),
                 Text(BankFileFormatCodes.CbkT5, companyAccount: true, bankCode: true),
                 Text(BankFileFormatCodes.CbkT6, companyAccount: true, bankCode: true),
+                Text(BankFileFormatCodes.CbkT1, companyAccount: true, employeeAccount: true),
+                Text(BankFileFormatCodes.CbkT2, companyAccount: true, employeeAccount: true),
             },
             ["GB"] = new[] { Grid(BankFileFormatCodes.GbkG1), Grid(BankFileFormatCodes.GbkG2) },
             ["GBK"] = new[] { Grid(BankFileFormatCodes.GbkG1), Grid(BankFileFormatCodes.GbkG2) },
@@ -62,12 +70,18 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             {
                 Text(BankFileFormatCodes.BurT1, bankCode: true),
                 Grid(BankFileFormatCodes.BurG2, bankCode: true, companyCode: true),
+                Grid(BankFileFormatCodes.BurG1, employeeAccount: true),
             },
             ["KFH"] = new[] { Grid(BankFileFormatCodes.KfhG1) },
             ["KIB"] = new[] { Grid(BankFileFormatCodes.KibG1) },
             ["WRB"] = new[] { Grid(BankFileFormatCodes.WrbG1) },
             ["BB"] = new[] { Grid(BankFileFormatCodes.BbG1) },
             ["NBR"] = new[] { Grid(BankFileFormatCodes.NbrG1) },
+            ["BURBD"] = new[]
+            {
+                Text(BankFileFormatCodes.BurBdT1, employeeAccount: true),
+                Grid(BankFileFormatCodes.BurBdG1, employeeAccount: true),
+            },
         };
 
     /// <summary>
@@ -166,11 +180,12 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         }
 
         var employees = await EmployeesAsync(payrollAreaName, monthEnd);
-        var withBank = await EmployeeIdsWithBankDetailsAsync(employees.Select(e => e.Id).ToList(), monthEnd);
+        var details = await BankDetailsAsync(employees.Select(e => e.Id).ToList(), monthEnd);
 
-        output.EmployeesWithBank = employees.Count(e => withBank.Contains(e.Id));
+        output.EmployeesWithBank = employees.Count(e => details.ContainsKey(e.Id));
+        output.EmployeesWithAccountNumber = employees.Count(e => details.TryGetValue(e.Id, out var d) && d);
         output.EmployeesWithoutBank = employees
-            .Where(e => !withBank.Contains(e.Id))
+            .Where(e => !details.ContainsKey(e.Id))
             .Select(e => LeftOut(e.Code, e.Name, GoLiveV2BankFileLeftOutReason.NoBankDetails))
             .ToList();
 
@@ -207,7 +222,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
 
         // Who the file pays: everyone in the area the month paid, with a bank and an IBAN. The rest are named.
         var results = await _payrollResults.GetResultsAsync(input.PayrollAreaName, monthEnd);
-        var withBank = await EmployeeIdsWithBankDetailsAsync(results.Employees.Select(e => e.EmployeeId).ToList(), monthEnd);
+        var details = await BankDetailsAsync(results.Employees.Select(e => e.EmployeeId).ToList(), monthEnd);
 
         var output = new GoLiveV2GenerateBankFileOutput();
         var payees = new List<string>();
@@ -218,9 +233,14 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             {
                 output.LeftOut.Add(LeftOut(employee.EmployeeCode, employee.EmployeeName, GoLiveV2BankFileLeftOutReason.NotPaid));
             }
-            else if (!withBank.Contains(employee.EmployeeId))
+            else if (!details.TryGetValue(employee.EmployeeId, out var hasAccountNumber))
             {
                 output.LeftOut.Add(LeftOut(employee.EmployeeCode, employee.EmployeeName, GoLiveV2BankFileLeftOutReason.NoBankDetails));
+            }
+            else if (layout.NeedsEmployeeAccountNumber && !hasAccountNumber)
+            {
+                // This layout pays into the account number, so an employee without one would come out blank.
+                output.LeftOut.Add(LeftOut(employee.EmployeeCode, employee.EmployeeName, GoLiveV2BankFileLeftOutReason.NoAccountNumber));
             }
             else
             {
@@ -346,17 +366,21 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             .ToList();
     }
 
-    /// <summary>A bank-transfer record in force at month end, with a bank and an IBAN -- what a bank file pays into.</summary>
-    private async Task<HashSet<int>> EmployeeIdsWithBankDetailsAsync(List<int> employeeIds, DateTime monthEnd) =>
+    /// <summary>
+    /// Everyone with a bank-transfer record in force at month end, with a bank and an IBAN -- what a bank file
+    /// pays into -- and whether that record also carries an account number, which some layouts pay into instead.
+    /// </summary>
+    private async Task<Dictionary<int, bool>> BankDetailsAsync(List<int> employeeIds, DateTime monthEnd) =>
         (await _employeeBankRepository.GetAll()
             .Where(b => employeeIds.Contains(b.EmployeeId)
                         && b.StartDate <= monthEnd && b.EndDate >= monthEnd
                         && b.PaymentType == PaymentType.Bank
                         && b.BankId != null
                         && b.IBAN != null && b.IBAN != "")
-            .Select(b => b.EmployeeId)
+            .Select(b => new { b.EmployeeId, HasAccountNumber = b.AccountNum != null && b.AccountNum != "" })
             .ToListAsync())
-        .ToHashSet();
+        .GroupBy(b => b.EmployeeId)
+        .ToDictionary(g => g.Key, g => g.Any(b => b.HasAccountNumber));
 
     /// <summary>
     /// The code the generator knows the bank by: its own code when that has layouts, otherwise the Kuwait pack's
@@ -378,13 +402,19 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private static GoLiveV2BankFileEmployeeDto LeftOut(string code, string name, GoLiveV2BankFileLeftOutReason reason) =>
         new() { EmployeeCode = code, EmployeeName = name, Reason = reason };
 
-    private static Layout Grid(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false) =>
-        new(formatCode, false, companyAccount, bankCode, companyCode);
+    private static Layout Grid(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false, bool employeeAccount = false) =>
+        new(formatCode, false, companyAccount, bankCode, companyCode, employeeAccount);
 
-    private static Layout Text(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false) =>
-        new(formatCode, true, companyAccount, bankCode, companyCode);
+    private static Layout Text(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false, bool employeeAccount = false) =>
+        new(formatCode, true, companyAccount, bankCode, companyCode, employeeAccount);
 
-    private sealed record Layout(string FormatCode, bool IsText, bool NeedsCompanyAccount, bool NeedsBankCode, bool NeedsCompanyCode)
+    private sealed record Layout(
+        string FormatCode,
+        bool IsText,
+        bool NeedsCompanyAccount,
+        bool NeedsBankCode,
+        bool NeedsCompanyCode,
+        bool NeedsEmployeeAccountNumber)
     {
         public GoLiveV2BankFileLayoutDto ToDto() => new()
         {
@@ -393,6 +423,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             NeedsCompanyAccount = NeedsCompanyAccount,
             NeedsBankCode = NeedsBankCode,
             NeedsCompanyCode = NeedsCompanyCode,
+            NeedsEmployeeAccountNumber = NeedsEmployeeAccountNumber,
         };
     }
 }

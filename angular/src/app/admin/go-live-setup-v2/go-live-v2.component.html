@@ -494,7 +494,19 @@
                                             </option>
                                         }
                                     </select>
-                                    <div class="v2-field-note">{{ 'GoLiveV2BankLayoutHint' | localize }}</div>
+                                    <div class="v2-field-note">
+                                        @if (selectedLayout()?.needsEmployeeAccountNumber) {
+                                            {{
+                                                l(
+                                                    'GoLiveV2LayoutPaysIntoAccountNumbers',
+                                                    setup.employeesWithAccountNumber,
+                                                    setup.employeesWithBank
+                                                )
+                                            }}
+                                        } @else {
+                                            {{ 'GoLiveV2BankLayoutHint' | localize }}
+                                        }
+                                    </div>
                                 </div>
                             }
 

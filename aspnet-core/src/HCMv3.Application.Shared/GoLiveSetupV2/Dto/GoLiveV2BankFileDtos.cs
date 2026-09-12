@@ -28,6 +28,12 @@ public class GoLiveV2BankFileSetupOutput
 
     /// <summary>Employees in the payroll area with a bank and an IBAN.</summary>
     public int EmployeesWithBank { get; set; }
+
+    /// <summary>
+    /// Of those, how many also have an account number -- all a layout that pays into account numbers rather
+    /// than IBANs can reach.
+    /// </summary>
+    public int EmployeesWithAccountNumber { get; set; }
 }
 
 /// <summary>A bank the company can pay salaries from, with the layouts its salary file comes in.</summary>
@@ -69,6 +75,11 @@ public class GoLiveV2BankFileLayoutDto
     public bool NeedsBankCode { get; set; }
 
     public bool NeedsCompanyCode { get; set; }
+
+    /// <summary>
+    /// The layout pays into each employee's account number, not their IBAN: anyone without one is left out.
+    /// </summary>
+    public bool NeedsEmployeeAccountNumber { get; set; }
 }
 
 /// <summary>Make the month's salary file: the paying bank, its layout, and whatever that layout needs.</summary>
@@ -134,4 +145,7 @@ public enum GoLiveV2BankFileLeftOutReason
 
     /// <summary>The month's payroll paid them nothing: no salary register, or a net pay of zero.</summary>
     NotPaid = 1,
+
+    /// <summary>This layout pays into account numbers, and this employee has no account number on record.</summary>
+    NoAccountNumber = 2,
 }

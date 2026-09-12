@@ -6106,5 +6106,9 @@
     <text name="GoLiveV2BankFileLeftOut">غير مدرجين في الملف ({0})</text>
     <text name="GoLiveV2LeftOutNoBank">لا يوجد بنك أو رقم آيبان</text>
     <text name="GoLiveV2LeftOutNotPaid">لم يُصرف له راتب هذا الشهر</text>
+    <text name="GoLiveV2ColAccountNumber">رقم الحساب</text>
+    <text name="GoLiveV2ColAccountNumberHint">رقم الحساب لدى ذلك البنك. بعض نماذج ملفات البنوك تدفع إليه بدلًا من رقم الآيبان.</text>
+    <text name="GoLiveV2LayoutPaysIntoAccountNumbers">يدفع هذا النموذج إلى أرقام الحسابات لا إلى الآيبان: {0} من {1} موظفًا لديهم رقم حساب مسجل.</text>
+    <text name="GoLiveV2LeftOutNoAccountNumber">لا يوجد رقم حساب</text>
   </texts>
 </localizationDictionary>

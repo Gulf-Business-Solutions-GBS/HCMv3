@@ -260698,6 +260698,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     needsCompanyAccount!: boolean;
     needsBankCode!: boolean;
     needsCompanyCode!: boolean;
+    needsEmployeeAccountNumber!: boolean;
 
     constructor(data?: IGoLiveV2BankFileLayoutDto) {
         if (data) {
@@ -260715,6 +260716,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
             this.needsCompanyAccount = _data["needsCompanyAccount"];
             this.needsBankCode = _data["needsBankCode"];
             this.needsCompanyCode = _data["needsCompanyCode"];
+            this.needsEmployeeAccountNumber = _data["needsEmployeeAccountNumber"];
         }
     }
 
@@ -260732,6 +260734,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
         data["needsCompanyAccount"] = this.needsCompanyAccount;
         data["needsBankCode"] = this.needsBankCode;
         data["needsCompanyCode"] = this.needsCompanyCode;
+        data["needsEmployeeAccountNumber"] = this.needsEmployeeAccountNumber;
         return data;
     }
 }
@@ -260742,11 +260745,13 @@ export interface IGoLiveV2BankFileLayoutDto {
     needsCompanyAccount: boolean;
     needsBankCode: boolean;
     needsCompanyCode: boolean;
+    needsEmployeeAccountNumber: boolean;
 }
 
 export enum GoLiveV2BankFileLeftOutReason {
     NoBankDetails = 0,
     NotPaid = 1,
+    NoAccountNumber = 2,
 }
 
 export class GoLiveV2BankFileSetupInput implements IGoLiveV2BankFileSetupInput {
@@ -260793,6 +260798,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
     payingBanks!: GoLiveV2PayingBankDto[] | undefined;
     employeesWithoutBank!: GoLiveV2BankFileEmployeeDto[] | undefined;
     employeesWithBank!: number;
+    employeesWithAccountNumber!: number;
 
     constructor(data?: IGoLiveV2BankFileSetupOutput) {
         if (data) {
@@ -260816,6 +260822,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
                     this.employeesWithoutBank!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
             }
             this.employeesWithBank = _data["employeesWithBank"];
+            this.employeesWithAccountNumber = _data["employeesWithAccountNumber"];
         }
     }
 
@@ -260839,6 +260846,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
                 data["employeesWithoutBank"].push(item ? item.toJSON() : undefined as any);
         }
         data["employeesWithBank"] = this.employeesWithBank;
+        data["employeesWithAccountNumber"] = this.employeesWithAccountNumber;
         return data;
     }
 }
@@ -260847,6 +260855,7 @@ export interface IGoLiveV2BankFileSetupOutput {
     payingBanks: GoLiveV2PayingBankDto[] | undefined;
     employeesWithoutBank: GoLiveV2BankFileEmployeeDto[] | undefined;
     employeesWithBank: number;
+    employeesWithAccountNumber: number;
 }
 
 export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
@@ -260907,6 +260916,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     otherAllowance!: number | undefined;
     bankName!: string | undefined;
     iban!: string | undefined;
+    accountNumber!: string | undefined;
 
     constructor(data?: IGoLiveV2EmployeeRowDto) {
         if (data) {
@@ -260932,6 +260942,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
             this.otherAllowance = _data["otherAllowance"];
             this.bankName = _data["bankName"];
             this.iban = _data["iban"];
+            this.accountNumber = _data["accountNumber"];
         }
     }
 
@@ -260957,6 +260968,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
         data["otherAllowance"] = this.otherAllowance;
         data["bankName"] = this.bankName;
         data["iban"] = this.iban;
+        data["accountNumber"] = this.accountNumber;
         return data;
     }
 }
@@ -260975,6 +260987,7 @@ export interface IGoLiveV2EmployeeRowDto {
     otherAllowance: number | undefined;
     bankName: string | undefined;
     iban: string | undefined;
+    accountNumber: string | undefined;
 }
 
 export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultDto {

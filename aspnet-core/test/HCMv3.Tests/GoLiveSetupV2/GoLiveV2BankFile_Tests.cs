@@ -68,6 +68,29 @@ public class GoLiveV2BankFile_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Record_The_Account_Number_When_The_Sheet_Gives_One()
+    {
+        GivenTheReferenceData();
+
+        await _goLive.LoadEmployees(Load(Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban, "0123456789")));
+
+        UsingDbContext(context => context.EmployeeBanks.Single(b => b.TenantId == TenantId).AccountNum.ShouldBe("0123456789"));
+        (await _goLive.GetLoadedEmployees(DefaultArea)).Employees.Single().AccountNumber.ShouldBe("0123456789");
+    }
+
+    /// <summary>An account number filled in on the employee screen is not wiped by a sheet that leaves it blank.</summary>
+    [Fact]
+    public async Task Should_Keep_An_Account_Number_The_Sheet_Does_Not_Give()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Load(Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban, "0123456789")));
+
+        await _goLive.LoadEmployees(Load(Row("E001", "Ahmed Ali", "290011501234", Cbk, Iban)));
+
+        UsingDbContext(context => context.EmployeeBanks.Single(b => b.TenantId == TenantId).AccountNum.ShouldBe("0123456789"));
+    }
+
+    [Fact]
     public async Task Should_Load_An_Employee_Without_A_Bank_And_Record_None()
     {
         GivenTheReferenceData();
@@ -162,9 +185,11 @@ public class GoLiveV2BankFile_Tests : AppTestBase
 
         var nbk = setup.PayingBanks.Single(b => b.Name == Nbk);
         nbk.Code.ShouldBe("NBK");
-        // NBK-G2 writes an NBK customer's account number, which the grid does not ask for; G1 and G3 use the IBAN.
-        nbk.Layouts.Select(l => l.FormatCode).ShouldBe(new[] { "NBK-G1", "NBK-G3" });
+        nbk.Layouts.Select(l => l.FormatCode).ShouldBe(new[] { "NBK-G1", "NBK-G3", "NBK-G2" });
         nbk.SelectedLayout.ShouldBe("NBK-G1");
+        // NBK-G2 writes an NBK customer's account number rather than their IBAN, and says so.
+        nbk.Layouts.Single(l => l.FormatCode == "NBK-G2").NeedsEmployeeAccountNumber.ShouldBeTrue();
+        nbk.Layouts.Single(l => l.FormatCode == "NBK-G1").NeedsEmployeeAccountNumber.ShouldBeFalse();
 
         var cbk = setup.PayingBanks.Single(b => b.Name == Cbk);
         cbk.SelectedLayout.ShouldBe("CBK-G1");
@@ -172,8 +197,8 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         cbkT4.IsText.ShouldBeTrue();
         cbkT4.NeedsCompanyAccount.ShouldBeTrue();
         cbk.Layouts.Single(l => l.FormatCode == "CBK-G1").NeedsCompanyAccount.ShouldBeFalse();
-        // Keyed off the employee's account number (T1, T2), a sponsor's account (T7): not what V2 records.
-        cbk.Layouts.ShouldNotContain(l => l.FormatCode == "CBK-T1");
+        cbk.Layouts.Single(l => l.FormatCode == "CBK-T1").NeedsEmployeeAccountNumber.ShouldBeTrue();
+        // Keyed off a sponsor's bank account, which V2 does not set up.
         cbk.Layouts.ShouldNotContain(l => l.FormatCode == "CBK-T7");
 
         // No layout has ever been written for these two, so they cannot pay a bank file.
@@ -365,6 +390,41 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         leftOut.Reason.ShouldBe(GoLiveV2BankFileLeftOutReason.NotPaid);
     }
 
+    /// <summary>
+    /// A layout that pays into account numbers reaches only the employees who have one. The rest are named,
+    /// with that as the reason, rather than written into the file as blank lines.
+    /// </summary>
+    [Fact]
+    public async Task Should_Leave_Out_Someone_Without_An_Account_Number_On_A_Layout_That_Pays_Into_Them()
+    {
+        await GivenTheFirstPayrollHasRun(
+            Row("E001", "Ahmed Ali", "290011501234", Cbk, Iban, "0123456789"),
+            Row("E002", "Sara Khalid", "290011501235", Cbk, "KW81CBKU0000000000001234560102"));
+        var input = Generate(Cbk, "CBK-T1");
+        input.CompanyAccountNo = "1234567890";
+
+        var file = await _goLive.GenerateBankFile(input);
+
+        file.RecordCount.ShouldBe(1);
+        var leftOut = file.LeftOut.Single();
+        leftOut.EmployeeCode.ShouldBe("E002");
+        leftOut.Reason.ShouldBe(GoLiveV2BankFileLeftOutReason.NoAccountNumber);
+    }
+
+    [Fact]
+    public async Task Should_Count_Who_Has_An_Account_Number()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Load(
+            Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban, "0123456789"),
+            Row("E002", "Sara Khalid", "290011501235", Nbk, "KW81CBKU0000000000001234560102")));
+
+        var setup = await _goLive.GetBankFileSetup(SetupInput());
+
+        setup.EmployeesWithBank.ShouldBe(2);
+        setup.EmployeesWithAccountNumber.ShouldBe(1);
+    }
+
     // ---------------------------------------------------------------- arrange
 
     private async Task GivenTheFirstPayrollHasRun(params GoLiveV2EmployeeRowDto[] rows)
@@ -406,8 +466,24 @@ public class GoLiveV2BankFile_Tests : AppTestBase
     private static GoLiveV2LoadEmployeesInput Load(params GoLiveV2EmployeeRowDto[] rows) =>
         new() { OrganizationUnitName = "ABC Holding", PayrollAreaName = DefaultArea, Employees = new List<GoLiveV2EmployeeRowDto>(rows) };
 
-    private static GoLiveV2EmployeeRowDto Row(string code, string name, string civilId, string bank = null, string iban = null) =>
-        new() { Code = code, FullName = name, JoiningDate = Joined, CivilId = civilId, BasicSalary = 500, BankName = bank, Iban = iban };
+    private static GoLiveV2EmployeeRowDto Row(
+        string code,
+        string name,
+        string civilId,
+        string bank = null,
+        string iban = null,
+        string accountNumber = null) =>
+        new()
+        {
+            Code = code,
+            FullName = name,
+            JoiningDate = Joined,
+            CivilId = civilId,
+            BasicSalary = 500,
+            BankName = bank,
+            Iban = iban,
+            AccountNumber = accountNumber,
+        };
 
     private string Localized(string key, params object[] args) =>
         string.Format(Resolve<ILocalizationManager>().GetString(HCMv3Consts.LocalizationSourceName, key), args);

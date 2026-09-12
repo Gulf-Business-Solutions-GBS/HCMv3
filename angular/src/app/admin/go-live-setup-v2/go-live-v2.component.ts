@@ -221,6 +221,14 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 return ok ? null : { key: 'GoLiveV2RowIbanInvalid', params: [String(value)] };
             },
         },
+        {
+            key: 'accountNumber',
+            header: this.l('GoLiveV2ColAccountNumber'),
+            type: 'text',
+            maxLength: 50,
+            width: 180,
+            hint: this.l('GoLiveV2ColAccountNumberHint'),
+        },
     ]);
 
     readonly filledEmployeeCount = computed(() => this.employeeRows().filter((r) => !isRowEmpty(r)).length);
@@ -725,7 +733,14 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     }
 
     leftOutReasonKey(reason: GoLiveV2BankFileLeftOutReason): string {
-        return reason === GoLiveV2BankFileLeftOutReason.NotPaid ? 'GoLiveV2LeftOutNotPaid' : 'GoLiveV2LeftOutNoBank';
+        switch (reason) {
+            case GoLiveV2BankFileLeftOutReason.NotPaid:
+                return 'GoLiveV2LeftOutNotPaid';
+            case GoLiveV2BankFileLeftOutReason.NoAccountNumber:
+                return 'GoLiveV2LeftOutNoAccountNumber';
+            default:
+                return 'GoLiveV2LeftOutNoBank';
+        }
     }
 
     /** Made, downloaded, and the setup read again: the layout and account are saved on the bank now. */
@@ -1116,6 +1131,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             otherAllowance: e.otherAllowance ?? null,
             bankName: e.bankName ?? null,
             iban: e.iban ?? null,
+            accountNumber: e.accountNumber ?? null,
         };
     }
 
@@ -1154,6 +1170,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             dto.otherAllowance = this.amount(row['otherAllowance']);
             dto.bankName = this.text(row['bankName']);
             dto.iban = this.text(row['iban']);
+            dto.accountNumber = this.text(row['accountNumber']);
 
             const joined = this.text(row['joiningDate']);
             if (joined) {

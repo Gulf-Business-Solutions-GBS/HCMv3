@@ -87,7 +87,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         // The latest bank record of each -- the one a load keeps.
         var banks = (await _employeeBankRepository.GetAll()
                 .Where(b => ids.Contains(b.EmployeeId))
-                .Select(b => new { b.EmployeeId, b.StartDate, BankName = b.Bank.NameEn, b.IBAN })
+                .Select(b => new { b.EmployeeId, b.StartDate, BankName = b.Bank.NameEn, b.IBAN, b.AccountNum })
                 .ToListAsync())
             .GroupBy(b => b.EmployeeId)
             .ToDictionary(g => g.Key, g => g.OrderByDescending(b => b.StartDate).First());
@@ -118,6 +118,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
             {
                 row.BankName = bank.BankName;
                 row.Iban = bank.IBAN;
+                row.AccountNumber = bank.AccountNum;
             }
 
             output.Employees.Add(row);
