@@ -350,6 +350,7 @@
     font-size: 1.35rem;
     font-weight: 700;
     color: var(--v2-step-colour);
+    white-space: nowrap;
 }
 
 .v2-step-what {
@@ -403,11 +404,12 @@
     text-shadow: 0 0 4px var(--bs-body-bg, #fff);
 }
 
+/* Level with the middle of the circles: half the 8rem circle, plus the step's 0.5rem padding below it. */
 .v2-step-line {
-    flex: 0 1 4rem;
+    flex: 0 1 5rem;
     align-self: flex-end;
     height: 0;
-    margin-bottom: 2.5rem;
+    margin-bottom: 4.5rem;
     border-top: 2px dashed var(--bs-gray-400);
 }
 

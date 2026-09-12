@@ -6244,7 +6244,7 @@
     <text name="GoLiveV2ColBankHint">The bank the salary is paid into. Leave it empty for someone not paid by bank transfer.</text>
     <text name="GoLiveV2ColIban">IBAN</text>
     <text name="GoLiveV2ColIbanHint">Copy it from the bank letter rather than retyping it. Spaces are fine.</text>
-    <text name="GoLiveV2BankFileTitle">Make the bank file</text>
+    <text name="GoLiveV2BankFileTitle">Generate Bank File</text>
     <text name="GoLiveV2BankFileHint">The month's salary transfer file, in the layout your bank accepts, ready to upload to the bank.</text>
     <text name="GoLiveV2PayingBank">Paying bank</text>
     <text name="GoLiveV2PayingBankHint">The bank the company pays salaries from.</text>
@@ -6256,7 +6256,7 @@
     <text name="GoLiveV2CompanyAccountNoHint">The company's account at the paying bank. This layout writes it in the file.</text>
     <text name="GoLiveV2CompanyCode">Company code at the bank</text>
     <text name="GoLiveV2CompanyCodeHint">The code the bank knows the company by.</text>
-    <text name="GoLiveV2MakeBankFile">Make bank file</text>
+    <text name="GoLiveV2MakeBankFile">Generate</text>
     <text name="GoLiveV2BankFileNoBanks">None of the company's banks has a bank file layout.</text>
     <text name="GoLiveV2BankFileMissingBanks">{0} employee(s) have no bank or IBAN, so the bank file cannot pay them. Add them in step 1:</text>
     <text name="GoLiveV2BankFileMade">{0} downloaded: {1} employee(s), {2} in total.</text>
@@ -6297,7 +6297,7 @@
     <text name="GoLiveV2StepLoadWhat">Who they are, what they are paid, and where the salary goes.</text>
     <text name="GoLiveV2StepRunName">Run Payroll</text>
     <text name="GoLiveV2StepRunWhat">Run the engines for the month and check what they paid.</text>
-    <text name="GoLiveV2StepBankFileName">Generate Bank File</text>
+    <text name="GoLiveV2StepBankFileName">Bank File</text>
     <text name="GoLiveV2StepBankFileWhat">The salary transfer file, in the layout your bank accepts.</text>
     <text name="GoLiveV2DocCannotPreview">This file could not be shown, so it has been downloaded instead.</text>
     <text name="GoLiveV2DocCannotFetch">The report could not be fetched. Try again.</text>

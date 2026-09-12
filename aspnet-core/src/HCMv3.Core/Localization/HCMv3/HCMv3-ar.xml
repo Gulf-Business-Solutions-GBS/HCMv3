@@ -6083,7 +6083,7 @@
     <text name="GoLiveV2ColBankHint">البنك الذي يُحوَّل إليه الراتب. اتركه فارغًا لمن لا يُدفع راتبه بالتحويل البنكي.</text>
     <text name="GoLiveV2ColIban">رقم الآيبان</text>
     <text name="GoLiveV2ColIbanHint">انسخه من خطاب البنك بدلًا من إعادة كتابته. المسافات مقبولة.</text>
-    <text name="GoLiveV2BankFileTitle">إعداد الملف البنكي</text>
+    <text name="GoLiveV2BankFileTitle">إنشاء الملف البنكي</text>
     <text name="GoLiveV2BankFileHint">ملف تحويل رواتب الشهر بالنموذج الذي يقبله البنك، جاهز للرفع إلى البنك.</text>
     <text name="GoLiveV2PayingBank">بنك الدفع</text>
     <text name="GoLiveV2PayingBankHint">البنك الذي تدفع منه الشركة الرواتب.</text>
@@ -6095,7 +6095,7 @@
     <text name="GoLiveV2CompanyAccountNoHint">حساب الشركة لدى بنك الدفع. يكتبه هذا النموذج في الملف.</text>
     <text name="GoLiveV2CompanyCode">رمز الشركة لدى البنك</text>
     <text name="GoLiveV2CompanyCodeHint">الرمز الذي يعرّف به البنك الشركة.</text>
-    <text name="GoLiveV2MakeBankFile">إعداد الملف البنكي</text>
+    <text name="GoLiveV2MakeBankFile">إنشاء</text>
     <text name="GoLiveV2BankFileNoBanks">لا يوجد نموذج ملف بنكي لأي من بنوك الشركة.</text>
     <text name="GoLiveV2BankFileMissingBanks">لا يوجد بنك أو رقم آيبان لعدد {0} من الموظفين، فلا يمكن الدفع لهم بالملف البنكي. أضفهما في الخطوة 1:</text>
     <text name="GoLiveV2BankFileMade">تم تنزيل {0}: عدد الموظفين {1}، والإجمالي {2}.</text>
@@ -6136,7 +6136,7 @@
     <text name="GoLiveV2StepLoadWhat">من هم، وما يتقاضونه، وإلى أين يُحوَّل الراتب.</text>
     <text name="GoLiveV2StepRunName">تشغيل الرواتب</text>
     <text name="GoLiveV2StepRunWhat">شغّل المحركات للشهر وتحقق مما تم صرفه.</text>
-    <text name="GoLiveV2StepBankFileName">إنشاء الملف البنكي</text>
+    <text name="GoLiveV2StepBankFileName">الملف البنكي</text>
     <text name="GoLiveV2StepBankFileWhat">ملف تحويل الرواتب بالنموذج الذي يقبله البنك.</text>
     <text name="GoLiveV2DocCannotPreview">تعذر عرض هذا الملف، لذا تم تنزيله بدلًا من ذلك.</text>
     <text name="GoLiveV2DocCannotFetch">تعذر جلب التقرير. حاول مرة أخرى.</text>
