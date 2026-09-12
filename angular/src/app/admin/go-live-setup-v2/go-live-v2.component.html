@@ -88,25 +88,53 @@
             </div>
         </div>
 
-        <!-- Step 2: Run payroll -- the goal every other step was added for. -->
+        <!-- Step 2: Run payroll, and what it paid -- the goal every other step was added for. -->
         <div class="card card-custom v2-step">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
                         <div class="v2-step-number">{{ l('GoLiveV2Step', 2) }}</div>
-                        <h3 class="v2-step-title">{{ 'GoLiveV2RunPayroll' | localize }}</h3>
-                        <p class="v2-step-hint">{{ 'GoLiveV2RunPayrollHint' | localize }}</p>
+                        <h3 class="v2-step-title">{{ 'GoLiveV2RunAndResults' | localize }}</h3>
+                        <p class="v2-step-hint">{{ 'GoLiveV2RunAndResultsHint' | localize }}</p>
                     </div>
 
-                    <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
-                        @if (running()) {
-                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                            {{ 'GoLiveV2Running' | localize }}
-                        } @else {
-                            <i class="fa fa-play me-2" aria-hidden="true"></i>
-                            {{ 'GoLiveV2RunPayroll' | localize }}
-                        }
-                    </button>
+                    <div class="v2-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveV2PayrollSheetHint' | localize"
+                            (click)="downloadPayrollSheet()">
+                            @if (exporting() === 'sheet') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2PayrollSheet' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveV2SalaryRegisterHint' | localize"
+                            (click)="downloadSalaryRegister()">
+                            @if (exporting() === 'register') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2SalaryRegister' | localize }}
+                        </button>
+                        <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
+                            @if (running()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                {{ 'GoLiveV2Running' | localize }}
+                            } @else {
+                                <i class="fa fa-play me-2" aria-hidden="true"></i>
+                                {{ 'GoLiveV2RunPayroll' | localize }}
+                            }
+                        </button>
+                    </div>
                 </div>
 
                 <div class="v2-fields">
@@ -255,49 +283,8 @@
                         <p class="v2-next-text">{{ 'GoLiveV2PressRunAgain' | localize }}</p>
                     </div>
                 }
-            </div>
-        </div>
 
-        <!-- Step 3: See the results -- what the payroll paid, to check against the legacy payroll. -->
-        <div class="card card-custom v2-step">
-            <div class="card-body">
-                <div class="v2-step-head">
-                    <div>
-                        <div class="v2-step-number">{{ l('GoLiveV2Step', 3) }}</div>
-                        <h3 class="v2-step-title">{{ 'GoLiveV2SeeResults' | localize }}</h3>
-                        <p class="v2-step-hint">{{ 'GoLiveV2SeeResultsHint' | localize }}</p>
-                    </div>
-
-                    <div class="v2-results-actions">
-                        <button
-                            type="button"
-                            class="btn btn-light-primary"
-                            [disabled]="!monthEnd() || exporting() !== null"
-                            [title]="'GoLiveV2PayrollSheetHint' | localize"
-                            (click)="downloadPayrollSheet()">
-                            @if (exporting() === 'sheet') {
-                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                            } @else {
-                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
-                            }
-                            {{ 'GoLiveV2PayrollSheet' | localize }}
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-light-primary"
-                            [disabled]="!monthEnd() || exporting() !== null"
-                            [title]="'GoLiveV2SalaryRegisterHint' | localize"
-                            (click)="downloadSalaryRegister()">
-                            @if (exporting() === 'register') {
-                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                            } @else {
-                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
-                            }
-                            {{ 'GoLiveV2SalaryRegister' | localize }}
-                        </button>
-                    </div>
-                </div>
-
+                <!-- What the run paid, in the same step: the results follow the month on their own. -->
                 @if (!monthEnd()) {
                     <p class="v2-progress-note mt-3">{{ 'GoLiveV2ResultsPickMonth' | localize }}</p>
                 }
@@ -441,12 +428,12 @@
             </div>
         </div>
 
-        <!-- Step 4: Make the bank file -- the month's salary transfer, in the paying bank's layout. -->
+        <!-- Step 3: Make the bank file -- the month's salary transfer, in the paying bank's layout. -->
         <div class="card card-custom v2-step">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
-                        <div class="v2-step-number">{{ l('GoLiveV2Step', 4) }}</div>
+                        <div class="v2-step-number">{{ l('GoLiveV2Step', 3) }}</div>
                         <h3 class="v2-step-title">{{ 'GoLiveV2BankFileTitle' | localize }}</h3>
                         <p class="v2-step-hint">{{ 'GoLiveV2BankFileHint' | localize }}</p>
                     </div>
@@ -570,30 +557,22 @@
                         </div>
                     }
 
-                    @if (selectedLayout()?.needsPayeeBankCodes && payingBank(); as bank) {
-                        <div class="v2-payee-banks">
-                            <div class="v2-said-label">{{ 'GoLiveV2PayeeBankCodes' | localize }}</div>
-                            <p class="v2-field-note">{{ 'GoLiveV2PayeeBankCodesHint' | localize }}</p>
-                            <div class="v2-fields">
-                                @for (payee of bank.payeeBanks; track payee.bankId) {
-                                    <div class="v2-field">
-                                        <label class="form-label" [attr.for]="'v2-payee-' + payee.bankId">
-                                            {{ payee.bankName }}
-                                        </label>
-                                        <input
-                                            [id]="'v2-payee-' + payee.bankId"
-                                            type="text"
-                                            class="form-control"
-                                            maxlength="128"
-                                            [value]="payeeBankCodes()[payee.bankId] ?? ''"
-                                            (input)="onPayeeBankCodeInput(payee.bankId, $event)" />
-                                        <div class="v2-field-note">
+                    @if (selectedLayout()?.writesPayeeBankCodes && payingBank(); as bank) {
+                        @if (bank.payeeBanks.length > 0) {
+                            <div class="v2-payee-banks">
+                                <div class="v2-said-label">{{ 'GoLiveV2PayeeBankCodes' | localize }}</div>
+                                <p class="v2-field-note">{{ 'GoLiveV2PayeeBankCodesHint' | localize }}</p>
+                                <ul class="v2-payee-list">
+                                    @for (payee of bank.payeeBanks; track payee.bankId) {
+                                        <li>
+                                            <span class="v2-code">{{ payee.code }}</span>
+                                            {{ payee.bankName }} &middot;
                                             {{ l('GoLiveV2PayeeBankEmployees', payee.employees) }}
-                                        </div>
-                                    </div>
-                                }
+                                        </li>
+                                    }
+                                </ul>
                             </div>
-                        </div>
+                        }
                     }
 
                     @if (setup.employeesWithoutBank.length > 0) {

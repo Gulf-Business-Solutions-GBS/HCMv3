@@ -260699,7 +260699,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     needsBankCode!: boolean;
     needsCompanyCode!: boolean;
     needsEmployeeAccountNumber!: boolean;
-    needsPayeeBankCodes!: boolean;
+    writesPayeeBankCodes!: boolean;
     needsMosalId!: boolean;
 
     constructor(data?: IGoLiveV2BankFileLayoutDto) {
@@ -260719,7 +260719,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
             this.needsBankCode = _data["needsBankCode"];
             this.needsCompanyCode = _data["needsCompanyCode"];
             this.needsEmployeeAccountNumber = _data["needsEmployeeAccountNumber"];
-            this.needsPayeeBankCodes = _data["needsPayeeBankCodes"];
+            this.writesPayeeBankCodes = _data["writesPayeeBankCodes"];
             this.needsMosalId = _data["needsMosalId"];
         }
     }
@@ -260739,7 +260739,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
         data["needsBankCode"] = this.needsBankCode;
         data["needsCompanyCode"] = this.needsCompanyCode;
         data["needsEmployeeAccountNumber"] = this.needsEmployeeAccountNumber;
-        data["needsPayeeBankCodes"] = this.needsPayeeBankCodes;
+        data["writesPayeeBankCodes"] = this.writesPayeeBankCodes;
         data["needsMosalId"] = this.needsMosalId;
         return data;
     }
@@ -260752,7 +260752,7 @@ export interface IGoLiveV2BankFileLayoutDto {
     needsBankCode: boolean;
     needsCompanyCode: boolean;
     needsEmployeeAccountNumber: boolean;
-    needsPayeeBankCodes: boolean;
+    writesPayeeBankCodes: boolean;
     needsMosalId: boolean;
 }
 
@@ -261067,7 +261067,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
     bankCode!: string | undefined;
     companyCode!: string | undefined;
     mosalId!: number | undefined;
-    payeeBanks!: GoLiveV2PayeeBankDto[] | undefined;
 
     constructor(data?: IGoLiveV2GenerateBankFileInput) {
         if (data) {
@@ -261088,11 +261087,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
             this.bankCode = _data["bankCode"];
             this.companyCode = _data["companyCode"];
             this.mosalId = _data["mosalId"];
-            if (Array.isArray(_data["payeeBanks"])) {
-                this.payeeBanks = [] as any;
-                for (let item of _data["payeeBanks"])
-                    this.payeeBanks!.push(GoLiveV2PayeeBankDto.fromJS(item));
-            }
         }
     }
 
@@ -261113,11 +261107,6 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
         data["bankCode"] = this.bankCode;
         data["companyCode"] = this.companyCode;
         data["mosalId"] = this.mosalId;
-        if (Array.isArray(this.payeeBanks)) {
-            data["payeeBanks"] = [];
-            for (let item of this.payeeBanks)
-                data["payeeBanks"].push(item ? item.toJSON() : undefined as any);
-        }
         return data;
     }
 }
@@ -261131,7 +261120,6 @@ export interface IGoLiveV2GenerateBankFileInput {
     bankCode: string | undefined;
     companyCode: string | undefined;
     mosalId: number | undefined;
-    payeeBanks: GoLiveV2PayeeBankDto[] | undefined;
 }
 
 export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFileOutput {

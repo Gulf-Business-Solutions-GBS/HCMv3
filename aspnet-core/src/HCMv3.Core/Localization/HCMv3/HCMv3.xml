@@ -6275,11 +6275,12 @@
     <text name="GoLiveV2LoadUpdated">{0} updated from the sheet</text>
     <text name="GoLiveV2SponsorDefaultName">The company</text>
     <text name="GoLiveV2BankFileNeedsMosalId">Layout {0} writes the company's MOSAL ID beside each employee. Give the MOSAL ID.</text>
-    <text name="GoLiveV2BankFileNeedsPayeeBankCodes">Layout {0} writes a code for each employee's own bank, and these have none yet: {1}. The paying bank gives you these codes.</text>
     <text name="GoLiveV2CompanyMosalId">Company MOSAL ID</text>
     <text name="GoLiveV2CompanyMosalIdHint">Saved as the company's sponsor record, with every employee in the payroll area under it.</text>
     <text name="GoLiveV2PayeeBankCodes">Bank codes for the file</text>
-    <text name="GoLiveV2PayeeBankCodesHint">The code the paying bank writes for each bank your employees are paid into. The paying bank gives you the list.</text>
+    <text name="GoLiveV2PayeeBankCodesHint">The file carries these codes for the banks your employees are paid into. Taken from the banks themselves, so there is nothing to fill in.</text>
     <text name="GoLiveV2PayeeBankEmployees">{0} employee(s)</text>
+    <text name="GoLiveV2RunAndResults">Run payroll and see what it paid</text>
+    <text name="GoLiveV2RunAndResultsHint">The engines run for the month you pick, and the results appear below as soon as they finish.</text>
   </texts>
 </localizationDictionary>

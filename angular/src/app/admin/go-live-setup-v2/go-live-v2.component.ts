@@ -16,7 +16,6 @@ import {
     GoLiveV2BankFileSetupOutput,
     GoLiveV2GenerateBankFileInput,
     GoLiveV2GenerateBankFileOutput,
-    GoLiveV2PayeeBankDto,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
@@ -291,9 +290,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     readonly bankFileCode = signal('');
     readonly companyCode = signal('');
     readonly companyMosalId = signal('');
-
-    /** The code the paying bank writes for each bank employees are paid into, by bank id. */
-    readonly payeeBankCodes = signal<Record<number, string>>({});
     readonly generatingBankFile = signal(false);
     readonly bankFile = signal<GoLiveV2GenerateBankFileOutput | null>(null);
     readonly LeftOutReason = GoLiveV2BankFileLeftOutReason;
@@ -317,15 +313,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             (!layout.needsCompanyAccount || this.companyAccountNo().trim().length > 0) &&
             (!layout.needsBankCode || this.bankFileCode().trim().length > 0) &&
             (!layout.needsCompanyCode || this.companyCode().trim().length > 0) &&
-            (!layout.needsMosalId || this.companyMosalId().trim().length > 0) &&
-            (!layout.needsPayeeBankCodes || this.everyPayeeBankHasACode())
+            (!layout.needsMosalId || this.companyMosalId().trim().length > 0)
         );
-    });
-
-    /** The file writes a code for each employee's own bank, so every bank in use needs one. */
-    readonly everyPayeeBankHasACode = computed(() => {
-        const codes = this.payeeBankCodes();
-        return (this.payingBank()?.payeeBanks ?? []).every((b) => (codes[b.bankId] ?? '').trim().length > 0);
     });
 
     /** Search and paging are on the page: the results come whole, a line per employee, so 100 is nothing. */
@@ -746,10 +735,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         })[field].set(value);
     }
 
-    onPayeeBankCodeInput(bankId: number, event: Event): void {
-        const value = (event.target as HTMLInputElement).value;
-        this.payeeBankCodes.update((codes) => ({ ...codes, [bankId]: value }));
-    }
 
     layoutLabel(layout: GoLiveV2BankFileLayoutDto): string {
         return this.l(layout.isText ? 'GoLiveV2LayoutText' : 'GoLiveV2LayoutExcel', layout.formatCode);
@@ -783,14 +768,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         input.bankCode = this.bankFileCode().trim() || undefined;
         input.companyCode = this.companyCode().trim() || undefined;
         input.mosalId = Number(this.companyMosalId().trim()) || undefined;
-        input.payeeBanks = (this.payingBank()?.payeeBanks ?? [])
-            .filter((b) => (this.payeeBankCodes()[b.bankId] ?? '').trim().length > 0)
-            .map((b) => {
-                const payee = new GoLiveV2PayeeBankDto();
-                payee.bankId = b.bankId;
-                payee.code = this.payeeBankCodes()[b.bankId].trim();
-                return payee;
-            });
 
         this.generatingBankFile.set(true);
         this.bankFile.set(null);
@@ -834,9 +811,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.companyAccountNo.set(bank?.companyAccountNo ?? '');
         this.bankFileCode.set(bank?.bankCode ?? '');
         this.companyCode.set(bank?.companyCode ?? '');
-        this.payeeBankCodes.set(
-            Object.fromEntries((bank?.payeeBanks ?? []).map((b) => [b.bankId, b.code ?? '']))
-        );
     }
 
     /** The file comes back inline, as the Bank File screen's does. */

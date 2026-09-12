@@ -78,7 +78,7 @@ public class GoLiveV2PayeeBankDto
 
     public string BankName { get; set; }
 
-    /// <summary>Given by the paying bank, not by this one. Null until somebody fills it in.</summary>
+    /// <summary>The code the file will carry for this bank -- the paying bank's own, or this bank's code.</summary>
     public string Code { get; set; }
 
     /// <summary>How many of the area's employees are paid into it.</summary>
@@ -104,8 +104,11 @@ public class GoLiveV2BankFileLayoutDto
     /// </summary>
     public bool NeedsEmployeeAccountNumber { get; set; }
 
-    /// <summary>The layout writes a code for each employee's own bank, which the paying bank gives you.</summary>
-    public bool NeedsPayeeBankCodes { get; set; }
+    /// <summary>
+    /// The layout writes a code beside each employee for the bank they are paid into. Nothing to fill in: the
+    /// code is the paying bank's own name for that bank, or the bank's code where the payer has no list.
+    /// </summary>
+    public bool WritesPayeeBankCodes { get; set; }
 
     /// <summary>The layout writes the company's MOSAL ID beside each employee.</summary>
     public bool NeedsMosalId { get; set; }
@@ -138,8 +141,6 @@ public class GoLiveV2GenerateBankFileInput : GoLiveV2BankFileSetupInput
     /// </summary>
     public long? MosalId { get; set; }
 
-    /// <summary>The code the paying bank writes for each bank employees are paid into. Blank ones are left as they were.</summary>
-    public List<GoLiveV2PayeeBankDto> PayeeBanks { get; set; } = new();
 }
 
 /// <summary>The file, inline, and who is not in it.</summary>

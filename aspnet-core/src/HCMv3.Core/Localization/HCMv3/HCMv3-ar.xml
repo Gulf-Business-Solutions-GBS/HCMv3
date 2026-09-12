@@ -6114,11 +6114,12 @@
     <text name="GoLiveV2LoadUpdated">تم تحديث {0} من الجدول</text>
     <text name="GoLiveV2SponsorDefaultName">الشركة</text>
     <text name="GoLiveV2BankFileNeedsMosalId">يكتب النموذج {0} رقم الشؤون (MOSAL) للشركة أمام كل موظف. أدخل رقم الشؤون.</text>
-    <text name="GoLiveV2BankFileNeedsPayeeBankCodes">يكتب النموذج {0} رمزًا لبنك كل موظف، وهذه البنوك بلا رمز حتى الآن: {1}. يزودك بنك الدفع بهذه الرموز.</text>
     <text name="GoLiveV2CompanyMosalId">رقم الشؤون (MOSAL) للشركة</text>
     <text name="GoLiveV2CompanyMosalIdHint">يُحفظ في سجل كفيل الشركة، ويُدرج تحته كل موظفي منطقة الرواتب.</text>
     <text name="GoLiveV2PayeeBankCodes">رموز البنوك في الملف</text>
-    <text name="GoLiveV2PayeeBankCodesHint">الرمز الذي يكتبه بنك الدفع لكل بنك يتقاضى موظفوك رواتبهم فيه. يزودك بنك الدفع بالقائمة.</text>
+    <text name="GoLiveV2PayeeBankCodesHint">يحمل الملف هذه الرموز للبنوك التي يتقاضى فيها موظفوك رواتبهم. تؤخذ من البنوك نفسها، فلا حاجة لإدخالها.</text>
     <text name="GoLiveV2PayeeBankEmployees">{0} موظفًا</text>
+    <text name="GoLiveV2RunAndResults">تشغيل الرواتب وعرض ما تم صرفه</text>
+    <text name="GoLiveV2RunAndResultsHint">تعمل المحركات للشهر الذي تختاره، وتظهر النتائج أدناه فور انتهائها.</text>
   </texts>
 </localizationDictionary>

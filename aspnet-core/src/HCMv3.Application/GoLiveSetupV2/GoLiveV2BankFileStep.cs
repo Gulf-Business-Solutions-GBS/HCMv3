@@ -103,6 +103,32 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             ["Boubyan Bank"] = "BB",
         };
 
+    /// <summary>
+    /// What a paying bank calls each other bank in its salary file, by bank code. Read out of the legacy
+    /// databases (HRMS_RCF and HRMS_ASF agree row for row): Al-Ahli writes Kuwait's clearing numbers, and
+    /// every other bank's file carries the payee bank's own code, which is the fallback below. Nobody is asked
+    /// for these -- the sheet already says which bank each employee is paid into.
+    /// </summary>
+    private static readonly IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> PayeeBankCodesByPayer =
+        new Dictionary<string, IReadOnlyDictionary<string, string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["ABK"] = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["NBK"] = "001",
+                ["CBK"] = "002",
+                ["GB"] = "003",
+                ["GBK"] = "003",
+                ["ABK"] = "004",
+                ["AUB"] = "005",
+                ["KIB"] = "006",
+                ["BUR"] = "007",
+                ["BBK"] = "008",
+                ["KFH"] = "009",
+                ["BB"] = "013",
+                ["WRB"] = "023",
+            },
+        };
+
     private const string RegularRun = "R";
 
     private readonly PayrollBankFiles _bankFiles;
@@ -208,8 +234,9 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
                     BankId = b.BankId,
                     BankName = b.BankName,
                     Employees = b.Employees,
-                    Code = payeeCodes
-                        .FirstOrDefault(c => c.PayerBankId == payingBank.BankId && c.PayeeBankId == b.BankId)?.BankCode,
+                    Code = Given(payeeCodes
+                              .FirstOrDefault(c => c.PayerBankId == payingBank.BankId && c.PayeeBankId == b.BankId)?.BankCode)
+                           ?? PayeeBankCodeOf(payingBank.Code, b.BankCode),
                 })
                 .ToList();
         }
@@ -295,11 +322,9 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
 
         output.BankCodeCorrectedFrom = await SetUpBankAsync(bank, code, layout, input, companyAccount, input.PayrollAreaName, monthEnd);
 
-        await SavePayeeBankCodesAsync(bank.Id, input.PayeeBanks);
-
-        if (layout.NeedsPayeeBankCodes)
+        if (layout.WritesPayeeBankCodes)
         {
-            await CheckPayeeBankCodesAsync(bank.Id, payeeIds, monthEnd, layout);
+            await EnsurePayeeBankCodesAsync(bank, payeeIds, monthEnd);
         }
 
         int? sponsorId = null;
@@ -377,32 +402,38 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     }
 
     /// <summary>
-    /// The code the paying bank writes for each bank its employees are paid into, kept where the generator
-    /// reads it: one <c>PayeeBankDetail</c> per paying bank and payee bank. A blank leaves what is there.
+    /// This layout writes a code beside each employee for the bank they are paid into, and the generator reads
+    /// that code from the paying bank's own list -- which is why the column came out empty for a company that
+    /// had never filled the list in. The codes are known, so they are written rather than asked for: the
+    /// paying bank's published list where there is one, otherwise the payee bank's own code, which is what
+    /// every other bank's file carries. A code somebody has set by hand is left alone.
     /// </summary>
-    private async Task SavePayeeBankCodesAsync(int payerBankId, List<GoLiveV2PayeeBankDto> payeeBanks)
+    private async Task EnsurePayeeBankCodesAsync(Bank payerBank, List<int> payeeIds, DateTime monthEnd)
     {
-        foreach (var payee in payeeBanks ?? new List<GoLiveV2PayeeBankDto>())
+        var banksInUse = await BanksEmployeesArePaidIntoAsync(payeeIds, monthEnd);
+        var existing = await _payeeBankDetailRepository.GetAll()
+            .Where(d => d.BankId == payerBank.Id && d.PayeeBankId != null)
+            .ToListAsync();
+
+        foreach (var payee in banksInUse)
         {
-            var code = Given(payee.Code);
+            var code = PayeeBankCodeOf(payerBank.Code, payee.BankCode);
             if (code == null)
             {
                 continue;
             }
 
-            var existing = await _payeeBankDetailRepository.FirstOrDefaultAsync(
-                d => d.BankId == payerBankId && d.PayeeBankId == payee.BankId);
-
-            if (existing != null)
+            var row = existing.FirstOrDefault(d => d.PayeeBankId == payee.BankId);
+            if (row != null)
             {
-                existing.BankCode = code;
+                row.BankCode = Given(row.BankCode) ?? code;
                 continue;
             }
 
             await _payeeBankDetailRepository.InsertAsync(new PayeeBankDetail
             {
                 TenantId = _session.GetTenantId(),
-                BankId = payerBankId,
+                BankId = payerBank.Id,
                 PayeeBankId = payee.BankId,
                 BankCode = code,
             });
@@ -411,29 +442,22 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         await CurrentUnitOfWork.SaveChangesAsync();
     }
 
-    /// <summary>
-    /// This layout writes a bank code beside each employee, and the code comes from the paying bank's own list
-    /// -- so a bank nobody has given a code for would go into the file with that column empty.
-    /// </summary>
-    private async Task CheckPayeeBankCodesAsync(int payerBankId, List<int> payeeIds, DateTime monthEnd, Layout layout)
+    /// <summary>The paying bank's own name for a payee bank, or the payee bank's code where it has no list.</summary>
+    private static string PayeeBankCodeOf(string payerBankCode, string payeeBankCode)
     {
-        var banksInUse = await BanksEmployeesArePaidIntoAsync(payeeIds, monthEnd);
-        var coded = (await _payeeBankDetailRepository.GetAll()
-                .Where(d => d.BankId == payerBankId && d.PayeeBankId != null && d.BankCode != null && d.BankCode != "")
-                .Select(d => d.PayeeBankId.Value)
-                .ToListAsync())
-            .ToHashSet();
-
-        var missing = banksInUse.Where(b => !coded.Contains(b.BankId)).Select(b => b.BankName).ToList();
-        if (missing.Count > 0)
+        if (payerBankCode != null
+            && PayeeBankCodesByPayer.TryGetValue(payerBankCode, out var codes)
+            && payeeBankCode != null
+            && codes.TryGetValue(payeeBankCode, out var code))
         {
-            throw new UserFriendlyException(
-                L("GoLiveV2BankFileNeedsPayeeBankCodes", layout.FormatCode, string.Join(", ", missing)));
+            return code;
         }
+
+        return Given(payeeBankCode);
     }
 
     /// <summary>The banks these employees are actually paid into, and how many are paid into each.</summary>
-    private async Task<List<(int BankId, string BankName, int Employees)>> BanksEmployeesArePaidIntoAsync(
+    private async Task<List<(int BankId, string BankName, string BankCode, int Employees)>> BanksEmployeesArePaidIntoAsync(
         List<int> employeeIds,
         DateTime monthEnd) =>
         (await _employeeBankRepository.GetAll()
@@ -441,11 +465,11 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
                         && b.StartDate <= monthEnd && b.EndDate >= monthEnd
                         && b.PaymentType == PaymentType.Bank
                         && b.BankId != null)
-            .Select(b => new { BankId = b.BankId.Value, BankName = b.Bank.NameEn, b.EmployeeId })
+            .Select(b => new { BankId = b.BankId.Value, BankName = b.Bank.NameEn, BankCode = b.Bank.Code, b.EmployeeId })
             .ToListAsync())
-        .GroupBy(b => new { b.BankId, b.BankName })
+        .GroupBy(b => new { b.BankId, b.BankName, b.BankCode })
         .OrderBy(g => g.Key.BankName)
-        .Select(g => (g.Key.BankId, g.Key.BankName, g.Select(b => b.EmployeeId).Distinct().Count()))
+        .Select(g => (g.Key.BankId, g.Key.BankName, g.Key.BankCode, g.Select(b => b.EmployeeId).Distinct().Count()))
         .ToList();
 
     /// <summary>The company the payroll area's employees are in, by the name its organisation unit carries.</summary>
@@ -568,7 +592,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         bool NeedsBankCode,
         bool NeedsCompanyCode,
         bool NeedsEmployeeAccountNumber,
-        bool NeedsPayeeBankCodes,
+        bool WritesPayeeBankCodes,
         bool NeedsMosalId)
     {
         public GoLiveV2BankFileLayoutDto ToDto() => new()
@@ -579,7 +603,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             NeedsBankCode = NeedsBankCode,
             NeedsCompanyCode = NeedsCompanyCode,
             NeedsEmployeeAccountNumber = NeedsEmployeeAccountNumber,
-            NeedsPayeeBankCodes = NeedsPayeeBankCodes,
+            WritesPayeeBankCodes = WritesPayeeBankCodes,
             NeedsMosalId = NeedsMosalId,
         };
     }
