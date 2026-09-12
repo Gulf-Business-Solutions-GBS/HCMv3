@@ -513,19 +513,6 @@
                                         <div class="v2-field-note">{{ 'GoLiveV2CompanyAccountNoHint' | localize }}</div>
                                     </div>
                                 }
-                                @if (layout.needsBankCode) {
-                                    <div class="v2-field">
-                                        <label class="form-label" for="v2-bank-code">{{ 'GoLiveV2BankFileCode' | localize }}</label>
-                                        <input
-                                            id="v2-bank-code"
-                                            type="text"
-                                            class="form-control"
-                                            maxlength="128"
-                                            [value]="bankFileCode()"
-                                            (input)="onBankFieldInput('bankCode', $event)" />
-                                        <div class="v2-field-note">{{ 'GoLiveV2BankFileCodeHint' | localize }}</div>
-                                    </div>
-                                }
                                 @if (layout.needsMosalId) {
                                     <div class="v2-field">
                                         <label class="form-label" for="v2-mosal-id">{{ 'GoLiveV2CompanyMosalId' | localize }}</label>

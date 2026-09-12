@@ -6077,7 +6077,6 @@
     <text name="GoLiveV2BankFileBankHasNoLayout">لا يوجد نموذج ملف بنكي لـ {0}. اختر بنك دفع آخر.</text>
     <text name="GoLiveV2BankFileLayoutNotForBank">النموذج {0} ليس من نماذج {1}.</text>
     <text name="GoLiveV2BankFileNeedsCompanyAccount">يتطلب النموذج {0} رقم حساب الشركة لدى بنك الدفع.</text>
-    <text name="GoLiveV2BankFileNeedsBankCode">يتطلب النموذج {0} رمز البنك كما يُكتب في ملفاته. يزودك البنك بهذا الرمز.</text>
     <text name="GoLiveV2BankFileNeedsCompanyCode">يتطلب النموذج {0} رمز الشركة لدى البنك.</text>
     <text name="GoLiveV2BankFileNobodyToPay">لا يمكن الدفع لأي موظف عن طريق البنك عن {0}: لا يوجد بنك ورقم آيبان مسجلان لأي موظف صُرف راتبه. أضفهما في خطوة تحميل بيانات الموظفين.</text>
     <text name="GoLiveV2ColBank">البنك</text>
@@ -6094,8 +6093,6 @@
     <text name="GoLiveV2LayoutText">{0} (ملف نصي)</text>
     <text name="GoLiveV2CompanyAccountNo">رقم حساب الشركة</text>
     <text name="GoLiveV2CompanyAccountNoHint">حساب الشركة لدى بنك الدفع. يكتبه هذا النموذج في الملف.</text>
-    <text name="GoLiveV2BankFileCode">رمز البنك في الملف</text>
-    <text name="GoLiveV2BankFileCodeHint">الرمز الذي زودك به البنك لملفات الرواتب.</text>
     <text name="GoLiveV2CompanyCode">رمز الشركة لدى البنك</text>
     <text name="GoLiveV2CompanyCodeHint">الرمز الذي يعرّف به البنك الشركة.</text>
     <text name="GoLiveV2MakeBankFile">إعداد الملف البنكي</text>

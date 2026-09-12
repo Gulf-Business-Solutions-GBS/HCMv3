@@ -6238,7 +6238,6 @@
     <text name="GoLiveV2BankFileBankHasNoLayout">No bank file layout exists for {0}. Choose another paying bank.</text>
     <text name="GoLiveV2BankFileLayoutNotForBank">Layout {0} is not one of {1}'s layouts.</text>
     <text name="GoLiveV2BankFileNeedsCompanyAccount">Layout {0} needs the company's account number at the paying bank.</text>
-    <text name="GoLiveV2BankFileNeedsBankCode">Layout {0} needs the bank's code as its files write it. The bank gives you this code.</text>
     <text name="GoLiveV2BankFileNeedsCompanyCode">Layout {0} needs the company's code at the bank.</text>
     <text name="GoLiveV2BankFileNobodyToPay">Nobody can be paid by bank for {0}: no one the payroll paid has a bank and IBAN on record. Add them under Load employee data.</text>
     <text name="GoLiveV2ColBank">Bank</text>
@@ -6255,8 +6254,6 @@
     <text name="GoLiveV2LayoutText">{0} (text file)</text>
     <text name="GoLiveV2CompanyAccountNo">Company account number</text>
     <text name="GoLiveV2CompanyAccountNoHint">The company's account at the paying bank. This layout writes it in the file.</text>
-    <text name="GoLiveV2BankFileCode">Bank code for the file</text>
-    <text name="GoLiveV2BankFileCodeHint">The code the bank gave you for its salary files.</text>
     <text name="GoLiveV2CompanyCode">Company code at the bank</text>
     <text name="GoLiveV2CompanyCodeHint">The code the bank knows the company by.</text>
     <text name="GoLiveV2MakeBankFile">Make bank file</text>

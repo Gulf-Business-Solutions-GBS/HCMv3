@@ -95,8 +95,6 @@ public class GoLiveV2BankFileLayoutDto
 
     public bool NeedsCompanyAccount { get; set; }
 
-    public bool NeedsBankCode { get; set; }
-
     public bool NeedsCompanyCode { get; set; }
 
     /// <summary>
@@ -126,10 +124,6 @@ public class GoLiveV2GenerateBankFileInput : GoLiveV2BankFileSetupInput
     /// <summary>Saved as the company's account at the paying bank. Left as it was when blank.</summary>
     [StringLength(SimpleLookupConsts.MaxNameLength)]
     public string CompanyAccountNo { get; set; }
-
-    /// <summary>Saved as the paying bank's external code. Left as it was when blank.</summary>
-    [StringLength(SimpleLookupConsts.MaxNameLength)]
-    public string BankCode { get; set; }
 
     /// <summary>Saved as the company's code at the paying bank. Left as it was when blank.</summary>
     [StringLength(SimpleLookupConsts.MaxNameLength)]

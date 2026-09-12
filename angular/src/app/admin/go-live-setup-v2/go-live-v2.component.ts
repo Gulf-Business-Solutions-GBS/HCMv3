@@ -287,7 +287,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     readonly payingBankId = signal<number | null>(null);
     readonly bankLayout = signal('');
     readonly companyAccountNo = signal('');
-    readonly bankFileCode = signal('');
     readonly companyCode = signal('');
     readonly companyMosalId = signal('');
     readonly generatingBankFile = signal(false);
@@ -311,7 +310,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             !!layout &&
             !this.generatingBankFile() &&
             (!layout.needsCompanyAccount || this.companyAccountNo().trim().length > 0) &&
-            (!layout.needsBankCode || this.bankFileCode().trim().length > 0) &&
             (!layout.needsCompanyCode || this.companyCode().trim().length > 0) &&
             (!layout.needsMosalId || this.companyMosalId().trim().length > 0)
         );
@@ -722,11 +720,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.bankLayout.set((event.target as HTMLSelectElement).value);
     }
 
-    onBankFieldInput(field: 'account' | 'bankCode' | 'companyCode' | 'mosalId', event: Event): void {
+    onBankFieldInput(field: 'account' | 'companyCode' | 'mosalId', event: Event): void {
         const value = (event.target as HTMLInputElement).value;
         ({
             account: this.companyAccountNo,
-            bankCode: this.bankFileCode,
             companyCode: this.companyCode,
             mosalId: this.companyMosalId,
         })[field].set(value);
@@ -762,7 +759,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         input.paymentBankId = bankId;
         input.formatCode = this.bankLayout();
         input.companyAccountNo = this.companyAccountNo().trim() || undefined;
-        input.bankCode = this.bankFileCode().trim() || undefined;
         input.companyCode = this.companyCode().trim() || undefined;
         input.mosalId = Number(this.companyMosalId().trim()) || undefined;
 
@@ -806,7 +802,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.payingBankId.set(bank?.bankId ?? null);
         this.bankLayout.set(bank?.selectedLayout ?? '');
         this.companyAccountNo.set(bank?.companyAccountNo ?? '');
-        this.bankFileCode.set(bank?.bankCode ?? '');
         this.companyCode.set(bank?.companyCode ?? '');
     }
 

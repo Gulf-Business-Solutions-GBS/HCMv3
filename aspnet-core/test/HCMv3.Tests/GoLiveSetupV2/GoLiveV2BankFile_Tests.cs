@@ -346,11 +346,10 @@ public class GoLiveV2BankFile_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Save_The_Bank_And_Company_Codes_A_Layout_Needs()
+    public async Task Should_Save_The_Company_Code_A_Layout_Needs()
     {
         await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", "Burgan Bank", Iban));
         var input = Generate("Burgan Bank", "BUR-G2");
-        input.BankCode = "BRGN";
         input.CompanyCode = "C042";
         input.MosalId = 123456;
 
@@ -360,7 +359,8 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         UsingDbContext(context =>
         {
             var bank = context.Banks.Single(b => b.TenantId == TenantId && b.NameEn == "Burgan Bank");
-            bank.ExternalCode.ShouldBe("BRGN");
+            // Burgan writes its own code for its own accounts, which nobody had to type.
+            bank.ExternalCode.ShouldBe("BUR");
             bank.CompanyCode.ShouldBe("C042");
         });
     }
@@ -522,7 +522,6 @@ public class GoLiveV2BankFile_Tests : AppTestBase
     {
         await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Cbk, Iban));
         var input = Generate("Al-Ahli Bank of Kuwait", "ABK-G1");
-        input.BankCode = "004";
 
         var file = await _goLive.GenerateBankFile(input);
 

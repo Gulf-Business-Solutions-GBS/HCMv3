@@ -52,10 +52,10 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             {
                 Grid(BankFileFormatCodes.CbkG1),
                 Grid(BankFileFormatCodes.CbkG2),
-                Text(BankFileFormatCodes.CbkT3, companyAccount: true, bankCode: true, payeeBankCodes: true),
+                Text(BankFileFormatCodes.CbkT3, companyAccount: true, payeeBankCodes: true),
                 Text(BankFileFormatCodes.CbkT4, companyAccount: true),
-                Text(BankFileFormatCodes.CbkT5, companyAccount: true, bankCode: true, payeeBankCodes: true),
-                Text(BankFileFormatCodes.CbkT6, companyAccount: true, bankCode: true, payeeBankCodes: true),
+                Text(BankFileFormatCodes.CbkT5, companyAccount: true, payeeBankCodes: true),
+                Text(BankFileFormatCodes.CbkT6, companyAccount: true, payeeBankCodes: true),
                 Text(BankFileFormatCodes.CbkT1, companyAccount: true, employeeAccount: true),
                 Text(BankFileFormatCodes.CbkT2, companyAccount: true, employeeAccount: true),
             },
@@ -63,14 +63,14 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             ["GBK"] = new[] { Grid(BankFileFormatCodes.GbkG1, mosalId: true), Grid(BankFileFormatCodes.GbkG2, mosalId: true) },
             ["ABK"] = new[]
             {
-                Grid(BankFileFormatCodes.AbkG1, bankCode: true, payeeBankCodes: true),
-                Grid(BankFileFormatCodes.AbkG2, bankCode: true, payeeBankCodes: true),
-                Grid(BankFileFormatCodes.AbkG3, bankCode: true, payeeBankCodes: true),
+                Grid(BankFileFormatCodes.AbkG1, payeeBankCodes: true),
+                Grid(BankFileFormatCodes.AbkG2, payeeBankCodes: true),
+                Grid(BankFileFormatCodes.AbkG3, payeeBankCodes: true),
             },
             ["BUR"] = new[]
             {
-                Text(BankFileFormatCodes.BurT1, bankCode: true, mosalId: true),
-                Grid(BankFileFormatCodes.BurG2, bankCode: true, companyCode: true, mosalId: true),
+                Text(BankFileFormatCodes.BurT1, mosalId: true),
+                Grid(BankFileFormatCodes.BurG2, companyCode: true, mosalId: true),
                 Grid(BankFileFormatCodes.BurG1, employeeAccount: true, payeeBankCodes: true, mosalId: true),
             },
             ["KFH"] = new[] { Grid(BankFileFormatCodes.KfhG1) },
@@ -269,11 +269,6 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             throw new UserFriendlyException(L("GoLiveV2BankFileNeedsCompanyAccount", layout.FormatCode));
         }
 
-        if (layout.NeedsBankCode && (Given(input.BankCode) ?? Given(bank.ExternalCode)) == null)
-        {
-            throw new UserFriendlyException(L("GoLiveV2BankFileNeedsBankCode", layout.FormatCode));
-        }
-
         if (layout.NeedsCompanyCode && (Given(input.CompanyCode) ?? Given(bank.CompanyCode)) == null)
         {
             throw new UserFriendlyException(L("GoLiveV2BankFileNeedsCompanyCode", layout.FormatCode));
@@ -389,7 +384,9 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         var bankFile = await _bankFileRepository.FirstOrDefaultAsync(f => f.NameEn == layout.FormatCode);
         bank.BankFileId = bankFile?.Id;
 
-        bank.ExternalCode = Given(input.BankCode) ?? bank.ExternalCode;
+        // What the paying bank calls ITSELF in its own file -- Al-Ahli writes "004" for an Al-Ahli
+        // account, every other bank its own code. Set only when nobody has set it by hand.
+        bank.ExternalCode = Given(bank.ExternalCode) ?? PayeeBankCodeOf(code, code);
         bank.CompanyCode = Given(input.CompanyCode) ?? bank.CompanyCode;
 
         if (Given(input.CompanyAccountNo) != null)
@@ -568,28 +565,25 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private static Layout Grid(
         string formatCode,
         bool companyAccount = false,
-        bool bankCode = false,
         bool companyCode = false,
         bool employeeAccount = false,
         bool payeeBankCodes = false,
         bool mosalId = false) =>
-        new(formatCode, false, companyAccount, bankCode, companyCode, employeeAccount, payeeBankCodes, mosalId);
+        new(formatCode, false, companyAccount, companyCode, employeeAccount, payeeBankCodes, mosalId);
 
     private static Layout Text(
         string formatCode,
         bool companyAccount = false,
-        bool bankCode = false,
         bool companyCode = false,
         bool employeeAccount = false,
         bool payeeBankCodes = false,
         bool mosalId = false) =>
-        new(formatCode, true, companyAccount, bankCode, companyCode, employeeAccount, payeeBankCodes, mosalId);
+        new(formatCode, true, companyAccount, companyCode, employeeAccount, payeeBankCodes, mosalId);
 
     private sealed record Layout(
         string FormatCode,
         bool IsText,
         bool NeedsCompanyAccount,
-        bool NeedsBankCode,
         bool NeedsCompanyCode,
         bool NeedsEmployeeAccountNumber,
         bool WritesPayeeBankCodes,
@@ -600,7 +594,6 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             FormatCode = FormatCode,
             IsText = IsText,
             NeedsCompanyAccount = NeedsCompanyAccount,
-            NeedsBankCode = NeedsBankCode,
             NeedsCompanyCode = NeedsCompanyCode,
             NeedsEmployeeAccountNumber = NeedsEmployeeAccountNumber,
             WritesPayeeBankCodes = WritesPayeeBankCodes,
