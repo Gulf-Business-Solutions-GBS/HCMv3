@@ -139,23 +139,18 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     // ---------------------------------------------------------------- the three steps
 
     /**
-     * Which step is on screen. Whether a step can be opened is read from the data, never from what was
-     * pressed in this visit: a company with employees can run payroll, a month with results has a bank
-     * file to make, and a page reload knows both. So nothing has to be unlocked, and coming back to fix
-     * a salary and running again is just going back a step.
+     * The steps run in order, and the order is what you press, not what the database already holds. The
+     * screen opens on step 1 with the other two shut; loading employees opens step 2, a payroll that
+     * runs opens step 3. Loading employees again puts the run and the bank file back where they were
+     * before -- they described the employees as they were, and those have just changed.
      */
     readonly activeStep = signal(1);
 
-    /** Employees the payroll area has: what step 1 is for, and what step 2 needs. */
-    readonly employeesLoaded = computed(() => this.results()?.employees?.length ?? this.filledEmployeeCount());
-
-    /** Employees the month actually paid: what step 2 is for, and what step 3 needs. */
-    readonly employeesPaid = computed(() => this.results()?.employeesPaid ?? 0);
+    /** The furthest step opened so far: 1 on arrival, 2 once employees are loaded, 3 once payroll runs. */
+    readonly unlockedStep = signal(1);
 
     readonly steps = computed(() => {
-        const loaded = this.employeesLoaded();
-        const paid = this.employeesPaid();
-        const made = this.bankFile() != null;
+        const unlocked = this.unlockedStep();
 
         return [
             {
@@ -163,7 +158,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 title: this.l('GoLiveV2StepLoadName'),
                 what: this.l('GoLiveV2StepLoadWhat'),
                 icon: 'fa-users',
-                done: loaded > 0,
+                done: unlocked > 1,
                 ready: true,
                 why: '',
             },
@@ -172,8 +167,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 title: this.l('GoLiveV2StepRunName'),
                 what: this.l('GoLiveV2StepRunWhat'),
                 icon: 'fa-calculator',
-                done: paid > 0,
-                ready: loaded > 0,
+                done: unlocked > 2,
+                ready: unlocked >= 2,
                 why: this.l('GoLiveV2StepNeedsEmployees'),
             },
             {
@@ -181,24 +176,33 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 title: this.l('GoLiveV2StepBankFileName'),
                 what: this.l('GoLiveV2StepBankFileWhat'),
                 icon: 'fa-file-invoice-dollar',
-                done: made,
-                ready: paid > 0,
+                done: this.bankFile() != null,
+                ready: unlocked >= 3,
                 why: this.l('GoLiveV2StepNeedsPayroll'),
             },
         ];
     });
 
-    /** The step on screen, kept to one that can be opened -- loading employees again reopens step 1. */
-    readonly currentStep = computed(() => {
-        const steps = this.steps();
-        const asked = this.activeStep();
-        return steps.find((s) => s.number === asked)?.ready ? asked : 1;
-    });
+    /** The step on screen, never one that is still shut. */
+    readonly currentStep = computed(() => Math.min(this.activeStep(), this.unlockedStep()));
 
     goToStep(step: number): void {
-        if (this.steps().find((s) => s.number === step)?.ready) {
+        if (step <= this.unlockedStep()) {
             this.activeStep.set(step);
         }
+    }
+
+    /**
+     * A fresh load of employees makes the month's run and its bank file out of date, so they are
+     * cleared and their steps shut again: what is on screen always describes the employees now loaded.
+     */
+    private restartFromStepTwo(): void {
+        this.latest.set(null);
+        this.lastSetUp.set(null);
+        this.results.set(null);
+        this.bankFile.set(null);
+        this.unlockedStep.set(2);
+        this.activeStep.set(2);
     }
 
     // ---------------------------------------------------------------- step 1: load employee data
@@ -659,10 +663,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.latest.set(null);
             this.lastSetUp.set(null);
             this.lastLoad.set(combined);
-            this.refreshBankFileSetup();
             if (combined.rows.some((r) => r.succeeded)) {
-                this.activeStep.set(2);
+                this.restartFromStepTwo();
             }
+            this.refreshBankFileSetup();
             this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
         }
     }
@@ -820,6 +824,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     // Whatever the run did, the results below now describe it.
                     this.showResults();
                     this.refreshBankFileSetup();
+
+                    if (result.succeeded) {
+                        this.unlockedStep.update((step) => Math.max(step, 3));
+                    }
                 },
                 error: () => this.runProgress.set(null),
             });
