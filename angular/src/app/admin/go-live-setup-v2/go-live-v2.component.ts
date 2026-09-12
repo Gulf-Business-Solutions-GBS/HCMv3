@@ -401,10 +401,12 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
      * importing it as a module hands back an empty object.
      */
     private async readSheets(blob: Blob): Promise<V2DocSheet[]> {
-        await import('exceljs/dist/exceljs.min.js');
-        const ExcelJS = (window as unknown as { ExcelJS?: { Workbook: new () => any } }).ExcelJS;
+        // Bundled, the UMD build comes back as the module's default export and defines no global;
+        // loaded straight into a browser it does the opposite. Take whichever shape turns up.
+        const loaded: any = await import('exceljs/dist/exceljs.min.js');
+        const ExcelJS = [loaded?.default, loaded, (window as any).ExcelJS].find((c) => c?.Workbook);
         if (!ExcelJS) {
-            throw new Error('ExcelJS did not load.');
+            throw new Error('exceljs loaded without a Workbook: ' + Object.keys(loaded ?? {}).join(', '));
         }
 
         const workbook = new ExcelJS.Workbook();
