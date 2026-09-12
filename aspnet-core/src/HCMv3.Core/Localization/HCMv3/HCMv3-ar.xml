@@ -6140,5 +6140,6 @@
     <text name="GoLiveV2StepBankFileWhat">ملف تحويل الرواتب بالنموذج الذي يقبله البنك.</text>
     <text name="GoLiveV2DocCannotPreview">تعذر عرض هذا الملف، لذا تم تنزيله بدلًا من ذلك.</text>
     <text name="GoLiveV2DocCannotFetch">تعذر جلب التقرير. حاول مرة أخرى.</text>
+    <text name="GoLiveV2DocPrint">طباعة / PDF</text>
   </texts>
 </localizationDictionary>

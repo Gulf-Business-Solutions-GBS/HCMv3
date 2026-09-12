@@ -6301,5 +6301,6 @@
     <text name="GoLiveV2StepBankFileWhat">The salary transfer file, in the layout your bank accepts.</text>
     <text name="GoLiveV2DocCannotPreview">This file could not be shown, so it has been downloaded instead.</text>
     <text name="GoLiveV2DocCannotFetch">The report could not be fetched. Try again.</text>
+    <text name="GoLiveV2DocPrint">Print / PDF</text>
   </texts>
 </localizationDictionary>

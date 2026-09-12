@@ -77,6 +77,27 @@
     white-space: pre;
 }
 
+/* Printing shows the document, not the screen around it -- which is also how it is saved as a PDF. */
+@media print {
+    .v2-doc-backdrop,
+    .v2-doc-actions,
+    .v2-doc-sheets {
+        display: none !important;
+    }
+
+    .v2-doc {
+        position: static;
+        inset: auto;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .v2-doc-body {
+        overflow: visible;
+        padding: 0;
+    }
+}
+
 /* Long reports scroll inside the window, with the headings staying put. */
 .v2-doc-sheet thead th {
     position: sticky;

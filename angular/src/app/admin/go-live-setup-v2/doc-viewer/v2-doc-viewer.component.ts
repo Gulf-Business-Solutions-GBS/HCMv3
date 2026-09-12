@@ -94,6 +94,11 @@ export class V2DocViewerComponent extends AppComponentBase {
         this.find.set('');
     }
 
+    /** The browser's print dialog, which is also its save-as-PDF. */
+    print(): void {
+        window.print();
+    }
+
     download(): void {
         const doc = this.doc();
         const url = URL.createObjectURL(doc.blob);

@@ -30,6 +30,12 @@
                     </button>
                 </div>
             }
+            @if (doc().kind !== 'pdf') {
+                <button type="button" class="btn btn-sm btn-light" (click)="print()">
+                    <i class="fa fa-print me-2" aria-hidden="true"></i>
+                    {{ 'GoLiveV2DocPrint' | localize }}
+                </button>
+            }
             <button type="button" class="btn btn-sm btn-primary" (click)="download()">
                 <i class="fa fa-download me-2" aria-hidden="true"></i>
                 {{ 'GoLiveV2DocDownload' | localize }}

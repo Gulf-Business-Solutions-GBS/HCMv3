@@ -24,11 +24,54 @@ export function readXlsx(bytes: Uint8Array): XlsxSheet[] {
 
     const sharedStrings = readSharedStrings(text('xl/sharedStrings.xml'));
     const targets = readRelationships(text('xl/_rels/workbook.xml.rels'));
+    const dateStyles = readDateStyles(text('xl/styles.xml'));
 
     return readSheetList(text('xl/workbook.xml'), targets, files).map(({ name, path }) => ({
         name,
-        rows: readSheet(text(path), sharedStrings),
+        rows: readSheet(text(path), sharedStrings, dateStyles),
     }));
+}
+
+/**
+ * Which cell styles mean "this number is a date". A spreadsheet keeps a date as a count of days, and
+ * only its format says so -- without this a pay period reads as 46295.
+ */
+function readDateStyles(stylesXml: string | null): Set<number> {
+    if (!stylesXml) {
+        return new Set();
+    }
+
+    // Formats the file defines itself are dates when their pattern mentions a day, month or year.
+    const custom = new Set<number>();
+    for (const tag of stylesXml.match(/<(?:\w+:)?numFmt\b[^>]*\/?>/g) ?? []) {
+        const id = Number(attribute(tag, 'numFmtId'));
+        const code = attribute(tag, 'formatCode') ?? '';
+        if (!Number.isNaN(id) && /[dmy]/i.test(code.replace(/\[[^\]]*\]|"[^"]*"/g, ''))) {
+            custom.add(id);
+        }
+    }
+
+    // The rest are the built-in date and time formats.
+    const builtIn = (id: number) => (id >= 14 && id <= 22) || (id >= 27 && id <= 36) || (id >= 45 && id <= 58);
+
+    const styles = new Set<number>();
+    const cellXfs = stylesXml.match(/<(?:\w+:)?cellXfs\b[\s\S]*?<\/(?:\w+:)?cellXfs>/)?.[0] ?? '';
+    (cellXfs.match(/<(?:\w+:)?xf\b[^>]*\/?>/g) ?? []).forEach((xf, index) => {
+        const id = Number(attribute(xf, 'numFmtId'));
+        if (!Number.isNaN(id) && (builtIn(id) || custom.has(id))) {
+            styles.add(index);
+        }
+    });
+
+    return styles;
+}
+
+/** A spreadsheet counts days from 1900, and gets 1900 wrong on purpose; day 60 is its phantom leap day. */
+function dateText(serial: number): string {
+    const days = serial > 59 ? serial - 1 : serial;
+    const date = new Date(Date.UTC(1900, 0, 1) + (days - 1) * 86400000);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return pad(date.getUTCDate()) + '-' + pad(date.getUTCMonth() + 1) + '-' + date.getUTCFullYear();
 }
 
 /** The names of the sheets, in the workbook's own order, each with the part that holds it. */
@@ -86,7 +129,7 @@ function readSharedStrings(xml: string | null): string[] {
     );
 }
 
-function readSheet(xml: string | null, sharedStrings: string[]): string[][] {
+function readSheet(xml: string | null, sharedStrings: string[], dateStyles: Set<number>): string[][] {
     if (!xml) {
         return [];
     }
@@ -103,7 +146,7 @@ function readSheet(xml: string | null, sharedStrings: string[]): string[][] {
             while (cells.length < at) {
                 cells.push('');
             }
-            cells[at] = cellValue(cellXml, sharedStrings);
+            cells[at] = cellValue(cellXml, sharedStrings, dateStyles);
         }
 
         rows.push(cells);
@@ -112,7 +155,7 @@ function readSheet(xml: string | null, sharedStrings: string[]): string[][] {
     return rows;
 }
 
-function cellValue(cellXml: string, sharedStrings: string[]): string {
+function cellValue(cellXml: string, sharedStrings: string[], dateStyles: Set<number>): string {
     const type = attribute(cellXml, 't');
 
     if (type === 'inlineStr') {
@@ -128,7 +171,13 @@ function cellValue(cellXml: string, sharedStrings: string[]): string {
     }
 
     const value = decode(raw);
-    return type === 's' ? sharedStrings[Number(value)] ?? '' : value;
+    if (type === 's') {
+        return sharedStrings[Number(value)] ?? '';
+    }
+
+    const style = Number(attribute(cellXml, 's'));
+    const serial = Number(value);
+    return !Number.isNaN(style) && dateStyles.has(style) && serial > 0 ? dateText(serial) : value;
 }
 
 /** "BC12" is column 55, counting from zero. */
