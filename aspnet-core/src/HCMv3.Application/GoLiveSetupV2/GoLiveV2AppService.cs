@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.GeneralMasterInfo;
 using HCMv3.Dto;
+using HCMv3.GoLiveSetup.ReferenceData;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
@@ -28,6 +30,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
 {
     private const string DefaultCurrencyCode = "KWD";
     private const string DefaultPayYearCode = "Jan-Dec";
+
+    /// <summary>The reference pack with the payroll catalogue: wage types, leave types and the links between them.</summary>
+    private const string PayrollCataloguePack = "payroll";
 
     /// <summary>The Kuwait pack's open-ended contract type, matching the 31/12/9999 end date every contract gets.</summary>
     private const string DefaultContractType = "Unlimited";
@@ -53,6 +58,10 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly GoLiveV2WorkingTime _workingTime;
     private readonly GoLiveV2LoadedEmployeesReader _loadedEmployees;
     private readonly GoLiveV2PayrollResultsReader _payrollResults;
+    private readonly IReferenceDataSeeder _referenceData;
+    private readonly IRepository<WageTypeLeave> _wageTypeLeaveRepository;
+    private readonly IRepository<Bank> _bankRepository;
+    private readonly GoLiveV2BankFileStep _bankFileStep;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -72,7 +81,11 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         GoLiveV2TimeEngineStep timeEngineStep,
         GoLiveV2WorkingTime workingTime,
         GoLiveV2LoadedEmployeesReader loadedEmployees,
-        GoLiveV2PayrollResultsReader payrollResults)
+        GoLiveV2PayrollResultsReader payrollResults,
+        IReferenceDataSeeder referenceData,
+        IRepository<WageTypeLeave> wageTypeLeaveRepository,
+        IRepository<Bank> bankRepository,
+        GoLiveV2BankFileStep bankFileStep)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -92,6 +105,10 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _workingTime = workingTime;
         _loadedEmployees = loadedEmployees;
         _payrollResults = payrollResults;
+        _referenceData = referenceData;
+        _wageTypeLeaveRepository = wageTypeLeaveRepository;
+        _bankRepository = bankRepository;
+        _bankFileStep = bankFileStep;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -134,9 +151,30 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             }
         }
 
+        var leavePayLinksAdded = await EnsureLeavePayLinksAsync();
+
         var output = await RunEnginesAsync(areaName, payInDate);
         output.MonthSetUp = monthSetUp;
+        output.LeavePayLinksAdded = leavePayLinksAdded;
         return output;
+    }
+
+    /// <summary>
+    /// A company with no "paid during leave" links at all -- one seeded before the catalogue carried them -- gets
+    /// the legacy catalogue's, through the same seeder that seeds a new company; it adds only what is missing. A
+    /// company with any links of its own has chosen them, and is left alone.
+    /// </summary>
+    private async Task<int> EnsureLeavePayLinksAsync()
+    {
+        if (await _wageTypeLeaveRepository.GetAll().AnyAsync())
+        {
+            return 0;
+        }
+
+        var result = await _referenceData.SeedPackAsync(PayrollCataloguePack, AbpSession.GetTenantId());
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        return result.Counts.Where(c => c.Lookup == nameof(WageTypeLeave)).Sum(c => c.Inserted);
     }
 
     /// <summary>The time engine, then the payroll engine, for a month that is set up.</summary>
@@ -318,6 +356,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
                 SalaryWageTypeIds = salaryWageTypeIds,
                 Placeholders = placeholders,
                 WorkingTime = workingTime,
+                BankIdsByName = await BankIdsByNameAsync(),
             },
             output);
 
@@ -365,6 +404,38 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
     public Task<FileDto> GetSalaryRegisterExcel(GoLiveV2PayrollResultsInput input) =>
         _payrollResults.ExportRegisterLinesAsync(input.PayrollAreaName, MonthEnd(input.PayDate.Value));
+
+    public async Task<ListResultDto<string>> GetBankNames()
+    {
+        var names = await _bankRepository.GetAll()
+            .Where(b => b.NameEn != null && b.NameEn != "")
+            .Select(b => b.NameEn)
+            .Distinct()
+            .OrderBy(n => n)
+            .ToListAsync();
+
+        return new ListResultDto<string>(names);
+    }
+
+    /// <remarks>Shows who is paid into which bank, so it needs the Bank File screen's permission.</remarks>
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles)]
+    public Task<GoLiveV2BankFileSetupOutput> GetBankFileSetup(GoLiveV2BankFileSetupInput input) =>
+        _bankFileStep.GetSetupAsync(input.PayrollAreaName.Trim(), MonthEnd(input.PayDate.Value));
+
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_BankFiles_Generate)]
+    public Task<GoLiveV2GenerateBankFileOutput> GenerateBankFile(GoLiveV2GenerateBankFileInput input) =>
+        _bankFileStep.GenerateAsync(input, MonthEnd(input.PayDate.Value));
+
+    /// <summary>By name ignoring case. Two banks with one name -- the seeder never makes them -- resolve to the first.</summary>
+    private async Task<IReadOnlyDictionary<string, int>> BankIdsByNameAsync() =>
+        (await _bankRepository.GetAll()
+            .Where(b => b.NameEn != null && b.NameEn != "")
+            .OrderBy(b => b.Id)
+            .Select(b => new { b.Id, b.NameEn })
+            .ToListAsync())
+        .GroupBy(b => b.NameEn.Trim(), StringComparer.OrdinalIgnoreCase)
+        .ToDictionary(g => g.Key, g => g.First().Id, StringComparer.OrdinalIgnoreCase);
 
     public async Task<ListResultDto<string>> GetPayrollAreaNames()
     {

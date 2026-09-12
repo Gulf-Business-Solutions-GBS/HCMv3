@@ -77,6 +77,12 @@ public class GoLiveV2RunPayrollOutput
     /// when any of it was missing. Null when the month was already set up.
     /// </summary>
     public GoLiveV2SetUpPayrollMonthOutput MonthSetUp { get; set; }
+
+    /// <summary>
+    /// "Paid during leave" links added from the legacy catalogue before running, because the company had none;
+    /// 0 when it already had them. Without them annual leave pay and the annual leave provision are zero.
+    /// </summary>
+    public int LeavePayLinksAdded { get; set; }
 }
 
 public class GoLiveV2EmployeeResultDto

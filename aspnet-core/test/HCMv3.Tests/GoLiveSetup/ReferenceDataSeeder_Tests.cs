@@ -205,6 +205,24 @@ public class ReferenceDataSeeder_Tests : AppTestBase
         });
     }
 
+    /// <summary>The bank-file generator picks a paying bank's layouts by its code, so the banks carry those codes.</summary>
+    [Theory]
+    [InlineData("National Bank of Kuwait", "NBK")]
+    [InlineData("Commercial Bank of Kuwait", "CBK")]
+    [InlineData("Al-Ahli Bank of Kuwait", "ABK")]
+    [InlineData("Gulf Bank", "GB")]
+    [InlineData("Burgan Bank", "BUR")]
+    [InlineData("Kuwait Finance House", "KFH")]
+    [InlineData("Kuwait International Bank", "KIB")]
+    [InlineData("Boubyan Bank", "BB")]
+    [InlineData("Warba Bank", "WRB")]
+    public async Task Should_Seed_The_Kuwait_Banks_With_The_Codes_Bank_Files_Know_Them_By(string name, string code)
+    {
+        await _seeder.SeedPackAsync("kuwait", TenantId);
+
+        UsingDbContext(context => context.Banks.Single(b => b.TenantId == TenantId && b.NameEn == name).Code.ShouldBe(code));
+    }
+
     [Fact]
     public async Task Should_Leave_A_Row_The_Tenant_Already_Has_Untouched()
     {

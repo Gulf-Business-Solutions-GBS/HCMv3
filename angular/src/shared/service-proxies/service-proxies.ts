@@ -66576,6 +66576,169 @@ export class GoLiveV2ServiceProxy {
     /**
      * @return OK
      */
+    getBankNames(): Observable<ListResultDtoOfString> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetBankNames";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankNames(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankNames(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfString>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfString>;
+        }));
+    }
+
+    protected processGetBankNames(response: HttpResponseBase): Observable<ListResultDtoOfString> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfString.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getBankFileSetup(body?: GoLiveV2BankFileSetupInput | undefined): Observable<GoLiveV2BankFileSetupOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetBankFileSetup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankFileSetup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankFileSetup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2BankFileSetupOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2BankFileSetupOutput>;
+        }));
+    }
+
+    protected processGetBankFileSetup(response: HttpResponseBase): Observable<GoLiveV2BankFileSetupOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2BankFileSetupOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    generateBankFile(body?: GoLiveV2GenerateBankFileInput | undefined): Observable<GoLiveV2GenerateBankFileOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GenerateBankFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGenerateBankFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGenerateBankFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2GenerateBankFileOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2GenerateBankFileOutput>;
+        }));
+    }
+
+    protected processGenerateBankFile(response: HttpResponseBase): Observable<GoLiveV2GenerateBankFileOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2GenerateBankFileOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getPayrollAreaNames(): Observable<ListResultDtoOfString> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollAreaNames";
         url_ = url_.replace(/[?&]$/, "");
@@ -260485,6 +260648,207 @@ export interface IGoLiveStepStateDto {
     lastSavedUtc: DateTime;
 }
 
+export class GoLiveV2BankFileEmployeeDto implements IGoLiveV2BankFileEmployeeDto {
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    reason!: GoLiveV2BankFileLeftOutReason;
+
+    constructor(data?: IGoLiveV2BankFileEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2BankFileEmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2BankFileEmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IGoLiveV2BankFileEmployeeDto {
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    reason: GoLiveV2BankFileLeftOutReason;
+}
+
+export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
+    formatCode!: string | undefined;
+    isText!: boolean;
+    needsCompanyAccount!: boolean;
+    needsBankCode!: boolean;
+    needsCompanyCode!: boolean;
+
+    constructor(data?: IGoLiveV2BankFileLayoutDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formatCode = _data["formatCode"];
+            this.isText = _data["isText"];
+            this.needsCompanyAccount = _data["needsCompanyAccount"];
+            this.needsBankCode = _data["needsBankCode"];
+            this.needsCompanyCode = _data["needsCompanyCode"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2BankFileLayoutDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2BankFileLayoutDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formatCode"] = this.formatCode;
+        data["isText"] = this.isText;
+        data["needsCompanyAccount"] = this.needsCompanyAccount;
+        data["needsBankCode"] = this.needsBankCode;
+        data["needsCompanyCode"] = this.needsCompanyCode;
+        return data;
+    }
+}
+
+export interface IGoLiveV2BankFileLayoutDto {
+    formatCode: string | undefined;
+    isText: boolean;
+    needsCompanyAccount: boolean;
+    needsBankCode: boolean;
+    needsCompanyCode: boolean;
+}
+
+export enum GoLiveV2BankFileLeftOutReason {
+    NoBankDetails = 0,
+    NotPaid = 1,
+}
+
+export class GoLiveV2BankFileSetupInput implements IGoLiveV2BankFileSetupInput {
+    payDate!: DateTime;
+    payrollAreaName!: string;
+
+    constructor(data?: IGoLiveV2BankFileSetupInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2BankFileSetupInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2BankFileSetupInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        return data;
+    }
+}
+
+export interface IGoLiveV2BankFileSetupInput {
+    payDate: DateTime;
+    payrollAreaName: string;
+}
+
+export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput {
+    payingBanks!: GoLiveV2PayingBankDto[] | undefined;
+    employeesWithoutBank!: GoLiveV2BankFileEmployeeDto[] | undefined;
+    employeesWithBank!: number;
+
+    constructor(data?: IGoLiveV2BankFileSetupOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["payingBanks"])) {
+                this.payingBanks = [] as any;
+                for (let item of _data["payingBanks"])
+                    this.payingBanks!.push(GoLiveV2PayingBankDto.fromJS(item));
+            }
+            if (Array.isArray(_data["employeesWithoutBank"])) {
+                this.employeesWithoutBank = [] as any;
+                for (let item of _data["employeesWithoutBank"])
+                    this.employeesWithoutBank!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
+            }
+            this.employeesWithBank = _data["employeesWithBank"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2BankFileSetupOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2BankFileSetupOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.payingBanks)) {
+            data["payingBanks"] = [];
+            for (let item of this.payingBanks)
+                data["payingBanks"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.employeesWithoutBank)) {
+            data["employeesWithoutBank"] = [];
+            for (let item of this.employeesWithoutBank)
+                data["employeesWithoutBank"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["employeesWithBank"] = this.employeesWithBank;
+        return data;
+    }
+}
+
+export interface IGoLiveV2BankFileSetupOutput {
+    payingBanks: GoLiveV2PayingBankDto[] | undefined;
+    employeesWithoutBank: GoLiveV2BankFileEmployeeDto[] | undefined;
+    employeesWithBank: number;
+}
+
 export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
     employeeCode!: string | undefined;
     succeeded!: boolean;
@@ -260541,6 +260905,8 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     foodAllowance!: number | undefined;
     housingAllowance!: number | undefined;
     otherAllowance!: number | undefined;
+    bankName!: string | undefined;
+    iban!: string | undefined;
 
     constructor(data?: IGoLiveV2EmployeeRowDto) {
         if (data) {
@@ -260564,6 +260930,8 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
             this.foodAllowance = _data["foodAllowance"];
             this.housingAllowance = _data["housingAllowance"];
             this.otherAllowance = _data["otherAllowance"];
+            this.bankName = _data["bankName"];
+            this.iban = _data["iban"];
         }
     }
 
@@ -260587,6 +260955,8 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
         data["foodAllowance"] = this.foodAllowance;
         data["housingAllowance"] = this.housingAllowance;
         data["otherAllowance"] = this.otherAllowance;
+        data["bankName"] = this.bankName;
+        data["iban"] = this.iban;
         return data;
     }
 }
@@ -260603,6 +260973,8 @@ export interface IGoLiveV2EmployeeRowDto {
     foodAllowance: number | undefined;
     housingAllowance: number | undefined;
     otherAllowance: number | undefined;
+    bankName: string | undefined;
+    iban: string | undefined;
 }
 
 export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultDto {
@@ -260655,6 +261027,138 @@ export interface IGoLiveV2EmployeeRowResultDto {
     succeeded: boolean;
     created: boolean;
     message: string | undefined;
+}
+
+export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileInput {
+    payDate!: DateTime;
+    payrollAreaName!: string;
+    paymentBankId!: number;
+    formatCode!: string;
+    companyAccountNo!: string | undefined;
+    bankCode!: string | undefined;
+    companyCode!: string | undefined;
+
+    constructor(data?: IGoLiveV2GenerateBankFileInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.paymentBankId = _data["paymentBankId"];
+            this.formatCode = _data["formatCode"];
+            this.companyAccountNo = _data["companyAccountNo"];
+            this.bankCode = _data["bankCode"];
+            this.companyCode = _data["companyCode"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2GenerateBankFileInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2GenerateBankFileInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["paymentBankId"] = this.paymentBankId;
+        data["formatCode"] = this.formatCode;
+        data["companyAccountNo"] = this.companyAccountNo;
+        data["bankCode"] = this.bankCode;
+        data["companyCode"] = this.companyCode;
+        return data;
+    }
+}
+
+export interface IGoLiveV2GenerateBankFileInput {
+    payDate: DateTime;
+    payrollAreaName: string;
+    paymentBankId: number;
+    formatCode: string;
+    companyAccountNo: string | undefined;
+    bankCode: string | undefined;
+    companyCode: string | undefined;
+}
+
+export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFileOutput {
+    fileName!: string | undefined;
+    base64Content!: string | undefined;
+    contentType!: string | undefined;
+    formatCode!: string | undefined;
+    recordCount!: number;
+    totalAmount!: number;
+    bankCodeCorrectedFrom!: string | undefined;
+    leftOut!: GoLiveV2BankFileEmployeeDto[] | undefined;
+
+    constructor(data?: IGoLiveV2GenerateBankFileOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.base64Content = _data["base64Content"];
+            this.contentType = _data["contentType"];
+            this.formatCode = _data["formatCode"];
+            this.recordCount = _data["recordCount"];
+            this.totalAmount = _data["totalAmount"];
+            this.bankCodeCorrectedFrom = _data["bankCodeCorrectedFrom"];
+            if (Array.isArray(_data["leftOut"])) {
+                this.leftOut = [] as any;
+                for (let item of _data["leftOut"])
+                    this.leftOut!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2GenerateBankFileOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2GenerateBankFileOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["base64Content"] = this.base64Content;
+        data["contentType"] = this.contentType;
+        data["formatCode"] = this.formatCode;
+        data["recordCount"] = this.recordCount;
+        data["totalAmount"] = this.totalAmount;
+        data["bankCodeCorrectedFrom"] = this.bankCodeCorrectedFrom;
+        if (Array.isArray(this.leftOut)) {
+            data["leftOut"] = [];
+            for (let item of this.leftOut)
+                data["leftOut"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2GenerateBankFileOutput {
+    fileName: string | undefined;
+    base64Content: string | undefined;
+    contentType: string | undefined;
+    formatCode: string | undefined;
+    recordCount: number;
+    totalAmount: number;
+    bankCodeCorrectedFrom: string | undefined;
+    leftOut: GoLiveV2BankFileEmployeeDto[] | undefined;
 }
 
 export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
@@ -260865,6 +261369,78 @@ export enum GoLiveV2NextStep {
     None = 0,
     SetUpPayrollMonth = 1,
     LoadEmployees = 2,
+}
+
+export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
+    bankId!: number;
+    name!: string | undefined;
+    code!: string | undefined;
+    selectedLayout!: string | undefined;
+    companyAccountNo!: string | undefined;
+    bankCode!: string | undefined;
+    companyCode!: string | undefined;
+    layouts!: GoLiveV2BankFileLayoutDto[] | undefined;
+
+    constructor(data?: IGoLiveV2PayingBankDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankId = _data["bankId"];
+            this.name = _data["name"];
+            this.code = _data["code"];
+            this.selectedLayout = _data["selectedLayout"];
+            this.companyAccountNo = _data["companyAccountNo"];
+            this.bankCode = _data["bankCode"];
+            this.companyCode = _data["companyCode"];
+            if (Array.isArray(_data["layouts"])) {
+                this.layouts = [] as any;
+                for (let item of _data["layouts"])
+                    this.layouts!.push(GoLiveV2BankFileLayoutDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayingBankDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayingBankDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankId"] = this.bankId;
+        data["name"] = this.name;
+        data["code"] = this.code;
+        data["selectedLayout"] = this.selectedLayout;
+        data["companyAccountNo"] = this.companyAccountNo;
+        data["bankCode"] = this.bankCode;
+        data["companyCode"] = this.companyCode;
+        if (Array.isArray(this.layouts)) {
+            data["layouts"] = [];
+            for (let item of this.layouts)
+                data["layouts"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayingBankDto {
+    bankId: number;
+    name: string | undefined;
+    code: string | undefined;
+    selectedLayout: string | undefined;
+    companyAccountNo: string | undefined;
+    bankCode: string | undefined;
+    companyCode: string | undefined;
+    layouts: GoLiveV2BankFileLayoutDto[] | undefined;
 }
 
 export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto {
@@ -261083,6 +261659,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
     payInDate!: DateTime | undefined;
     employees!: GoLiveV2EmployeeResultDto[] | undefined;
     monthSetUp!: GoLiveV2SetUpPayrollMonthOutput;
+    leavePayLinksAdded!: number;
 
     constructor(data?: IGoLiveV2RunPayrollOutput) {
         if (data) {
@@ -261106,6 +261683,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
                     this.employees!.push(GoLiveV2EmployeeResultDto.fromJS(item));
             }
             this.monthSetUp = _data["monthSetUp"] ? GoLiveV2SetUpPayrollMonthOutput.fromJS(_data["monthSetUp"]) : undefined as any;
+            this.leavePayLinksAdded = _data["leavePayLinksAdded"];
         }
     }
 
@@ -261129,6 +261707,7 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
                 data["employees"].push(item ? item.toJSON() : undefined as any);
         }
         data["monthSetUp"] = this.monthSetUp ? this.monthSetUp.toJSON() : undefined as any;
+        data["leavePayLinksAdded"] = this.leavePayLinksAdded;
         return data;
     }
 }
@@ -261141,6 +261720,7 @@ export interface IGoLiveV2RunPayrollOutput {
     payInDate: DateTime | undefined;
     employees: GoLiveV2EmployeeResultDto[] | undefined;
     monthSetUp: GoLiveV2SetUpPayrollMonthOutput;
+    leavePayLinksAdded: number;
 }
 
 export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDaysDto {

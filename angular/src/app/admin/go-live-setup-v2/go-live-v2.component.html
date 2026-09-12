@@ -45,7 +45,7 @@
 
                 <div class="v2-grid">
                     <app-paste-grid
-                        [columns]="employeeColumns"
+                        [columns]="employeeColumns()"
                         [(rows)]="employeeRows"
                         [padRows]="20"
                         [viewportHeight]="320"
@@ -158,6 +158,13 @@
                                     {{ line }}
                                 </div>
                             }
+                        }
+
+                        @if (result.leavePayLinksAdded > 0) {
+                            <div class="v2-setup-line">
+                                <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                {{ l('GoLiveV2LeavePayLinksAdded', result.leavePayLinksAdded) }}
+                            </div>
                         }
 
                         @if (result.message) {
@@ -288,18 +295,6 @@
                             }
                             {{ 'GoLiveV2SalaryRegister' | localize }}
                         </button>
-                        <button
-                            type="button"
-                            class="btn btn-primary v2-run"
-                            [disabled]="!monthEnd() || loadingResults()"
-                            (click)="showResults()">
-                            @if (loadingResults()) {
-                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                            } @else {
-                                <i class="fa fa-table me-2" aria-hidden="true"></i>
-                            }
-                            {{ 'GoLiveV2ShowResults' | localize }}
-                        </button>
                     </div>
                 </div>
 
@@ -307,10 +302,31 @@
                     <p class="v2-progress-note mt-3">{{ 'GoLiveV2ResultsPickMonth' | localize }}</p>
                 }
 
-                @if (results(); as res) {
-                    <p class="v2-results-summary">
-                        {{ l('GoLiveV2ResultsPaidCount', res.employeesPaid, res.employees.length, resultsMonth()) }}
+                @if (loadingResults() && !results()) {
+                    <p class="v2-progress-note mt-3">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     </p>
+                }
+
+                @if (results(); as res) {
+                    <div class="v2-results-bar">
+                        <p class="v2-results-summary">
+                            {{ l('GoLiveV2ResultsPaidCount', res.employeesPaid, res.employees.length, resultsMonth()) }}
+                            @if (loadingResults()) {
+                                <span class="spinner-border spinner-border-sm ms-2" aria-hidden="true"></span>
+                            }
+                        </p>
+                        <div class="v2-results-search">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <input
+                                type="search"
+                                class="form-control form-control-sm"
+                                [value]="resultsSearch()"
+                                [placeholder]="'GoLiveV2ResultsSearch' | localize"
+                                [attr.aria-label]="'GoLiveV2ResultsSearch' | localize"
+                                (input)="onResultsSearch($event)" />
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-row-bordered align-middle v2-results-table">
                             <thead>
@@ -325,7 +341,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (row of res.employees; track row.employeeId) {
+                                @for (row of pagedResults(); track row.employeeId) {
                                     <tr>
                                         <td class="v2-code">{{ row.employeeCode }}</td>
                                         <td>{{ row.employeeName }}</td>
@@ -350,6 +366,12 @@
                                             </button>
                                         </td>
                                     </tr>
+                                } @empty {
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-5">
+                                            {{ l('GoLiveV2ResultsNoMatch', resultsSearch().trim()) }}
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                             <tfoot>
@@ -362,6 +384,204 @@
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+
+                    @if (filteredResults().length > 0) {
+                        <div class="v2-pager">
+                            <span class="v2-pager-info">
+                                {{ l('GoLiveV2ResultsShowing', resultsFrom(), resultsTo(), filteredResults().length) }}
+                            </span>
+                            <select
+                                class="form-select form-select-sm v2-pager-size"
+                                [value]="resultsPageSize()"
+                                [attr.aria-label]="'GoLiveV2ResultsPerPage' | localize"
+                                (change)="onResultsPageSize($event)">
+                                @for (size of resultsPageSizes; track size) {
+                                    <option [value]="size" [selected]="size === resultsPageSize()">
+                                        {{ l('GoLiveV2ResultsPerPageOption', size) }}
+                                    </option>
+                                }
+                            </select>
+                            @if (resultsPageCount() > 1) {
+                                <nav class="ms-auto" [attr.aria-label]="'GoLiveV2ResultsPages' | localize">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item" [class.disabled]="currentResultsPage() === 1">
+                                            <button
+                                                type="button"
+                                                class="page-link"
+                                                [disabled]="currentResultsPage() === 1"
+                                                (click)="goToResultsPage(currentResultsPage() - 1)">
+                                                {{ 'Previous' | localize }}
+                                            </button>
+                                        </li>
+                                        @for (page of resultsPageNumbers(); track page) {
+                                            <li class="page-item" [class.active]="page === currentResultsPage()">
+                                                <button type="button" class="page-link" (click)="goToResultsPage(page)">
+                                                    {{ page }}
+                                                </button>
+                                            </li>
+                                        }
+                                        <li
+                                            class="page-item"
+                                            [class.disabled]="currentResultsPage() === resultsPageCount()">
+                                            <button
+                                                type="button"
+                                                class="page-link"
+                                                [disabled]="currentResultsPage() === resultsPageCount()"
+                                                (click)="goToResultsPage(currentResultsPage() + 1)">
+                                                {{ 'Next' | localize }}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Step 4: Make the bank file -- the month's salary transfer, in the paying bank's layout. -->
+        <div class="card card-custom v2-step">
+            <div class="card-body">
+                <div class="v2-step-head">
+                    <div>
+                        <div class="v2-step-number">{{ l('GoLiveV2Step', 4) }}</div>
+                        <h3 class="v2-step-title">{{ 'GoLiveV2BankFileTitle' | localize }}</h3>
+                        <p class="v2-step-hint">{{ 'GoLiveV2BankFileHint' | localize }}</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary v2-run"
+                        [disabled]="!canMakeBankFile()"
+                        (click)="makeBankFile()">
+                        @if (generatingBankFile()) {
+                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                        } @else {
+                            <i class="fa fa-university me-2" aria-hidden="true"></i>
+                        }
+                        {{ 'GoLiveV2MakeBankFile' | localize }}
+                    </button>
+                </div>
+
+                @if (!monthEnd()) {
+                    <p class="v2-progress-note mt-3">{{ 'GoLiveV2ResultsPickMonth' | localize }}</p>
+                } @else if (bankSetup(); as setup) {
+                    @if (setup.payingBanks.length === 0) {
+                        <p class="v2-progress-note mt-3">{{ 'GoLiveV2BankFileNoBanks' | localize }}</p>
+                    } @else {
+                        <div class="v2-fields">
+                            <div class="v2-field">
+                                <label class="form-label" for="v2-paying-bank">{{ 'GoLiveV2PayingBank' | localize }}</label>
+                                <select id="v2-paying-bank" class="form-select" (change)="onPayingBankChange($event)">
+                                    @for (bank of setup.payingBanks; track bank.bankId) {
+                                        <option [value]="bank.bankId" [selected]="bank.bankId === payingBankId()">
+                                            {{ bank.name }}
+                                        </option>
+                                    }
+                                </select>
+                                <div class="v2-field-note">{{ 'GoLiveV2PayingBankHint' | localize }}</div>
+                            </div>
+
+                            @if (payingBank(); as bank) {
+                                <div class="v2-field">
+                                    <label class="form-label" for="v2-bank-layout">{{ 'GoLiveV2BankLayout' | localize }}</label>
+                                    <select id="v2-bank-layout" class="form-select" (change)="onBankLayoutChange($event)">
+                                        @for (layout of bank.layouts; track layout.formatCode) {
+                                            <option [value]="layout.formatCode" [selected]="layout.formatCode === bankLayout()">
+                                                {{ layoutLabel(layout) }}
+                                            </option>
+                                        }
+                                    </select>
+                                    <div class="v2-field-note">{{ 'GoLiveV2BankLayoutHint' | localize }}</div>
+                                </div>
+                            }
+
+                            @if (selectedLayout(); as layout) {
+                                @if (layout.needsCompanyAccount) {
+                                    <div class="v2-field">
+                                        <label class="form-label" for="v2-company-account">
+                                            {{ 'GoLiveV2CompanyAccountNo' | localize }}
+                                        </label>
+                                        <input
+                                            id="v2-company-account"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="companyAccountNo()"
+                                            (input)="onBankFieldInput('account', $event)" />
+                                        <div class="v2-field-note">{{ 'GoLiveV2CompanyAccountNoHint' | localize }}</div>
+                                    </div>
+                                }
+                                @if (layout.needsBankCode) {
+                                    <div class="v2-field">
+                                        <label class="form-label" for="v2-bank-code">{{ 'GoLiveV2BankFileCode' | localize }}</label>
+                                        <input
+                                            id="v2-bank-code"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="bankFileCode()"
+                                            (input)="onBankFieldInput('bankCode', $event)" />
+                                        <div class="v2-field-note">{{ 'GoLiveV2BankFileCodeHint' | localize }}</div>
+                                    </div>
+                                }
+                                @if (layout.needsCompanyCode) {
+                                    <div class="v2-field">
+                                        <label class="form-label" for="v2-company-code">{{ 'GoLiveV2CompanyCode' | localize }}</label>
+                                        <input
+                                            id="v2-company-code"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="companyCode()"
+                                            (input)="onBankFieldInput('companyCode', $event)" />
+                                        <div class="v2-field-note">{{ 'GoLiveV2CompanyCodeHint' | localize }}</div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+
+                    @if (setup.employeesWithoutBank.length > 0) {
+                        <div class="v2-result mt-4" role="status">
+                            <div class="v2-outcome">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                {{ l('GoLiveV2BankFileMissingBanks', setup.employeesWithoutBank.length) }}
+                            </div>
+                            <ul class="v2-failed-rows">
+                                @for (e of setup.employeesWithoutBank; track e.employeeCode) {
+                                    <li><span class="v2-code">{{ e.employeeCode }}</span> {{ e.employeeName }}</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+
+                @if (bankFile(); as file) {
+                    <div class="v2-result v2-ok" [class.v2-partial]="file.leftOut.length > 0" role="status">
+                        <div class="v2-outcome">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            {{ l('GoLiveV2BankFileMade', file.fileName, file.recordCount, (file.totalAmount | number: '1.3-3')) }}
+                        </div>
+                        @if (file.bankCodeCorrectedFrom) {
+                            <div class="v2-setup-line">
+                                <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                {{ l('GoLiveV2BankFileCodeCorrected', file.bankCodeCorrectedFrom, payingBank()?.code) }}
+                            </div>
+                        }
+                        @if (file.leftOut.length > 0) {
+                            <div class="v2-said-label">{{ l('GoLiveV2BankFileLeftOut', file.leftOut.length) }}</div>
+                            <ul class="v2-failed-rows">
+                                @for (e of file.leftOut; track e.employeeCode) {
+                                    <li>
+                                        <span class="v2-code">{{ e.employeeCode }}</span> {{ e.employeeName }} --
+                                        {{ leftOutReasonKey(e.reason) | localize }}
+                                    </li>
+                                }
+                            </ul>
+                        }
                     </div>
                 }
             </div>

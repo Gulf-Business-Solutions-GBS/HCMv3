@@ -73,4 +73,20 @@ public interface IGoLiveV2AppService : IApplicationService
 
     /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
     Task<ListResultDto<string>> GetPayrollAreaNames();
+
+    /// <summary>The tenant's banks by name, for the Bank column of Load Employee Data.</summary>
+    Task<ListResultDto<string>> GetBankNames();
+
+    /// <summary>
+    /// Step 4: the banks the month's salary file can be made for, each with its layouts and what they need,
+    /// and the employees a bank file cannot pay for want of a bank or an IBAN.
+    /// </summary>
+    Task<GoLiveV2BankFileSetupOutput> GetBankFileSetup(GoLiveV2BankFileSetupInput input);
+
+    /// <summary>
+    /// Step 4: the month's salary file for the payroll area, from the chosen bank in the chosen layout, through
+    /// the same generator the Bank File screen uses. Sets the bank up for that layout first -- its layout, and
+    /// the company account or codes the layout needs -- so the Bank File screen makes the same file afterwards.
+    /// </summary>
+    Task<GoLiveV2GenerateBankFileOutput> GenerateBankFile(GoLiveV2GenerateBankFileInput input);
 }

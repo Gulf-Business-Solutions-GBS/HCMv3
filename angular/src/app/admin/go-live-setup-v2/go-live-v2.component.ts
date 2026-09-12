@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, effect, inject, signal, untracked } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { firstValueFrom, forkJoin } from 'rxjs';
@@ -10,6 +10,12 @@ import {
     BillingType,
     EngineRunStatusDto,
     GetPayrollSheetReportInput,
+    GoLiveV2BankFileLayoutDto,
+    GoLiveV2BankFileLeftOutReason,
+    GoLiveV2BankFileSetupInput,
+    GoLiveV2BankFileSetupOutput,
+    GoLiveV2GenerateBankFileInput,
+    GoLiveV2GenerateBankFileOutput,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
@@ -81,6 +87,12 @@ interface RunProgress {
     payroll: EngineRunStatusDto | null;
 }
 
+/** Two letters, two check digits, then 10 to 30 letters and digits: every country's IBAN has this shape. */
+const IbanShape = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{10,30}$/;
+
+/** A Kuwaiti IBAN is always 30 characters. */
+const KuwaitIbanLength = 30;
+
 /** The payroll area every new tenant gets, created on first use. */
 const DefaultPayrollArea = 'Default Payroll Area';
 
@@ -133,7 +145,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     /** Ticks once a second while a load runs, so elapsed and time-left count down on their own. */
     readonly now = signal(Date.now());
 
-    readonly employeeColumns: PasteGridColumn[] = [
+    /** The tenant's banks by name, for the Bank column. */
+    readonly bankNames = signal<string[]>([]);
+
+    readonly employeeColumns = computed<PasteGridColumn[]>(() => [
         { key: 'code', header: this.l('GoLiveV2ColCode'), type: 'text', required: true, maxLength: 64, width: 140 },
         {
             key: 'fullName',
@@ -185,7 +200,28 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 hint: this.l('GoLiveV2ColAmountHint'),
             })
         ),
-    ];
+        {
+            key: 'bankName',
+            header: this.l('GoLiveV2ColBank'),
+            type: 'choice',
+            options: this.bankNames(),
+            width: 230,
+            hint: this.l('GoLiveV2ColBankHint'),
+        },
+        {
+            key: 'iban',
+            header: this.l('GoLiveV2ColIban'),
+            type: 'text',
+            maxLength: 50,
+            width: 290,
+            hint: this.l('GoLiveV2ColIbanHint'),
+            validate: (value) => {
+                const iban = String(value).replace(/\s+/g, '').toUpperCase();
+                const ok = IbanShape.test(iban) && (!iban.startsWith('KW') || iban.length === KuwaitIbanLength);
+                return ok ? null : { key: 'GoLiveV2RowIbanInvalid', params: [String(value)] };
+            },
+        },
+    ]);
 
     readonly filledEmployeeCount = computed(() => this.employeeRows().filter((r) => !isRowEmpty(r)).length);
 
@@ -225,6 +261,99 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     readonly exporting = signal<'sheet' | 'register' | null>(null);
     readonly register = signal<GoLiveV2SalaryRegisterDto | null>(null);
     readonly registerFor = signal<GoLiveV2PayrollResultRowDto | null>(null);
+    private resultsRequest = 0;
+
+    /** The results, and the bank file's setup, follow the month and payroll area on their own. */
+    private readonly resultsFollowSelection = effect(() => {
+        this.monthEnd();
+        this.payrollAreaName();
+        untracked(() => {
+            this.showResults();
+            this.refreshBankFileSetup();
+        });
+    });
+
+    // ---------------------------------------------------------------- step 4: the bank file
+
+    readonly bankSetup = signal<GoLiveV2BankFileSetupOutput | null>(null);
+    readonly payingBankId = signal<number | null>(null);
+    readonly bankLayout = signal('');
+    readonly companyAccountNo = signal('');
+    readonly bankFileCode = signal('');
+    readonly companyCode = signal('');
+    readonly generatingBankFile = signal(false);
+    readonly bankFile = signal<GoLiveV2GenerateBankFileOutput | null>(null);
+    readonly LeftOutReason = GoLiveV2BankFileLeftOutReason;
+    private bankSetupRequest = 0;
+
+    readonly payingBank = computed(
+        () => this.bankSetup()?.payingBanks?.find((b) => b.bankId === this.payingBankId()) ?? null
+    );
+
+    readonly selectedLayout = computed(
+        () => this.payingBank()?.layouts?.find((l) => l.formatCode === this.bankLayout()) ?? null
+    );
+
+    /** Everything the chosen layout needs is filled in. The server checks again, in the same words. */
+    readonly canMakeBankFile = computed(() => {
+        const layout = this.selectedLayout();
+        return (
+            !!this.monthEnd() &&
+            !!layout &&
+            !this.generatingBankFile() &&
+            (!layout.needsCompanyAccount || this.companyAccountNo().trim().length > 0) &&
+            (!layout.needsBankCode || this.bankFileCode().trim().length > 0) &&
+            (!layout.needsCompanyCode || this.companyCode().trim().length > 0)
+        );
+    });
+
+    /** Search and paging are on the page: the results come whole, a line per employee, so 100 is nothing. */
+    readonly resultsSearch = signal('');
+    readonly resultsPage = signal(1);
+    readonly resultsPageSize = signal(25);
+    readonly resultsPageSizes = [25, 50, 100];
+
+    /** By code or name, anywhere in either. */
+    readonly filteredResults = computed(() => {
+        const rows = this.results()?.employees ?? [];
+        const query = this.resultsSearch().trim().toLowerCase();
+        return query
+            ? rows.filter(
+                  (r) =>
+                      (r.employeeCode ?? '').toLowerCase().includes(query) ||
+                      (r.employeeName ?? '').toLowerCase().includes(query)
+              )
+            : rows;
+    });
+
+    readonly resultsPageCount = computed(() =>
+        Math.max(1, Math.ceil(this.filteredResults().length / this.resultsPageSize()))
+    );
+
+    /** The page asked for, kept inside the pages there are -- a search can leave fewer. */
+    readonly currentResultsPage = computed(() => Math.min(this.resultsPage(), this.resultsPageCount()));
+
+    readonly pagedResults = computed(() => {
+        const size = this.resultsPageSize();
+        const start = (this.currentResultsPage() - 1) * size;
+        return this.filteredResults().slice(start, start + size);
+    });
+
+    readonly resultsFrom = computed(() =>
+        this.filteredResults().length === 0 ? 0 : (this.currentResultsPage() - 1) * this.resultsPageSize() + 1
+    );
+
+    readonly resultsTo = computed(() =>
+        Math.min(this.currentResultsPage() * this.resultsPageSize(), this.filteredResults().length)
+    );
+
+    /** Up to seven page numbers, centred on the current page. */
+    readonly resultsPageNumbers = computed(() => {
+        const count = this.resultsPageCount();
+        const shown = Math.min(7, count);
+        const first = Math.max(1, Math.min(this.currentResultsPage() - 3, count - shown + 1));
+        return Array.from({ length: shown }, (_, i) => first + i);
+    });
 
     /** The register's lines by group, in the order a payslip reads: earnings, deductions, provisions, day counters. */
     readonly registerGroups = computed(() => {
@@ -243,6 +372,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     ngOnInit(): void {
         this.refreshPayrollAreas();
+        this.proxy.getBankNames().subscribe((names) => this.bankNames.set(names.items ?? []));
         this.showPreviouslyLoaded();
     }
 
@@ -337,6 +467,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.latest.set(null);
             this.lastSetUp.set(null);
             this.lastLoad.set(combined);
+            this.refreshBankFileSetup();
             this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
         }
         this.refreshPayrollAreas();
@@ -495,6 +626,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     this.refreshPayrollAreas();
                     // Whatever the run did, the results below now describe it.
                     this.showResults();
+                    this.refreshBankFileSetup();
                 },
                 error: () => this.runProgress.set(null),
             });
@@ -548,15 +680,144 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     /** The month and payroll area chosen under Run payroll -- the results are that run's. */
     showResults(): void {
+        // Only the latest request counts: a month changed mid-load must not be overwritten by the one before.
+        const request = ++this.resultsRequest;
         const input = this.resultsInput();
-        if (!input || this.loadingResults()) {
+        if (!input) {
+            this.results.set(null);
+            this.loadingResults.set(false);
             return;
         }
         this.loadingResults.set(true);
         this.proxy
             .getPayrollResults(input)
-            .pipe(finalize(() => this.loadingResults.set(false)))
-            .subscribe((results) => this.results.set(results));
+            .pipe(
+                finalize(() => {
+                    if (request === this.resultsRequest) {
+                        this.loadingResults.set(false);
+                    }
+                })
+            )
+            .subscribe((results) => {
+                if (request === this.resultsRequest) {
+                    this.results.set(results);
+                }
+            });
+    }
+
+    // ---------------------------------------------------------------- step 4
+
+    onPayingBankChange(event: Event): void {
+        this.choosePayingBank(Number((event.target as HTMLSelectElement).value));
+    }
+
+    onBankLayoutChange(event: Event): void {
+        this.bankLayout.set((event.target as HTMLSelectElement).value);
+    }
+
+    onBankFieldInput(field: 'account' | 'bankCode' | 'companyCode', event: Event): void {
+        const value = (event.target as HTMLInputElement).value;
+        ({ account: this.companyAccountNo, bankCode: this.bankFileCode, companyCode: this.companyCode })[field].set(value);
+    }
+
+    layoutLabel(layout: GoLiveV2BankFileLayoutDto): string {
+        return this.l(layout.isText ? 'GoLiveV2LayoutText' : 'GoLiveV2LayoutExcel', layout.formatCode);
+    }
+
+    leftOutReasonKey(reason: GoLiveV2BankFileLeftOutReason): string {
+        return reason === GoLiveV2BankFileLeftOutReason.NotPaid ? 'GoLiveV2LeftOutNotPaid' : 'GoLiveV2LeftOutNoBank';
+    }
+
+    /** Made, downloaded, and the setup read again: the layout and account are saved on the bank now. */
+    makeBankFile(): void {
+        const end = this.monthEnd();
+        const bankId = this.payingBankId();
+        if (!end || bankId === null || !this.canMakeBankFile()) {
+            return;
+        }
+
+        const input = new GoLiveV2GenerateBankFileInput();
+        input.payDate = end.plus({ hours: 12 });
+        input.payrollAreaName = this.payrollAreaName().trim();
+        input.paymentBankId = bankId;
+        input.formatCode = this.bankLayout();
+        input.companyAccountNo = this.companyAccountNo().trim() || undefined;
+        input.bankCode = this.bankFileCode().trim() || undefined;
+        input.companyCode = this.companyCode().trim() || undefined;
+
+        this.generatingBankFile.set(true);
+        this.bankFile.set(null);
+        this.proxy
+            .generateBankFile(input)
+            .pipe(finalize(() => this.generatingBankFile.set(false)))
+            .subscribe((file) => {
+                this.bankFile.set(file);
+                this.downloadBase64(file.fileName, file.base64Content, file.contentType);
+                this.refreshBankFileSetup();
+            });
+    }
+
+    private refreshBankFileSetup(): void {
+        const request = ++this.bankSetupRequest;
+        const end = this.monthEnd();
+        const area = this.payrollAreaName().trim();
+        if (!end || !area) {
+            this.bankSetup.set(null);
+            return;
+        }
+
+        const input = new GoLiveV2BankFileSetupInput();
+        input.payDate = end.plus({ hours: 12 });
+        input.payrollAreaName = area;
+        this.proxy.getBankFileSetup(input).subscribe((setup) => {
+            if (request === this.bankSetupRequest) {
+                this.bankSetup.set(setup);
+                this.choosePayingBank(this.payingBankId() ?? setup.payingBanks?.[0]?.bankId ?? null);
+            }
+        });
+    }
+
+    /** A bank's saved choices fill the fields; one not offered (any more) falls back to the first bank. */
+    private choosePayingBank(bankId: number | null): void {
+        const banks = this.bankSetup()?.payingBanks ?? [];
+        const bank = banks.find((b) => b.bankId === bankId) ?? banks[0] ?? null;
+        this.payingBankId.set(bank?.bankId ?? null);
+        this.bankLayout.set(bank?.selectedLayout ?? '');
+        this.companyAccountNo.set(bank?.companyAccountNo ?? '');
+        this.bankFileCode.set(bank?.bankCode ?? '');
+        this.companyCode.set(bank?.companyCode ?? '');
+    }
+
+    /** The file comes back inline, as the Bank File screen's does. */
+    private downloadBase64(fileName: string | undefined, base64: string | undefined, contentType: string | undefined): void {
+        if (!base64) {
+            return;
+        }
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        const url = URL.createObjectURL(new Blob([bytes], { type: contentType || 'application/octet-stream' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName || 'BankFile';
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    onResultsSearch(event: Event): void {
+        this.resultsSearch.set((event.target as HTMLInputElement).value);
+        this.resultsPage.set(1);
+    }
+
+    onResultsPageSize(event: Event): void {
+        this.resultsPageSize.set(Number((event.target as HTMLSelectElement).value));
+        this.resultsPage.set(1);
+    }
+
+    goToResultsPage(page: number): void {
+        this.resultsPage.set(Math.max(1, Math.min(page, this.resultsPageCount())));
     }
 
     viewRegister(row: GoLiveV2PayrollResultRowDto): void {
@@ -853,6 +1114,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             foodAllowance: e.foodAllowance ?? null,
             housingAllowance: e.housingAllowance ?? null,
             otherAllowance: e.otherAllowance ?? null,
+            bankName: e.bankName ?? null,
+            iban: e.iban ?? null,
         };
     }
 
@@ -889,6 +1152,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             dto.foodAllowance = this.amount(row['foodAllowance']);
             dto.housingAllowance = this.amount(row['housingAllowance']);
             dto.otherAllowance = this.amount(row['otherAllowance']);
+            dto.bankName = this.text(row['bankName']);
+            dto.iban = this.text(row['iban']);
 
             const joined = this.text(row['joiningDate']);
             if (joined) {

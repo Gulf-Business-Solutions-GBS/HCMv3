@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
@@ -52,17 +53,25 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
 
     private static readonly DateTime OpenEnded = new(9999, 12, 31);
 
+    /// <summary>Two letters, two check digits, then 10 to 30 letters and digits -- the shape every country's IBAN has.</summary>
+    private static readonly Regex IbanShape = new("^[A-Z]{2}[0-9]{2}[A-Z0-9]{10,30}$", RegexOptions.Compiled);
+
+    /// <summary>A Kuwaiti IBAN is always this long: KW, two check digits, a four-letter bank code and 22 more.</summary>
+    private const int KuwaitIbanLength = 30;
+
     private readonly IEmployeesAppService _employees;
     private readonly IEmployeeContractsAppService _contracts;
     private readonly IEmployeeOrgAssignmentsAppService _assignments;
     private readonly IEmployeeBasicPaysAppService _basicPays;
     private readonly IEmployeeBasicPayDetailsAppService _basicPayDetails;
     private readonly IEmployeePayrollStatusesAppService _payrollStatuses;
+    private readonly IEmployeeBanksAppService _employeeBanks;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<EmployeeContract> _contractRepository;
     private readonly IRepository<EmployeeOrgAssignment> _assignmentRepository;
     private readonly IRepository<EmployeeBasicPay> _basicPayRepository;
     private readonly IRepository<EmployeePayrollStatus> _payrollStatusRepository;
+    private readonly IRepository<EmployeeBank> _employeeBankRepository;
     private readonly GoLiveV2WorkingTime _workingTime;
 
     public GoLiveV2EmployeeLoader(
@@ -72,11 +81,13 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         IEmployeeBasicPaysAppService basicPays,
         IEmployeeBasicPayDetailsAppService basicPayDetails,
         IEmployeePayrollStatusesAppService payrollStatuses,
+        IEmployeeBanksAppService employeeBanks,
         IRepository<Employee> employeeRepository,
         IRepository<EmployeeContract> contractRepository,
         IRepository<EmployeeOrgAssignment> assignmentRepository,
         IRepository<EmployeeBasicPay> basicPayRepository,
         IRepository<EmployeePayrollStatus> payrollStatusRepository,
+        IRepository<EmployeeBank> employeeBankRepository,
         GoLiveV2WorkingTime workingTime)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
@@ -87,11 +98,13 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         _basicPays = basicPays;
         _basicPayDetails = basicPayDetails;
         _payrollStatuses = payrollStatuses;
+        _employeeBanks = employeeBanks;
         _employeeRepository = employeeRepository;
         _contractRepository = contractRepository;
         _assignmentRepository = assignmentRepository;
         _basicPayRepository = basicPayRepository;
         _payrollStatusRepository = payrollStatusRepository;
+        _employeeBankRepository = employeeBankRepository;
         _workingTime = workingTime;
     }
 
@@ -118,6 +131,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
             try
             {
                 var (civilId, joined) = Check(row, code);
+                var salaryBank = CheckBank(row, targets.BankIdsByName);
 
                 if (!seenCodes.Add(code))
                 {
@@ -148,6 +162,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
                 await EnsureSalaryAsync(employee, row, targets);
                 await EnsurePayrollStatusAsync(employee);
                 await _workingTime.EnsureEmployeeAsync(employee, targets.WorkingTime);
+                await EnsureBankAsync(employee, salaryBank);
 
                 result.Succeeded = true;
             }
@@ -215,6 +230,45 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
 
         // The date part only: the screen sends midday so a time zone cannot move it to the day before.
         return (parsed, row.JoiningDate.Value.Date);
+    }
+
+    /// <summary>
+    /// The bank and IBAN go together: both, or neither. The bank must be one the tenant has, by name -- the grid
+    /// offers them as a list -- and the IBAN must have an IBAN's shape once spaces are dropped and letters
+    /// capitalised, which is how it is kept. Null when neither is given: the employee is paid, not by bank file.
+    /// </summary>
+    private (int BankId, string Iban)? CheckBank(GoLiveV2EmployeeRowDto row, IReadOnlyDictionary<string, int> bankIdsByName)
+    {
+        var bankName = row.BankName?.Trim();
+        var iban = string.IsNullOrWhiteSpace(row.Iban) ? null : row.Iban.Trim();
+
+        if (string.IsNullOrEmpty(bankName) && iban == null)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrEmpty(bankName))
+        {
+            throw new GoLiveV2RowException(L("GoLiveV2RowBankMissing"));
+        }
+
+        if (!bankIdsByName.TryGetValue(bankName, out var bankId))
+        {
+            throw new GoLiveV2RowException(L("GoLiveV2RowBankUnknown", bankName));
+        }
+
+        if (iban == null)
+        {
+            throw new GoLiveV2RowException(L("GoLiveV2RowIbanMissing"));
+        }
+
+        var normalized = new string(iban.Where(c => !char.IsWhiteSpace(c)).ToArray()).ToUpperInvariant();
+        if (!IbanShape.IsMatch(normalized) || (normalized.StartsWith("KW") && normalized.Length != KuwaitIbanLength))
+        {
+            throw new GoLiveV2RowException(L("GoLiveV2RowIbanInvalid", iban));
+        }
+
+        return (bankId, normalized);
     }
 
     private async Task<Employee> CreateEmployeeAsync(
@@ -366,6 +420,48 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         await CurrentUnitOfWork.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// The one bank record a V2 load keeps per employee: paid by bank transfer from the joining date, open-ended,
+    /// with no paying bank of its own so whichever bank the company pays from covers it. Loading the sheet again
+    /// with a different bank or IBAN corrects that record rather than adding a second -- the grid is where a
+    /// mistyped IBAN gets fixed. A row with no bank leaves any bank record there as it is.
+    /// </summary>
+    private async Task EnsureBankAsync(Employee employee, (int BankId, string Iban)? salaryBank)
+    {
+        if (salaryBank == null)
+        {
+            return;
+        }
+
+        var (bankId, iban) = salaryBank.Value;
+        var existing = await _employeeBankRepository.GetAll()
+            .Where(b => b.EmployeeId == employee.Id)
+            .OrderByDescending(b => b.StartDate)
+            .FirstOrDefaultAsync();
+
+        if (existing != null && existing.BankId == bankId && existing.IBAN == iban && existing.PaymentType == PaymentType.Bank)
+        {
+            return;
+        }
+
+        await _employeeBanks.CreateOrEdit(new CreateOrEditEmployeeBankDto
+        {
+            Id = existing?.Id,
+            EmployeeId = employee.Id,
+            BankId = bankId,
+            PaymentType = PaymentType.Bank,
+            IBAN = iban,
+            AccountNum = existing?.AccountNum,
+            BankBranch = existing?.BankBranch,
+            BankCountryId = existing?.BankCountryId,
+            PaymentCurrencyId = existing?.PaymentCurrencyId,
+            PayerBankId = existing?.PayerBankId,
+            StartDate = existing?.StartDate ?? employee.JoiningDate,
+            EndDate = existing?.EndDate ?? OpenEnded,
+        });
+        await CurrentUnitOfWork.SaveChangesAsync();
+    }
+
     /// <summary>First word to the first name, the rest to the last -- which joins back to the same full name.</summary>
     private static (string First, string Last) SplitName(string fullName)
     {
@@ -378,7 +474,9 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         && string.IsNullOrWhiteSpace(row.FullName)
         && row.JoiningDate == null
         && string.IsNullOrWhiteSpace(row.CivilId)
-        && SalaryColumns.All(c => c.Amount(row) == null);
+        && SalaryColumns.All(c => c.Amount(row) == null)
+        && string.IsNullOrWhiteSpace(row.BankName)
+        && string.IsNullOrWhiteSpace(row.Iban);
 }
 
 /// <summary>Where every loaded employee goes: the records <see cref="GoLiveV2EmployeeLoader"/> attaches them to.</summary>
@@ -403,6 +501,9 @@ public class GoLiveV2EmployeeTargets
 
     /// <summary>The duty period and time policy every employee is given from the joining date.</summary>
     public GoLiveV2WorkingTimeIds WorkingTime { get; set; }
+
+    /// <summary>The tenant's banks by name, matched ignoring case -- the grid's Bank column names one of these.</summary>
+    public IReadOnlyDictionary<string, int> BankIdsByName { get; set; } = new Dictionary<string, int>();
 }
 
 /// <summary>A row the grid should not have let through. Caught by the loader and reported against the row.</summary>

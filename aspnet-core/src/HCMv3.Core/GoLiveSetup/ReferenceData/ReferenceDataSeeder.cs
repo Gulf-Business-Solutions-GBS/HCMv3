@@ -48,6 +48,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
     private readonly IRepository<PayrollPeriod> _payrollPeriods;
     private readonly IRepository<WageType> _wageTypes;
     private readonly IRepository<AbsenceType> _absenceTypes;
+    private readonly IRepository<WageTypeLeave> _wageTypeLeaves;
 
     public ReferenceDataSeeder(
         IRepository<Country> countries,
@@ -65,7 +66,8 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         IRepository<TimeTransferType> timeTransferTypes,
         IRepository<PayrollPeriod> payrollPeriods,
         IRepository<WageType> wageTypes,
-        IRepository<AbsenceType> absenceTypes)
+        IRepository<AbsenceType> absenceTypes,
+        IRepository<WageTypeLeave> wageTypeLeaves)
     {
         _countries = countries;
         _nationalities = nationalities;
@@ -83,6 +85,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
         _payrollPeriods = payrollPeriods;
         _wageTypes = wageTypes;
         _absenceTypes = absenceTypes;
+        _wageTypeLeaves = wageTypeLeaves;
     }
 
     public IReadOnlyList<string> GetAvailablePackIds() => DefaultPackIds;
@@ -154,6 +157,12 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
             {
                 result.Counts.Add(await SeedAbsenceTypesAsync(pack.AbsenceTypes, wageTypesByCode, tenantId, apply));
             }
+        }
+
+        // The links last: they join the two, so both must be saved first.
+        if (pack.WageTypeLeaves.Any())
+        {
+            result.Counts.Add(await SeedWageTypeLeavesAsync(pack.WageTypeLeaves, tenantId, apply));
         }
 
         result.TotalInserted = result.Counts.Sum(c => c.Inserted);
@@ -376,6 +385,70 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
             }
 
             await _absenceTypes.InsertAsync(entity);
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Which wage types are paid during which leave type, matched on the two codes. A link already there is
+    /// skipped, and so is one whose wage type or leave type the tenant does not have -- a link to nothing would
+    /// fail its foreign key.
+    /// </summary>
+    private async Task<ReferenceDataSeedCount> SeedWageTypeLeavesAsync(
+        List<ReferenceWageTypeLeaveEntry> rows,
+        int tenantId,
+        bool apply)
+    {
+        var count = new ReferenceDataSeedCount { Lookup = nameof(WageTypeLeave) };
+
+        if (apply)
+        {
+            await SaveChangesAsync();
+        }
+
+        var wageTypesByCode = await LoadByCodeAsync(_wageTypes, w => w.Code);
+        var absenceTypesByCode = await LoadByCodeAsync(_absenceTypes, a => a.Code);
+        var existing = (await _wageTypeLeaves.GetAllListAsync())
+            .Select(l => (l.AbsenceTypeId, l.WageTypeId))
+            .ToHashSet();
+
+        foreach (var row in rows)
+        {
+            if (string.IsNullOrWhiteSpace(row.AbsenceTypeCode) || string.IsNullOrWhiteSpace(row.WageTypeCode)
+                || !absenceTypesByCode.TryGetValue(row.AbsenceTypeCode.Trim(), out var absenceType)
+                || !wageTypesByCode.TryGetValue(row.WageTypeCode.Trim(), out var wageType))
+            {
+                // On a preview the leave and wage types may be about to be inserted rather than present.
+                if (apply)
+                {
+                    count.Skipped++;
+                }
+                else
+                {
+                    count.Inserted++;
+                }
+
+                continue;
+            }
+
+            if (!existing.Add((absenceType.Id, wageType.Id)))
+            {
+                count.Skipped++;
+                continue;
+            }
+
+            count.Inserted++;
+
+            if (apply)
+            {
+                await _wageTypeLeaves.InsertAsync(new WageTypeLeave
+                {
+                    AbsenceTypeId = absenceType.Id,
+                    WageTypeId = wageType.Id,
+                    TenantId = tenantId,
+                });
+            }
         }
 
         return count;

@@ -91,6 +91,47 @@ public class GoLiveV2PayrollResults_Tests : AppTestBase
 
         // The time engine's day counters are there too, as the payroll engine used them.
         register.Lines.ShouldContain(l => l.Group == BillingType.TimeType);
+
+        // The annual leave provision: September's accrued days (30/365 of a year's 30) at a 26th of the pay
+        // that is paid during annual leave. Zero -- and so missing -- before the catalogue said which pay that is.
+        var accrued = register.Lines.Single(l => l.WageCode == "4010").Number;
+        accrued.ShouldBeGreaterThan(0);
+        register.Lines.Single(l => l.WageCode == "3001").Amount.ShouldBe(500d / 26 * accrued, 0.01);
+    }
+
+    /// <summary>
+    /// A company seeded before the catalogue carried them has no "paid during leave" links, so its annual leave
+    /// provision was priced at nothing and dropped. Run payroll adds the legacy links first, and says so.
+    /// </summary>
+    [Fact]
+    public async Task Should_Add_The_Leave_Pay_Links_A_Company_Lacks_Before_Running()
+    {
+        GivenTheReferenceData();
+        UsingDbContext(context =>
+        {
+            context.WageTypeLeaves.RemoveRange(context.WageTypeLeaves.Where(l => l.TenantId == TenantId));
+            context.SaveChanges();
+        });
+        await _goLive.LoadEmployees(Load(Row("E001", "Ahmed Ali", "290011501234")));
+
+        var run = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        run.Succeeded.ShouldBeTrue(run.Message);
+        run.LeavePayLinksAdded.ShouldBe(230);
+
+        var employeeId = (await _goLive.GetPayrollResults(Input())).Employees.Single().EmployeeId;
+        var register = await _goLive.GetSalaryRegister(new GoLiveV2SalaryRegisterInput { PayDate = PayDate, EmployeeId = employeeId });
+        register.Lines.Single(l => l.WageCode == "3001").Amount.ShouldBeGreaterThan(0);
+    }
+
+    [Fact]
+    public async Task Should_Not_Touch_The_Leave_Pay_Links_A_Company_Already_Has()
+    {
+        await GivenTheFirstPayrollHasRun();
+
+        var again = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
+
+        again.LeavePayLinksAdded.ShouldBe(0);
     }
 
     [Fact]

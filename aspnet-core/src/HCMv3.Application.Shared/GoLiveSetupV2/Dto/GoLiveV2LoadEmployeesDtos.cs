@@ -58,6 +58,15 @@ public class GoLiveV2EmployeeRowDto
 
     /// <summary>Anything regular the named columns do not cover. Wage type 1018.</summary>
     public double? OtherAllowance { get; set; }
+
+    /// <summary>
+    /// The bank the salary is paid into, by name as the tenant's bank list has it. Optional: without it the
+    /// employee is paid, but left out of the bank file.
+    /// </summary>
+    public string BankName { get; set; }
+
+    /// <summary>Needed with a bank. Spaces are dropped and letters capitalised; a Kuwaiti IBAN is 30 characters.</summary>
+    public string Iban { get; set; }
 }
 
 /// <summary>What was loaded before, in the grid's shape: the company, and the payroll area's employees.</summary>

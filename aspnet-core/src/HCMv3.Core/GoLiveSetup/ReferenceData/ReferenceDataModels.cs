@@ -42,6 +42,12 @@ public class ReferenceDataPack
 
     /// <summary>Leave types, matched on <c>Code</c> for the same reason. Seeded after the wage types they pay through.</summary>
     public List<ReferenceAbsenceTypeEntry> AbsenceTypes { get; set; } = new();
+
+    /// <summary>
+    /// Which wage types are paid during which leave type, by code -- legacy <c>WageTypeLeave</c>. The engine sums
+    /// these to price a leave day: without them annual leave pay and the annual leave provision come out as zero.
+    /// </summary>
+    public List<ReferenceWageTypeLeaveEntry> WageTypeLeaves { get; set; } = new();
 }
 
 /// <summary>A single bilingual lookup row.</summary>

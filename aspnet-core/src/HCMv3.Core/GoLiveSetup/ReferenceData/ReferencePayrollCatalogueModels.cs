@@ -134,6 +134,14 @@ public class ReferenceWageTypeEntry
 /// home in the port. <c>AbsenceViolationRule</c> points at a per-tenant rule set a new tenant does not have,
 /// and every legacy row leaves it empty anyway.</para>
 /// </summary>
+/// <summary>One "wage type paid during leave type" link, by the two codes the engines look both up by.</summary>
+public class ReferenceWageTypeLeaveEntry
+{
+    public string AbsenceTypeCode { get; set; }
+
+    public string WageTypeCode { get; set; }
+}
+
 public class ReferenceAbsenceTypeEntry
 {
     public string Code { get; set; }

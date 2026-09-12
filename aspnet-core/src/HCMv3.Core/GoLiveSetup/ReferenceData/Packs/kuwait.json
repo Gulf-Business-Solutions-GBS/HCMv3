@@ -152,57 +152,57 @@
     ],
     "Bank": [
       {
-        "code": "1",
+        "code": "NBK",
         "nameEn": "National Bank of Kuwait",
         "nameAr": "بنك الكويت الوطني"
       },
       {
-        "code": "2",
+        "code": "CBK",
         "nameEn": "Commercial Bank of Kuwait",
         "nameAr": "البنك التجاري الكويتي"
       },
       {
-        "code": "3",
+        "code": "ABK",
         "nameEn": "Al-Ahli Bank of Kuwait",
         "nameAr": "البنك الأهلي الكويتي"
       },
       {
-        "code": "4",
+        "code": "GB",
         "nameEn": "Gulf Bank",
         "nameAr": "بنك الخليج"
       },
       {
-        "code": "5",
+        "code": "BUR",
         "nameEn": "Burgan Bank",
         "nameAr": "بنك برقان"
       },
       {
-        "code": "6",
+        "code": "BBK",
         "nameEn": "Bank of Bahrain and Kuwait",
         "nameAr": "بنك البحرين والكويت"
       },
       {
-        "code": "7",
+        "code": "KFH",
         "nameEn": "Kuwait Finance House",
         "nameAr": "بيت التمويل الكويتي"
       },
       {
-        "code": "8",
+        "code": "KIB",
         "nameEn": "Kuwait International Bank",
         "nameAr": "بنك الكويت الدولي"
       },
       {
-        "code": "9",
+        "code": "AUB",
         "nameEn": "Ahli United Bank",
         "nameAr": "البنك الأهلي المتحد"
       },
       {
-        "code": "10",
+        "code": "BB",
         "nameEn": "Boubyan Bank",
         "nameAr": "بنك بوبيان"
       },
       {
-        "code": "11",
+        "code": "WRB",
         "nameEn": "Warba Bank",
         "nameAr": "بنك وربة"
       }

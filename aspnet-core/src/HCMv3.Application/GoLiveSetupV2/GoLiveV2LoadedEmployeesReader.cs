@@ -26,6 +26,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
     private readonly IRepository<EmployeeBasicPay> _basicPayRepository;
     private readonly IRepository<EmployeeBasicPayDetail> _basicPayDetailRepository;
     private readonly IRepository<OrganizationUnit, long> _orgUnitRepository;
+    private readonly IRepository<EmployeeBank> _employeeBankRepository;
 
     public GoLiveV2LoadedEmployeesReader(
         IEmployeePayrollAreaResolver payrollAreaResolver,
@@ -33,7 +34,8 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         IRepository<EmployeeOrgAssignment> assignmentRepository,
         IRepository<EmployeeBasicPay> basicPayRepository,
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
-        IRepository<OrganizationUnit, long> orgUnitRepository)
+        IRepository<OrganizationUnit, long> orgUnitRepository,
+        IRepository<EmployeeBank> employeeBankRepository)
     {
         _payrollAreaResolver = payrollAreaResolver;
         _employeeRepository = employeeRepository;
@@ -41,6 +43,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         _basicPayRepository = basicPayRepository;
         _basicPayDetailRepository = basicPayDetailRepository;
         _orgUnitRepository = orgUnitRepository;
+        _employeeBankRepository = employeeBankRepository;
     }
 
     public async Task<GoLiveV2LoadedEmployeesOutput> ReadAsync(string payrollAreaName)
@@ -81,6 +84,14 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
                 .ToListAsync())
             .ToLookup(d => d.EmployeeBasicPayId);
 
+        // The latest bank record of each -- the one a load keeps.
+        var banks = (await _employeeBankRepository.GetAll()
+                .Where(b => ids.Contains(b.EmployeeId))
+                .Select(b => new { b.EmployeeId, b.StartDate, BankName = b.Bank.NameEn, b.IBAN })
+                .ToListAsync())
+            .GroupBy(b => b.EmployeeId)
+            .ToDictionary(g => g.Key, g => g.OrderByDescending(b => b.StartDate).First());
+
         foreach (var e in employees)
         {
             var row = new GoLiveV2EmployeeRowDto
@@ -101,6 +112,12 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
                 row.FoodAllowance = Amount(amounts, "1038");
                 row.HousingAllowance = Amount(amounts, "1001");
                 row.OtherAllowance = Amount(amounts, "1018");
+            }
+
+            if (banks.TryGetValue(e.Id, out var bank))
+            {
+                row.BankName = bank.BankName;
+                row.Iban = bank.IBAN;
             }
 
             output.Employees.Add(row);

@@ -200,6 +200,40 @@ public class PayrollCatalogue_Tests : AppTestBase
         });
     }
 
+    /// <summary>
+    /// Which wage types are paid during which leave -- legacy WageTypeLeave, all 230 links. Without them a leave
+    /// day is priced at nothing, so annual leave pay and the annual leave provision come out as zero.
+    /// </summary>
+    [Fact]
+    public async Task Should_Link_The_Wage_Types_Paid_During_Each_Leave_Type()
+    {
+        await _seeder.SeedPackAsync("payroll", TenantId);
+
+        UsingDbContext(context =>
+        {
+            context.WageTypeLeaves.Count(l => l.TenantId == TenantId).ShouldBe(Pack.WageTypeLeaves.Count);
+
+            var annualLeavePaid = context.WageTypeLeaves
+                .Where(l => l.TenantId == TenantId && l.AbsenceType.Code == "1")
+                .Select(l => l.WageType.Code)
+                .ToList();
+            annualLeavePaid.ShouldContain("1000");
+            annualLeavePaid.ShouldContain("1001");
+            annualLeavePaid.ShouldContain("1011");
+        });
+    }
+
+    [Fact]
+    public async Task Should_Not_Link_Twice_On_A_Second_Run()
+    {
+        await _seeder.SeedPackAsync("payroll", TenantId);
+
+        var second = await _seeder.SeedPackAsync("payroll", TenantId);
+
+        second.Counts.Single(c => c.Lookup == nameof(WageTypeLeave)).Inserted.ShouldBe(0);
+        Row(c => c.WageTypeLeaves.Count(l => l.TenantId == TenantId)).ShouldBe(Pack.WageTypeLeaves.Count);
+    }
+
     [Fact]
     public async Task Should_Leave_A_Wage_Type_The_Tenant_Already_Has_Untouched()
     {
