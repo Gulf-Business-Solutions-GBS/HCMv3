@@ -29,6 +29,9 @@ public class GoLiveV2BankFileSetupOutput
     /// <summary>Employees in the payroll area with a bank and an IBAN.</summary>
     public int EmployeesWithBank { get; set; }
 
+    /// <summary>The company MOSAL ID on record, from its sponsor -- what several layouts write. Null until given.</summary>
+    public long? MosalId { get; set; }
+
     /// <summary>
     /// Of those, how many also have an account number -- all a layout that pays into account numbers rather
     /// than IBANs can reach.
@@ -60,6 +63,26 @@ public class GoLiveV2PayingBankDto
 
     /// <summary>The bank's usual layout first.</summary>
     public List<GoLiveV2BankFileLayoutDto> Layouts { get; set; } = new();
+
+    /// <summary>
+    /// The banks the payroll area's employees are paid into, with the code this paying bank writes for each in
+    /// its file. Empty codes are what a blank "bank code" column in the file comes from.
+    /// </summary>
+    public List<GoLiveV2PayeeBankDto> PayeeBanks { get; set; } = new();
+}
+
+/// <summary>One bank employees are paid into, and the code the paying bank knows it by in its salary file.</summary>
+public class GoLiveV2PayeeBankDto
+{
+    public int BankId { get; set; }
+
+    public string BankName { get; set; }
+
+    /// <summary>Given by the paying bank, not by this one. Null until somebody fills it in.</summary>
+    public string Code { get; set; }
+
+    /// <summary>How many of the area's employees are paid into it.</summary>
+    public int Employees { get; set; }
 }
 
 /// <summary>One file layout, and what the company must give for it beyond each employee's bank and IBAN.</summary>
@@ -80,6 +103,12 @@ public class GoLiveV2BankFileLayoutDto
     /// The layout pays into each employee's account number, not their IBAN: anyone without one is left out.
     /// </summary>
     public bool NeedsEmployeeAccountNumber { get; set; }
+
+    /// <summary>The layout writes a code for each employee's own bank, which the paying bank gives you.</summary>
+    public bool NeedsPayeeBankCodes { get; set; }
+
+    /// <summary>The layout writes the company's MOSAL ID beside each employee.</summary>
+    public bool NeedsMosalId { get; set; }
 }
 
 /// <summary>Make the month's salary file: the paying bank, its layout, and whatever that layout needs.</summary>
@@ -102,6 +131,15 @@ public class GoLiveV2GenerateBankFileInput : GoLiveV2BankFileSetupInput
     /// <summary>Saved as the company's code at the paying bank. Left as it was when blank.</summary>
     [StringLength(SimpleLookupConsts.MaxNameLength)]
     public string CompanyCode { get; set; }
+
+    /// <summary>
+    /// The company's MOSAL ID. Saved as the company's sponsor record, with every employee in the payroll area
+    /// sponsored by it, which is where the file's MOSAL ID column comes from.
+    /// </summary>
+    public long? MosalId { get; set; }
+
+    /// <summary>The code the paying bank writes for each bank employees are paid into. Blank ones are left as they were.</summary>
+    public List<GoLiveV2PayeeBankDto> PayeeBanks { get; set; } = new();
 }
 
 /// <summary>The file, inline, and who is not in it.</summary>

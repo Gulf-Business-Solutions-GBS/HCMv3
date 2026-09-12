@@ -123,8 +123,11 @@ public class GoLiveV2LoadEmployeesOutput
 
     public int EmployeesCreated { get; set; }
 
-    /// <summary>Rows whose employee code was already in the system: left as they were.</summary>
+    /// <summary>Rows whose employee code was already in the system: brought up to date from the sheet.</summary>
     public int EmployeesAlreadyLoaded { get; set; }
+
+    /// <summary>Of those, how many the sheet actually changed.</summary>
+    public int EmployeesUpdated { get; set; }
 
     /// <summary>One per non-empty grid row, in grid order.</summary>
     public List<GoLiveV2EmployeeRowResultDto> Rows { get; set; } = new();
@@ -141,6 +144,9 @@ public class GoLiveV2EmployeeRowResultDto
 
     /// <summary>False for an employee who was already loaded.</summary>
     public bool Created { get; set; }
+
+    /// <summary>The employee was already loaded and the sheet changed something: name, dates, pay or bank.</summary>
+    public bool Updated { get; set; }
 
     /// <summary>Why the row was not loaded, in words the customer can act on.</summary>
     public string Message { get; set; }

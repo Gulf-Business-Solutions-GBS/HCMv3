@@ -6271,5 +6271,15 @@
     <text name="GoLiveV2ColAccountNumberHint">The account number at that bank. Some banks' file layouts pay into this rather than the IBAN.</text>
     <text name="GoLiveV2LayoutPaysIntoAccountNumbers">This layout pays into account numbers, not IBANs: {0} of {1} employees have one on record.</text>
     <text name="GoLiveV2LeftOutNoAccountNumber">no account number</text>
+    <text name="GoLiveV2RowCivilIdTaken">Civil ID {0} already belongs to employee {1}.</text>
+    <text name="GoLiveV2LoadUpdated">{0} updated from the sheet</text>
+    <text name="GoLiveV2SponsorDefaultName">The company</text>
+    <text name="GoLiveV2BankFileNeedsMosalId">Layout {0} writes the company's MOSAL ID beside each employee. Give the MOSAL ID.</text>
+    <text name="GoLiveV2BankFileNeedsPayeeBankCodes">Layout {0} writes a code for each employee's own bank, and these have none yet: {1}. The paying bank gives you these codes.</text>
+    <text name="GoLiveV2CompanyMosalId">Company MOSAL ID</text>
+    <text name="GoLiveV2CompanyMosalIdHint">Saved as the company's sponsor record, with every employee in the payroll area under it.</text>
+    <text name="GoLiveV2PayeeBankCodes">Bank codes for the file</text>
+    <text name="GoLiveV2PayeeBankCodesHint">The code the paying bank writes for each bank your employees are paid into. The paying bank gives you the list.</text>
+    <text name="GoLiveV2PayeeBankEmployees">{0} employee(s)</text>
   </texts>
 </localizationDictionary>

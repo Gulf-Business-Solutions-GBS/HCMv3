@@ -375,6 +375,13 @@
     border-top: 2px solid var(--bs-gray-300);
 }
 
+/* The paying bank's codes for the other banks: one box per bank employees are paid into. */
+.v2-payee-banks {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--bs-gray-400);
+}
+
 /* ---------- Salary Register drawer ---------- */
 .v2-drawer-backdrop {
     position: fixed;

@@ -539,6 +539,20 @@
                                         <div class="v2-field-note">{{ 'GoLiveV2BankFileCodeHint' | localize }}</div>
                                     </div>
                                 }
+                                @if (layout.needsMosalId) {
+                                    <div class="v2-field">
+                                        <label class="form-label" for="v2-mosal-id">{{ 'GoLiveV2CompanyMosalId' | localize }}</label>
+                                        <input
+                                            id="v2-mosal-id"
+                                            type="text"
+                                            inputmode="numeric"
+                                            class="form-control"
+                                            maxlength="20"
+                                            [value]="companyMosalId()"
+                                            (input)="onBankFieldInput('mosalId', $event)" />
+                                        <div class="v2-field-note">{{ 'GoLiveV2CompanyMosalIdHint' | localize }}</div>
+                                    </div>
+                                }
                                 @if (layout.needsCompanyCode) {
                                     <div class="v2-field">
                                         <label class="form-label" for="v2-company-code">{{ 'GoLiveV2CompanyCode' | localize }}</label>
@@ -553,6 +567,32 @@
                                     </div>
                                 }
                             }
+                        </div>
+                    }
+
+                    @if (selectedLayout()?.needsPayeeBankCodes && payingBank(); as bank) {
+                        <div class="v2-payee-banks">
+                            <div class="v2-said-label">{{ 'GoLiveV2PayeeBankCodes' | localize }}</div>
+                            <p class="v2-field-note">{{ 'GoLiveV2PayeeBankCodesHint' | localize }}</p>
+                            <div class="v2-fields">
+                                @for (payee of bank.payeeBanks; track payee.bankId) {
+                                    <div class="v2-field">
+                                        <label class="form-label" [attr.for]="'v2-payee-' + payee.bankId">
+                                            {{ payee.bankName }}
+                                        </label>
+                                        <input
+                                            [id]="'v2-payee-' + payee.bankId"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="payeeBankCodes()[payee.bankId] ?? ''"
+                                            (input)="onPayeeBankCodeInput(payee.bankId, $event)" />
+                                        <div class="v2-field-note">
+                                            {{ l('GoLiveV2PayeeBankEmployees', payee.employees) }}
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     }
 

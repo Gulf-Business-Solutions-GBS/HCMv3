@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
+using Abp.Organizations;
 using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.GeneralMasterInfo;
@@ -43,7 +44,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         {
             ["NBK"] = new[]
             {
-                Grid(BankFileFormatCodes.NbkG1),
+                Grid(BankFileFormatCodes.NbkG1, payeeBankCodes: true, mosalId: true),
                 Grid(BankFileFormatCodes.NbkG3),
                 Grid(BankFileFormatCodes.NbkG2, employeeAccount: true),
             },
@@ -51,26 +52,26 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             {
                 Grid(BankFileFormatCodes.CbkG1),
                 Grid(BankFileFormatCodes.CbkG2),
-                Text(BankFileFormatCodes.CbkT3, companyAccount: true, bankCode: true),
+                Text(BankFileFormatCodes.CbkT3, companyAccount: true, bankCode: true, payeeBankCodes: true),
                 Text(BankFileFormatCodes.CbkT4, companyAccount: true),
-                Text(BankFileFormatCodes.CbkT5, companyAccount: true, bankCode: true),
-                Text(BankFileFormatCodes.CbkT6, companyAccount: true, bankCode: true),
+                Text(BankFileFormatCodes.CbkT5, companyAccount: true, bankCode: true, payeeBankCodes: true),
+                Text(BankFileFormatCodes.CbkT6, companyAccount: true, bankCode: true, payeeBankCodes: true),
                 Text(BankFileFormatCodes.CbkT1, companyAccount: true, employeeAccount: true),
                 Text(BankFileFormatCodes.CbkT2, companyAccount: true, employeeAccount: true),
             },
-            ["GB"] = new[] { Grid(BankFileFormatCodes.GbkG1), Grid(BankFileFormatCodes.GbkG2) },
-            ["GBK"] = new[] { Grid(BankFileFormatCodes.GbkG1), Grid(BankFileFormatCodes.GbkG2) },
+            ["GB"] = new[] { Grid(BankFileFormatCodes.GbkG1, mosalId: true), Grid(BankFileFormatCodes.GbkG2, mosalId: true) },
+            ["GBK"] = new[] { Grid(BankFileFormatCodes.GbkG1, mosalId: true), Grid(BankFileFormatCodes.GbkG2, mosalId: true) },
             ["ABK"] = new[]
             {
-                Grid(BankFileFormatCodes.AbkG1, bankCode: true),
-                Grid(BankFileFormatCodes.AbkG2, bankCode: true),
-                Grid(BankFileFormatCodes.AbkG3, bankCode: true),
+                Grid(BankFileFormatCodes.AbkG1, bankCode: true, payeeBankCodes: true),
+                Grid(BankFileFormatCodes.AbkG2, bankCode: true, payeeBankCodes: true),
+                Grid(BankFileFormatCodes.AbkG3, bankCode: true, payeeBankCodes: true),
             },
             ["BUR"] = new[]
             {
-                Text(BankFileFormatCodes.BurT1, bankCode: true),
-                Grid(BankFileFormatCodes.BurG2, bankCode: true, companyCode: true),
-                Grid(BankFileFormatCodes.BurG1, employeeAccount: true),
+                Text(BankFileFormatCodes.BurT1, bankCode: true, mosalId: true),
+                Grid(BankFileFormatCodes.BurG2, bankCode: true, companyCode: true, mosalId: true),
+                Grid(BankFileFormatCodes.BurG1, employeeAccount: true, payeeBankCodes: true, mosalId: true),
             },
             ["KFH"] = new[] { Grid(BankFileFormatCodes.KfhG1) },
             ["KIB"] = new[] { Grid(BankFileFormatCodes.KibG1) },
@@ -79,8 +80,8 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             ["NBR"] = new[] { Grid(BankFileFormatCodes.NbrG1) },
             ["BURBD"] = new[]
             {
-                Text(BankFileFormatCodes.BurBdT1, employeeAccount: true),
-                Grid(BankFileFormatCodes.BurBdG1, employeeAccount: true),
+                Text(BankFileFormatCodes.BurBdT1, employeeAccount: true, mosalId: true),
+                Grid(BankFileFormatCodes.BurBdG1, employeeAccount: true, mosalId: true),
             },
         };
 
@@ -107,24 +108,30 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private readonly PayrollBankFiles _bankFiles;
     private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
     private readonly GoLiveV2PayrollResultsReader _payrollResults;
+    private readonly GoLiveV2CompanySponsor _companySponsor;
     private readonly IRepository<Bank> _bankRepository;
     private readonly IRepository<BankFile> _bankFileRepository;
     private readonly IRepository<OrganizationBankInfo> _organizationBankInfoRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
+    private readonly IRepository<PayeeBankDetail> _payeeBankDetailRepository;
     private readonly IRepository<EmployeeOrgAssignment> _assignmentRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<OrganizationUnit, long> _orgUnitRepository;
     private readonly IAbpSession _session;
 
     public GoLiveV2BankFileStep(
         PayrollBankFiles bankFiles,
         IEmployeePayrollAreaResolver payrollAreaResolver,
         GoLiveV2PayrollResultsReader payrollResults,
+        GoLiveV2CompanySponsor companySponsor,
         IRepository<Bank> bankRepository,
         IRepository<BankFile> bankFileRepository,
         IRepository<OrganizationBankInfo> organizationBankInfoRepository,
         IRepository<EmployeeBank> employeeBankRepository,
+        IRepository<PayeeBankDetail> payeeBankDetailRepository,
         IRepository<EmployeeOrgAssignment> assignmentRepository,
         IRepository<Employee> employeeRepository,
+        IRepository<OrganizationUnit, long> orgUnitRepository,
         IAbpSession session)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
@@ -132,12 +139,15 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         _bankFiles = bankFiles;
         _payrollAreaResolver = payrollAreaResolver;
         _payrollResults = payrollResults;
+        _companySponsor = companySponsor;
         _bankRepository = bankRepository;
         _bankFileRepository = bankFileRepository;
         _organizationBankInfoRepository = organizationBankInfoRepository;
         _employeeBankRepository = employeeBankRepository;
+        _payeeBankDetailRepository = payeeBankDetailRepository;
         _assignmentRepository = assignmentRepository;
         _employeeRepository = employeeRepository;
+        _orgUnitRepository = orgUnitRepository;
         _session = session;
     }
 
@@ -179,8 +189,30 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             });
         }
 
+        output.MosalId = await _companySponsor.CurrentMosalIdAsync();
+
         var employees = await EmployeesAsync(payrollAreaName, monthEnd);
-        var details = await BankDetailsAsync(employees.Select(e => e.Id).ToList(), monthEnd);
+        var employeeIds = employees.Select(e => e.Id).ToList();
+        var details = await BankDetailsAsync(employeeIds, monthEnd);
+        var banksInUse = await BanksEmployeesArePaidIntoAsync(employeeIds, monthEnd);
+        var payeeCodes = await _payeeBankDetailRepository.GetAll()
+            .Where(d => d.BankId != null && d.PayeeBankId != null)
+            .Select(d => new { PayerBankId = d.BankId.Value, PayeeBankId = d.PayeeBankId.Value, d.BankCode })
+            .ToListAsync();
+
+        foreach (var payingBank in output.PayingBanks)
+        {
+            payingBank.PayeeBanks = banksInUse
+                .Select(b => new GoLiveV2PayeeBankDto
+                {
+                    BankId = b.BankId,
+                    BankName = b.BankName,
+                    Employees = b.Employees,
+                    Code = payeeCodes
+                        .FirstOrDefault(c => c.PayerBankId == payingBank.BankId && c.PayeeBankId == b.BankId)?.BankCode,
+                })
+                .ToList();
+        }
 
         output.EmployeesWithBank = employees.Count(e => details.ContainsKey(e.Id));
         output.EmployeesWithAccountNumber = employees.Count(e => details.TryGetValue(e.Id, out var d) && d);
@@ -220,12 +252,19 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             throw new UserFriendlyException(L("GoLiveV2BankFileNeedsCompanyCode", layout.FormatCode));
         }
 
+        var mosalId = input.MosalId ?? await _companySponsor.CurrentMosalIdAsync();
+        if (layout.NeedsMosalId && (mosalId ?? 0) <= 0)
+        {
+            throw new UserFriendlyException(L("GoLiveV2BankFileNeedsMosalId", layout.FormatCode));
+        }
+
         // Who the file pays: everyone in the area the month paid, with a bank and an IBAN. The rest are named.
         var results = await _payrollResults.GetResultsAsync(input.PayrollAreaName, monthEnd);
         var details = await BankDetailsAsync(results.Employees.Select(e => e.EmployeeId).ToList(), monthEnd);
 
         var output = new GoLiveV2GenerateBankFileOutput();
         var payees = new List<string>();
+        var payeeIds = new List<int>();
 
         foreach (var employee in results.Employees)
         {
@@ -245,6 +284,7 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             else
             {
                 payees.Add(employee.EmployeeCode);
+                payeeIds.Add(employee.EmployeeId);
             }
         }
 
@@ -255,12 +295,32 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
 
         output.BankCodeCorrectedFrom = await SetUpBankAsync(bank, code, layout, input, companyAccount, input.PayrollAreaName, monthEnd);
 
+        await SavePayeeBankCodesAsync(bank.Id, input.PayeeBanks);
+
+        if (layout.NeedsPayeeBankCodes)
+        {
+            await CheckPayeeBankCodesAsync(bank.Id, payeeIds, monthEnd, layout);
+        }
+
+        int? sponsorId = null;
+        if (mosalId > 0)
+        {
+            sponsorId = await _companySponsor.EnsureAsync(
+                await CompanyNameAsync(input.PayrollAreaName, monthEnd),
+                await CompanyUnitIdAsync(input.PayrollAreaName, monthEnd) ?? 0,
+                mosalId.Value,
+                payeeIds);
+        }
+
         var file = await _bankFiles.GenerateBankFile(new GenerateBankFileInput
         {
             PaymentBankId = bank.Id,
             PayrollRunType = RegularRun,
             PaymentType = PaymentType.Bank,
             EmployeeCodes = string.Join(",", payees),
+            // Named only where the layout writes its MOSAL ID in a header: it also narrows the file to that
+            // sponsor's employees, and every employee in the file has just been put under it.
+            SponsorId = layout.NeedsMosalId ? sponsorId : null,
             Year = monthEnd.Year,
             Month = monthEnd.Month,
             StartDate = new DateTime(monthEnd.Year, monthEnd.Month, 1),
@@ -314,6 +374,85 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
 
         await CurrentUnitOfWork.SaveChangesAsync();
         return correctedFrom;
+    }
+
+    /// <summary>
+    /// The code the paying bank writes for each bank its employees are paid into, kept where the generator
+    /// reads it: one <c>PayeeBankDetail</c> per paying bank and payee bank. A blank leaves what is there.
+    /// </summary>
+    private async Task SavePayeeBankCodesAsync(int payerBankId, List<GoLiveV2PayeeBankDto> payeeBanks)
+    {
+        foreach (var payee in payeeBanks ?? new List<GoLiveV2PayeeBankDto>())
+        {
+            var code = Given(payee.Code);
+            if (code == null)
+            {
+                continue;
+            }
+
+            var existing = await _payeeBankDetailRepository.FirstOrDefaultAsync(
+                d => d.BankId == payerBankId && d.PayeeBankId == payee.BankId);
+
+            if (existing != null)
+            {
+                existing.BankCode = code;
+                continue;
+            }
+
+            await _payeeBankDetailRepository.InsertAsync(new PayeeBankDetail
+            {
+                TenantId = _session.GetTenantId(),
+                BankId = payerBankId,
+                PayeeBankId = payee.BankId,
+                BankCode = code,
+            });
+        }
+
+        await CurrentUnitOfWork.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// This layout writes a bank code beside each employee, and the code comes from the paying bank's own list
+    /// -- so a bank nobody has given a code for would go into the file with that column empty.
+    /// </summary>
+    private async Task CheckPayeeBankCodesAsync(int payerBankId, List<int> payeeIds, DateTime monthEnd, Layout layout)
+    {
+        var banksInUse = await BanksEmployeesArePaidIntoAsync(payeeIds, monthEnd);
+        var coded = (await _payeeBankDetailRepository.GetAll()
+                .Where(d => d.BankId == payerBankId && d.PayeeBankId != null && d.BankCode != null && d.BankCode != "")
+                .Select(d => d.PayeeBankId.Value)
+                .ToListAsync())
+            .ToHashSet();
+
+        var missing = banksInUse.Where(b => !coded.Contains(b.BankId)).Select(b => b.BankName).ToList();
+        if (missing.Count > 0)
+        {
+            throw new UserFriendlyException(
+                L("GoLiveV2BankFileNeedsPayeeBankCodes", layout.FormatCode, string.Join(", ", missing)));
+        }
+    }
+
+    /// <summary>The banks these employees are actually paid into, and how many are paid into each.</summary>
+    private async Task<List<(int BankId, string BankName, int Employees)>> BanksEmployeesArePaidIntoAsync(
+        List<int> employeeIds,
+        DateTime monthEnd) =>
+        (await _employeeBankRepository.GetAll()
+            .Where(b => employeeIds.Contains(b.EmployeeId)
+                        && b.StartDate <= monthEnd && b.EndDate >= monthEnd
+                        && b.PaymentType == PaymentType.Bank
+                        && b.BankId != null)
+            .Select(b => new { BankId = b.BankId.Value, BankName = b.Bank.NameEn, b.EmployeeId })
+            .ToListAsync())
+        .GroupBy(b => new { b.BankId, b.BankName })
+        .OrderBy(g => g.Key.BankName)
+        .Select(g => (g.Key.BankId, g.Key.BankName, g.Select(b => b.EmployeeId).Distinct().Count()))
+        .ToList();
+
+    /// <summary>The company the payroll area's employees are in, by the name its organisation unit carries.</summary>
+    private async Task<string> CompanyNameAsync(string payrollAreaName, DateTime monthEnd)
+    {
+        var unitId = await CompanyUnitIdAsync(payrollAreaName, monthEnd);
+        return unitId == null ? null : (await _orgUnitRepository.FirstOrDefaultAsync(unitId.Value))?.DisplayName;
     }
 
     /// <summary>The company's account at the paying bank: the one row per bank, on the area's company unit.</summary>
@@ -402,11 +541,25 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
     private static GoLiveV2BankFileEmployeeDto LeftOut(string code, string name, GoLiveV2BankFileLeftOutReason reason) =>
         new() { EmployeeCode = code, EmployeeName = name, Reason = reason };
 
-    private static Layout Grid(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false, bool employeeAccount = false) =>
-        new(formatCode, false, companyAccount, bankCode, companyCode, employeeAccount);
+    private static Layout Grid(
+        string formatCode,
+        bool companyAccount = false,
+        bool bankCode = false,
+        bool companyCode = false,
+        bool employeeAccount = false,
+        bool payeeBankCodes = false,
+        bool mosalId = false) =>
+        new(formatCode, false, companyAccount, bankCode, companyCode, employeeAccount, payeeBankCodes, mosalId);
 
-    private static Layout Text(string formatCode, bool companyAccount = false, bool bankCode = false, bool companyCode = false, bool employeeAccount = false) =>
-        new(formatCode, true, companyAccount, bankCode, companyCode, employeeAccount);
+    private static Layout Text(
+        string formatCode,
+        bool companyAccount = false,
+        bool bankCode = false,
+        bool companyCode = false,
+        bool employeeAccount = false,
+        bool payeeBankCodes = false,
+        bool mosalId = false) =>
+        new(formatCode, true, companyAccount, bankCode, companyCode, employeeAccount, payeeBankCodes, mosalId);
 
     private sealed record Layout(
         string FormatCode,
@@ -414,7 +567,9 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
         bool NeedsCompanyAccount,
         bool NeedsBankCode,
         bool NeedsCompanyCode,
-        bool NeedsEmployeeAccountNumber)
+        bool NeedsEmployeeAccountNumber,
+        bool NeedsPayeeBankCodes,
+        bool NeedsMosalId)
     {
         public GoLiveV2BankFileLayoutDto ToDto() => new()
         {
@@ -424,6 +579,8 @@ public class GoLiveV2BankFileStep : AbpServiceBase, ITransientDependency
             NeedsBankCode = NeedsBankCode,
             NeedsCompanyCode = NeedsCompanyCode,
             NeedsEmployeeAccountNumber = NeedsEmployeeAccountNumber,
+            NeedsPayeeBankCodes = NeedsPayeeBankCodes,
+            NeedsMosalId = NeedsMosalId,
         };
     }
 }

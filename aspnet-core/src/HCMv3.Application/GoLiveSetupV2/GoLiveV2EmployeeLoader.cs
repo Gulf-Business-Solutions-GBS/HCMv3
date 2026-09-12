@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abp;
+using Abp.Application.Services.Dto;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Validation;
@@ -70,6 +71,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     private readonly IRepository<EmployeeContract> _contractRepository;
     private readonly IRepository<EmployeeOrgAssignment> _assignmentRepository;
     private readonly IRepository<EmployeeBasicPay> _basicPayRepository;
+    private readonly IRepository<EmployeeBasicPayDetail> _basicPayDetailRepository;
     private readonly IRepository<EmployeePayrollStatus> _payrollStatusRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
     private readonly GoLiveV2WorkingTime _workingTime;
@@ -86,6 +88,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         IRepository<EmployeeContract> contractRepository,
         IRepository<EmployeeOrgAssignment> assignmentRepository,
         IRepository<EmployeeBasicPay> basicPayRepository,
+        IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
         IRepository<EmployeePayrollStatus> payrollStatusRepository,
         IRepository<EmployeeBank> employeeBankRepository,
         GoLiveV2WorkingTime workingTime)
@@ -103,6 +106,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         _contractRepository = contractRepository;
         _assignmentRepository = assignmentRepository;
         _basicPayRepository = basicPayRepository;
+        _basicPayDetailRepository = basicPayDetailRepository;
         _payrollStatusRepository = payrollStatusRepository;
         _employeeBankRepository = employeeBankRepository;
         _workingTime = workingTime;
@@ -152,17 +156,24 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
                 }
                 else
                 {
-                    // Left as it is. Only a missing contract, assignment or salary is filled in, which is how a
-                    // load that failed half-way through a row -- employee made, contract refused -- is finished.
+                    // The sheet is the customer's copy of the truth until go-live, so a second load brings the
+                    // employee up to date with it -- everything but the code, which is what finds them.
+                    await CheckCivilIdIsFreeAsync(employee.Id, civilId);
+                    result.Updated = await UpdateEmployeeAsync(employee, row.FullName.Trim(), joined, civilId);
                     output.EmployeesAlreadyLoaded++;
                 }
 
                 await EnsureContractAsync(employee, targets.ContractTypeId);
                 await EnsureOrgAssignmentAsync(employee, targets);
-                await EnsureSalaryAsync(employee, row, targets);
+                result.Updated |= await EnsureSalaryAsync(employee, row, targets);
                 await EnsurePayrollStatusAsync(employee);
                 await _workingTime.EnsureEmployeeAsync(employee, targets.WorkingTime);
-                await EnsureBankAsync(employee, salaryBank);
+                result.Updated |= await EnsureBankAsync(employee, salaryBank);
+
+                if (result.Updated && !result.Created)
+                {
+                    output.EmployeesUpdated++;
+                }
 
                 result.Succeeded = true;
             }
@@ -307,6 +318,109 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         return await _employeeRepository.FirstOrDefaultAsync(e => e.Code == code);
     }
 
+    /// <summary>
+    /// Brings an employee already loaded up to date with the sheet: the name, the joining date and the civil ID.
+    /// The code is not touched -- it is what found this employee. Nothing else on the record is: a birth date or
+    /// a nationality put in on the employee screen is the customer's, and the sheet has nothing to say about it.
+    /// The dated records that were laid down from the joining date follow it when it moves.
+    /// </summary>
+    private async Task<bool> UpdateEmployeeAsync(Employee employee, string fullName, DateTime joined, long civilId)
+    {
+        var (first, last) = SplitName(fullName);
+        var wasJoined = employee.JoiningDate;
+
+        var changed = employee.FirstNameEn != first || employee.LastNameEn != last
+                      || employee.JoiningDate != joined || employee.CivilID != civilId;
+
+        if (!changed)
+        {
+            return false;
+        }
+
+        // The Arabic name follows the English one only while it is still the copy the load made of it.
+        if (employee.FirstNameAr == employee.FirstNameEn && employee.LastNameAr == employee.LastNameEn)
+        {
+            employee.FirstNameAr = first;
+            employee.LastNameAr = last;
+        }
+
+        employee.FirstNameEn = first;
+        employee.LastNameEn = last;
+        employee.JoiningDate = joined;
+        employee.CivilID = civilId;
+
+        // The full name and the probation end date are stored, not worked out when read: the employee service
+        // recomputes them on every save (EmployeesAppService.ApplyComputedFields) and so must this.
+        employee.FullNameEn = JoinNames(employee.FirstNameEn, employee.SecondNameEn, employee.ThirdNameEn, employee.LastNameEn);
+        employee.FullNameAr = JoinNames(employee.FirstNameAr, employee.SecondNameAr, employee.ThirdNameAr, employee.LastNameAr);
+        employee.ProbationEndDate = employee.JoiningDate.AddDays(employee.ProbationDays);
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        if (wasJoined != joined)
+        {
+            await MoveStartDatesAsync(employee.Id, wasJoined, joined);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// A joining date corrected in the sheet moves the open-ended records the load laid down from the old one:
+    /// the contract, the org assignment, the salary and where both engines start. One the customer dated
+    /// differently by hand is left where it is.
+    /// </summary>
+    private async Task MoveStartDatesAsync(int employeeId, DateTime wasJoined, DateTime joined)
+    {
+        foreach (var contract in await _contractRepository.GetAllListAsync(c => c.EmployeeId == employeeId && c.StartDate == wasJoined))
+        {
+            contract.StartDate = joined;
+        }
+
+        foreach (var assignment in await _assignmentRepository.GetAllListAsync(a => a.EmployeeId == employeeId && a.StartDate == wasJoined))
+        {
+            assignment.StartDate = joined;
+        }
+
+        foreach (var pay in await _basicPayRepository.GetAllListAsync(p => p.EmployeeId == employeeId && p.StartDate == wasJoined))
+        {
+            pay.StartDate = joined;
+        }
+
+        foreach (var status in await _payrollStatusRepository.GetAllListAsync(s => s.EmployeeId == employeeId))
+        {
+            if (status.NextTimeEvaluationFrom == wasJoined)
+            {
+                status.NextTimeEvaluationFrom = joined;
+            }
+
+            if (status.EarliestRetroAccountingDate == wasJoined)
+            {
+                status.EarliestRetroAccountingDate = joined;
+            }
+        }
+
+        foreach (var bank in await _employeeBankRepository.GetAllListAsync(b => b.EmployeeId == employeeId && b.StartDate == wasJoined))
+        {
+            bank.StartDate = joined;
+        }
+
+        await CurrentUnitOfWork.SaveChangesAsync();
+    }
+
+    /// <summary>The civil ID is one person's; the employee screen refuses a repeat and so does the sheet.</summary>
+    private async Task CheckCivilIdIsFreeAsync(int employeeId, long civilId)
+    {
+        var taken = await _employeeRepository.GetAll()
+            .Where(e => e.Id != employeeId && e.CivilID == civilId)
+            .Select(e => e.Code)
+            .FirstOrDefaultAsync();
+
+        if (taken != null)
+        {
+            throw new GoLiveV2RowException(L("GoLiveV2RowCivilIdTaken", civilId, taken));
+        }
+    }
+
     private async Task EnsureContractAsync(Employee employee, int contractTypeId)
     {
         if (await _contractRepository.GetAll().AnyAsync(c => c.EmployeeId == employee.Id))
@@ -352,50 +466,80 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     }
 
     /// <summary>
-    /// One monthly pay record from the joining date, open-ended, with a line per non-empty amount. An employee
-    /// who already has a pay record keeps it: salary history is the customer's, not the loader's to rewrite.
+    /// One monthly pay record from the joining date, open-ended, with a line per non-empty amount. On a second
+    /// load the sheet's amounts are written over the record's: an amount changed in the sheet is the point of
+    /// loading it again, and a column left empty means that pay has gone. Returns whether anything changed.
     /// </summary>
-    private async Task EnsureSalaryAsync(Employee employee, GoLiveV2EmployeeRowDto row, GoLiveV2EmployeeTargets targets)
+    private async Task<bool> EnsureSalaryAsync(Employee employee, GoLiveV2EmployeeRowDto row, GoLiveV2EmployeeTargets targets)
     {
-        if (await _basicPayRepository.GetAll().AnyAsync(p => p.EmployeeId == employee.Id))
+        var pay = await _basicPayRepository.GetAll()
+            .Where(p => p.EmployeeId == employee.Id)
+            .OrderByDescending(p => p.StartDate)
+            .FirstOrDefaultAsync();
+
+        var changed = false;
+
+        if (pay == null)
         {
-            return;
+            await _basicPays.CreateOrEdit(new CreateOrEditEmployeeBasicPayDto
+            {
+                EmployeeId = employee.Id,
+                StartDate = employee.JoiningDate,
+                EndDate = OpenEnded,
+                PayType = PayType.Regular,
+                PayInterval = PayInterval.Monthly,
+            });
+            await CurrentUnitOfWork.SaveChangesAsync();
+
+            pay = await _basicPayRepository.FirstOrDefaultAsync(p => p.EmployeeId == employee.Id);
+            changed = true;
         }
 
-        await _basicPays.CreateOrEdit(new CreateOrEditEmployeeBasicPayDto
-        {
-            EmployeeId = employee.Id,
-            StartDate = employee.JoiningDate,
-            EndDate = OpenEnded,
-            PayType = PayType.Regular,
-            PayInterval = PayInterval.Monthly,
-        });
-        await CurrentUnitOfWork.SaveChangesAsync();
-
-        var pay = await _basicPayRepository.FirstOrDefaultAsync(p => p.EmployeeId == employee.Id);
+        var lines = await _basicPayDetailRepository.GetAllListAsync(d => d.EmployeeBasicPayId == pay.Id);
         double total = 0;
 
         foreach (var (wageCode, amountOf) in SalaryColumns)
         {
+            var wageTypeId = targets.SalaryWageTypeIds[wageCode];
+            var line = lines.FirstOrDefault(l => l.WageTypeId == wageTypeId);
             var amount = amountOf(row) ?? 0;
-            if (amount <= 0)
-            {
-                continue;
-            }
 
-            await _basicPayDetails.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+            if (amount > 0)
             {
-                EmployeeBasicPayId = pay.Id,
-                WageTypeId = targets.SalaryWageTypeIds[wageCode],
-                Amount = amount,
-                CurrencyId = targets.CurrencyId,
-            });
-            total += amount;
+                total += amount;
+
+                if (line != null && Math.Abs(line.Amount - amount) < 0.0001)
+                {
+                    continue;
+                }
+
+                await _basicPayDetails.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+                {
+                    Id = line?.Id,
+                    EmployeeBasicPayId = pay.Id,
+                    WageTypeId = wageTypeId,
+                    Amount = amount,
+                    CurrencyId = line?.CurrencyId ?? targets.CurrencyId,
+                });
+                changed = true;
+            }
+            else if (line != null)
+            {
+                // The column was emptied: that pay is no longer part of the salary.
+                await _basicPayDetails.Delete(new EntityDto(line.Id));
+                changed = true;
+            }
         }
 
         // The total is what the payroll sheet and provision reports show as the salary. Neither service keeps it.
-        pay.Amount = total;
+        if (Math.Abs(pay.Amount - total) >= 0.0001)
+        {
+            pay.Amount = total;
+            changed = true;
+        }
+
         await CurrentUnitOfWork.SaveChangesAsync();
+        return changed;
     }
 
     /// <summary>
@@ -427,11 +571,11 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     /// with a different bank or IBAN corrects that record rather than adding a second -- the grid is where a
     /// mistyped IBAN gets fixed. A row with no bank leaves any bank record there as it is.
     /// </summary>
-    private async Task EnsureBankAsync(Employee employee, SalaryBank salaryBank)
+    private async Task<bool> EnsureBankAsync(Employee employee, SalaryBank salaryBank)
     {
         if (salaryBank == null)
         {
-            return;
+            return false;
         }
 
         var (bankId, iban, accountNumber) = salaryBank;
@@ -446,7 +590,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         if (existing != null && existing.BankId == bankId && existing.IBAN == iban
             && existing.AccountNum == accountNumber && existing.PaymentType == PaymentType.Bank)
         {
-            return;
+            return false;
         }
 
         await _employeeBanks.CreateOrEdit(new CreateOrEditEmployeeBankDto
@@ -465,7 +609,11 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
             EndDate = existing?.EndDate ?? OpenEnded,
         });
         await CurrentUnitOfWork.SaveChangesAsync();
+        return true;
     }
+
+    private static string JoinNames(params string[] parts) =>
+        string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
 
     /// <summary>First word to the first name, the rest to the last -- which joins back to the same full name.</summary>
     private static (string First, string Last) SplitName(string fullName)

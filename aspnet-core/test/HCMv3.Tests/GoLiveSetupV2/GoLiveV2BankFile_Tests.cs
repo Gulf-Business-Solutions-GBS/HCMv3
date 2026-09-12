@@ -191,6 +191,14 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         nbk.Layouts.Single(l => l.FormatCode == "NBK-G2").NeedsEmployeeAccountNumber.ShouldBeTrue();
         nbk.Layouts.Single(l => l.FormatCode == "NBK-G1").NeedsEmployeeAccountNumber.ShouldBeFalse();
 
+        // NBK-G1 carries a MOSAL ID and a code for each employee's own bank; NBK-G3 neither.
+        var nbkG1 = nbk.Layouts.Single(l => l.FormatCode == "NBK-G1");
+        nbkG1.NeedsMosalId.ShouldBeTrue();
+        nbkG1.NeedsPayeeBankCodes.ShouldBeTrue();
+        var nbkG3 = nbk.Layouts.Single(l => l.FormatCode == "NBK-G3");
+        nbkG3.NeedsMosalId.ShouldBeFalse();
+        nbkG3.NeedsPayeeBankCodes.ShouldBeFalse();
+
         var cbk = setup.PayingBanks.Single(b => b.Name == Cbk);
         cbk.SelectedLayout.ShouldBe("CBK-G1");
         var cbkT4 = cbk.Layouts.Single(l => l.FormatCode == "CBK-T4");
@@ -235,6 +243,23 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         missing.Reason.ShouldBe(GoLiveV2BankFileLeftOutReason.NoBankDetails);
     }
 
+    [Fact]
+    public async Task Should_List_The_Banks_Employees_Are_Paid_Into_For_Their_Codes()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Load(
+            Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban),
+            Row("E002", "Sara Khalid", "290011501235", Cbk, "KW81CBKU0000000000001234560102")));
+
+        var setup = await _goLive.GetBankFileSetup(SetupInput());
+
+        var payeeBanks = setup.PayingBanks.Single(b => b.Name == Nbk).PayeeBanks;
+        payeeBanks.Select(b => b.BankName).ShouldBe(new[] { Cbk, Nbk });
+        payeeBanks.ShouldAllBe(b => b.Employees == 1);
+        // Nobody has given the paying bank's codes for them yet, which is why that column comes out blank.
+        payeeBanks.ShouldAllBe(b => b.Code == null);
+    }
+
     // ---------------------------------------------------------------- Step 4: making the file
 
     [Fact]
@@ -244,9 +269,9 @@ public class GoLiveV2BankFile_Tests : AppTestBase
             Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban),
             Row("E002", "Sara Khalid", "290011501235"));
 
-        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G1"));
+        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G3"));
 
-        file.FormatCode.ShouldBe("NBK-G1");
+        file.FormatCode.ShouldBe("NBK-G3");
         file.FileName.ShouldEndWith(".xlsx");
         file.Base64Content.ShouldNotBeNullOrEmpty();
         file.RecordCount.ShouldBe(1);
@@ -268,7 +293,7 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban));
         GivenTheBankCode(Nbk, "1");
 
-        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G1"));
+        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G3"));
 
         file.RecordCount.ShouldBe(1);
         file.BankCodeCorrectedFrom.ShouldBe("1");
@@ -321,6 +346,7 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         var input = Generate("Burgan Bank", "BUR-G2");
         input.BankCode = "BRGN";
         input.CompanyCode = "C042";
+        input.MosalId = 123456;
 
         var file = await _goLive.GenerateBankFile(input);
 
@@ -370,7 +396,7 @@ public class GoLiveV2BankFile_Tests : AppTestBase
     {
         await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234"));
 
-        var refused = await Should.ThrowAsync<UserFriendlyException>(() => _goLive.GenerateBankFile(Generate(Nbk, "NBK-G1")));
+        var refused = await Should.ThrowAsync<UserFriendlyException>(() => _goLive.GenerateBankFile(Generate(Nbk, "NBK-G3")));
 
         refused.Message.ShouldBe(Localized("GoLiveV2BankFileNobodyToPay", "September 2026"));
     }
@@ -382,7 +408,7 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         // Loaded after the run: in the payroll area, with a bank, but not paid for September.
         await _goLive.LoadEmployees(Load(Row("E002", "Sara Khalid", "290011501235", Nbk, "KW81CBKU0000000000001234560102")));
 
-        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G1"));
+        var file = await _goLive.GenerateBankFile(Generate(Nbk, "NBK-G3"));
 
         file.RecordCount.ShouldBe(1);
         var leftOut = file.LeftOut.Single();
@@ -425,6 +451,83 @@ public class GoLiveV2BankFile_Tests : AppTestBase
         setup.EmployeesWithAccountNumber.ShouldBe(1);
     }
 
+    /// <summary>
+    /// The MOSAL ID is not smuggled into the file: it becomes the company's sponsor record, with every
+    /// employee in the file under it, which is where the generator -- and the Bank File screen -- read it.
+    /// </summary>
+    [Fact]
+    public async Task Should_Save_The_Mosal_Id_As_The_Company_Sponsor()
+    {
+        await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban));
+        var input = Generate(Nbk, "NBK-G1");
+        input.MosalId = 123456;
+        input.PayeeBanks = new List<GoLiveV2PayeeBankDto> { PayeeCode(Nbk, "NBK") };
+
+        var file = await _goLive.GenerateBankFile(input);
+
+        file.RecordCount.ShouldBe(1);
+        UsingDbContext(context =>
+        {
+            var sponsor = context.Sponsors.Single(s => s.TenantId == TenantId);
+            sponsor.NameEn.ShouldBe("ABC Holding");
+            sponsor.MOSALID.ShouldBe(123456);
+            var employeeId = context.Employees.Single(e => e.TenantId == TenantId && e.Code == "E001").Id;
+            context.EmployeeSponsors.Single(s => s.EmployeeId == employeeId).SponsorId.ShouldBe(sponsor.Id);
+        });
+
+        (await _goLive.GetBankFileSetup(SetupInput())).MosalId.ShouldBe(123456);
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Layout_That_Writes_The_Mosal_Id_Without_One()
+    {
+        await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Nbk, Iban));
+
+        var refused = await Should.ThrowAsync<UserFriendlyException>(() => _goLive.GenerateBankFile(Generate(Nbk, "NBK-G1")));
+
+        refused.Message.ShouldBe(Localized("GoLiveV2BankFileNeedsMosalId", "NBK-G1"));
+    }
+
+    /// <summary>
+    /// The file's bank code column comes from the paying bank's own list of codes for other banks, which is
+    /// why it was blank: nothing had ever filled that list in.
+    /// </summary>
+    [Fact]
+    public async Task Should_Save_The_Code_The_Paying_Bank_Writes_For_Each_Employees_Bank()
+    {
+        await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Cbk, Iban));
+        var input = Generate(Nbk, "NBK-G1");
+        input.MosalId = 123456;
+        input.PayeeBanks = new List<GoLiveV2PayeeBankDto> { PayeeCode(Cbk, "0002") };
+
+        var file = await _goLive.GenerateBankFile(input);
+
+        file.RecordCount.ShouldBe(1);
+        UsingDbContext(context =>
+        {
+            var payer = context.Banks.Single(b => b.TenantId == TenantId && b.NameEn == Nbk).Id;
+            var payee = context.Banks.Single(b => b.TenantId == TenantId && b.NameEn == Cbk).Id;
+            context.PayeeBankDetails.Single(d => d.BankId == payer && d.PayeeBankId == payee).BankCode.ShouldBe("0002");
+        });
+
+        (await _goLive.GetBankFileSetup(SetupInput()))
+            .PayingBanks.Single(b => b.Name == Nbk)
+            .PayeeBanks.Single(b => b.BankName == Cbk)
+            .Code.ShouldBe("0002");
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Layout_That_Writes_Bank_Codes_Without_Them()
+    {
+        await GivenTheFirstPayrollHasRun(Row("E001", "Ahmed Ali", "290011501234", Cbk, Iban));
+        var input = Generate(Nbk, "NBK-G1");
+        input.MosalId = 123456;
+
+        var refused = await Should.ThrowAsync<UserFriendlyException>(() => _goLive.GenerateBankFile(input));
+
+        refused.Message.ShouldBe(Localized("GoLiveV2BankFileNeedsPayeeBankCodes", "NBK-G1", Cbk));
+    }
+
     // ---------------------------------------------------------------- arrange
 
     private async Task GivenTheFirstPayrollHasRun(params GoLiveV2EmployeeRowDto[] rows)
@@ -460,6 +563,13 @@ public class GoLiveV2BankFile_Tests : AppTestBase
             FormatCode = formatCode,
         };
     }
+
+    private GoLiveV2PayeeBankDto PayeeCode(string bankName, string code) =>
+        new()
+        {
+            BankId = UsingDbContext(context => context.Banks.Single(b => b.TenantId == TenantId && b.NameEn == bankName).Id),
+            Code = code,
+        };
 
     private static GoLiveV2BankFileSetupInput SetupInput() => new() { PayDate = PayDate, PayrollAreaName = DefaultArea };
 

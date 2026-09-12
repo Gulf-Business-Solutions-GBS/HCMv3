@@ -374,7 +374,7 @@ public class GoLiveV2LoadEmployees_Tests : AppTestBase
     }
 
     [Fact]
-    public async Task Should_Leave_An_Employee_Already_Loaded_Alone()
+    public async Task Should_Not_Duplicate_The_Records_Of_An_Employee_Already_Loaded()
     {
         // Loading the same sheet twice is the normal way to fix a mistake and try again.
         GivenTheReferenceData();
@@ -384,6 +384,9 @@ public class GoLiveV2LoadEmployees_Tests : AppTestBase
 
         again.EmployeesCreated.ShouldBe(0);
         again.EmployeesAlreadyLoaded.ShouldBe(1);
+        // The same sheet changes nothing, so nothing is reported as changed.
+        again.EmployeesUpdated.ShouldBe(0);
+        again.Rows.Single().Updated.ShouldBeFalse();
         again.Rows.Single().Succeeded.ShouldBeTrue();
         UsingDbContext(context =>
         {
@@ -393,6 +396,78 @@ public class GoLiveV2LoadEmployees_Tests : AppTestBase
             context.EmployeeBasicPays.Count(p => p.EmployeeId == employeeId).ShouldBe(1);
             context.EmployeePayrollStatuses.Count(s => s.EmployeeId == employeeId).ShouldBe(1);
         });
+    }
+
+    /// <summary>
+    /// Until go-live the sheet is the customer's copy of the truth, so loading it again brings the employee up
+    /// to date with it: the name, the joining date, the civil ID and every salary column. The code is what
+    /// finds the employee, so it is the one thing the sheet cannot change.
+    /// </summary>
+    [Fact]
+    public async Task Should_Update_An_Employee_From_The_Sheet_On_A_Second_Load()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Input(Row("E001", "Ahmed Ali", Joined, "290011501234")));
+        var corrected = Row("E001", "Ahmed Ali Hassan", Joined.AddDays(10), "290011501299", 600);
+        corrected.MobileAllowance = 25;
+
+        var again = await _goLive.LoadEmployees(Input(corrected));
+
+        again.EmployeesUpdated.ShouldBe(1);
+        again.Rows.Single().Updated.ShouldBeTrue();
+        UsingDbContext(context =>
+        {
+            var employee = context.Employees.Single(e => e.TenantId == TenantId && e.Code == "E001");
+            employee.FullNameEn.ShouldBe("Ahmed Ali Hassan");
+            employee.JoiningDate.ShouldBe(Joined.AddDays(10));
+            employee.CivilID.ShouldBe(290011501299);
+
+            // The records the load dated from the joining date follow it.
+            context.EmployeeContracts.Single(c => c.EmployeeId == employee.Id).StartDate.ShouldBe(Joined.AddDays(10));
+            context.EmployeeOrgAssignments.Single(a => a.EmployeeId == employee.Id).StartDate.ShouldBe(Joined.AddDays(10));
+
+            var pay = context.EmployeeBasicPays.Single(p => p.EmployeeId == employee.Id);
+            pay.StartDate.ShouldBe(Joined.AddDays(10));
+            pay.Amount.ShouldBe(625, 0.001);
+            var lines = context.EmployeeBasicPayDetails.Where(d => d.EmployeeBasicPayId == pay.Id && !d.IsDeleted).ToList();
+            lines.Count.ShouldBe(2);
+        });
+    }
+
+    /// <summary>A salary column emptied in the sheet means that pay has gone, so its line goes with it.</summary>
+    [Fact]
+    public async Task Should_Drop_A_Salary_Line_The_Sheet_No_Longer_Has()
+    {
+        GivenTheReferenceData();
+        var first = Row("E001", "Ahmed Ali", Joined, "290011501234");
+        first.MobileAllowance = 25;
+        await _goLive.LoadEmployees(Input(first));
+
+        await _goLive.LoadEmployees(Input(Row("E001", "Ahmed Ali", Joined, "290011501234")));
+
+        UsingDbContext(context =>
+        {
+            var pay = context.EmployeeBasicPays.Single(p => p.TenantId == TenantId);
+            // The service soft-deletes, and this raw context sees deleted rows the engines never will.
+            context.EmployeeBasicPayDetails.Count(d => d.EmployeeBasicPayId == pay.Id && !d.IsDeleted).ShouldBe(1);
+            pay.Amount.ShouldBe(500, 0.001);
+        });
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Civil_Id_That_Belongs_To_Someone_Else()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Input(
+            Row("E001", "Ahmed Ali", Joined, "290011501234"),
+            Row("E002", "Sara Khalid", Joined, "290011501235")));
+
+        var clash = await _goLive.LoadEmployees(Input(Row("E002", "Sara Khalid", Joined, "290011501234")));
+
+        clash.Rows.Single().Succeeded.ShouldBeFalse();
+        clash.Rows.Single().Message.ShouldContain("E001");
+        UsingDbContext(context =>
+            context.Employees.Single(e => e.TenantId == TenantId && e.Code == "E002").CivilID.ShouldBe(290011501235));
     }
 
     [Fact]
