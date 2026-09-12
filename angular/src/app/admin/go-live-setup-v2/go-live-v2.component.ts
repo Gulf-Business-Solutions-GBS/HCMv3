@@ -395,50 +395,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         }
     }
 
-    /**
-     * Reads the generated workbook back. Loaded only when a spreadsheet is actually opened -- and loaded
-     * as the UMD bundle it is: exceljs's browser build exports nothing and defines window.ExcelJS, so
-     * importing it as a module hands back an empty object.
-     */
+    /** Reads the generated workbook back. The reader is loaded only when a spreadsheet is opened. */
     private async readSheets(blob: Blob): Promise<V2DocSheet[]> {
-        // Bundled, the UMD build comes back as the module's default export and defines no global;
-        // loaded straight into a browser it does the opposite. Take whichever shape turns up.
-        const loaded: any = await import('exceljs/dist/exceljs.min.js');
-        const ExcelJS = [loaded?.default, loaded, (window as any).ExcelJS].find((c) => c?.Workbook);
-        if (!ExcelJS) {
-            throw new Error('exceljs loaded without a Workbook: ' + Object.keys(loaded ?? {}).join(', '));
-        }
-
-        const workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.load(await blob.arrayBuffer());
-
-        return workbook.worksheets.map((sheet) => {
-            const rows: (string | number | null)[][] = [];
-            sheet.eachRow({ includeEmpty: false }, (row) => {
-                const values = row.values as unknown[];
-                // exceljs indexes cells from 1, so the first slot is always empty.
-                rows.push(values.slice(1).map((cell) => this.cellText(cell)));
-            });
-            return { name: sheet.name, rows };
-        });
-    }
-
-    private cellText(cell: unknown): string | number | null {
-        if (cell === null || cell === undefined) {
-            return null;
-        }
-        if (typeof cell === 'number' || typeof cell === 'string') {
-            return cell;
-        }
-        if (cell instanceof Date) {
-            return DateTime.fromJSDate(cell).toFormat('dd-MM-yyyy');
-        }
-        // Formulas and rich text come back as objects carrying the value that was written.
-        const value = cell as { result?: unknown; text?: unknown; richText?: { text: string }[] };
-        if (value.richText) {
-            return value.richText.map((part) => part.text).join('');
-        }
-        return (value.result ?? value.text ?? '') as string | number;
+        const { readXlsx } = await import('./doc-viewer/read-xlsx');
+        return readXlsx(new Uint8Array(await blob.arrayBuffer()));
     }
 
     /** The temp-file endpoint the Excel reports hand back, fetched rather than navigated to. */

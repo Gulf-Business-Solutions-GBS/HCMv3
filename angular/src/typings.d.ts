@@ -29,5 +29,3 @@ declare namespace abp {
 
 declare module 'rtl-detect';
 
-/** The browser build of exceljs is a UMD bundle: it exports nothing, it defines window.ExcelJS. */
-declare module 'exceljs/dist/exceljs.min.js';
