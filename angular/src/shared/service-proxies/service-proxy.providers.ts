@@ -733,6 +733,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.GoLiveApplyServiceProxy,
     ApiServiceProxies.GoLiveStateServiceProxy,
     ApiServiceProxies.GoLiveV2ServiceProxy,
+    ApiServiceProxies.GoLiveV2PayslipsServiceProxy,
     ApiServiceProxies.ReferenceDataServiceProxy,
     ApiServiceProxies.HelpMetadataServiceProxy,
     { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
