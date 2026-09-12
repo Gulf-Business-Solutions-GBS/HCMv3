@@ -390,21 +390,15 @@
     box-shadow: 0 0 0 6px color-mix(in srgb, var(--v2-step-colour) 20%, transparent);
 }
 
-/* The tick rides on the circle so a finished step reads at a glance without recolouring everything. */
+/* A green tick beside the circle when the step is done -- no badge, nothing over the icon. */
 .v2-step-tick {
     position: absolute;
-    right: 0;
+    right: -0.75rem;
     bottom: 0;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 50%;
-    background: var(--bs-success);
-    color: #fff;
-    font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--bs-body-bg, #fff);
+    color: var(--bs-success);
+    font-size: 2rem;
+    line-height: 1;
+    text-shadow: 0 0 3px var(--bs-body-bg, #fff);
 }
 
 .v2-step-line {
