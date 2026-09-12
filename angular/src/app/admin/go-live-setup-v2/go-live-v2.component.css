@@ -381,10 +381,7 @@
     line-height: 1;
 }
 
-.v2-step-done .v2-step-circle {
-    background: var(--v2-step-colour);
-    color: #fff;
-}
+/* A finished step keeps its own colours; the green tick is what marks it done. */
 
 .v2-step-current .v2-step-circle {
     box-shadow: 0 0 0 6px color-mix(in srgb, var(--v2-step-colour) 20%, transparent);
