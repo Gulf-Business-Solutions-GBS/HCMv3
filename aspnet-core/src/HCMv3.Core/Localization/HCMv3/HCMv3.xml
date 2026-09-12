@@ -6282,5 +6282,8 @@
     <text name="GoLiveV2PayeeBankEmployees">{0} employee(s)</text>
     <text name="GoLiveV2RunAndResults">Run payroll and see what it paid</text>
     <text name="GoLiveV2RunAndResultsHint">The engines run for the month you pick, and the results appear below as soon as they finish.</text>
+    <text name="GoLiveV2Payslips">View Payslip</text>
+    <text name="GoLiveV2PayslipsHint">Everyone's payslip for the month, as one PDF.</text>
+    <text name="GoLiveV2PayslipsNeedMonthAndArea">Pick the month before printing payslips.</text>
   </texts>
 </localizationDictionary>

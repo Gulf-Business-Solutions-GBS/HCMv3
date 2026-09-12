@@ -10,7 +10,6 @@
                         <div class="v2-step-number">{{ l('GoLiveV2Step', 1) }}</div>
                         <h3 class="v2-step-title">{{ 'GoLiveV2LoadEmployees' | localize }}</h3>
                         <p class="v2-step-hint">{{ 'GoLiveV2LoadEmployeesHint' | localize }}</p>
-                        <div class="v2-field-why">{{ 'GoLiveV2WhyLoadEmployees' | localize }}</div>
                     </div>
 
                     <button
@@ -99,6 +98,15 @@
                     </div>
 
                     <div class="v2-results-actions">
+                        <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
+                            @if (running()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                {{ 'GoLiveV2Running' | localize }}
+                            } @else {
+                                <i class="fa fa-play me-2" aria-hidden="true"></i>
+                                {{ 'GoLiveV2RunPayroll' | localize }}
+                            }
+                        </button>
                         <button
                             type="button"
                             class="btn btn-light-primary"
@@ -125,14 +133,18 @@
                             }
                             {{ 'GoLiveV2SalaryRegister' | localize }}
                         </button>
-                        <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
-                            @if (running()) {
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveV2PayslipsHint' | localize"
+                            (click)="showPayslips()">
+                            @if (exporting() === 'payslips') {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                                {{ 'GoLiveV2Running' | localize }}
                             } @else {
-                                <i class="fa fa-play me-2" aria-hidden="true"></i>
-                                {{ 'GoLiveV2RunPayroll' | localize }}
+                                <i class="fa fa-file-pdf me-2" aria-hidden="true"></i>
                             }
+                            {{ 'GoLiveV2Payslips' | localize }}
                         </button>
                     </div>
                 </div>
@@ -149,18 +161,6 @@
                         @if (monthEnd(); as end) {
                             <div class="v2-field-note">{{ l('GoLiveV2PaysUpTo', end.toFormat('dd/MM/yyyy')) }}</div>
                         }
-                        <div class="v2-field-why">{{ 'GoLiveV2WhyPayDate' | localize }}</div>
-                    </div>
-
-                    <div class="v2-field">
-                        <label class="form-label" for="v2-payroll-area">{{ 'GoLiveV2PayrollArea' | localize }}</label>
-                        <select id="v2-payroll-area" class="form-select" (change)="onPayrollAreaChange($event)">
-                            @for (name of payrollAreaOptions(); track name) {
-                                <option [value]="name" [selected]="name === payrollAreaName()">{{ name }}</option>
-                            }
-                        </select>
-                        <div class="v2-field-note">{{ 'GoLiveV2PayrollAreaHint' | localize }}</div>
-                        <div class="v2-field-why">{{ 'GoLiveV2WhyPayrollArea' | localize }}</div>
                     </div>
                 </div>
 

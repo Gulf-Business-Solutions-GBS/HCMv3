@@ -6121,5 +6121,8 @@
     <text name="GoLiveV2PayeeBankEmployees">{0} موظفًا</text>
     <text name="GoLiveV2RunAndResults">تشغيل الرواتب وعرض ما تم صرفه</text>
     <text name="GoLiveV2RunAndResultsHint">تعمل المحركات للشهر الذي تختاره، وتظهر النتائج أدناه فور انتهائها.</text>
+    <text name="GoLiveV2Payslips">عرض قسيمة الراتب</text>
+    <text name="GoLiveV2PayslipsHint">قسائم رواتب جميع الموظفين عن الشهر في ملف PDF واحد.</text>
+    <text name="GoLiveV2PayslipsNeedMonthAndArea">اختر الشهر قبل طباعة قسائم الرواتب.</text>
   </texts>
 </localizationDictionary>

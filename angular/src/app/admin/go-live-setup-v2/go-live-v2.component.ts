@@ -22,6 +22,8 @@ import {
     GoLiveV2LoadEmployeesOutput,
     GoLiveV2NextStep,
     GoLiveV2PayrollResultsInput,
+    GoLiveV2PayslipsInput,
+    GoLiveV2PayslipsServiceProxy,
     GoLiveV2PayrollResultsOutput,
     GoLiveV2PayrollResultRowDto,
     GoLiveV2SalaryRegisterDto,
@@ -124,6 +126,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
     private readonly payrollSheetProxy = inject(PayrollSheetReportServiceProxy);
     private readonly fileDownload = inject(FileDownloadService);
+    private readonly payslipsProxy = inject(GoLiveV2PayslipsServiceProxy);
     private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
 
@@ -255,9 +258,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     /** The payroll area to run, by name -- the engine matches it by name. Also where step 1 puts employees. */
     readonly payrollAreaName = signal(DefaultPayrollArea);
 
-    /** The tenant's payroll areas, with the default always offered: it is created the first time it is used. */
-    readonly payrollAreaOptions = signal<string[]>([DefaultPayrollArea]);
-
     readonly running = signal(false);
     readonly runProgress = signal<RunProgress | null>(null);
     readonly BillingType = BillingType;
@@ -266,7 +266,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     readonly results = signal<GoLiveV2PayrollResultsOutput | null>(null);
     readonly loadingResults = signal(false);
-    readonly exporting = signal<'sheet' | 'register' | null>(null);
+    readonly exporting = signal<'sheet' | 'register' | 'payslips' | null>(null);
     readonly register = signal<GoLiveV2SalaryRegisterDto | null>(null);
     readonly registerFor = signal<GoLiveV2PayrollResultRowDto | null>(null);
     private resultsRequest = 0;
@@ -381,7 +381,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     readonly canSetUp = computed(() => !!this.monthEnd() && this.payrollAreaName().trim().length > 0);
 
     ngOnInit(): void {
-        this.refreshPayrollAreas();
         this.proxy.getBankNames().subscribe((names) => this.bankNames.set(names.items ?? []));
         this.showPreviouslyLoaded();
     }
@@ -480,7 +479,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.refreshBankFileSetup();
             this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
         }
-        this.refreshPayrollAreas();
     }
 
     stopLoading(): void {
@@ -633,7 +631,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     this.lastLoad.set(null);
                     this.latest.set(result);
                     this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
-                    this.refreshPayrollAreas();
                     // Whatever the run did, the results below now describe it.
                     this.showResults();
                     this.refreshBankFileSetup();
@@ -863,6 +860,52 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.register.set(null);
     }
 
+    /**
+     * Everyone's payslip for the month, as one PDF: the ported legacy payslip report itself, rendered by
+     * the backend for this month and payroll area rather than through the report screen's parameter panel.
+     * Opened in a new tab, and saved instead if the browser blocks the tab.
+     */
+    showPayslips(): void {
+        const end = this.monthEnd();
+        if (!end || this.exporting()) {
+            return;
+        }
+
+        const input = new GoLiveV2PayslipsInput();
+        input.payDate = end.plus({ hours: 12 });
+        input.payrollAreaName = this.payrollAreaName().trim();
+
+        this.exporting.set('payslips');
+        this.payslipsProxy
+            .getPayslipsPdf(input)
+            .pipe(finalize(() => this.exporting.set(null)))
+            .subscribe((pdf) => this.openPdf(pdf.fileName, pdf.base64Content));
+    }
+
+    private openPdf(fileName: string, base64: string): void {
+        if (!base64) {
+            return;
+        }
+
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+
+        const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+        const opened = window.open(url, '_blank');
+        if (!opened) {
+            // The browser blocked the new tab, so hand the file over instead of losing it.
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName || 'Payslips.pdf';
+            link.click();
+        }
+
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
     /** The ported legacy Payroll Sheet, for the month and payroll area, as Excel. */
     downloadPayrollSheet(): void {
         const end = this.monthEnd();
@@ -930,16 +973,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 this.latest.set(null);
                 this.lastSetUp.set(setUp);
                 this.attempts.update((list) => [{ at: new Date(), setUp }, ...list]);
-                this.refreshPayrollAreas();
             });
     }
 
     onPayMonthChange(event: Event): void {
         this.payMonth.set((event.target as HTMLInputElement).value);
-    }
-
-    onPayrollAreaChange(event: Event): void {
-        this.payrollAreaName.set((event.target as HTMLSelectElement).value);
     }
 
     /** Where the run stopped, as a sentence the customer recognises. */
@@ -1143,13 +1181,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             iban: e.iban ?? null,
             accountNumber: e.accountNumber ?? null,
         };
-    }
-
-    private refreshPayrollAreas(): void {
-        this.proxy.getPayrollAreaNames().subscribe((names) => {
-            const list = names.items ?? [];
-            this.payrollAreaOptions.set(list.includes(DefaultPayrollArea) ? list : [DefaultPayrollArea, ...list]);
-        });
     }
 
     /**
