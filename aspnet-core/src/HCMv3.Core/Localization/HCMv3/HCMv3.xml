@@ -6282,5 +6282,15 @@
     <text name="GoLiveV2Payslips">View Payslip</text>
     <text name="GoLiveV2PayslipsHint">Everyone's payslip for the month, as one PDF.</text>
     <text name="GoLiveV2PayslipsNeedMonthAndArea">Pick the month before printing payslips.</text>
+    <text name="GoLiveV2DocDownload">Download</text>
+    <text name="GoLiveV2DocFind">Find in this file</text>
+    <text name="GoLiveV2DocZoom">Text size</text>
+    <text name="GoLiveV2DocZoomIn">Larger</text>
+    <text name="GoLiveV2DocZoomOut">Smaller</text>
+    <text name="GoLiveV2DocRows">{0} row(s)</text>
+    <text name="GoLiveV2DocSheets">Sheets</text>
+    <text name="GoLiveV2DocNothingMatches">Nothing in this file matches.</text>
+    <text name="GoLiveV2StepNeedsEmployees">Load employees first</text>
+    <text name="GoLiveV2StepNeedsPayroll">Run the payroll first</text>
   </texts>
 </localizationDictionary>

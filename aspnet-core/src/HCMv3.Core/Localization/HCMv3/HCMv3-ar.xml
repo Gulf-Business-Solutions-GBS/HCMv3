@@ -6121,5 +6121,15 @@
     <text name="GoLiveV2Payslips">عرض قسيمة الراتب</text>
     <text name="GoLiveV2PayslipsHint">قسائم رواتب جميع الموظفين عن الشهر في ملف PDF واحد.</text>
     <text name="GoLiveV2PayslipsNeedMonthAndArea">اختر الشهر قبل طباعة قسائم الرواتب.</text>
+    <text name="GoLiveV2DocDownload">تنزيل</text>
+    <text name="GoLiveV2DocFind">بحث في الملف</text>
+    <text name="GoLiveV2DocZoom">حجم النص</text>
+    <text name="GoLiveV2DocZoomIn">أكبر</text>
+    <text name="GoLiveV2DocZoomOut">أصغر</text>
+    <text name="GoLiveV2DocRows">{0} صفًا</text>
+    <text name="GoLiveV2DocSheets">الأوراق</text>
+    <text name="GoLiveV2DocNothingMatches">لا يوجد ما يطابق البحث في هذا الملف.</text>
+    <text name="GoLiveV2StepNeedsEmployees">حمّل الموظفين أولًا</text>
+    <text name="GoLiveV2StepNeedsPayroll">شغّل الرواتب أولًا</text>
   </texts>
 </localizationDictionary>

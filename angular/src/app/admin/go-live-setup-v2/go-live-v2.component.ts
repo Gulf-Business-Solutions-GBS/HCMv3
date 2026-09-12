@@ -40,7 +40,10 @@ import {
     PayrollSheetReportServiceProxy,
     TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import { FileDownloadService } from '@shared/utils/file-download.service';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
+import { FileDto } from '@shared/service-proxies/service-proxies';
+import { V2DocViewerComponent, V2Document, V2DocSheet } from './doc-viewer/v2-doc-viewer.component';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from '../go-live-setup/shared/paste-grid/paste-grid.component';
 import {
@@ -118,20 +121,73 @@ const DefaultPayrollArea = 'Default Payroll Area';
     templateUrl: './go-live-v2.component.html',
     styleUrl: './go-live-v2.component.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, LocalizePipe, DatePipe, DecimalPipe, PasteGridComponent],
+    imports: [SubHeaderComponent, LocalizePipe, DatePipe, DecimalPipe, PasteGridComponent, V2DocViewerComponent],
 })
 export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
     private readonly payrollEngineProxy = inject(PayrollEngineServiceProxy);
     private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
     private readonly payrollSheetProxy = inject(PayrollSheetReportServiceProxy);
-    private readonly fileDownload = inject(FileDownloadService);
+    private readonly http = inject(HttpClient);
     private readonly payslipsProxy = inject(GoLiveV2PayslipsServiceProxy);
     private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
 
     readonly StoppedAt = GoLiveV2StoppedAt;
     readonly NextStep = GoLiveV2NextStep;
+
+    // ---------------------------------------------------------------- the three steps
+
+    /**
+     * Which step is on screen. Whether a step can be opened is read from the data, never from what was
+     * pressed in this visit: a company with employees can run payroll, a month with results has a bank
+     * file to make, and a page reload knows both. So nothing has to be unlocked, and coming back to fix
+     * a salary and running again is just going back a step.
+     */
+    readonly activeStep = signal(1);
+
+    /** Employees the payroll area has: what step 1 is for, and what step 2 needs. */
+    readonly employeesLoaded = computed(() => this.results()?.employees?.length ?? this.filledEmployeeCount());
+
+    /** Employees the month actually paid: what step 2 is for, and what step 3 needs. */
+    readonly employeesPaid = computed(() => this.results()?.employeesPaid ?? 0);
+
+    readonly steps = computed(() => {
+        const loaded = this.employeesLoaded();
+        const paid = this.employeesPaid();
+        const made = this.bankFile() != null;
+
+        return [
+            { number: 1, title: this.l('GoLiveV2LoadEmployees'), done: loaded > 0, ready: true, why: '' },
+            {
+                number: 2,
+                title: this.l('GoLiveV2RunAndResults'),
+                done: paid > 0,
+                ready: loaded > 0,
+                why: this.l('GoLiveV2StepNeedsEmployees'),
+            },
+            {
+                number: 3,
+                title: this.l('GoLiveV2BankFileTitle'),
+                done: made,
+                ready: paid > 0,
+                why: this.l('GoLiveV2StepNeedsPayroll'),
+            },
+        ];
+    });
+
+    /** The step on screen, kept to one that can be opened -- loading employees again reopens step 1. */
+    readonly currentStep = computed(() => {
+        const steps = this.steps();
+        const asked = this.activeStep();
+        return steps.find((s) => s.number === asked)?.ready ? asked : 1;
+    });
+
+    goToStep(step: number): void {
+        if (this.steps().find((s) => s.number === step)?.ready) {
+            this.activeStep.set(step);
+        }
+    }
 
     // ---------------------------------------------------------------- step 1: load employee data
 
@@ -281,7 +337,108 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         });
     });
 
-    // ---------------------------------------------------------------- step 4: the bank file
+    /** The document being looked at, or null. Everything V2 produces goes through here first. */
+    readonly openDocument = signal<V2Document | null>(null);
+
+    closeDocument(): void {
+        const url = this.openDocument()?.pdfUrl;
+        if (url) {
+            URL.revokeObjectURL(url);
+        }
+        this.openDocument.set(null);
+    }
+
+    /**
+     * Shows the file itself, not a second rendering of the same data: a PDF in the browser's own
+     * viewer, a spreadsheet read back out of the bytes that were generated.
+     */
+    private async showDocument(title: string, fileName: string, blob: Blob, contentType: string): Promise<void> {
+        if (contentType.includes('pdf')) {
+            this.openDocument.set({ title, fileName, kind: 'pdf', blob, pdfUrl: URL.createObjectURL(blob) });
+            return;
+        }
+
+        if (contentType.includes('text')) {
+            this.openDocument.set({ title, fileName, kind: 'text', blob, text: await blob.text() });
+            return;
+        }
+
+        if (contentType.includes('zip')) {
+            // One file per payee bank, zipped: there is nothing to show, so hand it straight over.
+            this.saveBlob(fileName, blob);
+            return;
+        }
+
+        this.openDocument.set({ title, fileName, kind: 'sheet', blob, sheets: await this.readSheets(blob) });
+    }
+
+    /** Reads the generated workbook back. Loaded only when a spreadsheet is actually opened. */
+    private async readSheets(blob: Blob): Promise<V2DocSheet[]> {
+        const ExcelJS = await import('exceljs');
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(await blob.arrayBuffer());
+
+        return workbook.worksheets.map((sheet) => {
+            const rows: (string | number | null)[][] = [];
+            sheet.eachRow({ includeEmpty: false }, (row) => {
+                const values = row.values as unknown[];
+                // exceljs indexes cells from 1, so the first slot is always empty.
+                rows.push(values.slice(1).map((cell) => this.cellText(cell)));
+            });
+            return { name: sheet.name, rows };
+        });
+    }
+
+    private cellText(cell: unknown): string | number | null {
+        if (cell === null || cell === undefined) {
+            return null;
+        }
+        if (typeof cell === 'number' || typeof cell === 'string') {
+            return cell;
+        }
+        if (cell instanceof Date) {
+            return DateTime.fromJSDate(cell).toFormat('dd-MM-yyyy');
+        }
+        // Formulas and rich text come back as objects carrying the value that was written.
+        const value = cell as { result?: unknown; text?: unknown; richText?: { text: string }[] };
+        if (value.richText) {
+            return value.richText.map((part) => part.text).join('');
+        }
+        return (value.result ?? value.text ?? '') as string | number;
+    }
+
+    /** The temp-file endpoint the Excel reports hand back, fetched rather than navigated to. */
+    private tempFileUrl(file: FileDto): string {
+        return (
+            AppConsts.remoteServiceBaseUrl +
+            '/File/DownloadTempFile?fileType=' +
+            file.fileType +
+            '&fileToken=' +
+            file.fileToken +
+            '&fileName=' +
+            file.fileName
+        );
+    }
+
+    private saveBlob(fileName: string, blob: Blob): void {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
+    private base64Blob(base64: string, contentType: string): Blob {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: contentType });
+    }
+
+    // ---------------------------------------------------------------- step 3: the bank file
 
     readonly bankSetup = signal<GoLiveV2BankFileSetupOutput | null>(null);
     readonly payingBankId = signal<number | null>(null);
@@ -475,6 +632,9 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.lastSetUp.set(null);
             this.lastLoad.set(combined);
             this.refreshBankFileSetup();
+            if (combined.rows.some((r) => r.succeeded)) {
+                this.activeStep.set(2);
+            }
             this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
         }
     }
@@ -769,7 +929,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             .pipe(finalize(() => this.generatingBankFile.set(false)))
             .subscribe((file) => {
                 this.bankFile.set(file);
-                this.downloadBase64(file.fileName, file.base64Content, file.contentType);
+                const contentType = file.contentType ?? 'application/octet-stream';
+                this.showDocument(
+                    this.l('GoLiveV2BankFileTitle'),
+                    file.fileName ?? 'BankFile',
+                    this.base64Blob(file.base64Content ?? '', contentType),
+                    contentType
+                );
                 this.refreshBankFileSetup();
             });
     }
@@ -803,24 +969,6 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.bankLayout.set(bank?.selectedLayout ?? '');
         this.companyAccountNo.set(bank?.companyAccountNo ?? '');
         this.companyCode.set(bank?.companyCode ?? '');
-    }
-
-    /** The file comes back inline, as the Bank File screen's does. */
-    private downloadBase64(fileName: string | undefined, base64: string | undefined, contentType: string | undefined): void {
-        if (!base64) {
-            return;
-        }
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) {
-            bytes[i] = binary.charCodeAt(i);
-        }
-        const url = URL.createObjectURL(new Blob([bytes], { type: contentType || 'application/octet-stream' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName || 'BankFile';
-        link.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
     onResultsSearch(event: Event): void {
@@ -874,31 +1022,28 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.payslipsProxy
             .getPayslipsPdf(input)
             .pipe(finalize(() => this.exporting.set(null)))
-            .subscribe((pdf) => this.openPdf(pdf.fileName, pdf.base64Content));
+            .subscribe((pdf) =>
+                this.showDocument(
+                    this.l('GoLiveV2Payslips'),
+                    pdf.fileName ?? 'Payslips.pdf',
+                    this.base64Blob(pdf.base64Content ?? '', 'application/pdf'),
+                    'application/pdf'
+                )
+            );
     }
 
-    private openPdf(fileName: string, base64: string): void {
-        if (!base64) {
-            return;
-        }
-
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) {
-            bytes[i] = binary.charCodeAt(i);
-        }
-
-        const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
-        const opened = window.open(url, '_blank');
-        if (!opened) {
-            // The browser blocked the new tab, so hand the file over instead of losing it.
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName || 'Payslips.pdf';
-            link.click();
-        }
-
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
+    /** An Excel report comes back as a token for a temporary file; fetch it and show what it holds. */
+    private showTempFile(title: string, file: FileDto): void {
+        this.http.get(this.tempFileUrl(file), { responseType: 'blob' }).subscribe({
+            next: (blob) =>
+                this.showDocument(
+                    title,
+                    file.fileName ?? 'report.xlsx',
+                    blob,
+                    blob.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                ).finally(() => this.exporting.set(null)),
+            error: () => this.exporting.set(null),
+        });
     }
 
     /** The ported legacy Payroll Sheet, for the month and payroll area, as Excel. */
@@ -918,8 +1063,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.exporting.set('sheet');
         this.payrollSheetProxy
             .getPayrollSheetReportToExcel(input)
-            .pipe(finalize(() => this.exporting.set(null)))
-            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+            .subscribe((file) => this.showTempFile(this.l('GoLiveV2PayrollSheet'), file));
     }
 
     /** Every register line of the month, one row per employee and wage type, as Excel. */
@@ -931,8 +1075,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.exporting.set('register');
         this.proxy
             .getSalaryRegisterExcel(input)
-            .pipe(finalize(() => this.exporting.set(null)))
-            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+            .subscribe((file) => this.showTempFile(this.l('GoLiveV2SalaryRegister'), file));
     }
 
     groupKey(group: BillingType): string {

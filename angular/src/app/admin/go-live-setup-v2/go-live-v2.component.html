@@ -2,8 +2,41 @@
     <sub-header [title]="'GoLiveSetupV2' | localize" [description]="'GoLiveV2Intro' | localize" />
 
     <div [class]="containerClass">
+        <!-- Where you are, and what the data says can be opened yet. -->
+        <nav class="v2-steps" [attr.aria-label]="'GoLiveSetupV2' | localize">
+            @for (step of steps(); track step.number; let last = $last) {
+                <button
+                    type="button"
+                    class="v2-step-dot"
+                    [class.v2-step-current]="step.number === currentStep()"
+                    [class.v2-step-done]="step.done"
+                    [disabled]="!step.ready"
+                    [title]="step.ready ? step.title : step.why"
+                    [attr.aria-current]="step.number === currentStep() ? 'step' : null"
+                    (click)="goToStep(step.number)">
+                    <span class="v2-step-circle">
+                        @if (step.done) {
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        } @else {
+                            {{ step.number }}
+                        }
+                    </span>
+                    <span class="v2-step-label">
+                        {{ step.title }}
+                        @if (!step.ready) {
+                            <small class="v2-step-why">{{ step.why }}</small>
+                        }
+                    </span>
+                </button>
+
+                @if (!last) {
+                    <span class="v2-step-line" aria-hidden="true"></span>
+                }
+            }
+        </nav>
+
         <!-- Step 1: Load employee data. Added because the engine found nobody to pay. -->
-        <div class="card card-custom v2-step" id="v2-load-employees">
+        <div class="card card-custom v2-step" id="v2-load-employees" [hidden]="currentStep() !== 1">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
@@ -88,7 +121,7 @@
         </div>
 
         <!-- Step 2: Run payroll, and what it paid -- the goal every other step was added for. -->
-        <div class="card card-custom v2-step">
+        <div class="card card-custom v2-step" [hidden]="currentStep() !== 2">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
@@ -429,7 +462,7 @@
         </div>
 
         <!-- Step 3: Make the bank file -- the month's salary transfer, in the paying bank's layout. -->
-        <div class="card card-custom v2-step">
+        <div class="card card-custom v2-step" [hidden]="currentStep() !== 3">
             <div class="card-body">
                 <div class="v2-step-head">
                     <div>
@@ -649,6 +682,10 @@
             </div>
         </div>
     </div>
+
+    @if (openDocument(); as document) {
+        <v2-doc-viewer [doc]="document" (closed)="closeDocument()" />
+    }
 
     @if (registerFor(); as who) {
         <!-- Salary Register of one employee: every wage type the engine wrote for the month. -->

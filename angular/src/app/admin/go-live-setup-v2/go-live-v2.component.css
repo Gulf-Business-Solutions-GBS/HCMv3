@@ -308,6 +308,78 @@
     font-size: 0.95rem;
 }
 
+/* ---------- the three steps ---------- */
+.v2-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.v2-step-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: 0;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--bs-gray-600);
+    text-align: start;
+}
+
+.v2-step-dot:disabled {
+    opacity: 0.55;
+}
+
+.v2-step-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 2px solid var(--bs-gray-400);
+    font-weight: 600;
+    flex: none;
+}
+
+.v2-step-done .v2-step-circle {
+    background: var(--bs-success);
+    border-color: var(--bs-success);
+    color: #fff;
+}
+
+.v2-step-current .v2-step-circle {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+}
+
+.v2-step-current {
+    color: var(--bs-primary);
+    font-weight: 600;
+}
+
+.v2-step-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.v2-step-why {
+    color: var(--bs-gray-500);
+    font-weight: 400;
+}
+
+.v2-step-line {
+    flex: 1;
+    min-width: 1.5rem;
+    height: 2px;
+    margin-top: 1.2rem;
+    background: var(--bs-gray-300);
+}
+
 /* ---------- step 3: results ---------- */
 .v2-results-actions {
     display: flex;
