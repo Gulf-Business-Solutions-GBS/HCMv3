@@ -5,6 +5,7 @@ using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Runtime.Session;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Configuration;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement;
 using HCMv3.Reports.Dto;
@@ -34,11 +35,11 @@ public class GoLiveV2PayslipsController : HCMv3ControllerBase
     /// <summary>Legacy <c>@PrmEmployeeStatus</c> sentinel for "any status".</summary>
     private const int AnyEmployeeStatus = -1;
 
-    private readonly IConfiguration _configuration;
+    private readonly IAppConfigurationAccessor _configurationAccessor;
 
-    public GoLiveV2PayslipsController(IConfiguration configuration)
+    public GoLiveV2PayslipsController(IAppConfigurationAccessor configurationAccessor)
     {
-        _configuration = configuration;
+        _configurationAccessor = configurationAccessor;
     }
 
     [HttpPost]
@@ -51,7 +52,9 @@ public class GoLiveV2PayslipsController : HCMv3ControllerBase
         }
 
         var monthEnd = input.PayDate.Value;
-        var connectionString = _configuration.GetConnectionString("Default");
+        // The host reads its settings through this accessor, not through the injected IConfiguration --
+        // which is empty here, as the report connection provider beside this controller already knew.
+        var connectionString = _configurationAccessor.Configuration.GetConnectionString("Default");
 
         // Every employee in the area: the report reads an empty employee code as "all of them".
         var report = new rptPayslipEn(
