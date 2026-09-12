@@ -260699,6 +260699,8 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     needsBankCode!: boolean;
     needsCompanyCode!: boolean;
     needsEmployeeAccountNumber!: boolean;
+    needsPayeeBankCodes!: boolean;
+    needsMosalId!: boolean;
 
     constructor(data?: IGoLiveV2BankFileLayoutDto) {
         if (data) {
@@ -260717,6 +260719,8 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
             this.needsBankCode = _data["needsBankCode"];
             this.needsCompanyCode = _data["needsCompanyCode"];
             this.needsEmployeeAccountNumber = _data["needsEmployeeAccountNumber"];
+            this.needsPayeeBankCodes = _data["needsPayeeBankCodes"];
+            this.needsMosalId = _data["needsMosalId"];
         }
     }
 
@@ -260735,6 +260739,8 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
         data["needsBankCode"] = this.needsBankCode;
         data["needsCompanyCode"] = this.needsCompanyCode;
         data["needsEmployeeAccountNumber"] = this.needsEmployeeAccountNumber;
+        data["needsPayeeBankCodes"] = this.needsPayeeBankCodes;
+        data["needsMosalId"] = this.needsMosalId;
         return data;
     }
 }
@@ -260746,6 +260752,8 @@ export interface IGoLiveV2BankFileLayoutDto {
     needsBankCode: boolean;
     needsCompanyCode: boolean;
     needsEmployeeAccountNumber: boolean;
+    needsPayeeBankCodes: boolean;
+    needsMosalId: boolean;
 }
 
 export enum GoLiveV2BankFileLeftOutReason {
@@ -260798,6 +260806,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
     payingBanks!: GoLiveV2PayingBankDto[] | undefined;
     employeesWithoutBank!: GoLiveV2BankFileEmployeeDto[] | undefined;
     employeesWithBank!: number;
+    mosalId!: number | undefined;
     employeesWithAccountNumber!: number;
 
     constructor(data?: IGoLiveV2BankFileSetupOutput) {
@@ -260822,6 +260831,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
                     this.employeesWithoutBank!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
             }
             this.employeesWithBank = _data["employeesWithBank"];
+            this.mosalId = _data["mosalId"];
             this.employeesWithAccountNumber = _data["employeesWithAccountNumber"];
         }
     }
@@ -260846,6 +260856,7 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
                 data["employeesWithoutBank"].push(item ? item.toJSON() : undefined as any);
         }
         data["employeesWithBank"] = this.employeesWithBank;
+        data["mosalId"] = this.mosalId;
         data["employeesWithAccountNumber"] = this.employeesWithAccountNumber;
         return data;
     }
@@ -260855,6 +260866,7 @@ export interface IGoLiveV2BankFileSetupOutput {
     payingBanks: GoLiveV2PayingBankDto[] | undefined;
     employeesWithoutBank: GoLiveV2BankFileEmployeeDto[] | undefined;
     employeesWithBank: number;
+    mosalId: number | undefined;
     employeesWithAccountNumber: number;
 }
 
@@ -260995,6 +261007,7 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
     code!: string | undefined;
     succeeded!: boolean;
     created!: boolean;
+    updated!: boolean;
     message!: string | undefined;
 
     constructor(data?: IGoLiveV2EmployeeRowResultDto) {
@@ -261012,6 +261025,7 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
             this.code = _data["code"];
             this.succeeded = _data["succeeded"];
             this.created = _data["created"];
+            this.updated = _data["updated"];
             this.message = _data["message"];
         }
     }
@@ -261029,6 +261043,7 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
         data["code"] = this.code;
         data["succeeded"] = this.succeeded;
         data["created"] = this.created;
+        data["updated"] = this.updated;
         data["message"] = this.message;
         return data;
     }
@@ -261039,6 +261054,7 @@ export interface IGoLiveV2EmployeeRowResultDto {
     code: string | undefined;
     succeeded: boolean;
     created: boolean;
+    updated: boolean;
     message: string | undefined;
 }
 
@@ -261050,6 +261066,8 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
     companyAccountNo!: string | undefined;
     bankCode!: string | undefined;
     companyCode!: string | undefined;
+    mosalId!: number | undefined;
+    payeeBanks!: GoLiveV2PayeeBankDto[] | undefined;
 
     constructor(data?: IGoLiveV2GenerateBankFileInput) {
         if (data) {
@@ -261069,6 +261087,12 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
             this.companyAccountNo = _data["companyAccountNo"];
             this.bankCode = _data["bankCode"];
             this.companyCode = _data["companyCode"];
+            this.mosalId = _data["mosalId"];
+            if (Array.isArray(_data["payeeBanks"])) {
+                this.payeeBanks = [] as any;
+                for (let item of _data["payeeBanks"])
+                    this.payeeBanks!.push(GoLiveV2PayeeBankDto.fromJS(item));
+            }
         }
     }
 
@@ -261088,6 +261112,12 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
         data["companyAccountNo"] = this.companyAccountNo;
         data["bankCode"] = this.bankCode;
         data["companyCode"] = this.companyCode;
+        data["mosalId"] = this.mosalId;
+        if (Array.isArray(this.payeeBanks)) {
+            data["payeeBanks"] = [];
+            for (let item of this.payeeBanks)
+                data["payeeBanks"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -261100,6 +261130,8 @@ export interface IGoLiveV2GenerateBankFileInput {
     companyAccountNo: string | undefined;
     bankCode: string | undefined;
     companyCode: string | undefined;
+    mosalId: number | undefined;
+    payeeBanks: GoLiveV2PayeeBankDto[] | undefined;
 }
 
 export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFileOutput {
@@ -261242,6 +261274,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
     placeholdersCreated!: number;
     employeesCreated!: number;
     employeesAlreadyLoaded!: number;
+    employeesUpdated!: number;
     rows!: GoLiveV2EmployeeRowResultDto[] | undefined;
 
     constructor(data?: IGoLiveV2LoadEmployeesOutput) {
@@ -261270,6 +261303,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
             this.placeholdersCreated = _data["placeholdersCreated"];
             this.employeesCreated = _data["employeesCreated"];
             this.employeesAlreadyLoaded = _data["employeesAlreadyLoaded"];
+            this.employeesUpdated = _data["employeesUpdated"];
             if (Array.isArray(_data["rows"])) {
                 this.rows = [] as any;
                 for (let item of _data["rows"])
@@ -261302,6 +261336,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
         data["placeholdersCreated"] = this.placeholdersCreated;
         data["employeesCreated"] = this.employeesCreated;
         data["employeesAlreadyLoaded"] = this.employeesAlreadyLoaded;
+        data["employeesUpdated"] = this.employeesUpdated;
         if (Array.isArray(this.rows)) {
             data["rows"] = [];
             for (let item of this.rows)
@@ -261327,6 +261362,7 @@ export interface IGoLiveV2LoadEmployeesOutput {
     placeholdersCreated: number;
     employeesCreated: number;
     employeesAlreadyLoaded: number;
+    employeesUpdated: number;
     rows: GoLiveV2EmployeeRowResultDto[] | undefined;
 }
 
@@ -261384,6 +261420,54 @@ export enum GoLiveV2NextStep {
     LoadEmployees = 2,
 }
 
+export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
+    bankId!: number;
+    bankName!: string | undefined;
+    code!: string | undefined;
+    employees!: number;
+
+    constructor(data?: IGoLiveV2PayeeBankDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankId = _data["bankId"];
+            this.bankName = _data["bankName"];
+            this.code = _data["code"];
+            this.employees = _data["employees"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayeeBankDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayeeBankDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankId"] = this.bankId;
+        data["bankName"] = this.bankName;
+        data["code"] = this.code;
+        data["employees"] = this.employees;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayeeBankDto {
+    bankId: number;
+    bankName: string | undefined;
+    code: string | undefined;
+    employees: number;
+}
+
 export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
     bankId!: number;
     name!: string | undefined;
@@ -261393,6 +261477,7 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
     bankCode!: string | undefined;
     companyCode!: string | undefined;
     layouts!: GoLiveV2BankFileLayoutDto[] | undefined;
+    payeeBanks!: GoLiveV2PayeeBankDto[] | undefined;
 
     constructor(data?: IGoLiveV2PayingBankDto) {
         if (data) {
@@ -261416,6 +261501,11 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
                 this.layouts = [] as any;
                 for (let item of _data["layouts"])
                     this.layouts!.push(GoLiveV2BankFileLayoutDto.fromJS(item));
+            }
+            if (Array.isArray(_data["payeeBanks"])) {
+                this.payeeBanks = [] as any;
+                for (let item of _data["payeeBanks"])
+                    this.payeeBanks!.push(GoLiveV2PayeeBankDto.fromJS(item));
             }
         }
     }
@@ -261441,6 +261531,11 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
             for (let item of this.layouts)
                 data["layouts"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.payeeBanks)) {
+            data["payeeBanks"] = [];
+            for (let item of this.payeeBanks)
+                data["payeeBanks"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -261454,6 +261549,7 @@ export interface IGoLiveV2PayingBankDto {
     bankCode: string | undefined;
     companyCode: string | undefined;
     layouts: GoLiveV2BankFileLayoutDto[] | undefined;
+    payeeBanks: GoLiveV2PayeeBankDto[] | undefined;
 }
 
 export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto {
