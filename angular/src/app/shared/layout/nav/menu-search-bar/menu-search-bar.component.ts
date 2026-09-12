@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppNavigationService } from '../app-navigation.service';
 import { ScreenNavigationService } from '../screen-navigation.service';
@@ -60,11 +60,22 @@ export class MenuSearchBarComponent extends AppComponentBase {
 
     allMenuItems: any[];
 
-    searchResults: GlobalSearchGroup[] = [];
+    /**
+     * A signal, not a plain field, because the app runs zoneless. People arrive over HTTP after the
+     * keystroke that asked for them, and assigning a plain field from that callback schedules no change
+     * detection -- the panel went on showing "No results found" until the next key press repainted it.
+     */
+    readonly searchResults = signal<GlobalSearchGroup[]>([]);
 
     isMenuSearchActive = false;
 
-    selected: '';
+    /**
+     * The field's own value: PrimeNG writes the chosen row here on select, and clearing it empties the
+     * box. A signal for the same reason as searchResults -- an action clears it from inside
+     * router.navigate().then(), long after the click Angular was watching, so a plain field left the
+     * chosen screen's name sitting in the box after navigating away.
+     */
+    readonly selected = signal<string | GlobalSearchResult>('');
 
     /**
      * Fires as soon as a result is chosen, so a host that opened this in an overlay -- the mobile header
@@ -91,16 +102,16 @@ export class MenuSearchBarComponent extends AppComponentBase {
         const query = (event.query || '').trim();
 
         const actions = this.searchActions(query);
-        this.searchResults = this.buildGroups(actions, []);
+        this.searchResults.set(this.buildGroups(actions, []));
 
         this._globalSearchService.searchPeople(this.buildPeopleInput(query)).subscribe({
             next: (result) => {
                 const people = (result.people ?? []).map((person) => this.toPersonResult(person));
-                this.searchResults = this.buildGroups(actions, people);
+                this.searchResults.set(this.buildGroups(actions, people));
             },
             // A failed people lookup must not blank the action results that already rendered.
             error: () => {
-                this.searchResults = this.buildGroups(actions, []);
+                this.searchResults.set(this.buildGroups(actions, []));
             },
         });
     }
@@ -115,7 +126,7 @@ export class MenuSearchBarComponent extends AppComponentBase {
         this.resultSelected.emit();
 
         if (item.kind === 'person') {
-            this.selected = '';
+            this.selected.set('');
             this.navigate(`/app/admin/employees/${item.employeeId}`, undefined, false);
             return;
         }
@@ -127,9 +138,20 @@ export class MenuSearchBarComponent extends AppComponentBase {
         this.navigate(item.route, item.parameters, item.external);
     }
 
-    /** Falls back to the blank avatar when the photo endpoint 404s, which it does for anyone without one. */
+    /**
+     * Falls back to the blank avatar when the photo endpoint 404s, which it does for anyone without one.
+     *
+     * Replaces the row through the signal rather than mutating it in place: zoneless again -- an image
+     * error fires outside any handler Angular is watching, so a mutated field would leave the broken
+     * image on screen until something else happened to repaint.
+     */
     onPhotoError(result: GlobalSearchResult): void {
-        result.photoUrl = null;
+        this.searchResults.update((groups) =>
+            groups.map((group) => ({
+                ...group,
+                items: group.items.map((item) => (item === result ? { ...item, photoUrl: null } : item)),
+            }))
+        );
     }
 
     /**
@@ -208,14 +230,14 @@ export class MenuSearchBarComponent extends AppComponentBase {
         // router as an internal path -- where it matched nothing and silently did nothing.
         if (external) {
             window.open(route, '_blank');
-            this.selected = '';
+            this.selected.set('');
             return;
         }
 
         this.router
             .navigate([route], { queryParams: parameters })
             .then((navigated) => {
-                this.selected = '';
+                this.selected.set('');
 
                 if (!navigated) {
                     // navigate() resolves FALSE when a guard blocks -- it does not reject. AppRouteGuard
@@ -228,7 +250,7 @@ export class MenuSearchBarComponent extends AppComponentBase {
             .catch((error) => {
                 // A genuine routing failure -- an unmatched path, or a chunk that would not load.
                 console.error('Navigation error:', error);
-                this.selected = '';
+                this.selected.set('');
                 this.message.warn(this.l('ScreenNotPermittedOrUnavailable'));
             });
     }

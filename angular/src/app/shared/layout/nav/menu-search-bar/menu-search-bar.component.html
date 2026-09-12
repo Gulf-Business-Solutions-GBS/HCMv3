@@ -1,7 +1,8 @@
 @if (isMenuSearchActive) {
     <p-autoComplete
-        [(ngModel)]="selected"
-        [suggestions]="searchResults"
+        [ngModel]="selected()"
+        (ngModelChange)="selected.set($event)"
+        [suggestions]="searchResults()"
         (completeMethod)="search($event)"
         (onSelect)="selectResult($event)"
         [group]="true"
