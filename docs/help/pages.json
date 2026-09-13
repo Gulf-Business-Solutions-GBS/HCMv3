@@ -655,6 +655,1564 @@
       "defaultSection": "HelpSimpleLists",
       "service": "SimpleLookupAppServiceBase",
       "domPrefix": "SimpleLookup"
+    },
+    {
+      "helpId": "pa.employee-basic-pay-detail.edit",
+      "title": "Employee Basic Pay Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeBasicPayDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeBasicPayDetail",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeBasicPayDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeBasicPayDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-basic-pay-details/create-or-edit-employee-basic-pay-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeBasicPayDetails"
+    },
+    {
+      "helpId": "pa.employee-dependant-exception.edit",
+      "title": "Employee Dependant Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDependantExceptions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDependantException",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDependantException",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDependantException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-dependant-exceptions/create-or-edit-employee-dependant-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDependantExceptions"
+    },
+    {
+      "helpId": "pa.employee-abs-adjustment.edit",
+      "title": "Employee Absence Adjustments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAbsAdjustments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAbsAdjustment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAbsAdjustment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAbsAdjustment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/abs-adjustments/create-or-edit-employee-abs-adjustment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAbsAdjustments"
+    },
+    {
+      "helpId": "pa.employee-abs-quota-forfeit.edit",
+      "title": "Employee Absence Quota Forfeitures — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAbsQuotaForfeits.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAbsQuotaForfeit",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAbsQuotaForfeit",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAbsQuotaForfeit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/abs-quota-forfeits/create-or-edit-employee-abs-quota-forfeit-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAbsQuotaForfeits"
+    },
+    {
+      "helpId": "pa.employee-absence-quota.edit",
+      "title": "Employee Absence Quotas — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAbsenceQuotas.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAbsenceQuota",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAbsenceQuota",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAbsenceQuota.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/absence-quotas/create-or-edit-employee-absence-quota-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAbsenceQuotas"
+    },
+    {
+      "helpId": "pa.employee-absence.edit",
+      "title": "Employee Absences — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAbsences.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAbsence",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAbsence",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAbsence.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/absences/create-or-edit-employee-absence-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAbsences"
+    },
+    {
+      "helpId": "pa.employee-account-assignment.edit",
+      "title": "Employee Account Assignments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAccountAssignments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAccountAssignment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAccountAssignment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAccountAssignment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/account-assignments/create-or-edit-employee-account-assignment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAccountAssignments"
+    },
+    {
+      "helpId": "pa.employee-action.edit",
+      "title": "Employee Actions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeActions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAction",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAction",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAction.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/actions/create-or-edit-employee-action-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeActions"
+    },
+    {
+      "helpId": "pa.employee-asset.edit",
+      "title": "Employee Assets — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAssets.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAsset",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAsset",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAsset.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/assets/create-or-edit-employee-asset-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAssets"
+    },
+    {
+      "helpId": "pa.employee-attendance-quota.edit",
+      "title": "Employee Attendance Quotas — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAttendanceQuotas.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAttendanceQuota",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAttendanceQuota",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAttendanceQuota.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/attendance-quotas/create-or-edit-employee-attendance-quota-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAttendanceQuotas"
+    },
+    {
+      "helpId": "pa.employee-attendance.edit",
+      "title": "Employee Attendances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeAttendances.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAttendance",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeAttendance",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeAttendance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/attendances/create-or-edit-employee-attendance-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAttendances"
+    },
+    {
+      "helpId": "pa.employee-bank.edit",
+      "title": "Employee Banks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeBanks.Create"
+      ],
+      "entity": {
+        "name": "EmployeeBank",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeBank",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeBank.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/banks/create-or-edit-employee-bank-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeBanks"
+    },
+    {
+      "helpId": "pa.employee-basic-pay.edit",
+      "title": "Employee Basic Pays — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeBasicPays.Create"
+      ],
+      "entity": {
+        "name": "EmployeeBasicPay",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeBasicPay",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeBasicPay.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/basic-pays/create-or-edit-employee-basic-pay-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeBasicPays"
+    },
+    {
+      "helpId": "pa.employee-benefit-exception.edit",
+      "title": "Employee Benefit Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeBenefitExceptions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeBenefitException",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeBenefitException",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeBenefitException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/benefit-exceptions/create-or-edit-employee-benefit-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeBenefitExceptions"
+    },
+    {
+      "helpId": "pa.employee-certification.edit",
+      "title": "Employee Certifications — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeCertifications.Create"
+      ],
+      "entity": {
+        "name": "EmployeeCertification",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeCertification",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeCertification.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/certifications/create-or-edit-employee-certification-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeCertifications"
+    },
+    {
+      "helpId": "pa.employee-contract.edit",
+      "title": "Employee Contracts — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeContracts.Create"
+      ],
+      "entity": {
+        "name": "EmployeeContract",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeContract",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeContract.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/contracts/create-or-edit-employee-contract-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeContracts"
+    },
+    {
+      "helpId": "pa.employee-cost-distribution.edit",
+      "title": "Employee Cost Distributions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeCostDistributions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeCostDistribution",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeCostDistribution",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeCostDistribution.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/cost-distributions/create-or-edit-employee-cost-distribution-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeCostDistributions"
+    },
+    {
+      "helpId": "pa.employee-date.edit",
+      "title": "Employee Dates — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDates.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDate",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDate",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDate.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/dates/create-or-edit-employee-date-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDates"
+    },
+    {
+      "helpId": "pa.employee-delegation.edit",
+      "title": "Employee Delegations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDelegations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDelegation",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDelegation",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDelegation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/delegations/create-or-edit-employee-delegation-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDelegations"
+    },
+    {
+      "helpId": "pa.employee-dependant.edit",
+      "title": "Employee Dependants — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDependants.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDependant",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDependant",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDependant.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/dependants/create-or-edit-employee-dependant-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDependants"
+    },
+    {
+      "helpId": "pa.employee-disciplinary.edit",
+      "title": "Employee Disciplinaries — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDisciplinaries.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDisciplinary",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDisciplinary",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDisciplinary.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/disciplinaries/create-or-edit-employee-disciplinary-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDisciplinaries"
+    },
+    {
+      "helpId": "pa.employee-document.edit",
+      "title": "Employee Documents — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDocuments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDocument",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDocument",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDocument.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/documents/create-or-edit-employee-document-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDocuments"
+    },
+    {
+      "helpId": "pa.employee-dotted-line-manager.edit",
+      "title": "Employee Dotted Line Managers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeDottedLineManagers.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDottedLineManager",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDottedLineManager",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDottedLineManager.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/dotted-line-managers/create-or-edit-employee-dotted-line-manager-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDottedLineManagers"
+    },
+    {
+      "helpId": "pa.employee-duty-period.edit",
+      "title": "Employee Duty Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.EmployeeDutyPeriods.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDutyPeriod",
+        "fullName": "HCMv3.TimeManagement.EmployeeDutyPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/EmployeeDutyPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/duty-periods/create-or-edit-employee-duty-period-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDutyPeriods"
+    },
+    {
+      "helpId": "pa.employee-duty-schedule.edit",
+      "title": "Employee Duty Schedules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.EmployeeDutySchedules.Create"
+      ],
+      "entity": {
+        "name": "EmployeeDutySchedule",
+        "fullName": "HCMv3.TimeManagement.EmployeeDutySchedule",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/EmployeeDutySchedule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/duty-schedules/create-or-edit-employee-duty-schedule-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeDutySchedules"
+    },
+    {
+      "helpId": "pa.employee-education.edit",
+      "title": "Employee Educations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeEducations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeEducation",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeEducation",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeEducation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/education/create-or-edit-employee-education-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeEducations"
+    },
+    {
+      "helpId": "pa.employee-extd-work-location.edit",
+      "title": "Employee Extended Work Locations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeExtdWorkLocations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeExtdWorkLocation",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeExtdWorkLocation",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeExtdWorkLocation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/extd-work-locations/create-or-edit-employee-extd-work-location-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeExtdWorkLocations"
+    },
+    {
+      "helpId": "pa.employee-fn-fpayment.edit",
+      "title": "Employee Full & Final Payments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeFnFPayments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeFnFPayment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeFnFPayment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeFnFPayment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/fnf-payments/create-or-edit-employee-fnf-payment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeFnFPayments"
+    },
+    {
+      "helpId": "pa.employee-fund.edit",
+      "title": "Employee Funds — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeFunds.Create"
+      ],
+      "entity": {
+        "name": "EmployeeFund",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeFund",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeFund.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/funds/create-or-edit-employee-fund-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeFunds"
+    },
+    {
+      "helpId": "pa.employee-gratuity.edit",
+      "title": "Employee Gratuities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeGratuities.Create"
+      ],
+      "entity": {
+        "name": "EmployeeGratuity",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeGratuity",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeGratuity.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/gratuities/create-or-edit-employee-gratuity-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeGratuities"
+    },
+    {
+      "helpId": "pa.employee-gratuity-quota.edit",
+      "title": "Employee Gratuity Quotas — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeGratuityQuotas.Create"
+      ],
+      "entity": {
+        "name": "EmployeeGratuityQuota",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeGratuityQuota",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeGratuityQuota.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/gratuity-quotas/create-or-edit-employee-gratuity-quota-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeGratuityQuotas"
+    },
+    {
+      "helpId": "pa.employee-grievance.edit",
+      "title": "Employee Grievances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeGrievances.Create"
+      ],
+      "entity": {
+        "name": "EmployeeGrievance",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeGrievance",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeGrievance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/grievances/create-or-edit-employee-grievance-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeGrievances"
+    },
+    {
+      "helpId": "pa.employee-health-reimburse.edit",
+      "title": "Employee Health Reimburses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeHealthReimburses.Create"
+      ],
+      "entity": {
+        "name": "EmployeeHealthReimburse",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeHealthReimburse",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeHealthReimburse.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/health-reimburses/create-or-edit-employee-health-reimburse-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeHealthReimburses"
+    },
+    {
+      "helpId": "pa.employee-insurance.edit",
+      "title": "Employee Insurances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.BenefitsManagement.EmployeeInsurances.Create"
+      ],
+      "entity": {
+        "name": "EmployeeInsurance",
+        "fullName": "HCMv3.BenefitsManagement.EmployeeInsurance",
+        "file": "aspnet-core/src/HCMv3.Core/BenefitsManagement/EmployeeInsurance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/insurances/create-or-edit-employee-insurance-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeInsurances"
+    },
+    {
+      "helpId": "pa.employee-loan.edit",
+      "title": "Employee Loans — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeLoans.Create"
+      ],
+      "entity": {
+        "name": "EmployeeLoan",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeLoan",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeLoan.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/loans/create-or-edit-employee-loan-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeLoans"
+    },
+    {
+      "helpId": "pa.employee-manager.edit",
+      "title": "Employee Managers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeManagers.Create"
+      ],
+      "entity": {
+        "name": "EmployeeManager",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeManager",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeManager.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/managers/create-or-edit-employee-manager-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeManagers"
+    },
+    {
+      "helpId": "pa.employee-on-hold.edit",
+      "title": "Employee On Holds — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeOnHolds.Create"
+      ],
+      "entity": {
+        "name": "EmployeeOnHold",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeOnHold",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeOnHold.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/on-holds/create-or-edit-employee-on-hold-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeOnHolds"
+    },
+    {
+      "helpId": "pa.employee-org-assignment.edit",
+      "title": "Employee Org Assignments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeOrgAssignments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeOrgAssignment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeOrgAssignment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeOrgAssignment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/org-assignments/create-or-edit-employee-org-assignment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeOrgAssignments"
+    },
+    {
+      "helpId": "pa.employee-overtime.edit",
+      "title": "Employee Overtimes — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeOvertimes.Create"
+      ],
+      "entity": {
+        "name": "EmployeeOvertime",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeOvertime",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeOvertime.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/overtimes/create-or-edit-employee-overtime-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeOvertimes"
+    },
+    {
+      "helpId": "pa.employee-payment.edit",
+      "title": "Employee Payments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeePayments.Create"
+      ],
+      "entity": {
+        "name": "EmployeePayment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeePayment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeePayment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/payments/create-or-edit-employee-payment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeePayments"
+    },
+    {
+      "helpId": "pa.employee-payroll-status.edit",
+      "title": "Employee Payroll Statuses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeePayrollStatuses.Create"
+      ],
+      "entity": {
+        "name": "EmployeePayrollStatus",
+        "fullName": "HCMv3.PayrollManagement.EmployeePayrollStatus",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeePayrollStatus.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/payroll-status/create-or-edit-employee-payroll-status-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeePayrollStatuses"
+    },
+    {
+      "helpId": "pa.emp-performance-history.edit",
+      "title": "Employee Performance Histories — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.EmpPerformanceHistories.Create"
+      ],
+      "entity": {
+        "name": "EmpPerformanceHistory",
+        "fullName": "HCMv3.SuccessionManagement.EmpPerformanceHistory",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/EmpPerformanceHistory.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/performance-histories/create-or-edit-employee-performance-history-modal.component.html"
+        }
+      },
+      "defaultSection": "EmpPerformanceHistories"
+    },
+    {
+      "helpId": "pa.emp-potential-assessment.edit",
+      "title": "Employee Potential Assessments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.EmpPotentialAssessments.Create"
+      ],
+      "entity": {
+        "name": "EmpPotentialAssessment",
+        "fullName": "HCMv3.SuccessionManagement.EmpPotentialAssessment",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/EmpPotentialAssessment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/potential-assessments/create-or-edit-employee-potential-assessment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmpPotentialAssessments"
+    },
+    {
+      "helpId": "pa.employee-rejoin.edit",
+      "title": "Employee Rejoins — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeRejoins.Create"
+      ],
+      "entity": {
+        "name": "EmployeeRejoin",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeRejoin",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeRejoin.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/rejoins/create-or-edit-employee-rejoin-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeRejoins"
+    },
+    {
+      "helpId": "pa.employee-relationship.edit",
+      "title": "Employee Relationships — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeRelationships.Create"
+      ],
+      "entity": {
+        "name": "EmployeeRelationship",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeRelationship",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeRelationship.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/relationships/create-or-edit-employee-relationship-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeRelationships"
+    },
+    {
+      "helpId": "pa.employee-remuneration.edit",
+      "title": "Employee Remunerations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeRemunerations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeRemuneration",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeRemuneration",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeRemuneration.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/remunerations/create-or-edit-employee-remuneration-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeRemunerations"
+    },
+    {
+      "helpId": "pa.employee-reward.edit",
+      "title": "Employee Rewards — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeRewards.Create"
+      ],
+      "entity": {
+        "name": "EmployeeReward",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeReward",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeReward.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/rewards/create-or-edit-employee-reward-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeRewards"
+    },
+    {
+      "helpId": "pa.employee-separation.edit",
+      "title": "Employee Separations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeSeparations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSeparation",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeSeparation",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeSeparation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/separations/create-or-edit-employee-separation-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSeparations"
+    },
+    {
+      "helpId": "pa.employee-signature.edit",
+      "title": "Employee Signatures — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeSignatures.Create",
+        "Pages.PersonnelAdministration.EmployeeSignatures.Edit"
+      ],
+      "entity": {
+        "name": "EmployeeSignature",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeSignature",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeSignature.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/signature/employee-signature.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSignatures"
+    },
+    {
+      "helpId": "pa.employee-social-security.edit",
+      "title": "Employee Social Securities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeSocialSecurities.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSocialSecurity",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeSocialSecurity",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeSocialSecurity.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/social-securities/create-or-edit-employee-social-security-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSocialSecurities"
+    },
+    {
+      "helpId": "pa.employee-social-security-claim.edit",
+      "title": "Employee Social Security Claims — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeSocialSecurityClaims.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSocialSecurityClaim",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeSocialSecurityClaim",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeSocialSecurityClaim.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/social-security-claims/create-or-edit-employee-social-security-claim-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSocialSecurityClaims"
+    },
+    {
+      "helpId": "pa.employee-sponsor.edit",
+      "title": "Employee Sponsors — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeSponsors.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSponsor",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeSponsor",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeSponsor.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/sponsors/create-or-edit-employee-sponsor-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSponsors"
+    },
+    {
+      "helpId": "pa.employee-substitute-duty.edit",
+      "title": "Employee Substitute Duties — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.EmployeeSubstituteDuties.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubstituteDuty",
+        "fullName": "HCMv3.TimeManagement.EmployeeSubstituteDuty",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/EmployeeSubstituteDuty.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/substitute-duties/create-or-edit-employee-substitute-duty-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubstituteDuties"
+    },
+    {
+      "helpId": "pa.employee-talent-flag.edit",
+      "title": "Employee Talent Flags — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.EmployeeTalentFlags.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTalentFlag",
+        "fullName": "HCMv3.SuccessionManagement.EmployeeTalentFlag",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/EmployeeTalentFlag.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/talent-flags/create-or-edit-employee-talent-flag-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTalentFlags"
+    },
+    {
+      "helpId": "pa.emp-talent-matrix-data.edit",
+      "title": "Employee Talent Matrix Data — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SuccessionManagement.EmpTalentMatrixDatas.Create"
+      ],
+      "entity": {
+        "name": "EmpTalentMatrixData",
+        "fullName": "HCMv3.SuccessionManagement.EmpTalentMatrixData",
+        "file": "aspnet-core/src/HCMv3.Core/SuccessionManagement/EmpTalentMatrixData.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/talent-matrix/create-or-edit-employee-talent-matrix-modal.component.html"
+        }
+      },
+      "defaultSection": "EmpTalentMatrixDatas"
+    },
+    {
+      "helpId": "pa.employee-task.edit",
+      "title": "Employee Tasks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeTasks.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTask",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeTask",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeTask.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/tasks/create-or-edit-employee-task-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTasks"
+    },
+    {
+      "helpId": "pa.employee-ticket-quota.edit",
+      "title": "Employee Ticket Quotas — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeTicketQuotas.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTicketQuota",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeTicketQuota",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeTicketQuota.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/ticket-quotas/create-or-edit-employee-ticket-quota-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTicketQuotas"
+    },
+    {
+      "helpId": "pa.employee-ticket-route.edit",
+      "title": "Employee Ticket Routes — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeTicketRoutes.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTicketRoute",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeTicketRoute",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeTicketRoute.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/ticket-routes/create-or-edit-employee-ticket-route-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTicketRoutes"
+    },
+    {
+      "helpId": "pa.employee-ticket.edit",
+      "title": "Employee Tickets — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeTickets.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTicket",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeTicket",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeTicket.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/tickets/create-or-edit-employee-ticket-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTickets"
+    },
+    {
+      "helpId": "pa.employee-time-policy.edit",
+      "title": "Employee Time Policies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.EmployeeTimePolicies.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTimePolicy",
+        "fullName": "HCMv3.TimeManagement.EmployeeTimePolicy",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/EmployeeTimePolicy.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/time-policies/create-or-edit-employee-time-policy-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTimePolicies"
+    },
+    {
+      "helpId": "pa.employee-timesheet.edit",
+      "title": "Employee Timesheets — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.EmployeeTimesheets.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTimesheet",
+        "fullName": "HCMv3.TimeManagement.EmployeeTimesheet",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/EmployeeTimesheet.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/timesheets/create-or-edit-employee-timesheet-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTimesheets"
+    },
+    {
+      "helpId": "pa.employee-tkt-adjustment.edit",
+      "title": "Employee Ticket Adjustments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeTktAdjustments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeTktAdjustment",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeTktAdjustment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeTktAdjustment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/tkt-adjustments/create-or-edit-employee-tkt-adjustment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeTktAdjustments"
+    },
+    {
+      "helpId": "pa.employee-wage-acc-group.edit",
+      "title": "Employee Wage Account Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeWageAccGroups.Create"
+      ],
+      "entity": {
+        "name": "EmployeeWageAccGroup",
+        "fullName": "HCMv3.PayrollManagement.EmployeeWageAccGroup",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeWageAccGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/wage-acc-groups/create-or-edit-employee-wage-acc-group-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeWageAccGroups"
+    },
+    {
+      "helpId": "pa.employee-wage-account.edit",
+      "title": "Employee Wage Accounts — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeWageAccounts.Create"
+      ],
+      "entity": {
+        "name": "EmployeeWageAccount",
+        "fullName": "HCMv3.PayrollManagement.EmployeeWageAccount",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeWageAccount.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/wage-accounts/create-or-edit-employee-wage-account-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeWageAccounts"
+    },
+    {
+      "helpId": "pa.employee-work-experience.edit",
+      "title": "Employee Work Experiences — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeWorkExperiences.Create"
+      ],
+      "entity": {
+        "name": "EmployeeWorkExperience",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeWorkExperience",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeWorkExperience.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/work-experience/create-or-edit-employee-work-experience-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeWorkExperiences"
+    },
+    {
+      "helpId": "pa.employee-fund-detail.edit",
+      "title": "Employee Fund Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeFundDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeFundDetail",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeFundDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeFundDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-fund-details/create-or-edit-employee-fund-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeFundDetails"
+    },
+    {
+      "helpId": "pa.employee-fund-exemption.edit",
+      "title": "Employee Fund Exemptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeFundExemptions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeFundExemption",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeFundExemption",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeFundExemption.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-fund-exemptions/create-or-edit-employee-fund-exemption-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeFundExemptions"
+    },
+    {
+      "helpId": "pa.employee-loan-exemption.edit",
+      "title": "Employee Loan Exemptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeLoanExemptions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeLoanExemption",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeLoanExemption",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeLoanExemption.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-loan-exemptions/create-or-edit-employee-loan-exemption-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeLoanExemptions"
+    },
+    {
+      "helpId": "pa.employee-loan-recovery.edit",
+      "title": "Employee Loan Recoveries — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.EmployeeLoanRecoveries.Create"
+      ],
+      "entity": {
+        "name": "EmployeeLoanRecovery",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeLoanRecovery",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeLoanRecovery.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-loan-recoveries/create-or-edit-employee-loan-recovery-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeLoanRecoveries"
+    },
+    {
+      "helpId": "pa.loan-installment.edit",
+      "title": "Loan Installments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.LoanInstallments.Create"
+      ],
+      "entity": {
+        "name": "LoanInstallment",
+        "fullName": "HCMv3.PersonnelAdministration.LoanInstallment",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/LoanInstallment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/loan-installments/create-or-edit-loan-installment-modal.component.html"
+        }
+      },
+      "defaultSection": "LoanInstallments"
+    },
+    {
+      "helpId": "pa.news.edit",
+      "title": "Announcements — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PersonnelAdministration.News.Create",
+        "Pages.PersonnelAdministration.News.Edit"
+      ],
+      "entity": {
+        "name": "News",
+        "fullName": "HCMv3.PersonnelAdministration.News",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/News.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/announcements/create-or-edit-announcement-modal.component.html"
+        }
+      },
+      "defaultSection": "Announcements",
+      "service": "NewsAppService",
+      "domPrefix": "Announcement"
+    },
+    {
+      "helpId": "pa.employee-document-mvmt.edit",
+      "title": "Document Movements — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "EmployeeDocumentMvmt",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeDocumentMvmt",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeDocumentMvmt.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/documents/employee-document-movements-modal.component.html"
+        }
+      },
+      "service": "EmployeeDocumentMvmtsAppService",
+      "domPrefix": "Mvmt",
+      "defaultSection": "DocumentMovements"
+    },
+    {
+      "helpId": "pa.employee-non-payroll-trans.edit",
+      "title": "Non-Payroll Transactions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "EmployeeNonPayrollTrans",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeNonPayrollTrans",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeNonPayrollTrans.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/non-payroll-trans/create-or-edit-employee-non-payroll-tran-modal.component.html"
+        }
+      },
+      "service": "EmployeeNonPayrollTransAppService",
+      "domPrefix": "EmployeeNonPayrollTran",
+      "defaultSection": "EmployeeNonPayrollTrans"
+    },
+    {
+      "helpId": "pa.employee-visa-info.edit",
+      "title": "Visa Info",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "EmployeeVisaInfo",
+        "fullName": "HCMv3.PersonnelAdministration.EmployeeVisaInfo",
+        "file": "aspnet-core/src/HCMv3.Core/PersonnelAdministration/EmployeeVisaInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/personnel-administration/employee-detail/visa-info/employee-visa-info.component.html"
+        }
+      },
+      "service": "EmployeeVisaInfosAppService",
+      "domPrefix": "VisaInfo",
+      "defaultSection": "EmployeeVisaInfos"
     }
   ]
 }

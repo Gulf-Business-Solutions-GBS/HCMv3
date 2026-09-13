@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-gratuity.edit",
+  "lang": "en",
+  "title": "Employee Gratuities — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGratuity",
+  "overviewHtml": "<p>An indemnity (gratuity) payment already made to the employee, in days.</p><p>Payroll counts the days paid in the month when working out the indemnity due. Ticking Reset makes the indemnity count start again from the paid date.</p>",
+  "aliasIndex": {
+    "loc:GratuityPaidDate": "EmployeeGratuity.GratuityPaidDate",
+    "dom:EmployeeGratuity_GratuityPaidDate": "EmployeeGratuity.GratuityPaidDate",
+    "loc:GratuityPaidDays": "EmployeeGratuity.GratuityPaidDays",
+    "dom:EmployeeGratuity_GratuityPaidDays": "EmployeeGratuity.GratuityPaidDays",
+    "loc:ResetGratuityCalc": "EmployeeGratuity.ResetGratuityCalc",
+    "dom:EmployeeGratuity_ResetGratuityCalc": "EmployeeGratuity.ResetGratuityCalc",
+    "loc:Comments": "EmployeeGratuity.Comments",
+    "dom:EmployeeGratuity_Comments": "EmployeeGratuity.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGratuity.GratuityPaidDate",
+      "label": "GratuityPaidDate",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:GratuityPaidDate",
+        "dom:EmployeeGratuity_GratuityPaidDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the indemnity was paid.</p><p><strong>Example.</strong> 31 Dec 2025</p><p><strong>Why it matters.</strong> Days paid are counted in the payroll month of this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.GratuityPaidDays",
+      "label": "GratuityPaidDays",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:GratuityPaidDays",
+        "dom:EmployeeGratuity_GratuityPaidDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of indemnity days paid.</p><p><strong>Example.</strong> 120</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.ResetGratuityCalc",
+      "label": "ResetGratuityCalc",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:ResetGratuityCalc",
+        "dom:EmployeeGratuity_ResetGratuityCalc"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the indemnity calculation restarts from the paid date.</p><p><strong>Why it matters.</strong> When ticked, service for indemnity is counted from this payment's date instead of from the start.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuity.Comments",
+      "label": "Comments",
+      "section": "EmployeeGratuities",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeGratuity_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

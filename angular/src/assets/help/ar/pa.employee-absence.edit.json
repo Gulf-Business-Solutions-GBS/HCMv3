@@ -1,0 +1,267 @@
+{
+  "helpId": "pa.employee-absence.edit",
+  "lang": "ar",
+  "title": "غيابات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsence",
+  "overviewHtml": "<p>فترة إجازة أو غياب للموظف. ولا يجوز أن تتداخل فترات غياب الموظف نفسه.</p><p>تدفع الرواتب أجر الإجازة وفق نوع الدفع وتاريخه، ويحدد محرك الوقت الأيام على أنها إجازة.</p><p>الغياب المُدخل في هذا النموذج لا يغيّر رقم المستخدَم في حصة إجازات الموظف، فلا ينقص رصيد الإجازات في الخدمة الذاتية. أما الإجازة المطلوبة والمعتمدة عبر الخدمة الذاتية فتحدّثه.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
+    "dom:EmployeeAbsence_AbsenceTypeId": "EmployeeAbsence.AbsenceTypeId",
+    "loc:StartDate": "EmployeeAbsence.StartDate",
+    "dom:EmployeeAbsence_StartDate": "EmployeeAbsence.StartDate",
+    "loc:EndDate": "EmployeeAbsence.EndDate",
+    "dom:EmployeeAbsence_EndDate": "EmployeeAbsence.EndDate",
+    "loc:HalfdayType": "EmployeeAbsence.HalfdayType",
+    "dom:EmployeeAbsence_HalfdayType": "EmployeeAbsence.HalfdayType",
+    "loc:StartTime": "EmployeeAbsence.StartTime",
+    "dom:EmployeeAbsence_StartTime": "EmployeeAbsence.StartTime",
+    "loc:EndTime": "EmployeeAbsence.EndTime",
+    "dom:EmployeeAbsence_EndTime": "EmployeeAbsence.EndTime",
+    "loc:LeavePaymentType": "EmployeeAbsence.LeavePaymentType",
+    "dom:EmployeeAbsence_LeavePaymentType": "EmployeeAbsence.LeavePaymentType",
+    "loc:PaymentDate": "EmployeeAbsence.PaymentDate",
+    "dom:EmployeeAbsence_PaymentDate": "EmployeeAbsence.PaymentDate",
+    "loc:ReturnDate": "EmployeeAbsence.ReturnDate",
+    "dom:EmployeeAbsence_ReturnDate": "EmployeeAbsence.ReturnDate",
+    "loc:IsTravelling": "EmployeeAbsence.IsTravelling",
+    "dom:EmployeeAbsence_IsTravelling": "EmployeeAbsence.IsTravelling",
+    "loc:AdvanceLeavePaid": "EmployeeAbsence.AdvanceLeavePaid",
+    "dom:EmployeeAbsence_AdvanceLeavePaid": "EmployeeAbsence.AdvanceLeavePaid",
+    "loc:IsReturned": "EmployeeAbsence.IsReturned",
+    "dom:EmployeeAbsence_IsReturned": "EmployeeAbsence.IsReturned",
+    "loc:ExtAbsenceTypeId": "EmployeeAbsence.ExtAbsenceTypeId",
+    "dom:EmployeeAbsence_ExtAbsenceTypeId": "EmployeeAbsence.ExtAbsenceTypeId",
+    "loc:ExtStartDate": "EmployeeAbsence.ExtStartDate",
+    "dom:EmployeeAbsence_ExtStartDate": "EmployeeAbsence.ExtStartDate",
+    "loc:ExtEndDate": "EmployeeAbsence.ExtEndDate",
+    "dom:EmployeeAbsence_ExtEndDate": "EmployeeAbsence.ExtEndDate",
+    "loc:Comments": "EmployeeAbsence.Comments",
+    "dom:EmployeeAbsence_Comments": "EmployeeAbsence.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsence.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsence_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> إجازة سنوية</p><p><strong>لماذا يهم.</strong> يحدد طريقة دفع الأيام والحصة التي تنتمي إليها.</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الغياب.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAbsence_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAbsence_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.HalfdayType",
+      "label": "HalfdayType",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:HalfdayType",
+        "dom:EmployeeAbsence_HalfdayType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، بداية الدوام، نهاية الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل الإجازة نصف يوم، وأي نصف.</p><p><strong>مثال.</strong> بداية الدوام</p><p><strong>لماذا يهم.</strong> يظهر في تقارير الحضور الشهري مع السماحية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.StartTime",
+      "label": "StartTime",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:StartTime",
+        "dom:EmployeeAbsence_StartTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء الإجازة، للإجازة بالساعات.</p><p><strong>مثال.</strong> 08:00</p>",
+      "adminHtml": "<p>لا يعامل محركا الوقت والرواتب الغياب على أنه بالساعات إلا عند تحديد ساعات الغياب، وهو ما لا يفعله هذا النموذج. لذلك يُحتسب الغياب المحفوظ هنا أياماً كاملة حتى لو أُدخلت الأوقات.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.EndTime",
+      "label": "EndTime",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:EndTime",
+        "dom:EmployeeAbsence_EndTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء الإجازة، للإجازة بالساعات.</p><p><strong>مثال.</strong> 12:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.LeavePaymentType",
+      "label": "LeavePaymentType",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:LeavePaymentType",
+        "dom:EmployeeAbsence_LeavePaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الدفع مع الرواتب، الدفع مقدماً، الدفع كاملاً مع الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يُدفع أجر الإجازة.</p><p><strong>مثال.</strong> دفع مقدم</p><p><strong>لماذا يهم.</strong> الدفع المقدم يُصرف في مسيرة رواتب خارج الدورة في تاريخ الدفع. والدفع الكامل مع الرواتب يصرف أجر الإجازة الممتدة إلى أشهر لاحقة في مسيرة الرواتب التي يطابق تاريخ دفعها تاريخ الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeAbsence_PaymentDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ استحقاق أجر الإجازة.</p><p><strong>مثال.</strong> 25 يونيو 2026</p><p><strong>لماذا يهم.</strong> تطابقه الرواتب مع تاريخ دفع المسيرة التي يجب أن تصرف هذه الإجازة. ويمكن أيضاً توقيت تذكيرات الدفع المقدم منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.ReturnDate",
+      "label": "ReturnDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:ReturnDate",
+        "dom:EmployeeAbsence_ReturnDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي عاد فيه الموظف من الإجازة فعلياً.</p><p><strong>مثال.</strong> 16 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.IsTravelling",
+      "label": "IsTravelling",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:IsTravelling",
+        "dom:EmployeeAbsence_IsTravelling"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يسافر الموظف خلال الإجازة.</p><p><strong>لماذا يهم.</strong> متاح لقواعد العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.AdvanceLeavePaid",
+      "label": "AdvanceLeavePaid",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:AdvanceLeavePaid",
+        "dom:EmployeeAbsence_AdvanceLeavePaid"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل صُرف أجر الإجازة المقدم بالفعل.</p><p><strong>لماذا يهم.</strong> تحدده الرواتب عند صرف الدفعة المقدمة. ولا تُرسل تذكيرات الدفع المقدم إلا ما دام غير محدد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.IsReturned",
+      "label": "IsReturned",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:IsReturned",
+        "dom:EmployeeAbsence_IsReturned"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل عاد الموظف من هذه الإجازة.</p>",
+      "adminHtml": "<p>في أنواع الإجازات التي تتطلب تاريخ عودة، يُعامل الغياب المنتهي الذي ليس له تاريخ عودة ولم يُحدد فيه هذا الخيار على أنه عدم عودة من الإجازة: فتُرسل تذكيرات العودة، وتعامل الرواتب الموظف على أنه لم يعد عند تفعيل هذا الإعداد فيها.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.ExtAbsenceTypeId",
+      "label": "ExtAbsenceTypeId",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:ExtAbsenceTypeId",
+        "dom:EmployeeAbsence_ExtAbsenceTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة الذي يُحوَّل إليه تمديد هذا الغياب — كالإجازة السنوية الزائدة التي تُحتسب دون أجر.</p><p><strong>مثال.</strong> إجازة بدون أجر</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرأ أي احتساب التمديد حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.ExtStartDate",
+      "label": "ExtStartDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:ExtStartDate",
+        "dom:EmployeeAbsence_ExtStartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في التمديد.</p><p><strong>مثال.</strong> 11 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.ExtEndDate",
+      "label": "ExtEndDate",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:ExtEndDate",
+        "dom:EmployeeAbsence_ExtEndDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في التمديد.</p><p><strong>مثال.</strong> 15 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsence.Comments",
+      "label": "Comments",
+      "section": "EmployeeAbsences",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAbsence_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

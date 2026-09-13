@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-document-mvmt.edit",
+  "lang": "ar",
+  "title": "حركة الوثائق — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDocumentMvmt",
+  "overviewHtml": "<p>سحب إحدى وثائق الموظف وإرجاعها — كتسليم جواز السفر للموظف من أجل السفر.</p><p>ما دامت الحركة بلا تاريخ إرجاع فعلي، تظهر الوثيقة خارجة. ويمكن للموظفين طلب سحب جواز السفر عبر الخدمة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
+    "dom:Mvmt_WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
+    "loc:ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
+    "dom:Mvmt_ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
+    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "loc:Comments": "EmployeeDocumentMvmt.Comments",
+    "dom:Mvmt_Comments": "EmployeeDocumentMvmt.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDocumentMvmt.WithdrawDate",
+      "label": "WithdrawDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:WithdrawDate",
+        "dom:Mvmt_WithdrawDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سحب الوثيقة.</p><p><strong>مثال.</strong> 1 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ReturnDate",
+      "label": "ReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ReturnDate",
+        "dom:Mvmt_ReturnDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ المتوقع لإرجاع الوثيقة.</p><p><strong>مثال.</strong> 20 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ActualReturnDate",
+      "label": "ActualReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ActualReturnDate",
+        "dom:Mvmt_ActualReturnDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي أُرجعت فيه الوثيقة فعلياً.</p><p><strong>مثال.</strong> 18 يوليو 2026</p><p><strong>لماذا يهم.</strong> اتركه فارغاً ما دامت الوثيقة خارجة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.Comments",
+      "label": "Comments",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:Comments",
+        "dom:Mvmt_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

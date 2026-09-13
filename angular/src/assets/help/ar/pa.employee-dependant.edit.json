@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-dependant.edit",
+  "lang": "ar",
+  "title": "عائلو الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDependant",
+  "overviewHtml": "<p>فرد من الأسرة يعوله الموظف — زوج أو ابن أو والد — والمزايا التي يُحتسب ضمنها. ولا يجوز أن تتداخل فترات المعالين من نوع التذكرة نفسه للموظف نفسه.</p><p>يدخل المعالون في استحقاق تعويض المصاريف الصحية، وتذاكر طيران المعالين، وبدل الأبناء في التأمينات الاجتماعية.</p>",
+  "aliasIndex": {
+    "loc:NameEn": "EmployeeDependant.NameEn",
+    "dom:EmployeeDependant_NameEn": "EmployeeDependant.NameEn",
+    "loc:NameAr": "EmployeeDependant.NameAr",
+    "dom:EmployeeDependant_NameAr": "EmployeeDependant.NameAr",
+    "loc:DependantTypeId": "EmployeeDependant.DependantTypeId",
+    "dom:EmployeeDependant_DependantTypeId": "EmployeeDependant.DependantTypeId",
+    "loc:BirthDate": "EmployeeDependant.BirthDate",
+    "dom:EmployeeDependant_BirthDate": "EmployeeDependant.BirthDate",
+    "loc:TicketTypeId": "EmployeeDependant.TicketTypeId",
+    "dom:EmployeeDependant_TicketTypeId": "EmployeeDependant.TicketTypeId",
+    "loc:StartDate": "EmployeeDependant.StartDate",
+    "dom:EmployeeDependant_StartDate": "EmployeeDependant.StartDate",
+    "loc:EndDate": "EmployeeDependant.EndDate",
+    "dom:EmployeeDependant_EndDate": "EmployeeDependant.EndDate",
+    "loc:SpecialNeed": "EmployeeDependant.SpecialNeed",
+    "dom:EmployeeDependant_SpecialNeed": "EmployeeDependant.SpecialNeed",
+    "loc:IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
+    "dom:EmployeeDependant_IncludeInSocialSecurity": "EmployeeDependant.IncludeInSocialSecurity",
+    "loc:IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance",
+    "dom:EmployeeDependant_IncludeInHealthInsurance": "EmployeeDependant.IncludeInHealthInsurance"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDependant.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeDependant_NameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم المعال بالإنجليزية.</p><p><strong>مثال.</strong> Sara Ahmed Al-Mutairi</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeDependant_NameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم المعال بالعربية.</p><p><strong>مثال.</strong> سارة أحمد المطيري</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.DependantTypeId",
+      "label": "DependantTypeId",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:DependantTypeId",
+        "dom:EmployeeDependant_DependantTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع صفات العائل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صفة العائل بالنسبة إلى الموظف.</p><p><strong>مثال.</strong> ابنة</p><p><strong>لماذا يهم.</strong> يُحدَّد استحقاق تعويض المصاريف الصحية لكل صفة عائل في المجموعة الفرعية للموظف.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع صفات العائل.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.BirthDate",
+      "label": "BirthDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:BirthDate",
+        "dom:EmployeeDependant_BirthDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ ميلاد المعال.</p><p><strong>مثال.</strong> 12 مايو 2015</p><p><strong>لماذا يهم.</strong> يطبّق تعويض المصاريف الصحية حد العمر لصفة العائل بناءً عليه، وقد تعتمد أجرة تذكرة الطيران على عمر المعال.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeDependant_TicketTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة الذي تستخدمه تذاكر طيران المعال.</p><p><strong>مثال.</strong> المعال 1</p><p><strong>لماذا يهم.</strong> يحتسب محرك الوقت تراكم تذاكر المعال الساري في كل يوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependant_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه ونوع التذكرة نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependant_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.SpecialNeed",
+      "label": "SpecialNeed",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:SpecialNeed",
+        "dom:EmployeeDependant_SpecialNeed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل المعال من ذوي الاحتياجات الخاصة.</p><p><strong>لماذا يهم.</strong> تصرف التأمينات الاجتماعية بدل الأبناء من ذوي الاحتياجات الخاصة لهؤلاء المعالين بدلاً من بدل الأبناء العادي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.IncludeInSocialSecurity",
+      "label": "IncludeInSocialSecurity",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:IncludeInSocialSecurity",
+        "dom:EmployeeDependant_IncludeInSocialSecurity"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُحتسب المعال في بدلات الأبناء في التأمينات الاجتماعية.</p><p><strong>لماذا يهم.</strong> لا يُحتسب إلا المعالون المحدد لهم هذا الخيار، وللموظفين الذكور فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependant.IncludeInHealthInsurance",
+      "label": "IncludeInHealthInsurance",
+      "section": "EmployeeDependants",
+      "aliases": [
+        "loc:IncludeInHealthInsurance",
+        "dom:EmployeeDependant_IncludeInHealthInsurance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل المعال مشمول بالتأمين الصحي.</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-separation.edit",
+  "lang": "ar",
+  "title": "حالات فصل الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSeparation",
+  "overviewHtml": "<p>خروج الموظف: متى استقال أو أُنهيت خدمته، وآخر يوم له في الخدمة. ويبقى الفصل سارياً حتى يُلغى.</p><p>تتوقف الرواتب عن احتساب معظم الأجر بعد نهاية شهر آخر يوم في الخدمة، وتحتاج مسيرة نهاية الخدمة إلى فصل غير ملغى. ولا يؤدي حفظ الفصل إلى إنشاء إيقاف للأجر أو حذف سجلات الوقت اللاحقة؛ فتلك خطوات منفصلة.</p>",
+  "aliasIndex": {
+    "loc:SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "dom:EmployeeSeparation_SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "loc:LastDayInService": "EmployeeSeparation.LastDayInService",
+    "dom:EmployeeSeparation_LastDayInService": "EmployeeSeparation.LastDayInService",
+    "loc:NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "dom:EmployeeSeparation_NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "loc:PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "dom:EmployeeSeparation_PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "loc:SeparationType": "EmployeeSeparation.SeparationType",
+    "dom:EmployeeSeparation_SeparationType": "EmployeeSeparation.SeparationType",
+    "loc:SeparationReason": "EmployeeSeparation.SeparationReasonId",
+    "dom:EmployeeSeparation_SeparationReasonId": "EmployeeSeparation.SeparationReasonId",
+    "loc:RevokeDate": "EmployeeSeparation.RevokeDate",
+    "dom:EmployeeSeparation_RevokeDate": "EmployeeSeparation.RevokeDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSeparation.SubmissionDate",
+      "label": "SubmissionDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SubmissionDate",
+        "dom:EmployeeSeparation_SubmissionDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ تقديم الاستقالة أو إنهاء الخدمة.</p><p><strong>مثال.</strong> 1 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا يجوز أن يسبقه آخر يوم في الخدمة. وتستخدم مسيرة نهاية الخدمة أحدث فصل مقدَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.LastDayInService",
+      "label": "LastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:LastDayInService",
+        "dom:EmployeeSeparation_LastDayInService"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم عمل للموظف.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا تحتسب الرواتب أنواع الأجور لتواريخ دفع بعد نهاية هذا الشهر، وتتوقف اقتطاعات الصندوق، وتُحتسب مكافأة نهاية الخدمة كما في هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.NoticePeriodDays",
+      "label": "NoticePeriodDays",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:NoticePeriodDays",
+        "dom:EmployeeSeparation_NoticePeriodDays"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدة فترة الإشعار بالأيام.</p><p><strong>مثال.</strong> 30</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الفصل، ولا تُعاد حساب التواريخ منه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.PlannedLastDayInService",
+      "label": "PlannedLastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:PlannedLastDayInService",
+        "dom:EmployeeSeparation_PlannedLastDayInService"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم كان مخططاً في الأصل، قبل أي تغيير.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الفصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationType",
+      "label": "SeparationType",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationType",
+        "dom:EmployeeSeparation_SeparationType"
+      ],
+      "rules": "إلزامي. إحدى القيم: استقالة، إنهاء خدمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل استقال الموظف أم أُنهيت خدمته.</p><p><strong>مثال.</strong> استقالة</p><p><strong>لماذا يهم.</strong> يظهر في تقارير الموظفين والتكلفة الإجمالية للموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationReasonId",
+      "label": "SeparationReason",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationReason",
+        "dom:EmployeeSeparation_SeparationReasonId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أسباب الفصل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب مغادرة الموظف.</p><p><strong>مثال.</strong> فرصة أفضل</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أسباب الفصل.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.RevokeDate",
+      "label": "RevokeDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:RevokeDate",
+        "dom:EmployeeSeparation_RevokeDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سحب الفصل، إن سُحب.</p><p><strong>مثال.</strong> 10 أغسطس 2026</p><p><strong>لماذا يهم.</strong> بعد تحديده، تتجاهل الرواتب واحتساب مكافأة نهاية الخدمة هذا الفصل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

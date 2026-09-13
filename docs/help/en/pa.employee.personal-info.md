@@ -97,7 +97,7 @@ Maintained under General Master Info → Titles.
 
 **Why it matters.** Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.
 
-**Rules.** Required. One of: Male, Female.
+**Rules.** Required. One of: Male, Female, Not specified.
 
 :::admin
 Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.
@@ -299,7 +299,7 @@ Maintained under General Master Info → Recruitment Types.
 
 **Example.** `ahmed.mutairi@company.com`
 
-**Why it matters.** Where HCMv3 emails the employee: new sign-in details from the bulk password tool, announcements, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.
+**Why it matters.** Where HCMv3 emails the employee: new sign-in details from the bulk password tool, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.
 
 **Rules.** Optional. Maximum 256 characters.
 

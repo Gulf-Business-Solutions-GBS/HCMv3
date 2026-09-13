@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.emp-potential-assessment.edit",
+  "lang": "ar",
+  "title": "تقييمات إمكانات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.SuccessionManagement.EmpPotentialAssessment",
+  "overviewHtml": "<p>تقييم لإمكانات الموظف خلال فترة، لأغراض تخطيط التعاقب الوظيفي. ولا يجوز أن تتداخل فترات الموظف نفسه.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpPotentialAssessment.StartDate",
+    "dom:EmpPotentialAssessment_StartDate": "EmpPotentialAssessment.StartDate",
+    "loc:EndDate": "EmpPotentialAssessment.EndDate",
+    "dom:EmpPotentialAssessment_EndDate": "EmpPotentialAssessment.EndDate",
+    "loc:Description": "EmpPotentialAssessment.Description",
+    "dom:EmpPotentialAssessment_Description": "EmpPotentialAssessment.Description",
+    "loc:Score": "EmpPotentialAssessment.Score",
+    "dom:EmpPotentialAssessment_Score": "EmpPotentialAssessment.Score",
+    "loc:Source": "EmpPotentialAssessment.Source",
+    "dom:EmpPotentialAssessment_Source": "EmpPotentialAssessment.Source",
+    "loc:RatingId": "EmpPotentialAssessment.RatingId",
+    "dom:EmpPotentialAssessment_RatingId": "EmpPotentialAssessment.RatingId",
+    "loc:NineBoxRatingId": "EmpPotentialAssessment.NineBoxRatingId",
+    "dom:EmpPotentialAssessment_NineBoxRatingId": "EmpPotentialAssessment.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpPotentialAssessment.StartDate",
+      "label": "StartDate",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpPotentialAssessment_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.EndDate",
+      "label": "EndDate",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpPotentialAssessment_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Description",
+      "label": "Description",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Description",
+        "dom:EmpPotentialAssessment_Description"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات على التقييم.</p><p><strong>مثال.</strong> جاهز لدور قائد فريق خلال سنة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Score",
+      "label": "Score",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Score",
+        "dom:EmpPotentialAssessment_Score"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> درجة الإمكانات.</p><p><strong>مثال.</strong> 3.8</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.Source",
+      "label": "Source",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:Source",
+        "dom:EmpPotentialAssessment_Source"
+      ],
+      "rules": "إلزامي. إحدى القيم: منشور، Manual.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل جاءت الدرجة من تقييم فعلي أم أُدخلت يدوياً.</p><p><strong>مثال.</strong> يدوي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.RatingId",
+      "label": "RatingId",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:RatingId",
+        "dom:EmpPotentialAssessment_RatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات التعاقب الوظيفي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف التعاقب الوظيفي.</p><p><strong>مثال.</strong> إمكانات مرتفعة</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpPotentialAssessment.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "EmpPotentialAssessments",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:EmpPotentialAssessment_NineBoxRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف المصفوفة التساعية.</p><p><strong>مثال.</strong> نجم مستقبلي</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    }
+  ]
+}

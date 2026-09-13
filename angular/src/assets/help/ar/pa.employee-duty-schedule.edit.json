@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-duty-schedule.edit",
+  "lang": "ar",
+  "title": "جداول دوام الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.EmployeeDutySchedule",
+  "overviewHtml": "<p>يخصص الموظف لجدول دوام مناوب خلال فترة. ولا يجوز أن تتداخل جداول الموظف نفسه.</p><p>يُسجَّل للرجوع إليه؛ إذ يأخذ محرك الوقت والرواتب دوام الموظف من فترات الدوام والدوام البديل، ولا يقرآن هذا التخصيص حالياً.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDutySchedule.StartDate",
+    "dom:EmployeeDutySchedule_StartDate": "EmployeeDutySchedule.StartDate",
+    "loc:EndDate": "EmployeeDutySchedule.EndDate",
+    "dom:EmployeeDutySchedule_EndDate": "EmployeeDutySchedule.EndDate",
+    "loc:RosterDutySchedule": "EmployeeDutySchedule.RosterDutyScheduleId",
+    "dom:EmployeeDutySchedule_RosterDutyScheduleId": "EmployeeDutySchedule.RosterDutyScheduleId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDutySchedule.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDutySchedule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutySchedule.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDutySchedule_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutySchedule.RosterDutyScheduleId",
+      "label": "RosterDutySchedule",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:RosterDutySchedule",
+        "dom:EmployeeDutySchedule_RosterDutyScheduleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة جداول ورديات العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جدول الدوام المناوب.</p><p><strong>مثال.</strong> مناوبة الأمن الليلية</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

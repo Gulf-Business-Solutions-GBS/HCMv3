@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-rejoin.edit",
+  "lang": "ar",
+  "title": "حالات إعادة التحاق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRejoin",
+  "overviewHtml": "<p>يسجل عودة موظف أُنهيت خدمته.</p><p>بعد بلوغ تاريخ العودة، لا تأخذ الرواتب في الحسبان إلا حالات الفصل التي يقع آخر يوم فيها في تاريخ العودة أو بعده، فلا يعود الخروج السابق يوقف الأجر. أما خيارات الترحيل فتُسجَّل للرجوع إليها؛ ولا تُرحَّل الأرصدة تلقائياً.</p>",
+  "aliasIndex": {
+    "loc:RejoinDate": "EmployeeRejoin.RejoinDate",
+    "dom:EmployeeRejoin_RejoinDate": "EmployeeRejoin.RejoinDate",
+    "loc:Comments": "EmployeeRejoin.Comments",
+    "dom:EmployeeRejoin_Comments": "EmployeeRejoin.Comments",
+    "loc:CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "dom:EmployeeRejoin_CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "loc:CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "dom:EmployeeRejoin_CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "loc:CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "dom:EmployeeRejoin_CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "loc:CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance",
+    "dom:EmployeeRejoin_CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRejoin.RejoinDate",
+      "label": "RejoinDate",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:RejoinDate",
+        "dom:EmployeeRejoin_RejoinDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ عودة الموظف.</p><p><strong>مثال.</strong> 1 فبراير 2027</p><p><strong>لماذا يهم.</strong> اعتباراً من هذا التاريخ تتجاهل الرواتب حالات الفصل التي انتهت قبله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.Comments",
+      "label": "Comments",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRejoin_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLeaveBalance",
+      "label": "CarryForwardLeaveBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLeaveBalance",
+        "dom:EmployeeRejoin_CarryForwardLeaveBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرحَّل رصيد الإجازات.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يُرحَّل الرصيد تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardTicketBalance",
+      "label": "CarryForwardTicketBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardTicketBalance",
+        "dom:EmployeeRejoin_CarryForwardTicketBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرحَّل رصيد التذاكر.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يُرحَّل الرصيد تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardIndemnityBalance",
+      "label": "CarryForwardIndemnityBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardIndemnityBalance",
+        "dom:EmployeeRejoin_CarryForwardIndemnityBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرحَّل رصيد مكافأة نهاية الخدمة.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يُرحَّل الرصيد تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLoanBalance",
+      "label": "CarryForwardLoanBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLoanBalance",
+        "dom:EmployeeRejoin_CarryForwardLoanBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُرحَّل رصيد القروض.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يُرحَّل الرصيد تلقائياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

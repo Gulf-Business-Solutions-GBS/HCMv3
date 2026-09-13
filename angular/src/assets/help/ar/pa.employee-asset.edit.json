@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-asset.edit",
+  "lang": "ar",
+  "title": "عهد الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAsset",
+  "overviewHtml": "<p>أصل من أصول الشركة سُلِّم للموظف خلال فترة — حاسوب محمول أو هاتف أو سيارة.</p><p>لا يجوز تخصيص الأصل نفسه لفترات متداخلة، أياً كان الموظف الذي يحمله. ويمكن للموظفين طلب الأصول عبر الخدمة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:AssetId": "EmployeeAsset.AssetId",
+    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
+    "loc:StartDate": "EmployeeAsset.StartDate",
+    "dom:EmployeeAsset_StartDate": "EmployeeAsset.StartDate",
+    "loc:EndDate": "EmployeeAsset.EndDate",
+    "dom:EmployeeAsset_EndDate": "EmployeeAsset.EndDate",
+    "loc:AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
+    "dom:EmployeeAsset_AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
+    "loc:Comments": "EmployeeAsset.Comments",
+    "dom:EmployeeAsset_Comments": "EmployeeAsset.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAsset.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAsset_AssetId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العهد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأصل المسلَّم.</p><p><strong>مثال.</strong> حاسوب محمول — Dell 5540 (SN 7GH21)</p><p><strong>لماذا يهم.</strong> لا يجوز تخصيصه لأي شخص آخر لفترة متداخلة.</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← العهد.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAsset_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAsset_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.AssetDeductionMode",
+      "label": "AssetDeductionMode",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetDeductionMode",
+        "dom:EmployeeAsset_AssetDeductionMode"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، كامل، ما يزيد عن البدل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يدفع الموظف فواتير الأصل، وما مقدارها.</p><p><strong>مثال.</strong> ما يزيد على البدل</p><p><strong>لماذا يهم.</strong> يستخدمه تقرير فواتير الأصول لاحتساب حصة الموظف، ولا يُقتطع منه شيء في الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.Comments",
+      "label": "Comments",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAsset_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

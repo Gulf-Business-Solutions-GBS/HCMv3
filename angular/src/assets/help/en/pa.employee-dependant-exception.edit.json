@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-dependant-exception.edit",
+  "lang": "en",
+  "title": "Employee Dependant Exceptions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDependantException",
+  "overviewHtml": "<p>Overrides one dependant's ticket or health reimbursement entitlement for a period. The period must fall within the dependant's own dates.</p><p>For health reimbursement, the amount replaces that dependant's share. For tickets, the time engine uses it when accruing the dependant's ticket.</p>",
+  "aliasIndex": {
+    "loc:EmployeeDependantId": "EmployeeDependantException.EmployeeDependantId",
+    "dom:EmployeeDependantException_EmployeeDependantId": "EmployeeDependantException.EmployeeDependantId",
+    "loc:ExceptionBenefitType": "EmployeeDependantException.ExceptionBenefitType",
+    "dom:EmployeeDependantException_ExceptionBenefitType": "EmployeeDependantException.ExceptionBenefitType",
+    "loc:StartDate": "EmployeeDependantException.StartDate",
+    "dom:EmployeeDependantException_StartDate": "EmployeeDependantException.StartDate",
+    "loc:EndDate": "EmployeeDependantException.EndDate",
+    "dom:EmployeeDependantException_EndDate": "EmployeeDependantException.EndDate",
+    "loc:Amount": "EmployeeDependantException.Amount",
+    "dom:EmployeeDependantException_Amount": "EmployeeDependantException.Amount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDependantException.EmployeeDependantId",
+      "label": "EmployeeDependantId",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:EmployeeDependantId",
+        "dom:EmployeeDependantException_EmployeeDependantId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The dependant the exception applies to.</p><p><strong>Example.</strong> Sara Al-Mutairi (Daughter)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.ExceptionBenefitType",
+      "label": "ExceptionBenefitType",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:ExceptionBenefitType",
+        "dom:EmployeeDependantException_ExceptionBenefitType"
+      ],
+      "rules": "Required. One of: Ticket, Health Reimbursement.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which benefit is overridden.</p><p><strong>Example.</strong> Ticket</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependantException_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee dependant.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependantException_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.Amount",
+      "label": "Amount",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeDependantException_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The entitlement amount that applies instead.</p><p><strong>Example.</strong> 150.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

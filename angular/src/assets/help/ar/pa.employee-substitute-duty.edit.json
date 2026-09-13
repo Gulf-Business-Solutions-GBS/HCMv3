@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-substitute-duty.edit",
+  "lang": "ar",
+  "title": "الدوامات البديلة للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.EmployeeSubstituteDuty",
+  "overviewHtml": "<p>دوام مختلف للموظف في تاريخ واحد محدد — كتغطية وردية ليلية. دوام بديل واحد لكل موظف في كل تاريخ.</p><p>يتقدّم الدوام البديل على فترة دوام الموظف في ذلك التاريخ، أينما بُحث عن دوام الموظف لليوم: أيام العمل في الإجازات، والتراكم، وبيانات الوقت، وعدد الأيام في الرواتب.</p>",
+  "aliasIndex": {
+    "loc:SubstituteDate": "EmployeeSubstituteDuty.SubstituteDate",
+    "dom:EmployeeSubstituteDuty_SubstituteDate": "EmployeeSubstituteDuty.SubstituteDate",
+    "loc:Duty": "EmployeeSubstituteDuty.DutyId",
+    "dom:EmployeeSubstituteDuty_DutyId": "EmployeeSubstituteDuty.DutyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubstituteDuty.SubstituteDate",
+      "label": "SubstituteDate",
+      "section": "EmployeeSubstituteDuties",
+      "aliases": [
+        "loc:SubstituteDate",
+        "dom:EmployeeSubstituteDuty_SubstituteDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي ينطبق عليه الدوام البديل.</p><p><strong>مثال.</strong> 14 أغسطس 2026</p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون للموظف أكثر من دوام بديل في هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubstituteDuty.DutyId",
+      "label": "Duty",
+      "section": "EmployeeSubstituteDuties",
+      "aliases": [
+        "loc:Duty",
+        "dom:EmployeeSubstituteDuty_DutyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الدوامات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام المعمول به في ذلك التاريخ.</p><p><strong>مثال.</strong> الوردية الليلية 22:00–06:00</p>",
+      "adminHtml": "<p>يُدار من إدارة الوقت ← الدوامات.</p>",
+      "stub": false
+    }
+  ]
+}

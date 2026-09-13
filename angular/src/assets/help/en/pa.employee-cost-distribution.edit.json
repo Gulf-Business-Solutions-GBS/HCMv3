@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-cost-distribution.edit",
+  "lang": "en",
+  "title": "Employee Cost Distributions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeCostDistribution",
+  "overviewHtml": "<p>How the employee's cost was spread across organisation units for a period.</p><p>It is recorded for reference; the cost engine does not read it at present.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
+    "dom:EmployeeCostDistribution_OrganizationUnitId": "EmployeeCostDistribution.OrganizationUnitId",
+    "loc:StartDate": "EmployeeCostDistribution.StartDate",
+    "dom:EmployeeCostDistribution_StartDate": "EmployeeCostDistribution.StartDate",
+    "loc:EndDate": "EmployeeCostDistribution.EndDate",
+    "dom:EmployeeCostDistribution_EndDate": "EmployeeCostDistribution.EndDate",
+    "loc:CostCount": "EmployeeCostDistribution.CostCount",
+    "dom:EmployeeCostDistribution_CostCount": "EmployeeCostDistribution.CostCount",
+    "loc:UsedDays": "EmployeeCostDistribution.UsedDays",
+    "dom:EmployeeCostDistribution_UsedDays": "EmployeeCostDistribution.UsedDays"
+  },
+  "fields": [
+    {
+      "id": "EmployeeCostDistribution.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:EmployeeCostDistribution_OrganizationUnitId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation unit the cost is distributed to.</p><p><strong>Example.</strong> Projects Division</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCostDistribution.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeCostDistribution_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCostDistribution.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeCostDistribution_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCostDistribution.CostCount",
+      "label": "CostCount",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:CostCount",
+        "dom:EmployeeCostDistribution_CostCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A count recorded with the distribution.</p><p><strong>Example.</strong> 3</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCostDistribution.UsedDays",
+      "label": "UsedDays",
+      "section": "EmployeeCostDistributions",
+      "aliases": [
+        "loc:UsedDays",
+        "dom:EmployeeCostDistribution_UsedDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days recorded against this unit.</p><p><strong>Example.</strong> 12</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

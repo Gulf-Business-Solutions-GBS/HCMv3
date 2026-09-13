@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-org-assignment.edit",
+  "lang": "en",
+  "title": "Employee Org Assignments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOrgAssignment",
+  "overviewHtml": "<p>Where the employee sits in the organisation from a given date: their department, job title, cost centre and work location.</p><p>Assignments form a history. Saving one closes the employee's previous assignment on the day before the new start date, so there is always exactly one assignment in force. Leaving a field blank on a new assignment copies it from the previous one.</p><p>Approval routing, the time engine, reports and business rules all read the assignment in force on the date they need.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeOrgAssignment.StartDate",
+    "dom:EmployeeOrgAssignment_StartDate": "EmployeeOrgAssignment.StartDate",
+    "loc:JobTitle": "EmployeeOrgAssignment.JobTitleId",
+    "dom:EmployeeOrgAssignment_JobTitleId": "EmployeeOrgAssignment.JobTitleId",
+    "loc:CostCenter": "EmployeeOrgAssignment.CostCenterId",
+    "dom:EmployeeOrgAssignment_CostCenterId": "EmployeeOrgAssignment.CostCenterId",
+    "loc:WorkLocation": "EmployeeOrgAssignment.WorkLocationId",
+    "dom:EmployeeOrgAssignment_WorkLocationId": "EmployeeOrgAssignment.WorkLocationId",
+    "loc:PostingGroup": "EmployeeOrgAssignment.PostingGroupId",
+    "dom:EmployeeOrgAssignment_PostingGroupId": "EmployeeOrgAssignment.PostingGroupId",
+    "loc:BudgetingGroup": "EmployeeOrgAssignment.BudgetingGroupId",
+    "dom:EmployeeOrgAssignment_BudgetingGroupId": "EmployeeOrgAssignment.BudgetingGroupId",
+    "loc:OrganizationUnit": "EmployeeOrgAssignment.OrganizationUnitId",
+    "dom:EmployeeOrgAssignment_OrganizationUnitId": "EmployeeOrgAssignment.OrganizationUnitId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOrgAssignment.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeOrgAssignment_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee can start on the same date. Saving closes the previous record for the same employee on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.JobTitleId",
+      "label": "JobTitle",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:EmployeeOrgAssignment_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's job title from this date.</p><p><strong>Example.</strong> Senior Accountant</p><p><strong>Why it matters.</strong> Shown on reports and available to business rules. Left blank on a new assignment, it is copied from the previous one.</p>",
+      "adminHtml": "<p>Maintained under Organization Management → Job Titles.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.CostCenterId",
+      "label": "CostCenter",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:CostCenter",
+        "dom:EmployeeOrgAssignment_CostCenterId"
+      ],
+      "rules": "Optional. Chosen from Cost Center master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The cost centre the employee is charged to from this date.</p><p><strong>Example.</strong> CC-100 Finance</p><p><strong>Why it matters.</strong> Approval steps assigned to a cost-centre role go to the approver for this cost centre. Left blank on a new assignment, it is copied from the previous one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:EmployeeOrgAssignment_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's normal place of work from this date.</p><p><strong>Example.</strong> Head Office</p><p><strong>Why it matters.</strong> Approval steps assigned to a branch role go to the approver for this work location. Left blank on a new assignment, it is copied from the previous one.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.PostingGroupId",
+      "label": "PostingGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:PostingGroup",
+        "dom:EmployeeOrgAssignment_PostingGroupId"
+      ],
+      "rules": "Optional. Chosen from Posting Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The posting group recorded for the employee from this date.</p><p><strong>Why it matters.</strong> Kept for reference; no calculation or posting reads it from the assignment at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.BudgetingGroupId",
+      "label": "BudgetingGroup",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:BudgetingGroup",
+        "dom:EmployeeOrgAssignment_BudgetingGroupId"
+      ],
+      "rules": "Optional. Chosen from Budgeting Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeting group recorded for the employee from this date.</p><p><strong>Why it matters.</strong> Kept for reference; no calculation reads it from the assignment at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOrgAssignment.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "EmployeeOrgAssignments",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:EmployeeOrgAssignment_OrganizationUnitId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The department or unit the employee belongs to from this date, chosen from the organisation tree.</p><p><strong>Example.</strong> Finance › Accounts Payable</p><p><strong>Why it matters.</strong> Decides the employee's place in the organisation structure, and approval steps assigned to a department role go to that department's approver. Payroll amounts for the employee are rounded to the decimal places of the currency on this unit's payroll area.</p>",
+      "adminHtml": "<p>This form does not set the employee group, employee sub group, payroll area or workflow group, and does not copy them from the previous assignment. A new assignment saved here therefore has none of them. The time engine looks for the employee sub group on the assignments covering the period it runs, and approval routing reads the workflow group on today's assignment; for dates covered only by an assignment saved here, neither finds one.</p>",
+      "stub": false
+    }
+  ]
+}

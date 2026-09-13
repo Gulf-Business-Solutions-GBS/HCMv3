@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-ticket-quota.edit",
+  "lang": "en",
+  "title": "Employee Ticket Quotas — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTicketQuota",
+  "overviewHtml": "<p>The employee's air ticket entitlement for one ticket type over an entitlement period.</p><p>It is shown on the air ticket quota balance report, whose balance is accrued minus used and adjusted. The time engine works out ticket entitlement from the sub group's ticket rules and the tickets already paid, and does not read these quotas at present.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTicketQuota.TicketTypeId",
+    "dom:EmployeeTicketQuota_TicketTypeId": "EmployeeTicketQuota.TicketTypeId",
+    "loc:EntitlementFrom": "EmployeeTicketQuota.EntitlementFrom",
+    "dom:EmployeeTicketQuota_EntitlementFrom": "EmployeeTicketQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeTicketQuota.EntitlementTo",
+    "dom:EmployeeTicketQuota_EntitlementTo": "EmployeeTicketQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeTicketQuota.DeductionFrom",
+    "dom:EmployeeTicketQuota_DeductionFrom": "EmployeeTicketQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeTicketQuota.DeductionTo",
+    "dom:EmployeeTicketQuota_DeductionTo": "EmployeeTicketQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeTicketQuota.QuotaAccrued",
+    "dom:EmployeeTicketQuota_QuotaAccrued": "EmployeeTicketQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeTicketQuota.QuotaUsed",
+    "dom:EmployeeTicketQuota_QuotaUsed": "EmployeeTicketQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeTicketQuota.QuotaAdjusted",
+    "dom:EmployeeTicketQuota_QuotaAdjusted": "EmployeeTicketQuota.QuotaAdjusted"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTicketQuota.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTicketQuota_TicketTypeId"
+      ],
+      "rules": "Required. Chosen from Ticket Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ticket type this quota is for.</p><p><strong>Example.</strong> Employee</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeTicketQuota_EntitlementFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day of the entitlement period.</p><p><strong>Example.</strong> 1 Jan 2026</p><p><strong>Why it matters.</strong> The report uses the quota covering its as-on date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeTicketQuota_EntitlementTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day of the entitlement period.</p><p><strong>Example.</strong> 31 Dec 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeTicketQuota_DeductionFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day tickets can be taken from this quota.</p><p><strong>Example.</strong> 1 Jan 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeTicketQuota_DeductionTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day tickets can be taken from this quota.</p><p><strong>Example.</strong> 31 Dec 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeTicketQuota_QuotaAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets earned in the period.</p><p><strong>Example.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeTicketQuota_QuotaUsed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets taken in the period.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicketQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeTicketQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeTicketQuota_QuotaAdjusted"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets adjusted in the period.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

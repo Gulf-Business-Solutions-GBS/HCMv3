@@ -1,0 +1,171 @@
+{
+  "helpId": "pa.employee-bank.edit",
+  "lang": "en",
+  "title": "Employee Banks — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBank",
+  "overviewHtml": "<p>How and where the employee's salary is paid, from a given date. Two records for the same employee cannot start on the same date.</p><p>Bank transfer files use the record in force on the file's end date. Saving a new record does not close the previous one, so set the previous record's end date yourself.</p>",
+  "aliasIndex": {
+    "loc:BankId": "EmployeeBank.BankId",
+    "dom:EmployeeBank_BankId": "EmployeeBank.BankId",
+    "loc:PayerBankId": "EmployeeBank.PayerBankId",
+    "dom:EmployeeBank_PayerBankId": "EmployeeBank.PayerBankId",
+    "loc:BankCountryId": "EmployeeBank.BankCountryId",
+    "dom:EmployeeBank_BankCountryId": "EmployeeBank.BankCountryId",
+    "loc:StartDate": "EmployeeBank.StartDate",
+    "dom:EmployeeBank_StartDate": "EmployeeBank.StartDate",
+    "loc:EndDate": "EmployeeBank.EndDate",
+    "dom:EmployeeBank_EndDate": "EmployeeBank.EndDate",
+    "loc:PaymentType": "EmployeeBank.PaymentType",
+    "dom:EmployeeBank_PaymentType": "EmployeeBank.PaymentType",
+    "loc:PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
+    "dom:EmployeeBank_PaymentCurrencyId": "EmployeeBank.PaymentCurrencyId",
+    "loc:AccountNum": "EmployeeBank.AccountNum",
+    "dom:EmployeeBank_AccountNum": "EmployeeBank.AccountNum",
+    "loc:Iban": "EmployeeBank.IBAN",
+    "dom:EmployeeBank_Iban": "EmployeeBank.IBAN",
+    "loc:BankBranch": "EmployeeBank.BankBranch",
+    "dom:EmployeeBank_BankBranch": "EmployeeBank.BankBranch"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBank.BankId",
+      "label": "BankId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankId",
+        "dom:EmployeeBank_BankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own bank, which receives the salary.</p><p><strong>Example.</strong> National Bank of Kuwait</p><p><strong>Why it matters.</strong> Required when the payment type is Bank. Bank files can be filtered by it.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Banks.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PayerBankId",
+      "label": "PayerBankId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PayerBankId",
+        "dom:EmployeeBank_PayerBankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The company bank that pays this employee, when employees are split across paying banks.</p><p><strong>Example.</strong> Gulf Bank</p>",
+      "adminHtml": "<p>When any employee's record names a paying bank, that bank's transfer file includes only the employees who name it. Otherwise the file includes only employees with no paying bank set.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.BankCountryId",
+      "label": "BankCountryId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankCountryId",
+        "dom:EmployeeBank_BankCountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country of the employee's bank.</p><p><strong>Example.</strong> Kuwait</p><p><strong>Why it matters.</strong> Recorded only; bank files do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBank_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBank_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PaymentType",
+      "label": "PaymentType",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PaymentType",
+        "dom:EmployeeBank_PaymentType"
+      ],
+      "rules": "Required. One of: Bank, Cash, N/A.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the salary is paid.</p><p><strong>Example.</strong> Bank</p><p><strong>Why it matters.</strong> Bank files can be restricted to one payment type, and a bank must be chosen when the type is Bank.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.PaymentCurrencyId",
+      "label": "PaymentCurrencyId",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:PaymentCurrencyId",
+        "dom:EmployeeBank_PaymentCurrencyId"
+      ],
+      "rules": "Optional. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency the salary is paid in.</p><p><strong>Example.</strong> KWD</p><p><strong>Why it matters.</strong> Recorded only; bank files do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.AccountNum",
+      "label": "AccountNum",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:AccountNum",
+        "dom:EmployeeBank_AccountNum"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's bank account number.</p><p><strong>Example.</strong> 2010123456</p><p><strong>Why it matters.</strong> Written into the bank transfer file.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.IBAN",
+      "label": "Iban",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:Iban",
+        "dom:EmployeeBank_Iban"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's international bank account number.</p><p><strong>Example.</strong> KW81CBKU0000000000001234560101</p><p><strong>Why it matters.</strong> Written into the bank transfer file. A change requested through self-service needs an account number or an IBAN.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBank.BankBranch",
+      "label": "BankBranch",
+      "section": "EmployeeBanks",
+      "aliases": [
+        "loc:BankBranch",
+        "dom:EmployeeBank_BankBranch"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The branch of the employee's bank.</p><p><strong>Example.</strong> Salmiya</p><p><strong>Why it matters.</strong> Included in bank files that carry a branch, and on employee reports.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

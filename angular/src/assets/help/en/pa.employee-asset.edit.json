@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-asset.edit",
+  "lang": "en",
+  "title": "Employee Assets — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAsset",
+  "overviewHtml": "<p>A company asset issued to the employee for a period — a laptop, phone or car.</p><p>The same asset cannot be assigned for overlapping periods, whichever employee holds it. Employees can request assets through self-service.</p>",
+  "aliasIndex": {
+    "loc:AssetId": "EmployeeAsset.AssetId",
+    "dom:EmployeeAsset_AssetId": "EmployeeAsset.AssetId",
+    "loc:StartDate": "EmployeeAsset.StartDate",
+    "dom:EmployeeAsset_StartDate": "EmployeeAsset.StartDate",
+    "loc:EndDate": "EmployeeAsset.EndDate",
+    "dom:EmployeeAsset_EndDate": "EmployeeAsset.EndDate",
+    "loc:AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
+    "dom:EmployeeAsset_AssetDeductionMode": "EmployeeAsset.AssetDeductionMode",
+    "loc:Comments": "EmployeeAsset.Comments",
+    "dom:EmployeeAsset_Comments": "EmployeeAsset.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAsset.AssetId",
+      "label": "AssetId",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetId",
+        "dom:EmployeeAsset_AssetId"
+      ],
+      "rules": "Required. Chosen from Asset master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The asset issued.</p><p><strong>Example.</strong> Laptop — Dell 5540 (SN 7GH21)</p><p><strong>Why it matters.</strong> Cannot be assigned to anyone else for an overlapping period.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Assets.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAsset_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAsset_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.AssetDeductionMode",
+      "label": "AssetDeductionMode",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:AssetDeductionMode",
+        "dom:EmployeeAsset_AssetDeductionMode"
+      ],
+      "rules": "Required. One of: None, Full, Above Allowance.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee pays for the asset's invoices, and how much.</p><p><strong>Example.</strong> Above Allowance</p><p><strong>Why it matters.</strong> Used by the asset invoice report to work out the employee's share. Nothing is deducted in payroll from it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAsset.Comments",
+      "label": "Comments",
+      "section": "EmployeeAssets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAsset_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-work-experience.edit",
+  "lang": "en",
+  "title": "Employee Work Experiences — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeWorkExperience",
+  "overviewHtml": "<p>A previous job the employee held before joining. Periods for the same employee cannot overlap.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Company": "EmployeeWorkExperience.Company",
+    "dom:EmployeeWorkExperience_Company": "EmployeeWorkExperience.Company",
+    "loc:Position": "EmployeeWorkExperience.Position",
+    "dom:EmployeeWorkExperience_Position": "EmployeeWorkExperience.Position",
+    "loc:Location": "EmployeeWorkExperience.Location",
+    "dom:EmployeeWorkExperience_Location": "EmployeeWorkExperience.Location",
+    "loc:ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
+    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
+    "loc:StartDate": "EmployeeWorkExperience.StartDate",
+    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
+    "loc:EndDate": "EmployeeWorkExperience.EndDate",
+    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeWorkExperience.Company",
+      "label": "Company",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Company",
+        "dom:EmployeeWorkExperience_Company"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The previous employer.</p><p><strong>Example.</strong> Gulf Trading Co.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.Position",
+      "label": "Position",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Position",
+        "dom:EmployeeWorkExperience_Position"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title held there, as free text.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.Location",
+      "label": "Location",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeWorkExperience_Location"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the job was.</p><p><strong>Example.</strong> Kuwait City</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.ReasonForLeaving",
+      "label": "ReasonForLeaving",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:ReasonForLeaving",
+        "dom:EmployeeWorkExperience_ReasonForLeaving"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the employee left.</p><p><strong>Example.</strong> Career progression</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWorkExperience_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeWorkExperience_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

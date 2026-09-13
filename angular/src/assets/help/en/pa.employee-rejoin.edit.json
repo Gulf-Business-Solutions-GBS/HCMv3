@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-rejoin.edit",
+  "lang": "en",
+  "title": "Employee Rejoins — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRejoin",
+  "overviewHtml": "<p>Records that a separated employee has come back.</p><p>Once a rejoin date has been reached, payroll only takes separations whose last day in service is on or after the rejoin date into account, so an earlier exit no longer stops pay. The carry-forward options are recorded for reference; balances are not carried forward automatically.</p>",
+  "aliasIndex": {
+    "loc:RejoinDate": "EmployeeRejoin.RejoinDate",
+    "dom:EmployeeRejoin_RejoinDate": "EmployeeRejoin.RejoinDate",
+    "loc:Comments": "EmployeeRejoin.Comments",
+    "dom:EmployeeRejoin_Comments": "EmployeeRejoin.Comments",
+    "loc:CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "dom:EmployeeRejoin_CarryForwardLeaveBalance": "EmployeeRejoin.CarryForwardLeaveBalance",
+    "loc:CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "dom:EmployeeRejoin_CarryForwardTicketBalance": "EmployeeRejoin.CarryForwardTicketBalance",
+    "loc:CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "dom:EmployeeRejoin_CarryForwardIndemnityBalance": "EmployeeRejoin.CarryForwardIndemnityBalance",
+    "loc:CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance",
+    "dom:EmployeeRejoin_CarryForwardLoanBalance": "EmployeeRejoin.CarryForwardLoanBalance"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRejoin.RejoinDate",
+      "label": "RejoinDate",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:RejoinDate",
+        "dom:EmployeeRejoin_RejoinDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the employee rejoined.</p><p><strong>Example.</strong> 1 Feb 2027</p><p><strong>Why it matters.</strong> From this date payroll ignores separations that ended before it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.Comments",
+      "label": "Comments",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeRejoin_Comments"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLeaveBalance",
+      "label": "CarryForwardLeaveBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLeaveBalance",
+        "dom:EmployeeRejoin_CarryForwardLeaveBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardTicketBalance",
+      "label": "CarryForwardTicketBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardTicketBalance",
+        "dom:EmployeeRejoin_CarryForwardTicketBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the ticket balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardIndemnityBalance",
+      "label": "CarryForwardIndemnityBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardIndemnityBalance",
+        "dom:EmployeeRejoin_CarryForwardIndemnityBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the indemnity balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRejoin.CarryForwardLoanBalance",
+      "label": "CarryForwardLoanBalance",
+      "section": "EmployeeRejoins",
+      "aliases": [
+        "loc:CarryForwardLoanBalance",
+        "dom:EmployeeRejoin_CarryForwardLoanBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the loan balance should carry forward.</p><p><strong>Why it matters.</strong> Recorded only; the balance is not carried forward automatically.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-attendance.edit",
+  "lang": "ar",
+  "title": "حضور الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAttendance",
+  "overviewHtml": "<p>وقت يقضيه الموظف بعيداً عن دوامه المعتاد مع احتسابه حضوراً — كالتدريب أو الزيارة الميدانية أو المهمة الرسمية. ولا يجوز أن تتداخل سجلات حضور الموظف نفسه.</p><p>يقرأ محرك الوقت هذه السجلات عند بناء كل يوم. وتصرف الرواتب العادية الحضور من تلك الأيام، أما الرواتب خارج الدورة فتقرأ السجلات مباشرة.</p>",
+  "aliasIndex": {
+    "loc:AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
+    "dom:EmployeeAttendance_AttendanceTypeId": "EmployeeAttendance.AttendanceTypeId",
+    "loc:AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
+    "dom:EmployeeAttendance_AttendanceUnit": "EmployeeAttendance.AttendanceUnit",
+    "loc:AttendanceHours": "EmployeeAttendance.AttendanceHours",
+    "dom:EmployeeAttendance_AttendanceHours": "EmployeeAttendance.AttendanceHours",
+    "loc:StartDate": "EmployeeAttendance.StartDate",
+    "dom:EmployeeAttendance_StartDate": "EmployeeAttendance.StartDate",
+    "loc:EndDate": "EmployeeAttendance.EndDate",
+    "dom:EmployeeAttendance_EndDate": "EmployeeAttendance.EndDate",
+    "loc:StartTime": "EmployeeAttendance.StartTime",
+    "dom:EmployeeAttendance_StartTime": "EmployeeAttendance.StartTime",
+    "loc:EndTime": "EmployeeAttendance.EndTime",
+    "dom:EmployeeAttendance_EndTime": "EmployeeAttendance.EndTime",
+    "loc:Comments": "EmployeeAttendance.Comments",
+    "dom:EmployeeAttendance_Comments": "EmployeeAttendance.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAttendance.AttendanceTypeId",
+      "label": "AttendanceTypeId",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:AttendanceTypeId",
+        "dom:EmployeeAttendance_AttendanceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المواظبة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الحضور.</p><p><strong>مثال.</strong> مهمة رسمية</p><p><strong>لماذا يهم.</strong> تصرف الرواتب الحضور حسب نوعه.</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع المواظبة.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.AttendanceUnit",
+      "label": "AttendanceUnit",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:AttendanceUnit",
+        "dom:EmployeeAttendance_AttendanceUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: فترة، اليوم، ساعات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُسجَّل الحضور فترةً أم بالأيام أم بالساعات.</p><p><strong>مثال.</strong> ساعات</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه أي احتساب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.AttendanceHours",
+      "label": "AttendanceHours",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:AttendanceHours",
+        "dom:EmployeeAttendance_AttendanceHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الساعات، للحضور المسجل بالساعات.</p><p><strong>مثال.</strong> 3</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الحضور وفي إشعار الاعتماد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAttendance_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAttendance_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.StartTime",
+      "label": "StartTime",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:StartTime",
+        "dom:EmployeeAttendance_StartTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء الحضور.</p><p><strong>مثال.</strong> 09:00</p><p><strong>لماذا يهم.</strong> يستخدم محرك الوقت وقتي البداية والنهاية لاحتساب دقائق الحضور في اليوم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.EndTime",
+      "label": "EndTime",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:EndTime",
+        "dom:EmployeeAttendance_EndTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء الحضور.</p><p><strong>مثال.</strong> 12:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendance.Comments",
+      "label": "Comments",
+      "section": "EmployeeAttendances",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAttendance_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

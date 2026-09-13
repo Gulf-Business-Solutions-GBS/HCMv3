@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-gratuity-quota.edit",
+  "lang": "ar",
+  "title": "حصص مكافأة نهاية الخدمة للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGratuityQuota",
+  "overviewHtml": "<p>استحقاق الموظف من مكافأة نهاية الخدمة خلال فترة استحقاق.</p><p>ينشئ محرك الوقت حصة بنفسه لأي يوم لا تغطيه حصة، عندما يكون للمجموعة الفرعية للموظف قاعدة مكافأة نهاية خدمة. ويستبدل احتسابُ المكافأة المتراكمَ والمستخدَم من نتائجه في كل مرة يُشغَّل فيها.</p>",
+  "aliasIndex": {
+    "loc:EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",
+    "dom:EmployeeGratuityQuota_EntitlementFrom": "EmployeeGratuityQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeGratuityQuota.EntitlementTo",
+    "dom:EmployeeGratuityQuota_EntitlementTo": "EmployeeGratuityQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeGratuityQuota.DeductionFrom",
+    "dom:EmployeeGratuityQuota_DeductionFrom": "EmployeeGratuityQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeGratuityQuota.DeductionTo",
+    "dom:EmployeeGratuityQuota_DeductionTo": "EmployeeGratuityQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeGratuityQuota.QuotaAccrued",
+    "dom:EmployeeGratuityQuota_QuotaAccrued": "EmployeeGratuityQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeGratuityQuota.QuotaUsed",
+    "dom:EmployeeGratuityQuota_QuotaUsed": "EmployeeGratuityQuota.QuotaUsed",
+    "loc:QuotaAdjusted": "EmployeeGratuityQuota.QuotaAdjusted",
+    "dom:EmployeeGratuityQuota_QuotaAdjusted": "EmployeeGratuityQuota.QuotaAdjusted"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGratuityQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeGratuityQuota_EntitlementFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 1 يناير 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeGratuityQuota_EntitlementTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في فترة الاستحقاق.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p><p><strong>لماذا يهم.</strong> يستخدم تقرير مخصص مكافأة نهاية الخدمة الحصة التي تغطي تاريخه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeGratuityQuota_DeductionFrom"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم في فترة الخصم.</p><p><strong>مثال.</strong> 1 يناير 2026</p><p><strong>لماذا يهم.</strong> يظهر في تقرير مخصص مكافأة نهاية الخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeGratuityQuota_DeductionTo"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم في فترة الخصم.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p><p><strong>لماذا يهم.</strong> يظهر في تقرير مخصص مكافأة نهاية الخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeGratuityQuota_QuotaAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المتراكمة.</p><p><strong>مثال.</strong> 21</p><p><strong>لماذا يهم.</strong> يستبدله احتساب المكافأة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeGratuityQuota_QuotaUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المصروفة.</p><p><strong>مثال.</strong> 0</p><p><strong>لماذا يهم.</strong> يستبدله احتساب المكافأة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGratuityQuota.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeGratuityQuotas",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeGratuityQuota_QuotaAdjusted"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أيام مكافأة نهاية الخدمة المعدَّلة.</p><p><strong>مثال.</strong> 0</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه احتساب المكافأة حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

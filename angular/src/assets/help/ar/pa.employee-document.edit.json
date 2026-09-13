@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-document.edit",
+  "lang": "ar",
+  "title": "وثائق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDocument",
+  "overviewHtml": "<p>وثيقة رسمية محفوظة للموظف — جواز سفر أو بطاقة مدنية أو إقامة أو رخصة — مع رقمها وصلاحيتها.</p><p>تتبع حالة وجود الوثيقة حركاتِها: فما دام هناك سحب لم يُرجَع تظهر الوثيقة خارجة. ويمكن أيضاً إضافة الوثائق عبر الخدمة الذاتية، وسحب جوازات السفر منها.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "EmployeeDocument.DocumentTypeId",
+    "dom:EmployeeDocument_DocumentTypeId": "EmployeeDocument.DocumentTypeId",
+    "loc:DocumentNum": "EmployeeDocument.DocumentNum",
+    "dom:EmployeeDocument_DocumentNum": "EmployeeDocument.DocumentNum",
+    "loc:IssueDate": "EmployeeDocument.IssueDate",
+    "dom:EmployeeDocument_IssueDate": "EmployeeDocument.IssueDate",
+    "loc:ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "dom:EmployeeDocument_ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "loc:Description": "EmployeeDocument.Description",
+    "dom:EmployeeDocument_Description": "EmployeeDocument.Description",
+    "loc:Comments": "EmployeeDocument.Comments",
+    "dom:EmployeeDocument_Comments": "EmployeeDocument.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDocument.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:EmployeeDocument_DocumentTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الوثائق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الوثيقة.</p><p><strong>مثال.</strong> جواز سفر</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع الوثائق. ولا تُطبَّق إعدادات التذكير فيها حالياً، فلا تُرسل تذكيرات بانتهاء الصلاحية.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.DocumentNum",
+      "label": "DocumentNum",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentNum",
+        "dom:EmployeeDocument_DocumentNum"
+      ],
+      "rules": "اختياري. الحد الأقصى 128 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الوثيقة.</p><p><strong>مثال.</strong> P01234567</p><p><strong>لماذا يهم.</strong> إلزامي عند تقديم الوثيقة عبر الخدمة الذاتية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.IssueDate",
+      "label": "IssueDate",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:EmployeeDocument_IssueDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ إصدار الوثيقة.</p><p><strong>مثال.</strong> 3 مارس 2022</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:EmployeeDocument_ExpiryDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ انتهاء صلاحية الوثيقة.</p><p><strong>مثال.</strong> 2 مارس 2032</p><p><strong>لماذا يهم.</strong> تعرض الخدمة الذاتية للموظف وثائقه التي لم تنتهِ صلاحيتها بعد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.Description",
+      "label": "Description",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:Description",
+        "dom:EmployeeDocument_Description"
+      ],
+      "rules": "اختياري. الحد الأقصى 2000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وصف الوثيقة.</p><p><strong>مثال.</strong> إقامة كويتية، مادة 18</p><p><strong>لماذا يهم.</strong> يظهر في تقريري الوثائق وجوازات السفر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.Comments",
+      "label": "Comments",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDocument_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

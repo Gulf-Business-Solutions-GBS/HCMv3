@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-loan-recovery.edit",
+  "lang": "en",
+  "title": "Employee Loan Recoveries — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeLoanRecovery",
+  "overviewHtml": "<p>A repayment against one of the employee's loans. Payroll records its own instalments here as Recovery Through Payroll.</p><p>A recovery cannot be dated before the loan's recovery start date, and recoveries cannot add up to more than the loan's due amount. Saving a recovery on this form does not update the loan's balance due; payroll updates the balance when it recovers.</p>",
+  "aliasIndex": {
+    "loc:EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",
+    "dom:EmployeeLoanRecovery_EmployeeLoanId": "EmployeeLoanRecovery.EmployeeLoanId",
+    "loc:RecoveryDate": "EmployeeLoanRecovery.RecoveryDate",
+    "dom:EmployeeLoanRecovery_RecoveryDate": "EmployeeLoanRecovery.RecoveryDate",
+    "loc:RecoveryAmount": "EmployeeLoanRecovery.RecoveryAmount",
+    "dom:EmployeeLoanRecovery_RecoveryAmount": "EmployeeLoanRecovery.RecoveryAmount",
+    "loc:LoanRecoveryMethod": "EmployeeLoanRecovery.LoanRecoveryMethod",
+    "dom:EmployeeLoanRecovery_LoanRecoveryMethod": "EmployeeLoanRecovery.LoanRecoveryMethod",
+    "loc:Comments": "EmployeeLoanRecovery.Comments",
+    "dom:EmployeeLoanRecovery_Comments": "EmployeeLoanRecovery.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeLoanRecovery.EmployeeLoanId",
+      "label": "EmployeeLoanId",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:EmployeeLoanId",
+        "dom:EmployeeLoanRecovery_EmployeeLoanId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The loan being repaid.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.RecoveryDate",
+      "label": "RecoveryDate",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:RecoveryDate",
+        "dom:EmployeeLoanRecovery_RecoveryDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the repayment.</p><p><strong>Example.</strong> 31 Oct 2026</p><p><strong>Why it matters.</strong> Cannot be before the loan's recovery start date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.RecoveryAmount",
+      "label": "RecoveryAmount",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:RecoveryAmount",
+        "dom:EmployeeLoanRecovery_RecoveryAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount repaid.</p><p><strong>Example.</strong> 100.000</p><p><strong>Why it matters.</strong> All recoveries on the loan together cannot exceed its due amount.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.LoanRecoveryMethod",
+      "label": "LoanRecoveryMethod",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:LoanRecoveryMethod",
+        "dom:EmployeeLoanRecovery_LoanRecoveryMethod"
+      ],
+      "rules": "Required. One of: Recovery Through Payroll, Recovery External, Recovery Through End Of Service, Recovery Exemption, Additional Recovery Through Payroll.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the repayment was made.</p><p><strong>Example.</strong> Recovery External</p><p><strong>Why it matters.</strong> Payroll recognises its own rows as Recovery Through Payroll and replaces them when it recalculates the month.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeLoanRecovery.Comments",
+      "label": "Comments",
+      "section": "EmployeeLoanRecoveries",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeLoanRecovery_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

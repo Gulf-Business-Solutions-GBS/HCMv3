@@ -76,6 +76,14 @@ as if it worked.
 name with no topic of its own uses it, and is never stubbed. Write only what is true for *every*
 entity there; per-entity behaviour (auto-assigned codes, uniqueness) comes from the Rules line.
 
+## Rules the generator reads from code
+
+Besides the entity's annotations, the Rules line states what the form's own application service
+enforces: auto-assigned and unique codes, unique names, end date not before start date, no
+overlapping periods, one record per start date, and effective-dated history (saving closes the
+previous record). Overlap and start-date checks name their scope from the query itself, e.g.
+"the same employee and ticket type". Choice lists come from the form's dropdown, not the enum.
+
 ## Screens that share fields
 
 A field shown on several screens is written **once**, in its home file — the first screen in

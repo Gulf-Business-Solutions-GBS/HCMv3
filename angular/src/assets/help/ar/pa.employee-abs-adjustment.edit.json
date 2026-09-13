@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-abs-adjustment.edit",
+  "lang": "ar",
+  "title": "تعديلات إجازات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsAdjustment",
+  "overviewHtml": "<p>تغيير يدوي على إجازات الموظف — أيام مصروفة نقداً أو معدَّلة أو مقرَّبة.</p><p>تصرف الرواتب صرف الإجازة السنوية نقداً وتعديلات الكسور الواقعة في فترة الدفع على أنها بدل إجازة. ويحتسب رصيد الإجازة حتى التاريخ الذي تستخدمه الرواتب كل تعديل عدا ما حُدد بأنه بلا أثر على الحصة.</p><p>لا يؤدي حفظ التعديل إلى تحديث سجل حصة إجازات الموظف، فلا يتغير الرصيد في الخدمة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
+    "dom:EmployeeAbsAdjustment_AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
+    "loc:EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
+    "dom:EmployeeAbsAdjustment_EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
+    "loc:AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
+    "dom:EmployeeAbsAdjustment_AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
+    "loc:AdjustmentPaymentType": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+    "dom:EmployeeAbsAdjustment_AdjustmentPaymentType": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+    "loc:QuotaAdjusted": "EmployeeAbsAdjustment.QuotaAdjusted",
+    "dom:EmployeeAbsAdjustment_QuotaAdjusted": "EmployeeAbsAdjustment.QuotaAdjusted",
+    "loc:Comments": "EmployeeAbsAdjustment.Comments",
+    "dom:EmployeeAbsAdjustment_Comments": "EmployeeAbsAdjustment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsAdjustment.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsAdjustment_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة المعدَّل.</p><p><strong>مثال.</strong> إجازة سنوية</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع الغياب.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeAbsAdjustment_EffectiveDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سريان التعديل.</p><p><strong>مثال.</strong> 30 يونيو 2026</p><p><strong>لماذا يهم.</strong> تصرف الرواتب النقد الذي يقع تاريخ سريانه في فترة الدفع، ويحتسب رصيد الحصة حتى التاريخ التعديلاتِ حتى التاريخ المطلوب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.AdjustmentType",
+      "label": "AdjustmentType",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AdjustmentType",
+        "dom:EmployeeAbsAdjustment_AdjustmentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الصرف النقدي، تعديل، كسري، بلا أثر على الحصة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التعديل.</p><p><strong>مثال.</strong> صرف نقدي</p><p><strong>لماذا يهم.</strong> تصرف الرواتب تعديلات الصرف النقدي والكسور في الإجازة السنوية. أما «بلا أثر على الحصة» فيُسجَّل دون أن ينقص رصيد الحصة حتى التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+      "label": "AdjustmentPaymentType",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AdjustmentPaymentType",
+        "dom:EmployeeAbsAdjustment_AdjustmentPaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الدفع مع الرواتب، الدفع مقدماً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يُصرف النقد.</p><p><strong>مثال.</strong> مع الرواتب</p><p><strong>لماذا يهم.</strong> تلتقط مسيرات الرواتب خارج الدورة تعديلات الدفع المقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeAbsAdjustment_QuotaAdjusted"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأيام المعدَّلة.</p><p><strong>مثال.</strong> 5</p><p><strong>لماذا يهم.</strong> في الصرف النقدي، هي الأيام التي تصرفها الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.Comments",
+      "label": "Comments",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAbsAdjustment_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

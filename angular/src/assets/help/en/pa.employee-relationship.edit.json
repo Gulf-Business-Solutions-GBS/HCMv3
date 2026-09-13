@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-relationship.edit",
+  "lang": "en",
+  "title": "Employee Relationships — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRelationship",
+  "overviewHtml": "<p>A relationship between this employee and another employee — for example a spouse or relative working in the same organisation.</p><p>It is recorded for reference; no calculation or approval step reads it at present.</p>",
+  "aliasIndex": {
+    "loc:RelationshipType": "EmployeeRelationship.RelationshipTypeId",
+    "dom:EmployeeRelationship_RelationshipTypeId": "EmployeeRelationship.RelationshipTypeId",
+    "loc:RelatedEmployee": "EmployeeRelationship.RelatedEmployeeId",
+    "dom:EmployeeRelationship_RelatedEmployeeId": "EmployeeRelationship.RelatedEmployeeId",
+    "loc:StartDate": "EmployeeRelationship.StartDate",
+    "dom:EmployeeRelationship_StartDate": "EmployeeRelationship.StartDate",
+    "loc:EndDate": "EmployeeRelationship.EndDate",
+    "dom:EmployeeRelationship_EndDate": "EmployeeRelationship.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRelationship.RelationshipTypeId",
+      "label": "RelationshipType",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:RelationshipType",
+        "dom:EmployeeRelationship_RelationshipTypeId"
+      ],
+      "rules": "Required. Chosen from Relationship Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the two employees are related.</p><p><strong>Example.</strong> Spouse</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Relationship Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.RelatedEmployeeId",
+      "label": "RelatedEmployee",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:RelatedEmployee",
+        "dom:EmployeeRelationship_RelatedEmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The other employee.</p><p><strong>Example.</strong> Sara Al-Mutairi (1188)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeRelationship_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee and relationship type.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeRelationship_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

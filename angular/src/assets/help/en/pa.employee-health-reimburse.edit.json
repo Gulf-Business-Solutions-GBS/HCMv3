@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-health-reimburse.edit",
+  "lang": "en",
+  "title": "Employee Health Reimburses — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeHealthReimburse",
+  "overviewHtml": "<p>A health reimbursement claim for the employee. Payroll pays claims whose payment date falls in the month it processes.</p><p>Every save checks the claim against the employee's entitlement for the date, whether it is entered here or requested through self-service: a claim is refused if the employee has no entitlement, if the amount is zero, or if another claim already exists for the same date. When the claim type is routed for approval, a claim entered here also waits for approval.</p>",
+  "aliasIndex": {
+    "loc:PaymentDate": "EmployeeHealthReimburse.PaymentDate",
+    "dom:EmployeeHealthReimburse_PaymentDate": "EmployeeHealthReimburse.PaymentDate",
+    "loc:Amount": "EmployeeHealthReimburse.Amount",
+    "dom:EmployeeHealthReimburse_Amount": "EmployeeHealthReimburse.Amount",
+    "loc:Comments": "EmployeeHealthReimburse.Comments",
+    "dom:EmployeeHealthReimburse_Comments": "EmployeeHealthReimburse.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeHealthReimburse.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeHealthReimburse_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the expense was paid.</p><p><strong>Example.</strong> 5 Sep 2026</p><p><strong>Why it matters.</strong> Only one claim per date. Payroll pays the claim in the month of this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeHealthReimburse.Amount",
+      "label": "Amount",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeHealthReimburse_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount claimed.</p><p><strong>Example.</strong> 45.500</p><p><strong>Why it matters.</strong> Cannot be zero, and is checked against the employee's remaining entitlement.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeHealthReimburse.Comments",
+      "label": "Comments",
+      "section": "EmployeeHealthReimburses",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeHealthReimburse_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

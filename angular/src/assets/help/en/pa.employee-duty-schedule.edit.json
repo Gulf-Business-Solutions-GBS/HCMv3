@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-duty-schedule.edit",
+  "lang": "en",
+  "title": "Employee Duty Schedules — Create / Edit",
+  "entity": "HCMv3.TimeManagement.EmployeeDutySchedule",
+  "overviewHtml": "<p>Assigns the employee to a roster duty schedule for a period. Schedules for the same employee cannot overlap.</p><p>It is recorded for reference; the time engine and payroll take the employee's duties from duty periods and substitute duties, and do not read this assignment at present.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDutySchedule.StartDate",
+    "dom:EmployeeDutySchedule_StartDate": "EmployeeDutySchedule.StartDate",
+    "loc:EndDate": "EmployeeDutySchedule.EndDate",
+    "dom:EmployeeDutySchedule_EndDate": "EmployeeDutySchedule.EndDate",
+    "loc:RosterDutySchedule": "EmployeeDutySchedule.RosterDutyScheduleId",
+    "dom:EmployeeDutySchedule_RosterDutyScheduleId": "EmployeeDutySchedule.RosterDutyScheduleId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDutySchedule.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDutySchedule_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutySchedule.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDutySchedule_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutySchedule.RosterDutyScheduleId",
+      "label": "RosterDutySchedule",
+      "section": "EmployeeDutySchedules",
+      "aliases": [
+        "loc:RosterDutySchedule",
+        "dom:EmployeeDutySchedule_RosterDutyScheduleId"
+      ],
+      "rules": "Required. Chosen from Roster Duty Schedule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The roster duty schedule.</p><p><strong>Example.</strong> Security Night Roster</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

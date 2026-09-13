@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-payroll-status.edit",
+  "lang": "en",
+  "title": "Employee Payroll Statuses — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeePayrollStatus",
+  "overviewHtml": "<p>The employee's payroll status record. An employee can have only one.</p><p>The payroll and time engines create and update this record themselves to track how far the employee has been processed. The two options on this form are stored but not read by either engine at present.</p>",
+  "aliasIndex": {
+    "loc:PersonLocked": "EmployeePayrollStatus.PersonLocked",
+    "dom:EmployeePayrollStatus_PersonLocked": "EmployeePayrollStatus.PersonLocked",
+    "loc:PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection",
+    "dom:EmployeePayrollStatus_PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection"
+  },
+  "fields": [
+    {
+      "id": "EmployeePayrollStatus.PersonLocked",
+      "label": "PersonLocked",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PersonLocked",
+        "dom:EmployeePayrollStatus_PersonLocked"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks the employee as locked for payroll.</p><p><strong>Why it matters.</strong> Stored only; payroll does not currently skip a locked employee.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.PayrollCorrection",
+      "label": "PayrollCorrection",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PayrollCorrection",
+        "dom:EmployeePayrollStatus_PayrollCorrection"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks the employee as needing a payroll correction.</p><p><strong>Why it matters.</strong> Stored only; no engine reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

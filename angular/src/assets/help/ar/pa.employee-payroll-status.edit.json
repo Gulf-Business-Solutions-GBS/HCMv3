@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-payroll-status.edit",
+  "lang": "ar",
+  "title": "حالات رواتب الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeePayrollStatus",
+  "overviewHtml": "<p>سجل حالة رواتب الموظف. لا يجوز أن يكون للموظف أكثر من سجل واحد.</p><p>ينشئ محركا الرواتب والوقت هذا السجل ويحدّثانه بنفسيهما لتتبّع المدى الذي وصلت إليه معالجة الموظف. أما الخياران في هذا النموذج فيُحفظان ولا يقرؤهما أيٌّ من المحركين حالياً.</p>",
+  "aliasIndex": {
+    "loc:PersonLocked": "EmployeePayrollStatus.PersonLocked",
+    "dom:EmployeePayrollStatus_PersonLocked": "EmployeePayrollStatus.PersonLocked",
+    "loc:PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection",
+    "dom:EmployeePayrollStatus_PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection"
+  },
+  "fields": [
+    {
+      "id": "EmployeePayrollStatus.PersonLocked",
+      "label": "PersonLocked",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PersonLocked",
+        "dom:EmployeePayrollStatus_PersonLocked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحدد الموظف مقفلاً للرواتب.</p><p><strong>لماذا يهم.</strong> يُحفظ فقط؛ ولا تتخطى الرواتب حالياً الموظف المقفل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.PayrollCorrection",
+      "label": "PayrollCorrection",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PayrollCorrection",
+        "dom:EmployeePayrollStatus_PayrollCorrection"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحدد أن الموظف يحتاج إلى تصحيح في الرواتب.</p><p><strong>لماذا يهم.</strong> يُحفظ فقط؛ ولا يقرؤه أي محرك حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

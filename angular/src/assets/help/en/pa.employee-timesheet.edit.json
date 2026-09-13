@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-timesheet.edit",
+  "lang": "en",
+  "title": "Employee Timesheets — Create / Edit",
+  "entity": "HCMv3.TimeManagement.EmployeeTimesheet",
+  "overviewHtml": "<p>A manual timesheet for the employee on one date: actual in, out and break times. One timesheet per employee per date.</p><p>For employees whose time policy takes punches from timesheets, the time engine builds the day's in and break times from these entries, and reads the total hours.</p>",
+  "aliasIndex": {
+    "loc:TransDate": "EmployeeTimesheet.TransDate",
+    "dom:EmployeeTimesheet_TransDate": "EmployeeTimesheet.TransDate",
+    "loc:ActualStartTime": "EmployeeTimesheet.ActualStartTime",
+    "dom:EmployeeTimesheet_ActualStartTime": "EmployeeTimesheet.ActualStartTime",
+    "loc:ActualEndTime": "EmployeeTimesheet.ActualEndTime",
+    "dom:EmployeeTimesheet_ActualEndTime": "EmployeeTimesheet.ActualEndTime",
+    "loc:BreakStartTime": "EmployeeTimesheet.BreakStartTime",
+    "dom:EmployeeTimesheet_BreakStartTime": "EmployeeTimesheet.BreakStartTime",
+    "loc:BreakEndTime": "EmployeeTimesheet.BreakEndTime",
+    "dom:EmployeeTimesheet_BreakEndTime": "EmployeeTimesheet.BreakEndTime",
+    "loc:TotalHours": "EmployeeTimesheet.TotalHours",
+    "dom:EmployeeTimesheet_TotalHours": "EmployeeTimesheet.TotalHours",
+    "loc:Approved": "EmployeeTimesheet.Approved",
+    "dom:EmployeeTimesheet_Approved": "EmployeeTimesheet.Approved",
+    "loc:Comments": "EmployeeTimesheet.Comments",
+    "dom:EmployeeTimesheet_Comments": "EmployeeTimesheet.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTimesheet.TransDate",
+      "label": "TransDate",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:TransDate",
+        "dom:EmployeeTimesheet_TransDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the timesheet is for.</p><p><strong>Example.</strong> 10 Sep 2026</p>",
+      "adminHtml": "<p>When building a day from timesheets, the time engine looks the timesheet up by date only, not by employee. On a date where more than one employee has a timesheet, an employee can be given another employee's times. This matches the legacy system and is awaiting a decision.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.ActualStartTime",
+      "label": "ActualStartTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:ActualStartTime",
+        "dom:EmployeeTimesheet_ActualStartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the employee started work.</p><p><strong>Example.</strong> 07:55</p><p><strong>Why it matters.</strong> Used as the day's actual in time.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.ActualEndTime",
+      "label": "ActualEndTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:ActualEndTime",
+        "dom:EmployeeTimesheet_ActualEndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the employee finished work.</p><p><strong>Example.</strong> 16:10</p><p><strong>Why it matters.</strong> Recorded with the timesheet; the time engine does not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.BreakStartTime",
+      "label": "BreakStartTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:BreakStartTime",
+        "dom:EmployeeTimesheet_BreakStartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the break started.</p><p><strong>Example.</strong> 12:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.BreakEndTime",
+      "label": "BreakEndTime",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:BreakEndTime",
+        "dom:EmployeeTimesheet_BreakEndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the break ended.</p><p><strong>Example.</strong> 12:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.TotalHours",
+      "label": "TotalHours",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:TotalHours",
+        "dom:EmployeeTimesheet_TotalHours"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The total hours worked on the date.</p><p><strong>Example.</strong> 7.75</p><p><strong>Why it matters.</strong> The time engine reads it for this employee and date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.Approved",
+      "label": "Approved",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:Approved",
+        "dom:EmployeeTimesheet_Approved"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An approval marker recorded with the timesheet.</p><p><strong>Why it matters.</strong> Recorded only; the time engine does not check it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimesheet.Comments",
+      "label": "Comments",
+      "section": "EmployeeTimesheets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTimesheet_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

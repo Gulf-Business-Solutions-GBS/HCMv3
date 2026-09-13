@@ -1,0 +1,235 @@
+{
+  "helpId": "pa.employee-insurance.edit",
+  "lang": "ar",
+  "title": "تأمينات الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.BenefitsManagement.EmployeeInsurance",
+  "overviewHtml": "<p>اشتراك تأمين للموظف أو أحد المعالين، وكيفية تقاسم تكلفته واستردادها.</p><p>تصرف الرواتب اشتراكي الموظف والشركة في شهر الرواتب الذي يبدأ فيه التأمين، ثم تستردهما على أقساط اعتباراً من تاريخ بدء الأقساط حتى يُسدَّد كل رصيد. ويجب أن يساوي مبلغ التأمين اشتراك الموظف مضافاً إليه اشتراك الشركة.</p>",
+  "aliasIndex": {
+    "loc:InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
+    "dom:EmployeeInsurance_InsurancePlanId": "EmployeeInsurance.InsurancePlanId",
+    "loc:InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
+    "dom:EmployeeInsurance_InsuranceProviderId": "EmployeeInsurance.InsuranceProviderId",
+    "loc:DependantId": "EmployeeInsurance.DependantId",
+    "dom:EmployeeInsurance_DependantId": "EmployeeInsurance.DependantId",
+    "loc:StartDate": "EmployeeInsurance.StartDate",
+    "dom:EmployeeInsurance_StartDate": "EmployeeInsurance.StartDate",
+    "loc:EndDate": "EmployeeInsurance.EndDate",
+    "dom:EmployeeInsurance_EndDate": "EmployeeInsurance.EndDate",
+    "loc:InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
+    "dom:EmployeeInsurance_InstallmentStartDate": "EmployeeInsurance.InstallmentStartDate",
+    "loc:InsuranceAmount": "EmployeeInsurance.InsuranceAmount",
+    "dom:EmployeeInsurance_InsuranceAmount": "EmployeeInsurance.InsuranceAmount",
+    "loc:Comments": "EmployeeInsurance.Comments",
+    "dom:EmployeeInsurance_Comments": "EmployeeInsurance.Comments",
+    "loc:CompanyInterval": "EmployeeInsurance.CompanyInterval",
+    "dom:EmployeeInsurance_CompanyInterval": "EmployeeInsurance.CompanyInterval",
+    "loc:CompanyContribution": "EmployeeInsurance.CompanyContribution",
+    "dom:EmployeeInsurance_CompanyContribution": "EmployeeInsurance.CompanyContribution",
+    "loc:InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
+    "dom:EmployeeInsurance_InstallmentCompanyDedAmount": "EmployeeInsurance.InstallmentCompanyDedAmount",
+    "loc:EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
+    "dom:EmployeeInsurance_EmployeeInterval": "EmployeeInsurance.EmployeeInterval",
+    "loc:EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
+    "dom:EmployeeInsurance_EmployeeContribution": "EmployeeInsurance.EmployeeContribution",
+    "loc:InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount",
+    "dom:EmployeeInsurance_InstallmentEmployeeDedAmount": "EmployeeInsurance.InstallmentEmployeeDedAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeInsurance.InsurancePlanId",
+      "label": "InsurancePlanId",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InsurancePlanId",
+        "dom:EmployeeInsurance_InsurancePlanId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة خطط التأمين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خطة التأمين.</p><p><strong>مثال.</strong> التأمين الطبي الذهبي</p><p><strong>لماذا يهم.</strong> تُسجَّل فقط، ولا تقرؤها الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.InsuranceProviderId",
+      "label": "InsuranceProviderId",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InsuranceProviderId",
+        "dom:EmployeeInsurance_InsuranceProviderId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة شركات التأمين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شركة التأمين.</p><p><strong>مثال.</strong> الخليج للتأمين</p><p><strong>لماذا يهم.</strong> تُسجَّل فقط، ولا تقرؤها الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.DependantId",
+      "label": "DependantId",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:DependantId",
+        "dom:EmployeeInsurance_DependantId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعال المشمول، عندما لا يكون التأمين للموظف.</p><p><strong>مثال.</strong> سارة المطيري (ابنة)</p><p><strong>لماذا يهم.</strong> يُصرف تأمين المعال ويُسترد بالطريقة نفسها التي يُصرف بها تأمين الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeInsurance_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeInsurance_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.InstallmentStartDate",
+      "label": "InstallmentStartDate",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InstallmentStartDate",
+        "dom:EmployeeInsurance_InstallmentStartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي تبدأ فيه الرواتب استرداد الاشتراكات.</p><p><strong>مثال.</strong> 1 أكتوبر 2026</p><p><strong>لماذا يهم.</strong> لا يجوز أن يسبق تاريخ البداية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.InsuranceAmount",
+      "label": "InsuranceAmount",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InsuranceAmount",
+        "dom:EmployeeInsurance_InsuranceAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إجمالي تكلفة التأمين.</p><p><strong>مثال.</strong> 600.000</p><p><strong>لماذا يهم.</strong> لا يجوز أن يكون صفراً، ويجب أن يساوي اشتراك الموظف مضافاً إليه اشتراك الشركة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.Comments",
+      "label": "Comments",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeInsurance_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.CompanyInterval",
+      "label": "CompanyInterval",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:CompanyInterval",
+        "dom:EmployeeInsurance_CompanyInterval"
+      ],
+      "rules": "إلزامي. إحدى القيم: شهري، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدورية التي يُعبَّر بها عن اشتراك الشركة.</p><p><strong>مثال.</strong> سنوي</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.CompanyContribution",
+      "label": "CompanyContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:CompanyContribution",
+        "dom:EmployeeInsurance_CompanyContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة الشركة من التكلفة.</p><p><strong>مثال.</strong> 400.000</p><p><strong>لماذا يهم.</strong> تُصرف في شهر بدء التأمين، ثم تُسترد على أقساط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.InstallmentCompanyDedAmount",
+      "label": "InstallmentCompanyDedAmount",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InstallmentCompanyDedAmount",
+        "dom:EmployeeInsurance_InstallmentCompanyDedAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسط الشهري لاسترداد اشتراك الشركة.</p><p><strong>مثال.</strong> 33.333</p><p><strong>لماذا يهم.</strong> لا تسترد الرواتب أكثر من الرصيد المتبقي، ولا أكثر مما يسمح به صافي راتب الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.EmployeeInterval",
+      "label": "EmployeeInterval",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:EmployeeInterval",
+        "dom:EmployeeInsurance_EmployeeInterval"
+      ],
+      "rules": "إلزامي. إحدى القيم: شهري، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدورية التي يُعبَّر بها عن اشتراك الموظف.</p><p><strong>مثال.</strong> سنوي</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.EmployeeContribution",
+      "label": "EmployeeContribution",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:EmployeeContribution",
+        "dom:EmployeeInsurance_EmployeeContribution"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة الموظف من التكلفة.</p><p><strong>مثال.</strong> 200.000</p><p><strong>لماذا يهم.</strong> تُصرف في شهر بدء التأمين، ثم تُسترد على أقساط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeInsurance.InstallmentEmployeeDedAmount",
+      "label": "InstallmentEmployeeDedAmount",
+      "section": "EmployeeInsurances",
+      "aliases": [
+        "loc:InstallmentEmployeeDedAmount",
+        "dom:EmployeeInsurance_InstallmentEmployeeDedAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسط الشهري لاسترداد اشتراك الموظف.</p><p><strong>مثال.</strong> 16.667</p><p><strong>لماذا يهم.</strong> لا تسترد الرواتب أكثر من الرصيد المتبقي، ولا أكثر مما يسمح به صافي راتب الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

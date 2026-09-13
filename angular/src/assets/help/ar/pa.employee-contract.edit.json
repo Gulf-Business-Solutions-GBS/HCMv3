@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-contract.edit",
+  "lang": "ar",
+  "title": "عقود الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeContract",
+  "overviewHtml": "<p>عقود عمل الموظف والفترات التي تغطيها. لا يؤدي حفظ عقد إلى إغلاق عقد سابق؛ ولا يجوز أن تتداخل فترات عقود الموظف نفسه، ولا أن يبدأ عقدان في التاريخ نفسه.</p><p>في أنواع الإجازات التي تتراكم على مدى فترة الخدمة كلها، تمتد فترة التراكم من تاريخ الالتحاق حتى تاريخ انتهاء أحدث عقد للموظف.</p>",
+  "aliasIndex": {
+    "loc:ContractType": "EmployeeContract.ContractTypeId",
+    "dom:EmployeeContract_ContractTypeId": "EmployeeContract.ContractTypeId",
+    "loc:StartDate": "EmployeeContract.StartDate",
+    "dom:EmployeeContract_StartDate": "EmployeeContract.StartDate",
+    "loc:EndDate": "EmployeeContract.EndDate",
+    "dom:EmployeeContract_EndDate": "EmployeeContract.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeContract.ContractTypeId",
+      "label": "ContractType",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:ContractType",
+        "dom:EmployeeContract_ContractTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع العقود.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العقد.</p><p><strong>مثال.</strong> محدد المدة — سنتان</p><p><strong>لماذا يهم.</strong> يظهر في تقارير العقود والموظفين.</p>",
+      "adminHtml": "<p>يُدار من البيانات الأساسية العامة ← أنواع العقود.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeContract.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeContract_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه. لا يجوز أن يبدأ سجلان للموظف نفسه في التاريخ نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeContract.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeContract_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

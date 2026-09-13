@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-document.edit",
+  "lang": "en",
+  "title": "Employee Documents — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDocument",
+  "overviewHtml": "<p>An official document held for the employee — a passport, civil ID, residency or licence — with its number and validity.</p><p>Whether the document is in or out follows its movements: while a withdrawal has not been returned, the document shows as out. Documents can also be added through self-service, and passports withdrawn there.</p>",
+  "aliasIndex": {
+    "loc:DocumentType": "EmployeeDocument.DocumentTypeId",
+    "dom:EmployeeDocument_DocumentTypeId": "EmployeeDocument.DocumentTypeId",
+    "loc:DocumentNum": "EmployeeDocument.DocumentNum",
+    "dom:EmployeeDocument_DocumentNum": "EmployeeDocument.DocumentNum",
+    "loc:IssueDate": "EmployeeDocument.IssueDate",
+    "dom:EmployeeDocument_IssueDate": "EmployeeDocument.IssueDate",
+    "loc:ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "dom:EmployeeDocument_ExpiryDate": "EmployeeDocument.ExpiryDate",
+    "loc:Description": "EmployeeDocument.Description",
+    "dom:EmployeeDocument_Description": "EmployeeDocument.Description",
+    "loc:Comments": "EmployeeDocument.Comments",
+    "dom:EmployeeDocument_Comments": "EmployeeDocument.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDocument.DocumentTypeId",
+      "label": "DocumentType",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentType",
+        "dom:EmployeeDocument_DocumentTypeId"
+      ],
+      "rules": "Required. Chosen from Document Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of document.</p><p><strong>Example.</strong> Passport</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Document Types. Their reminder settings are not acted on at present, so no expiry reminders are sent.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.DocumentNum",
+      "label": "DocumentNum",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:DocumentNum",
+        "dom:EmployeeDocument_DocumentNum"
+      ],
+      "rules": "Optional. Maximum 128 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The document number.</p><p><strong>Example.</strong> P01234567</p><p><strong>Why it matters.</strong> Required when the document is submitted through self-service.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.IssueDate",
+      "label": "IssueDate",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:EmployeeDocument_IssueDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document was issued.</p><p><strong>Example.</strong> 3 Mar 2022</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.ExpiryDate",
+      "label": "ExpiryDate",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:ExpiryDate",
+        "dom:EmployeeDocument_ExpiryDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document expires.</p><p><strong>Example.</strong> 2 Mar 2032</p><p><strong>Why it matters.</strong> Self-service shows the employee their documents that have not yet expired.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.Description",
+      "label": "Description",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:Description",
+        "dom:EmployeeDocument_Description"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A description of the document.</p><p><strong>Example.</strong> Kuwait residency, Article 18</p><p><strong>Why it matters.</strong> Shown on the document and passport reports.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocument.Comments",
+      "label": "Comments",
+      "section": "EmployeeDocuments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDocument_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

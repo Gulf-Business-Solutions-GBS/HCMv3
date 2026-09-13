@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-tkt-adjustment.edit",
+  "lang": "en",
+  "title": "Employee Ticket Adjustments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTktAdjustment",
+  "overviewHtml": "<p>A manual adjustment to the employee's air ticket entitlement.</p><p>It is recorded for reference: saving it does not update the employee's ticket quota, and neither payroll nor the time engine reads it at present.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
+    "dom:EmployeeTktAdjustment_TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
+    "loc:EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
+    "dom:EmployeeTktAdjustment_EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
+    "loc:AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
+    "dom:EmployeeTktAdjustment_AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
+    "loc:TicketPaymentType": "EmployeeTktAdjustment.TicketPaymentType",
+    "dom:EmployeeTktAdjustment_TicketPaymentType": "EmployeeTktAdjustment.TicketPaymentType",
+    "loc:QuotaAccrued": "EmployeeTktAdjustment.QuotaAccrued",
+    "dom:EmployeeTktAdjustment_QuotaAccrued": "EmployeeTktAdjustment.QuotaAccrued",
+    "loc:QuotaAdjusted": "EmployeeTktAdjustment.QuotaAdjusted",
+    "dom:EmployeeTktAdjustment_QuotaAdjusted": "EmployeeTktAdjustment.QuotaAdjusted",
+    "loc:Comments": "EmployeeTktAdjustment.Comments",
+    "dom:EmployeeTktAdjustment_Comments": "EmployeeTktAdjustment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTktAdjustment.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTktAdjustment_TicketTypeId"
+      ],
+      "rules": "Required. Chosen from Ticket Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The ticket type being adjusted.</p><p><strong>Example.</strong> Employee</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeTktAdjustment_EffectiveDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the adjustment takes effect.</p><p><strong>Example.</strong> 30 Jun 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.AdjustmentType",
+      "label": "AdjustmentType",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:AdjustmentType",
+        "dom:EmployeeTktAdjustment_AdjustmentType"
+      ],
+      "rules": "Required. One of: Encashment, Adjust, Fractional, No Impact On Quota.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What kind of adjustment this is.</p><p><strong>Example.</strong> Encashment</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.TicketPaymentType",
+      "label": "TicketPaymentType",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:TicketPaymentType",
+        "dom:EmployeeTktAdjustment_TicketPaymentType"
+      ],
+      "rules": "Required. One of: Pay With Payroll, Pay In Advance.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When an encashment would be paid.</p><p><strong>Example.</strong> Pay With Payroll</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeTktAdjustment_QuotaAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets accrued by the adjustment.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeTktAdjustment_QuotaAdjusted"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Tickets adjusted.</p><p><strong>Example.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.Comments",
+      "label": "Comments",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTktAdjustment_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

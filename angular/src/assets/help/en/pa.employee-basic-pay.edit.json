@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-basic-pay.edit",
+  "lang": "en",
+  "title": "Employee Basic Pays — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBasicPay",
+  "overviewHtml": "<p>The header of the employee's pay for a period. Its detail lines hold the wage types and amounts; this record says how often the pay is expressed.</p><p>Payroll uses the basic pay whose period covers the pay date. Saving a new one does not close the previous one, and only a duplicate start date is refused, so set the previous record's end date yourself.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeBasicPay.StartDate",
+    "dom:EmployeeBasicPay_StartDate": "EmployeeBasicPay.StartDate",
+    "loc:EndDate": "EmployeeBasicPay.EndDate",
+    "dom:EmployeeBasicPay_EndDate": "EmployeeBasicPay.EndDate",
+    "loc:PayType": "EmployeeBasicPay.PayType",
+    "dom:EmployeeBasicPay_PayType": "EmployeeBasicPay.PayType",
+    "loc:PayInterval": "EmployeeBasicPay.PayInterval",
+    "dom:EmployeeBasicPay_PayInterval": "EmployeeBasicPay.PayInterval",
+    "loc:EmployeeActionId": "EmployeeBasicPay.EmployeeActionId",
+    "dom:EmployeeBasicPay_EmployeeActionId": "EmployeeBasicPay.EmployeeActionId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBasicPay.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBasicPay_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee can start on the same date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBasicPay_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.PayType",
+      "label": "PayType",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:PayType",
+        "dom:EmployeeBasicPay_PayType"
+      ],
+      "rules": "Required. One of: None, Regular.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The type of pay.</p><p><strong>Example.</strong> Regular</p><p><strong>Why it matters.</strong> Kept for reference; no calculation reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeBasicPay_PayInterval"
+      ],
+      "rules": "Required. One of: Monthly, Daily, Hourly, End Of Service, Yearly.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period the detail amounts are expressed for.</p><p><strong>Example.</strong> Monthly</p><p><strong>Why it matters.</strong> Payroll works out each detail line from it: Monthly amounts are prorated by the wage type's billing method, Daily and Hourly amounts are multiplied by the days or hours recorded for the employee under Employee Remunerations in that month.</p>",
+      "adminHtml": "<p>With End Of Service or Yearly, the basic pay calculation produces no amount for the detail lines.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBasicPay.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeBasicPays",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeBasicPay_EmployeeActionId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The personnel action this pay change belongs to, if any.</p><p><strong>Example.</strong> Promotion — 1 Jan 2026</p><p><strong>Why it matters.</strong> Recorded as a link only; payroll does not read it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

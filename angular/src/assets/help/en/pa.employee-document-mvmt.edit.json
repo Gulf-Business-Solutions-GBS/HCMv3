@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-document-mvmt.edit",
+  "lang": "en",
+  "title": "Document Movements — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDocumentMvmt",
+  "overviewHtml": "<p>A withdrawal and return of one of the employee's documents — for example a passport handed back for travel.</p><p>While a movement has no actual return date, the document shows as out. Employees can request a passport withdrawal through self-service.</p>",
+  "aliasIndex": {
+    "loc:WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
+    "dom:Mvmt_WithdrawDate": "EmployeeDocumentMvmt.WithdrawDate",
+    "loc:ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
+    "dom:Mvmt_ReturnDate": "EmployeeDocumentMvmt.ReturnDate",
+    "loc:ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "dom:Mvmt_ActualReturnDate": "EmployeeDocumentMvmt.ActualReturnDate",
+    "loc:Comments": "EmployeeDocumentMvmt.Comments",
+    "dom:Mvmt_Comments": "EmployeeDocumentMvmt.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDocumentMvmt.WithdrawDate",
+      "label": "WithdrawDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:WithdrawDate",
+        "dom:Mvmt_WithdrawDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document was taken out.</p><p><strong>Example.</strong> 1 Jul 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ReturnDate",
+      "label": "ReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ReturnDate",
+        "dom:Mvmt_ReturnDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document is due back.</p><p><strong>Example.</strong> 20 Jul 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.ActualReturnDate",
+      "label": "ActualReturnDate",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:ActualReturnDate",
+        "dom:Mvmt_ActualReturnDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the document actually came back.</p><p><strong>Example.</strong> 18 Jul 2026</p><p><strong>Why it matters.</strong> Leave it empty while the document is still out.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDocumentMvmt.Comments",
+      "label": "Comments",
+      "section": "DocumentMovements",
+      "aliases": [
+        "loc:Comments",
+        "dom:Mvmt_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

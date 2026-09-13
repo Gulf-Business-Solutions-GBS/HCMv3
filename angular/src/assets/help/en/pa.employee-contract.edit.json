@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-contract.edit",
+  "lang": "en",
+  "title": "Employee Contracts — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeContract",
+  "overviewHtml": "<p>The employee's employment contracts and the periods they cover. Saving a contract does not close an earlier one; periods for the same employee cannot overlap, and no two can start on the same date.</p><p>For leave types that accrue over the whole employment, the accrual period runs from the joining date to the end date of the employee's latest contract.</p>",
+  "aliasIndex": {
+    "loc:ContractType": "EmployeeContract.ContractTypeId",
+    "dom:EmployeeContract_ContractTypeId": "EmployeeContract.ContractTypeId",
+    "loc:StartDate": "EmployeeContract.StartDate",
+    "dom:EmployeeContract_StartDate": "EmployeeContract.StartDate",
+    "loc:EndDate": "EmployeeContract.EndDate",
+    "dom:EmployeeContract_EndDate": "EmployeeContract.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeContract.ContractTypeId",
+      "label": "ContractType",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:ContractType",
+        "dom:EmployeeContract_ContractTypeId"
+      ],
+      "rules": "Required. Chosen from Contract Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of contract.</p><p><strong>Example.</strong> Limited — 2 years</p><p><strong>Why it matters.</strong> Shown on contract and employee reports.</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Contract Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeContract.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeContract_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee. No two records for the same employee can start on the same date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeContract.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeContracts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeContract_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

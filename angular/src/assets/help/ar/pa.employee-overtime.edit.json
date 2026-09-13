@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-overtime.edit",
+  "lang": "ar",
+  "title": "العمل الإضافي للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOvertime",
+  "overviewHtml": "<p>العمل الإضافي للموظف في تاريخ واحد: الساعات المطلوبة، والساعات التي قاسها محرك الوقت، والساعات المعتمدة. سجل عمل إضافي واحد لكل موظف في كل تاريخ.</p><p>تصرف الرواتب الساعات المعتمدة مضروبة في معدل نوع العمل الإضافي. وينشئ محرك الوقت هذه السجلات بنفسه عندما يجد عملاً إضافياً، ويملأ الساعات المعتمدة من الساعات المقاسة إن لم تُعتمد ساعات.</p>",
+  "aliasIndex": {
+    "loc:EffectiveDate": "EmployeeOvertime.EffectiveDate",
+    "dom:EmployeeOvertime_EffectiveDate": "EmployeeOvertime.EffectiveDate",
+    "loc:OvertimeTypeId": "EmployeeOvertime.OvertimeTypeId",
+    "dom:EmployeeOvertime_OvertimeTypeId": "EmployeeOvertime.OvertimeTypeId",
+    "loc:OvertimeHours": "EmployeeOvertime.OvertimeHours",
+    "dom:EmployeeOvertime_OvertimeHours": "EmployeeOvertime.OvertimeHours",
+    "loc:ActualOvertimeHours": "EmployeeOvertime.ActualOvertimeHours",
+    "dom:EmployeeOvertime_ActualOvertimeHours": "EmployeeOvertime.ActualOvertimeHours",
+    "loc:ApprovedOvertimeHours": "EmployeeOvertime.ApprovedOvertimeHours",
+    "dom:EmployeeOvertime_ApprovedOvertimeHours": "EmployeeOvertime.ApprovedOvertimeHours",
+    "loc:Comments": "EmployeeOvertime.Comments",
+    "dom:EmployeeOvertime_Comments": "EmployeeOvertime.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOvertime.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeOvertime_EffectiveDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي أُدي فيه العمل الإضافي.</p><p><strong>مثال.</strong> 12 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> تصرف الرواتب العمل الإضافي الواقع ضمن فترة الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.OvertimeTypeId",
+      "label": "OvertimeTypeId",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:OvertimeTypeId",
+        "dom:EmployeeOvertime_OvertimeTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع العمل الإضافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي، ويحدد المعدل.</p><p><strong>مثال.</strong> عمل إضافي نهاية الأسبوع</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع العمل الإضافي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.OvertimeHours",
+      "label": "OvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:OvertimeHours",
+        "dom:EmployeeOvertime_OvertimeHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات المطلوبة.</p><p><strong>مثال.</strong> 4</p><p><strong>لماذا يهم.</strong> تظهر في طلب الاعتماد، ولا تصرفها الرواتب مباشرة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.ActualOvertimeHours",
+      "label": "ActualOvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:ActualOvertimeHours",
+        "dom:EmployeeOvertime_ActualOvertimeHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات التي قاسها محرك الوقت.</p><p><strong>مثال.</strong> 3.5</p><p><strong>لماذا يهم.</strong> يستبدلها محرك الوقت في كل مرة يعالج فيها التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.ApprovedOvertimeHours",
+      "label": "ApprovedOvertimeHours",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:ApprovedOvertimeHours",
+        "dom:EmployeeOvertime_ApprovedOvertimeHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الساعات المعتمدة للصرف.</p><p><strong>مثال.</strong> 3.5</p><p><strong>لماذا يهم.</strong> تصرف الرواتب هذه الساعات مضروبة في معدل العمل الإضافي. وإذا تُركت صفراً يملؤها محرك الوقت من الساعات المقاسة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOvertime.Comments",
+      "label": "Comments",
+      "section": "EmployeeOvertimes",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeOvertime_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

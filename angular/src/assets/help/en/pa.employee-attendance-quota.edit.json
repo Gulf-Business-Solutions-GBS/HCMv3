@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-attendance-quota.edit",
+  "lang": "en",
+  "title": "Employee Attendance Quotas — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAttendanceQuota",
+  "overviewHtml": "<p>An attendance entitlement for the employee over a period.</p><p>It is recorded for reference; no calculation reads it at present.</p>",
+  "aliasIndex": {
+    "loc:EntitlementFrom": "EmployeeAttendanceQuota.EntitlementFrom",
+    "dom:EmployeeAttendanceQuota_EntitlementFrom": "EmployeeAttendanceQuota.EntitlementFrom",
+    "loc:EntitlementTo": "EmployeeAttendanceQuota.EntitlementTo",
+    "dom:EmployeeAttendanceQuota_EntitlementTo": "EmployeeAttendanceQuota.EntitlementTo",
+    "loc:DeductionFrom": "EmployeeAttendanceQuota.DeductionFrom",
+    "dom:EmployeeAttendanceQuota_DeductionFrom": "EmployeeAttendanceQuota.DeductionFrom",
+    "loc:DeductionTo": "EmployeeAttendanceQuota.DeductionTo",
+    "dom:EmployeeAttendanceQuota_DeductionTo": "EmployeeAttendanceQuota.DeductionTo",
+    "loc:QuotaAccrued": "EmployeeAttendanceQuota.QuotaAccrued",
+    "dom:EmployeeAttendanceQuota_QuotaAccrued": "EmployeeAttendanceQuota.QuotaAccrued",
+    "loc:QuotaUsed": "EmployeeAttendanceQuota.QuotaUsed",
+    "dom:EmployeeAttendanceQuota_QuotaUsed": "EmployeeAttendanceQuota.QuotaUsed"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAttendanceQuota.EntitlementFrom",
+      "label": "EntitlementFrom",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:EntitlementFrom",
+        "dom:EmployeeAttendanceQuota_EntitlementFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day of the entitlement period.</p><p><strong>Example.</strong> 1 Jan 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.EntitlementTo",
+      "label": "EntitlementTo",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:EntitlementTo",
+        "dom:EmployeeAttendanceQuota_EntitlementTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day of the entitlement period.</p><p><strong>Example.</strong> 31 Dec 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.DeductionFrom",
+      "label": "DeductionFrom",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:DeductionFrom",
+        "dom:EmployeeAttendanceQuota_DeductionFrom"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day the entitlement can be used.</p><p><strong>Example.</strong> 1 Jan 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.DeductionTo",
+      "label": "DeductionTo",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:DeductionTo",
+        "dom:EmployeeAttendanceQuota_DeductionTo"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day the entitlement can be used.</p><p><strong>Example.</strong> 31 Dec 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeAttendanceQuota_QuotaAccrued"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount earned in the period.</p><p><strong>Example.</strong> 10</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAttendanceQuota.QuotaUsed",
+      "label": "QuotaUsed",
+      "section": "EmployeeAttendanceQuotas",
+      "aliases": [
+        "loc:QuotaUsed",
+        "dom:EmployeeAttendanceQuota_QuotaUsed"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount used in the period.</p><p><strong>Example.</strong> 4</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

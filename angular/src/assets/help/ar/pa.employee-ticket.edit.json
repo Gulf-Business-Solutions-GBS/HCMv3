@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-ticket.edit",
+  "lang": "ar",
+  "title": "تذاكر الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTicket",
+  "overviewHtml": "<p>استحقاق تذكرة طيران أُخذ أو صُرف للموظف أو أحد المعالين.</p><p>عندما تصرف المجموعة الفرعية للموظف تذاكر الطيران تلقائياً، ينشئ محرك الوقت هذه السجلات بنفسه في يوم بدء فترة تراكم كل تذكرة. ويقرأ احتساب متوسط التذكرة في الرواتب التذاكرَ في أحدث تاريخ دفع. ولا تحتسب رواتب HCMv3 حالياً صرف تذاكر الطيران من هذه السجلات.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTicket.TicketTypeId",
+    "dom:EmployeeTicket_TicketTypeId": "EmployeeTicket.TicketTypeId",
+    "loc:TicketDate": "EmployeeTicket.TicketDate",
+    "dom:EmployeeTicket_TicketDate": "EmployeeTicket.TicketDate",
+    "loc:PaymentDate": "EmployeeTicket.PaymentDate",
+    "dom:EmployeeTicket_PaymentDate": "EmployeeTicket.PaymentDate",
+    "loc:Compensate": "EmployeeTicket.Compensate",
+    "dom:EmployeeTicket_Compensate": "EmployeeTicket.Compensate",
+    "loc:TicketPaymentType": "EmployeeTicket.TicketPaymentType",
+    "dom:EmployeeTicket_TicketPaymentType": "EmployeeTicket.TicketPaymentType",
+    "loc:Amount": "EmployeeTicket.Amount",
+    "dom:EmployeeTicket_Amount": "EmployeeTicket.Amount",
+    "loc:AdvancedTicketPaid": "EmployeeTicket.AdvancedTicketPaid",
+    "dom:EmployeeTicket_AdvancedTicketPaid": "EmployeeTicket.AdvancedTicketPaid",
+    "loc:OverrideAmount": "EmployeeTicket.OverrideAmount",
+    "dom:EmployeeTicket_OverrideAmount": "EmployeeTicket.OverrideAmount",
+    "loc:Comments": "EmployeeTicket.Comments",
+    "dom:EmployeeTicket_Comments": "EmployeeTicket.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTicket.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTicket_TicketTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لمن التذكرة — للموظف نفسه أو لنوع تذكرة معال.</p><p><strong>مثال.</strong> الموظف</p>",
+      "adminHtml": "<p>تُدار من إدارة الرواتب ← أنواع التذاكر.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.TicketDate",
+      "label": "TicketDate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketDate",
+        "dom:EmployeeTicket_TicketDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ التذكرة.</p><p><strong>مثال.</strong> 1 يوليو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeTicket_PaymentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ صرف التذكرة أو استخدامها.</p><p><strong>مثال.</strong> 1 يوليو 2026</p><p><strong>لماذا يهم.</strong> تُحتسب التذاكر المصروفة ضمن فترة التراكم مستخدمةً عندما يحسب محرك الوقت الاستحقاق المتبقي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Compensate",
+      "label": "Compensate",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Compensate",
+        "dom:EmployeeTicket_Compensate"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد التذاكر.</p><p><strong>مثال.</strong> 1</p><p><strong>لماذا يهم.</strong> يطرحه محرك الوقت من الاستحقاق، ويضربه احتساب متوسط التذكرة في أجرة المسار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.TicketPaymentType",
+      "label": "TicketPaymentType",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:TicketPaymentType",
+        "dom:EmployeeTicket_TicketPaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الدفع مع الرواتب، الدفع مقدماً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تُصرف التذكرة.</p><p><strong>مثال.</strong> مع الرواتب</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Amount",
+      "label": "Amount",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeTicket_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ التذكرة، عندما يحل محل أجرة المسار.</p><p><strong>مثال.</strong> 180.000</p><p><strong>لماذا يهم.</strong> يملؤه محرك الوقت من استثناء ميزة أو استثناء معال.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.AdvancedTicketPaid",
+      "label": "AdvancedTicketPaid",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:AdvancedTicketPaid",
+        "dom:EmployeeTicket_AdvancedTicketPaid"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> علامة لدفعة تذكرة مقدمة.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.OverrideAmount",
+      "label": "OverrideAmount",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:OverrideAmount",
+        "dom:EmployeeTicket_OverrideAmount"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يحل المبلغ محل أجرة المسار.</p><p><strong>لماذا يهم.</strong> يحدده محرك الوقت عندما يأخذ المبلغ من استثناء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTicket.Comments",
+      "label": "Comments",
+      "section": "EmployeeTickets",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTicket_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

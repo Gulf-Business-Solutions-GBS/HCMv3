@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.loan-installment.edit",
+  "lang": "en",
+  "title": "Loan Installments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.LoanInstallment",
+  "overviewHtml": "<p>A planned instalment in a loan's schedule.</p><p>It is recorded for reference; payroll recovers loans from the loan's instalment amount and does not read this schedule at present.</p>",
+  "aliasIndex": {
+    "loc:EmployeeLoanId": "LoanInstallment.EmployeeLoanId",
+    "dom:LoanInstallment_EmployeeLoanId": "LoanInstallment.EmployeeLoanId",
+    "loc:InstallmentDate": "LoanInstallment.InstallmentDate",
+    "dom:LoanInstallment_InstallmentDate": "LoanInstallment.InstallmentDate",
+    "loc:InstallmentAmount": "LoanInstallment.InstallmentAmount",
+    "dom:LoanInstallment_InstallmentAmount": "LoanInstallment.InstallmentAmount",
+    "loc:InstallmentStatus": "LoanInstallment.InstallmentStatus",
+    "dom:LoanInstallment_InstallmentStatus": "LoanInstallment.InstallmentStatus"
+  },
+  "fields": [
+    {
+      "id": "LoanInstallment.EmployeeLoanId",
+      "label": "EmployeeLoanId",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:EmployeeLoanId",
+        "dom:LoanInstallment_EmployeeLoanId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The loan this instalment belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentDate",
+      "label": "InstallmentDate",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentDate",
+        "dom:LoanInstallment_InstallmentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the instalment is due.</p><p><strong>Example.</strong> 31 Oct 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentAmount",
+      "label": "InstallmentAmount",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentAmount",
+        "dom:LoanInstallment_InstallmentAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The instalment amount.</p><p><strong>Example.</strong> 100.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "LoanInstallment.InstallmentStatus",
+      "label": "InstallmentStatus",
+      "section": "LoanInstallments",
+      "aliases": [
+        "loc:InstallmentStatus",
+        "dom:LoanInstallment_InstallmentStatus"
+      ],
+      "rules": "Required. One of: Unpaid, Paid.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the instalment has been paid.</p><p><strong>Example.</strong> Unpaid</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

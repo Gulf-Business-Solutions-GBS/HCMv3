@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.emp-talent-matrix-data.edit",
+  "lang": "ar",
+  "title": "بيانات مصفوفة مواهب الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.SuccessionManagement.EmpTalentMatrixData",
+  "overviewHtml": "<p>موقع الموظف في المصفوفة التساعية للمواهب خلال فترة. ولا يجوز أن تتداخل فترات الموظف نفسه.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpTalentMatrixData.StartDate",
+    "dom:EmpTalentMatrixData_StartDate": "EmpTalentMatrixData.StartDate",
+    "loc:EndDate": "EmpTalentMatrixData.EndDate",
+    "dom:EmpTalentMatrixData_EndDate": "EmpTalentMatrixData.EndDate",
+    "loc:PerformanceRatingId": "EmpTalentMatrixData.PerformanceRatingId",
+    "dom:EmpTalentMatrixData_PerformanceRatingId": "EmpTalentMatrixData.PerformanceRatingId",
+    "loc:PotentialRatingId": "EmpTalentMatrixData.PotentialRatingId",
+    "dom:EmpTalentMatrixData_PotentialRatingId": "EmpTalentMatrixData.PotentialRatingId",
+    "loc:OverallRatingId": "EmpTalentMatrixData.OverallRatingId",
+    "dom:EmpTalentMatrixData_OverallRatingId": "EmpTalentMatrixData.OverallRatingId",
+    "loc:CalibratedRatingId": "EmpTalentMatrixData.CalibratedRatingId",
+    "dom:EmpTalentMatrixData_CalibratedRatingId": "EmpTalentMatrixData.CalibratedRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpTalentMatrixData.StartDate",
+      "label": "StartDate",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpTalentMatrixData_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.EndDate",
+      "label": "EndDate",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpTalentMatrixData_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.PerformanceRatingId",
+      "label": "PerformanceRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:PerformanceRatingId",
+        "dom:EmpTalentMatrixData_PerformanceRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف محور الأداء.</p><p><strong>مثال.</strong> مرتفع</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.PotentialRatingId",
+      "label": "PotentialRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:PotentialRatingId",
+        "dom:EmpTalentMatrixData_PotentialRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تصنيف محور الإمكانات.</p><p><strong>مثال.</strong> متوسط</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.OverallRatingId",
+      "label": "OverallRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:OverallRatingId",
+        "dom:EmpTalentMatrixData_OverallRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المربع الإجمالي الذي يقع فيه الموظف.</p><p><strong>مثال.</strong> أداء مرتفع</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpTalentMatrixData.CalibratedRatingId",
+      "label": "CalibratedRatingId",
+      "section": "EmpTalentMatrixDatas",
+      "aliases": [
+        "loc:CalibratedRatingId",
+        "dom:EmpTalentMatrixData_CalibratedRatingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تقديرات المصفوفة التساعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المربع بعد مراجعة المعايرة.</p><p><strong>مثال.</strong> نجم</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    }
+  ]
+}

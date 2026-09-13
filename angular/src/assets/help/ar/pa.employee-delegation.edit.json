@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-delegation.edit",
+  "lang": "ar",
+  "title": "تفويضات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDelegation",
+  "overviewHtml": "<p>تسليم مهام الموظف إلى زميل خلال فترة — عادةً أثناء إجازته.</p><p>طوال سريان التفويض، يُنسخ الزميل على رسائل الإشعارات التي يتلقاها الموظف. ويمكن توجيه التفويضات للاعتماد، ولا تسري إلا بعد اعتمادها. ولا يجوز للموظف تفويض نفسه، ولا أن تتداخل تفويضات الموظف نفسه.</p>",
+  "aliasIndex": {
+    "loc:DelegateTo": "EmployeeDelegation.DelegateToId",
+    "dom:EmployeeDelegation_DelegateToId": "EmployeeDelegation.DelegateToId",
+    "loc:StartDate": "EmployeeDelegation.StartDate",
+    "dom:EmployeeDelegation_StartDate": "EmployeeDelegation.StartDate",
+    "loc:EndDate": "EmployeeDelegation.EndDate",
+    "dom:EmployeeDelegation_EndDate": "EmployeeDelegation.EndDate",
+    "loc:Comments": "EmployeeDelegation.Comments",
+    "dom:EmployeeDelegation_Comments": "EmployeeDelegation.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDelegation.DelegateToId",
+      "label": "DelegateTo",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:DelegateTo",
+        "dom:EmployeeDelegation_DelegateToId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزميل الذي يتولى مهام الموظف.</p><p><strong>مثال.</strong> أحمد الكندري (1057)</p><p><strong>لماذا يهم.</strong> يجب أن يكون موظفاً آخر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDelegation_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDelegation_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDelegation.Comments",
+      "label": "Comments",
+      "section": "EmployeeDelegations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeDelegation_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

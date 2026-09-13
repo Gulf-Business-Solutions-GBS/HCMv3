@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-benefit-exception.edit",
+  "lang": "en",
+  "title": "Employee Benefit Exceptions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeBenefitException",
+  "overviewHtml": "<p>Overrides the employee's own ticket or health reimbursement entitlement for a period.</p><p>For health reimbursement, the amount replaces the employee's share from their sub group's entitlement. For tickets, the time engine uses the amount when accruing the employee's own ticket; an amount of zero means not entitled.</p>",
+  "aliasIndex": {
+    "loc:ExceptionBenefitType": "EmployeeBenefitException.ExceptionBenefitType",
+    "dom:EmployeeBenefitException_ExceptionBenefitType": "EmployeeBenefitException.ExceptionBenefitType",
+    "loc:Amount": "EmployeeBenefitException.Amount",
+    "dom:EmployeeBenefitException_Amount": "EmployeeBenefitException.Amount",
+    "loc:StartDate": "EmployeeBenefitException.StartDate",
+    "dom:EmployeeBenefitException_StartDate": "EmployeeBenefitException.StartDate",
+    "loc:EndDate": "EmployeeBenefitException.EndDate",
+    "dom:EmployeeBenefitException_EndDate": "EmployeeBenefitException.EndDate",
+    "loc:Comments": "EmployeeBenefitException.Comments",
+    "dom:EmployeeBenefitException_Comments": "EmployeeBenefitException.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeBenefitException.ExceptionBenefitType",
+      "label": "ExceptionBenefitType",
+      "section": "EmployeeBenefitExceptions",
+      "aliases": [
+        "loc:ExceptionBenefitType",
+        "dom:EmployeeBenefitException_ExceptionBenefitType"
+      ],
+      "rules": "Required. One of: Ticket, Health Reimbursement.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Which benefit is overridden.</p><p><strong>Example.</strong> Health Reimbursement</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBenefitException.Amount",
+      "label": "Amount",
+      "section": "EmployeeBenefitExceptions",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeBenefitException_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The entitlement amount that applies instead.</p><p><strong>Example.</strong> 300.000</p><p><strong>Why it matters.</strong> For tickets, zero means the employee is not entitled during the period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBenefitException.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeBenefitExceptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeBenefitException_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBenefitException.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeBenefitExceptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeBenefitException_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeBenefitException.Comments",
+      "label": "Comments",
+      "section": "EmployeeBenefitExceptions",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeBenefitException_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

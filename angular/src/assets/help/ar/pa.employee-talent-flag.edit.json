@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-talent-flag.edit",
+  "lang": "ar",
+  "title": "مؤشرات مواهب الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.SuccessionManagement.EmployeeTalentFlag",
+  "overviewHtml": "<p>يحدد الموظف موضع اهتمام من حيث الاستبقاء خلال فترة: مدى احتمال مغادرته، ومدى أثر ذلك، وسببه.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:RiskOfLossId": "EmployeeTalentFlag.RiskOfLossId",
+    "dom:EmployeeTalentFlag_RiskOfLossId": "EmployeeTalentFlag.RiskOfLossId",
+    "loc:ImpactOfLossId": "EmployeeTalentFlag.ImpactOfLossId",
+    "dom:EmployeeTalentFlag_ImpactOfLossId": "EmployeeTalentFlag.ImpactOfLossId",
+    "loc:ReasonForLeavingId": "EmployeeTalentFlag.ReasonForLeavingId",
+    "dom:EmployeeTalentFlag_ReasonForLeavingId": "EmployeeTalentFlag.ReasonForLeavingId",
+    "loc:TalentPoolId": "EmployeeTalentFlag.TalentPoolId",
+    "dom:EmployeeTalentFlag_TalentPoolId": "EmployeeTalentFlag.TalentPoolId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTalentFlag.RiskOfLossId",
+      "label": "RiskOfLossId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:RiskOfLossId",
+        "dom:EmployeeTalentFlag_RiskOfLossId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مخاطر فقدان الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى احتمال مغادرة الموظف.</p><p><strong>مثال.</strong> مرتفع</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.ImpactOfLossId",
+      "label": "ImpactOfLossId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:ImpactOfLossId",
+        "dom:EmployeeTalentFlag_ImpactOfLossId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أثر فقدان الكفاءات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى أثر فقدان الموظف.</p><p><strong>مثال.</strong> حرج</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.ReasonForLeavingId",
+      "label": "ReasonForLeavingId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:ReasonForLeavingId",
+        "dom:EmployeeTalentFlag_ReasonForLeavingId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أسباب ترك العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السبب المحتمل للمغادرة.</p><p><strong>مثال.</strong> الأجر</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTalentFlag.TalentPoolId",
+      "label": "TalentPoolId",
+      "section": "EmployeeTalentFlags",
+      "aliases": [
+        "loc:TalentPoolId",
+        "dom:EmployeeTalentFlag_TalentPoolId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات المواهب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة المواهب التي ينتمي إليها الموظف.</p><p><strong>مثال.</strong> قادة المستقبل</p>",
+      "adminHtml": "<p>تُدار من إدارة التعاقب الوظيفي.</p>",
+      "stub": false
+    }
+  ]
+}

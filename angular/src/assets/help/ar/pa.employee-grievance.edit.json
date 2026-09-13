@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-grievance.edit",
+  "lang": "ar",
+  "title": "تظلمات الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeGrievance",
+  "overviewHtml": "<p>تظلّم قدّمه الموظف. ولا يجوز تسجيل النوع نفسه من التظلم مرتين في التاريخ نفسه.</p><p>يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:GrievanceTypeId": "EmployeeGrievance.GrievanceTypeId",
+    "dom:EmployeeGrievance_GrievanceTypeId": "EmployeeGrievance.GrievanceTypeId",
+    "loc:GrievanceDate": "EmployeeGrievance.GrievanceDate",
+    "dom:EmployeeGrievance_GrievanceDate": "EmployeeGrievance.GrievanceDate",
+    "loc:Comments": "EmployeeGrievance.Comments",
+    "dom:EmployeeGrievance_Comments": "EmployeeGrievance.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGrievance.GrievanceTypeId",
+      "label": "GrievanceTypeId",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:GrievanceTypeId",
+        "dom:EmployeeGrievance_GrievanceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التظلمات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التظلم.</p><p><strong>مثال.</strong> ظروف العمل</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← أنواع التظلمات.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGrievance.GrievanceDate",
+      "label": "GrievanceDate",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:GrievanceDate",
+        "dom:EmployeeGrievance_GrievanceDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ تقديم التظلم.</p><p><strong>مثال.</strong> 2 سبتمبر 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGrievance.Comments",
+      "label": "Comments",
+      "section": "EmployeeGrievances",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeGrievance_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

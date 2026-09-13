@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-certification.edit",
+  "lang": "en",
+  "title": "Employee Certifications — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeCertification",
+  "overviewHtml": "<p>A course or professional certification the employee has completed.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Course": "EmployeeCertification.Course",
+    "dom:EmployeeCertification_Course": "EmployeeCertification.Course",
+    "loc:Institution": "EmployeeCertification.InstitutionId",
+    "dom:EmployeeCertification_InstitutionId": "EmployeeCertification.InstitutionId",
+    "loc:Duration": "EmployeeCertification.Duration",
+    "dom:EmployeeCertification_Duration": "EmployeeCertification.Duration",
+    "loc:Certificate": "EmployeeCertification.Certificate",
+    "dom:EmployeeCertification_Certificate": "EmployeeCertification.Certificate",
+    "loc:Grade": "EmployeeCertification.Grade",
+    "dom:EmployeeCertification_Grade": "EmployeeCertification.Grade",
+    "loc:StartDate": "EmployeeCertification.StartDate",
+    "dom:EmployeeCertification_StartDate": "EmployeeCertification.StartDate",
+    "loc:EndDate": "EmployeeCertification.EndDate",
+    "dom:EmployeeCertification_EndDate": "EmployeeCertification.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeCertification.Course",
+      "label": "Course",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Course",
+        "dom:EmployeeCertification_Course"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The name of the course.</p><p><strong>Example.</strong> Certified Payroll Professional</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.InstitutionId",
+      "label": "Institution",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Institution",
+        "dom:EmployeeCertification_InstitutionId"
+      ],
+      "rules": "Required. Chosen from Institution master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The institution that ran the course.</p><p><strong>Example.</strong> Kuwait Institute for Scientific Research</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Duration",
+      "label": "Duration",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Duration",
+        "dom:EmployeeCertification_Duration"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How long the course lasted, as free text.</p><p><strong>Example.</strong> 3 months</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Certificate",
+      "label": "Certificate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Certificate",
+        "dom:EmployeeCertification_Certificate"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The certificate awarded.</p><p><strong>Example.</strong> CPP</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.Grade",
+      "label": "Grade",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:Grade",
+        "dom:EmployeeCertification_Grade"
+      ],
+      "rules": "Optional. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The grade achieved.</p><p><strong>Example.</strong> Pass</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeCertification_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeCertification.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeCertifications",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeCertification_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

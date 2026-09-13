@@ -18,3 +18,15 @@ See docs/help/DESIGN.md §5.1.
 ## NameAr {#*.NameAr}
 
 **What it is.** The item's name in Arabic.
+
+## StartDate {#*.StartDate}
+
+**What it is.** The first day this record applies.
+
+## EndDate {#*.EndDate}
+
+**What it is.** The last day this record applies.
+
+## Comments {#*.Comments}
+
+**What it is.** Free-text notes about this record.

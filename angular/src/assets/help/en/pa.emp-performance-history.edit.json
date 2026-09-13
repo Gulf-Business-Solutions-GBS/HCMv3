@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.emp-performance-history.edit",
+  "lang": "en",
+  "title": "Employee Performance Histories — Create / Edit",
+  "entity": "HCMv3.SuccessionManagement.EmpPerformanceHistory",
+  "overviewHtml": "<p>A performance score for the employee over a period, for succession planning. Periods for the same employee cannot overlap.</p><p>It is recorded for reference; no calculation or report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmpPerformanceHistory.StartDate",
+    "dom:EmpPerformanceHistory_StartDate": "EmpPerformanceHistory.StartDate",
+    "loc:EndDate": "EmpPerformanceHistory.EndDate",
+    "dom:EmpPerformanceHistory_EndDate": "EmpPerformanceHistory.EndDate",
+    "loc:Description": "EmpPerformanceHistory.Description",
+    "dom:EmpPerformanceHistory_Description": "EmpPerformanceHistory.Description",
+    "loc:Score": "EmpPerformanceHistory.Score",
+    "dom:EmpPerformanceHistory_Score": "EmpPerformanceHistory.Score",
+    "loc:Source": "EmpPerformanceHistory.Source",
+    "dom:EmpPerformanceHistory_Source": "EmpPerformanceHistory.Source",
+    "loc:RatingId": "EmpPerformanceHistory.RatingId",
+    "dom:EmpPerformanceHistory_RatingId": "EmpPerformanceHistory.RatingId",
+    "loc:NineBoxRatingId": "EmpPerformanceHistory.NineBoxRatingId",
+    "dom:EmpPerformanceHistory_NineBoxRatingId": "EmpPerformanceHistory.NineBoxRatingId"
+  },
+  "fields": [
+    {
+      "id": "EmpPerformanceHistory.StartDate",
+      "label": "StartDate",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmpPerformanceHistory_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.EndDate",
+      "label": "EndDate",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmpPerformanceHistory_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Description",
+      "label": "Description",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Description",
+        "dom:EmpPerformanceHistory_Description"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Notes on the score.</p><p><strong>Example.</strong> Exceeded sales targets for the year.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Score",
+      "label": "Score",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Score",
+        "dom:EmpPerformanceHistory_Score"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The performance score.</p><p><strong>Example.</strong> 4.2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.Source",
+      "label": "Source",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:Source",
+        "dom:EmpPerformanceHistory_Source"
+      ],
+      "rules": "Required. One of: Live, Manual.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the score came from a live appraisal or was entered by hand.</p><p><strong>Example.</strong> Manual</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.RatingId",
+      "label": "RatingId",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:RatingId",
+        "dom:EmpPerformanceHistory_RatingId"
+      ],
+      "rules": "Required. Chosen from Succession Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The succession rating.</p><p><strong>Example.</strong> High Performer</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmpPerformanceHistory.NineBoxRatingId",
+      "label": "NineBoxRatingId",
+      "section": "EmpPerformanceHistories",
+      "aliases": [
+        "loc:NineBoxRatingId",
+        "dom:EmpPerformanceHistory_NineBoxRatingId"
+      ],
+      "rules": "Required. Chosen from Nine Box Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nine-box rating.</p><p><strong>Example.</strong> Star</p>",
+      "adminHtml": "<p>Maintained under Succession Management.</p>",
+      "stub": false
+    }
+  ]
+}

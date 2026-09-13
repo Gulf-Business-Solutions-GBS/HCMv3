@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-account-assignment.edit",
+  "lang": "en",
+  "title": "Employee Account Assignments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAccountAssignment",
+  "overviewHtml": "<p>A share of the employee's cost assigned for a period.</p><p>It is recorded for reference; the cost engine and journal postings do not read it at present. Use Employee Wage Accounts for account mapping that postings use.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeAccountAssignment.StartDate",
+    "dom:EmployeeAccountAssignment_StartDate": "EmployeeAccountAssignment.StartDate",
+    "loc:EndDate": "EmployeeAccountAssignment.EndDate",
+    "dom:EmployeeAccountAssignment_EndDate": "EmployeeAccountAssignment.EndDate",
+    "loc:CostPercentage": "EmployeeAccountAssignment.CostPercentage",
+    "dom:EmployeeAccountAssignment_CostPercentage": "EmployeeAccountAssignment.CostPercentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAccountAssignment.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAccountAssignment_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAccountAssignment_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostPercentage",
+      "label": "CostPercentage",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:EmployeeAccountAssignment_CostPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The percentage of cost assigned.</p><p><strong>Example.</strong> 50</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

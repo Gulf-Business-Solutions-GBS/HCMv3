@@ -327,6 +327,8 @@ this choice does not foreclose it.
 | Motion | Never load-bearing: entry animation offsets by 1.5rem, not 100%; F1 scroll is instant, not smooth | 2026-09-10 |
 | Shared fields | One home file per topic; other screens borrow it; duplicates fail coverage | 2026-09-10 |
 | Property-name matching | Case-insensitive — `Employee_PaciNumber` is the `PACINumber` property | 2026-09-10 |
+| Date rules | Generated per form from its own service: end-after-start, no overlap, unique start date, and "saving closes the previous record". The scope (same employee, same employee and wage type…) is read from the check's query, never assumed | 2026-09-13 |
+| Fields nothing reads | Say so plainly ("recorded only; payroll does not read it at present") instead of describing what the field was meant to do | 2026-09-13 |
 | Arabic Rules line | Generated in Arabic from the same rule parts as English, so the two can never state different rules; choice values and master-data lists use the app's own Arabic strings from `HCMv3-ar.xml` | 2026-09-10 |
 | Arabic terminology | `docs/localization/arabic-glossary.md` first, then the Arabic the screen already shows — help must not name a field or menu differently from the UI | 2026-09-10 |
 | Page title per language | Taken from each file's own frontmatter `title:`; the registry title is only the English fallback | 2026-09-10 |

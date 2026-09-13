@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-substitute-duty.edit",
+  "lang": "en",
+  "title": "Employee Substitute Duties — Create / Edit",
+  "entity": "HCMv3.TimeManagement.EmployeeSubstituteDuty",
+  "overviewHtml": "<p>A different duty for the employee on one specific date — for example covering a night shift. One substitute duty per employee per date.</p><p>A substitute duty takes priority over the employee's duty period for that date, wherever the employee's duty for the day is looked up: leave working days, accruals, time data and payroll day counts.</p>",
+  "aliasIndex": {
+    "loc:SubstituteDate": "EmployeeSubstituteDuty.SubstituteDate",
+    "dom:EmployeeSubstituteDuty_SubstituteDate": "EmployeeSubstituteDuty.SubstituteDate",
+    "loc:Duty": "EmployeeSubstituteDuty.DutyId",
+    "dom:EmployeeSubstituteDuty_DutyId": "EmployeeSubstituteDuty.DutyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubstituteDuty.SubstituteDate",
+      "label": "SubstituteDate",
+      "section": "EmployeeSubstituteDuties",
+      "aliases": [
+        "loc:SubstituteDate",
+        "dom:EmployeeSubstituteDuty_SubstituteDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the substitute duty applies to.</p><p><strong>Example.</strong> 14 Aug 2026</p><p><strong>Why it matters.</strong> Only one substitute duty can exist for the employee on this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubstituteDuty.DutyId",
+      "label": "Duty",
+      "section": "EmployeeSubstituteDuties",
+      "aliases": [
+        "loc:Duty",
+        "dom:EmployeeSubstituteDuty_DutyId"
+      ],
+      "rules": "Required. Chosen from Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty worked on that date.</p><p><strong>Example.</strong> Night Shift 22:00–06:00</p>",
+      "adminHtml": "<p>Maintained under Time Management → Duties.</p>",
+      "stub": false
+    }
+  ]
+}

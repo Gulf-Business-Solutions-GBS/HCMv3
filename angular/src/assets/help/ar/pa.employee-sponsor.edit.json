@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-sponsor.edit",
+  "lang": "ar",
+  "title": "كفلاء الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSponsor",
+  "overviewHtml": "<p>الكفيل الذي تقع تأشيرة عمل الموظف تحت كفالته خلال فترة، مع المسمى الوظيفي الحكومي وراتب العقد.</p><p>عند إنشاء التخصيص يُحتسب ضمن حصة الكفيل لذلك المسمى الوظيفي الحكومي، مواطناً أو غير مواطن بحسب جنسية الموظف؛ وعند حذفه يُفرج عن المكان. ولا يؤدي تعديل تخصيص قائم إلى نقل العدد. ويُرفض التخصيص إذا لم تكن للكفيل حصة لذلك المسمى الوظيفي الحكومي.</p>",
+  "aliasIndex": {
+    "loc:SponsorId": "EmployeeSponsor.SponsorId",
+    "dom:EmployeeSponsor_SponsorId": "EmployeeSponsor.SponsorId",
+    "loc:GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
+    "dom:EmployeeSponsor_GovtJobTitleId": "EmployeeSponsor.GovtJobTitleId",
+    "loc:EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
+    "dom:EmployeeSponsor_EmpSponsorRelation": "EmployeeSponsor.EmpSponsorRelation",
+    "loc:StartDate": "EmployeeSponsor.StartDate",
+    "dom:EmployeeSponsor_StartDate": "EmployeeSponsor.StartDate",
+    "loc:EndDate": "EmployeeSponsor.EndDate",
+    "dom:EmployeeSponsor_EndDate": "EmployeeSponsor.EndDate",
+    "loc:ContractSalary": "EmployeeSponsor.ContractSalary",
+    "dom:EmployeeSponsor_ContractSalary": "EmployeeSponsor.ContractSalary",
+    "loc:SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
+    "dom:EmployeeSponsor_SalaryCurrencyId": "EmployeeSponsor.SalaryCurrencyId",
+    "loc:ResidencyType": "EmployeeSponsor.ResidencyType",
+    "dom:EmployeeSponsor_ResidencyType": "EmployeeSponsor.ResidencyType",
+    "loc:WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId",
+    "dom:EmployeeSponsor_WorkVisaTypeId": "EmployeeSponsor.WorkVisaTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSponsor.SponsorId",
+      "label": "SponsorId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:SponsorId",
+        "dom:EmployeeSponsor_SponsorId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الكفلاء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الكفيل.</p><p><strong>مثال.</strong> شركة المطيري للتجارة العامة</p><p><strong>لماذا يهم.</strong> يمكن تصفية ملفات البنك وتوزيع التقارير حسب الكفيل.</p>",
+      "adminHtml": "<p>يُدار من إدارة العلاقات الحكومية ← الكفلاء.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.GovtJobTitleId",
+      "label": "GovtJobTitleId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:GovtJobTitleId",
+        "dom:EmployeeSponsor_GovtJobTitleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المسميات الوظيفية الحكومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي المسجل لدى الجهات الحكومية.</p><p><strong>مثال.</strong> محاسب</p><p><strong>لماذا يهم.</strong> يجب أن تكون للكفيل حصة لهذا المسمى؛ ويشغل التخصيص أحد أماكنها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EmpSponsorRelation",
+      "label": "EmpSponsorRelation",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EmpSponsorRelation",
+        "dom:EmployeeSponsor_EmpSponsorRelation"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صلة الموظف بالكفيل، كنص حر.</p><p><strong>مثال.</strong> موظف</p><p><strong>لماذا يهم.</strong> يظهر في تقرير الكفلاء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSponsor_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSponsor_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.ContractSalary",
+      "label": "ContractSalary",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:ContractSalary",
+        "dom:EmployeeSponsor_ContractSalary"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الراتب في العقد الحكومي.</p><p><strong>مثال.</strong> 600.000</p><p><strong>لماذا يهم.</strong> عند ضبط التأمينات الاجتماعية على استخدام راتب العقد، تأخذه الرواتب من تخصيص الكفيل الذي يغطي الشهر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.SalaryCurrencyId",
+      "label": "SalaryCurrencyId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:SalaryCurrencyId",
+        "dom:EmployeeSponsor_SalaryCurrencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عملة راتب العقد.</p><p><strong>مثال.</strong> KWD</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.ResidencyType",
+      "label": "ResidencyType",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:ResidencyType",
+        "dom:EmployeeSponsor_ResidencyType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الشركة، خارج الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل الإقامة على الشركة أم لا.</p><p><strong>مثال.</strong> الشركة</p><p><strong>لماذا يهم.</strong> يظهر في تقارير الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSponsor.WorkVisaTypeId",
+      "label": "WorkVisaTypeId",
+      "section": "EmployeeSponsors",
+      "aliases": [
+        "loc:WorkVisaTypeId",
+        "dom:EmployeeSponsor_WorkVisaTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع تأشيرات العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع تأشيرة العمل.</p><p><strong>مثال.</strong> مادة 18</p><p><strong>لماذا يهم.</strong> يُسجَّل للرجوع إليه، ولا يقرؤه أي احتساب أو تقرير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

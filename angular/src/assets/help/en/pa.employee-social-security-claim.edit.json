@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-social-security-claim.edit",
+  "lang": "en",
+  "title": "Employee Social Security Claims — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSocialSecurityClaim",
+  "overviewHtml": "<p>A social security claim or reimbursement recorded for the employee. At least one of the two contribution amounts must be entered.</p><p>It is recorded for reference; payroll does not read it at present.</p>",
+  "aliasIndex": {
+    "loc:ClaimDate": "EmployeeSocialSecurityClaim.ClaimDate",
+    "dom:EmployeeSocialSecurityClaim_ClaimDate": "EmployeeSocialSecurityClaim.ClaimDate",
+    "loc:EmployeeContributionAmount": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+    "dom:EmployeeSocialSecurityClaim_EmployeeContributionAmount": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+    "loc:EmployerContributionAmount": "EmployeeSocialSecurityClaim.EmployerContributionAmount",
+    "dom:EmployeeSocialSecurityClaim_EmployerContributionAmount": "EmployeeSocialSecurityClaim.EmployerContributionAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSocialSecurityClaim.ClaimDate",
+      "label": "ClaimDate",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:ClaimDate",
+        "dom:EmployeeSocialSecurityClaim_ClaimDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date of the claim.</p><p><strong>Example.</strong> 20 Aug 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+      "label": "EmployeeContributionAmount",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:EmployeeContributionAmount",
+        "dom:EmployeeSocialSecurityClaim_EmployeeContributionAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee contribution amount claimed.</p><p><strong>Example.</strong> 52.500</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurityClaim.EmployerContributionAmount",
+      "label": "EmployerContributionAmount",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:EmployerContributionAmount",
+        "dom:EmployeeSocialSecurityClaim_EmployerContributionAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employer contribution amount claimed.</p><p><strong>Example.</strong> 112.500</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-tkt-adjustment.edit",
+  "lang": "ar",
+  "title": "تعديلات تذاكر الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTktAdjustment",
+  "overviewHtml": "<p>تعديل يدوي على استحقاق الموظف من تذاكر الطيران.</p><p>يُسجَّل للرجوع إليه: فلا يؤدي حفظه إلى تحديث حصة تذاكر الموظف، ولا تقرؤه الرواتب ولا محرك الوقت حالياً.</p>",
+  "aliasIndex": {
+    "loc:TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
+    "dom:EmployeeTktAdjustment_TicketTypeId": "EmployeeTktAdjustment.TicketTypeId",
+    "loc:EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
+    "dom:EmployeeTktAdjustment_EffectiveDate": "EmployeeTktAdjustment.EffectiveDate",
+    "loc:AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
+    "dom:EmployeeTktAdjustment_AdjustmentType": "EmployeeTktAdjustment.AdjustmentType",
+    "loc:TicketPaymentType": "EmployeeTktAdjustment.TicketPaymentType",
+    "dom:EmployeeTktAdjustment_TicketPaymentType": "EmployeeTktAdjustment.TicketPaymentType",
+    "loc:QuotaAccrued": "EmployeeTktAdjustment.QuotaAccrued",
+    "dom:EmployeeTktAdjustment_QuotaAccrued": "EmployeeTktAdjustment.QuotaAccrued",
+    "loc:QuotaAdjusted": "EmployeeTktAdjustment.QuotaAdjusted",
+    "dom:EmployeeTktAdjustment_QuotaAdjusted": "EmployeeTktAdjustment.QuotaAdjusted",
+    "loc:Comments": "EmployeeTktAdjustment.Comments",
+    "dom:EmployeeTktAdjustment_Comments": "EmployeeTktAdjustment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTktAdjustment.TicketTypeId",
+      "label": "TicketTypeId",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:TicketTypeId",
+        "dom:EmployeeTktAdjustment_TicketTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التذاكر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التذكرة المعدَّل.</p><p><strong>مثال.</strong> الموظف</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeTktAdjustment_EffectiveDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ سريان التعديل.</p><p><strong>مثال.</strong> 30 يونيو 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.AdjustmentType",
+      "label": "AdjustmentType",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:AdjustmentType",
+        "dom:EmployeeTktAdjustment_AdjustmentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الصرف النقدي، تعديل، كسري، بلا أثر على الحصة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التعديل.</p><p><strong>مثال.</strong> صرف نقدي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.TicketPaymentType",
+      "label": "TicketPaymentType",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:TicketPaymentType",
+        "dom:EmployeeTktAdjustment_TicketPaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: الدفع مع الرواتب، الدفع مقدماً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يُصرف النقد.</p><p><strong>مثال.</strong> مع الرواتب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.QuotaAccrued",
+      "label": "QuotaAccrued",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:QuotaAccrued",
+        "dom:EmployeeTktAdjustment_QuotaAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المتراكمة بالتعديل.</p><p><strong>مثال.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeTktAdjustment_QuotaAdjusted"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التذاكر المعدَّلة.</p><p><strong>مثال.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTktAdjustment.Comments",
+      "label": "Comments",
+      "section": "EmployeeTktAdjustments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTktAdjustment_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

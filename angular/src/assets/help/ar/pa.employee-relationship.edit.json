@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-relationship.edit",
+  "lang": "ar",
+  "title": "صلات قرابة الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeRelationship",
+  "overviewHtml": "<p>صلة بين هذا الموظف وموظف آخر — كزوج أو قريب يعمل في المؤسسة نفسها.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو خطوة اعتماد حالياً.</p>",
+  "aliasIndex": {
+    "loc:RelationshipType": "EmployeeRelationship.RelationshipTypeId",
+    "dom:EmployeeRelationship_RelationshipTypeId": "EmployeeRelationship.RelationshipTypeId",
+    "loc:RelatedEmployee": "EmployeeRelationship.RelatedEmployeeId",
+    "dom:EmployeeRelationship_RelatedEmployeeId": "EmployeeRelationship.RelatedEmployeeId",
+    "loc:StartDate": "EmployeeRelationship.StartDate",
+    "dom:EmployeeRelationship_StartDate": "EmployeeRelationship.StartDate",
+    "loc:EndDate": "EmployeeRelationship.EndDate",
+    "dom:EmployeeRelationship_EndDate": "EmployeeRelationship.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeRelationship.RelationshipTypeId",
+      "label": "RelationshipType",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:RelationshipType",
+        "dom:EmployeeRelationship_RelationshipTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة صلات القرابة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> صلة القرابة بين الموظفَين.</p><p><strong>مثال.</strong> زوج</p>",
+      "adminHtml": "<p>تُدار من البيانات الأساسية العامة ← صلات القرابة.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.RelatedEmployeeId",
+      "label": "RelatedEmployee",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:RelatedEmployee",
+        "dom:EmployeeRelationship_RelatedEmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الآخر.</p><p><strong>مثال.</strong> سارة المطيري (1188)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeRelationship_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه وصلة القرابة نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeRelationship.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeRelationships",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeRelationship_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

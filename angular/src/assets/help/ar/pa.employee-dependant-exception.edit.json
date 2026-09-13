@@ -1,0 +1,91 @@
+{
+  "helpId": "pa.employee-dependant-exception.edit",
+  "lang": "ar",
+  "title": "استثناءات عائلي الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeDependantException",
+  "overviewHtml": "<p>يستبدل استحقاق أحد المعالين من التذاكر أو تعويض المصاريف الصحية خلال فترة. ويجب أن تقع الفترة ضمن تواريخ المعال نفسه.</p><p>في تعويض المصاريف الصحية، يحل المبلغ محل حصة ذلك المعال. وفي التذاكر، يستخدمه محرك الوقت عند احتساب تراكم تذكرة المعال.</p>",
+  "aliasIndex": {
+    "loc:EmployeeDependantId": "EmployeeDependantException.EmployeeDependantId",
+    "dom:EmployeeDependantException_EmployeeDependantId": "EmployeeDependantException.EmployeeDependantId",
+    "loc:ExceptionBenefitType": "EmployeeDependantException.ExceptionBenefitType",
+    "dom:EmployeeDependantException_ExceptionBenefitType": "EmployeeDependantException.ExceptionBenefitType",
+    "loc:StartDate": "EmployeeDependantException.StartDate",
+    "dom:EmployeeDependantException_StartDate": "EmployeeDependantException.StartDate",
+    "loc:EndDate": "EmployeeDependantException.EndDate",
+    "dom:EmployeeDependantException_EndDate": "EmployeeDependantException.EndDate",
+    "loc:Amount": "EmployeeDependantException.Amount",
+    "dom:EmployeeDependantException_Amount": "EmployeeDependantException.Amount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDependantException.EmployeeDependantId",
+      "label": "EmployeeDependantId",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:EmployeeDependantId",
+        "dom:EmployeeDependantException_EmployeeDependantId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعال الذي ينطبق عليه الاستثناء.</p><p><strong>مثال.</strong> سارة المطيري (ابنة)</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.ExceptionBenefitType",
+      "label": "ExceptionBenefitType",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:ExceptionBenefitType",
+        "dom:EmployeeDependantException_ExceptionBenefitType"
+      ],
+      "rules": "إلزامي. إحدى القيم: التذكرة، استرداد المصاريف الصحية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الميزة التي يُستبدل استحقاقها.</p><p><strong>مثال.</strong> تذكرة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDependantException_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر لEmployee Dependant نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeDependantException_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDependantException.Amount",
+      "label": "Amount",
+      "section": "EmployeeDependantExceptions",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeDependantException_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ الاستحقاق الذي يُطبَّق بدلاً منه.</p><p><strong>مثال.</strong> 150.000</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

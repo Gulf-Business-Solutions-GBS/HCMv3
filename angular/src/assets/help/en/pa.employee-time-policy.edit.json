@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-time-policy.edit",
+  "lang": "en",
+  "title": "Employee Time Policies — Create / Edit",
+  "entity": "HCMv3.TimeManagement.EmployeeTimePolicy",
+  "overviewHtml": "<p>The time policy that governs the employee's attendance from a given date. Saving a new one closes the previous one on the day before the new start date.</p><p>The time engine applies the policy in force on each day, and stops with \"Employee TimePolicy not found\" for a day no policy covers. Payroll day counts read the policy's time management status and monthly tolerance.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeTimePolicy.StartDate",
+    "dom:EmployeeTimePolicy_StartDate": "EmployeeTimePolicy.StartDate",
+    "loc:TimePolicy": "EmployeeTimePolicy.TimePolicyId",
+    "dom:EmployeeTimePolicy_TimePolicyId": "EmployeeTimePolicy.TimePolicyId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTimePolicy.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeTimePolicies",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeTimePolicy_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee can start on the same date. Saving closes the previous record for the same employee on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTimePolicy.TimePolicyId",
+      "label": "TimePolicy",
+      "section": "EmployeeTimePolicies",
+      "aliases": [
+        "loc:TimePolicy",
+        "dom:EmployeeTimePolicy_TimePolicyId"
+      ],
+      "rules": "Required. Chosen from Time Policy master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time policy assigned from this date.</p><p><strong>Example.</strong> Office Staff — Biometric</p>",
+      "adminHtml": "<p>Maintained under Time Management → Time Policies.</p>",
+      "stub": false
+    }
+  ]
+}

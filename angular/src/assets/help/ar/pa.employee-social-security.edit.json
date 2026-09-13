@@ -1,0 +1,75 @@
+{
+  "helpId": "pa.employee-social-security.edit",
+  "lang": "ar",
+  "title": "التأمينات الاجتماعية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSocialSecurity",
+  "overviewHtml": "<p>تسجيل الموظف في التأمينات الاجتماعية خلال فترة.</p><p>لا تحتسب الرواتب بدلات التأمينات الاجتماعية واقتطاعاتها لشهر ما إلا إذا غطى نهايةَ ذلك الشهر تسجيلٌ محدد فيه خيار المساهمة.</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
+    "dom:EmployeeSocialSecurity_SocialSecurityNum": "EmployeeSocialSecurity.SocialSecurityNum",
+    "loc:SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib",
+    "dom:EmployeeSocialSecurity_SocialSecurityContrib": "EmployeeSocialSecurity.SocialSecurityContrib",
+    "loc:StartDate": "EmployeeSocialSecurity.StartDate",
+    "dom:EmployeeSocialSecurity_StartDate": "EmployeeSocialSecurity.StartDate",
+    "loc:EndDate": "EmployeeSocialSecurity.EndDate",
+    "dom:EmployeeSocialSecurity_EndDate": "EmployeeSocialSecurity.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSocialSecurity.SocialSecurityNum",
+      "label": "SocialSecurityNum",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:SocialSecurityNum",
+        "dom:EmployeeSocialSecurity_SocialSecurityNum"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم تسجيل الموظف في التأمينات الاجتماعية.</p><p><strong>مثال.</strong> 1234567</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا تقرؤه الرواتب ولا التقارير حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurity.SocialSecurityContrib",
+      "label": "SocialSecurityContrib",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:SocialSecurityContrib",
+        "dom:EmployeeSocialSecurity_SocialSecurityContrib"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يساهم الموظف في التأمينات الاجتماعية خلال هذه الفترة.</p><p><strong>لماذا يهم.</strong> من دونه لا تحتسب الرواتب أي تأمينات اجتماعية للأشهر التي يغطيها هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurity.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSocialSecurity_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurity.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSocialSecurities",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSocialSecurity_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

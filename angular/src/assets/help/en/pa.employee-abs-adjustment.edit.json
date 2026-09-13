@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-abs-adjustment.edit",
+  "lang": "en",
+  "title": "Employee Absence Adjustments — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeAbsAdjustment",
+  "overviewHtml": "<p>A manual change to the employee's leave — days encashed, adjusted or rounded.</p><p>Payroll pays annual-leave encashment and fractional adjustments falling in the pay period as leave encashment. The as-on-date leave quota used by payroll counts every adjustment except those marked No Impact On Quota.</p><p>Saving an adjustment does not update the employee's leave quota record, so the self-service balance does not change.</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
+    "dom:EmployeeAbsAdjustment_AbsenceTypeId": "EmployeeAbsAdjustment.AbsenceTypeId",
+    "loc:EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
+    "dom:EmployeeAbsAdjustment_EffectiveDate": "EmployeeAbsAdjustment.EffectiveDate",
+    "loc:AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
+    "dom:EmployeeAbsAdjustment_AdjustmentType": "EmployeeAbsAdjustment.AdjustmentType",
+    "loc:AdjustmentPaymentType": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+    "dom:EmployeeAbsAdjustment_AdjustmentPaymentType": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+    "loc:QuotaAdjusted": "EmployeeAbsAdjustment.QuotaAdjusted",
+    "dom:EmployeeAbsAdjustment_QuotaAdjusted": "EmployeeAbsAdjustment.QuotaAdjusted",
+    "loc:Comments": "EmployeeAbsAdjustment.Comments",
+    "dom:EmployeeAbsAdjustment_Comments": "EmployeeAbsAdjustment.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAbsAdjustment.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:EmployeeAbsAdjustment_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Absence Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The leave type being adjusted.</p><p><strong>Example.</strong> Annual Leave</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Absence Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.EffectiveDate",
+      "label": "EffectiveDate",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:EffectiveDate",
+        "dom:EmployeeAbsAdjustment_EffectiveDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the adjustment takes effect.</p><p><strong>Example.</strong> 30 Jun 2026</p><p><strong>Why it matters.</strong> Payroll pays encashment whose effective date falls in the pay period, and the as-on-date quota counts adjustments up to the date asked for.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.AdjustmentType",
+      "label": "AdjustmentType",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AdjustmentType",
+        "dom:EmployeeAbsAdjustment_AdjustmentType"
+      ],
+      "rules": "Required. One of: Encashment, Adjust, Fractional, No Impact On Quota.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What kind of adjustment this is.</p><p><strong>Example.</strong> Encashment</p><p><strong>Why it matters.</strong> Encashment and Fractional adjustments of annual leave are paid by payroll. No Impact On Quota is recorded without reducing the as-on-date quota.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.AdjustmentPaymentType",
+      "label": "AdjustmentPaymentType",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:AdjustmentPaymentType",
+        "dom:EmployeeAbsAdjustment_AdjustmentPaymentType"
+      ],
+      "rules": "Required. One of: Pay With Payroll, Pay In Advance.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When an encashment is paid.</p><p><strong>Example.</strong> Pay With Payroll</p><p><strong>Why it matters.</strong> Pay In Advance adjustments are picked up by off-cycle payroll runs.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.QuotaAdjusted",
+      "label": "QuotaAdjusted",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:QuotaAdjusted",
+        "dom:EmployeeAbsAdjustment_QuotaAdjusted"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The number of days adjusted.</p><p><strong>Example.</strong> 5</p><p><strong>Why it matters.</strong> For encashment, the days payroll pays out.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAbsAdjustment.Comments",
+      "label": "Comments",
+      "section": "EmployeeAbsAdjustments",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAbsAdjustment_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

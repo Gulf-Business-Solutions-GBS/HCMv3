@@ -1,0 +1,107 @@
+{
+  "helpId": "pa.employee-work-experience.edit",
+  "lang": "ar",
+  "title": "خبرات الموظف العملية — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeWorkExperience",
+  "overviewHtml": "<p>وظيفة سابقة شغلها الموظف قبل التحاقه. ولا يجوز أن تتداخل فترات الموظف نفسه.</p><p>تُسجَّل للرجوع إليها، ولا يقرؤها أي احتساب أو تقرير حالياً.</p>",
+  "aliasIndex": {
+    "loc:Company": "EmployeeWorkExperience.Company",
+    "dom:EmployeeWorkExperience_Company": "EmployeeWorkExperience.Company",
+    "loc:Position": "EmployeeWorkExperience.Position",
+    "dom:EmployeeWorkExperience_Position": "EmployeeWorkExperience.Position",
+    "loc:Location": "EmployeeWorkExperience.Location",
+    "dom:EmployeeWorkExperience_Location": "EmployeeWorkExperience.Location",
+    "loc:ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
+    "dom:EmployeeWorkExperience_ReasonForLeaving": "EmployeeWorkExperience.ReasonForLeaving",
+    "loc:StartDate": "EmployeeWorkExperience.StartDate",
+    "dom:EmployeeWorkExperience_StartDate": "EmployeeWorkExperience.StartDate",
+    "loc:EndDate": "EmployeeWorkExperience.EndDate",
+    "dom:EmployeeWorkExperience_EndDate": "EmployeeWorkExperience.EndDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeWorkExperience.Company",
+      "label": "Company",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Company",
+        "dom:EmployeeWorkExperience_Company"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جهة العمل السابقة.</p><p><strong>مثال.</strong> شركة الخليج التجارية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.Position",
+      "label": "Position",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Position",
+        "dom:EmployeeWorkExperience_Position"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي فيها، كنص حر.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.Location",
+      "label": "Location",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeWorkExperience_Location"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مكان العمل.</p><p><strong>مثال.</strong> مدينة الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.ReasonForLeaving",
+      "label": "ReasonForLeaving",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:ReasonForLeaving",
+        "dom:EmployeeWorkExperience_ReasonForLeaving"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب ترك العمل.</p><p><strong>مثال.</strong> التطور الوظيفي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeWorkExperience_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWorkExperience.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeWorkExperiences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeWorkExperience_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

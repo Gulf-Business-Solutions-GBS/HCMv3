@@ -1,0 +1,123 @@
+{
+  "helpId": "pa.employee-separation.edit",
+  "lang": "en",
+  "title": "Employee Separations — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSeparation",
+  "overviewHtml": "<p>The employee's exit: when they resigned or were terminated, and their last day in service. A separation stays in effect until it is revoked.</p><p>Payroll stops calculating most pay after the end of the month of the last day in service, and the end-of-service payroll run needs an unrevoked separation. Saving a separation does not create a pay hold or remove later time records; those are separate steps.</p>",
+  "aliasIndex": {
+    "loc:SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "dom:EmployeeSeparation_SubmissionDate": "EmployeeSeparation.SubmissionDate",
+    "loc:LastDayInService": "EmployeeSeparation.LastDayInService",
+    "dom:EmployeeSeparation_LastDayInService": "EmployeeSeparation.LastDayInService",
+    "loc:NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "dom:EmployeeSeparation_NoticePeriodDays": "EmployeeSeparation.NoticePeriodDays",
+    "loc:PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "dom:EmployeeSeparation_PlannedLastDayInService": "EmployeeSeparation.PlannedLastDayInService",
+    "loc:SeparationType": "EmployeeSeparation.SeparationType",
+    "dom:EmployeeSeparation_SeparationType": "EmployeeSeparation.SeparationType",
+    "loc:SeparationReason": "EmployeeSeparation.SeparationReasonId",
+    "dom:EmployeeSeparation_SeparationReasonId": "EmployeeSeparation.SeparationReasonId",
+    "loc:RevokeDate": "EmployeeSeparation.RevokeDate",
+    "dom:EmployeeSeparation_RevokeDate": "EmployeeSeparation.RevokeDate"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSeparation.SubmissionDate",
+      "label": "SubmissionDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SubmissionDate",
+        "dom:EmployeeSeparation_SubmissionDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the resignation or termination was submitted.</p><p><strong>Example.</strong> 1 Aug 2026</p><p><strong>Why it matters.</strong> The last day in service cannot be before it. The end-of-service run uses the most recently submitted separation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.LastDayInService",
+      "label": "LastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:LastDayInService",
+        "dom:EmployeeSeparation_LastDayInService"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's final working day.</p><p><strong>Example.</strong> 31 Aug 2026</p><p><strong>Why it matters.</strong> Payroll does not calculate wage types for pay dates after the end of this month, fund deductions stop, and the indemnity calculation is worked out as at this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.NoticePeriodDays",
+      "label": "NoticePeriodDays",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:NoticePeriodDays",
+        "dom:EmployeeSeparation_NoticePeriodDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The length of the notice period in days.</p><p><strong>Example.</strong> 30</p><p><strong>Why it matters.</strong> Shown on the separation report; the dates are not recalculated from it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.PlannedLastDayInService",
+      "label": "PlannedLastDayInService",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:PlannedLastDayInService",
+        "dom:EmployeeSeparation_PlannedLastDayInService"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day originally planned, before any change.</p><p><strong>Example.</strong> 31 Aug 2026</p><p><strong>Why it matters.</strong> Shown on the separation report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationType",
+      "label": "SeparationType",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationType",
+        "dom:EmployeeSeparation_SeparationType"
+      ],
+      "rules": "Required. One of: Resignation, Termination.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the employee resigned or was terminated.</p><p><strong>Example.</strong> Resignation</p><p><strong>Why it matters.</strong> Shown on employee and cost-to-company reports.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.SeparationReasonId",
+      "label": "SeparationReason",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:SeparationReason",
+        "dom:EmployeeSeparation_SeparationReasonId"
+      ],
+      "rules": "Required. Chosen from Separation Reason master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Why the employee is leaving.</p><p><strong>Example.</strong> Better opportunity</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Separation Reasons.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSeparation.RevokeDate",
+      "label": "RevokeDate",
+      "section": "EmployeeSeparations",
+      "aliases": [
+        "loc:RevokeDate",
+        "dom:EmployeeSeparation_RevokeDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the separation was withdrawn, if it was.</p><p><strong>Example.</strong> 10 Aug 2026</p><p><strong>Why it matters.</strong> Once set, payroll and the indemnity calculation ignore this separation.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

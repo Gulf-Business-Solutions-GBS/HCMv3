@@ -172,7 +172,39 @@ function serviceBehaviour(entityName, serviceOverride) {
         // The name check refuses a record whose English OR Arabic name matches another's, so
         // each of the two names must be unique on its own.
         uniqueName: /L\("NameAlreadyInUse"\)/.test(text),
+        endAfterStart: /L\("EndDateCannotBeEarlierThanStartDate"\)/.test(text),
+        noOverlap: queryScope(text, /L\("OverlapConflictFound"\)/),
+        uniqueStart: queryScope(text, /L\("StartDateAlreadyExists"/),
+        // Effective-dated history: each record ends the day before the next one starts.
+        chained: /InfiniteEndDate/.test(text) ? queryScope(text, /\.StartDate\.AddDays\(-1\)/) : null,
     };
+}
+
+/**
+ * Which records a check compares against, read from the query nearest above `anchor`: the
+ * `x.SomethingId == ...` conditions in it. EmployeeDependants refuses an overlap only for the same
+ * employee AND ticket type; stating "another record" there would be false, so the scope is named.
+ * Returns null when the anchor is absent, and the scope list (possibly empty) when present.
+ */
+function queryScope(text, anchor) {
+    const lines = text.split(/\r?\n/);
+    const at = lines.findIndex((l) => anchor.test(l));
+    if (at < 0) return null;
+    let from = at;
+    for (let i = at; i >= Math.max(0, at - 30); i--) {
+        // A query with a condition -- `records.Skip(i + 1).FirstOrDefault()` is not one.
+        if (/\.(Where|AnyAsync|Any|FirstOrDefaultAsync|FirstOrDefault|CountAsync)\(\s*\w+\s*=>/.test(lines[i])) {
+            from = i;
+            break;
+        }
+    }
+    const scope = new Set();
+    for (const l of lines.slice(from, at + 1)) {
+        for (const m of l.matchAll(/\b\w+\.(\w+Id)\s*==\s*[\w.]+/g)) {
+            if (!['Id', 'TenantId'].includes(m[1])) scope.add(m[1]);
+        }
+    }
+    return [...scope];
 }
 
 /**
@@ -184,7 +216,10 @@ function locText(lang, key) {
     if (!locTexts[lang]) {
         const file = lang === 'en' ? 'HCMv3.xml' : `HCMv3-${lang}.xml`;
         const xml = read(`aspnet-core/src/HCMv3.Core/Localization/HCMv3/${file}`);
-        locTexts[lang] = new Map([...xml.matchAll(/<text name="([^"]+)">([^<]*)<\/text>/g)].map((m) => [m[1], m[2]]));
+        // Decoded, or "Full &amp; Final" reaches a page title literally.
+        const decode = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+            .replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+        locTexts[lang] = new Map([...xml.matchAll(/<text name="([^"]+)">([^<]*)<\/text>/g)].map((m) => [m[1], decode(m[2])]));
     }
     return locTexts[lang].get(key);
 }
@@ -206,6 +241,22 @@ function arCountedNoun(n) {
     return 'حرفاً';
 }
 
+/**
+ * "the same employee and ticket type" / "للموظف نفسه ونوع التذكرة نفسه" from a check's scope ids.
+ * Names come from the app's own strings, so they read as the screen labels them.
+ */
+function scopeWords(lang, scope) {
+    const names = (scope.length ? scope : ['EmployeeId']).map((id) => {
+        const key = id.replace(/Id$/, '');
+        if (key === 'Employee') return lang === 'ar' ? 'الموظف' : 'employee';
+        const text = locText(lang, key) ?? key.replace(/([a-z])([A-Z])/g, '$1 $2');
+        return lang === 'ar' ? text : text.toLowerCase();
+    });
+    // لـ + الموظف is written للموظف; before any other word it is simply joined: لنوع.
+    if (lang === 'ar') return `ل${names.map((n) => `${n} نفسه`).join(' و')}`.replace(/^لال/, 'لل');
+    return `the same ${names.join(' and ')}`;
+}
+
 /** Every rule phrase, per language. English is the original wording, kept byte-for-byte. */
 const RULE_TEXT = {
     en: {
@@ -218,12 +269,20 @@ const RULE_TEXT = {
         oneOfKeys: (r) => `One of: ${r.keys.map((k) => locText('en', k) ?? k).join(', ')}.`,
         lookup: (r) => `Chosen from ${r.target.replace(/([a-z])([A-Z])/g, '$1 $2')} master data.`,
         lookupGeneric: () => 'Chosen from a list.',
+        lookupEmployee: () => 'Chosen from the employee list.',
         autoCode: () => 'Left blank, the next number is assigned when the record is saved.',
         unique: () => 'Must be unique in this list.',
         date: () => 'Date value.',
+        time: () => 'Time of day.',
         whole: () => 'Whole number.',
         number: () => 'Number.',
         yesNo: () => 'Yes or no.',
+        endAfterStart: () => 'Cannot be before the start date.',
+        noOverlap: (r) => `Its dates cannot overlap another record for ${scopeWords('en', r.scope)}.`,
+        uniqueStart: (r) => `No two records for ${scopeWords('en', r.scope)} can start on the same date.`,
+        chained: (r) =>
+            `Saving closes the previous record for ${scopeWords('en', r.scope)} on the day before this date; ` +
+            'the latest record stays open.',
     },
     ar: {
         system: () => 'يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.',
@@ -235,12 +294,20 @@ const RULE_TEXT = {
         oneOfKeys: (r) => `إحدى القيم: ${r.keys.map((k) => arText(k) ?? k).join('، ')}.`,
         lookup: (r) => `يُختار من قائمة ${arText(pluralKey(r.target)) ?? r.target}.`,
         lookupGeneric: () => 'يُختار من قائمة.',
+        lookupEmployee: () => 'يُختار من قائمة الموظفين.',
         autoCode: () => 'إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل.',
         unique: () => 'يجب ألا يتكرر في هذه القائمة.',
         date: () => 'تاريخ.',
+        time: () => 'وقت من اليوم.',
         whole: () => 'رقم صحيح.',
         number: () => 'رقم.',
         yesNo: () => 'نعم أو لا.',
+        endAfterStart: () => 'لا يجوز أن يسبق تاريخ البداية.',
+        noOverlap: (r) => `لا يجوز أن تتداخل فترته مع سجل آخر ${scopeWords('ar', r.scope)}.`,
+        uniqueStart: (r) => `لا يجوز أن يبدأ سجلان ${scopeWords('ar', r.scope)} في التاريخ نفسه.`,
+        chained: (r) =>
+            `عند الحفظ يُغلق السجل السابق ${scopeWords('ar', r.scope)} في اليوم السابق لهذا التاريخ، ` +
+            'ويبقى أحدث سجل مفتوحاً.',
     },
 };
 
@@ -290,22 +357,38 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviou
             }
         }
 
-        if (prop.name === 'Code' && behaviour?.autoCode) parts.push({ k: 'autoCode' });
-        if ((prop.name === 'Code' && behaviour?.uniqueCode) ||
-            ((prop.name === 'NameEn' || prop.name === 'NameAr') && behaviour?.uniqueName)) {
-            parts.push({ k: 'unique' });
-        }
-
-        if (prop.lookupTarget) {
+        // The kind of value first, then what the service enforces: "Required. Date value. Cannot
+        // be before the start date." reads in the order a person fills the field in.
+        // Only reference lists are "master data". An employee is picked from the employee list, and
+        // a parent record such as the employee's own basic pay is not master data at all.
+        if (prop.lookupTarget === 'Employee') {
+            parts.push({ k: 'lookupEmployee' });
+        } else if (prop.lookupTarget && /^Employee[A-Z]/.test(prop.lookupTarget)) {
+            parts.push({ k: 'lookupGeneric' });
+        } else if (prop.lookupTarget) {
             parts.push({ k: 'lookup', target: prop.lookupTarget });
         } else if (prop.isFkWithoutNav) {
             parts.push({ k: 'lookupGeneric' });
         } else if (prop.bareType === 'DateTime') {
             parts.push({ k: 'date' });
+        } else if (prop.bareType === 'TimeSpan') {
+            parts.push({ k: 'time' });
         } else if ((prop.bareType === 'int' || prop.bareType === 'long') && !prop.isEnumCandidate) {
             parts.push({ k: 'whole' });
         } else if (['decimal', 'double', 'float'].includes(prop.bareType)) {
             parts.push({ k: 'number' });
+        }
+
+        if (prop.name === 'EndDate' && behaviour?.endAfterStart) parts.push({ k: 'endAfterStart' });
+        if (prop.name === 'StartDate') {
+            if (behaviour?.noOverlap) parts.push({ k: 'noOverlap', scope: behaviour.noOverlap });
+            if (behaviour?.uniqueStart) parts.push({ k: 'uniqueStart', scope: behaviour.uniqueStart });
+            if (behaviour?.chained) parts.push({ k: 'chained', scope: behaviour.chained });
+        }
+        if (prop.name === 'Code' && behaviour?.autoCode) parts.push({ k: 'autoCode' });
+        if ((prop.name === 'Code' && behaviour?.uniqueCode) ||
+            ((prop.name === 'NameEn' || prop.name === 'NameAr') && behaviour?.uniqueName)) {
+            parts.push({ k: 'unique' });
         }
     }
 

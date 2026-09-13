@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-social-security-claim.edit",
+  "lang": "ar",
+  "title": "مطالبات التأمينات الاجتماعية للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeSocialSecurityClaim",
+  "overviewHtml": "<p>مطالبة أو استرداد تأمينات اجتماعية مسجل للموظف. ويجب إدخال أحد مبلغي الاشتراك على الأقل.</p><p>يُسجَّل للرجوع إليه، ولا تقرؤه الرواتب حالياً.</p>",
+  "aliasIndex": {
+    "loc:ClaimDate": "EmployeeSocialSecurityClaim.ClaimDate",
+    "dom:EmployeeSocialSecurityClaim_ClaimDate": "EmployeeSocialSecurityClaim.ClaimDate",
+    "loc:EmployeeContributionAmount": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+    "dom:EmployeeSocialSecurityClaim_EmployeeContributionAmount": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+    "loc:EmployerContributionAmount": "EmployeeSocialSecurityClaim.EmployerContributionAmount",
+    "dom:EmployeeSocialSecurityClaim_EmployerContributionAmount": "EmployeeSocialSecurityClaim.EmployerContributionAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSocialSecurityClaim.ClaimDate",
+      "label": "ClaimDate",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:ClaimDate",
+        "dom:EmployeeSocialSecurityClaim_ClaimDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ المطالبة.</p><p><strong>مثال.</strong> 20 أغسطس 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurityClaim.EmployeeContributionAmount",
+      "label": "EmployeeContributionAmount",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:EmployeeContributionAmount",
+        "dom:EmployeeSocialSecurityClaim_EmployeeContributionAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ اشتراك الموظف المطالب به.</p><p><strong>مثال.</strong> 52.500</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSocialSecurityClaim.EmployerContributionAmount",
+      "label": "EmployerContributionAmount",
+      "section": "EmployeeSocialSecurityClaims",
+      "aliases": [
+        "loc:EmployerContributionAmount",
+        "dom:EmployeeSocialSecurityClaim_EmployerContributionAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مبلغ اشتراك صاحب العمل المطالب به.</p><p><strong>مثال.</strong> 112.500</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "pa.employee-duty-period.edit",
+  "lang": "en",
+  "title": "Employee Duty Periods — Create / Edit",
+  "entity": "HCMv3.TimeManagement.EmployeeDutyPeriod",
+  "overviewHtml": "<p>The duty pattern the employee works from a given date. Saving a new one closes the previous one on the day before the new start date.</p><p>For each day, the employee's duty comes from a substitute duty for that exact date if there is one, otherwise from the duty period in force. It decides working days for leave, the time engine's expected shift, and payroll day counts.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeDutyPeriod.StartDate",
+    "dom:EmployeeDutyPeriod_StartDate": "EmployeeDutyPeriod.StartDate",
+    "loc:DutyPeriod": "EmployeeDutyPeriod.DutyPeriodId",
+    "dom:EmployeeDutyPeriod_DutyPeriodId": "EmployeeDutyPeriod.DutyPeriodId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeDutyPeriod.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeDutyPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeDutyPeriod_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same employee can start on the same date. Saving closes the previous record for the same employee on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeDutyPeriod.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "EmployeeDutyPeriods",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:EmployeeDutyPeriod_DutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period — the weekly pattern of duties — assigned from this date.</p><p><strong>Example.</strong> Sunday–Thursday 8:00–16:00</p><p><strong>Why it matters.</strong> The duty for each day is taken from this period's pattern for that day of the week.</p>",
+      "adminHtml": "<p>Rotating patterns need a rotation start point, which this form does not set; an assignment saved here always uses the day-of-week pattern. Duty periods are maintained under Time Management → Duty Periods.</p>",
+      "stub": false
+    }
+  ]
+}

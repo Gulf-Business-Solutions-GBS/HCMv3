@@ -1,0 +1,219 @@
+{
+  "helpId": "pa.employee-on-hold.edit",
+  "lang": "ar",
+  "title": "حالات الإيقاف للموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeOnHold",
+  "overviewHtml": "<p>يوقف صرف جزء من أجر الموظف أو كله خلال فترة. ولا يجوز أن تتداخل فترات إيقاف الموظف نفسه.</p><p>تطبّق الرواتب الإيقاف الساري في تاريخ الدفع. وإيقاف الكل يفعّل كل خيارات الإيقاف دفعة واحدة.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeOnHold.StartDate",
+    "dom:EmployeeOnHold_StartDate": "EmployeeOnHold.StartDate",
+    "loc:EndDate": "EmployeeOnHold.EndDate",
+    "dom:EmployeeOnHold_EndDate": "EmployeeOnHold.EndDate",
+    "loc:BankTransfer": "EmployeeOnHold.BankTransfer",
+    "dom:EmployeeOnHold_BankTransfer": "EmployeeOnHold.BankTransfer",
+    "loc:EmployeeActionId": "EmployeeOnHold.EmployeeActionId",
+    "dom:EmployeeOnHold_EmployeeActionId": "EmployeeOnHold.EmployeeActionId",
+    "loc:OnHold": "EmployeeOnHold.OnHold",
+    "dom:EmployeeOnHold_OnHold": "EmployeeOnHold.OnHold",
+    "loc:OnHoldBasicPay": "EmployeeOnHold.OnHoldBasicPay",
+    "dom:EmployeeOnHold_OnHoldBasicPay": "EmployeeOnHold.OnHoldBasicPay",
+    "loc:OnHoldLeavePay": "EmployeeOnHold.OnHoldLeavePay",
+    "dom:EmployeeOnHold_OnHoldLeavePay": "EmployeeOnHold.OnHoldLeavePay",
+    "loc:OnHoldIndemnityPay": "EmployeeOnHold.OnHoldIndemnityPay",
+    "dom:EmployeeOnHold_OnHoldIndemnityPay": "EmployeeOnHold.OnHoldIndemnityPay",
+    "loc:OnHoldAirTicketPay": "EmployeeOnHold.OnHoldAirTicketPay",
+    "dom:EmployeeOnHold_OnHoldAirTicketPay": "EmployeeOnHold.OnHoldAirTicketPay",
+    "loc:OnHoldLoanDeduction": "EmployeeOnHold.OnHoldLoanDeduction",
+    "dom:EmployeeOnHold_OnHoldLoanDeduction": "EmployeeOnHold.OnHoldLoanDeduction",
+    "loc:OnHoldAllEarnings": "EmployeeOnHold.OnHoldAllEarnings",
+    "dom:EmployeeOnHold_OnHoldAllEarnings": "EmployeeOnHold.OnHoldAllEarnings",
+    "loc:OnHoldAllDeductions": "EmployeeOnHold.OnHoldAllDeductions",
+    "dom:EmployeeOnHold_OnHoldAllDeductions": "EmployeeOnHold.OnHoldAllDeductions",
+    "loc:Comments": "EmployeeOnHold.Comments",
+    "dom:EmployeeOnHold_Comments": "EmployeeOnHold.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeOnHold.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeOnHold_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر للموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeOnHold_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.BankTransfer",
+      "label": "BankTransfer",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:BankTransfer",
+        "dom:EmployeeOnHold_BankTransfer"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، إيقاف، إلغاء الإيقاف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> هل يُوقف تحويل راتب الموظف.</p><p><strong>مثال.</strong> إيقاف</p>",
+      "adminHtml": "<p>من بين صيغ ملفات البنك، لا تستبعد الموظفين الموقوف تحويلهم إلا صيغة البنك الأهلي الكويتي (ABK). أما الصيغ الأخرى فلا تتحقق منه حالياً.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.EmployeeActionId",
+      "label": "EmployeeActionId",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:EmployeeActionId",
+        "dom:EmployeeOnHold_EmployeeActionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الإجراء الشخصي الذي ينتمي إليه هذا الإيقاف، إن وُجد.</p><p><strong>لماذا يهم.</strong> يُسجَّل كرابط فقط، ولا تقرؤه الرواتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHold",
+      "label": "OnHold",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHold",
+        "dom:EmployeeOnHold_OnHold"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف كل شيء.</p><p><strong>لماذا يهم.</strong> تعامل الرواتب كل خيارات الإيقاف أدناه على أنها محددة، ويُدرج تقرير الموظفين غير المشمولين بالرواتب الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldBasicPay",
+      "label": "OnHoldBasicPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldBasicPay",
+        "dom:EmployeeOnHold_OnHoldBasicPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف الأجر الأساسي.</p><p><strong>لماذا يهم.</strong> لا تصرف الرواتب أجراً أساسياً ما دام محدداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldLeavePay",
+      "label": "OnHoldLeavePay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldLeavePay",
+        "dom:EmployeeOnHold_OnHoldLeavePay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف أجر الإجازات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldIndemnityPay",
+      "label": "OnHoldIndemnityPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldIndemnityPay",
+        "dom:EmployeeOnHold_OnHoldIndemnityPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف مكافأة نهاية الخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAirTicketPay",
+      "label": "OnHoldAirTicketPay",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAirTicketPay",
+        "dom:EmployeeOnHold_OnHoldAirTicketPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف صرف تذاكر الطيران.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط؛ ولا تتحقق منه الرواتب حالياً عند صرف التذاكر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldLoanDeduction",
+      "label": "OnHoldLoanDeduction",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldLoanDeduction",
+        "dom:EmployeeOnHold_OnHoldLoanDeduction"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف اقتطاع أقساط القروض.</p><p><strong>لماذا يهم.</strong> لا تسترد الرواتب القروض ما دام محدداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAllEarnings",
+      "label": "OnHoldAllEarnings",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAllEarnings",
+        "dom:EmployeeOnHold_OnHoldAllEarnings"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف جميع الاستحقاقات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.OnHoldAllDeductions",
+      "label": "OnHoldAllDeductions",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:OnHoldAllDeductions",
+        "dom:EmployeeOnHold_OnHoldAllDeductions"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوقف جميع الاقتطاعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeOnHold.Comments",
+      "label": "Comments",
+      "section": "EmployeeOnHolds",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeOnHold_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

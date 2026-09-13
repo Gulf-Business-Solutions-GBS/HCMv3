@@ -1,0 +1,139 @@
+{
+  "helpId": "pa.employee-task.edit",
+  "lang": "en",
+  "title": "Employee Tasks — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeTask",
+  "overviewHtml": "<p>A task or follow-up for the employee, with a reminder date.</p><p>It is recorded for reference; no reminder is sent from it and nothing reads it at present.</p>",
+  "aliasIndex": {
+    "loc:TaskTypeId": "EmployeeTask.TaskTypeId",
+    "dom:EmployeeTask_TaskTypeId": "EmployeeTask.TaskTypeId",
+    "loc:TaskDate": "EmployeeTask.TaskDate",
+    "dom:EmployeeTask_TaskDate": "EmployeeTask.TaskDate",
+    "loc:TaskStatus": "EmployeeTask.TaskStatus",
+    "dom:EmployeeTask_TaskStatus": "EmployeeTask.TaskStatus",
+    "loc:ReminderDate": "EmployeeTask.ReminderDate",
+    "dom:EmployeeTask_ReminderDate": "EmployeeTask.ReminderDate",
+    "loc:MonitoringType": "EmployeeTask.MonitoringType",
+    "dom:EmployeeTask_MonitoringType": "EmployeeTask.MonitoringType",
+    "loc:MonitoringCount": "EmployeeTask.MonitoringCount",
+    "dom:EmployeeTask_MonitoringCount": "EmployeeTask.MonitoringCount",
+    "loc:MonitoringUnit": "EmployeeTask.MonitoringUnit",
+    "dom:EmployeeTask_MonitoringUnit": "EmployeeTask.MonitoringUnit",
+    "loc:Comments": "EmployeeTask.Comments",
+    "dom:EmployeeTask_Comments": "EmployeeTask.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeTask.TaskTypeId",
+      "label": "TaskTypeId",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskTypeId",
+        "dom:EmployeeTask_TaskTypeId"
+      ],
+      "rules": "Required. Chosen from Task Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of task.</p><p><strong>Example.</strong> Probation review</p>",
+      "adminHtml": "<p>Maintained under General Master Info → Task Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.TaskDate",
+      "label": "TaskDate",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskDate",
+        "dom:EmployeeTask_TaskDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the task is due.</p><p><strong>Example.</strong> 30 Nov 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.TaskStatus",
+      "label": "TaskStatus",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:TaskStatus",
+        "dom:EmployeeTask_TaskStatus"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The task's status, as a number.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.ReminderDate",
+      "label": "ReminderDate",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:ReminderDate",
+        "dom:EmployeeTask_ReminderDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date to be reminded.</p><p><strong>Example.</strong> 23 Nov 2026</p><p><strong>Why it matters.</strong> No reminder is sent from it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringType",
+      "label": "MonitoringType",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringType",
+        "dom:EmployeeTask_MonitoringType"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the task is monitored, as a number.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringCount",
+      "label": "MonitoringCount",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringCount",
+        "dom:EmployeeTask_MonitoringCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many monitoring units.</p><p><strong>Example.</strong> 1</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.MonitoringUnit",
+      "label": "MonitoringUnit",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:MonitoringUnit",
+        "dom:EmployeeTask_MonitoringUnit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The monitoring unit, as a number.</p><p><strong>Example.</strong> 0</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeTask.Comments",
+      "label": "Comments",
+      "section": "EmployeeTasks",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeTask_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

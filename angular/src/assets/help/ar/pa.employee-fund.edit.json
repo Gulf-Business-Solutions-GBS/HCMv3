@@ -1,0 +1,59 @@
+{
+  "helpId": "pa.employee-fund.edit",
+  "lang": "ar",
+  "title": "صناديق الموظف — إنشاء / تحرير",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeFund",
+  "overviewHtml": "<p>حساب الصندوق الخاص بالموظف — كصندوق الادخار أو الصندوق التقاعدي — خلال فترة.</p><p>تقتطع الرواتب اشتراك الصندوق وفق شرائح الصندوق في المجموعة الفرعية للموظف، وتنشئ هذا السجل بنفسها إن لم يكن للموظف سجل. وتُحدَّث مجاميع الحساب من تفاصيل الصندوق.</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeFund.StartDate",
+    "dom:EmployeeFund_StartDate": "EmployeeFund.StartDate",
+    "loc:EndDate": "EmployeeFund.EndDate",
+    "dom:EmployeeFund_EndDate": "EmployeeFund.EndDate",
+    "loc:Comments": "EmployeeFund.Comments",
+    "dom:EmployeeFund_Comments": "EmployeeFund.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeFund.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeFund_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFund.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeFund_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeFund.Comments",
+      "label": "Comments",
+      "section": "EmployeeFunds",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeFund_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

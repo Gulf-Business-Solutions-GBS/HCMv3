@@ -173,7 +173,7 @@
         "loc:Gender",
         "dom:Employee_Gender"
       ],
-      "rules": "Required. One of: Male, Female.",
+      "rules": "Required. One of: Male, Female, Not specified.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The gender recorded on the Civil ID.</p><p><strong>Example.</strong> <code>Female</code></p><p><strong>Why it matters.</strong> Used by the social security (PIFSS) calculations in payroll. Business rules can also test it; the sample maternity-leave rule uses it to refuse maternity leave for male employees, where that rule is switched on. Employees can ask for a change through self-service.</p>",
       "adminHtml": "<p>Absence types have a gender setting, but the system does not currently check it against this field. To restrict a leave type by gender, use a business rule.</p>",
@@ -399,7 +399,7 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The work email address.</p><p><strong>Example.</strong> <code>ahmed.mutairi@company.com</code></p><p><strong>Why it matters.</strong> Where HCMv3 emails the employee: new sign-in details from the bulk password tool, announcements, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.</p>",
+      "html": "<p><strong>What it is.</strong> The work email address.</p><p><strong>Example.</strong> <code>ahmed.mutairi@company.com</code></p><p><strong>Why it matters.</strong> Where HCMv3 emails the employee: new sign-in details from the bulk password tool, scheduled report deliveries, and notifications such as birthday and work-anniversary greetings. Employees can ask for a change through self-service.</p>",
       "adminHtml": "",
       "stub": false
     },

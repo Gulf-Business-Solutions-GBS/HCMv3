@@ -1,0 +1,155 @@
+{
+  "helpId": "pa.employee-non-payroll-trans.edit",
+  "lang": "en",
+  "title": "Non-Payroll Transactions — Create / Edit",
+  "entity": "HCMv3.PersonnelAdministration.EmployeeNonPayrollTrans",
+  "overviewHtml": "<p>A payment made to the employee outside payroll — for example a bonus paid by cheque.</p><p>Payroll does not pay it. The average bonus calculation does count non-payroll amounts of the bonus wage type within the period it averages, and the bonus and non-payroll reports show them.</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
+    "dom:EmployeeNonPayrollTran_WageTypeId": "EmployeeNonPayrollTrans.WageTypeId",
+    "loc:PaymentDate": "EmployeeNonPayrollTrans.PaymentDate",
+    "dom:EmployeeNonPayrollTran_PaymentDate": "EmployeeNonPayrollTrans.PaymentDate",
+    "loc:Amount": "EmployeeNonPayrollTrans.Amount",
+    "dom:EmployeeNonPayrollTran_Amount": "EmployeeNonPayrollTrans.Amount",
+    "loc:CurrencyId": "EmployeeNonPayrollTrans.CurrencyId",
+    "dom:EmployeeNonPayrollTran_CurrencyId": "EmployeeNonPayrollTrans.CurrencyId",
+    "loc:PayableBy": "EmployeeNonPayrollTrans.PayableBy",
+    "dom:EmployeeNonPayrollTran_PayableBy": "EmployeeNonPayrollTrans.PayableBy",
+    "loc:PaymentMethod": "EmployeeNonPayrollTrans.PaymentMethod",
+    "dom:EmployeeNonPayrollTran_PaymentMethod": "EmployeeNonPayrollTrans.PaymentMethod",
+    "loc:IsLocked": "EmployeeNonPayrollTrans.IsLocked",
+    "dom:EmployeeNonPayrollTran_IsLocked": "EmployeeNonPayrollTrans.IsLocked",
+    "loc:NotificationSent": "EmployeeNonPayrollTrans.NotificationSent",
+    "dom:EmployeeNonPayrollTran_NotificationSent": "EmployeeNonPayrollTrans.NotificationSent",
+    "loc:Comments": "EmployeeNonPayrollTrans.Comments",
+    "dom:EmployeeNonPayrollTran_Comments": "EmployeeNonPayrollTrans.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeNonPayrollTrans.WageTypeId",
+      "label": "WageTypeId",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:EmployeeNonPayrollTran_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The pay element the payment is recorded against.</p><p><strong>Example.</strong> Annual Bonus</p>",
+      "adminHtml": "<p>Maintained under Payroll Management → Wage Types.</p>",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PaymentDate",
+      "label": "PaymentDate",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:EmployeeNonPayrollTran_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the payment was made.</p><p><strong>Example.</strong> 15 Mar 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.Amount",
+      "label": "Amount",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeNonPayrollTran_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount paid.</p><p><strong>Example.</strong> 1000.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.CurrencyId",
+      "label": "CurrencyId",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:EmployeeNonPayrollTran_CurrencyId"
+      ],
+      "rules": "Optional. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency of the payment.</p><p><strong>Example.</strong> KWD</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PayableBy",
+      "label": "PayableBy",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PayableBy",
+        "dom:EmployeeNonPayrollTran_PayableBy"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who pays it, as free text.</p><p><strong>Example.</strong> Head Office Finance</p><p><strong>Why it matters.</strong> Shown on the non-payroll report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.PaymentMethod",
+      "label": "PaymentMethod",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:PaymentMethod",
+        "dom:EmployeeNonPayrollTran_PaymentMethod"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How it was paid, as free text.</p><p><strong>Example.</strong> Cheque</p><p><strong>Why it matters.</strong> Shown on the non-payroll report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.IsLocked",
+      "label": "IsLocked",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:IsLocked",
+        "dom:EmployeeNonPayrollTran_IsLocked"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks the record as locked.</p><p><strong>Why it matters.</strong> Shown on the non-payroll report; it does not stop the record being edited.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.NotificationSent",
+      "label": "NotificationSent",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:NotificationSent",
+        "dom:EmployeeNonPayrollTran_NotificationSent"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks that the employee has been notified.</p><p><strong>Why it matters.</strong> Recorded only; nothing sends or reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeNonPayrollTrans.Comments",
+      "label": "Comments",
+      "section": "EmployeeNonPayrollTrans",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeNonPayrollTran_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
