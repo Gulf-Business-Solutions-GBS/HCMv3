@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.payroll-control-record.edit",
+  "lang": "ar",
+  "title": "سجلات ضبط الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollControlRecord",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "dom:PayrollControlRecord_PayrollAreaId": "PayrollControlRecord.PayrollAreaId",
+    "loc:PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "dom:PayrollControlRecord_PayrollMonth": "PayrollControlRecord.PayrollMonth",
+    "loc:PayrollYear": "PayrollControlRecord.PayrollYear",
+    "dom:PayrollControlRecord_PayrollYear": "PayrollControlRecord.PayrollYear",
+    "loc:PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "dom:PayrollControlRecord_PeriodLocked": "PayrollControlRecord.PeriodLocked",
+    "loc:PeriodClosed": "PayrollControlRecord.PeriodClosed",
+    "dom:PayrollControlRecord_PeriodClosed": "PayrollControlRecord.PeriodClosed"
+  },
+  "fields": [
+    {
+      "id": "PayrollControlRecord.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollControlRecord_PayrollAreaId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollControlRecord.PayrollMonth",
+      "label": "PayrollMonth",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollMonth",
+        "dom:PayrollControlRecord_PayrollMonth"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollControlRecord.PayrollYear",
+      "label": "PayrollYear",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PayrollYear",
+        "dom:PayrollControlRecord_PayrollYear"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollControlRecord.PeriodLocked",
+      "label": "PeriodLocked",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodLocked",
+        "dom:PayrollControlRecord_PeriodLocked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollControlRecord.PeriodClosed",
+      "label": "PeriodClosed",
+      "section": "PayrollControlRecords",
+      "aliases": [
+        "loc:PeriodClosed",
+        "dom:PayrollControlRecord_PeriodClosed"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

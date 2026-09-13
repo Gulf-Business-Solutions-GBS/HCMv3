@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.employee-sub-group-payment.edit",
+  "lang": "ar",
+  "title": "مدفوعات المجموعة الفرعية للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupPayment.WageTypeId",
+    "dom:EmployeeSubGroupPayment_WageTypeId": "EmployeeSubGroupPayment.WageTypeId",
+    "loc:Amount": "EmployeeSubGroupPayment.Amount",
+    "dom:EmployeeSubGroupPayment_Amount": "EmployeeSubGroupPayment.Amount",
+    "loc:PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "dom:EmployeeSubGroupPayment_PayInterval": "EmployeeSubGroupPayment.PayInterval",
+    "loc:PayMonth": "EmployeeSubGroupPayment.PayMonth",
+    "dom:EmployeeSubGroupPayment_PayMonth": "EmployeeSubGroupPayment.PayMonth"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupPayment.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupPayment_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupPayment.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupPayment_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayInterval",
+      "label": "PayInterval",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayInterval",
+        "dom:EmployeeSubGroupPayment_PayInterval"
+      ],
+      "rules": "إلزامي. إحدى القيم: شهري، يومي، بالساعة، نهاية الخدمة، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupPayment.PayMonth",
+      "label": "PayMonth",
+      "section": "EmployeeSubGroupPayments",
+      "aliases": [
+        "loc:PayMonth",
+        "dom:EmployeeSubGroupPayment_PayMonth"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

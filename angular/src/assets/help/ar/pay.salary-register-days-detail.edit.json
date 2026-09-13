@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.salary-register-days-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل أيام سجلات الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SalaryRegisterDaysDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "loc:Period": "SalaryRegisterDaysDetail.Period",
+    "dom:SalaryRegisterDaysDetail_Period": "SalaryRegisterDaysDetail.Period",
+    "loc:Rate": "SalaryRegisterDaysDetail.Rate",
+    "dom:SalaryRegisterDaysDetail_Rate": "SalaryRegisterDaysDetail.Rate",
+    "loc:Number": "SalaryRegisterDaysDetail.Number",
+    "dom:SalaryRegisterDaysDetail_Number": "SalaryRegisterDaysDetail.Number",
+    "loc:Amount": "SalaryRegisterDaysDetail.Amount",
+    "dom:SalaryRegisterDaysDetail_Amount": "SalaryRegisterDaysDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+      "label": "SalaryRegisterDetailId",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:SalaryRegisterDetailId",
+        "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة تفاصيل سجلات الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Period",
+      "label": "Period",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Period",
+        "dom:SalaryRegisterDaysDetail_Period"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Rate",
+      "label": "Rate",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SalaryRegisterDaysDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Number",
+      "label": "Number",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SalaryRegisterDaysDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Amount",
+      "label": "Amount",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SalaryRegisterDaysDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

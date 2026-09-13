@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.absence-violation-action-log.edit",
+  "lang": "en",
+  "title": "Absence Violation Action Logs — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationActionLog",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceViolationActionRecords": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
+    "dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
+    "loc:Step": "AbsenceViolationActionLog.Step",
+    "dom:AbsenceViolationActionLog_Step": "AbsenceViolationActionLog.Step",
+    "loc:Action": "AbsenceViolationActionLog.Action",
+    "dom:AbsenceViolationActionLog_Action": "AbsenceViolationActionLog.Action",
+    "loc:ActionDate": "AbsenceViolationActionLog.ActionDate",
+    "dom:AbsenceViolationActionLog_ActionDate": "AbsenceViolationActionLog.ActionDate",
+    "loc:ObjectOId": "AbsenceViolationActionLog.ObjectOId",
+    "dom:AbsenceViolationActionLog_ObjectOId": "AbsenceViolationActionLog.ObjectOId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
+      "label": "AbsenceViolationActionRecords",
+      "section": "AbsenceViolationActionLogs",
+      "aliases": [
+        "loc:AbsenceViolationActionRecords",
+        "dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId"
+      ],
+      "rules": "Required. Chosen from Absence Violation Action Record master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationActionLog.Step",
+      "label": "Step",
+      "section": "AbsenceViolationActionLogs",
+      "aliases": [
+        "loc:Step",
+        "dom:AbsenceViolationActionLog_Step"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationActionLog.Action",
+      "label": "Action",
+      "section": "AbsenceViolationActionLogs",
+      "aliases": [
+        "loc:Action",
+        "dom:AbsenceViolationActionLog_Action"
+      ],
+      "rules": "Required. One of: Notification, Violation, Leave.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationActionLog.ActionDate",
+      "label": "ActionDate",
+      "section": "AbsenceViolationActionLogs",
+      "aliases": [
+        "loc:ActionDate",
+        "dom:AbsenceViolationActionLog_ActionDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationActionLog.ObjectOId",
+      "label": "ObjectOId",
+      "section": "AbsenceViolationActionLogs",
+      "aliases": [
+        "loc:ObjectOId",
+        "dom:AbsenceViolationActionLog_ObjectOId"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

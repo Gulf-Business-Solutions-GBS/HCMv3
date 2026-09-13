@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.cost-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.CostRegisterDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:CostRegisterId": "CostRegisterDetail.CostRegisterId",
+    "dom:CostRegisterDetail_CostRegisterId": "CostRegisterDetail.CostRegisterId",
+    "loc:WageTypeId": "CostRegisterDetail.WageTypeId",
+    "dom:CostRegisterDetail_WageTypeId": "CostRegisterDetail.WageTypeId",
+    "loc:AccountInfoId": "CostRegisterDetail.AccountInfoId",
+    "dom:CostRegisterDetail_AccountInfoId": "CostRegisterDetail.AccountInfoId",
+    "loc:Amount": "CostRegisterDetail.Amount",
+    "dom:CostRegisterDetail_Amount": "CostRegisterDetail.Amount",
+    "loc:CurrencyId": "CostRegisterDetail.CurrencyId",
+    "dom:CostRegisterDetail_CurrencyId": "CostRegisterDetail.CurrencyId",
+    "loc:CostElement1Id": "CostRegisterDetail.CostElement1Id",
+    "dom:CostRegisterDetail_costElement1Id": "CostRegisterDetail.CostElement1Id",
+    "loc:CostElement2Id": "CostRegisterDetail.CostElement2Id",
+    "dom:CostRegisterDetail_costElement2Id": "CostRegisterDetail.CostElement2Id",
+    "loc:CostElement3Id": "CostRegisterDetail.CostElement3Id",
+    "dom:CostRegisterDetail_costElement3Id": "CostRegisterDetail.CostElement3Id",
+    "loc:CostElement4Id": "CostRegisterDetail.CostElement4Id",
+    "dom:CostRegisterDetail_costElement4Id": "CostRegisterDetail.CostElement4Id",
+    "loc:CostElement5Id": "CostRegisterDetail.CostElement5Id",
+    "dom:CostRegisterDetail_costElement5Id": "CostRegisterDetail.CostElement5Id",
+    "loc:CostElement6Id": "CostRegisterDetail.CostElement6Id",
+    "dom:CostRegisterDetail_costElement6Id": "CostRegisterDetail.CostElement6Id",
+    "loc:CostElement7Id": "CostRegisterDetail.CostElement7Id",
+    "dom:CostRegisterDetail_costElement7Id": "CostRegisterDetail.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "CostRegisterDetail.CostRegisterId",
+      "label": "CostRegisterId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostRegisterId",
+        "dom:CostRegisterDetail_CostRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:CostRegisterDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:CostRegisterDetail_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:CostRegisterDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CurrencyId",
+      "label": "CurrencyId",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:CostRegisterDetail_CurrencyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:CostRegisterDetail_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:CostRegisterDetail_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:CostRegisterDetail_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:CostRegisterDetail_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:CostRegisterDetail_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:CostRegisterDetail_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegisterDetail.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "CostRegisterDetails",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:CostRegisterDetail_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

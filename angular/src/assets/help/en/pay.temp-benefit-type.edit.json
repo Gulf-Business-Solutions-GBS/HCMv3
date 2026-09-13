@@ -1,0 +1,411 @@
+{
+  "helpId": "pay.temp-benefit-type.edit",
+  "lang": "en",
+  "title": "Temp Benefit Types — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.TempBenefitType",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Grade": "TempBenefitType.Grade",
+    "dom:TempBenefitType_Grade": "TempBenefitType.Grade",
+    "loc:Ticket": "TempBenefitType.Ticket",
+    "dom:TempBenefitType_ticket": "TempBenefitType.Ticket",
+    "loc:SimCard": "TempBenefitType.SimCard",
+    "dom:TempBenefitType_simCard": "TempBenefitType.SimCard",
+    "loc:Phone": "TempBenefitType.Phone",
+    "dom:TempBenefitType_phone": "TempBenefitType.Phone",
+    "loc:Incentive": "TempBenefitType.Incentive",
+    "dom:TempBenefitType_incentive": "TempBenefitType.Incentive",
+    "loc:BonusSIP": "TempBenefitType.BonusSIP",
+    "dom:TempBenefitType_bonusSIP": "TempBenefitType.BonusSIP",
+    "loc:Uniform": "TempBenefitType.Uniform",
+    "dom:TempBenefitType_uniform": "TempBenefitType.Uniform",
+    "loc:MedicalInsurance": "TempBenefitType.MedicalInsurance",
+    "dom:TempBenefitType_medicalInsurance": "TempBenefitType.MedicalInsurance",
+    "loc:LeaveDays": "TempBenefitType.LeaveDays",
+    "dom:TempBenefitType_leaveDays": "TempBenefitType.LeaveDays",
+    "loc:MedicalLeave": "TempBenefitType.MedicalLeave",
+    "dom:TempBenefitType_medicalLeave": "TempBenefitType.MedicalLeave",
+    "loc:MaternityLeave": "TempBenefitType.MaternityLeave",
+    "dom:TempBenefitType_maternityLeave": "TempBenefitType.MaternityLeave",
+    "loc:StaffDiscount": "TempBenefitType.StaffDiscount",
+    "dom:TempBenefitType_staffDiscount": "TempBenefitType.StaffDiscount",
+    "loc:SpecialAllowance": "TempBenefitType.SpecialAllowance",
+    "dom:TempBenefitType_specialAllowance": "TempBenefitType.SpecialAllowance",
+    "loc:ManagerAllowance": "TempBenefitType.ManagerAllowance",
+    "dom:TempBenefitType_managerAllowance": "TempBenefitType.ManagerAllowance",
+    "loc:CompanyAsset": "TempBenefitType.CompanyAsset",
+    "dom:TempBenefitType_companyAsset": "TempBenefitType.CompanyAsset",
+    "loc:SchoolAllowance": "TempBenefitType.SchoolAllowance",
+    "dom:TempBenefitType_schoolAllowance": "TempBenefitType.SchoolAllowance",
+    "loc:NoticePeriod": "TempBenefitType.NoticePeriod",
+    "dom:TempBenefitType_noticePeriod": "TempBenefitType.NoticePeriod",
+    "loc:Indemnity": "TempBenefitType.Indemnity",
+    "dom:TempBenefitType_indemnity": "TempBenefitType.Indemnity",
+    "loc:Retirement": "TempBenefitType.Retirement",
+    "dom:TempBenefitType_retirement": "TempBenefitType.Retirement",
+    "loc:MinSalary": "TempBenefitType.MinSalary",
+    "dom:TempBenefitType_minSalary": "TempBenefitType.MinSalary",
+    "loc:MidSalary": "TempBenefitType.MidSalary",
+    "dom:TempBenefitType_midSalary": "TempBenefitType.MidSalary",
+    "loc:MaxSalary": "TempBenefitType.MaxSalary",
+    "dom:TempBenefitType_maxSalary": "TempBenefitType.MaxSalary",
+    "loc:TransportationAllowance": "TempBenefitType.TransportationAllowance",
+    "dom:TempBenefitType_transportationAllowance": "TempBenefitType.TransportationAllowance",
+    "loc:HousingAllowance": "TempBenefitType.HousingAllowance",
+    "dom:TempBenefitType_housingAllowance": "TempBenefitType.HousingAllowance",
+    "loc:OtherAllowance": "TempBenefitType.OtherAllowance",
+    "dom:TempBenefitType_otherAllowance": "TempBenefitType.OtherAllowance"
+  },
+  "fields": [
+    {
+      "id": "TempBenefitType.Grade",
+      "label": "Grade",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Grade",
+        "dom:TempBenefitType_Grade"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Ticket",
+      "label": "Ticket",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Ticket",
+        "dom:TempBenefitType_ticket"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.SimCard",
+      "label": "SimCard",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SimCard",
+        "dom:TempBenefitType_simCard"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Phone",
+      "label": "Phone",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Phone",
+        "dom:TempBenefitType_phone"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Incentive",
+      "label": "Incentive",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Incentive",
+        "dom:TempBenefitType_incentive"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.BonusSIP",
+      "label": "BonusSIP",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:BonusSIP",
+        "dom:TempBenefitType_bonusSIP"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Uniform",
+      "label": "Uniform",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Uniform",
+        "dom:TempBenefitType_uniform"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MedicalInsurance",
+      "label": "MedicalInsurance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MedicalInsurance",
+        "dom:TempBenefitType_medicalInsurance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.LeaveDays",
+      "label": "LeaveDays",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:LeaveDays",
+        "dom:TempBenefitType_leaveDays"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MedicalLeave",
+      "label": "MedicalLeave",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MedicalLeave",
+        "dom:TempBenefitType_medicalLeave"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MaternityLeave",
+      "label": "MaternityLeave",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MaternityLeave",
+        "dom:TempBenefitType_maternityLeave"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.StaffDiscount",
+      "label": "StaffDiscount",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:StaffDiscount",
+        "dom:TempBenefitType_staffDiscount"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.SpecialAllowance",
+      "label": "SpecialAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SpecialAllowance",
+        "dom:TempBenefitType_specialAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.ManagerAllowance",
+      "label": "ManagerAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:ManagerAllowance",
+        "dom:TempBenefitType_managerAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.CompanyAsset",
+      "label": "CompanyAsset",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:CompanyAsset",
+        "dom:TempBenefitType_companyAsset"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.SchoolAllowance",
+      "label": "SchoolAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:SchoolAllowance",
+        "dom:TempBenefitType_schoolAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.NoticePeriod",
+      "label": "NoticePeriod",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:NoticePeriod",
+        "dom:TempBenefitType_noticePeriod"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Indemnity",
+      "label": "Indemnity",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Indemnity",
+        "dom:TempBenefitType_indemnity"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.Retirement",
+      "label": "Retirement",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:Retirement",
+        "dom:TempBenefitType_retirement"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MinSalary",
+      "label": "MinSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MinSalary",
+        "dom:TempBenefitType_minSalary"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MidSalary",
+      "label": "MidSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MidSalary",
+        "dom:TempBenefitType_midSalary"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.MaxSalary",
+      "label": "MaxSalary",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:MaxSalary",
+        "dom:TempBenefitType_maxSalary"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.TransportationAllowance",
+      "label": "TransportationAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:TransportationAllowance",
+        "dom:TempBenefitType_transportationAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.HousingAllowance",
+      "label": "HousingAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:HousingAllowance",
+        "dom:TempBenefitType_housingAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TempBenefitType.OtherAllowance",
+      "label": "OtherAllowance",
+      "section": "TempBenefitTypes",
+      "aliases": [
+        "loc:OtherAllowance",
+        "dom:TempBenefitType_otherAllowance"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

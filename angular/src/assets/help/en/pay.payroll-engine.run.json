@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.payroll-engine.run",
+  "lang": "en",
+  "title": "Payroll Engine — Run",
+  "entity": "HCMv3.PayrollManagement.Dto.RunPayrollEngineInput",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "RunPayrollEngineInput.PayrollAreaName",
+    "dom:PayrollEngine_PayrollArea": "RunPayrollEngineInput.PayrollAreaName",
+    "loc:PayrollRunType": "RunPayrollEngineInput.PayrollRunType",
+    "dom:PayrollEngine_RunType": "RunPayrollEngineInput.PayrollRunType",
+    "loc:EmployeeCode": "RunPayrollEngineInput.EmployeeCodes",
+    "dom:PayrollEngine_EmployeeCodes": "RunPayrollEngineInput.EmployeeCodes",
+    "loc:PayInDate": "RunPayrollEngineInput.PayInDate",
+    "dom:PayrollEngine_PayInDate": "RunPayrollEngineInput.PayInDate",
+    "loc:OffCycleReason": "RunPayrollEngineInput.OffCycleReason",
+    "dom:PayrollEngine_OffCycleReason": "RunPayrollEngineInput.OffCycleReason",
+    "loc:OffCyclePaymentDate": "RunPayrollEngineInput.OffCyclePaymentDate",
+    "dom:PayrollEngine_OffCyclePaymentDate": "RunPayrollEngineInput.OffCyclePaymentDate"
+  },
+  "fields": [
+    {
+      "id": "RunPayrollEngineInput.PayrollAreaName",
+      "label": "PayrollAreaId",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollEngine_PayrollArea"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "RunPayrollEngineInput.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:PayrollEngine_RunType"
+      ],
+      "rules": "Required. One of: Regular, Off Cycle.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "RunPayrollEngineInput.EmployeeCodes",
+      "label": "EmployeeCode",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:EmployeeCode",
+        "dom:PayrollEngine_EmployeeCodes"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "RunPayrollEngineInput.PayInDate",
+      "label": "PayInDate",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:PayInDate",
+        "dom:PayrollEngine_PayInDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "RunPayrollEngineInput.OffCycleReason",
+      "label": "OffCycleReason",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:OffCycleReason",
+        "dom:PayrollEngine_OffCycleReason"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "RunPayrollEngineInput.OffCyclePaymentDate",
+      "label": "OffCyclePaymentDate",
+      "section": "PayrollEngine",
+      "aliases": [
+        "loc:OffCyclePaymentDate",
+        "dom:PayrollEngine_OffCyclePaymentDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

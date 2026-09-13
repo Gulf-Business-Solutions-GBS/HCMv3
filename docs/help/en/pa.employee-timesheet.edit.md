@@ -25,7 +25,7 @@ For employees whose time policy takes punches from timesheets, the time engine b
 **Rules.** Required. Date value.
 
 :::admin
-When building a day from timesheets, the time engine looks the timesheet up by date only, not by employee. On a date where more than one employee has a timesheet, an employee can be given another employee's times. This matches the legacy system and is awaiting a decision.
+When building a day from timesheets, the time engine looks the timesheet up by date only, not by employee. On a date where more than one employee has a timesheet, an employee can be given another employee's in and break times. Total hours are not affected. This matches the legacy system and has been kept on purpose, so check the in and break times on those dates.
 :::
 
 ## ActualStartTime {#EmployeeTimesheet.ActualStartTime}

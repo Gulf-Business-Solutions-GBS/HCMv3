@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.ticket-fare.edit",
+  "lang": "en",
+  "title": "Ticket Fares — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.TicketFare",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:TicketRouteId": "TicketFare.TicketRouteId",
+    "dom:TicketFare_TicketRouteId": "TicketFare.TicketRouteId",
+    "loc:TicketPaxTypeId": "TicketFare.TicketPaxTypeId",
+    "dom:TicketFare_TicketPaxTypeId": "TicketFare.TicketPaxTypeId",
+    "loc:TicketClassId": "TicketFare.TicketClassId",
+    "dom:TicketFare_TicketClassId": "TicketFare.TicketClassId",
+    "loc:StartDate": "TicketFare.StartDate",
+    "dom:TicketFare_StartDate": "TicketFare.StartDate",
+    "loc:OneWayTicketFare": "TicketFare.OneWayTicketFare",
+    "dom:TicketFare_OneWayTicketFare": "TicketFare.OneWayTicketFare",
+    "loc:ReturnTicketFare": "TicketFare.ReturnTicketFare",
+    "dom:TicketFare_ReturnTicketFare": "TicketFare.ReturnTicketFare"
+  },
+  "fields": [
+    {
+      "id": "TicketFare.TicketRouteId",
+      "label": "TicketRouteId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketRouteId",
+        "dom:TicketFare_TicketRouteId"
+      ],
+      "rules": "Required. Chosen from Ticket Route master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketFare.TicketPaxTypeId",
+      "label": "TicketPaxTypeId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketPaxTypeId",
+        "dom:TicketFare_TicketPaxTypeId"
+      ],
+      "rules": "Required. Chosen from Ticket Pax Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketFare.TicketClassId",
+      "label": "TicketClassId",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:TicketClassId",
+        "dom:TicketFare_TicketClassId"
+      ],
+      "rules": "Required. Chosen from Ticket Class master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketFare.StartDate",
+      "label": "StartDate",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:StartDate",
+        "dom:TicketFare_StartDate"
+      ],
+      "rules": "Required. Date value. Saving closes the previous record for the same ticket route and ticket pax type and ticket class on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketFare.OneWayTicketFare",
+      "label": "OneWayTicketFare",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:OneWayTicketFare",
+        "dom:TicketFare_OneWayTicketFare"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketFare.ReturnTicketFare",
+      "label": "ReturnTicketFare",
+      "section": "TicketFares",
+      "aliases": [
+        "loc:ReturnTicketFare",
+        "dom:TicketFare_ReturnTicketFare"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

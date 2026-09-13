@@ -1,0 +1,27 @@
+{
+  "helpId": "pay.employee-sub-group-commission.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Commissions — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupCommission",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:WageType": "EmployeeSubGroupCommission.WageTypeId",
+    "dom:EmployeeSubGroupCommission_WageTypeId": "EmployeeSubGroupCommission.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupCommission.WageTypeId",
+      "label": "WageType",
+      "section": "EmployeeSubGroupCommissions",
+      "aliases": [
+        "loc:WageType",
+        "dom:EmployeeSubGroupCommission_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

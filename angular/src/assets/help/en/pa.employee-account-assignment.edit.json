@@ -3,14 +3,28 @@
   "lang": "en",
   "title": "Employee Account Assignments — Create / Edit",
   "entity": "HCMv3.PersonnelAdministration.EmployeeAccountAssignment",
-  "overviewHtml": "<p>A share of the employee's cost assigned for a period.</p><p>It is recorded for reference; the cost engine and journal postings do not read it at present. Use Employee Wage Accounts for account mapping that postings use.</p>",
+  "overviewHtml": "<p>A share of the employee's cost assigned for a period, under up to seven cost elements.</p><p>It is recorded for reference; the cost engine and journal postings do not read it at present. Use Employee Wage Accounts for account mapping that postings use.</p>",
   "aliasIndex": {
     "loc:StartDate": "EmployeeAccountAssignment.StartDate",
     "dom:EmployeeAccountAssignment_StartDate": "EmployeeAccountAssignment.StartDate",
     "loc:EndDate": "EmployeeAccountAssignment.EndDate",
     "dom:EmployeeAccountAssignment_EndDate": "EmployeeAccountAssignment.EndDate",
     "loc:CostPercentage": "EmployeeAccountAssignment.CostPercentage",
-    "dom:EmployeeAccountAssignment_CostPercentage": "EmployeeAccountAssignment.CostPercentage"
+    "dom:EmployeeAccountAssignment_CostPercentage": "EmployeeAccountAssignment.CostPercentage",
+    "loc:CostElement1Id": "EmployeeAccountAssignment.CostElement1Id",
+    "dom:EmployeeAccountAssignment_costElement1Id": "EmployeeAccountAssignment.CostElement1Id",
+    "loc:CostElement2Id": "EmployeeAccountAssignment.CostElement2Id",
+    "dom:EmployeeAccountAssignment_costElement2Id": "EmployeeAccountAssignment.CostElement2Id",
+    "loc:CostElement3Id": "EmployeeAccountAssignment.CostElement3Id",
+    "dom:EmployeeAccountAssignment_costElement3Id": "EmployeeAccountAssignment.CostElement3Id",
+    "loc:CostElement4Id": "EmployeeAccountAssignment.CostElement4Id",
+    "dom:EmployeeAccountAssignment_costElement4Id": "EmployeeAccountAssignment.CostElement4Id",
+    "loc:CostElement5Id": "EmployeeAccountAssignment.CostElement5Id",
+    "dom:EmployeeAccountAssignment_costElement5Id": "EmployeeAccountAssignment.CostElement5Id",
+    "loc:CostElement6Id": "EmployeeAccountAssignment.CostElement6Id",
+    "dom:EmployeeAccountAssignment_costElement6Id": "EmployeeAccountAssignment.CostElement6Id",
+    "loc:CostElement7Id": "EmployeeAccountAssignment.CostElement7Id",
+    "dom:EmployeeAccountAssignment_costElement7Id": "EmployeeAccountAssignment.CostElement7Id"
   },
   "fields": [
     {
@@ -52,6 +66,104 @@
       "rules": "Optional. Number.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The percentage of cost assigned.</p><p><strong>Example.</strong> 50</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:EmployeeAccountAssignment_costElement1Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 1 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:EmployeeAccountAssignment_costElement2Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 2 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:EmployeeAccountAssignment_costElement3Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 3 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:EmployeeAccountAssignment_costElement4Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 4 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:EmployeeAccountAssignment_costElement5Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 5 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:EmployeeAccountAssignment_costElement6Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 6 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccountAssignment.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "EmployeeAccountAssignments",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:EmployeeAccountAssignment_costElement7Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 7 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> Recorded for reference; the cost engine and journal postings do not read it at present.</p>",
       "adminHtml": "",
       "stub": false
     }

@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.absence-payment.edit",
+  "lang": "ar",
+  "title": "مدفوعات الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsencePayment",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceTypes": "AbsencePayment.AbsenceTypeId",
+    "dom:AbsencePayment_AbsenceTypeId": "AbsencePayment.AbsenceTypeId",
+    "loc:WageTypes": "AbsencePayment.WageTypeId",
+    "dom:AbsencePayment_WageTypeId": "AbsencePayment.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "AbsencePayment.AbsenceTypeId",
+      "label": "AbsenceTypes",
+      "section": "AbsencePayments",
+      "aliases": [
+        "loc:AbsenceTypes",
+        "dom:AbsencePayment_AbsenceTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsencePayment.WageTypeId",
+      "label": "WageTypes",
+      "section": "AbsencePayments",
+      "aliases": [
+        "loc:WageTypes",
+        "dom:AbsencePayment_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.employee-sub-group-absence.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Absences — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupAbsence",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceType": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "dom:EmployeeSubGroupAbsence_AbsenceTypeId": "EmployeeSubGroupAbsence.AbsenceTypeId",
+    "loc:AbsenceDeductionRule": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+    "loc:StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "dom:EmployeeSubGroupAbsence_StartDate": "EmployeeSubGroupAbsence.StartDate",
+    "loc:EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "dom:EmployeeSubGroupAbsence_EndDate": "EmployeeSubGroupAbsence.EndDate",
+    "loc:ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "dom:EmployeeSubGroupAbsence_ChangeYear": "EmployeeSubGroupAbsence.ChangeYear",
+    "loc:TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "dom:EmployeeSubGroupAbsence_TotalDays": "EmployeeSubGroupAbsence.TotalDays",
+    "loc:MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "dom:EmployeeSubGroupAbsence_MaxLimit": "EmployeeSubGroupAbsence.MaxLimit",
+    "loc:MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+    "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceTypeId",
+      "label": "AbsenceType",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceType",
+        "dom:EmployeeSubGroupAbsence_AbsenceTypeId"
+      ],
+      "rules": "Optional. Chosen from Absence Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRule",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:AbsenceDeductionRule",
+        "dom:EmployeeSubGroupAbsence_AbsenceDeductionRuleId"
+      ],
+      "rules": "Optional. Chosen from Absence Deduction Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupAbsence_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupAbsence_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.ChangeYear",
+      "label": "ChangeYear",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:ChangeYear",
+        "dom:EmployeeSubGroupAbsence_ChangeYear"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.TotalDays",
+      "label": "TotalDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:TotalDays",
+        "dom:EmployeeSubGroupAbsence_TotalDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimit",
+      "label": "MaxLimit",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimit",
+        "dom:EmployeeSubGroupAbsence_MaxLimit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupAbsence.MaxLimitReachNotificationInDays",
+      "label": "MaxLimitReachNotificationInDays",
+      "section": "EmployeeSubGroupAbsences",
+      "aliases": [
+        "loc:MaxLimitReachNotificationInDays",
+        "dom:EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

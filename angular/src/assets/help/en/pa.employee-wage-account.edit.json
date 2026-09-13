@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Wage Accounts — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeWageAccount",
-  "overviewHtml": "<p>Which ledger account one of the employee's wage types posts to, from a given date. The cost engine and the journal voucher exports read these to post the employee's pay.</p><p>Records for the same employee and wage type form a history: saving a new one closes the previous one on the day before the new start date. A wage type can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.</p>",
+  "overviewHtml": "<p>Which ledger account one of the employee's wage types posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.</p><p>Records for the same employee and wage type form a history: saving a new one closes the previous one on the day before the new start date. A wage type can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "EmployeeWageAccount.WageTypeId",
     "dom:EmployeeWageAccount_WageTypeId": "EmployeeWageAccount.WageTypeId",
@@ -16,7 +16,21 @@
     "loc:OffsetAccountInfoId": "EmployeeWageAccount.OffsetAccountInfoId",
     "dom:EmployeeWageAccount_OffsetAccountInfoId": "EmployeeWageAccount.OffsetAccountInfoId",
     "loc:MergeOffsetAccount": "EmployeeWageAccount.MergeOffsetAccount",
-    "dom:EmployeeWageAccount_MergeOffsetAccount": "EmployeeWageAccount.MergeOffsetAccount"
+    "dom:EmployeeWageAccount_MergeOffsetAccount": "EmployeeWageAccount.MergeOffsetAccount",
+    "loc:CostElement1Id": "EmployeeWageAccount.CostElement1Id",
+    "dom:EmployeeWageAccount_costElement1Id": "EmployeeWageAccount.CostElement1Id",
+    "loc:CostElement2Id": "EmployeeWageAccount.CostElement2Id",
+    "dom:EmployeeWageAccount_costElement2Id": "EmployeeWageAccount.CostElement2Id",
+    "loc:CostElement3Id": "EmployeeWageAccount.CostElement3Id",
+    "dom:EmployeeWageAccount_costElement3Id": "EmployeeWageAccount.CostElement3Id",
+    "loc:CostElement4Id": "EmployeeWageAccount.CostElement4Id",
+    "dom:EmployeeWageAccount_costElement4Id": "EmployeeWageAccount.CostElement4Id",
+    "loc:CostElement5Id": "EmployeeWageAccount.CostElement5Id",
+    "dom:EmployeeWageAccount_costElement5Id": "EmployeeWageAccount.CostElement5Id",
+    "loc:CostElement6Id": "EmployeeWageAccount.CostElement6Id",
+    "dom:EmployeeWageAccount_costElement6Id": "EmployeeWageAccount.CostElement6Id",
+    "loc:CostElement7Id": "EmployeeWageAccount.CostElement7Id",
+    "dom:EmployeeWageAccount_costElement7Id": "EmployeeWageAccount.CostElement7Id"
   },
   "fields": [
     {
@@ -100,6 +114,104 @@
       "rules": "Yes or no.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Whether offset lines to the same account are combined into one line in the journal voucher.</p><p><strong>Why it matters.</strong> Read when the journal voucher is built.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:EmployeeWageAccount_costElement1Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 1 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:EmployeeWageAccount_costElement2Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 2 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:EmployeeWageAccount_costElement3Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 3 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:EmployeeWageAccount_costElement4Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 4 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:EmployeeWageAccount_costElement5Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 5 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:EmployeeWageAccount_costElement6Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 6 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeWageAccount.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "EmployeeWageAccounts",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:EmployeeWageAccount_costElement7Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Cost element 7 — one of up to seven accounting dimensions.</p><p><strong>Why it matters.</strong> The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.</p>",
       "adminHtml": "",
       "stub": false
     }

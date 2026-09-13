@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.payroll-area.edit",
+  "lang": "ar",
+  "title": "مناطق الرواتب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.PayrollArea",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "PayrollArea.Code",
+    "dom:PayrollArea_Code": "PayrollArea.Code",
+    "loc:Name": "PayrollArea.Name",
+    "dom:PayrollArea_Name": "PayrollArea.Name",
+    "loc:PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "dom:PayrollArea_PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "loc:CurrencyId": "PayrollArea.CurrencyId",
+    "dom:PayrollArea_CurrencyId": "PayrollArea.CurrencyId",
+    "loc:CutOffDay": "PayrollArea.CutOffDay",
+    "dom:PayrollArea_CutOffDay": "PayrollArea.CutOffDay",
+    "loc:CountryId": "PayrollArea.CountryId",
+    "dom:PayrollArea_CountryId": "PayrollArea.CountryId",
+    "loc:FICompanyId": "PayrollArea.FICompanyId",
+    "dom:PayrollArea_FICompanyId": "PayrollArea.FICompanyId",
+    "loc:FIBankId": "PayrollArea.FIBankId",
+    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId"
+  },
+  "fields": [
+    {
+      "id": "PayrollArea.Code",
+      "label": "Code",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Code",
+        "dom:PayrollArea_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.Name",
+      "label": "Name",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Name",
+        "dom:PayrollArea_Name"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.PayrollPeriodId",
+      "label": "PayrollPeriodId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PayrollPeriodId",
+        "dom:PayrollArea_PayrollPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CurrencyId",
+      "label": "CurrencyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:PayrollArea_CurrencyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة العملات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CutOffDay",
+      "label": "CutOffDay",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CutOffDay",
+        "dom:PayrollArea_CutOffDay"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CountryId",
+      "label": "CountryId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CountryId",
+        "dom:PayrollArea_CountryId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.FICompanyId",
+      "label": "FICompanyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FICompanyId",
+        "dom:PayrollArea_FICompanyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.FIBankId",
+      "label": "FIBankId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FIBankId",
+        "dom:PayrollArea_FIBankId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

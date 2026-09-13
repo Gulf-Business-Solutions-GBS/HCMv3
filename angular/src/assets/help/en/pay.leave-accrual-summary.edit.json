@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.leave-accrual-summary.edit",
+  "lang": "en",
+  "title": "Leave Accrual Summaries — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.LeaveAccrualSummary",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "LeaveAccrualSummary.EmployeeId",
+    "dom:LeaveAccrualSummary_EmployeeId": "LeaveAccrualSummary.EmployeeId",
+    "loc:AbsenceTypeId": "LeaveAccrualSummary.AbsenceTypeId",
+    "dom:LeaveAccrualSummary_AbsenceTypeId": "LeaveAccrualSummary.AbsenceTypeId",
+    "loc:Year": "LeaveAccrualSummary.Year",
+    "dom:LeaveAccrualSummary_Year": "LeaveAccrualSummary.Year",
+    "loc:Month": "LeaveAccrualSummary.Month",
+    "dom:LeaveAccrualSummary_Month": "LeaveAccrualSummary.Month",
+    "loc:AccrualDays": "LeaveAccrualSummary.AccrualDays",
+    "dom:LeaveAccrualSummary_AccrualDays": "LeaveAccrualSummary.AccrualDays",
+    "loc:UsedDays": "LeaveAccrualSummary.UsedDays",
+    "dom:LeaveAccrualSummary_UsedDays": "LeaveAccrualSummary.UsedDays",
+    "loc:CumulativeAccruedDays": "LeaveAccrualSummary.CumulativeAccruedDays",
+    "dom:LeaveAccrualSummary_CumulativeAccruedDays": "LeaveAccrualSummary.CumulativeAccruedDays"
+  },
+  "fields": [
+    {
+      "id": "LeaveAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:LeaveAccrualSummary_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.AbsenceTypeId",
+      "label": "AbsenceTypeId",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:AbsenceTypeId",
+        "dom:LeaveAccrualSummary_AbsenceTypeId"
+      ],
+      "rules": "Required. Chosen from Absence Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.Year",
+      "label": "Year",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:LeaveAccrualSummary_Year"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.Month",
+      "label": "Month",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:LeaveAccrualSummary_Month"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.AccrualDays",
+      "label": "AccrualDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:AccrualDays",
+        "dom:LeaveAccrualSummary_AccrualDays"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.UsedDays",
+      "label": "UsedDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:UsedDays",
+        "dom:LeaveAccrualSummary_UsedDays"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "LeaveAccrualSummary.CumulativeAccruedDays",
+      "label": "CumulativeAccruedDays",
+      "section": "LeaveAccrualSummaries",
+      "aliases": [
+        "loc:CumulativeAccruedDays",
+        "dom:LeaveAccrualSummary_CumulativeAccruedDays"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

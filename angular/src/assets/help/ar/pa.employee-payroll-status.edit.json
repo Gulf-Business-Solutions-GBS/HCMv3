@@ -3,14 +3,142 @@
   "lang": "ar",
   "title": "حالات رواتب الموظف — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.EmployeePayrollStatus",
-  "overviewHtml": "<p>سجل حالة رواتب الموظف. لا يجوز أن يكون للموظف أكثر من سجل واحد.</p><p>ينشئ محركا الرواتب والوقت هذا السجل ويحدّثانه بنفسيهما لتتبّع المدى الذي وصلت إليه معالجة الموظف. أما الخياران في هذا النموذج فيُحفظان ولا يقرؤهما أيٌّ من المحركين حالياً.</p>",
+  "overviewHtml": "<p>المدى الذي وصلت إليه معالجة الموظف في الرواتب ومحرك الوقت، والتواريخ التي تتحكم في إعادة الاحتساب. ولا يجوز أن يكون للموظف أكثر من سجل واحد.</p><p>ينشئ محرك الوقت هذا السجل عند أول معالجة للموظف، وتتوقف الرواتب برسالة «Payroll Status not found» للموظف الذي ليس له سجل. ويحدّث المحركان التواريخ أثناء تشغيلهما؛ فلا تغيّرها إلا لفرض إعادة احتساب أو تقييدها.</p>",
   "aliasIndex": {
+    "loc:EarliestRetroAccountingDate": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+    "dom:EmployeePayrollStatus_earliestRetroAccountingDate": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+    "loc:AccountedTo": "EmployeePayrollStatus.AccountedTo",
+    "dom:EmployeePayrollStatus_accountedTo": "EmployeePayrollStatus.AccountedTo",
+    "loc:RunPayrollUpto": "EmployeePayrollStatus.RunPayrollUpto",
+    "dom:EmployeePayrollStatus_runPayrollUpto": "EmployeePayrollStatus.RunPayrollUpto",
+    "loc:EarliestMasterDataChange": "EmployeePayrollStatus.EarliestMasterDataChange",
+    "dom:EmployeePayrollStatus_earliestMasterDataChange": "EmployeePayrollStatus.EarliestMasterDataChange",
+    "loc:DoNoAccountAfter": "EmployeePayrollStatus.DoNoAccountAfter",
+    "dom:EmployeePayrollStatus_doNoAccountAfter": "EmployeePayrollStatus.DoNoAccountAfter",
+    "loc:EarliestRecalculationDate": "EmployeePayrollStatus.EarliestRecalculationDate",
+    "dom:EmployeePayrollStatus_earliestRecalculationDate": "EmployeePayrollStatus.EarliestRecalculationDate",
+    "loc:PersonalCalendarFrom": "EmployeePayrollStatus.PersonalCalendarFrom",
+    "dom:EmployeePayrollStatus_personalCalendarFrom": "EmployeePayrollStatus.PersonalCalendarFrom",
+    "loc:NextTimeEvaluationFrom": "EmployeePayrollStatus.NextTimeEvaluationFrom",
+    "dom:EmployeePayrollStatus_nextTimeEvaluationFrom": "EmployeePayrollStatus.NextTimeEvaluationFrom",
     "loc:PersonLocked": "EmployeePayrollStatus.PersonLocked",
     "dom:EmployeePayrollStatus_PersonLocked": "EmployeePayrollStatus.PersonLocked",
     "loc:PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection",
     "dom:EmployeePayrollStatus_PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection"
   },
   "fields": [
+    {
+      "id": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+      "label": "EarliestRetroAccountingDate",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestRetroAccountingDate",
+        "dom:EmployeePayrollStatus_earliestRetroAccountingDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقدم تاريخ يجوز أن تعود إليه إعادة الاحتساب.</p><p><strong>مثال.</strong> 1 يناير 2026</p><p><strong>لماذا يهم.</strong> إذا امتد تغيير إلى ما قبل هذا التاريخ، يتوقف محرك الوقت والرواتب العادية للموظف برسالة «EarliestRetroAccountingDate set to …»، ما لم يكن التاريخ تاريخ الالتحاق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.AccountedTo",
+      "label": "AccountedTo",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:AccountedTo",
+        "dom:EmployeePayrollStatus_accountedTo"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر تاريخ دفع عالجته الرواتب للموظف.</p><p><strong>مثال.</strong> 31 أغسطس 2026</p><p><strong>لماذا يهم.</strong> تعيد الرواتب الاحتساب من الشهر التالي لهذا التاريخ حتى تاريخ الدفع الحالي، وتقدّمه بعد كل تشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.RunPayrollUpto",
+      "label": "RunPayrollUpto",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:RunPayrollUpto",
+        "dom:EmployeePayrollStatus_runPayrollUpto"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ يجب أن تُشغَّل الرواتب حتى بلوغه.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه أي من المحركين حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.EarliestMasterDataChange",
+      "label": "EarliestMasterDataChange",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestMasterDataChange",
+        "dom:EmployeePayrollStatus_earliestMasterDataChange"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقدم تاريخ تأثر بتغيير على سجلات الموظف منذ آخر تشغيل للرواتب.</p><p><strong>مثال.</strong> 1 يونيو 2026</p><p><strong>لماذا يهم.</strong> تعيد الرواتب احتساب كل شهر اعتباراً من هذا التاريخ، ويبدأ منه محرك الوقت عند إيقاف التشغيل التلقائي. ويحدده محرك الوقت عند تغيّر يوم، وتمسحه الرواتب بعد تشغيل ناجح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.DoNoAccountAfter",
+      "label": "DoNoAccountAfter",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:DoNoAccountAfter",
+        "dom:EmployeePayrollStatus_doNoAccountAfter"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر فترة يجوز للرواتب احتسابها للموظف.</p><p><strong>مثال.</strong> 31 ديسمبر 2026</p><p><strong>لماذا يهم.</strong> تتخطى الرواتب ومحرك تكلفة المشاريع أي فترة بعد هذا التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.EarliestRecalculationDate",
+      "label": "EarliestRecalculationDate",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestRecalculationDate",
+        "dom:EmployeePayrollStatus_earliestRecalculationDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ أقدم إعادة احتساب.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه أي من المحركين حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.PersonalCalendarFrom",
+      "label": "PersonalCalendarFrom",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PersonalCalendarFrom",
+        "dom:EmployeePayrollStatus_personalCalendarFrom"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ بدء التقويم الشخصي للموظف.</p><p><strong>لماذا يهم.</strong> يُسجَّل فقط، ولا يقرؤه أي من المحركين حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.NextTimeEvaluationFrom",
+      "label": "NextTimeEvaluationFrom",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:NextTimeEvaluationFrom",
+        "dom:EmployeePayrollStatus_nextTimeEvaluationFrom"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي سيعالج منه محرك الوقت الموظف في المرة القادمة.</p><p><strong>مثال.</strong> 1 سبتمبر 2026</p><p><strong>لماذا يهم.</strong> يقدّمه محرك الوقت أثناء تشغيله. وتتوقف مسيرة الرواتب خارج الدورة، عدا نهاية الخدمة، برسالة «Time Engine not run» إذا سبق هذا التاريخ تاريخَ الدفع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeePayrollStatus.PersonLocked",
       "label": "PersonLocked",

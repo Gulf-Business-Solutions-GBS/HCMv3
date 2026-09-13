@@ -1,0 +1,155 @@
+{
+  "helpId": "pay.social-security-rule.edit",
+  "lang": "ar",
+  "title": "قواعد التأمينات الاجتماعية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityRule",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityRule.SocialSecurityId",
+    "dom:SocialSecurityRule_SocialSecurityId": "SocialSecurityRule.SocialSecurityId",
+    "loc:StartDate": "SocialSecurityRule.StartDate",
+    "dom:SocialSecurityRule_StartDate": "SocialSecurityRule.StartDate",
+    "loc:EndDate": "SocialSecurityRule.EndDate",
+    "dom:SocialSecurityRule_EndDate": "SocialSecurityRule.EndDate",
+    "loc:QualificationId": "SocialSecurityRule.QualificationId",
+    "dom:SocialSecurityRule_QualificationId": "SocialSecurityRule.QualificationId",
+    "loc:Gender": "SocialSecurityRule.Gender",
+    "dom:SocialSecurityRule_Gender": "SocialSecurityRule.Gender",
+    "loc:MaritalStatusId": "SocialSecurityRule.MaritalStatusId",
+    "dom:SocialSecurityRule_MaritalStatusId": "SocialSecurityRule.MaritalStatusId",
+    "loc:Dependant": "SocialSecurityRule.Dependant",
+    "dom:SocialSecurityRule_Dependant": "SocialSecurityRule.Dependant",
+    "loc:Amount": "SocialSecurityRule.Amount",
+    "dom:SocialSecurityRule_Amount": "SocialSecurityRule.Amount",
+    "loc:Disability": "SocialSecurityRule.Disability",
+    "dom:SocialSecurityRule_Disability": "SocialSecurityRule.Disability"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityRule.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityRule_SocialSecurityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة التأمينات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.StartDate",
+      "label": "StartDate",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SocialSecurityRule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.EndDate",
+      "label": "EndDate",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SocialSecurityRule_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SocialSecurityRule.QualificationId",
+      "label": "QualificationId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:QualificationId",
+        "dom:SocialSecurityRule_QualificationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المؤهلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.Gender",
+      "label": "Gender",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Gender",
+        "dom:SocialSecurityRule_Gender"
+      ],
+      "rules": "إلزامي. إحدى القيم: ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.MaritalStatusId",
+      "label": "MaritalStatusId",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:MaritalStatusId",
+        "dom:SocialSecurityRule_MaritalStatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الحالات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.Dependant",
+      "label": "Dependant",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Dependant",
+        "dom:SocialSecurityRule_Dependant"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.Amount",
+      "label": "Amount",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Amount",
+        "dom:SocialSecurityRule_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityRule.Disability",
+      "label": "Disability",
+      "section": "SocialSecurityRules",
+      "aliases": [
+        "loc:Disability",
+        "dom:SocialSecurityRule_Disability"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.absence-violation-rule-detail.edit",
+  "lang": "en",
+  "title": "Absence Violation Rule Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceViolationRules": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+    "loc:Step": "AbsenceViolationRuleDetail.Step",
+    "dom:AbsenceViolationRuleDetail_Step": "AbsenceViolationRuleDetail.Step",
+    "loc:DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "dom:AbsenceViolationRuleDetail_DayInterval": "AbsenceViolationRuleDetail.DayInterval",
+    "loc:Action": "AbsenceViolationRuleDetail.Action",
+    "dom:AbsenceViolationRuleDetail_Action": "AbsenceViolationRuleDetail.Action",
+    "loc:ActionType": "AbsenceViolationRuleDetail.ActionTypeId",
+    "dom:AbsenceViolationRuleDetail_ActionTypeId": "AbsenceViolationRuleDetail.ActionTypeId"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId"
+      ],
+      "rules": "Required. Chosen from Absence Violation Rule master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Step",
+      "label": "Step",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Step",
+        "dom:AbsenceViolationRuleDetail_Step"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.DayInterval",
+      "label": "DayInterval",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:DayInterval",
+        "dom:AbsenceViolationRuleDetail_DayInterval"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.Action",
+      "label": "Action",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:Action",
+        "dom:AbsenceViolationRuleDetail_Action"
+      ],
+      "rules": "Required. One of: Notification, Violation, Leave.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleDetail.ActionTypeId",
+      "label": "ActionType",
+      "section": "AbsenceViolationRuleDetails",
+      "aliases": [
+        "loc:ActionType",
+        "dom:AbsenceViolationRuleDetail_ActionTypeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.simulation-salary-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات الرواتب التجريبية — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegisterDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+    "loc:WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "dom:SimulationSalaryRegisterDetail_WageTypeId": "SimulationSalaryRegisterDetail.WageTypeId",
+    "loc:Rate": "SimulationSalaryRegisterDetail.Rate",
+    "dom:SimulationSalaryRegisterDetail_Rate": "SimulationSalaryRegisterDetail.Rate",
+    "loc:Number": "SimulationSalaryRegisterDetail.Number",
+    "dom:SimulationSalaryRegisterDetail_Number": "SimulationSalaryRegisterDetail.Number",
+    "loc:Amount": "SimulationSalaryRegisterDetail.Amount",
+    "dom:SimulationSalaryRegisterDetail_Amount": "SimulationSalaryRegisterDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegisterDetail.SimulationSalaryRegisterId",
+      "label": "SimulationSalaryRegisterId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:SimulationSalaryRegisterId",
+        "dom:SimulationSalaryRegisterDetail_SimulationSalaryRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الرواتب التجريبية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:SimulationSalaryRegisterDetail_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Rate",
+      "label": "Rate",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SimulationSalaryRegisterDetail_Rate"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Number",
+      "label": "Number",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SimulationSalaryRegisterDetail_Number"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegisterDetail.Amount",
+      "label": "Amount",
+      "section": "SimulationSalaryRegisterDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SimulationSalaryRegisterDetail_Amount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.ticket-type.edit",
+  "lang": "en",
+  "title": "Ticket Types — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.TicketType",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "TicketType.Code",
+    "dom:TicketType_Code": "TicketType.Code",
+    "loc:NameEn": "TicketType.NameEn",
+    "dom:TicketType_NameEn": "TicketType.NameEn",
+    "loc:NameAr": "TicketType.NameAr",
+    "dom:TicketType_NameAr": "TicketType.NameAr",
+    "loc:TicketBasisPeriod": "TicketType.TicketBasisPeriod",
+    "dom:TicketType_TicketBasisPeriod": "TicketType.TicketBasisPeriod",
+    "loc:TicketBasisFixedDays": "TicketType.TicketBasisFixedDays",
+    "dom:TicketType_TicketBasisFixedDays": "TicketType.TicketBasisFixedDays",
+    "loc:Lapse": "TicketType.Lapse",
+    "dom:TicketType_Lapse": "TicketType.Lapse",
+    "loc:LapseAfter": "TicketType.LapseAfter",
+    "dom:TicketType_LapseAfter": "TicketType.LapseAfter",
+    "loc:StopDependantAccrualAfter": "TicketType.StopDependantAccrualAfter",
+    "dom:TicketType_StopDependantAccrualAfter": "TicketType.StopDependantAccrualAfter",
+    "loc:MinCompensation": "TicketType.MinCompensation",
+    "dom:TicketType_MinCompensation": "TicketType.MinCompensation",
+    "loc:DeductionPeriod": "TicketType.DeductionPeriod",
+    "dom:TicketType_DeductionPeriod": "TicketType.DeductionPeriod",
+    "loc:QuotaEntitlement": "TicketType.QuotaEntitlement",
+    "dom:TicketType_QuotaEntitlement": "TicketType.QuotaEntitlement",
+    "loc:WageTypeId": "TicketType.WageTypeId",
+    "dom:TicketType_WageTypeId": "TicketType.WageTypeId"
+  },
+  "fields": [
+    {
+      "id": "TicketType.Code",
+      "label": "Code",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:TicketType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.NameEn",
+      "label": "NameEn",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TicketType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.NameAr",
+      "label": "NameAr",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TicketType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TicketType.TicketBasisPeriod",
+      "label": "TicketBasisPeriod",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:TicketBasisPeriod",
+        "dom:TicketType_TicketBasisPeriod"
+      ],
+      "rules": "Required. One of: Calendar Days, Fixed Days.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.TicketBasisFixedDays",
+      "label": "TicketBasisFixedDays",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:TicketBasisFixedDays",
+        "dom:TicketType_TicketBasisFixedDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.Lapse",
+      "label": "Lapse",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:Lapse",
+        "dom:TicketType_Lapse"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.LapseAfter",
+      "label": "LapseAfter",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:LapseAfter",
+        "dom:TicketType_LapseAfter"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.StopDependantAccrualAfter",
+      "label": "StopDependantAccrualAfter",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:StopDependantAccrualAfter",
+        "dom:TicketType_StopDependantAccrualAfter"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.MinCompensation",
+      "label": "MinCompensation",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:MinCompensation",
+        "dom:TicketType_MinCompensation"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.DeductionPeriod",
+      "label": "DeductionPeriod",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:DeductionPeriod",
+        "dom:TicketType_DeductionPeriod"
+      ],
+      "rules": "Required. One of: After Entitlement, Same As Entitlement.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.QuotaEntitlement",
+      "label": "QuotaEntitlement",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:QuotaEntitlement",
+        "dom:TicketType_QuotaEntitlement"
+      ],
+      "rules": "Required. One of: Period, Immediate.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketType.WageTypeId",
+      "label": "WageTypeId",
+      "section": "TicketTypes",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:TicketType_WageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

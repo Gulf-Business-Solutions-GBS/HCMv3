@@ -2213,6 +2213,1314 @@
       "service": "EmployeeVisaInfosAppService",
       "domPrefix": "VisaInfo",
       "defaultSection": "EmployeeVisaInfos"
+    },
+    {
+      "helpId": "pay.absence-ded-rule-detail.edit",
+      "title": "Absence Deduction Rule Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceDedRuleDetails.Create"
+      ],
+      "entity": {
+        "name": "AbsenceDedRuleDetail",
+        "fullName": "HCMv3.PayrollManagement.AbsenceDedRuleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceDedRuleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-ded-rule-details/create-or-edit-absence-ded-rule-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceDedRuleDetails"
+    },
+    {
+      "helpId": "pay.absence-deduction-rule.edit",
+      "title": "Absence Deduction Rules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceDeductionRules.Create"
+      ],
+      "entity": {
+        "name": "AbsenceDeductionRule",
+        "fullName": "HCMv3.PayrollManagement.AbsenceDeductionRule",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceDeductionRule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-deduction-rules/create-or-edit-absence-deduction-rule-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceDeductionRules"
+    },
+    {
+      "helpId": "pay.absence-payment.edit",
+      "title": "Absence Payments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsencePayments.Create"
+      ],
+      "entity": {
+        "name": "AbsencePayment",
+        "fullName": "HCMv3.PayrollManagement.AbsencePayment",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsencePayment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-payments/create-or-edit-absence-payment-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsencePayments"
+    },
+    {
+      "helpId": "pay.absence-type-exception.edit",
+      "title": "Absence Type Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceTypeExceptions.Create"
+      ],
+      "entity": {
+        "name": "AbsenceTypeException",
+        "fullName": "HCMv3.PayrollManagement.AbsenceTypeException",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceTypeException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-type-exceptions/create-or-edit-absence-type-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceTypeExceptions"
+    },
+    {
+      "helpId": "pay.absence-type.edit",
+      "title": "Absence Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceTypes.Create"
+      ],
+      "entity": {
+        "name": "AbsenceType",
+        "fullName": "HCMv3.PayrollManagement.AbsenceType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-types/create-or-edit-absence-type-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceTypes"
+    },
+    {
+      "helpId": "pay.absence-violation-action-log.edit",
+      "title": "Absence Violation Action Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceViolationActionLogs.Create"
+      ],
+      "entity": {
+        "name": "AbsenceViolationActionLog",
+        "fullName": "HCMv3.PayrollManagement.AbsenceViolationActionLog",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceViolationActionLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-violation-action-logs/create-or-edit-absence-violation-action-log-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceViolationActionLogs"
+    },
+    {
+      "helpId": "pay.absence-violation-action-record.edit",
+      "title": "Absence Violation Action Records — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceViolationActionRecords.Create"
+      ],
+      "entity": {
+        "name": "AbsenceViolationActionRecord",
+        "fullName": "HCMv3.PayrollManagement.AbsenceViolationActionRecord",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceViolationActionRecord.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-violation-action-records/create-or-edit-absence-violation-action-record-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceViolationActionRecords"
+    },
+    {
+      "helpId": "pay.absence-violation-rule-detail.edit",
+      "title": "Absence Violation Rule Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceViolationRuleDetails.Create"
+      ],
+      "entity": {
+        "name": "AbsenceViolationRuleDetail",
+        "fullName": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceViolationRuleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-violation-rule-details/create-or-edit-absence-violation-rule-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceViolationRuleDetails"
+    },
+    {
+      "helpId": "pay.absence-violation-rule-exception.edit",
+      "title": "Absence Violation Rule Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AbsenceViolationRuleExceptions.Create"
+      ],
+      "entity": {
+        "name": "AbsenceViolationRuleException",
+        "fullName": "HCMv3.PayrollManagement.AbsenceViolationRuleException",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AbsenceViolationRuleException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/absence-violation-rule-exceptions/create-or-edit-absence-violation-rule-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "AbsenceViolationRuleExceptions"
+    },
+    {
+      "helpId": "pay.account-info.edit",
+      "title": "Account Infos — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AccountInfos.Create"
+      ],
+      "entity": {
+        "name": "AccountInfo",
+        "fullName": "HCMv3.PayrollManagement.AccountInfo",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AccountInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/account-infos/create-or-edit-account-info-modal.component.html"
+        }
+      },
+      "defaultSection": "AccountInfos"
+    },
+    {
+      "helpId": "pay.attendance-type.edit",
+      "title": "Attendance Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.AttendanceTypes.Create"
+      ],
+      "entity": {
+        "name": "AttendanceType",
+        "fullName": "HCMv3.PayrollManagement.AttendanceType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/AttendanceType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/attendance-types/create-or-edit-attendance-type-modal.component.html"
+        }
+      },
+      "defaultSection": "AttendanceTypes"
+    },
+    {
+      "helpId": "pay.cost-register-detail.edit",
+      "title": "Cost Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.CostRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "CostRegisterDetail",
+        "fullName": "HCMv3.PayrollManagement.CostRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/CostRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/cost-register-details/create-or-edit-cost-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "CostRegisterDetails"
+    },
+    {
+      "helpId": "pay.cost-register.edit",
+      "title": "Cost Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.CostRegisters.Create"
+      ],
+      "entity": {
+        "name": "CostRegister",
+        "fullName": "HCMv3.PayrollManagement.CostRegister",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/CostRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/cost-registers/create-or-edit-cost-register-modal.component.html"
+        }
+      },
+      "defaultSection": "CostRegisters"
+    },
+    {
+      "helpId": "pay.employee-group.edit",
+      "title": "Employee Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeGroups.Create"
+      ],
+      "entity": {
+        "name": "EmployeeGroup",
+        "fullName": "HCMv3.PayrollManagement.EmployeeGroup",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-groups/create-or-edit-employee-group-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeGroups"
+    },
+    {
+      "helpId": "pay.employee-sub-group-absence-type.edit",
+      "title": "Employee Sub Group Absence Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupAbsenceType",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupAbsenceType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupAbsenceType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/absence-types/create-or-edit-employee-sub-group-absence-type-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupAbsenceTypes"
+    },
+    {
+      "helpId": "pay.employee-sub-group-absence.edit",
+      "title": "Employee Sub Group Absences — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupAbsences.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupAbsence",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupAbsence",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupAbsence.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/absences/create-or-edit-employee-sub-group-absence-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupAbsences"
+    },
+    {
+      "helpId": "pay.employee-sub-group-asset-allowance.edit",
+      "title": "Employee Sub Group Asset Allowances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupAssetAllowances.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupAssetAllowance",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupAssetAllowance",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupAssetAllowance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/asset-allowances/create-or-edit-employee-sub-group-asset-allowance-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupAssetAllowances"
+    },
+    {
+      "helpId": "pay.employee-sub-group-benefit-detail.edit",
+      "title": "Employee Sub Group Benefit Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupBenefitDetails.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupBenefitDetail",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupBenefitDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupBenefitDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/benefits/benefit-details/create-or-edit-employee-sub-group-benefit-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupBenefitDetails"
+    },
+    {
+      "helpId": "pay.employee-sub-group-benefit.edit",
+      "title": "Employee Sub Group Benefits — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupBenefits.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupBenefit",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupBenefit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/benefits/create-or-edit-employee-sub-group-benefit-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupBenefits"
+    },
+    {
+      "helpId": "pay.employee-sub-group-bonus.edit",
+      "title": "Employee Sub Group Bonuses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupBonuses.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupBonus",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupBonus",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupBonus.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/bonuses/create-or-edit-employee-sub-group-bonus-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupBonuses"
+    },
+    {
+      "helpId": "pay.employee-sub-group-commission.edit",
+      "title": "Employee Sub Group Commissions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupCommissions.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupCommission",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupCommission",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupCommission.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/commissions/create-or-edit-employee-sub-group-commission-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupCommissions"
+    },
+    {
+      "helpId": "pay.employee-sub-group-fund.edit",
+      "title": "Employee Sub Group Funds — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupFunds.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupFund",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupFund",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupFund.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/funds/create-or-edit-employee-sub-group-fund-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupFunds"
+    },
+    {
+      "helpId": "pay.employee-sub-group-gratuity.edit",
+      "title": "Employee Sub Group Gratuities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupGratuities.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupGratuity",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupGratuity",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupGratuity.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/gratuities/create-or-edit-employee-sub-group-gratuity-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupGratuities"
+    },
+    {
+      "helpId": "pay.employee-sub-group-health-reimburse.edit",
+      "title": "Employee Sub Group Health Reimburses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupHealthReimburses.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupHealthReimburse",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupHealthReimburse.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/health-reimburses/create-or-edit-employee-sub-group-health-reimburse-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupHealthReimburses"
+    },
+    {
+      "helpId": "pay.employee-sub-group-payment.edit",
+      "title": "Employee Sub Group Payments — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupPayments.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupPayment",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupPayment",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupPayment.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/payments/create-or-edit-employee-sub-group-payment-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupPayments"
+    },
+    {
+      "helpId": "pay.employee-sub-group-ticket.edit",
+      "title": "Employee Sub Group Tickets — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupTickets.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupTicket",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupTicket",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupTicket.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/tickets/create-or-edit-employee-sub-group-ticket-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupTickets"
+    },
+    {
+      "helpId": "pay.employee-sub-group-wage-type.edit",
+      "title": "Employee Sub Group Wage Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroupWageTypes.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroupWageType",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroupWageType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroupWageType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-group-detail/wage-types/create-or-edit-employee-sub-group-wage-type-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroupWageTypes"
+    },
+    {
+      "helpId": "pay.employee-sub-group.edit",
+      "title": "Employee Sub Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.EmployeeSubGroups.Create"
+      ],
+      "entity": {
+        "name": "EmployeeSubGroup",
+        "fullName": "HCMv3.PayrollManagement.EmployeeSubGroup",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/EmployeeSubGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/employee-sub-groups/create-or-edit-employee-sub-group-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeSubGroups"
+    },
+    {
+      "helpId": "pay.gratuity-accrual-summary.edit",
+      "title": "Gratuity Accrual Summaries — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.GratuityAccrualSummaries.Create"
+      ],
+      "entity": {
+        "name": "GratuityAccrualSummary",
+        "fullName": "HCMv3.PayrollManagement.GratuityAccrualSummary",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/GratuityAccrualSummary.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/gratuity-accrual-summaries/create-or-edit-gratuity-accrual-summary-modal.component.html"
+        }
+      },
+      "defaultSection": "GratuityAccrualSummaries"
+    },
+    {
+      "helpId": "pay.indemnity-pay-rule-detail.edit",
+      "title": "Indemnity Pay Rule Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.IndemnityPayRuleDetails.Create"
+      ],
+      "entity": {
+        "name": "IndemnityPayRuleDetail",
+        "fullName": "HCMv3.PayrollManagement.IndemnityPayRuleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/IndemnityPayRuleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/indemnity-pay-rule-details/create-or-edit-indemnity-pay-rule-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "IndemnityPayRuleDetails"
+    },
+    {
+      "helpId": "pay.indemnity-pay-rule.edit",
+      "title": "Indemnity Pay Rules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.IndemnityPayRules.Create"
+      ],
+      "entity": {
+        "name": "IndemnityPayRule",
+        "fullName": "HCMv3.PayrollManagement.IndemnityPayRule",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/IndemnityPayRule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/indemnity-pay-rules/create-or-edit-indemnity-pay-rule-modal.component.html"
+        }
+      },
+      "defaultSection": "IndemnityPayRules"
+    },
+    {
+      "helpId": "pay.leave-accrual-summary.edit",
+      "title": "Leave Accrual Summaries — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.LeaveAccrualSummaries.Create"
+      ],
+      "entity": {
+        "name": "LeaveAccrualSummary",
+        "fullName": "HCMv3.PayrollManagement.LeaveAccrualSummary",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/LeaveAccrualSummary.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/leave-accrual-summaries/create-or-edit-leave-accrual-summary-modal.component.html"
+        }
+      },
+      "defaultSection": "LeaveAccrualSummaries"
+    },
+    {
+      "helpId": "pay.org-unit-wage-acc-group.edit",
+      "title": "Organization Unit Wage Account Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.OrgUnitWageAccGroups.Create"
+      ],
+      "entity": {
+        "name": "OrgUnitWageAccGroup",
+        "fullName": "HCMv3.PayrollManagement.OrgUnitWageAccGroup",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/OrgUnitWageAccGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/org-unit-wage-acc-groups/create-or-edit-org-unit-wage-acc-group-modal.component.html"
+        }
+      },
+      "defaultSection": "OrgUnitWageAccGroups"
+    },
+    {
+      "helpId": "pay.payroll-area.edit",
+      "title": "Payroll Areas — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollAreas.Create"
+      ],
+      "entity": {
+        "name": "PayrollArea",
+        "fullName": "HCMv3.PayrollManagement.PayrollArea",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/PayrollArea.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/payroll-areas/create-or-edit-payroll-area-modal.component.html"
+        }
+      },
+      "defaultSection": "PayrollAreas"
+    },
+    {
+      "helpId": "pay.payroll-calendar.edit",
+      "title": "Payroll Calendars — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollCalendars.Create"
+      ],
+      "entity": {
+        "name": "PayrollCalendar",
+        "fullName": "HCMv3.PayrollManagement.PayrollCalendar",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/PayrollCalendar.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/payroll-calendars/create-or-edit-payroll-calendar-modal.component.html"
+        }
+      },
+      "defaultSection": "PayrollCalendars"
+    },
+    {
+      "helpId": "pay.payroll-control-record.edit",
+      "title": "Payroll Control Records — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollControlRecords.Create"
+      ],
+      "entity": {
+        "name": "PayrollControlRecord",
+        "fullName": "HCMv3.PayrollManagement.PayrollControlRecord",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/PayrollControlRecord.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/payroll-control-records/create-or-edit-payroll-control-record-modal.component.html"
+        }
+      },
+      "defaultSection": "PayrollControlRecords"
+    },
+    {
+      "helpId": "pay.payroll-log.edit",
+      "title": "Payroll Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollLogs.Create"
+      ],
+      "entity": {
+        "name": "PayrollLog",
+        "fullName": "HCMv3.PayrollManagement.PayrollLog",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/PayrollLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/payroll-logs/create-or-edit-payroll-log-modal.component.html"
+        }
+      },
+      "defaultSection": "PayrollLogs"
+    },
+    {
+      "helpId": "pay.salary-register-days-detail.edit",
+      "title": "Salary Register Days Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SalaryRegisterDaysDetails.Create"
+      ],
+      "entity": {
+        "name": "SalaryRegisterDaysDetail",
+        "fullName": "HCMv3.PayrollManagement.SalaryRegisterDaysDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SalaryRegisterDaysDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/salary-register-days-details/create-or-edit-salary-register-days-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SalaryRegisterDaysDetails"
+    },
+    {
+      "helpId": "pay.salary-register-detail.edit",
+      "title": "Salary Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SalaryRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "SalaryRegisterDetail",
+        "fullName": "HCMv3.PayrollManagement.SalaryRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SalaryRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/salary-register-details/create-or-edit-salary-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SalaryRegisterDetails"
+    },
+    {
+      "helpId": "pay.salary-register.edit",
+      "title": "Salary Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SalaryRegisters.Create"
+      ],
+      "entity": {
+        "name": "SalaryRegister",
+        "fullName": "HCMv3.PayrollManagement.SalaryRegister",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SalaryRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/salary-registers/create-or-edit-salary-register-modal.component.html"
+        }
+      },
+      "defaultSection": "SalaryRegisters"
+    },
+    {
+      "helpId": "pay.simulation-salary-register-days-detail.edit",
+      "title": "Simulation Salary Register Days Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SimulationSalaryRegisterDaysDetails.Create"
+      ],
+      "entity": {
+        "name": "SimulationSalaryRegisterDaysDetail",
+        "fullName": "HCMv3.PayrollManagement.SimulationSalaryRegisterDaysDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SimulationSalaryRegisterDaysDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/simulation-salary-register-days-details/create-or-edit-simulation-salary-register-days-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SimulationSalaryRegisterDaysDetails"
+    },
+    {
+      "helpId": "pay.simulation-salary-register-detail.edit",
+      "title": "Simulation Salary Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SimulationSalaryRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "SimulationSalaryRegisterDetail",
+        "fullName": "HCMv3.PayrollManagement.SimulationSalaryRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SimulationSalaryRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/simulation-salary-register-details/create-or-edit-simulation-salary-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SimulationSalaryRegisterDetails"
+    },
+    {
+      "helpId": "pay.simulation-salary-register.edit",
+      "title": "Simulation Salary Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SimulationSalaryRegisters.Create"
+      ],
+      "entity": {
+        "name": "SimulationSalaryRegister",
+        "fullName": "HCMv3.PayrollManagement.SimulationSalaryRegister",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SimulationSalaryRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/simulation-salary-registers/create-or-edit-simulation-salary-register-modal.component.html"
+        }
+      },
+      "defaultSection": "SimulationSalaryRegisters"
+    },
+    {
+      "helpId": "pay.social-security.edit",
+      "title": "Social Securities — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SocialSecurities.Create"
+      ],
+      "entity": {
+        "name": "SocialSecurity",
+        "fullName": "HCMv3.PayrollManagement.SocialSecurity",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SocialSecurity.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/social-securities/create-or-edit-social-security-modal.component.html"
+        }
+      },
+      "defaultSection": "SocialSecurities"
+    },
+    {
+      "helpId": "pay.social-security-detail.edit",
+      "title": "Social Security Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SocialSecurityDetails.Create"
+      ],
+      "entity": {
+        "name": "SocialSecurityDetail",
+        "fullName": "HCMv3.PayrollManagement.SocialSecurityDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SocialSecurityDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/social-security-details/create-or-edit-social-security-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SocialSecurityDetails"
+    },
+    {
+      "helpId": "pay.social-security-education-allowance.edit",
+      "title": "Social Security Education Allowances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SocialSecurityEducationAllowances.Create"
+      ],
+      "entity": {
+        "name": "SocialSecurityEducationAllowance",
+        "fullName": "HCMv3.PayrollManagement.SocialSecurityEducationAllowance",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SocialSecurityEducationAllowance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/social-security-education-allowances/create-or-edit-social-security-education-allowance-modal.component.html"
+        }
+      },
+      "defaultSection": "SocialSecurityEducationAllowances"
+    },
+    {
+      "helpId": "pay.social-security-marital-allowance.edit",
+      "title": "Social Security Marital Allowances — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SocialSecurityMaritalAllowances.Create"
+      ],
+      "entity": {
+        "name": "SocialSecurityMaritalAllowance",
+        "fullName": "HCMv3.PayrollManagement.SocialSecurityMaritalAllowance",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SocialSecurityMaritalAllowance.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/social-security-marital-allowances/create-or-edit-social-security-marital-allowance-modal.component.html"
+        }
+      },
+      "defaultSection": "SocialSecurityMaritalAllowances"
+    },
+    {
+      "helpId": "pay.social-security-rule.edit",
+      "title": "Social Security Rules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.SocialSecurityRules.Create"
+      ],
+      "entity": {
+        "name": "SocialSecurityRule",
+        "fullName": "HCMv3.PayrollManagement.SocialSecurityRule",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/SocialSecurityRule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/social-security-rules/create-or-edit-social-security-rule-modal.component.html"
+        }
+      },
+      "defaultSection": "SocialSecurityRules"
+    },
+    {
+      "helpId": "pay.temp-benefit-type.edit",
+      "title": "Temp Benefit Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TempBenefitTypes.Create"
+      ],
+      "entity": {
+        "name": "TempBenefitType",
+        "fullName": "HCMv3.PayrollManagement.TempBenefitType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TempBenefitType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/temp-benefit-types/create-or-edit-temp-benefit-type-modal.component.html"
+        }
+      },
+      "defaultSection": "TempBenefitTypes"
+    },
+    {
+      "helpId": "pay.temp-employee-benefit.edit",
+      "title": "Temp Employee Benefits — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TempEmployeeBenefits.Create"
+      ],
+      "entity": {
+        "name": "TempEmployeeBenefit",
+        "fullName": "HCMv3.PayrollManagement.TempEmployeeBenefit",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TempEmployeeBenefit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/temp-employee-benefits/create-or-edit-temp-employee-benefit-modal.component.html"
+        }
+      },
+      "defaultSection": "TempEmployeeBenefits"
+    },
+    {
+      "helpId": "pay.ticket-accrual-summary.edit",
+      "title": "Ticket Accrual Summaries — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TicketAccrualSummaries.Create"
+      ],
+      "entity": {
+        "name": "TicketAccrualSummary",
+        "fullName": "HCMv3.PayrollManagement.TicketAccrualSummary",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TicketAccrualSummary.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/ticket-accrual-summaries/create-or-edit-ticket-accrual-summary-modal.component.html"
+        }
+      },
+      "defaultSection": "TicketAccrualSummaries"
+    },
+    {
+      "helpId": "pay.ticket-fare.edit",
+      "title": "Ticket Fares — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TicketFares.Create"
+      ],
+      "entity": {
+        "name": "TicketFare",
+        "fullName": "HCMv3.PayrollManagement.TicketFare",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TicketFare.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/ticket-fares/create-or-edit-ticket-fare-modal.component.html"
+        }
+      },
+      "defaultSection": "TicketFares"
+    },
+    {
+      "helpId": "pay.ticket-pax-type.edit",
+      "title": "Ticket Passenger Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TicketPaxTypes.Create"
+      ],
+      "entity": {
+        "name": "TicketPaxType",
+        "fullName": "HCMv3.PayrollManagement.TicketPaxType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TicketPaxType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/ticket-pax-types/create-or-edit-ticket-pax-type-modal.component.html"
+        }
+      },
+      "defaultSection": "TicketPaxTypes"
+    },
+    {
+      "helpId": "pay.ticket-type.edit",
+      "title": "Ticket Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.TicketTypes.Create"
+      ],
+      "entity": {
+        "name": "TicketType",
+        "fullName": "HCMv3.PayrollManagement.TicketType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/TicketType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/ticket-types/create-or-edit-ticket-type-modal.component.html"
+        }
+      },
+      "defaultSection": "TicketTypes"
+    },
+    {
+      "helpId": "pay.wage-acc-group-detail.edit",
+      "title": "Wage Account Group Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageAccGroupDetails.Create"
+      ],
+      "entity": {
+        "name": "WageAccGroupDetail",
+        "fullName": "HCMv3.PayrollManagement.WageAccGroupDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageAccGroupDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-acc-group-details/create-or-edit-wage-acc-group-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "WageAccGroupDetails"
+    },
+    {
+      "helpId": "pay.wage-account.edit",
+      "title": "Wage Accounts — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageAccounts.Create"
+      ],
+      "entity": {
+        "name": "WageAccount",
+        "fullName": "HCMv3.PayrollManagement.WageAccount",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageAccount.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-accounts/create-or-edit-wage-account-modal.component.html"
+        }
+      },
+      "defaultSection": "WageAccounts"
+    },
+    {
+      "helpId": "pay.wage-type-exception.edit",
+      "title": "Wage Type Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageTypeExceptions.Create"
+      ],
+      "entity": {
+        "name": "WageTypeException",
+        "fullName": "HCMv3.PayrollManagement.WageTypeException",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageTypeException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-type-exceptions/create-or-edit-wage-type-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "WageTypeExceptions"
+    },
+    {
+      "helpId": "pay.wage-type-leave.edit",
+      "title": "Wage Type Leaves — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageTypeLeaves.Create"
+      ],
+      "entity": {
+        "name": "WageTypeLeave",
+        "fullName": "HCMv3.PayrollManagement.WageTypeLeave",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageTypeLeave.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-type-leaves/create-or-edit-wage-type-leave-modal.component.html"
+        }
+      },
+      "defaultSection": "WageTypeLeaves"
+    },
+    {
+      "helpId": "pay.wage-type-register.edit",
+      "title": "Wage Type Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageTypeRegisters.Create"
+      ],
+      "entity": {
+        "name": "WageTypeRegister",
+        "fullName": "HCMv3.PayrollManagement.WageTypeRegister",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageTypeRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-type-registers/create-or-edit-wage-type-register-modal.component.html"
+        }
+      },
+      "defaultSection": "WageTypeRegisters"
+    },
+    {
+      "helpId": "pay.wage-type-security-role.edit",
+      "title": "Wage Type Security Roles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageTypeSecurityRoles.Create"
+      ],
+      "entity": {
+        "name": "WageTypeSecurityRole",
+        "fullName": "HCMv3.PayrollManagement.WageTypeSecurityRole",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageTypeSecurityRole.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-type-security-roles/create-or-edit-wage-type-security-role-modal.component.html"
+        }
+      },
+      "defaultSection": "WageTypeSecurityRoles"
+    },
+    {
+      "helpId": "pay.wage-type.edit",
+      "title": "Wage Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.WageTypes.Create"
+      ],
+      "entity": {
+        "name": "WageType",
+        "fullName": "HCMv3.PayrollManagement.WageType",
+        "file": "aspnet-core/src/HCMv3.Core/PayrollManagement/WageType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/wage-types/create-or-edit-wage-type-modal.component.html"
+        }
+      },
+      "defaultSection": "WageTypes"
+    },
+    {
+      "helpId": "pay.payroll-engine.run",
+      "title": "Payroll Engine — Run",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PayrollManagement.PayrollEngine"
+      ],
+      "entity": {
+        "name": "RunPayrollEngineInput",
+        "fullName": "HCMv3.PayrollManagement.Dto.RunPayrollEngineInput",
+        "file": "aspnet-core/src/HCMv3.Application.Shared/PayrollManagement/Dto/PayrollEngineDtos.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/payroll-management/payroll-engine/payroll-engine.component.html"
+        }
+      },
+      "defaultSection": "PayrollEngine",
+      "domPrefix": "PayrollEngine",
+      "service": "PayrollEngineAppService",
+      "propertyMap": {
+        "RunType": "PayrollRunType",
+        "PayrollArea": "PayrollAreaName"
+      }
     }
   ]
 }

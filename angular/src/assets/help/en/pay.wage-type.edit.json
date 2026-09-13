@@ -1,0 +1,523 @@
+{
+  "helpId": "pay.wage-type.edit",
+  "lang": "en",
+  "title": "Wage Types — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageType",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "WageType.Code",
+    "dom:WageType_Code": "WageType.Code",
+    "loc:NameEn": "WageType.NameEn",
+    "dom:WageType_NameEn": "WageType.NameEn",
+    "loc:NameAr": "WageType.NameAr",
+    "dom:WageType_NameAr": "WageType.NameAr",
+    "loc:ShortNameEn": "WageType.ShortNameEn",
+    "dom:WageType_ShortNameEn": "WageType.ShortNameEn",
+    "loc:ShortNameAr": "WageType.ShortNameAr",
+    "dom:WageType_ShortNameAr": "WageType.ShortNameAr",
+    "loc:BillingType": "WageType.BillingType",
+    "dom:WageType_BillingType": "WageType.BillingType",
+    "loc:BillingMethod": "WageType.BillingMethod",
+    "dom:WageType_BillingMethod": "WageType.BillingMethod",
+    "loc:ProrateMethod": "WageType.ProrateMethod",
+    "dom:WageType_ProrateMethod": "WageType.ProrateMethod",
+    "loc:Category": "WageType.Category",
+    "dom:WageType_Category": "WageType.Category",
+    "loc:FixedDays": "WageType.FixedDays",
+    "dom:WageType_FixedDays": "WageType.FixedDays",
+    "loc:Rate": "WageType.Rate",
+    "dom:WageType_Rate": "WageType.Rate",
+    "loc:PayrollOrder": "WageType.PayrollOrder",
+    "dom:WageType_PayrollOrder": "WageType.PayrollOrder",
+    "loc:ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "dom:WageType_ArrearSourceWageTypeId": "WageType.ArrearSourceWageTypeId",
+    "loc:Status": "WageType.Status",
+    "dom:WageType_Status": "WageType.Status",
+    "loc:IncludeInIndemnity": "WageType.IncludeInIndemnity",
+    "dom:WageType_includeInIndemnity": "WageType.IncludeInIndemnity",
+    "loc:IncludeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "dom:WageType_includeInPaidLeave": "WageType.IncludeInPaidLeave",
+    "loc:IncludeInBasicPay": "WageType.IncludeInBasicPay",
+    "dom:WageType_includeInBasicPay": "WageType.IncludeInBasicPay",
+    "loc:IncludeInArrearPay": "WageType.IncludeInArrearPay",
+    "dom:WageType_includeInArrearPay": "WageType.IncludeInArrearPay",
+    "loc:IncludeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "dom:WageType_includeInCalculatedPay": "WageType.IncludeInCalculatedPay",
+    "loc:IncludeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "dom:WageType_includeInAdvancePay": "WageType.IncludeInAdvancePay",
+    "loc:IncludeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "dom:WageType_includeInOvertimePay": "WageType.IncludeInOvertimePay",
+    "loc:IncludeInFIPosting": "WageType.IncludeInFIPosting",
+    "dom:WageType_includeInFIPosting": "WageType.IncludeInFIPosting",
+    "loc:IncludeInCutoff": "WageType.IncludeInCutoff",
+    "dom:WageType_includeInCutoff": "WageType.IncludeInCutoff",
+    "loc:IncludeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "dom:WageType_includeInDisciplinary": "WageType.IncludeInDisciplinary",
+    "loc:IncludeInVariablePay": "WageType.IncludeInVariablePay",
+    "dom:WageType_includeInVariablePay": "WageType.IncludeInVariablePay",
+    "loc:IncludeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "dom:WageType_includeInSocialSecurity": "WageType.IncludeInSocialSecurity",
+    "loc:IncludeInPartialPay": "WageType.IncludeInPartialPay",
+    "dom:WageType_includeInPartialPay": "WageType.IncludeInPartialPay",
+    "loc:IncludeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "dom:WageType_includeInLateEarlyDed": "WageType.IncludeInLateEarlyDed",
+    "loc:IncludeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "dom:WageType_includeInServiceBonus": "WageType.IncludeInServiceBonus",
+    "loc:IncludeInFund": "WageType.IncludeInFund",
+    "dom:WageType_includeInFund": "WageType.IncludeInFund",
+    "loc:DontImpactNetPay": "WageType.DontImpactNetPay",
+    "dom:WageType_dontImpactNetPay": "WageType.DontImpactNetPay",
+    "loc:IsSecured": "WageType.IsSecured",
+    "dom:WageType_isSecured": "WageType.IsSecured"
+  },
+  "fields": [
+    {
+      "id": "WageType.Code",
+      "label": "Code",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:WageType_Code"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameEn",
+      "label": "NameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WageType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.NameAr",
+      "label": "NameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WageType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageType.ShortNameEn",
+      "label": "ShortNameEn",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameEn",
+        "dom:WageType_ShortNameEn"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.ShortNameAr",
+      "label": "ShortNameAr",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ShortNameAr",
+        "dom:WageType_ShortNameAr"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.BillingType",
+      "label": "BillingType",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingType",
+        "dom:WageType_BillingType"
+      ],
+      "rules": "Required. One of: Earning, Deduction, Time Type, Provision.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.BillingMethod",
+      "label": "BillingMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:BillingMethod",
+        "dom:WageType_BillingMethod"
+      ],
+      "rules": "Required. One of: Fixed Amount Per Month, Fixed Days Per Month, Calendar Days Per Month, Working Days Per Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.ProrateMethod",
+      "label": "ProrateMethod",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ProrateMethod",
+        "dom:WageType_ProrateMethod"
+      ],
+      "rules": "Required. One of: Working Days, Working Days (Rest), Active Days.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.Category",
+      "label": "Category",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Category",
+        "dom:WageType_Category"
+      ],
+      "rules": "Required. One of: Custom, Technical.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.FixedDays",
+      "label": "FixedDays",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:FixedDays",
+        "dom:WageType_FixedDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.Rate",
+      "label": "Rate",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Rate",
+        "dom:WageType_Rate"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.PayrollOrder",
+      "label": "PayrollOrder",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:PayrollOrder",
+        "dom:WageType_PayrollOrder"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.ArrearSourceWageTypeId",
+      "label": "ArrearSourceWageTypeId",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:ArrearSourceWageTypeId",
+        "dom:WageType_ArrearSourceWageTypeId"
+      ],
+      "rules": "Optional. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.Status",
+      "label": "Status",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:Status",
+        "dom:WageType_Status"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInIndemnity",
+      "label": "IncludeInIndemnity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInIndemnity",
+        "dom:WageType_includeInIndemnity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInPaidLeave",
+      "label": "IncludeInPaidLeave",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPaidLeave",
+        "dom:WageType_includeInPaidLeave"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInBasicPay",
+      "label": "IncludeInBasicPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInBasicPay",
+        "dom:WageType_includeInBasicPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInArrearPay",
+      "label": "IncludeInArrearPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInArrearPay",
+        "dom:WageType_includeInArrearPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInCalculatedPay",
+      "label": "IncludeInCalculatedPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCalculatedPay",
+        "dom:WageType_includeInCalculatedPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInAdvancePay",
+      "label": "IncludeInAdvancePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInAdvancePay",
+        "dom:WageType_includeInAdvancePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInOvertimePay",
+      "label": "IncludeInOvertimePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInOvertimePay",
+        "dom:WageType_includeInOvertimePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInFIPosting",
+      "label": "IncludeInFIPosting",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFIPosting",
+        "dom:WageType_includeInFIPosting"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInCutoff",
+      "label": "IncludeInCutoff",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInCutoff",
+        "dom:WageType_includeInCutoff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInDisciplinary",
+      "label": "IncludeInDisciplinary",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInDisciplinary",
+        "dom:WageType_includeInDisciplinary"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInVariablePay",
+      "label": "IncludeInVariablePay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInVariablePay",
+        "dom:WageType_includeInVariablePay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInSocialSecurity",
+      "label": "IncludeInSocialSecurity",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInSocialSecurity",
+        "dom:WageType_includeInSocialSecurity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInPartialPay",
+      "label": "IncludeInPartialPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInPartialPay",
+        "dom:WageType_includeInPartialPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInLateEarlyDed",
+      "label": "IncludeInLateEarlyDed",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInLateEarlyDed",
+        "dom:WageType_includeInLateEarlyDed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInServiceBonus",
+      "label": "IncludeInServiceBonus",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInServiceBonus",
+        "dom:WageType_includeInServiceBonus"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IncludeInFund",
+      "label": "IncludeInFund",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IncludeInFund",
+        "dom:WageType_includeInFund"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.DontImpactNetPay",
+      "label": "DontImpactNetPay",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:DontImpactNetPay",
+        "dom:WageType_dontImpactNetPay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageType.IsSecured",
+      "label": "IsSecured",
+      "section": "WageTypes",
+      "aliases": [
+        "loc:IsSecured",
+        "dom:WageType_isSecured"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

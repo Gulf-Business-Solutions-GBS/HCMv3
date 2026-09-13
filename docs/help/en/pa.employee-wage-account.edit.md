@@ -11,7 +11,7 @@ permissions: [Pages.PayrollManagement.EmployeeWageAccounts.Create]
 
 ## Overview
 
-Which ledger account one of the employee's wage types posts to, from a given date. The cost engine and the journal voucher exports read these to post the employee's pay.
+Which ledger account one of the employee's wage types posts to, from a given date, and under which cost elements. The cost engine and the journal voucher exports read these to post the employee's pay.
 
 Records for the same employee and wage type form a history: saving a new one closes the previous one on the day before the new start date. A wage type can be split across several accounts starting on the same date, as long as the percentages add up to no more than 100.
 
@@ -67,3 +67,66 @@ Maintained under Payroll Management → Wage Types. Only wage types included in 
 **Why it matters.** Read when the journal voucher is built.
 
 **Rules.** Yes or no.
+
+## CostElement1Id {#EmployeeWageAccount.CostElement1Id}
+<!-- alias: loc:CostElement1Id, dom:EmployeeWageAccount_costElement1Id -->
+
+**What it is.** Cost element 1 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement2Id {#EmployeeWageAccount.CostElement2Id}
+<!-- alias: loc:CostElement2Id, dom:EmployeeWageAccount_costElement2Id -->
+
+**What it is.** Cost element 2 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement3Id {#EmployeeWageAccount.CostElement3Id}
+<!-- alias: loc:CostElement3Id, dom:EmployeeWageAccount_costElement3Id -->
+
+**What it is.** Cost element 3 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement4Id {#EmployeeWageAccount.CostElement4Id}
+<!-- alias: loc:CostElement4Id, dom:EmployeeWageAccount_costElement4Id -->
+
+**What it is.** Cost element 4 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement5Id {#EmployeeWageAccount.CostElement5Id}
+<!-- alias: loc:CostElement5Id, dom:EmployeeWageAccount_costElement5Id -->
+
+**What it is.** Cost element 5 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement6Id {#EmployeeWageAccount.CostElement6Id}
+<!-- alias: loc:CostElement6Id, dom:EmployeeWageAccount_costElement6Id -->
+
+**What it is.** Cost element 6 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.
+
+## CostElement7Id {#EmployeeWageAccount.CostElement7Id}
+<!-- alias: loc:CostElement7Id, dom:EmployeeWageAccount_costElement7Id -->
+
+**What it is.** Cost element 7 -- one of up to seven accounting dimensions.
+
+**Why it matters.** The cost engine copies it onto the employee's cost register lines, and the journal voucher export prints its code. Offset lines merge only when all seven cost elements match.
+
+**Rules.** Optional. Chosen from Cost Element master data.

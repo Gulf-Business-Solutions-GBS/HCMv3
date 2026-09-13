@@ -1,0 +1,203 @@
+{
+  "helpId": "pay.employee-sub-group.edit",
+  "lang": "en",
+  "title": "Employee Sub Groups — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroup",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeGroup": "EmployeeSubGroup.EmployeeGroupId",
+    "dom:EmployeeSubGroup_EmployeeGroupId": "EmployeeSubGroup.EmployeeGroupId",
+    "loc:Code": "EmployeeSubGroup.Code",
+    "dom:EmployeeSubGroup_Code": "EmployeeSubGroup.Code",
+    "loc:TicketClass": "EmployeeSubGroup.TicketClassId",
+    "dom:EmployeeSubGroup_TicketClassId": "EmployeeSubGroup.TicketClassId",
+    "loc:NameEn": "EmployeeSubGroup.NameEn",
+    "dom:EmployeeSubGroup_NameEn": "EmployeeSubGroup.NameEn",
+    "loc:NameAr": "EmployeeSubGroup.NameAr",
+    "dom:EmployeeSubGroup_NameAr": "EmployeeSubGroup.NameAr",
+    "loc:PayOvertime": "EmployeeSubGroup.PayOvertime",
+    "dom:EmployeeSubGroup_PayOvertime": "EmployeeSubGroup.PayOvertime",
+    "loc:AirTicketPayType": "EmployeeSubGroup.AirTicketPayType",
+    "dom:EmployeeSubGroup_AirTicketPayType": "EmployeeSubGroup.AirTicketPayType",
+    "loc:AutoPayAirTicket": "EmployeeSubGroup.AutoPayAirTicket",
+    "dom:EmployeeSubGroup_AutoPayAirTicket": "EmployeeSubGroup.AutoPayAirTicket",
+    "loc:MaxDependantAirTicketCount": "EmployeeSubGroup.MaxDependantAirTicketCount",
+    "dom:EmployeeSubGroup_MaxDependantAirTicketCount": "EmployeeSubGroup.MaxDependantAirTicketCount",
+    "loc:MaxHealthReimburseAmount": "EmployeeSubGroup.MaxHealthReimburseAmount",
+    "dom:EmployeeSubGroup_MaxHealthReimburseAmount": "EmployeeSubGroup.MaxHealthReimburseAmount",
+    "loc:HealthInsurancePeriod": "EmployeeSubGroup.HealthInsurancePeriod",
+    "dom:EmployeeSubGroup_HealthInsurancePeriod": "EmployeeSubGroup.HealthInsurancePeriod",
+    "loc:MaxDependantHealthReimburseCount": "EmployeeSubGroup.MaxDependantHealthReimburseCount",
+    "dom:EmployeeSubGroup_MaxDependantHealthReimburseCount": "EmployeeSubGroup.MaxDependantHealthReimburseCount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroup.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:EmployeeSubGroup_EmployeeGroupId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.Code",
+      "label": "Code",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeSubGroup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.TicketClassId",
+      "label": "TicketClass",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:TicketClass",
+        "dom:EmployeeSubGroup_TicketClassId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeSubGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeSubGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroup.PayOvertime",
+      "label": "PayOvertime",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:PayOvertime",
+        "dom:EmployeeSubGroup_PayOvertime"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.AirTicketPayType",
+      "label": "AirTicketPayType",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:AirTicketPayType",
+        "dom:EmployeeSubGroup_AirTicketPayType"
+      ],
+      "rules": "Required. One of: FareAmount, Fix Amount, Actual Amount, ActualAmountWithinMaxlimit.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.AutoPayAirTicket",
+      "label": "AutoPayAirTicket",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:AutoPayAirTicket",
+        "dom:EmployeeSubGroup_AutoPayAirTicket"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.MaxDependantAirTicketCount",
+      "label": "MaxDependantAirTicketCount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxDependantAirTicketCount",
+        "dom:EmployeeSubGroup_MaxDependantAirTicketCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.MaxHealthReimburseAmount",
+      "label": "MaxHealthReimburseAmount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxHealthReimburseAmount",
+        "dom:EmployeeSubGroup_MaxHealthReimburseAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.HealthInsurancePeriod",
+      "label": "HealthInsurancePeriod",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:HealthInsurancePeriod",
+        "dom:EmployeeSubGroup_HealthInsurancePeriod"
+      ],
+      "rules": "Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroup.MaxDependantHealthReimburseCount",
+      "label": "MaxDependantHealthReimburseCount",
+      "section": "EmployeeSubGroups",
+      "aliases": [
+        "loc:MaxDependantHealthReimburseCount",
+        "dom:EmployeeSubGroup_MaxDependantHealthReimburseCount"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

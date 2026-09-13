@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.employee-sub-group-health-reimburse.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Health Reimburses — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupHealthReimburse",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "dom:EmployeeSubGroupHealthReimburse_StartDate": "EmployeeSubGroupHealthReimburse.StartDate",
+    "loc:EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "dom:EmployeeSubGroupHealthReimburse_EndDate": "EmployeeSubGroupHealthReimburse.EndDate",
+    "loc:DependantType": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "dom:EmployeeSubGroupHealthReimburse_DependantTypeId": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+    "loc:Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "dom:EmployeeSubGroupHealthReimburse_Amount": "EmployeeSubGroupHealthReimburse.Amount",
+    "loc:AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit",
+    "dom:EmployeeSubGroupHealthReimburse_AgeLimit": "EmployeeSubGroupHealthReimburse.AgeLimit"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupHealthReimburse.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupHealthReimburse_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupHealthReimburse_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.DependantTypeId",
+      "label": "DependantType",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:DependantType",
+        "dom:EmployeeSubGroupHealthReimburse_DependantTypeId"
+      ],
+      "rules": "Optional. Chosen from Dependant Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.Amount",
+      "label": "Amount",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:Amount",
+        "dom:EmployeeSubGroupHealthReimburse_Amount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupHealthReimburse.AgeLimit",
+      "label": "AgeLimit",
+      "section": "EmployeeSubGroupHealthReimburses",
+      "aliases": [
+        "loc:AgeLimit",
+        "dom:EmployeeSubGroupHealthReimburse_AgeLimit"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

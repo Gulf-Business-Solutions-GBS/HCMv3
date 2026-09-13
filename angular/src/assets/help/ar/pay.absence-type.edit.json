@@ -1,0 +1,939 @@
+{
+  "helpId": "pay.absence-type.edit",
+  "lang": "ar",
+  "title": "أنواع الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceType",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "AbsenceType.Code",
+    "dom:AbsenceType_Code": "AbsenceType.Code",
+    "loc:NameEn": "AbsenceType.NameEn",
+    "dom:AbsenceType_NameEn": "AbsenceType.NameEn",
+    "loc:NameAr": "AbsenceType.NameAr",
+    "dom:AbsenceType_NameAr": "AbsenceType.NameAr",
+    "loc:IsActive": "AbsenceType.IsActive",
+    "dom:AbsenceType_IsActive": "AbsenceType.IsActive",
+    "loc:LeaveBasisPeriod": "AbsenceType.LeaveBasisPeriod",
+    "dom:AbsenceType_LeaveBasisPeriod": "AbsenceType.LeaveBasisPeriod",
+    "loc:LeaveBasisFixedDays": "AbsenceType.LeaveBasisFixedDays",
+    "dom:AbsenceType_LeaveBasisFixedDays": "AbsenceType.LeaveBasisFixedDays",
+    "loc:IsPaid": "AbsenceType.IsPaid",
+    "dom:AbsenceType_IsPaid": "AbsenceType.IsPaid",
+    "loc:WageType": "AbsenceType.WageTypeId",
+    "dom:AbsenceType_WageTypeId": "AbsenceType.WageTypeId",
+    "loc:IncludeWeekend": "AbsenceType.IncludeWeekend",
+    "dom:AbsenceType_IncludeWeekend": "AbsenceType.IncludeWeekend",
+    "loc:IncludeRestDay": "AbsenceType.IncludeRestDay",
+    "dom:AbsenceType_IncludeRestDay": "AbsenceType.IncludeRestDay",
+    "loc:IncludePublicHoliday": "AbsenceType.IncludePublicHoliday",
+    "dom:AbsenceType_IncludePublicHoliday": "AbsenceType.IncludePublicHoliday",
+    "loc:IncludeInWorkflow": "AbsenceType.IncludeInWorkflow",
+    "dom:AbsenceType_IncludeInWorkflow": "AbsenceType.IncludeInWorkflow",
+    "loc:HaveQuotaAccrual": "AbsenceType.HaveQuotaAccrual",
+    "dom:AbsenceType_HaveQuotaAccrual": "AbsenceType.HaveQuotaAccrual",
+    "loc:AccrualPeriod": "AbsenceType.AccrualPeriod",
+    "dom:AbsenceType_AccrualPeriod": "AbsenceType.AccrualPeriod",
+    "loc:CustomStartMonth": "AbsenceType.CustomStartMonth",
+    "dom:AbsenceType_CustomStartMonth": "AbsenceType.CustomStartMonth",
+    "loc:ExcludePaidLeaveAccrual": "AbsenceType.ExcludePaidLeaveAccrual",
+    "dom:AbsenceType_ExcludePaidLeaveAccrual": "AbsenceType.ExcludePaidLeaveAccrual",
+    "loc:MinActiveDaysInService": "AbsenceType.MinActiveDaysInService",
+    "dom:AbsenceType_MinActiveDaysInService": "AbsenceType.MinActiveDaysInService",
+    "loc:CanApplyAgain": "AbsenceType.CanApplyAgain",
+    "dom:AbsenceType_CanApplyAgain": "AbsenceType.CanApplyAgain",
+    "loc:CanApplyAfterDays": "AbsenceType.CanApplyAfterDays",
+    "dom:AbsenceType_CanApplyAfterDays": "AbsenceType.CanApplyAfterDays",
+    "loc:CanApplyBeforeDays": "AbsenceType.CanApplyBeforeDays",
+    "dom:AbsenceType_CanApplyBeforeDays": "AbsenceType.CanApplyBeforeDays",
+    "loc:ReInitialize": "AbsenceType.ReInitialize",
+    "dom:AbsenceType_ReInitialize": "AbsenceType.ReInitialize",
+    "loc:ReInitializeAfter": "AbsenceType.ReInitializeAfter",
+    "dom:AbsenceType_ReInitializeAfter": "AbsenceType.ReInitializeAfter",
+    "loc:ApplyLeaveInAdvance": "AbsenceType.ApplyLeaveInAdvance",
+    "dom:AbsenceType_ApplyLeaveInAdvance": "AbsenceType.ApplyLeaveInAdvance",
+    "loc:ApplyLeaveInAdvanceDays": "AbsenceType.ApplyLeaveInAdvanceDays",
+    "dom:AbsenceType_ApplyLeaveInAdvanceDays": "AbsenceType.ApplyLeaveInAdvanceDays",
+    "loc:ApplyMaxLeave": "AbsenceType.ApplyMaxLeave",
+    "dom:AbsenceType_ApplyMaxLeave": "AbsenceType.ApplyMaxLeave",
+    "loc:MaxLimitInDays": "AbsenceType.MaxLimitInDays",
+    "dom:AbsenceType_MaxLimitInDays": "AbsenceType.MaxLimitInDays",
+    "loc:CreateUnpaidAboveMaxLimitDays": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+    "dom:AbsenceType_CreateUnpaidAboveMaxLimitDays": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+    "loc:ApplyMinLeave": "AbsenceType.ApplyMinLeave",
+    "dom:AbsenceType_ApplyMinLeave": "AbsenceType.ApplyMinLeave",
+    "loc:MinLimitInDays": "AbsenceType.MinLimitInDays",
+    "dom:AbsenceType_MinLimitInDays": "AbsenceType.MinLimitInDays",
+    "loc:ResetFrequency": "AbsenceType.ResetFrequency",
+    "dom:AbsenceType_ResetFrequency": "AbsenceType.ResetFrequency",
+    "loc:TotalMinutes": "AbsenceType.TotalMinutes",
+    "dom:AbsenceType_TotalMinutes": "AbsenceType.TotalMinutes",
+    "loc:MaxMinutes": "AbsenceType.MaxMinutes",
+    "dom:AbsenceType_MaxMinutes": "AbsenceType.MaxMinutes",
+    "loc:MaxCount": "AbsenceType.MaxCount",
+    "dom:AbsenceType_MaxCount": "AbsenceType.MaxCount",
+    "loc:RestrictType": "AbsenceType.PolicyRestrictType",
+    "dom:AbsenceType_PolicyRestrictType": "AbsenceType.PolicyRestrictType",
+    "loc:AbsenceViolationRules": "AbsenceType.AbsenceViolationRuleId",
+    "dom:AbsenceType_AbsenceViolationRuleId": "AbsenceType.AbsenceViolationRuleId",
+    "loc:LeaveGender": "AbsenceType.LeaveGender",
+    "dom:AbsenceType_LeaveGender": "AbsenceType.LeaveGender",
+    "loc:LeaveReligion": "AbsenceType.LeaveReligion",
+    "dom:AbsenceType_LeaveReligion": "AbsenceType.LeaveReligion",
+    "loc:QuotaType": "AbsenceType.QuotaType",
+    "dom:AbsenceType_QuotaType": "AbsenceType.QuotaType",
+    "loc:LeaveEntitlement": "AbsenceType.LeaveEntitlement",
+    "dom:AbsenceType_LeaveEntitlement": "AbsenceType.LeaveEntitlement",
+    "loc:AllowBackDatedDays": "AbsenceType.AllowBackDatedDays",
+    "dom:AbsenceType_AllowBackDatedDays": "AbsenceType.AllowBackDatedDays",
+    "loc:TotalDaysAllowed": "AbsenceType.TotalDaysAllowed",
+    "dom:AbsenceType_TotalDaysAllowed": "AbsenceType.TotalDaysAllowed",
+    "loc:NegativeBalanceLimit": "AbsenceType.NegativeBalanceLimit",
+    "dom:AbsenceType_NegativeBalanceLimit": "AbsenceType.NegativeBalanceLimit",
+    "loc:EnableNegativeBalance": "AbsenceType.EnableNegativeBalance",
+    "dom:AbsenceType_EnableNegativeBalance": "AbsenceType.EnableNegativeBalance",
+    "loc:IncludeInSalaryProfile": "AbsenceType.IncludeInSalaryProfile",
+    "dom:AbsenceType_IncludeInSalaryProfile": "AbsenceType.IncludeInSalaryProfile",
+    "loc:AllowDuringProbation": "AbsenceType.AllowDuringProbation",
+    "dom:AbsenceType_AllowDuringProbation": "AbsenceType.AllowDuringProbation",
+    "loc:AllowToReturnEarly": "AbsenceType.AllowToReturnEarly",
+    "dom:AbsenceType_AllowToReturnEarly": "AbsenceType.AllowToReturnEarly",
+    "loc:AllowInTerminationNoticeOnly": "AbsenceType.AllowInTerminationNoticeOnly",
+    "dom:AbsenceType_AllowInTerminationNoticeOnly": "AbsenceType.AllowInTerminationNoticeOnly",
+    "loc:IsReturnDateRequired": "AbsenceType.IsReturnDateRequired",
+    "dom:AbsenceType_IsReturnDateRequired": "AbsenceType.IsReturnDateRequired",
+    "loc:IsAttachmentRequired": "AbsenceType.IsAttachmentRequired",
+    "dom:AbsenceType_IsAttachmentRequired": "AbsenceType.IsAttachmentRequired",
+    "loc:AllowPartialLeave": "AbsenceType.AllowPartialLeave",
+    "dom:AbsenceType_AllowPartialLeave": "AbsenceType.AllowPartialLeave",
+    "loc:SendNotification": "AbsenceType.SendNotification",
+    "dom:AbsenceType_SendNotification": "AbsenceType.SendNotification",
+    "loc:Sunday": "AbsenceType.DontAllowToStartOnSunday",
+    "dom:AbsenceType_DontAllowToStartOnSunday": "AbsenceType.DontAllowToStartOnSunday",
+    "loc:Monday": "AbsenceType.DontAllowToStartOnMonday",
+    "dom:AbsenceType_DontAllowToStartOnMonday": "AbsenceType.DontAllowToStartOnMonday",
+    "loc:Tuesday": "AbsenceType.DontAllowToStartOnTuesday",
+    "dom:AbsenceType_DontAllowToStartOnTuesday": "AbsenceType.DontAllowToStartOnTuesday",
+    "loc:Wednesday": "AbsenceType.DontAllowToStartOnWednesday",
+    "dom:AbsenceType_DontAllowToStartOnWednesday": "AbsenceType.DontAllowToStartOnWednesday",
+    "loc:Thursday": "AbsenceType.DontAllowToStartOnThursday",
+    "dom:AbsenceType_DontAllowToStartOnThursday": "AbsenceType.DontAllowToStartOnThursday",
+    "loc:Friday": "AbsenceType.DontAllowToStartOnFriday",
+    "dom:AbsenceType_DontAllowToStartOnFriday": "AbsenceType.DontAllowToStartOnFriday",
+    "loc:Saturday": "AbsenceType.DontAllowToStartOnSaturday",
+    "dom:AbsenceType_DontAllowToStartOnSaturday": "AbsenceType.DontAllowToStartOnSaturday"
+  },
+  "fields": [
+    {
+      "id": "AbsenceType.Code",
+      "label": "Code",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AbsenceType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.NameEn",
+      "label": "NameEn",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AbsenceType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.NameAr",
+      "label": "NameAr",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AbsenceType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceType.IsActive",
+      "label": "IsActive",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsActive",
+        "dom:AbsenceType_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.LeaveBasisPeriod",
+      "label": "LeaveBasisPeriod",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveBasisPeriod",
+        "dom:AbsenceType_LeaveBasisPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: أيام التقويم، أيام ثابتة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.LeaveBasisFixedDays",
+      "label": "LeaveBasisFixedDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveBasisFixedDays",
+        "dom:AbsenceType_LeaveBasisFixedDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IsPaid",
+      "label": "IsPaid",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsPaid",
+        "dom:AbsenceType_IsPaid"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.WageTypeId",
+      "label": "WageType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:WageType",
+        "dom:AbsenceType_WageTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IncludeWeekend",
+      "label": "IncludeWeekend",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeWeekend",
+        "dom:AbsenceType_IncludeWeekend"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IncludeRestDay",
+      "label": "IncludeRestDay",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeRestDay",
+        "dom:AbsenceType_IncludeRestDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IncludePublicHoliday",
+      "label": "IncludePublicHoliday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludePublicHoliday",
+        "dom:AbsenceType_IncludePublicHoliday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IncludeInWorkflow",
+      "label": "IncludeInWorkflow",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeInWorkflow",
+        "dom:AbsenceType_IncludeInWorkflow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.HaveQuotaAccrual",
+      "label": "HaveQuotaAccrual",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:HaveQuotaAccrual",
+        "dom:AbsenceType_HaveQuotaAccrual"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AccrualPeriod",
+      "label": "AccrualPeriod",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AccrualPeriod",
+        "dom:AbsenceType_AccrualPeriod"
+      ],
+      "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.CustomStartMonth",
+      "label": "CustomStartMonth",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CustomStartMonth",
+        "dom:AbsenceType_CustomStartMonth"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ExcludePaidLeaveAccrual",
+      "label": "ExcludePaidLeaveAccrual",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ExcludePaidLeaveAccrual",
+        "dom:AbsenceType_ExcludePaidLeaveAccrual"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.MinActiveDaysInService",
+      "label": "MinActiveDaysInService",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MinActiveDaysInService",
+        "dom:AbsenceType_MinActiveDaysInService"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.CanApplyAgain",
+      "label": "CanApplyAgain",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyAgain",
+        "dom:AbsenceType_CanApplyAgain"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.CanApplyAfterDays",
+      "label": "CanApplyAfterDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyAfterDays",
+        "dom:AbsenceType_CanApplyAfterDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.CanApplyBeforeDays",
+      "label": "CanApplyBeforeDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CanApplyBeforeDays",
+        "dom:AbsenceType_CanApplyBeforeDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ReInitialize",
+      "label": "ReInitialize",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ReInitialize",
+        "dom:AbsenceType_ReInitialize"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ReInitializeAfter",
+      "label": "ReInitializeAfter",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ReInitializeAfter",
+        "dom:AbsenceType_ReInitializeAfter"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ApplyLeaveInAdvance",
+      "label": "ApplyLeaveInAdvance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyLeaveInAdvance",
+        "dom:AbsenceType_ApplyLeaveInAdvance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ApplyLeaveInAdvanceDays",
+      "label": "ApplyLeaveInAdvanceDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyLeaveInAdvanceDays",
+        "dom:AbsenceType_ApplyLeaveInAdvanceDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ApplyMaxLeave",
+      "label": "ApplyMaxLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyMaxLeave",
+        "dom:AbsenceType_ApplyMaxLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.MaxLimitInDays",
+      "label": "MaxLimitInDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxLimitInDays",
+        "dom:AbsenceType_MaxLimitInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
+      "label": "CreateUnpaidAboveMaxLimitDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:CreateUnpaidAboveMaxLimitDays",
+        "dom:AbsenceType_CreateUnpaidAboveMaxLimitDays"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ApplyMinLeave",
+      "label": "ApplyMinLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ApplyMinLeave",
+        "dom:AbsenceType_ApplyMinLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.MinLimitInDays",
+      "label": "MinLimitInDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MinLimitInDays",
+        "dom:AbsenceType_MinLimitInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.ResetFrequency",
+      "label": "ResetFrequency",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:ResetFrequency",
+        "dom:AbsenceType_ResetFrequency"
+      ],
+      "rules": "إلزامي. إحدى القيم: يومي، إسبوعي، شهري، ربع سنوي، سنوياً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.TotalMinutes",
+      "label": "TotalMinutes",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:TotalMinutes",
+        "dom:AbsenceType_TotalMinutes"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.MaxMinutes",
+      "label": "MaxMinutes",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxMinutes",
+        "dom:AbsenceType_MaxMinutes"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.MaxCount",
+      "label": "MaxCount",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:MaxCount",
+        "dom:AbsenceType_MaxCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.PolicyRestrictType",
+      "label": "RestrictType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:RestrictType",
+        "dom:AbsenceType_PolicyRestrictType"
+      ],
+      "rules": "إلزامي. إحدى القيم: تحذير، خطأ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceType_AbsenceViolationRuleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة قواعد مخالفات الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.LeaveGender",
+      "label": "LeaveGender",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveGender",
+        "dom:AbsenceType_LeaveGender"
+      ],
+      "rules": "إلزامي. إحدى القيم: الجميع، ذكر، أنثى.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.LeaveReligion",
+      "label": "LeaveReligion",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveReligion",
+        "dom:AbsenceType_LeaveReligion"
+      ],
+      "rules": "إلزامي. إحدى القيم: الجميع، مسلم، غير مسلم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.QuotaType",
+      "label": "QuotaType",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:QuotaType",
+        "dom:AbsenceType_QuotaType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الإجازة السنوية، الإجازة المرضية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.LeaveEntitlement",
+      "label": "LeaveEntitlement",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:LeaveEntitlement",
+        "dom:AbsenceType_LeaveEntitlement"
+      ],
+      "rules": "إلزامي. إحدى القيم: كامل، بالتناسب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AllowBackDatedDays",
+      "label": "AllowBackDatedDays",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowBackDatedDays",
+        "dom:AbsenceType_AllowBackDatedDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.TotalDaysAllowed",
+      "label": "TotalDaysAllowed",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:TotalDaysAllowed",
+        "dom:AbsenceType_TotalDaysAllowed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.NegativeBalanceLimit",
+      "label": "NegativeBalanceLimit",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:NegativeBalanceLimit",
+        "dom:AbsenceType_NegativeBalanceLimit"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.EnableNegativeBalance",
+      "label": "EnableNegativeBalance",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:EnableNegativeBalance",
+        "dom:AbsenceType_EnableNegativeBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IncludeInSalaryProfile",
+      "label": "IncludeInSalaryProfile",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IncludeInSalaryProfile",
+        "dom:AbsenceType_IncludeInSalaryProfile"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AllowDuringProbation",
+      "label": "AllowDuringProbation",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowDuringProbation",
+        "dom:AbsenceType_AllowDuringProbation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AllowToReturnEarly",
+      "label": "AllowToReturnEarly",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowToReturnEarly",
+        "dom:AbsenceType_AllowToReturnEarly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AllowInTerminationNoticeOnly",
+      "label": "AllowInTerminationNoticeOnly",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowInTerminationNoticeOnly",
+        "dom:AbsenceType_AllowInTerminationNoticeOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IsReturnDateRequired",
+      "label": "IsReturnDateRequired",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsReturnDateRequired",
+        "dom:AbsenceType_IsReturnDateRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.IsAttachmentRequired",
+      "label": "IsAttachmentRequired",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:IsAttachmentRequired",
+        "dom:AbsenceType_IsAttachmentRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.AllowPartialLeave",
+      "label": "AllowPartialLeave",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:AllowPartialLeave",
+        "dom:AbsenceType_AllowPartialLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.SendNotification",
+      "label": "SendNotification",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:SendNotification",
+        "dom:AbsenceType_SendNotification"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnSunday",
+      "label": "Sunday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Sunday",
+        "dom:AbsenceType_DontAllowToStartOnSunday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnMonday",
+      "label": "Monday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Monday",
+        "dom:AbsenceType_DontAllowToStartOnMonday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnTuesday",
+      "label": "Tuesday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Tuesday",
+        "dom:AbsenceType_DontAllowToStartOnTuesday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnWednesday",
+      "label": "Wednesday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Wednesday",
+        "dom:AbsenceType_DontAllowToStartOnWednesday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnThursday",
+      "label": "Thursday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Thursday",
+        "dom:AbsenceType_DontAllowToStartOnThursday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnFriday",
+      "label": "Friday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Friday",
+        "dom:AbsenceType_DontAllowToStartOnFriday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceType.DontAllowToStartOnSaturday",
+      "label": "Saturday",
+      "section": "AbsenceTypes",
+      "aliases": [
+        "loc:Saturday",
+        "dom:AbsenceType_DontAllowToStartOnSaturday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-group.edit",
+  "lang": "ar",
+  "title": "مجموعات الموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.EmployeeGroup",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "EmployeeGroup.Code",
+    "dom:EmployeeGroup_Code": "EmployeeGroup.Code",
+    "loc:NameEn": "EmployeeGroup.NameEn",
+    "dom:EmployeeGroup_NameEn": "EmployeeGroup.NameEn",
+    "loc:NameAr": "EmployeeGroup.NameAr",
+    "dom:EmployeeGroup_NameAr": "EmployeeGroup.NameAr",
+    "loc:IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "dom:EmployeeGroup_IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "loc:IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "dom:EmployeeGroup_IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "loc:IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage",
+    "dom:EmployeeGroup_IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGroup.Code",
+      "label": "Code",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeGroup_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeGroup_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeGroup_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxNumber",
+      "label": "IndemnityMaxNumber",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxNumber",
+        "dom:EmployeeGroup_IndemnityMaxNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxUnit",
+      "label": "IndemnityMaxUnit",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxUnit",
+        "dom:EmployeeGroup_IndemnityMaxUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: اليوم، الشهر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxAccruePercentage",
+      "label": "IndemnityMaxAccruePercentage",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxAccruePercentage",
+        "dom:EmployeeGroup_IndemnityMaxAccruePercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -447,12 +447,53 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
         });
     }
 
+    const tsFile = rel.replace(/\.html$/, '.ts');
+    const ts = exists(tsFile) ? read(tsFile) : '';
+
+    // Fields rendered in a loop: `@for (flag of includeFlags) { ... [id]="'WageType_' + flag.field" }`.
+    // Their ids are built at runtime, so the label scan above cannot see them -- Wage Type's 18
+    // include flags, the seven cost elements on account forms and the payroll status dates were all
+    // missing. The loop's array is read from the component: plain strings, or objects carrying a
+    // `field` and a localization `key`.
+    const sectionsAt = [];
+    if (sectionTitleClass) {
+        for (const s of html.matchAll(new RegExp(sectionTitlePattern(sectionTitleClass), 'g'))) {
+            sectionsAt.push({ at: s.index, key: s[1] });
+        }
+    }
+    const idRe = new RegExp(`\\[id\\]="'${entityName}_'\\s*\\+\\s*(\\w+)(?:\\.(\\w+))?"`, 'g');
+    for (const d of html.matchAll(idRe)) {
+        const [, loopVar, member] = d;
+        const loops = [...html.slice(0, d.index).matchAll(new RegExp(`@for\\s*\\(\\s*${loopVar}\\s+of\\s+(\\w+)`, 'g'))];
+        const arrayName = loops.at(-1)?.[1];
+        const body = arrayName && ts.match(new RegExp(`\\b${arrayName}\\b[^=]*=\\s*\\[([\\s\\S]*?)\\]\\s*;`))?.[1];
+        if (!body) continue;
+        const items = member
+            ? [...body.matchAll(/\{([^}]*)\}/g)].map((x) => ({
+                  value: x[1].match(new RegExp(`\\b${member}\\s*:\\s*'([^']+)'`))?.[1],
+                  key: x[1].match(/\bkey\s*:\s*'([^']+)'/)?.[1],
+              }))
+            : [...body.matchAll(/'([^']+)'/g)].map((x) => ({ value: x[1] }));
+        const section = sectionsAt.filter((s) => s.at < d.index).at(-1)?.key ?? null;
+        items.forEach((item, i) => {
+            if (!item.value) return;
+            const pascal = item.value.charAt(0).toUpperCase() + item.value.slice(1);
+            out.push({
+                locKey: item.key ?? pascal,
+                domId: `${entityName}_${item.value}`,
+                property: pascal,
+                uiRequired: false,
+                section,
+                at: d.index + i / 1000,
+            });
+        });
+    }
+    out.sort((a, b) => a.at - b.at);
+
     // The choices a dropdown actually offers, read from the form rather than the enum: an enum can
     // hold members the form hides (EmploymentType.ALL) or offer ones that look like filters but are
     // real (RecoveryOption.All -- "recovered by payroll and externally"). Options are either
     // literal `<option>`s or an `@for` over an array in the component.
-    const tsFile = rel.replace(/\.html$/, '.ts');
-    const ts = exists(tsFile) ? read(tsFile) : '';
     out.forEach((f, i) => {
         const control = html.slice(f.at, i + 1 < out.length ? out[i + 1].at : html.length);
         const select = control.match(/<select[\s\S]*?<\/select>/)?.[0];
@@ -549,6 +590,9 @@ function buildInventory() {
                   page.surfaces.edit.sectionTitleClass
               )
             : [];
+        // Where an input's id does not spell its property -- the payroll engine's `PayrollEngine_RunType`
+        // binds `PayrollRunType` -- the page says so explicitly rather than the tool guessing.
+        for (const ef of editFields) ef.property = page.propertyMap?.[ef.property] ?? ef.property;
         const editMap = new Map();
         for (const ef of editFields) if (!editMap.has(ef.locKey)) editMap.set(ef.locKey, ef);
 

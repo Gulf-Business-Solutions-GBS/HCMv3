@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.payroll-area.edit",
+  "lang": "en",
+  "title": "Payroll Areas — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.PayrollArea",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "PayrollArea.Code",
+    "dom:PayrollArea_Code": "PayrollArea.Code",
+    "loc:Name": "PayrollArea.Name",
+    "dom:PayrollArea_Name": "PayrollArea.Name",
+    "loc:PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "dom:PayrollArea_PayrollPeriodId": "PayrollArea.PayrollPeriodId",
+    "loc:CurrencyId": "PayrollArea.CurrencyId",
+    "dom:PayrollArea_CurrencyId": "PayrollArea.CurrencyId",
+    "loc:CutOffDay": "PayrollArea.CutOffDay",
+    "dom:PayrollArea_CutOffDay": "PayrollArea.CutOffDay",
+    "loc:CountryId": "PayrollArea.CountryId",
+    "dom:PayrollArea_CountryId": "PayrollArea.CountryId",
+    "loc:FICompanyId": "PayrollArea.FICompanyId",
+    "dom:PayrollArea_FICompanyId": "PayrollArea.FICompanyId",
+    "loc:FIBankId": "PayrollArea.FIBankId",
+    "dom:PayrollArea_FIBankId": "PayrollArea.FIBankId"
+  },
+  "fields": [
+    {
+      "id": "PayrollArea.Code",
+      "label": "Code",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Code",
+        "dom:PayrollArea_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollArea.Name",
+      "label": "Name",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:Name",
+        "dom:PayrollArea_Name"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.PayrollPeriodId",
+      "label": "PayrollPeriodId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:PayrollPeriodId",
+        "dom:PayrollArea_PayrollPeriodId"
+      ],
+      "rules": "Required. Chosen from Payroll Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CurrencyId",
+      "label": "CurrencyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CurrencyId",
+        "dom:PayrollArea_CurrencyId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CutOffDay",
+      "label": "CutOffDay",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CutOffDay",
+        "dom:PayrollArea_CutOffDay"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.CountryId",
+      "label": "CountryId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:CountryId",
+        "dom:PayrollArea_CountryId"
+      ],
+      "rules": "Optional. Chosen from Country master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.FICompanyId",
+      "label": "FICompanyId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FICompanyId",
+        "dom:PayrollArea_FICompanyId"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollArea.FIBankId",
+      "label": "FIBankId",
+      "section": "PayrollAreas",
+      "aliases": [
+        "loc:FIBankId",
+        "dom:PayrollArea_FIBankId"
+      ],
+      "rules": "Optional. Chosen from Account Info master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

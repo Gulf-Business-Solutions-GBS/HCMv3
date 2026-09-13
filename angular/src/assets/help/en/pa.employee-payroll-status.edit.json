@@ -3,14 +3,142 @@
   "lang": "en",
   "title": "Employee Payroll Statuses — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeePayrollStatus",
-  "overviewHtml": "<p>The employee's payroll status record. An employee can have only one.</p><p>The payroll and time engines create and update this record themselves to track how far the employee has been processed. The two options on this form are stored but not read by either engine at present.</p>",
+  "overviewHtml": "<p>How far the employee has been processed by payroll and the time engine, and the dates that control recalculation. An employee can have only one.</p><p>The time engine creates this record the first time it processes the employee, and payroll stops with \"Payroll Status not found\" for an employee who has none. Both engines update the dates as they run; change them only to force or limit a recalculation.</p>",
   "aliasIndex": {
+    "loc:EarliestRetroAccountingDate": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+    "dom:EmployeePayrollStatus_earliestRetroAccountingDate": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+    "loc:AccountedTo": "EmployeePayrollStatus.AccountedTo",
+    "dom:EmployeePayrollStatus_accountedTo": "EmployeePayrollStatus.AccountedTo",
+    "loc:RunPayrollUpto": "EmployeePayrollStatus.RunPayrollUpto",
+    "dom:EmployeePayrollStatus_runPayrollUpto": "EmployeePayrollStatus.RunPayrollUpto",
+    "loc:EarliestMasterDataChange": "EmployeePayrollStatus.EarliestMasterDataChange",
+    "dom:EmployeePayrollStatus_earliestMasterDataChange": "EmployeePayrollStatus.EarliestMasterDataChange",
+    "loc:DoNoAccountAfter": "EmployeePayrollStatus.DoNoAccountAfter",
+    "dom:EmployeePayrollStatus_doNoAccountAfter": "EmployeePayrollStatus.DoNoAccountAfter",
+    "loc:EarliestRecalculationDate": "EmployeePayrollStatus.EarliestRecalculationDate",
+    "dom:EmployeePayrollStatus_earliestRecalculationDate": "EmployeePayrollStatus.EarliestRecalculationDate",
+    "loc:PersonalCalendarFrom": "EmployeePayrollStatus.PersonalCalendarFrom",
+    "dom:EmployeePayrollStatus_personalCalendarFrom": "EmployeePayrollStatus.PersonalCalendarFrom",
+    "loc:NextTimeEvaluationFrom": "EmployeePayrollStatus.NextTimeEvaluationFrom",
+    "dom:EmployeePayrollStatus_nextTimeEvaluationFrom": "EmployeePayrollStatus.NextTimeEvaluationFrom",
     "loc:PersonLocked": "EmployeePayrollStatus.PersonLocked",
     "dom:EmployeePayrollStatus_PersonLocked": "EmployeePayrollStatus.PersonLocked",
     "loc:PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection",
     "dom:EmployeePayrollStatus_PayrollCorrection": "EmployeePayrollStatus.PayrollCorrection"
   },
   "fields": [
+    {
+      "id": "EmployeePayrollStatus.EarliestRetroAccountingDate",
+      "label": "EarliestRetroAccountingDate",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestRetroAccountingDate",
+        "dom:EmployeePayrollStatus_earliestRetroAccountingDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The earliest date recalculation may go back to.</p><p><strong>Example.</strong> 1 Jan 2026</p><p><strong>Why it matters.</strong> If a change reaches back before this date, the time engine and regular payroll stop for the employee with \"EarliestRetroAccountingDate set to …\", unless the date is the joining date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.AccountedTo",
+      "label": "AccountedTo",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:AccountedTo",
+        "dom:EmployeePayrollStatus_accountedTo"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last pay date payroll has processed for the employee.</p><p><strong>Example.</strong> 31 Aug 2026</p><p><strong>Why it matters.</strong> Payroll recalculates from the month after this date up to the current pay date, and moves it forward after each run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.RunPayrollUpto",
+      "label": "RunPayrollUpto",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:RunPayrollUpto",
+        "dom:EmployeePayrollStatus_runPayrollUpto"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A date payroll should run up to.</p><p><strong>Why it matters.</strong> Recorded only; neither engine reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.EarliestMasterDataChange",
+      "label": "EarliestMasterDataChange",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestMasterDataChange",
+        "dom:EmployeePayrollStatus_earliestMasterDataChange"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The earliest date affected by a change to the employee's records since payroll last ran.</p><p><strong>Example.</strong> 1 Jun 2026</p><p><strong>Why it matters.</strong> Payroll recalculates every month from this date; the time engine starts from it when autorun is off. The time engine sets it when a day changes, and payroll clears it after a successful run.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.DoNoAccountAfter",
+      "label": "DoNoAccountAfter",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:DoNoAccountAfter",
+        "dom:EmployeePayrollStatus_doNoAccountAfter"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last period payroll may calculate for the employee.</p><p><strong>Example.</strong> 31 Dec 2026</p><p><strong>Why it matters.</strong> Payroll and the project cost engine skip any period after this date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.EarliestRecalculationDate",
+      "label": "EarliestRecalculationDate",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:EarliestRecalculationDate",
+        "dom:EmployeePayrollStatus_earliestRecalculationDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An earliest recalculation date.</p><p><strong>Why it matters.</strong> Recorded only; neither engine reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.PersonalCalendarFrom",
+      "label": "PersonalCalendarFrom",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:PersonalCalendarFrom",
+        "dom:EmployeePayrollStatus_personalCalendarFrom"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the employee's personal calendar starts.</p><p><strong>Why it matters.</strong> Recorded only; neither engine reads it at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePayrollStatus.NextTimeEvaluationFrom",
+      "label": "NextTimeEvaluationFrom",
+      "section": "EmployeePayrollStatuses",
+      "aliases": [
+        "loc:NextTimeEvaluationFrom",
+        "dom:EmployeePayrollStatus_nextTimeEvaluationFrom"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date the time engine will next process the employee from.</p><p><strong>Example.</strong> 1 Sep 2026</p><p><strong>Why it matters.</strong> The time engine moves it forward as it runs. An off-cycle payroll other than end of service stops with \"Time Engine not run\" if this date is before the payment date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
     {
       "id": "EmployeePayrollStatus.PersonLocked",
       "label": "PersonLocked",

@@ -34,7 +34,7 @@
       "rules": "Required. Date value.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The date the timesheet is for.</p><p><strong>Example.</strong> 10 Sep 2026</p>",
-      "adminHtml": "<p>When building a day from timesheets, the time engine looks the timesheet up by date only, not by employee. On a date where more than one employee has a timesheet, an employee can be given another employee's times. This matches the legacy system and is awaiting a decision.</p>",
+      "adminHtml": "<p>When building a day from timesheets, the time engine looks the timesheet up by date only, not by employee. On a date where more than one employee has a timesheet, an employee can be given another employee's in and break times. Total hours are not affected. This matches the legacy system and has been kept on purpose, so check the in and break times on those dates.</p>",
       "stub": false
     },
     {

@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.absence-ded-rule-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل قواعد الخصم على الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceDedRuleDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceDeductionRules": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+    "loc:StartDate": "AbsenceDedRuleDetail.StartDate",
+    "dom:AbsenceDedRuleDetail_StartDate": "AbsenceDedRuleDetail.StartDate",
+    "loc:EndDate": "AbsenceDedRuleDetail.EndDate",
+    "dom:AbsenceDedRuleDetail_EndDate": "AbsenceDedRuleDetail.EndDate",
+    "loc:DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "dom:AbsenceDedRuleDetail_DaysCount": "AbsenceDedRuleDetail.DaysCount",
+    "loc:DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "dom:AbsenceDedRuleDetail_DeductionUnit": "AbsenceDedRuleDetail.DeductionUnit",
+    "loc:DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber",
+    "dom:AbsenceDedRuleDetail_DeductionNumber": "AbsenceDedRuleDetail.DeductionNumber"
+  },
+  "fields": [
+    {
+      "id": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
+      "label": "AbsenceDeductionRules",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:AbsenceDeductionRules",
+        "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قواعد الخصم على الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceDedRuleDetail.StartDate",
+      "label": "StartDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AbsenceDedRuleDetail_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.EndDate",
+      "label": "EndDate",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AbsenceDedRuleDetail_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DaysCount",
+      "label": "DaysCount",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DaysCount",
+        "dom:AbsenceDedRuleDetail_DaysCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionUnit",
+      "label": "DeductionUnit",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionUnit",
+        "dom:AbsenceDedRuleDetail_DeductionUnit"
+      ],
+      "rules": "إلزامي. إحدى القيم: ثابت، النسبة المئوية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceDedRuleDetail.DeductionNumber",
+      "label": "DeductionNumber",
+      "section": "AbsenceDedRuleDetails",
+      "aliases": [
+        "loc:DeductionNumber",
+        "dom:AbsenceDedRuleDetail_DeductionNumber"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

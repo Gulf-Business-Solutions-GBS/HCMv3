@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.cost-register.edit",
+  "lang": "ar",
+  "title": "سجلات التكلفة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.CostRegister",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "CostRegister.EmployeeId",
+    "dom:CostRegister_EmployeeId": "CostRegister.EmployeeId",
+    "loc:Period": "CostRegister.Period",
+    "dom:CostRegister_Period": "CostRegister.Period",
+    "loc:PayrollRunType": "CostRegister.PayrollRunType",
+    "dom:CostRegister_PayrollRunType": "CostRegister.PayrollRunType"
+  },
+  "fields": [
+    {
+      "id": "CostRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:CostRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegister.Period",
+      "label": "Period",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:Period",
+        "dom:CostRegister_Period"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "CostRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "CostRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:CostRegister_PayrollRunType"
+      ],
+      "rules": "إلزامي. إحدى القيم: اعتيادي، خارج الدورة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

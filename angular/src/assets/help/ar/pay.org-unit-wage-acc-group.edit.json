@@ -1,0 +1,59 @@
+{
+  "helpId": "pay.org-unit-wage-acc-group.edit",
+  "lang": "ar",
+  "title": "مجموعات حسابات الأجور لوحدات الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.OrgUnitWageAccGroup",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnitId": "OrgUnitWageAccGroup.OrganizationUnitId",
+    "dom:OrgUnitWageAccGroup_OrganizationUnitId": "OrgUnitWageAccGroup.OrganizationUnitId",
+    "loc:WageAccGroupId": "OrgUnitWageAccGroup.WageAccGroupId",
+    "dom:OrgUnitWageAccGroup_WageAccGroupId": "OrgUnitWageAccGroup.WageAccGroupId",
+    "loc:StartDate": "OrgUnitWageAccGroup.StartDate",
+    "dom:OrgUnitWageAccGroup_StartDate": "OrgUnitWageAccGroup.StartDate"
+  },
+  "fields": [
+    {
+      "id": "OrgUnitWageAccGroup.OrganizationUnitId",
+      "label": "OrganizationUnitId",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:OrganizationUnitId",
+        "dom:OrgUnitWageAccGroup_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "OrgUnitWageAccGroup.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:OrgUnitWageAccGroup_WageAccGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات حسابات الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "OrgUnitWageAccGroup.StartDate",
+      "label": "StartDate",
+      "section": "OrgUnitWageAccGroups",
+      "aliases": [
+        "loc:StartDate",
+        "dom:OrgUnitWageAccGroup_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. عند الحفظ يُغلق السجل السابق لوحدة الشركة نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-sub-group-gratuity.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Gratuities — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupGratuity",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:StartDate": "EmployeeSubGroupGratuity.StartDate",
+    "dom:EmployeeSubGroupGratuity_StartDate": "EmployeeSubGroupGratuity.StartDate",
+    "loc:EndDate": "EmployeeSubGroupGratuity.EndDate",
+    "dom:EmployeeSubGroupGratuity_EndDate": "EmployeeSubGroupGratuity.EndDate",
+    "loc:ChangeYear": "EmployeeSubGroupGratuity.ChangeYear",
+    "dom:EmployeeSubGroupGratuity_ChangeYear": "EmployeeSubGroupGratuity.ChangeYear",
+    "loc:GratuityDays": "EmployeeSubGroupGratuity.GratuityDays",
+    "dom:EmployeeSubGroupGratuity_GratuityDays": "EmployeeSubGroupGratuity.GratuityDays",
+    "loc:BasisDays": "EmployeeSubGroupGratuity.BasisDays",
+    "dom:EmployeeSubGroupGratuity_BasisDays": "EmployeeSubGroupGratuity.BasisDays",
+    "loc:ImpactFromDateOfJoining": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining",
+    "dom:EmployeeSubGroupGratuity_ImpactFromDateOfJoining": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupGratuity.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeSubGroupGratuity_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeSubGroupGratuity_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.ChangeYear",
+      "label": "ChangeYear",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:ChangeYear",
+        "dom:EmployeeSubGroupGratuity_ChangeYear"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.GratuityDays",
+      "label": "GratuityDays",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:GratuityDays",
+        "dom:EmployeeSubGroupGratuity_GratuityDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.BasisDays",
+      "label": "BasisDays",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:BasisDays",
+        "dom:EmployeeSubGroupGratuity_BasisDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupGratuity.ImpactFromDateOfJoining",
+      "label": "ImpactFromDateOfJoining",
+      "section": "EmployeeSubGroupGratuities",
+      "aliases": [
+        "loc:ImpactFromDateOfJoining",
+        "dom:EmployeeSubGroupGratuity_ImpactFromDateOfJoining"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

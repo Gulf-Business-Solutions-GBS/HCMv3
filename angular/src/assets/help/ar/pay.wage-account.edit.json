@@ -1,0 +1,219 @@
+{
+  "helpId": "pay.wage-account.edit",
+  "lang": "ar",
+  "title": "حسابات الأجور — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.WageAccount",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:WageTypeId": "WageAccount.WageTypeId",
+    "dom:WageAccount_WageTypeId": "WageAccount.WageTypeId",
+    "loc:StartDate": "WageAccount.StartDate",
+    "dom:WageAccount_StartDate": "WageAccount.StartDate",
+    "loc:EndDate": "WageAccount.EndDate",
+    "dom:WageAccount_EndDate": "WageAccount.EndDate",
+    "loc:AccountInfoId": "WageAccount.AccountInfoId",
+    "dom:WageAccount_AccountInfoId": "WageAccount.AccountInfoId",
+    "loc:OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "dom:WageAccount_OffsetAccountInfoId": "WageAccount.OffsetAccountInfoId",
+    "loc:CostPercentage": "WageAccount.CostPercentage",
+    "dom:WageAccount_CostPercentage": "WageAccount.CostPercentage",
+    "loc:CostElement1Id": "WageAccount.CostElement1Id",
+    "dom:WageAccount_costElement1Id": "WageAccount.CostElement1Id",
+    "loc:CostElement2Id": "WageAccount.CostElement2Id",
+    "dom:WageAccount_costElement2Id": "WageAccount.CostElement2Id",
+    "loc:CostElement3Id": "WageAccount.CostElement3Id",
+    "dom:WageAccount_costElement3Id": "WageAccount.CostElement3Id",
+    "loc:CostElement4Id": "WageAccount.CostElement4Id",
+    "dom:WageAccount_costElement4Id": "WageAccount.CostElement4Id",
+    "loc:CostElement5Id": "WageAccount.CostElement5Id",
+    "dom:WageAccount_costElement5Id": "WageAccount.CostElement5Id",
+    "loc:CostElement6Id": "WageAccount.CostElement6Id",
+    "dom:WageAccount_costElement6Id": "WageAccount.CostElement6Id",
+    "loc:CostElement7Id": "WageAccount.CostElement7Id",
+    "dom:WageAccount_costElement7Id": "WageAccount.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "WageAccount.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageAccount_WageTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.StartDate",
+      "label": "StartDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:WageAccount_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.EndDate",
+      "label": "EndDate",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:WageAccount_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WageAccount.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:WageAccount_AccountInfoId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:WageAccount_OffsetAccountInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة بيانات الحسابات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostPercentage",
+      "label": "CostPercentage",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:WageAccount_CostPercentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:WageAccount_costElement1Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:WageAccount_costElement2Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:WageAccount_costElement3Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:WageAccount_costElement4Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:WageAccount_costElement5Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:WageAccount_costElement6Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccount.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "WageAccounts",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:WageAccount_costElement7Id"
+      ],
+      "rules": "اختياري. يُختار من قائمة عناصر التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.ticket-accrual-summary.edit",
+  "lang": "ar",
+  "title": "ملخصات تراكم التذاكر — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.TicketAccrualSummary",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "dom:TicketAccrualSummary_EmployeeId": "TicketAccrualSummary.EmployeeId",
+    "loc:Year": "TicketAccrualSummary.Year",
+    "dom:TicketAccrualSummary_Year": "TicketAccrualSummary.Year",
+    "loc:Month": "TicketAccrualSummary.Month",
+    "dom:TicketAccrualSummary_Month": "TicketAccrualSummary.Month",
+    "loc:TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "dom:TicketAccrualSummary_TicketAccrued": "TicketAccrualSummary.TicketAccrued",
+    "loc:TicketUsed": "TicketAccrualSummary.TicketUsed",
+    "dom:TicketAccrualSummary_TicketUsed": "TicketAccrualSummary.TicketUsed"
+  },
+  "fields": [
+    {
+      "id": "TicketAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:TicketAccrualSummary_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketAccrualSummary.Year",
+      "label": "Year",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:TicketAccrualSummary_Year"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketAccrualSummary.Month",
+      "label": "Month",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:TicketAccrualSummary_Month"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketAccrualSummary.TicketAccrued",
+      "label": "TicketAccrued",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketAccrued",
+        "dom:TicketAccrualSummary_TicketAccrued"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TicketAccrualSummary.TicketUsed",
+      "label": "TicketUsed",
+      "section": "TicketAccrualSummaries",
+      "aliases": [
+        "loc:TicketUsed",
+        "dom:TicketAccrualSummary_TicketUsed"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

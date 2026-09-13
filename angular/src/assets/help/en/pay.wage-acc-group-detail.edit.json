@@ -1,0 +1,235 @@
+{
+  "helpId": "pay.wage-acc-group-detail.edit",
+  "lang": "en",
+  "title": "Wage Account Group Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.WageAccGroupDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
+    "dom:WageAccGroupDetail_WageAccGroupId": "WageAccGroupDetail.WageAccGroupId",
+    "loc:WageTypeId": "WageAccGroupDetail.WageTypeId",
+    "dom:WageAccGroupDetail_WageTypeId": "WageAccGroupDetail.WageTypeId",
+    "loc:AccountInfoId": "WageAccGroupDetail.AccountInfoId",
+    "dom:WageAccGroupDetail_AccountInfoId": "WageAccGroupDetail.AccountInfoId",
+    "loc:OffsetAccountInfoType": "WageAccGroupDetail.OffsetAccountInfoType",
+    "dom:WageAccGroupDetail_OffsetAccountInfoType": "WageAccGroupDetail.OffsetAccountInfoType",
+    "loc:OffsetAccountInfoId": "WageAccGroupDetail.OffsetAccountInfoId",
+    "dom:WageAccGroupDetail_OffsetAccountInfoId": "WageAccGroupDetail.OffsetAccountInfoId",
+    "loc:CostPercentage": "WageAccGroupDetail.CostPercentage",
+    "dom:WageAccGroupDetail_CostPercentage": "WageAccGroupDetail.CostPercentage",
+    "loc:MergeOffsetAccount": "WageAccGroupDetail.MergeOffsetAccount",
+    "dom:WageAccGroupDetail_MergeOffsetAccount": "WageAccGroupDetail.MergeOffsetAccount",
+    "loc:CostElement1Id": "WageAccGroupDetail.CostElement1Id",
+    "dom:WageAccGroupDetail_costElement1Id": "WageAccGroupDetail.CostElement1Id",
+    "loc:CostElement2Id": "WageAccGroupDetail.CostElement2Id",
+    "dom:WageAccGroupDetail_costElement2Id": "WageAccGroupDetail.CostElement2Id",
+    "loc:CostElement3Id": "WageAccGroupDetail.CostElement3Id",
+    "dom:WageAccGroupDetail_costElement3Id": "WageAccGroupDetail.CostElement3Id",
+    "loc:CostElement4Id": "WageAccGroupDetail.CostElement4Id",
+    "dom:WageAccGroupDetail_costElement4Id": "WageAccGroupDetail.CostElement4Id",
+    "loc:CostElement5Id": "WageAccGroupDetail.CostElement5Id",
+    "dom:WageAccGroupDetail_costElement5Id": "WageAccGroupDetail.CostElement5Id",
+    "loc:CostElement6Id": "WageAccGroupDetail.CostElement6Id",
+    "dom:WageAccGroupDetail_costElement6Id": "WageAccGroupDetail.CostElement6Id",
+    "loc:CostElement7Id": "WageAccGroupDetail.CostElement7Id",
+    "dom:WageAccGroupDetail_costElement7Id": "WageAccGroupDetail.CostElement7Id"
+  },
+  "fields": [
+    {
+      "id": "WageAccGroupDetail.WageAccGroupId",
+      "label": "WageAccGroupId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:WageAccGroupId",
+        "dom:WageAccGroupDetail_WageAccGroupId"
+      ],
+      "rules": "Required. Chosen from Wage Acc Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.WageTypeId",
+      "label": "WageTypeId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:WageTypeId",
+        "dom:WageAccGroupDetail_WageTypeId"
+      ],
+      "rules": "Required. Chosen from Wage Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.AccountInfoId",
+      "label": "AccountInfoId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:AccountInfoId",
+        "dom:WageAccGroupDetail_AccountInfoId"
+      ],
+      "rules": "Required. Chosen from Account Info master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.OffsetAccountInfoType",
+      "label": "OffsetAccountInfoType",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:OffsetAccountInfoType",
+        "dom:WageAccGroupDetail_OffsetAccountInfoType"
+      ],
+      "rules": "Required. One of: Fixed, Employee Code.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.OffsetAccountInfoId",
+      "label": "OffsetAccountInfoId",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:OffsetAccountInfoId",
+        "dom:WageAccGroupDetail_OffsetAccountInfoId"
+      ],
+      "rules": "Optional. Chosen from Account Info master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostPercentage",
+      "label": "CostPercentage",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostPercentage",
+        "dom:WageAccGroupDetail_CostPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.MergeOffsetAccount",
+      "label": "MergeOffsetAccount",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:MergeOffsetAccount",
+        "dom:WageAccGroupDetail_MergeOffsetAccount"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement1Id",
+      "label": "CostElement1Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement1Id",
+        "dom:WageAccGroupDetail_costElement1Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement2Id",
+      "label": "CostElement2Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement2Id",
+        "dom:WageAccGroupDetail_costElement2Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement3Id",
+      "label": "CostElement3Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement3Id",
+        "dom:WageAccGroupDetail_costElement3Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement4Id",
+      "label": "CostElement4Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement4Id",
+        "dom:WageAccGroupDetail_costElement4Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement5Id",
+      "label": "CostElement5Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement5Id",
+        "dom:WageAccGroupDetail_costElement5Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement6Id",
+      "label": "CostElement6Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement6Id",
+        "dom:WageAccGroupDetail_costElement6Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "WageAccGroupDetail.CostElement7Id",
+      "label": "CostElement7Id",
+      "section": "WageAccGroupDetails",
+      "aliases": [
+        "loc:CostElement7Id",
+        "dom:WageAccGroupDetail_costElement7Id"
+      ],
+      "rules": "Optional. Chosen from Cost Element master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

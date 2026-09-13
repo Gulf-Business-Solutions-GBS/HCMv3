@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.employee-group.edit",
+  "lang": "en",
+  "title": "Employee Groups — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeGroup",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "EmployeeGroup.Code",
+    "dom:EmployeeGroup_Code": "EmployeeGroup.Code",
+    "loc:NameEn": "EmployeeGroup.NameEn",
+    "dom:EmployeeGroup_NameEn": "EmployeeGroup.NameEn",
+    "loc:NameAr": "EmployeeGroup.NameAr",
+    "dom:EmployeeGroup_NameAr": "EmployeeGroup.NameAr",
+    "loc:IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "dom:EmployeeGroup_IndemnityMaxNumber": "EmployeeGroup.IndemnityMaxNumber",
+    "loc:IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "dom:EmployeeGroup_IndemnityMaxUnit": "EmployeeGroup.IndemnityMaxUnit",
+    "loc:IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage",
+    "dom:EmployeeGroup_IndemnityMaxAccruePercentage": "EmployeeGroup.IndemnityMaxAccruePercentage"
+  },
+  "fields": [
+    {
+      "id": "EmployeeGroup.Code",
+      "label": "Code",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:EmployeeGroup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameEn",
+      "label": "NameEn",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmployeeGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.NameAr",
+      "label": "NameAr",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmployeeGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxNumber",
+      "label": "IndemnityMaxNumber",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxNumber",
+        "dom:EmployeeGroup_IndemnityMaxNumber"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxUnit",
+      "label": "IndemnityMaxUnit",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxUnit",
+        "dom:EmployeeGroup_IndemnityMaxUnit"
+      ],
+      "rules": "Required. One of: Day, Month.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeGroup.IndemnityMaxAccruePercentage",
+      "label": "IndemnityMaxAccruePercentage",
+      "section": "EmployeeGroups",
+      "aliases": [
+        "loc:IndemnityMaxAccruePercentage",
+        "dom:EmployeeGroup_IndemnityMaxAccruePercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

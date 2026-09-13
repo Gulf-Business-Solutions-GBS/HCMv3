@@ -1,0 +1,43 @@
+{
+  "helpId": "pay.employee-sub-group-benefit.edit",
+  "lang": "en",
+  "title": "Employee Sub Group Benefits — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.EmployeeSubGroupBenefit",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:BenefitType": "EmployeeSubGroupBenefit.BenefitTypeId",
+    "dom:EmployeeSubGroupBenefit_BenefitTypeId": "EmployeeSubGroupBenefit.BenefitTypeId",
+    "loc:MaxAmount": "EmployeeSubGroupBenefit.MaxAmount",
+    "dom:EmployeeSubGroupBenefit_MaxAmount": "EmployeeSubGroupBenefit.MaxAmount"
+  },
+  "fields": [
+    {
+      "id": "EmployeeSubGroupBenefit.BenefitTypeId",
+      "label": "BenefitType",
+      "section": "EmployeeSubGroupBenefits",
+      "aliases": [
+        "loc:BenefitType",
+        "dom:EmployeeSubGroupBenefit_BenefitTypeId"
+      ],
+      "rules": "Optional. Chosen from Benefit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "EmployeeSubGroupBenefit.MaxAmount",
+      "label": "MaxAmount",
+      "section": "EmployeeSubGroupBenefits",
+      "aliases": [
+        "loc:MaxAmount",
+        "dom:EmployeeSubGroupBenefit_MaxAmount"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.social-security-marital-allowance.edit",
+  "lang": "ar",
+  "title": "علاوات الحالة الاجتماعية في التأمينات — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.SocialSecurityMaritalAllowance",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SocialSecurityId": "SocialSecurityMaritalAllowance.SocialSecurityId",
+    "dom:SocialSecurityMaritalAllowance_SocialSecurityId": "SocialSecurityMaritalAllowance.SocialSecurityId",
+    "loc:EducationBranchId": "SocialSecurityMaritalAllowance.EducationBranchId",
+    "dom:SocialSecurityMaritalAllowance_EducationBranchId": "SocialSecurityMaritalAllowance.EducationBranchId",
+    "loc:MaritalStatusId": "SocialSecurityMaritalAllowance.MaritalStatusId",
+    "dom:SocialSecurityMaritalAllowance_MaritalStatusId": "SocialSecurityMaritalAllowance.MaritalStatusId",
+    "loc:Amount": "SocialSecurityMaritalAllowance.Amount",
+    "dom:SocialSecurityMaritalAllowance_Amount": "SocialSecurityMaritalAllowance.Amount"
+  },
+  "fields": [
+    {
+      "id": "SocialSecurityMaritalAllowance.SocialSecurityId",
+      "label": "SocialSecurityId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:SocialSecurityId",
+        "dom:SocialSecurityMaritalAllowance_SocialSecurityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة التأمينات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.EducationBranchId",
+      "label": "EducationBranchId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:EducationBranchId",
+        "dom:SocialSecurityMaritalAllowance_EducationBranchId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة EducationBranch.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.MaritalStatusId",
+      "label": "MaritalStatusId",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:MaritalStatusId",
+        "dom:SocialSecurityMaritalAllowance_MaritalStatusId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الحالات الاجتماعية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SocialSecurityMaritalAllowance.Amount",
+      "label": "Amount",
+      "section": "SocialSecurityMaritalAllowances",
+      "aliases": [
+        "loc:Amount",
+        "dom:SocialSecurityMaritalAllowance_Amount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "pay.absence-violation-rule-exception.edit",
+  "lang": "ar",
+  "title": "استثناءات قواعد مخالفات الغياب — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleException",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:AbsenceViolationRules": "AbsenceViolationRuleException.AbsenceViolationRuleId",
+    "dom:AbsenceViolationRuleException_AbsenceViolationRuleId": "AbsenceViolationRuleException.AbsenceViolationRuleId",
+    "loc:Employee": "AbsenceViolationRuleException.EmployeeId",
+    "dom:AbsenceViolationRuleException_EmployeeId": "AbsenceViolationRuleException.EmployeeId",
+    "loc:StartDate": "AbsenceViolationRuleException.StartDate",
+    "dom:AbsenceViolationRuleException_StartDate": "AbsenceViolationRuleException.StartDate",
+    "loc:EndDate": "AbsenceViolationRuleException.EndDate",
+    "dom:AbsenceViolationRuleException_EndDate": "AbsenceViolationRuleException.EndDate"
+  },
+  "fields": [
+    {
+      "id": "AbsenceViolationRuleException.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRules",
+      "section": "AbsenceViolationRuleExceptions",
+      "aliases": [
+        "loc:AbsenceViolationRules",
+        "dom:AbsenceViolationRuleException_AbsenceViolationRuleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قواعد مخالفات الغياب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleException.EmployeeId",
+      "label": "Employee",
+      "section": "AbsenceViolationRuleExceptions",
+      "aliases": [
+        "loc:Employee",
+        "dom:AbsenceViolationRuleException_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "AbsenceViolationRuleException.StartDate",
+      "label": "StartDate",
+      "section": "AbsenceViolationRuleExceptions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AbsenceViolationRuleException_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AbsenceViolationRuleException.EndDate",
+      "label": "EndDate",
+      "section": "AbsenceViolationRuleExceptions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AbsenceViolationRuleException_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

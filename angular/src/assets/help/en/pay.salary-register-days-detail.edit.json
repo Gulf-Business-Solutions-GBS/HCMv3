@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.salary-register-days-detail.edit",
+  "lang": "en",
+  "title": "Salary Register Days Details — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SalaryRegisterDaysDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+    "loc:Period": "SalaryRegisterDaysDetail.Period",
+    "dom:SalaryRegisterDaysDetail_Period": "SalaryRegisterDaysDetail.Period",
+    "loc:Rate": "SalaryRegisterDaysDetail.Rate",
+    "dom:SalaryRegisterDaysDetail_Rate": "SalaryRegisterDaysDetail.Rate",
+    "loc:Number": "SalaryRegisterDaysDetail.Number",
+    "dom:SalaryRegisterDaysDetail_Number": "SalaryRegisterDaysDetail.Number",
+    "loc:Amount": "SalaryRegisterDaysDetail.Amount",
+    "dom:SalaryRegisterDaysDetail_Amount": "SalaryRegisterDaysDetail.Amount"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegisterDaysDetail.SalaryRegisterDetailId",
+      "label": "SalaryRegisterDetailId",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:SalaryRegisterDetailId",
+        "dom:SalaryRegisterDaysDetail_SalaryRegisterDetailId"
+      ],
+      "rules": "Required. Chosen from Salary Register Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Period",
+      "label": "Period",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Period",
+        "dom:SalaryRegisterDaysDetail_Period"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Rate",
+      "label": "Rate",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Rate",
+        "dom:SalaryRegisterDaysDetail_Rate"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Number",
+      "label": "Number",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Number",
+        "dom:SalaryRegisterDaysDetail_Number"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegisterDaysDetail.Amount",
+      "label": "Amount",
+      "section": "SalaryRegisterDaysDetails",
+      "aliases": [
+        "loc:Amount",
+        "dom:SalaryRegisterDaysDetail_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

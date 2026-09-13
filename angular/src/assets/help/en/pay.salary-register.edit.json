@@ -1,0 +1,139 @@
+{
+  "helpId": "pay.salary-register.edit",
+  "lang": "en",
+  "title": "Salary Registers — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SalaryRegister",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "SalaryRegister.EmployeeId",
+    "dom:SalaryRegister_EmployeeId": "SalaryRegister.EmployeeId",
+    "loc:ForPeriod": "SalaryRegister.ForPeriod",
+    "dom:SalaryRegister_ForPeriod": "SalaryRegister.ForPeriod",
+    "loc:InPeriod": "SalaryRegister.InPeriod",
+    "dom:SalaryRegister_InPeriod": "SalaryRegister.InPeriod",
+    "loc:PayrollRunType": "SalaryRegister.PayrollRunType",
+    "dom:SalaryRegister_PayrollRunType": "SalaryRegister.PayrollRunType",
+    "loc:PayrollResultType": "SalaryRegister.PayrollResultType",
+    "dom:SalaryRegister_PayrollResultType": "SalaryRegister.PayrollResultType",
+    "loc:PayrollReasonTypeId": "SalaryRegister.PayrollReasonTypeId",
+    "dom:SalaryRegister_PayrollReasonTypeId": "SalaryRegister.PayrollReasonTypeId",
+    "loc:OffCyclePaymentDate": "SalaryRegister.OffCyclePaymentDate",
+    "dom:SalaryRegister_OffCyclePaymentDate": "SalaryRegister.OffCyclePaymentDate",
+    "loc:Locked": "SalaryRegister.Locked",
+    "dom:SalaryRegister_Locked": "SalaryRegister.Locked"
+  },
+  "fields": [
+    {
+      "id": "SalaryRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:SalaryRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:SalaryRegister_ForPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:SalaryRegister_InPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:SalaryRegister_PayrollRunType"
+      ],
+      "rules": "Required. One of: Regular, Off Cycle.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.PayrollResultType",
+      "label": "PayrollResultType",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollResultType",
+        "dom:SalaryRegister_PayrollResultType"
+      ],
+      "rules": "Required. One of: Current, Last, Archive.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.PayrollReasonTypeId",
+      "label": "PayrollReasonTypeId",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:PayrollReasonTypeId",
+        "dom:SalaryRegister_PayrollReasonTypeId"
+      ],
+      "rules": "Required. Chosen from Payroll Reason Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.OffCyclePaymentDate",
+      "label": "OffCyclePaymentDate",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:OffCyclePaymentDate",
+        "dom:SalaryRegister_OffCyclePaymentDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SalaryRegister.Locked",
+      "label": "Locked",
+      "section": "SalaryRegisters",
+      "aliases": [
+        "loc:Locked",
+        "dom:SalaryRegister_Locked"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "helpId": "pay.payroll-calendar.edit",
+  "lang": "en",
+  "title": "Payroll Calendars — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.PayrollCalendar",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:PayrollAreaId": "PayrollCalendar.PayrollAreaId",
+    "dom:PayrollCalendar_PayrollAreaId": "PayrollCalendar.PayrollAreaId",
+    "loc:PayrollMonth": "PayrollCalendar.PayrollMonth",
+    "dom:PayrollCalendar_PayrollMonth": "PayrollCalendar.PayrollMonth",
+    "loc:PayrollYear": "PayrollCalendar.PayrollYear",
+    "dom:PayrollCalendar_PayrollYear": "PayrollCalendar.PayrollYear",
+    "loc:StartDate": "PayrollCalendar.StartDate",
+    "dom:PayrollCalendar_StartDate": "PayrollCalendar.StartDate",
+    "loc:EndDate": "PayrollCalendar.EndDate",
+    "dom:PayrollCalendar_EndDate": "PayrollCalendar.EndDate"
+  },
+  "fields": [
+    {
+      "id": "PayrollCalendar.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:PayrollCalendar_PayrollAreaId"
+      ],
+      "rules": "Required. Chosen from Payroll Area master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollCalendar.PayrollMonth",
+      "label": "PayrollMonth",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollMonth",
+        "dom:PayrollCalendar_PayrollMonth"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollCalendar.PayrollYear",
+      "label": "PayrollYear",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:PayrollYear",
+        "dom:PayrollCalendar_PayrollYear"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "PayrollCalendar.StartDate",
+      "label": "StartDate",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:StartDate",
+        "dom:PayrollCalendar_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollCalendar.EndDate",
+      "label": "EndDate",
+      "section": "PayrollCalendars",
+      "aliases": [
+        "loc:EndDate",
+        "dom:PayrollCalendar_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "pay.gratuity-accrual-summary.edit",
+  "lang": "ar",
+  "title": "ملخصات تراكم مكافأة نهاية الخدمة — إنشاء / تحرير",
+  "entity": "HCMv3.PayrollManagement.GratuityAccrualSummary",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "GratuityAccrualSummary.EmployeeId",
+    "dom:GratuityAccrualSummary_EmployeeId": "GratuityAccrualSummary.EmployeeId",
+    "loc:Year": "GratuityAccrualSummary.Year",
+    "dom:GratuityAccrualSummary_Year": "GratuityAccrualSummary.Year",
+    "loc:Month": "GratuityAccrualSummary.Month",
+    "dom:GratuityAccrualSummary_Month": "GratuityAccrualSummary.Month",
+    "loc:GratuityDaysAccrued": "GratuityAccrualSummary.GratuityDaysAccrued",
+    "dom:GratuityAccrualSummary_GratuityDaysAccrued": "GratuityAccrualSummary.GratuityDaysAccrued",
+    "loc:GratuityDaysBalance": "GratuityAccrualSummary.GratuityDaysBalance",
+    "dom:GratuityAccrualSummary_GratuityDaysBalance": "GratuityAccrualSummary.GratuityDaysBalance",
+    "loc:GratuityAmount": "GratuityAccrualSummary.GratuityAmount",
+    "dom:GratuityAccrualSummary_GratuityAmount": "GratuityAccrualSummary.GratuityAmount",
+    "loc:GratuityAmountPaid": "GratuityAccrualSummary.GratuityAmountPaid",
+    "dom:GratuityAccrualSummary_GratuityAmountPaid": "GratuityAccrualSummary.GratuityAmountPaid"
+  },
+  "fields": [
+    {
+      "id": "GratuityAccrualSummary.EmployeeId",
+      "label": "EmployeeId",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:GratuityAccrualSummary_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.Year",
+      "label": "Year",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:Year",
+        "dom:GratuityAccrualSummary_Year"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.Month",
+      "label": "Month",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:Month",
+        "dom:GratuityAccrualSummary_Month"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityDaysAccrued",
+      "label": "GratuityDaysAccrued",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityDaysAccrued",
+        "dom:GratuityAccrualSummary_GratuityDaysAccrued"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityDaysBalance",
+      "label": "GratuityDaysBalance",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityDaysBalance",
+        "dom:GratuityAccrualSummary_GratuityDaysBalance"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityAmount",
+      "label": "GratuityAmount",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityAmount",
+        "dom:GratuityAccrualSummary_GratuityAmount"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "GratuityAccrualSummary.GratuityAmountPaid",
+      "label": "GratuityAmountPaid",
+      "section": "GratuityAccrualSummaries",
+      "aliases": [
+        "loc:GratuityAmountPaid",
+        "dom:GratuityAccrualSummary_GratuityAmountPaid"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

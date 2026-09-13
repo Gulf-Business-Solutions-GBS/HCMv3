@@ -1,0 +1,107 @@
+{
+  "helpId": "pay.simulation-salary-register.edit",
+  "lang": "en",
+  "title": "Simulation Salary Registers — Create / Edit",
+  "entity": "HCMv3.PayrollManagement.SimulationSalaryRegister",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "dom:SimulationSalaryRegister_EmployeeId": "SimulationSalaryRegister.EmployeeId",
+    "loc:ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "dom:SimulationSalaryRegister_ForPeriod": "SimulationSalaryRegister.ForPeriod",
+    "loc:InPeriod": "SimulationSalaryRegister.InPeriod",
+    "dom:SimulationSalaryRegister_InPeriod": "SimulationSalaryRegister.InPeriod",
+    "loc:PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "dom:SimulationSalaryRegister_PayrollRunType": "SimulationSalaryRegister.PayrollRunType",
+    "loc:PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "dom:SimulationSalaryRegister_PayrollResultType": "SimulationSalaryRegister.PayrollResultType",
+    "loc:PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId",
+    "dom:SimulationSalaryRegister_PayrollReasonTypeId": "SimulationSalaryRegister.PayrollReasonTypeId"
+  },
+  "fields": [
+    {
+      "id": "SimulationSalaryRegister.EmployeeId",
+      "label": "EmployeeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:EmployeeId",
+        "dom:SimulationSalaryRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegister.ForPeriod",
+      "label": "ForPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:ForPeriod",
+        "dom:SimulationSalaryRegister_ForPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegister.InPeriod",
+      "label": "InPeriod",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:InPeriod",
+        "dom:SimulationSalaryRegister_InPeriod"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollRunType",
+      "label": "PayrollRunType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollRunType",
+        "dom:SimulationSalaryRegister_PayrollRunType"
+      ],
+      "rules": "Required. One of: Regular, Off Cycle.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollResultType",
+      "label": "PayrollResultType",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollResultType",
+        "dom:SimulationSalaryRegister_PayrollResultType"
+      ],
+      "rules": "Required. One of: Current, Last, Archive.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationSalaryRegister.PayrollReasonTypeId",
+      "label": "PayrollReasonTypeId",
+      "section": "SimulationSalaryRegisters",
+      "aliases": [
+        "loc:PayrollReasonTypeId",
+        "dom:SimulationSalaryRegister_PayrollReasonTypeId"
+      ],
+      "rules": "Required. Chosen from Payroll Reason Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}
