@@ -40,7 +40,9 @@ public class EmployeeAbsenceRuleBaseObjectProvider : IRuleBaseObjectProvider, IS
             .SupportsEvents(
                 RuleEventType.OnInit,
                 RuleEventType.BeforeSave,
-                RuleEventType.OnValidate)
+                RuleEventType.AfterSave,
+                RuleEventType.OnValidate,
+                RuleEventType.BeforeDelete)
 
             .Parameter<EmployeeAbsence>(LeaveParameter, "Leave", isWritable: true, p => p
                 .Read("Id", "Id", RuleDataType.Integer, a => (long)a.Id)

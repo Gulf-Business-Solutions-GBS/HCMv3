@@ -189,6 +189,7 @@ public class HCMv3CoreModule : AbpModule
             Component
                 .For<IEventHandler<EntityCreatingEventData<Employee>>,
                     IEventHandler<EntityUpdatingEventData<Employee>>,
+                    IEventHandler<EntityDeletingEventData<Employee>>,
                     EmployeeBusinessRuleHook>()
                 .ImplementedBy<EmployeeBusinessRuleHook>()
                 .LifestyleTransient());
@@ -197,6 +198,7 @@ public class HCMv3CoreModule : AbpModule
             Component
                 .For<IEventHandler<EntityCreatingEventData<EmployeeAbsence>>,
                     IEventHandler<EntityUpdatingEventData<EmployeeAbsence>>,
+                    IEventHandler<EntityDeletingEventData<EmployeeAbsence>>,
                     EmployeeAbsenceBusinessRuleHook>()
                 .ImplementedBy<EmployeeAbsenceBusinessRuleHook>()
                 .LifestyleTransient());

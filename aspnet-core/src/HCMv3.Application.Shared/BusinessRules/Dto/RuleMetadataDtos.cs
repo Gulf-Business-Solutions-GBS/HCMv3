@@ -149,3 +149,21 @@ public class TestBusinessRuleOutput
 
     public string Trace { get; set; }
 }
+
+/// <summary>A table an AfterSave rule may write, named by its entity.</summary>
+public class RuleRecordTableDto
+{
+    public string Name { get; set; }
+
+    public List<RuleRecordColumnDto> Columns { get; set; } = new();
+}
+
+/// <summary>A column an AfterSave rule may set.</summary>
+public class RuleRecordColumnDto
+{
+    public string Name { get; set; }
+
+    public RuleDataType DataType { get; set; }
+
+    public bool IsNullable { get; set; }
+}

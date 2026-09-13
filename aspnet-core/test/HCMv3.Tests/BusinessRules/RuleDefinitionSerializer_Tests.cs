@@ -126,6 +126,68 @@ public class RuleDefinitionSerializer_Tests
     /// rule that is working correctly. Refused at the door instead.
     /// </summary>
     [Fact]
+    public void Should_Round_Trip_Record_Actions()
+    {
+        var original = new RuleDefinition
+        {
+            Blocks = new System.Collections.Generic.List<RuleBlock>
+            {
+                new()
+                {
+                    Then = new System.Collections.Generic.List<RuleAction>
+                    {
+                        new RuleCreateRecordAction
+                        {
+                            Table = "Nationality",
+                            Values = new System.Collections.Generic.List<RuleRecordFieldValue>
+                            {
+                                new() { Field = "Code", Value = new RuleConstantExpression { DataType = RuleDataType.String, Value = "KW" } }
+                            }
+                        },
+                        new RuleUpdateRecordAction
+                        {
+                            Table = "Employee",
+                            RecordId = new RuleFieldExpression { Parameter = "Leave", Field = "EmployeeId" },
+                            Values = new System.Collections.Generic.List<RuleRecordFieldValue>
+                            {
+                                new() { Field = "Email", Value = new RuleConstantExpression { DataType = RuleDataType.String, Value = "a@b.com" } }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var json = RuleDefinitionSerializer.Serialize(original);
+        var reparsed = RuleDefinitionSerializer.Parse(json);
+
+        // Serialising the reparsed definition must give back the same text: a record action that lost its table,
+        // its row, or a value on the way through would change what the rule writes the next time it is opened.
+        RuleDefinitionSerializer.Serialize(reparsed).ShouldBe(json);
+
+        var create = reparsed.Blocks[0].Then[0].ShouldBeOfType<RuleCreateRecordAction>();
+        create.Table.ShouldBe("Nationality");
+        create.Values.ShouldHaveSingleItem().Field.ShouldBe("Code");
+
+        var update = reparsed.Blocks[0].Then[1].ShouldBeOfType<RuleUpdateRecordAction>();
+        update.Table.ShouldBe("Employee");
+        update.RecordId.ShouldBeOfType<RuleFieldExpression>().Field.ShouldBe("EmployeeId");
+    }
+
+    [Fact]
+    public void Should_Reject_An_Update_Record_Action_With_No_Record_Id()
+    {
+        const string json = """
+            {
+              "version": 1,
+              "blocks": [ { "then": [ { "kind": "updateRecord", "table": "Employee", "values": [] } ] } ]
+            }
+            """;
+
+        Should.Throw<RuleDefinitionException>(() => RuleDefinitionSerializer.Parse(json));
+    }
+
+    [Fact]
     public void Should_Reject_A_Definition_With_No_Blocks()
     {
         Should.Throw<RuleDefinitionException>(() => RuleDefinitionSerializer.Parse("""{ "version": 1 }"""));

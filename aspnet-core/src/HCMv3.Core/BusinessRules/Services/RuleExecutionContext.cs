@@ -62,6 +62,20 @@ public class RuleExecutionContext
     /// </summary>
     public bool AllowWrites { get; set; } = true;
 
+    /// <summary>
+    /// The action kinds this execution may carry out, from <see cref="RuleEventActionPolicy"/>. Null means
+    /// unrestricted, which only the authoring "Test rule" dry run uses -- it exercises a definition, not an
+    /// event.
+    ///
+    /// <para>
+    /// Distinct from <see cref="AllowWrites"/>, and the distinction is the point. AllowWrites turns a real
+    /// assignment into a traced dry run. This refuses an action the event cannot support at all, and it
+    /// refuses LOUDLY: a "set" on OnValidate that merely traced would leave a rule that looks healthy and
+    /// never does anything.
+    /// </para>
+    /// </summary>
+    public IReadOnlyCollection<string> AllowedActionKinds { get; set; }
+
     /// <summary>Set by the runner while a rule is executing, so errors and trace lines can name it.</summary>
     public string CurrentRuleCode { get; set; }
 

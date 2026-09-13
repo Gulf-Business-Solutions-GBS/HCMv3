@@ -1,6 +1,10 @@
 using System;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Abp.Json;
+using Abp.UI;
+using HCMv3.BusinessRules.AfterSave;
 using Abp.OpenIddict.Applications;
 using Abp.OpenIddict.Authorizations;
 using Abp.OpenIddict.EntityFrameworkCore;
@@ -1138,6 +1142,111 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
     public HCMv3DbContext(DbContextOptions<HCMv3DbContext> options)
         : base(options)
     {
+    }
+
+    /// <summary>
+    /// Property-injected, the way ABP injects EventBus and the rest of this context's collaborators: the
+    /// constructor has to stay usable by the design-time factory that builds migrations, which has no container.
+    /// Without the container this is the null dispatcher, and no AfterSave rule runs -- which is correct for a
+    /// migration and caught by BusinessRuleAfterSave_Tests for everything else.
+    /// </summary>
+    public IBusinessRuleAfterSaveDispatcher BusinessRuleAfterSaveDispatcher { get; set; } =
+        NullBusinessRuleAfterSaveDispatcher.Instance;
+
+    private bool _isRunningAfterSaveRules;
+
+    public override int SaveChanges()
+    {
+        var saved = base.SaveChanges();
+        return saved + RunAfterSaveRules();
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var saved = await base.SaveChangesAsync(cancellationToken);
+        return saved + await RunAfterSaveRulesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Runs the AfterSave rules of what this save just wrote, and saves their follow-up changes -- in the same
+    /// transaction, which is the whole reason this lives here rather than in an EntityCreated handler. ABP raises
+    /// EntityCreated only after the unit of work has committed, when a failed follow-up could no longer undo the
+    /// save it followed. Here the transaction is still open, so any failure rolls everything back.
+    ///
+    /// <para>
+    /// In rounds, because a follow-up that saves a rule-enabled record queues that record's AfterSave rules in
+    /// turn. The dispatcher stops a chain that will not settle. The flag stops a SaveChanges made from inside a
+    /// rule from starting a second, nested drain; the outer loop picks up whatever it queued.
+    /// </para>
+    /// </summary>
+    private int RunAfterSaveRules()
+    {
+        if (_isRunningAfterSaveRules || !BusinessRuleAfterSaveDispatcher.HasPending)
+        {
+            return 0;
+        }
+
+        _isRunningAfterSaveRules = true;
+
+        try
+        {
+            var saved = 0;
+
+            for (var round = 1; BusinessRuleAfterSaveDispatcher.HasPending; round++)
+            {
+                BusinessRuleAfterSaveDispatcher.RunPending(round);
+
+                try
+                {
+                    saved += base.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new UserFriendlyException(BusinessRuleAfterSaveDispatcher.DescribeFollowUpSaveFailure(ex));
+                }
+            }
+
+            return saved;
+        }
+        finally
+        {
+            _isRunningAfterSaveRules = false;
+        }
+    }
+
+    private async Task<int> RunAfterSaveRulesAsync(CancellationToken cancellationToken)
+    {
+        if (_isRunningAfterSaveRules || !BusinessRuleAfterSaveDispatcher.HasPending)
+        {
+            return 0;
+        }
+
+        _isRunningAfterSaveRules = true;
+
+        try
+        {
+            var saved = 0;
+
+            for (var round = 1; BusinessRuleAfterSaveDispatcher.HasPending; round++)
+            {
+                BusinessRuleAfterSaveDispatcher.RunPending(round);
+
+                try
+                {
+                    saved += await base.SaveChangesAsync(cancellationToken);
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new UserFriendlyException(BusinessRuleAfterSaveDispatcher.DescribeFollowUpSaveFailure(ex));
+                }
+            }
+
+            return saved;
+        }
+        finally
+        {
+            _isRunningAfterSaveRules = false;
+        }
     }
 
     /// <summary>

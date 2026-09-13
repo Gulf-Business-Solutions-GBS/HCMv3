@@ -40,6 +40,13 @@ public interface IBusinessRulesAppService : IApplicationService
     Task<RuleMetadataDto> GetRuleMetadata();
 
     /// <summary>
+    /// The tables and columns an AfterSave rule may create or update. Separate from <see cref="GetRuleMetadata"/>
+    /// because it covers every business table and their columns, and the builder only needs it once an author
+    /// adds a record action.
+    /// </summary>
+    Task<List<RuleRecordTableDto>> GetRuleRecordTables();
+
+    /// <summary>
     /// Runs a rule against sample values without saving anything. Returns problems rather than throwing --
     /// reporting every fault at once is the whole value of a test harness.
     /// </summary>

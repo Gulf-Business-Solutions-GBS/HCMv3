@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Abp.Timing;
@@ -66,6 +67,11 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         // and a caller that forgot to wire it would get rules silently reading empty related records.
         context.EntityLoader ??= _entityLoader;
 
+        // Every live run is held to what its event permits. Set here, once, rather than trusted to each hook
+        // and resolver to remember. TestAsync does not come through this method, so the authoring dry run
+        // stays unrestricted.
+        context.AllowedActionKinds ??= RuleEventActionPolicy.AllowedKindsFor(context.EventType);
+
         var result = new BusinessRuleRunResult();
 
         var rules = await _cache.GetAsync(context.TenantId, context.BaseObject.Code, context.EventType);
@@ -95,6 +101,13 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
         }
 
         return result;
+    }
+
+    public async Task<bool> HasArmedRulesAsync(int? tenantId, string baseObjectCode, RuleEventType eventType, DateTime asOf)
+    {
+        var rules = await _cache.GetAsync(tenantId, baseObjectCode, eventType);
+
+        return rules.Any(rule => rule.IsEffectiveOn(asOf.Date));
     }
 
     public async Task<BusinessRuleRunResult> TestAsync(
@@ -192,6 +205,7 @@ public class BusinessRuleRunner : HCMv3DomainServiceBase, IBusinessRuleRunner
             }
 
             result.Writes.AddRange(evaluation.Writes);
+            result.RecordChanges.AddRange(evaluation.RecordChanges);
 
             foreach (var error in evaluation.Errors)
             {

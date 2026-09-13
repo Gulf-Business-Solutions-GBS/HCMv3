@@ -239,6 +239,21 @@ public static class RuleDefinitionSerializer
                     Args = ParseExpressionList(obj["args"], 1)
                 };
 
+            case RuleCreateRecordAction.KindName:
+                return new RuleCreateRecordAction
+                {
+                    Table = RequireString(obj, "table", "create record action"),
+                    Values = ParseRecordValues(obj["values"], "create record action")
+                };
+
+            case RuleUpdateRecordAction.KindName:
+                return new RuleUpdateRecordAction
+                {
+                    Table = RequireString(obj, "table", "update record action"),
+                    RecordId = ParseExpression(RequireNode(obj, "recordId", "update record action"), 1),
+                    Values = ParseRecordValues(obj["values"], "update record action")
+                };
+
             default:
                 throw new RuleDefinitionException("Unknown rule action kind: " + (kind ?? "(missing)"));
         }
@@ -460,6 +475,57 @@ public static class RuleDefinitionSerializer
         return array;
     }
 
+    /// <summary>
+    /// A record action with no columns is allowed through here and rejected by the validator instead, which can
+    /// say which table it was -- the serializer only knows the JSON is well formed.
+    /// </summary>
+    private static List<RuleRecordFieldValue> ParseRecordValues(JsonNode node, string what)
+    {
+        var values = new List<RuleRecordFieldValue>();
+
+        if (node == null)
+        {
+            return values;
+        }
+
+        if (node is not JsonArray array)
+        {
+            throw new RuleDefinitionException("The values of a " + what + " must be a JSON array.");
+        }
+
+        foreach (var item in array)
+        {
+            if (item is not JsonObject valueObject)
+            {
+                throw new RuleDefinitionException("Each value of a " + what + " must be a JSON object.");
+            }
+
+            values.Add(new RuleRecordFieldValue
+            {
+                Field = RequireString(valueObject, "field", what),
+                Value = ParseExpression(RequireNode(valueObject, "value", what), 1)
+            });
+        }
+
+        return values;
+    }
+
+    private static JsonArray WriteRecordValues(IEnumerable<RuleRecordFieldValue> values)
+    {
+        var array = new JsonArray();
+
+        foreach (var value in values ?? Enumerable.Empty<RuleRecordFieldValue>())
+        {
+            array.Add(new JsonObject
+            {
+                ["field"] = value.Field,
+                ["value"] = WriteExpression(value.Value)
+            });
+        }
+
+        return array;
+    }
+
     private static JsonArray WriteActions(IEnumerable<RuleAction> actions)
     {
         var array = new JsonArray();
@@ -479,6 +545,17 @@ public static class RuleDefinitionSerializer
                 case RuleErrorAction error:
                     obj["messageKey"] = error.MessageKey;
                     obj["args"] = WriteExpressions(error.Args);
+                    break;
+
+                case RuleCreateRecordAction create:
+                    obj["table"] = create.Table;
+                    obj["values"] = WriteRecordValues(create.Values);
+                    break;
+
+                case RuleUpdateRecordAction update:
+                    obj["table"] = update.Table;
+                    obj["recordId"] = WriteExpression(update.RecordId);
+                    obj["values"] = WriteRecordValues(update.Values);
                     break;
 
                 default:

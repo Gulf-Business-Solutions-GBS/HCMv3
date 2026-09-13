@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HCMv3.BusinessRules.Definition;
+using HCMv3.BusinessRules.Records;
 
 namespace HCMv3.BusinessRules.Services;
 
@@ -42,6 +43,9 @@ public class RuleEvaluationResult
     /// validation pass can tell the user everything that is wrong with their record in a single round trip.
     /// </summary>
     public List<RuleRaisedError> Errors { get; } = new();
+
+    /// <summary>Creates and updates to other tables the rule decided on. Applied by the caller, never here.</summary>
+    public List<RuleRecordChange> RecordChanges { get; } = new();
 
     public bool HasErrors => Errors.Count > 0;
 }

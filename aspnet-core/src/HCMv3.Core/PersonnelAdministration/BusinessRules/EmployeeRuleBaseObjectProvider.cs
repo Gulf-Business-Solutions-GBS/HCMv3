@@ -44,7 +44,8 @@ public class EmployeeRuleBaseObjectProvider : IRuleBaseObjectProvider, ISingleto
                 RuleEventType.OnInit,
                 RuleEventType.BeforeSave,
                 RuleEventType.AfterSave,
-                RuleEventType.OnValidate)
+                RuleEventType.OnValidate,
+                RuleEventType.BeforeDelete)
             .Parameter<Employee>(EmployeeParameter, "Employee", isWritable: true, p => p
                 // --- Identity and status: readable so rules can branch, never writable. ---
                 .Read("Id", "Id", RuleDataType.Integer, e => (long)e.Id)

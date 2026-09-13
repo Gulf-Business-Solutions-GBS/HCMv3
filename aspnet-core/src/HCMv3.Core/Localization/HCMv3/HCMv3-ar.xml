@@ -5969,6 +5969,7 @@
     <text name="RuleFunction_Abs">القيمة المطلقة</text>
     <text name="BaseObjectCannotBeChanged">لا يمكن تغيير الكائن الأساسي لقاعدة قائمة. الرجاء إنشاء قاعدة جديدة.</text>
     <text name="EventNotSupportedByBaseObject">الحدث "{0}" غير متاح للكائن الأساسي "{1}".</text>
+    <text name="RuleActionNotAllowedOnEvent">لا يمكن تشغيل هذه القاعدة عند "{0}": هذا الحدث لا يسمح بالإجراء "{1}".</text>
     <text name="RuleIsAlreadyAssignedToThisEvent">هذه القاعدة مرتبطة بهذا الحدث بالفعل.</text>
     <text name="BusinessRulesDescription">إعداد الاشتقاقات وعمليات التحقق وتوجيه الاعتماد دون تغيير في البرمجة</text>
     <text name="InstallSampleRules">تثبيت القواعد النموذجية</text>
@@ -5998,6 +5999,11 @@
     <text name="RuleAllBlocksEvaluateHint">تُقيَّم جميع الكتل بالترتيب. الكتل ليست بدائل لبعضها، لذا يمكن لكتلة لاحقة أن تستبدل ما عيّنته كتلة سابقة.</text>
     <text name="RuleActionSet">تعيين</text>
     <text name="RuleActionRaiseError">إظهار خطأ</text>
+    <text name="RuleActionCreateRecord">إنشاء سجل</text>
+    <text name="RuleActionUpdateRecord">تحديث سجل</text>
+    <text name="BusinessRulesKeptTriggeringEachOther">استمرت قواعد العمل في تغيير سجلات أدت إلى تشغيل قواعد أخرى، لذلك لم يتم حفظ أي شيء. يرجى مراجعة القواعد التي تعمل بعد الحفظ.</text>
+    <text name="BusinessRuleRecordChangeFailed">تعذر على قاعدة العمل "{0}" تغيير "{1}"، لذلك لم يتم حفظ أي شيء. {2}</text>
+    <text name="BusinessRuleFollowUpSaveFailed">تعذر حفظ التغيير اللاحق لإحدى قواعد العمل، لذلك لم يتم حفظ أي شيء. {0}</text>
     <text name="RuleLeftOperand">الطرف الأيسر</text>
     <text name="RuleRightOperand">الطرف الأيمن</text>
     <text name="RuleGroupWithAnd">التجميع مع شرط آخر</text>

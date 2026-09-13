@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Domain.Services;
+using HCMv3.BusinessRules.Records;
 
 namespace HCMv3.BusinessRules.Services;
 
@@ -36,6 +38,13 @@ public interface IBusinessRuleRunner : IDomainService
     Task<BusinessRuleRunResult> RunAsync(RuleExecutionContext context, int? targetEntityId = null);
 
     /// <summary>
+    /// Whether any rule is armed on the event and in effect on <paramref name="asOf"/>. A cache read, no
+    /// database work -- so a caller can skip building an expensive context (the leave hook loads the employee
+    /// and the leave type to populate one) on the overwhelmingly common save where nothing is armed at all.
+    /// </summary>
+    Task<bool> HasArmedRulesAsync(int? tenantId, string baseObjectCode, RuleEventType eventType, DateTime asOf);
+
+    /// <summary>
     /// Runs a single rule definition without persisting anything and without consulting assignments -- the
     /// authoring screen's "test this rule" button.
     ///
@@ -61,6 +70,12 @@ public class BusinessRuleRunResult
     public int RulesMatched { get; set; }
 
     public List<RuleFieldWrite> Writes { get; } = new();
+
+    /// <summary>
+    /// Creates and updates to other tables, from every rule that ran. Only returned when no rule raised an
+    /// error -- RunAsync throws first -- so a caller applying them never applies half a rule set.
+    /// </summary>
+    public List<RuleRecordChange> RecordChanges { get; } = new();
 
     /// <summary>Business errors raised by rules, already localized.</summary>
     public List<string> Errors { get; } = new();

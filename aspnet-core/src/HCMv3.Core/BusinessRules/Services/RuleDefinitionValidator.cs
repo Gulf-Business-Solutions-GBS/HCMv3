@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Abp.Dependency;
 using HCMv3.BusinessRules.Definition;
+using HCMv3.BusinessRules.Records;
 
 namespace HCMv3.BusinessRules.Services;
 
@@ -29,10 +30,12 @@ public interface IRuleDefinitionValidator
 public class RuleDefinitionValidator : IRuleDefinitionValidator, ITransientDependency
 {
     private readonly IRuleFunctionRegistry _functionRegistry;
+    private readonly IRuleRecordSchema _recordSchema;
 
-    public RuleDefinitionValidator(IRuleFunctionRegistry functionRegistry)
+    public RuleDefinitionValidator(IRuleFunctionRegistry functionRegistry, IRuleRecordSchema recordSchema)
     {
         _functionRegistry = functionRegistry;
+        _recordSchema = recordSchema;
     }
 
     public IReadOnlyList<string> Validate(
@@ -122,6 +125,14 @@ public class RuleDefinitionValidator : IRuleDefinitionValidator, ITransientDepen
 
                     break;
 
+                case RuleCreateRecordAction create:
+                    ValidateRecordAction(create.Table, null, create.Values, isUpdate: false, baseObject, variables, purpose, errors);
+                    break;
+
+                case RuleUpdateRecordAction update:
+                    ValidateRecordAction(update.Table, update.RecordId, update.Values, isUpdate: true, baseObject, variables, purpose, errors);
+                    break;
+
                 default:
                     errors.Add("Unsupported action type: " + action.GetType().Name + ".");
                     break;
@@ -173,6 +184,90 @@ public class RuleDefinitionValidator : IRuleDefinitionValidator, ITransientDepen
         }
 
         ValidateExpression(set.Value, baseObject, variables, errors);
+    }
+
+    /// <summary>
+    /// Everything about a record action that can be known before it runs: the table and every column exist and
+    /// are writable, no column is set twice, and an update names its row. Whether a VALUE fits its column is
+    /// checked when the change is applied, because most values are only known then.
+    /// </summary>
+    private void ValidateRecordAction(
+        string tableName,
+        RuleExpression recordId,
+        List<RuleRecordFieldValue> values,
+        bool isUpdate,
+        RuleBaseObjectDescriptor baseObject,
+        HashSet<string> variables,
+        RulePurpose purpose,
+        List<string> errors)
+    {
+        var what = (isUpdate ? "An update" : "A create") + " of '" + tableName + "'";
+
+        if (purpose == RulePurpose.Validate)
+        {
+            // Same reasoning as a set: the runner turns writes off for validation rules, so this would silently
+            // do nothing. Better the author hears it now.
+            errors.Add(what + " belongs to a rule whose purpose is Validate. Validation rules may only raise errors.");
+        }
+
+        if (string.IsNullOrWhiteSpace(tableName))
+        {
+            errors.Add((isUpdate ? "An update" : "A create") + " record action has no table.");
+            return;
+        }
+
+        var table = _recordSchema.FindTable(tableName);
+
+        if (table == null)
+        {
+            errors.Add(
+                "'" + tableName + "' is not a table rules can write. It does not exist, or it is a system table "
+                + "rules are not allowed to change.");
+            return;
+        }
+
+        if (isUpdate)
+        {
+            if (recordId == null)
+            {
+                errors.Add(what + " does not say which record to update.");
+            }
+            else
+            {
+                ValidateExpression(recordId, baseObject, variables, errors);
+            }
+        }
+
+        if (values == null || values.Count == 0)
+        {
+            errors.Add(what + " does not set any fields.");
+            return;
+        }
+
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var value in values)
+        {
+            if (string.IsNullOrWhiteSpace(value.Field))
+            {
+                errors.Add(what + " has a value with no field.");
+                continue;
+            }
+
+            if (table.FindColumn(value.Field) == null)
+            {
+                errors.Add(
+                    "'" + table.Name + "." + value.Field + "' is not a field rules can set. It does not exist, or it "
+                    + "is a system field such as Id, TenantId or an audit stamp.");
+            }
+
+            if (!seen.Add(value.Field))
+            {
+                errors.Add(what + " sets '" + value.Field + "' more than once.");
+            }
+
+            ValidateExpression(value.Value, baseObject, variables, errors);
+        }
     }
 
     private void ValidateExpression(

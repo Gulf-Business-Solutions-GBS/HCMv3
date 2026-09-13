@@ -7,6 +7,7 @@ using Abp.Events.Bus.Handlers;
 using Abp.Runtime.Session;
 using Abp.Threading;
 using Castle.Core.Logging;
+using HCMv3.BusinessRules.AfterSave;
 using HCMv3.BusinessRules.Services;
 
 namespace HCMv3.BusinessRules.Hooks;
@@ -41,21 +42,29 @@ namespace HCMv3.BusinessRules.Hooks;
 /// </summary>
 public abstract class BusinessRuleEntityHookBase<TEntity> :
     IEventHandler<EntityCreatingEventData<TEntity>>,
-    IEventHandler<EntityUpdatingEventData<TEntity>>
+    IEventHandler<EntityUpdatingEventData<TEntity>>,
+    IEventHandler<EntityDeletingEventData<TEntity>>
     where TEntity : class, IEntity<int>
 {
     protected BusinessRuleEntityHookBase(
         IBusinessRuleRunner runner,
         IRuleBaseObjectRegistry registry,
         IAbpSession session,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IBusinessRuleAfterSaveDispatcher afterSaveDispatcher)
     {
         Runner = runner;
         Registry = registry;
         Session = session;
         UnitOfWorkManager = unitOfWorkManager;
+
+        // Constructor-injected, not a property. A property that failed to inject would fall back to nothing and
+        // every AfterSave rule would silently never run -- the exact failure this engine keeps being fixed for.
+        AfterSaveDispatcher = afterSaveDispatcher;
         Logger = NullLogger.Instance;
     }
+
+    protected IBusinessRuleAfterSaveDispatcher AfterSaveDispatcher { get; }
 
     public ILogger Logger { get; set; }
 
@@ -78,15 +87,60 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
 
     public void HandleEvent(EntityCreatingEventData<TEntity> eventData)
     {
-        Run(eventData.Entity);
+        RunSaveEvents(eventData.Entity);
     }
 
     public void HandleEvent(EntityUpdatingEventData<TEntity> eventData)
     {
-        Run(eventData.Entity);
+        RunSaveEvents(eventData.Entity);
     }
 
-    private void Run(TEntity entity)
+    /// <summary>
+    /// ABP raises this for a soft delete as well as a hard one, before the change is written, so a refusal
+    /// here stops the delete from ever reaching the database.
+    /// </summary>
+    public void HandleEvent(EntityDeletingEventData<TEntity> eventData)
+    {
+        Run(eventData.Entity, RuleEventType.BeforeDelete);
+    }
+
+    /// <summary>
+    /// BeforeSave, then OnValidate -- in that order, deliberately. BeforeSave derives values; OnValidate
+    /// judges the record. Validating first would judge the values the user typed rather than the values
+    /// about to be saved, so a rule checking a derived total would pass a record that is then saved with a
+    /// different total. Validating second means what gets validated is exactly what gets written.
+    /// </summary>
+    private void RunSaveEvents(TEntity entity)
+    {
+        Run(entity, RuleEventType.BeforeSave);
+        Run(entity, RuleEventType.OnValidate);
+        QueueAfterSave(entity);
+    }
+
+    /// <summary>
+    /// Queued rather than run: this handler fires inside the save, and AfterSave rules need the record written
+    /// first -- an inserted leave has no id to point a follow-up record at until then. HCMv3DbContext runs the
+    /// queue straight after the save's SQL, in the same transaction. See BusinessRuleAfterSaveDispatcher.
+    /// </summary>
+    private void QueueAfterSave(TEntity entity)
+    {
+        if (entity == null || UnitOfWorkManager.Current == null)
+        {
+            return;
+        }
+
+        if (!AsyncHelper.RunSync(() => Runner.HasArmedRulesAsync(Session.TenantId, BaseObjectCode, RuleEventType.AfterSave, DateTime.Today)))
+        {
+            return;
+        }
+
+        AfterSaveDispatcher.Enqueue(
+            BaseObjectCode,
+            context => PopulateParameters(context, entity),
+            () => entity.Id);
+    }
+
+    private void Run(TEntity entity, RuleEventType eventType)
     {
         if (entity == null)
         {
@@ -111,6 +165,15 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
             return;
         }
 
+        // Before anything else touches the database. Populating a context is not free -- the leave hook loads
+        // the employee snapshot and the leave type to build one -- and every save now asks about two events,
+        // so building it regardless would put those queries on every leave save in the system, twice, even
+        // though almost none have a rule armed. This keeps the empty case at one cache read per event.
+        if (!AsyncHelper.RunSync(() => Runner.HasArmedRulesAsync(Session.TenantId, BaseObjectCode, eventType, DateTime.Today)))
+        {
+            return;
+        }
+
         var baseObject = Registry.Find(BaseObjectCode);
 
         if (baseObject == null)
@@ -126,7 +189,7 @@ public abstract class BusinessRuleEntityHookBase<TEntity> :
 
         var context = new RuleExecutionContext(
             baseObject,
-            RuleEventType.BeforeSave,
+            eventType,
             DateTime.Today,
             Session.TenantId)
         {

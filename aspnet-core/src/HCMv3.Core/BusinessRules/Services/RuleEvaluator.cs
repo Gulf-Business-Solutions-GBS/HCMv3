@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Abp.Dependency;
 using HCMv3.BusinessRules.Definition;
+using HCMv3.BusinessRules.Records;
 
 namespace HCMv3.BusinessRules.Services;
 
@@ -87,6 +88,16 @@ public class RuleEvaluator : IRuleEvaluator, ITransientDependency
     {
         Consume(context);
 
+        // Checked before the action runs, so a disallowed action has no partial effect. Arming already
+        // refuses this combination; reaching here means the rule was edited after it was armed.
+        if (context.AllowedActionKinds != null && !context.AllowedActionKinds.Contains(action.Kind))
+        {
+            throw new RuleExecutionException(
+                ruleCode,
+                "The rule performs a '" + action.Kind + "' action, which the " + context.EventType
+                + " event does not allow.");
+        }
+
         switch (action)
         {
             case RuleSetAction set:
@@ -99,11 +110,85 @@ public class RuleEvaluator : IRuleEvaluator, ITransientDependency
                 context.Trace("raised " + error.MessageKey);
                 break;
 
+            case RuleCreateRecordAction create:
+                StageRecordChange(ruleCode, context, result, RuleRecordChangeKind.Create, create.Table, null, create.Values);
+                break;
+
+            case RuleUpdateRecordAction update:
+                StageRecordChange(ruleCode, context, result, RuleRecordChangeKind.Update, update.Table, update.RecordId, update.Values);
+                break;
+
             default:
                 throw new RuleExecutionException(
                     ruleCode,
                     "The rule uses an action type the engine does not implement: " + action.GetType().Name + ".");
         }
+    }
+
+    /// <summary>
+    /// Evaluates a record action into a <see cref="RuleRecordChange"/> and hands it back -- nothing is written.
+    ///
+    /// <para>
+    /// The values are evaluated here, in the rule, because that is where the context lives: afterwards the
+    /// variables are gone. Checking that the table and columns exist and accept those values is left to the
+    /// writer, which holds the data model; the validator has already caught every mistake it can see at
+    /// authoring time.
+    /// </para>
+    /// </summary>
+    private void StageRecordChange(
+        string ruleCode,
+        RuleExecutionContext context,
+        RuleEvaluationResult result,
+        RuleRecordChangeKind kind,
+        string table,
+        RuleExpression recordIdExpression,
+        List<RuleRecordFieldValue> fieldValues)
+    {
+        long? recordId = null;
+
+        if (kind == RuleRecordChangeKind.Update)
+        {
+            var idValue = Evaluate(recordIdExpression, context);
+
+            if (idValue == null)
+            {
+                throw new RuleExecutionException(
+                    ruleCode,
+                    "The rule updates a record in '" + table + "' but the record id it names is empty.");
+            }
+
+            try
+            {
+                recordId = RuleValueConverter.ToInteger(idValue);
+            }
+            catch (Exception ex) when (ex is InvalidCastException or FormatException or OverflowException)
+            {
+                throw new RuleExecutionException(
+                    ruleCode,
+                    "The rule updates a record in '" + table + "' but its record id is not a number.",
+                    ex);
+            }
+        }
+
+        var values = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var fieldValue in fieldValues ?? new List<RuleRecordFieldValue>())
+        {
+            // Evaluated even on a dry run, for the same reason as a set: an expression that would throw in
+            // production must throw in the test harness.
+            values[fieldValue.Field] = Evaluate(fieldValue.Value, context);
+        }
+
+        var change = new RuleRecordChange(ruleCode, kind, table, recordId, values);
+
+        if (!context.AllowWrites)
+        {
+            context.Trace("would " + change);
+            return;
+        }
+
+        result.RecordChanges.Add(change);
+        context.Trace(change.ToString());
     }
 
     private void ApplySet(RuleSetAction set, string ruleCode, RuleExecutionContext context, RuleEvaluationResult result)

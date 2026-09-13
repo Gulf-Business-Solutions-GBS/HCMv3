@@ -15,6 +15,7 @@ using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.BusinessRules.Definition;
 using HCMv3.BusinessRules.Dto;
+using HCMv3.BusinessRules.Records;
 using HCMv3.BusinessRules.Seed;
 using HCMv3.BusinessRules.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
     private readonly IBusinessRuleRunner _runner;
     private readonly IBusinessRuleCache _cache;
     private readonly IRepository<PayrollManagement.AbsenceType> _absenceTypeRepository;
+    private readonly IRuleRecordSchema _recordSchema;
 
     public BusinessRulesAppService(
         IRepository<BusinessRule> ruleRepository,
@@ -45,8 +47,10 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
         IRuleDefinitionValidator validator,
         IBusinessRuleRunner runner,
         IBusinessRuleCache cache,
-        IRepository<PayrollManagement.AbsenceType> absenceTypeRepository)
+        IRepository<PayrollManagement.AbsenceType> absenceTypeRepository,
+        IRuleRecordSchema recordSchema)
     {
+        _recordSchema = recordSchema;
         _ruleRepository = ruleRepository;
         _assignmentRepository = assignmentRepository;
         _logRepository = logRepository;
@@ -187,6 +191,20 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
                 throw new UserFriendlyException(L("BaseObjectCannotBeChanged"));
             }
 
+            // The same check arming makes, applied to every event the rule is already armed on. Without it,
+            // adding a "set" to a rule armed on OnValidate would slip past arm-time validation entirely and only
+            // surface as a failure on somebody's save.
+            var armedEvents = await _assignmentRepository.GetAll()
+                .Where(a => a.BusinessRuleId == rule.Id)
+                .Select(a => a.EventType)
+                .Distinct()
+                .ToListAsync();
+
+            foreach (var armedEvent in armedEvents)
+            {
+                CheckActionsAllowedOn(definition, armedEvent);
+            }
+
             rule.Code = input.Code;
             rule.NameEn = input.NameEn;
             rule.NameAr = input.NameAr;
@@ -245,12 +263,16 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
 
         // Re-validated at ARM time, not only at authoring time. A rule saved months ago may reference a
         // field that has since been removed from the descriptor, and arming is the moment that matters.
-        var errors = _validator.Validate(ParseOrThrow(rule.DefinitionJson), baseObject, rule.Purpose);
+        var definition = ParseOrThrow(rule.DefinitionJson);
+        var errors = _validator.Validate(definition, baseObject, rule.Purpose);
 
         if (errors.Count > 0)
         {
             throw new UserFriendlyException(string.Join(" ", errors));
         }
+
+        // A rule whose actions the event cannot carry out would be armed, look healthy, and never do its job.
+        CheckActionsAllowedOn(definition, input.EventType);
 
         if (input.Id.HasValue)
         {
@@ -298,6 +320,26 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
         await _assignmentRepository.DeleteAsync(input.Id);
         await CurrentUnitOfWork.SaveChangesAsync();
         await _cache.InvalidateAsync();
+    }
+
+    public Task<List<RuleRecordTableDto>> GetRuleRecordTables()
+    {
+        var tables = _recordSchema.GetTables()
+            .Select(table => new RuleRecordTableDto
+            {
+                Name = table.Name,
+                Columns = table.Columns
+                    .Select(column => new RuleRecordColumnDto
+                    {
+                        Name = column.Name,
+                        DataType = column.DataType,
+                        IsNullable = column.IsNullable
+                    })
+                    .ToList()
+            })
+            .ToList();
+
+        return Task.FromResult(tables);
     }
 
     public Task<RuleMetadataDto> GetRuleMetadata()
@@ -620,6 +662,33 @@ public class BusinessRulesAppService : HCMv3AppServiceBase, IBusinessRulesAppSer
                 LookupSource = f.LookupSource
             }).ToList(),
             Navigations = navigation.Navigations.Select(ToDto).ToList()
+        };
+    }
+
+    private void CheckActionsAllowedOn(RuleDefinition definition, RuleEventType eventType)
+    {
+        var disallowed = RuleEventActionPolicy.FindDisallowedKinds(definition, eventType);
+
+        if (disallowed.Count == 0)
+        {
+            return;
+        }
+
+        throw new UserFriendlyException(L(
+            "RuleActionNotAllowedOnEvent",
+            L("RuleEventType" + eventType),
+            string.Join(", ", disallowed.Select(ActionLabel))));
+    }
+
+    private string ActionLabel(string actionKind)
+    {
+        return actionKind switch
+        {
+            RuleSetAction.KindName => L("RuleActionSet"),
+            RuleErrorAction.KindName => L("RuleActionRaiseError"),
+            RuleCreateRecordAction.KindName => L("RuleActionCreateRecord"),
+            RuleUpdateRecordAction.KindName => L("RuleActionUpdateRecord"),
+            _ => actionKind
         };
     }
 

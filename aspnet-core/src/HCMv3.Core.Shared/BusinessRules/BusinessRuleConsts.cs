@@ -26,6 +26,14 @@ public static class BusinessRuleConsts
     /// </summary>
     public const int MaxExecutionSteps = 5000;
 
+    /// <summary>
+    /// How many times AfterSave rules may trigger further AfterSave rules within one save. An AfterSave rule
+    /// that updates a rule-enabled record fires that record's AfterSave rules in turn; a rule that updates the
+    /// very record it runs on would do so forever. Five rounds is well past any real chain of follow-ups and
+    /// short enough that a loop fails fast, with the whole save rolled back.
+    /// </summary>
+    public const int MaxAfterSaveRounds = 5;
+
     /// <summary>Cache name for the per-tenant compiled rule set, keyed by "{baseObject}|{eventType}".</summary>
     public const string RuleSetCacheName = "HCMv3.BusinessRules.RuleSet";
 }

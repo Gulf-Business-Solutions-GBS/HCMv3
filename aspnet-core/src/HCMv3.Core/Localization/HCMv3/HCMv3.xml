@@ -6130,6 +6130,7 @@
     <text name="RuleFunction_Abs">Absolute value</text>
     <text name="BaseObjectCannotBeChanged">The base object of an existing rule cannot be changed. Create a new rule instead.</text>
     <text name="EventNotSupportedByBaseObject">The event "{0}" is not available for the base object "{1}".</text>
+    <text name="RuleActionNotAllowedOnEvent">This rule cannot run on "{0}": that event does not allow the action "{1}".</text>
     <text name="RuleIsAlreadyAssignedToThisEvent">This rule is already assigned to that event.</text>
     <text name="BusinessRulesDescription">Configure derivations, validations and approval routing without a code change</text>
     <text name="InstallSampleRules">Install sample rules</text>
@@ -6159,6 +6160,11 @@
     <text name="RuleAllBlocksEvaluateHint">Every block is evaluated, in order. Blocks are not alternatives to each other, so a later block can overwrite what an earlier one set.</text>
     <text name="RuleActionSet">Set</text>
     <text name="RuleActionRaiseError">Raise error</text>
+    <text name="RuleActionCreateRecord">Create record</text>
+    <text name="RuleActionUpdateRecord">Update record</text>
+    <text name="BusinessRulesKeptTriggeringEachOther">Business rules kept changing records that triggered more rules, so nothing was saved. Check the rules that run after save.</text>
+    <text name="BusinessRuleRecordChangeFailed">Business rule "{0}" could not change "{1}", so nothing was saved. {2}</text>
+    <text name="BusinessRuleFollowUpSaveFailed">A business rule's follow-up change could not be saved, so nothing was saved. {0}</text>
     <text name="RuleLeftOperand">Left</text>
     <text name="RuleRightOperand">Right</text>
     <text name="RuleGroupWithAnd">Group with another condition</text>
