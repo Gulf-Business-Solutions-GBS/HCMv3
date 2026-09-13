@@ -66743,6 +66743,116 @@ export class GoLiveV2ServiceProxy {
     getBankFileSetup(body?: GoLiveV2BankFileSetupInput | undefined): Observable<GoLiveV2BankFileSetupOutput> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetBankFileSetup";
         url_ = url_.replace(/[?&]$/, "");
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getClearPreview(payrollAreaName?: string | null | undefined): Observable<GoLiveV2ClearCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetClearPreview?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetClearPreview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetClearPreview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2ClearCompanyDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2ClearCompanyDto>;
+        }));
+    }
+
+    protected processGetClearPreview(response: HttpResponseBase): Observable<GoLiveV2ClearCompanyDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2ClearCompanyDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    clearCompany(body?: GoLiveV2ClearCompanyInput | undefined): Observable<GoLiveV2ClearCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ClearCompany";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processClearCompany(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processClearCompany(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2ClearCompanyDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2ClearCompanyDto>;
+        }));
+    }
+
+    protected processClearCompany(response: HttpResponseBase): Observable<GoLiveV2ClearCompanyDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2ClearCompanyDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
 
         const content_ = JSON.stringify(body);
 
@@ -261104,6 +261214,106 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     otherAllowance!: number | undefined;
     bankName!: string | undefined;
     iban!: string | undefined;
+export class GoLiveV2ClearCompanyDto implements IGoLiveV2ClearCompanyDto {
+    companyName!: string | undefined;
+    employees!: number;
+    timeRegisters!: number;
+    salaryRegisters!: number;
+    otherRecords!: number;
+    payrollMonthEnd!: DateTime | undefined;
+    calendarMonths!: number;
+
+    constructor(data?: IGoLiveV2ClearCompanyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyName = _data["companyName"];
+            this.employees = _data["employees"];
+            this.timeRegisters = _data["timeRegisters"];
+            this.salaryRegisters = _data["salaryRegisters"];
+            this.otherRecords = _data["otherRecords"];
+            this.payrollMonthEnd = _data["payrollMonthEnd"] ? DateTime.fromISO(_data["payrollMonthEnd"].toString()) : undefined as any;
+            this.calendarMonths = _data["calendarMonths"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2ClearCompanyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2ClearCompanyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyName"] = this.companyName;
+        data["employees"] = this.employees;
+        data["timeRegisters"] = this.timeRegisters;
+        data["salaryRegisters"] = this.salaryRegisters;
+        data["otherRecords"] = this.otherRecords;
+        data["payrollMonthEnd"] = this.payrollMonthEnd ? this.payrollMonthEnd.toString() : undefined as any;
+        data["calendarMonths"] = this.calendarMonths;
+        return data;
+    }
+}
+
+export interface IGoLiveV2ClearCompanyDto {
+    companyName: string | undefined;
+    employees: number;
+    timeRegisters: number;
+    salaryRegisters: number;
+    otherRecords: number;
+    payrollMonthEnd: DateTime | undefined;
+    calendarMonths: number;
+}
+
+export class GoLiveV2ClearCompanyInput implements IGoLiveV2ClearCompanyInput {
+    payrollAreaName!: string;
+    confirmCompanyName!: string;
+
+    constructor(data?: IGoLiveV2ClearCompanyInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.confirmCompanyName = _data["confirmCompanyName"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2ClearCompanyInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2ClearCompanyInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["confirmCompanyName"] = this.confirmCompanyName;
+        return data;
+    }
+}
+
+export interface IGoLiveV2ClearCompanyInput {
+    payrollAreaName: string;
+    confirmCompanyName: string;
+}
+
     accountNumber!: string | undefined;
 
     constructor(data?: IGoLiveV2EmployeeRowDto) {

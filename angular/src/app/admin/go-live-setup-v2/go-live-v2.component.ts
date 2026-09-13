@@ -16,6 +16,8 @@ import {
     GoLiveV2BankFileSetupOutput,
     GoLiveV2GenerateBankFileInput,
     GoLiveV2GenerateBankFileOutput,
+    GoLiveV2ClearCompanyDto,
+    GoLiveV2ClearCompanyInput,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
     GoLiveV2LoadEmployeesInput,
@@ -202,6 +204,71 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         this.bankFile.set(null);
         this.unlockedStep.set(2);
         this.activeStep.set(2);
+    }
+
+    // ---------------------------------------------------------------- clearing the company
+
+    /** What Clear would remove, while its confirmation is open; null when it is closed. */
+    readonly clearPreview = signal<GoLiveV2ClearCompanyDto | null>(null);
+    readonly clearTyped = signal('');
+    readonly clearing = signal(false);
+
+    /** Clear unlocks only once the company's name is typed back -- the server checks it again. */
+    readonly canConfirmClear = computed(() => {
+        const name = this.clearPreview()?.companyName?.trim().toLowerCase();
+        return !!name && this.clearTyped().trim().toLowerCase() === name && !this.clearing();
+    });
+
+    readonly clearHasSomething = computed(() => {
+        const preview = this.clearPreview();
+        return !!preview && (preview.employees > 0 || !!preview.payrollMonthEnd);
+    });
+
+    openClear(): void {
+        this.clearTyped.set('');
+        this.proxy.getClearPreview(this.payrollAreaName().trim()).subscribe((preview) => this.clearPreview.set(preview));
+    }
+
+    closeClear(): void {
+        if (!this.clearing()) {
+            this.clearPreview.set(null);
+        }
+    }
+
+    onClearTyped(event: Event): void {
+        this.clearTyped.set((event.target as HTMLInputElement).value);
+    }
+
+    /**
+     * Back to a blank company: the grid, the run, the results and the bank file are all gone from the screen
+     * as they are from the database, and the month is unset so any month can be chosen -- an earlier one too.
+     */
+    confirmClear(): void {
+        if (!this.canConfirmClear()) {
+            return;
+        }
+
+        const input = new GoLiveV2ClearCompanyInput();
+        input.payrollAreaName = this.payrollAreaName().trim();
+        input.confirmCompanyName = this.clearTyped().trim();
+
+        this.clearing.set(true);
+        this.proxy
+            .clearCompany(input)
+            .pipe(finalize(() => this.clearing.set(false)))
+            .subscribe(() => {
+                this.clearPreview.set(null);
+                this.employeeRows.set([]);
+                this.lastLoad.set(null);
+                this.latest.set(null);
+                this.lastSetUp.set(null);
+                this.results.set(null);
+                this.bankFile.set(null);
+                this.payMonth.set('');
+                this.unlockedStep.set(1);
+                this.activeStep.set(1);
+                this.notify.success(this.l('GoLiveV2ClearDone'));
+            });
     }
 
     // ---------------------------------------------------------------- step 1: load employee data

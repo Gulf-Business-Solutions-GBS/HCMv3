@@ -77,6 +77,19 @@ public interface IGoLiveV2AppService : IApplicationService
     /// <summary>The month's register lines as a table, read out of the file they generate.</summary>
     Task<GoLiveV2GridDto> GetSalaryRegisterGrid(GoLiveV2PayrollResultsInput input);
 
+    /// <summary>
+    /// What Clear would remove from the payroll area, counted: the employees, their time and salary registers,
+    /// everything else that belongs to them, and the payroll month. Nothing is changed.
+    /// </summary>
+    Task<GoLiveV2ClearCompanyDto> GetClearPreview(string payrollAreaName);
+
+    /// <summary>
+    /// Takes the payroll area back to no employees and no payroll month, so the sheet loads again and any
+    /// month -- an earlier one included -- can be set up. The company's setup stays. Refused unless the
+    /// company's name is typed back. Soft deletes: every row is kept for audit.
+    /// </summary>
+    Task<GoLiveV2ClearCompanyDto> ClearCompany(GoLiveV2ClearCompanyInput input);
+
     /// <summary>The tenant's payroll areas by name, for the Run payroll dropdown.</summary>
     Task<ListResultDto<string>> GetPayrollAreaNames();
 

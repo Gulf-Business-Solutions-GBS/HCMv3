@@ -69,6 +69,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IRepository<Bank> _bankRepository;
     private readonly GoLiveV2BankFileStep _bankFileStep;
     private readonly GoLiveV2GridReader _gridReader;
+    private readonly GoLiveV2CompanyClearer _companyClearer;
     private readonly IPayrollSheetReportAppService _payrollSheetReport;
     private readonly ITempFileCacheManager _tempFiles;
 
@@ -96,6 +97,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         IRepository<Bank> bankRepository,
         GoLiveV2BankFileStep bankFileStep,
         GoLiveV2GridReader gridReader,
+        GoLiveV2CompanyClearer companyClearer,
         IPayrollSheetReportAppService payrollSheetReport,
         ITempFileCacheManager tempFiles)
     {
@@ -122,6 +124,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _bankRepository = bankRepository;
         _bankFileStep = bankFileStep;
         _gridReader = gridReader;
+        _companyClearer = companyClearer;
         _payrollSheetReport = payrollSheetReport;
         _tempFiles = tempFiles;
     }
@@ -453,6 +456,22 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         var file = await GetSalaryRegisterExcel(input);
         return _gridReader.Read(_tempFiles.GetFile(file.FileToken), L("GoLiveV2SalaryRegister"));
     }
+
+    /// <remarks>Shows employee records, so it needs the employee screen's permission too.</remarks>
+    [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees)]
+    public Task<GoLiveV2ClearCompanyDto> GetClearPreview(string payrollAreaName) =>
+        _companyClearer.PreviewAsync(payrollAreaName);
+
+    /// <remarks>
+    /// Removes employees and a payroll month, so it needs both of those screens' delete permissions -- V2 must
+    /// not become a way round either.
+    /// </remarks>
+    [AbpAuthorize(
+        AppPermissions.Pages_PersonnelAdministration_Employees_Delete,
+        AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Delete,
+        RequireAllPermissions = true)]
+    public Task<GoLiveV2ClearCompanyDto> ClearCompany(GoLiveV2ClearCompanyInput input) =>
+        _companyClearer.ClearAsync(input);
 
     public async Task<ListResultDto<string>> GetBankNames()
     {

@@ -6144,5 +6144,17 @@
     <text name="GoLiveV2DocExcel">تنزيل إكسل</text>
     <text name="GoLiveV2DocPdf">حفظ بصيغة PDF</text>
     <text name="GoLiveV2GoToStep">انتقل إلى الخطوة {0}</text>
+    <text name="GoLiveV2ClearNameMismatch">اكتب اسم الشركة كما هو -- "{0}" -- لمسحها.</text>
+    <text name="GoLiveV2Clear">مسح</text>
+    <text name="GoLiveV2ClearTitle">مسح بيانات الشركة</text>
+    <text name="GoLiveV2ClearIntro">يؤدي هذا إلى إزالة الموظفين ورواتبهم لتتمكن من تحميلهم مجددًا وإعداد أي شهر، بما في ذلك شهر سابق. يبقى إعداد الشركة كما هو.</text>
+    <text name="GoLiveV2ClearEmployees">{0} موظفًا</text>
+    <text name="GoLiveV2ClearTimeRegisters">{0} يومًا من سجلات الوقت</text>
+    <text name="GoLiveV2ClearSalaryRegisters">{0} من سجلات الرواتب</text>
+    <text name="GoLiveV2ClearOtherRecords">{0} من السجلات الأخرى: العقود والرواتب والبنوك والأرصدة والسجلات</text>
+    <text name="GoLiveV2ClearPayrollMonth">شهر الرواتب المنتهي في {0}</text>
+    <text name="GoLiveV2ClearNothing">لا يوجد ما يمكن مسحه.</text>
+    <text name="GoLiveV2ClearTypeName">اكتب {0} للتأكيد</text>
+    <text name="GoLiveV2ClearDone">تم المسح. حمّل الموظفين مجددًا.</text>
   </texts>
 </localizationDictionary>

@@ -6305,5 +6305,17 @@
     <text name="GoLiveV2DocExcel">Download Excel</text>
     <text name="GoLiveV2DocPdf">Save as PDF</text>
     <text name="GoLiveV2GoToStep">Go to Step {0}</text>
+    <text name="GoLiveV2ClearNameMismatch">Type the company name exactly -- "{0}" -- to clear it.</text>
+    <text name="GoLiveV2Clear">Clear</text>
+    <text name="GoLiveV2ClearTitle">Clear the company</text>
+    <text name="GoLiveV2ClearIntro">This removes the employees and their payroll so you can load them again and set up any month, an earlier one included. The company setup stays.</text>
+    <text name="GoLiveV2ClearEmployees">{0} employee(s)</text>
+    <text name="GoLiveV2ClearTimeRegisters">{0} time register day(s)</text>
+    <text name="GoLiveV2ClearSalaryRegisters">{0} salary register(s)</text>
+    <text name="GoLiveV2ClearOtherRecords">{0} other record(s): contracts, salaries, banks, balances and logs</text>
+    <text name="GoLiveV2ClearPayrollMonth">The payroll month ending {0}</text>
+    <text name="GoLiveV2ClearNothing">There is nothing to clear.</text>
+    <text name="GoLiveV2ClearTypeName">Type {0} to confirm</text>
+    <text name="GoLiveV2ClearDone">Cleared. Load your employees again.</text>
   </texts>
 </localizationDictionary>

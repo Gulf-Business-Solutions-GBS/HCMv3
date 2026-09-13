@@ -55,6 +55,10 @@
                                 {{ loadButtonLabel() }}
                             }
                         </button>
+                        <button type="button" class="btn btn-light-danger" [disabled]="loading()" (click)="openClear()">
+                            <i class="fa fa-eraser me-2" aria-hidden="true"></i>
+                            {{ 'GoLiveV2Clear' | localize }}
+                        </button>
                         <button
                             type="button"
                             class="btn btn-light-primary"
@@ -701,6 +705,64 @@
 
     @if (openDocument(); as document) {
         <v2-doc-viewer [doc]="document" (closed)="closeDocument()" />
+    }
+
+    @if (clearPreview(); as preview) {
+        <!-- Clear: what goes, in numbers, and the company name typed back before anything does. -->
+        <div class="v2-modal-backdrop" (click)="closeClear()">
+            <div class="v2-modal" role="dialog" aria-modal="true" aria-labelledby="v2-clear-title" (click)="$event.stopPropagation()">
+                <h4 class="v2-modal-title" id="v2-clear-title">{{ 'GoLiveV2ClearTitle' | localize }}</h4>
+
+                @if (clearHasSomething()) {
+                    <p class="mb-0">{{ 'GoLiveV2ClearIntro' | localize }}</p>
+                    <ul class="v2-failed-rows">
+                        <li>{{ l('GoLiveV2ClearEmployees', preview.employees) }}</li>
+                        @if (preview.timeRegisters > 0) {
+                            <li>{{ l('GoLiveV2ClearTimeRegisters', preview.timeRegisters) }}</li>
+                        }
+                        @if (preview.salaryRegisters > 0) {
+                            <li>{{ l('GoLiveV2ClearSalaryRegisters', preview.salaryRegisters) }}</li>
+                        }
+                        @if (preview.otherRecords > 0) {
+                            <li>{{ l('GoLiveV2ClearOtherRecords', preview.otherRecords) }}</li>
+                        }
+                        @if (preview.payrollMonthEnd; as monthEnd) {
+                            <li>{{ l('GoLiveV2ClearPayrollMonth', monthEnd.toFormat('dd/MM/yyyy')) }}</li>
+                        }
+                    </ul>
+
+                    <label class="form-label mb-0" for="v2-clear-name">
+                        {{ l('GoLiveV2ClearTypeName', preview.companyName) }}
+                    </label>
+                    <input
+                        id="v2-clear-name"
+                        type="text"
+                        class="form-control"
+                        autocomplete="off"
+                        [value]="clearTyped()"
+                        (input)="onClearTyped($event)"
+                        (keydown.enter)="confirmClear()" />
+                } @else {
+                    <p class="mb-0">{{ 'GoLiveV2ClearNothing' | localize }}</p>
+                }
+
+                <div class="v2-modal-actions">
+                    <button type="button" class="btn btn-light" [disabled]="clearing()" (click)="closeClear()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    @if (clearHasSomething()) {
+                        <button type="button" class="btn btn-danger" [disabled]="!canConfirmClear()" (click)="confirmClear()">
+                            @if (clearing()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-eraser me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2Clear' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
     }
 
     @if (registerFor(); as who) {
