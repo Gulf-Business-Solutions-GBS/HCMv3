@@ -154,6 +154,10 @@ public class TimeSheetPunchResolutionStrategy : PunchResolutionStrategyBase
     /// return first. This is preserved verbatim so the port reproduces production output; adding
     /// <c>EmployeeId == context.Employee.Id</c> is a one-line change but a behaviour change, and must be a
     /// deliberate product decision rather than a silent port "improvement".</para>
+    ///
+    /// <para><b>Decision (2026-09-13): keep legacy parity.</b> Reviewed and kept as-is; the leak is pinned by
+    /// <c>PunchResolutionStrategies_Tests.TimeSheet_Punches_Should_Not_Filter_By_Employee_So_A_Shared_Day_Leaks_One_Employees_Times_To_Another</c>
+    /// and flagged in the <c>pa.employee-timesheet.edit</c> help topic's admin note.</para>
     /// </summary>
     private EmployeeTimesheet GetTimesheet(TimeRegisterDayContext context)
     {

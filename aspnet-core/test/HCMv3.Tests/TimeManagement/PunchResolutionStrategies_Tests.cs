@@ -784,6 +784,102 @@ public class PunchResolutionStrategies_Tests : TimeManagementAppServiceTestBase
         (await strategy.GetActualBreakEndTimeAsync(context)).ShouldBe(Day.AddHours(13).AddMinutes(15));
     }
 
+    /// <summary>
+    /// Adds an employee (sharing one nationality row) with their own <see cref="EmployeeTimesheet"/> on
+    /// <see cref="Day"/>, so several employees can hold timesheets for the same date.
+    /// </summary>
+    private Employee CreateEmployeeWithTimesheet(string code, TimeSpan actualStart, TimeSpan breakStart)
+    {
+        var nationality = Context.Nationalities.FirstOrDefault();
+        if (nationality == null)
+        {
+            nationality = new HCMv3.GeneralMasterInfo.Nationality
+            {
+                TenantId = AbpSession.TenantId ?? 1,
+                NameEn = "Local",
+                NameAr = "Local"
+            };
+            Context.Nationalities.Add(nationality);
+            Context.SaveChanges();
+        }
+
+        var employee = new Employee
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            Code = code,
+            FirstNameEn = code,
+            LastNameEn = code,
+            FirstNameAr = code,
+            LastNameAr = code,
+            FullNameEn = code,
+            FullNameAr = code,
+            NationalityId = nationality.Id
+        };
+        Context.Employees.Add(employee);
+        Context.SaveChanges();
+
+        Context.EmployeeTimesheets.Add(new EmployeeTimesheet
+        {
+            TenantId = AbpSession.TenantId ?? 1,
+            EmployeeId = employee.Id,
+            TransDate = Day,
+            ActualStartTime = actualStart,
+            BreakStartTime = breakStart,
+            BreakEndTime = breakStart.Add(TimeSpan.FromMinutes(45)),
+            ActualEndTime = new TimeSpan(16, 30, 0),
+            TotalHours = 8
+        });
+        Context.SaveChanges();
+
+        return employee;
+    }
+
+    /// <summary>
+    /// A TimeSheet-policy day context for <paramref name="employee"/>, with both
+    /// <see cref="TimeRegisterDayContext.Employee"/> and <c>TimeRegister.EmployeeId</c> set the way the time
+    /// engine sets them, so an employee-filtered lookup would have what it needs.
+    /// </summary>
+    private static TimeRegisterDayContext BuildTimeSheetContextFor(Employee employee)
+    {
+        var context = BuildContext(policy: BuildPolicy(status: TimeMgmtStatus.TimeSheet));
+        context.Employee = employee;
+        context.TimeRegister.EmployeeId = employee.Id;
+        return context;
+    }
+
+    [Fact]
+    public async Task TimeSheet_Punches_Should_Not_Filter_By_Employee_So_A_Shared_Day_Leaks_One_Employees_Times_To_Another()
+    {
+        // LEGACY QUIRK (see TimeSheetPunchResolutionStrategy.GetTimesheet): the lookup filters on TransDate
+        // only. Two TimeSheet-policy employees with their own rows on the same day both resolve to whichever
+        // row the database returns first, so at least one of them is paid on the other's times.
+        var alice = CreateEmployeeWithTimesheet("ALICE", new TimeSpan(7, 0, 0), new TimeSpan(11, 0, 0));
+        var bob = CreateEmployeeWithTimesheet("BOB", new TimeSpan(9, 30, 0), new TimeSpan(13, 30, 0));
+
+        var strategy = BuildResolver().Resolve(TimeMgmtStatus.TimeSheet);
+        var aliceContext = BuildTimeSheetContextFor(alice);
+        var bobContext = BuildTimeSheetContextFor(bob);
+
+        var aliceIn = await strategy.GetActualInAsync(aliceContext);
+        var bobIn = await strategy.GetActualInAsync(bobContext);
+        var aliceBreakOut = await strategy.GetBreakOutAsync(aliceContext);
+        var bobBreakOut = await strategy.GetBreakOutAsync(bobContext);
+
+        var aliceOwnIn = Day.AddHours(7);
+        var bobOwnIn = Day.AddHours(9).AddMinutes(30);
+
+        // Both employees get the SAME row...
+        bobIn.ShouldBe(aliceIn);
+        bobBreakOut.ShouldBe(aliceBreakOut);
+
+        // ...so one of them is wrong: they cannot both equal their own start time.
+        (aliceIn == aliceOwnIn && bobIn == bobOwnIn).ShouldBeFalse();
+
+        // Concretely, Sqlite returns rows in insertion order, so Bob is given Alice's 07:00 / 11:00.
+        bobIn.ShouldBe(aliceOwnIn);
+        bobBreakOut.ShouldBe(Day.AddHours(11));
+    }
+
     [Fact]
     public async Task TimeSheet_Actual_Times_Should_Be_No_Punch_When_The_Underlying_Punch_Is_Missing()
     {
