@@ -191,3 +191,37 @@ html[dir="rtl"] {
         display: none;
     }
 }
+
+/*
+ * The off-canvas menu below lg, now driven by DefaultLayoutComponent.isMobileSidebarOpen instead of
+ * Metronic's drawer script. Metronic's .drawer/.drawer-start/.drawer-on classes still do the sliding; these
+ * rules supply what its script used to set inline, and fix the one thing it got wrong on iPhone.
+ */
+@media (max-width: 991.98px) {
+    /* The width Metronic's script forced inline from data-kt-drawer-width. The ID outranks .app-sidebar. */
+    #kt_app_sidebar.drawer {
+        width: 225px;
+    }
+
+    .app-sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+
+        /* One below the menu (.app-sidebar sits at 106), as Metronic's own overlay was placed. */
+        z-index: 105;
+        background-color: var(--bs-drawer-overlay-bg-color);
+        animation: animation-drawer-fade-in 0.3s ease-in-out;
+
+        /*
+         * The actual iPhone fix. Safari does not deliver a tap's click to an element that does not look
+         * clickable, and a plain div with cursor:auto does not -- which is exactly what Metronic's overlay
+         * was, so tapping beside the menu to dismiss it did nothing on iOS while working everywhere else.
+         */
+        cursor: pointer;
+    }
+
+    /* Keep the page from scrolling behind the open menu; see the effect in DefaultLayoutComponent. */
+    body.hcm-mobile-menu-open {
+        overflow: hidden;
+    }
+}
