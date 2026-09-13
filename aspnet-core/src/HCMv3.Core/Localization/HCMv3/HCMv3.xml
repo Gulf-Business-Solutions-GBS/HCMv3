@@ -5572,7 +5572,7 @@
     <text name="QuestionCardDemoTryPhase">Q2.10 is badged "Later" and does not count toward the first-payroll progress figure.</text>
     <text name="GoLiveSetup">Go-Live Setup</text>
     <text name="GoLiveSetupV2">Go-Live Setup V2</text>
-    <text name="GoLiveV2Intro">Built backwards from a working payroll. Press Run payroll: the engine says what it is missing, and that becomes the next step.</text>
+    <text name="GoLiveV2Intro">Go live in 3 easy steps</text>
     <text name="GoLiveV2RunPayroll">Run payroll</text>
     <text name="GoLiveV2RunPayrollHint">Runs the real payroll engine for this company, now.</text>
     <text name="GoLiveV2PayMonth">Month to pay</text>
@@ -5625,7 +5625,7 @@
     <text name="GoLiveV2WhyLoadEmployees">Added because the engine found nobody to pay in the payroll area.</text>
     <text name="GoLiveV2OrganizationUnit">Company (organisation unit)</text>
     <text name="GoLiveV2OrganizationUnitPlaceholder">e.g. ABC Holding</text>
-    <text name="GoLiveV2OrganizationUnitHint">Created as the top of your organisation if it does not exist yet. Every employee is placed in it.</text>
+    <text name="GoLiveV2OrganizationUnitHint">Your company name, as it should appear on reports.</text>
     <text name="GoLiveV2ColCode">Employee code</text>
     <text name="GoLiveV2ColFullName">Full name</text>
     <text name="GoLiveV2ColJoiningDate">Joining date</text>
@@ -6304,5 +6304,6 @@
     <text name="GoLiveV2DocPrint">Print / PDF</text>
     <text name="GoLiveV2DocExcel">Download Excel</text>
     <text name="GoLiveV2DocPdf">Save as PDF</text>
+    <text name="GoLiveV2GoToStep">Go to Step {0}</text>
   </texts>
 </localizationDictionary>

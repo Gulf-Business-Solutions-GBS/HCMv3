@@ -12,11 +12,11 @@
                     [class.v2-step-current]="step.number === currentStep()"
                     [class.v2-step-done]="step.done"
                     [disabled]="!step.ready"
-                    [title]="step.ready ? step.what : step.why"
+                    [title]="step.ready ? step.title : step.why"
                     [attr.aria-current]="step.number === currentStep() ? 'step' : null"
                     (click)="goToStep(step.number)">
                     <span class="v2-step-name">{{ l('GoLiveV2StepNumbered', step.number, step.title) }}</span>
-                    <span class="v2-step-what">{{ step.ready ? step.what : step.why }}</span>
+                    <span class="v2-step-what">{{ step.what }}</span>
                     <span class="v2-step-circle">
                         <i class="fa" [class]="'fa ' + step.icon" aria-hidden="true"></i>
                         @if (step.done) {
@@ -41,19 +41,30 @@
                         <p class="v2-step-hint">{{ 'GoLiveV2LoadEmployeesHint' | localize }}</p>
                     </div>
 
-                    <button
-                        type="button"
-                        class="btn btn-primary v2-run"
-                        [disabled]="loading() || !canLoad()"
-                        (click)="loadEmployees()">
-                        @if (loading()) {
-                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                            {{ 'GoLiveV2Loading' | localize }}
-                        } @else {
-                            <i class="fa fa-user-plus me-2" aria-hidden="true"></i>
-                            {{ loadButtonLabel() }}
-                        }
-                    </button>
+                    <div class="v2-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-primary v2-run"
+                            [disabled]="loading() || !canLoad()"
+                            (click)="loadEmployees()">
+                            @if (loading()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                {{ 'GoLiveV2Loading' | localize }}
+                            } @else {
+                                <i class="fa fa-user-plus me-2" aria-hidden="true"></i>
+                                {{ loadButtonLabel() }}
+                            }
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="unlockedStep() < 2"
+                            [title]="unlockedStep() < 2 ? ('GoLiveV2StepNeedsEmployees' | localize) : ''"
+                            (click)="goToStep(2)">
+                            {{ l('GoLiveV2GoToStep', 2) }}
+                            <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="v2-fields">
@@ -174,6 +185,15 @@
                                 <i class="fa fa-file-pdf me-2" aria-hidden="true"></i>
                             }
                             {{ 'GoLiveV2Payslips' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="unlockedStep() < 3"
+                            [title]="unlockedStep() < 3 ? ('GoLiveV2StepNeedsPayroll' | localize) : ''"
+                            (click)="goToStep(3)">
+                            {{ l('GoLiveV2GoToStep', 3) }}
+                            <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>

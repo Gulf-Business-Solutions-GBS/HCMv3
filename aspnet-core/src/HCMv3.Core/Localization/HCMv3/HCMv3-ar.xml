@@ -5422,7 +5422,7 @@
     <text name="QuestionCardDemoTryPhase">السؤال Q2.10 موسوم بـ "لاحقاً" ولا يُحتسب ضمن نسبة إنجاز أول رواتب.</text>
     <text name="GoLiveSetup">إعداد التشغيل</text>
     <text name="GoLiveSetupV2">إعداد التشغيل - الإصدار 2</text>
-    <text name="GoLiveV2Intro">مبنيّ بالعكس انطلاقاً من مسيّر رواتب يعمل. اضغط «تشغيل الرواتب»: يوضح محرك الرواتب ما ينقصه، ويصبح ذلك الخطوة التالية.</text>
+    <text name="GoLiveV2Intro">انطلق في 3 خطوات سهلة</text>
     <text name="GoLiveV2RunPayroll">تشغيل الرواتب</text>
     <text name="GoLiveV2RunPayrollHint">يشغّل محرك الرواتب الفعلي لهذه الشركة الآن.</text>
     <text name="GoLiveV2PayMonth">شهر الرواتب</text>
@@ -5475,7 +5475,7 @@
     <text name="GoLiveV2WhyLoadEmployees">أُضيف لأن المحرك لم يجد أحداً لصرف راتبه في منطقة الرواتب.</text>
     <text name="GoLiveV2OrganizationUnit">الشركة (الوحدة التنظيمية)</text>
     <text name="GoLiveV2OrganizationUnitPlaceholder">مثال: ABC القابضة</text>
-    <text name="GoLiveV2OrganizationUnitHint">تُنشأ في أعلى هيكلك التنظيمي إن لم تكن موجودة، ويوضع فيها كل الموظفين.</text>
+    <text name="GoLiveV2OrganizationUnitHint">اسم شركتك كما يجب أن يظهر في التقارير.</text>
     <text name="GoLiveV2ColCode">رمز الموظف</text>
     <text name="GoLiveV2ColFullName">الاسم الكامل</text>
     <text name="GoLiveV2ColJoiningDate">تاريخ الالتحاق</text>
@@ -6143,5 +6143,6 @@
     <text name="GoLiveV2DocPrint">طباعة / PDF</text>
     <text name="GoLiveV2DocExcel">تنزيل إكسل</text>
     <text name="GoLiveV2DocPdf">حفظ بصيغة PDF</text>
+    <text name="GoLiveV2GoToStep">انتقل إلى الخطوة {0}</text>
   </texts>
 </localizationDictionary>

@@ -890,17 +890,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             .generateBankFile(input)
             .pipe(finalize(() => this.generatingBankFile.set(false)))
             .subscribe((file) => {
+                // Made: the third step is done, and the file goes straight to disk in the format the
+                // bank takes -- a spreadsheet, a fixed-width text file, or a zip of one per payee bank.
                 this.bankFile.set(file);
                 const contentType = file.contentType ?? 'application/octet-stream';
-                const save = () =>
-                    this.saveBlob(file.fileName ?? 'BankFile', this.base64Blob(file.base64Content ?? '', contentType));
-
-                if (file.contents) {
-                    this.showGrid(file.contents, save);
-                } else {
-                    // A zip of one file per payee bank has nothing to show.
-                    save();
-                }
+                this.saveBlob(file.fileName ?? 'BankFile', this.base64Blob(file.base64Content ?? '', contentType));
                 this.refreshBankFileSetup();
             });
     }
