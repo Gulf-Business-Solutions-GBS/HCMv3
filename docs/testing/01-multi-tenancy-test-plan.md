@@ -5,6 +5,8 @@
 **Scope:** Tenant provisioning, tenant admin + user creation, and proof that one tenant cannot read, write, or infer another tenant's data.
 **Tenants under test:** `S180` and `SCC`
 
+> The tester-facing version of this plan is the **HCMv3 Tester Guide** — `docs/testing/hcmv3-tester-guide.html`, published at https://claude.ai/code/artifact/431d9fb0-9fa5-4b51-9bf8-5cbef46c4456. The API cases in Step 6 appear there as Module 47 (Tests 180–183).
+
 ---
 
 ## Step 0 — Naming rules you must stay inside
