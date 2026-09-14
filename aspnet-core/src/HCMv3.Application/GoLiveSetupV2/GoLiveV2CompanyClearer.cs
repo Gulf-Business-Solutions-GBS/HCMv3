@@ -143,6 +143,7 @@ public class GoLiveV2CompanyClearer : AbpServiceBase, ITransientDependency
         Other(await RemoveAsync<EmployeeDutyPeriod>(d => ids.Contains(d.EmployeeId), delete));
         Other(await RemoveAsync<EmployeeTimePolicy>(t => ids.Contains(t.EmployeeId), delete));
         Other(await RemoveAsync<EmployeeBank>(b => ids.Contains(b.EmployeeId), delete));
+        Other(await RemoveAsync<TimeTransfer>(t => ids.Contains(t.EmployeeId), delete));
         Other(await RemoveAsync<EmployeeSponsor>(s => ids.Contains(s.EmployeeId), delete));
         Other(await RemoveAsync<EmployeeOrgAssignment>(a => ids.Contains(a.EmployeeId), delete));
         result.Employees = await RemoveAsync<Employee>(e => ids.Contains(e.Id), delete);

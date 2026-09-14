@@ -15,6 +15,8 @@ using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.TimeManagement;
+using HCMv3.TimeManagement.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.GoLiveSetupV2;
@@ -75,6 +77,8 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     private readonly IRepository<EmployeePayrollStatus> _payrollStatusRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
     private readonly GoLiveV2WorkingTime _workingTime;
+    private readonly ITimeTransfersAppService _timeTransfers;
+    private readonly GoLiveV2OpeningBalances _openingBalances;
 
     public GoLiveV2EmployeeLoader(
         IEmployeesAppService employees,
@@ -91,7 +95,9 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
         IRepository<EmployeePayrollStatus> payrollStatusRepository,
         IRepository<EmployeeBank> employeeBankRepository,
-        GoLiveV2WorkingTime workingTime)
+        GoLiveV2WorkingTime workingTime,
+        ITimeTransfersAppService timeTransfers,
+        GoLiveV2OpeningBalances openingBalances)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
 
@@ -110,6 +116,8 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         _payrollStatusRepository = payrollStatusRepository;
         _employeeBankRepository = employeeBankRepository;
         _workingTime = workingTime;
+        _timeTransfers = timeTransfers;
+        _openingBalances = openingBalances;
     }
 
     public async Task LoadAsync(IReadOnlyList<GoLiveV2EmployeeRowDto> rows, GoLiveV2EmployeeTargets targets, GoLiveV2LoadEmployeesOutput output)
@@ -118,6 +126,10 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         // clashing with the employee this same load had just created, which reads as a database problem.
         var seenCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var seenCivilIds = new HashSet<long>();
+
+        // Resolved once, and only if a row gives an opening balance.
+        int? openingBalanceTypeId = null;
+        DateTime? openingBalanceDate = null;
 
         for (var i = 0; i < rows.Count; i++)
         {
@@ -169,6 +181,15 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
                 await EnsurePayrollStatusAsync(employee);
                 await _workingTime.EnsureEmployeeAsync(employee, targets.WorkingTime);
                 result.Updated |= await EnsureBankAsync(employee, salaryBank);
+
+                if (row.AnnualLeaveOpeningBalance is not (null or 0))
+                {
+                    openingBalanceTypeId ??= await _openingBalances.TransferTypeIdAsync()
+                                             ?? throw new GoLiveV2RowException(L("GoLiveV2OpeningBalanceTypeMissing"));
+                    openingBalanceDate ??= await _openingBalances.LoadDateAsync(targets.PayrollAreaId);
+                }
+
+                result.Updated |= await EnsureOpeningBalanceAsync(employee, row.AnnualLeaveOpeningBalance, openingBalanceTypeId, openingBalanceDate);
 
                 if (result.Updated && !result.Created)
                 {
@@ -612,6 +633,46 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         return true;
     }
 
+    /// <summary>
+    /// The employee's annual leave opening balance as the one time transfer this setup keeps: made, corrected to
+    /// the sheet, or removed when the sheet leaves it blank or zero. Its date is left to Run payroll, which moves
+    /// it onto the month it runs; a new one starts on the date the load was given.
+    /// </summary>
+    private async Task<bool> EnsureOpeningBalanceAsync(Employee employee, double? balance, int? transferTypeId, DateTime? loadDate)
+    {
+        var existing = await _openingBalances.FindAsync(employee.Id);
+
+        if (balance is null or 0)
+        {
+            if (existing == null)
+            {
+                return false;
+            }
+
+            await _timeTransfers.Delete(new EntityDto(existing.Id));
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        var count = Math.Round(balance.Value, 3);
+        if (existing != null && existing.TransferTypeId == transferTypeId && Math.Abs(existing.TransferCount - count) < 0.0005)
+        {
+            return false;
+        }
+
+        await _timeTransfers.CreateOrEdit(new CreateOrEditTimeTransferDto
+        {
+            Id = existing?.Id,
+            EmployeeId = employee.Id,
+            TransferDate = existing?.TransferDate ?? loadDate!.Value,
+            TransferTypeId = transferTypeId!.Value,
+            TransferCount = count,
+            Comments = GoLiveV2OpeningBalances.Comment,
+        });
+        await CurrentUnitOfWork.SaveChangesAsync();
+        return true;
+    }
+
     private static string JoinNames(params string[] parts) =>
         string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
 
@@ -628,6 +689,7 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         && row.JoiningDate == null
         && string.IsNullOrWhiteSpace(row.CivilId)
         && SalaryColumns.All(c => c.Amount(row) == null)
+        && row.AnnualLeaveOpeningBalance == null
         && string.IsNullOrWhiteSpace(row.BankName)
         && string.IsNullOrWhiteSpace(row.Iban)
         && string.IsNullOrWhiteSpace(row.AccountNumber);

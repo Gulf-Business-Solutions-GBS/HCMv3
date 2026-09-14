@@ -80,6 +80,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IPayrollSheetReportAppService _payrollSheetReport;
     private readonly ITempFileCacheManager _tempFiles;
     private readonly GoLiveV2LegacyComparer _legacyComparer;
+    private readonly GoLiveV2OpeningBalances _openingBalances;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -111,7 +112,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         IBackgroundJobManager backgroundJobs,
         IPayrollSheetReportAppService payrollSheetReport,
         ITempFileCacheManager tempFiles,
-        GoLiveV2LegacyComparer legacyComparer)
+        GoLiveV2LegacyComparer legacyComparer,
+        GoLiveV2OpeningBalances openingBalances)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -143,6 +145,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _payrollSheetReport = payrollSheetReport;
         _tempFiles = tempFiles;
         _legacyComparer = legacyComparer;
+        _openingBalances = openingBalances;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -281,6 +284,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         }
 
         var leavePayLinksAdded = await EnsureLeavePayLinksAsync();
+
+        // Opening balances count in the month they are dated: moved onto this month for anyone not yet paid.
+        await _openingBalances.DateForRunAsync(areaName, payInDate);
 
         return new PreparedRun
         {

@@ -8,6 +8,7 @@ using Abp.Organizations;
 using HCMv3.GoLiveSetupV2.Dto;
 using HCMv3.PayrollManagement.Services;
 using HCMv3.PersonnelAdministration;
+using HCMv3.TimeManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCMv3.GoLiveSetupV2;
@@ -27,6 +28,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
     private readonly IRepository<EmployeeBasicPayDetail> _basicPayDetailRepository;
     private readonly IRepository<OrganizationUnit, long> _orgUnitRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
+    private readonly IRepository<TimeTransfer> _timeTransferRepository;
 
     public GoLiveV2LoadedEmployeesReader(
         IEmployeePayrollAreaResolver payrollAreaResolver,
@@ -35,7 +37,8 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         IRepository<EmployeeBasicPay> basicPayRepository,
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
         IRepository<OrganizationUnit, long> orgUnitRepository,
-        IRepository<EmployeeBank> employeeBankRepository)
+        IRepository<EmployeeBank> employeeBankRepository,
+        IRepository<TimeTransfer> timeTransferRepository)
     {
         _payrollAreaResolver = payrollAreaResolver;
         _employeeRepository = employeeRepository;
@@ -44,6 +47,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         _basicPayDetailRepository = basicPayDetailRepository;
         _orgUnitRepository = orgUnitRepository;
         _employeeBankRepository = employeeBankRepository;
+        _timeTransferRepository = timeTransferRepository;
     }
 
     public async Task<GoLiveV2LoadedEmployeesOutput> ReadAsync(string payrollAreaName)
@@ -92,6 +96,14 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
             .GroupBy(b => b.EmployeeId)
             .ToDictionary(g => g.Key, g => g.OrderByDescending(b => b.StartDate).First());
 
+        // The opening balance each was loaded with -- the transfer this setup keeps.
+        var openingBalances = (await _timeTransferRepository.GetAll()
+                .Where(t => ids.Contains(t.EmployeeId) && t.Comments == GoLiveV2OpeningBalances.Comment)
+                .Select(t => new { t.EmployeeId, t.Id, t.TransferCount })
+                .ToListAsync())
+            .GroupBy(t => t.EmployeeId)
+            .ToDictionary(g => g.Key, g => g.OrderByDescending(t => t.Id).First().TransferCount);
+
         foreach (var e in employees)
         {
             var row = new GoLiveV2EmployeeRowDto
@@ -112,6 +124,11 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
                 row.FoodAllowance = Amount(amounts, "1038");
                 row.HousingAllowance = Amount(amounts, "1001");
                 row.OtherAllowance = Amount(amounts, "1018");
+            }
+
+            if (openingBalances.TryGetValue(e.Id, out var openingBalance))
+            {
+                row.AnnualLeaveOpeningBalance = openingBalance;
             }
 
             if (banks.TryGetValue(e.Id, out var bank))

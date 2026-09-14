@@ -262053,6 +262053,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     foodAllowance!: number | undefined;
     housingAllowance!: number | undefined;
     otherAllowance!: number | undefined;
+    annualLeaveOpeningBalance!: number | undefined;
     bankName!: string | undefined;
     iban!: string | undefined;
     accountNumber!: string | undefined;
@@ -262079,6 +262080,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
             this.foodAllowance = _data["foodAllowance"];
             this.housingAllowance = _data["housingAllowance"];
             this.otherAllowance = _data["otherAllowance"];
+            this.annualLeaveOpeningBalance = _data["annualLeaveOpeningBalance"];
             this.bankName = _data["bankName"];
             this.iban = _data["iban"];
             this.accountNumber = _data["accountNumber"];
@@ -262105,6 +262107,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
         data["foodAllowance"] = this.foodAllowance;
         data["housingAllowance"] = this.housingAllowance;
         data["otherAllowance"] = this.otherAllowance;
+        data["annualLeaveOpeningBalance"] = this.annualLeaveOpeningBalance;
         data["bankName"] = this.bankName;
         data["iban"] = this.iban;
         data["accountNumber"] = this.accountNumber;
@@ -262124,6 +262127,7 @@ export interface IGoLiveV2EmployeeRowDto {
     foodAllowance: number | undefined;
     housingAllowance: number | undefined;
     otherAllowance: number | undefined;
+    annualLeaveOpeningBalance: number | undefined;
     bankName: string | undefined;
     iban: string | undefined;
     accountNumber: string | undefined;

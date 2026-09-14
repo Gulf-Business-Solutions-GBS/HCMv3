@@ -6483,5 +6483,8 @@
     <text name="GoLiveV2CompareEmployeesTotal">Employees compared</text>
     <text name="GoLiveV2CompareEmployeesMatched">Employees matched</text>
     <text name="GoLiveV2CompareEmployeesNotMatched">Employees not matched</text>
+    <text name="GoLiveV2ColAnnualLeaveOpening">Annual leave opening balance</text>
+    <text name="GoLiveV2ColAnnualLeaveOpeningHint">Days of annual leave the employee already has at go-live. Added to the first payroll month's accrual and leave provision. Leave blank for none.</text>
+    <text name="GoLiveV2OpeningBalanceTypeMissing">The time transfer type "Annual Leave Opening Balance" (code 1) is missing, so the opening balance cannot be saved.</text>
   </texts>
 </localizationDictionary>

@@ -60,6 +60,12 @@ public class GoLiveV2EmployeeRowDto
     public double? OtherAllowance { get; set; }
 
     /// <summary>
+    /// Days of annual leave the employee already has at go-live. Kept as an Annual Leave Opening Balance time
+    /// transfer, counted in the first payroll month's accrual and leave provision. Blank or zero for none.
+    /// </summary>
+    public double? AnnualLeaveOpeningBalance { get; set; }
+
+    /// <summary>
     /// The bank the salary is paid into, by name as the tenant's bank list has it. Optional: without it the
     /// employee is paid, but left out of the bank file.
     /// </summary>

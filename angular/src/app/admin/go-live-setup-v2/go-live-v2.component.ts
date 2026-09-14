@@ -374,6 +374,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             })
         ),
         {
+            key: 'annualLeaveOpeningBalance',
+            header: this.l('GoLiveV2ColAnnualLeaveOpening'),
+            type: 'number',
+            width: 190,
+            hint: this.l('GoLiveV2ColAnnualLeaveOpeningHint'),
+        },
+        {
             key: 'bankName',
             header: this.l('GoLiveV2ColBank'),
             type: 'choice',
@@ -1322,7 +1329,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     }
 
     private isEmptyRow(dto: GoLiveV2EmployeeRowDto): boolean {
-        return !dto.code && !dto.fullName && !dto.civilId && !dto.joiningDate && dto.basicSalary === undefined;
+        return !dto.code && !dto.fullName && !dto.civilId && !dto.joiningDate && dto.basicSalary === undefined && dto.annualLeaveOpeningBalance === undefined;
     }
 
     private elapsedMs(p: LoadProgress): number {
@@ -1562,6 +1569,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             foodAllowance: e.foodAllowance ?? null,
             housingAllowance: e.housingAllowance ?? null,
             otherAllowance: e.otherAllowance ?? null,
+            annualLeaveOpeningBalance: e.annualLeaveOpeningBalance ?? null,
             bankName: e.bankName ?? null,
             iban: e.iban ?? null,
             accountNumber: e.accountNumber ?? null,
@@ -1597,6 +1605,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         dto.foodAllowance = this.amount(row['foodAllowance']);
         dto.housingAllowance = this.amount(row['housingAllowance']);
         dto.otherAllowance = this.amount(row['otherAllowance']);
+        dto.annualLeaveOpeningBalance = this.amount(row['annualLeaveOpeningBalance']);
         dto.bankName = this.text(row['bankName']);
         dto.iban = this.text(row['iban']);
         dto.accountNumber = this.text(row['accountNumber']);
@@ -1634,6 +1643,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                     dto.foodAllowance ?? null,
                     dto.housingAllowance ?? null,
                     dto.otherAllowance ?? null,
+                    dto.annualLeaveOpeningBalance ?? null,
                     dto.bankName ?? '',
                     (dto.iban ?? '').replace(/\s+/g, '').toUpperCase(),
                     dto.accountNumber ?? '',
