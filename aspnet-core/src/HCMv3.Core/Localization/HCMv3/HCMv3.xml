@@ -6476,5 +6476,7 @@
     <text name="GoLiveV2CompareWageTypesNotMatched">Wage types not matched</text>
     <text name="GoLiveV2CompareLinesMatched">Lines matched</text>
     <text name="GoLiveV2CompareLinesNotMatched">Lines not matched</text>
+    <text name="GoLiveV2CompareTabUpload">Upload</text>
+    <text name="GoLiveV2CompareTabSummary">Summary</text>
   </texts>
 </localizationDictionary>

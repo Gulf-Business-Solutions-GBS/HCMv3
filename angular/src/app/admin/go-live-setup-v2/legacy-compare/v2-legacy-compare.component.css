@@ -290,3 +290,68 @@
     margin: 0;
     font-size: 0.875rem;
 }
+
+/* ---------- tabs: the window keeps one height and the tab in front fills it ---------- */
+.v2-modal.lc-modal {
+    height: 92vh;
+    overflow: hidden;
+}
+
+.lc-tabs {
+    flex: 0 0 auto;
+}
+
+.lc-tabs .nav-link {
+    border: 0;
+    background: none;
+}
+
+.lc-tabs .nav-link:disabled {
+    opacity: 0.45;
+}
+
+.lc-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow: auto;
+}
+
+.lc-body .lc-table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+}
+
+.lc-body .lc-summary {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.lc-lists {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.lc-lists .lc-list {
+    display: flex;
+    flex-direction: column;
+    max-height: none;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.lc-list-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+.lc-reason {
+    min-width: 26rem;
+}

@@ -16,6 +16,8 @@ import {
 
 type StatusFilter = 'all' | 'matched' | 'notMatched';
 
+type Tab = 'upload' | 'summary' | 'lines';
+
 /**
  * Compare with legacy salary: the legacy payroll's registers for the month -- exported by a read-only query the
  * window hands out -- set beside HCMv3's in one grid, rate, number and amount side by side, each cell coloured by
@@ -55,6 +57,15 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     readonly pageSizes = [50, 100, 200];
 
     readonly month = computed(() => this.monthEnd().toFormat('MMMM yyyy'));
+
+    /** Upload first; Summary and Lines open once there is a result, and a comparison lands on Summary. */
+    readonly tab = signal<Tab>('upload');
+
+    selectTab(tab: Tab): void {
+        if (tab === 'upload' || this.result()) {
+            this.tab.set(tab);
+        }
+    }
 
     // ---------------------------------------------------------------- step 1: the query
 
@@ -126,6 +137,7 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
             .subscribe((result) => {
                 this.result.set(result);
                 this.resetFilters();
+                this.tab.set('summary');
             });
     }
 
@@ -161,18 +173,18 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         };
     });
 
-    /** Which list the counts have opened, if any. */
-    readonly openList = signal<'matched' | 'notMatched' | null>(null);
-
-    toggleList(list: 'matched' | 'notMatched'): void {
-        this.openList.set(this.openList() === list ? null : list);
-    }
-
-    /** From a wage type in the list to its lines in the grid above. */
+    /** From a wage type on the Summary tab to its lines on the Lines tab. */
     showWageTypeLines(code: string): void {
         this.resetFilters();
         this.wageType.set(code);
-        document.querySelector('.lc-filters')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.tab.set('lines');
+    }
+
+    /** From a count on the Summary tab to the lines it counts. */
+    showLines(status: StatusFilter): void {
+        this.resetFilters();
+        this.status.set(status);
+        this.tab.set('lines');
     }
 
     // ---------------------------------------------------------------- filters

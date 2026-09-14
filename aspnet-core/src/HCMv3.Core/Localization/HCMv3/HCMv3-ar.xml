@@ -6315,5 +6315,7 @@
     <text name="GoLiveV2CompareWageTypesNotMatched">أنواع الأجور غير المطابقة</text>
     <text name="GoLiveV2CompareLinesMatched">البنود المطابقة</text>
     <text name="GoLiveV2CompareLinesNotMatched">البنود غير المطابقة</text>
+    <text name="GoLiveV2CompareTabUpload">الرفع</text>
+    <text name="GoLiveV2CompareTabSummary">الملخص</text>
   </texts>
 </localizationDictionary>
