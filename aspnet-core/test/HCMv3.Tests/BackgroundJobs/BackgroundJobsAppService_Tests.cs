@@ -170,7 +170,7 @@ public class BackgroundJobsAppService_Tests : AppTestBase
     {
         var userName = "bgjobs" + Guid.NewGuid().ToString("N").Substring(0, 8);
 
-        UsingDbContext(context => context.Users.Add(new User
+        var user = new User
         {
             TenantId = AbpSession.TenantId,
             UserName = userName,
@@ -179,7 +179,12 @@ public class BackgroundJobsAppService_Tests : AppTestBase
             EmailAddress = userName + "@gbskw.com",
             IsEmailConfirmed = true,
             Password = "AM4OLBpptxBYmM79lGOX9egzZk3vIQU3d/gFCJzaBjAPXzYIK3tQ2N7X4fcrHtElTw=="
-        }));
+        };
+
+        // Normally filled in by UserManager; a row added straight to the context has to set them itself.
+        user.SetNormalizedNames();
+
+        UsingDbContext(context => context.Users.Add(user));
 
         LoginAsTenant(AbpTenantBase.DefaultTenantName, userName);
 

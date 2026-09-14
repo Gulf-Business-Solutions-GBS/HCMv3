@@ -128,7 +128,25 @@ public class BackgroundWorkerRecording_Tests : AppTestBase
 
         workerTypes.Count.ShouldBeGreaterThanOrEqualTo(9);
 
-        foreach (var type in workerTypes.Where(t => LocalIocManager.IsRegistered(t)))
+        // Only tasks the test container can build. A few depend on services registered by the web host alone -- the
+        // unpaid-subscription reminder needs the payment URL generator -- and cannot be built here at all. Checked by
+        // handler state rather than by catching exceptions, so a task that fails for any other reason still fails.
+        var buildable = workerTypes
+            .Where(t => LocalIocManager.IsRegistered(t)
+                        && LocalIocManager.IocContainer.Kernel.GetHandler(t)?.CurrentState == Castle.MicroKernel.HandlerState.Valid)
+            .ToList();
+
+        // The tasks this screen matters most for must be among them, so the filter cannot quietly skip everything.
+        foreach (var required in new[]
+                 {
+                     "TimeEngineAutorunBackgroundWorker", "WorkflowEscalationWorker",
+                     "ReportScheduleDispatcherWorker", "ExpiredAuditLogDeleterWorker"
+                 })
+        {
+            buildable.ShouldContain(t => t.Name == required, $"{required} could not be built in the test container");
+        }
+
+        foreach (var type in buildable)
         {
             var worker = LocalIocManager.Resolve(type);
             var recorder = type.GetProperty("WorkerRecorder")!.GetValue(worker);
