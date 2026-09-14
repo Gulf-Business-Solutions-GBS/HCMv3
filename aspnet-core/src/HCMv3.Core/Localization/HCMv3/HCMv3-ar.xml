@@ -6325,5 +6325,9 @@
     <text name="GoLiveV2ColAnnualLeaveOpening">الرصيد الافتتاحي للإجازة السنوية</text>
     <text name="GoLiveV2ColAnnualLeaveOpeningHint">أيام الإجازة السنوية المستحقة للموظف عند بدء التشغيل. تُضاف إلى استحقاق أول شهر رواتب ومخصص الإجازة. اتركه فارغًا إذا لم يوجد.</text>
     <text name="GoLiveV2OpeningBalanceTypeMissing">نوع تحويل الوقت "الرصيد الافتتاحي للإجازة السنوية" (الرمز 1) غير موجود، لذلك لا يمكن حفظ الرصيد الافتتاحي.</text>
+    <text name="GoLiveV2ExportEmployeesSheet">الموظفون</text>
+    <text name="GoLiveV2ExportBanksSheet">البنوك</text>
+    <text name="GoLiveV2ExportEmployeesFileName">Employees.xlsx</text>
+    <text name="GoLiveV2ExportComparisonFileName">Legacy salary comparison {0}.xlsx</text>
   </texts>
 </localizationDictionary>

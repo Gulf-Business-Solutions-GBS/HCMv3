@@ -60,6 +60,14 @@
                             <i class="fa fa-eraser me-2" aria-hidden="true"></i>
                             {{ 'GoLiveV2Clear' | localize }}
                         </button>
+                        <button type="button" class="btn btn-light-success" [disabled]="exportingEmployees()" (click)="exportEmployees()">
+                            @if (exportingEmployees()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'ExportToExcel' | localize }}
+                        </button>
                         <button
                             type="button"
                             class="btn btn-light-primary"

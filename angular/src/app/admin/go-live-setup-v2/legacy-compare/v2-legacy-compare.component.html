@@ -291,6 +291,18 @@
                                 <option [value]="w.code" [selected]="wageType() === w.code">{{ w.code }} {{ w.name }}</option>
                             }
                         </select>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-success ms-auto"
+                            [disabled]="exporting() || filteredLines().length === 0"
+                            (click)="exportLines()">
+                            @if (exporting()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'ExportToExcel' | localize }}
+                        </button>
                     </div>
 
                     <div class="lc-table-wrap">

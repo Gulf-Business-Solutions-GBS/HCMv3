@@ -4,10 +4,12 @@ import { DateTime } from 'luxon';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import {
     BillingType,
     GoLiveV2CompareCause,
     GoLiveV2CompareStatus,
+    GoLiveV2LegacyCompareExportInput,
     GoLiveV2LegacyCompareInput,
     GoLiveV2LegacyCompareOutput,
     GoLiveV2PayrollResultsInput,
@@ -37,6 +39,7 @@ type Tab = 'upload' | 'summary' | 'lines';
 })
 export class V2LegacyCompareComponent extends AppComponentBase implements OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
+    private readonly fileDownload = inject(FileDownloadService);
 
     /** The month end being compared. */
     readonly monthEnd = input.required<DateTime>();
@@ -266,6 +269,21 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         this.filteredLines().length === 0 ? 0 : (this.currentPage() - 1) * this.pageSize() + 1
     );
     readonly showingTo = computed(() => Math.min(this.currentPage() * this.pageSize(), this.filteredLines().length));
+
+    readonly exporting = signal(false);
+
+    /** The lines as the grid shows them, filters applied, as Excel for a customer to check. */
+    exportLines(): void {
+        const input = new GoLiveV2LegacyCompareExportInput();
+        input.payMonth = this.monthEnd();
+        input.lines = this.filteredLines();
+
+        this.exporting.set(true);
+        this.proxy
+            .exportLegacyComparison(input)
+            .pipe(finalize(() => this.exporting.set(false)))
+            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+    }
 
     onSearch(event: Event): void {
         this.search.set((event.target as HTMLInputElement).value);

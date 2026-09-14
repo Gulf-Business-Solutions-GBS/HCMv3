@@ -19,6 +19,7 @@ import {
     GoLiveV2ClearCompanyInput,
     GoLiveV2EmployeeRowDto,
     GoLiveV2EmployeeRowResultDto,
+    GoLiveV2EmployeeSheetInput,
     GoLiveV2LoadEmployeesInput,
     GoLiveV2LoadEmployeesOutput,
     GoLiveV2NextStep,
@@ -254,6 +255,23 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         const preview = this.clearPreview();
         return !!preview && (preview.employees > 0 || !!preview.payrollMonthEnd);
     });
+
+    readonly exportingEmployees = signal(false);
+
+    /**
+     * The grid as it stands, unsaved edits included, as Excel for a customer to fill in: the same columns in the
+     * same order, so their sheet pastes straight back. An empty grid gives the headers alone.
+     */
+    exportEmployees(): void {
+        const input = new GoLiveV2EmployeeSheetInput();
+        input.employees = this.buildEmployeeRows().filter((row) => !this.isEmptyRow(row));
+
+        this.exportingEmployees.set(true);
+        this.proxy
+            .exportEmployeeSheet(input)
+            .pipe(finalize(() => this.exportingEmployees.set(false)))
+            .subscribe((file) => this.fileDownload.downloadTempFile(file));
+    }
 
     openClear(): void {
         this.clearTyped.set('');

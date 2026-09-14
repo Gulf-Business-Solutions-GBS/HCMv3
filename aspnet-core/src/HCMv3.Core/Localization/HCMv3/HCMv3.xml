@@ -6486,5 +6486,9 @@
     <text name="GoLiveV2ColAnnualLeaveOpening">Annual leave opening balance</text>
     <text name="GoLiveV2ColAnnualLeaveOpeningHint">Days of annual leave the employee already has at go-live. Added to the first payroll month's accrual and leave provision. Leave blank for none.</text>
     <text name="GoLiveV2OpeningBalanceTypeMissing">The time transfer type "Annual Leave Opening Balance" (code 1) is missing, so the opening balance cannot be saved.</text>
+    <text name="GoLiveV2ExportEmployeesSheet">Employees</text>
+    <text name="GoLiveV2ExportBanksSheet">Banks</text>
+    <text name="GoLiveV2ExportEmployeesFileName">Employees.xlsx</text>
+    <text name="GoLiveV2ExportComparisonFileName">Legacy salary comparison {0}.xlsx</text>
   </texts>
 </localizationDictionary>

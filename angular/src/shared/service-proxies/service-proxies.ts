@@ -66687,6 +66687,118 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
+    exportEmployeeSheet(body?: GoLiveV2EmployeeSheetInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ExportEmployeeSheet";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportEmployeeSheet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportEmployeeSheet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportEmployeeSheet(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    exportLegacyComparison(body?: GoLiveV2LegacyCompareExportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ExportLegacyComparison";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportLegacyComparison(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportLegacyComparison(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportLegacyComparison(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
     getLegacySalaryExportQuery(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2LegacyExportQueryDto> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLegacySalaryExportQuery";
         url_ = url_.replace(/[?&]$/, "");
@@ -262189,6 +262301,50 @@ export interface IGoLiveV2EmployeeRowResultDto {
     message: string | undefined;
 }
 
+export class GoLiveV2EmployeeSheetInput implements IGoLiveV2EmployeeSheetInput {
+    employees!: GoLiveV2EmployeeRowDto[] | undefined;
+
+    constructor(data?: IGoLiveV2EmployeeSheetInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2EmployeeSheetInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2EmployeeSheetInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2EmployeeSheetInput {
+    employees: GoLiveV2EmployeeRowDto[] | undefined;
+}
+
 export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileInput {
     payDate!: DateTime;
     payrollAreaName!: string;
@@ -262387,6 +262543,54 @@ export interface IGoLiveV2GridDto {
     columns: string[] | undefined;
     rows: string[][] | undefined;
     text: string | undefined;
+}
+
+export class GoLiveV2LegacyCompareExportInput implements IGoLiveV2LegacyCompareExportInput {
+    payMonth!: DateTime | undefined;
+    lines!: GoLiveV2LegacyCompareLineDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LegacyCompareExportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payMonth = _data["payMonth"] ? DateTime.fromISO(_data["payMonth"].toString()) : undefined as any;
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(GoLiveV2LegacyCompareLineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyCompareExportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyCompareExportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payMonth"] = this.payMonth ? this.payMonth.toString() : undefined as any;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyCompareExportInput {
+    payMonth: DateTime | undefined;
+    lines: GoLiveV2LegacyCompareLineDto[] | undefined;
 }
 
 export class GoLiveV2LegacyCompareInput implements IGoLiveV2LegacyCompareInput {

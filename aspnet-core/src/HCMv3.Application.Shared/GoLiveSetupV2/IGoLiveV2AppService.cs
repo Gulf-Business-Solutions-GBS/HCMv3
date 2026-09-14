@@ -94,6 +94,18 @@ public interface IGoLiveV2AppService : IApplicationService
     Task<GoLiveV2GridDto> GetSalaryRegisterGrid(GoLiveV2PayrollResultsInput input);
 
     /// <summary>
+    /// The Load Employee Data grid as Excel, in the grid's own columns and order, so a customer can fill it in and
+    /// it pastes straight back. The Bank column offers the tenant's banks. Header only when the grid is empty.
+    /// </summary>
+    Task<FileDto> ExportEmployeeSheet(GoLiveV2EmployeeSheetInput input);
+
+    /// <summary>
+    /// The comparison lines as Excel for a customer to check: each legacy/HCMv3 pair coloured green or red, and a
+    /// Summary sheet with the employee and wage type counts. Made from the lines sent; nothing is stored.
+    /// </summary>
+    Task<FileDto> ExportLegacyComparison(GoLiveV2LegacyCompareExportInput input);
+
+    /// <summary>
     /// The read-only query to run against the legacy HRMS database, filled in with the month and the payroll
     /// area's employee codes. Its result is what Compare with legacy salary takes.
     /// </summary>
