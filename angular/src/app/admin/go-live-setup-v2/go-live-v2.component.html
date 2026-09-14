@@ -208,6 +208,14 @@
                         <button
                             type="button"
                             class="btn btn-light-primary"
+                            [disabled]="!monthEnd()"
+                            (click)="compareOpen.set(true)">
+                            <i class="fa fa-balance-scale me-2" aria-hidden="true"></i>
+                            {{ 'GoLiveV2CompareButton' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
                             [disabled]="openStep() < 3"
                             [title]="openStep() < 3 ? ('GoLiveV2StepNeedsPayroll' | localize) : ''"
                             (click)="goToStep(3)">
@@ -875,6 +883,10 @@
                 </div>
             }
         </aside>
+    }
+
+    @if (compareOpen() && monthEnd(); as end) {
+        <v2-legacy-compare [monthEnd]="end" [payrollAreaName]="payrollAreaName().trim()" (closed)="compareOpen.set(false)" />
     }
 
     @if (runProgress(); as rp) {

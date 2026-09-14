@@ -66684,6 +66684,118 @@ export class GoLiveV2ServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getLegacySalaryExportQuery(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2LegacyExportQueryDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLegacySalaryExportQuery";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLegacySalaryExportQuery(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLegacySalaryExportQuery(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyExportQueryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyExportQueryDto>;
+        }));
+    }
+
+    protected processGetLegacySalaryExportQuery(response: HttpResponseBase): Observable<GoLiveV2LegacyExportQueryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2LegacyExportQueryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    compareWithLegacySalary(body?: GoLiveV2LegacyCompareInput | undefined): Observable<GoLiveV2LegacyCompareOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/CompareWithLegacySalary";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompareWithLegacySalary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompareWithLegacySalary(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyCompareOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyCompareOutput>;
+        }));
+    }
+
+    protected processCompareWithLegacySalary(response: HttpResponseBase): Observable<GoLiveV2LegacyCompareOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2LegacyCompareOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param payrollAreaName (optional) 
      * @return OK
      */
@@ -261868,6 +261980,23 @@ export interface IGoLiveV2ClearCompanyInput {
     confirmCompanyName: string;
 }
 
+export enum GoLiveV2CompareCause {
+    None = 0,
+    Rounding = 1,
+    Data = 2,
+    Days = 3,
+    Logic = 4,
+    Setup = 5,
+    FollowsOtherLines = 6,
+}
+
+export enum GoLiveV2CompareStatus {
+    Matched = 0,
+    Different = 1,
+    OnlyInLegacy = 2,
+    OnlyInHcmv3 = 3,
+}
+
 export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
     employeeCode!: string | undefined;
     succeeded!: boolean;
@@ -262254,6 +262383,278 @@ export interface IGoLiveV2GridDto {
     columns: string[] | undefined;
     rows: string[][] | undefined;
     text: string | undefined;
+}
+
+export class GoLiveV2LegacyCompareInput implements IGoLiveV2LegacyCompareInput {
+    payDate!: DateTime;
+    payrollAreaName!: string;
+    fileName!: string;
+    base64Content!: string;
+
+    constructor(data?: IGoLiveV2LegacyCompareInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.fileName = _data["fileName"];
+            this.base64Content = _data["base64Content"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyCompareInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyCompareInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["fileName"] = this.fileName;
+        data["base64Content"] = this.base64Content;
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyCompareInput {
+    payDate: DateTime;
+    payrollAreaName: string;
+    fileName: string;
+    base64Content: string;
+}
+
+export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineDto {
+    employeeCode!: string | undefined;
+    employeeName!: string | undefined;
+    wageTypeCode!: string | undefined;
+    wageTypeName!: string | undefined;
+    billingType!: BillingType;
+    comparesDays!: boolean;
+    legacyRate!: number | undefined;
+    legacyNumber!: number | undefined;
+    legacyAmount!: number | undefined;
+    hcmv3Rate!: number | undefined;
+    hcmv3Number!: number | undefined;
+    hcmv3Amount!: number | undefined;
+    hcmv3PayRecordAmount!: number | undefined;
+    difference!: number | undefined;
+    status!: GoLiveV2CompareStatus;
+    cause!: GoLiveV2CompareCause;
+    reason!: string | undefined;
+
+    constructor(data?: IGoLiveV2LegacyCompareLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.employeeName = _data["employeeName"];
+            this.wageTypeCode = _data["wageTypeCode"];
+            this.wageTypeName = _data["wageTypeName"];
+            this.billingType = _data["billingType"];
+            this.comparesDays = _data["comparesDays"];
+            this.legacyRate = _data["legacyRate"];
+            this.legacyNumber = _data["legacyNumber"];
+            this.legacyAmount = _data["legacyAmount"];
+            this.hcmv3Rate = _data["hcmv3Rate"];
+            this.hcmv3Number = _data["hcmv3Number"];
+            this.hcmv3Amount = _data["hcmv3Amount"];
+            this.hcmv3PayRecordAmount = _data["hcmv3PayRecordAmount"];
+            this.difference = _data["difference"];
+            this.status = _data["status"];
+            this.cause = _data["cause"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyCompareLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyCompareLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["employeeName"] = this.employeeName;
+        data["wageTypeCode"] = this.wageTypeCode;
+        data["wageTypeName"] = this.wageTypeName;
+        data["billingType"] = this.billingType;
+        data["comparesDays"] = this.comparesDays;
+        data["legacyRate"] = this.legacyRate;
+        data["legacyNumber"] = this.legacyNumber;
+        data["legacyAmount"] = this.legacyAmount;
+        data["hcmv3Rate"] = this.hcmv3Rate;
+        data["hcmv3Number"] = this.hcmv3Number;
+        data["hcmv3Amount"] = this.hcmv3Amount;
+        data["hcmv3PayRecordAmount"] = this.hcmv3PayRecordAmount;
+        data["difference"] = this.difference;
+        data["status"] = this.status;
+        data["cause"] = this.cause;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyCompareLineDto {
+    employeeCode: string | undefined;
+    employeeName: string | undefined;
+    wageTypeCode: string | undefined;
+    wageTypeName: string | undefined;
+    billingType: BillingType;
+    comparesDays: boolean;
+    legacyRate: number | undefined;
+    legacyNumber: number | undefined;
+    legacyAmount: number | undefined;
+    hcmv3Rate: number | undefined;
+    hcmv3Number: number | undefined;
+    hcmv3Amount: number | undefined;
+    hcmv3PayRecordAmount: number | undefined;
+    difference: number | undefined;
+    status: GoLiveV2CompareStatus;
+    cause: GoLiveV2CompareCause;
+    reason: string | undefined;
+}
+
+export class GoLiveV2LegacyCompareOutput implements IGoLiveV2LegacyCompareOutput {
+    payMonth!: DateTime;
+    fileRows!: number;
+    rowsForOtherMonths!: number;
+    rowsUnreadable!: number;
+    employees!: number;
+    hcmv3EmployeesNotInFile!: number;
+    matched!: number;
+    different!: number;
+    onlyInLegacy!: number;
+    onlyInHcmv3!: number;
+    lines!: GoLiveV2LegacyCompareLineDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LegacyCompareOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payMonth = _data["payMonth"] ? DateTime.fromISO(_data["payMonth"].toString()) : undefined as any;
+            this.fileRows = _data["fileRows"];
+            this.rowsForOtherMonths = _data["rowsForOtherMonths"];
+            this.rowsUnreadable = _data["rowsUnreadable"];
+            this.employees = _data["employees"];
+            this.hcmv3EmployeesNotInFile = _data["hcmv3EmployeesNotInFile"];
+            this.matched = _data["matched"];
+            this.different = _data["different"];
+            this.onlyInLegacy = _data["onlyInLegacy"];
+            this.onlyInHcmv3 = _data["onlyInHcmv3"];
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(GoLiveV2LegacyCompareLineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyCompareOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyCompareOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payMonth"] = this.payMonth ? this.payMonth.toString() : undefined as any;
+        data["fileRows"] = this.fileRows;
+        data["rowsForOtherMonths"] = this.rowsForOtherMonths;
+        data["rowsUnreadable"] = this.rowsUnreadable;
+        data["employees"] = this.employees;
+        data["hcmv3EmployeesNotInFile"] = this.hcmv3EmployeesNotInFile;
+        data["matched"] = this.matched;
+        data["different"] = this.different;
+        data["onlyInLegacy"] = this.onlyInLegacy;
+        data["onlyInHcmv3"] = this.onlyInHcmv3;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyCompareOutput {
+    payMonth: DateTime;
+    fileRows: number;
+    rowsForOtherMonths: number;
+    rowsUnreadable: number;
+    employees: number;
+    hcmv3EmployeesNotInFile: number;
+    matched: number;
+    different: number;
+    onlyInLegacy: number;
+    onlyInHcmv3: number;
+    lines: GoLiveV2LegacyCompareLineDto[] | undefined;
+}
+
+export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryDto {
+    fileName!: string | undefined;
+    sql!: string | undefined;
+
+    constructor(data?: IGoLiveV2LegacyExportQueryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.sql = _data["sql"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyExportQueryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyExportQueryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["sql"] = this.sql;
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyExportQueryDto {
+    fileName: string | undefined;
+    sql: string | undefined;
 }
 
 export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {

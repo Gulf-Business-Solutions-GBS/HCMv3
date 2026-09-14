@@ -43,6 +43,7 @@ import {
     PayrollSheetReportServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { V2DocViewerComponent, V2Document } from './doc-viewer/v2-doc-viewer.component';
+import { V2LegacyCompareComponent } from './legacy-compare/v2-legacy-compare.component';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 import { PasteGridComponent } from '../go-live-setup/shared/paste-grid/paste-grid.component';
@@ -123,7 +124,15 @@ const DefaultPayrollArea = 'Default Payroll Area';
     templateUrl: './go-live-v2.component.html',
     styleUrl: './go-live-v2.component.css',
     animations: [appModuleAnimation()],
-    imports: [SubHeaderComponent, LocalizePipe, DatePipe, DecimalPipe, PasteGridComponent, V2DocViewerComponent],
+    imports: [
+        SubHeaderComponent,
+        LocalizePipe,
+        DatePipe,
+        DecimalPipe,
+        PasteGridComponent,
+        V2DocViewerComponent,
+        V2LegacyCompareComponent,
+    ],
 })
 export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
@@ -454,6 +463,9 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.refreshBankFileSetup();
         });
     });
+
+    /** Compare with legacy salary, open for the month chosen above. */
+    readonly compareOpen = signal(false);
 
     /** The document being looked at, or null. Everything V2 produces goes through here first. */
     readonly openDocument = signal<V2Document | null>(null);

@@ -94,6 +94,19 @@ public interface IGoLiveV2AppService : IApplicationService
     Task<GoLiveV2GridDto> GetSalaryRegisterGrid(GoLiveV2PayrollResultsInput input);
 
     /// <summary>
+    /// The read-only query to run against the legacy HRMS database, filled in with the month and the payroll
+    /// area's employee codes. Its result is what Compare with legacy salary takes.
+    /// </summary>
+    Task<GoLiveV2LegacyExportQueryDto> GetLegacySalaryExportQuery(GoLiveV2PayrollResultsInput input);
+
+    /// <summary>
+    /// Sets the legacy salary register export beside HCMv3's registers for the month: employee by employee and
+    /// wage type by wage type, whether it matches, and for each difference the likely reason -- the salary
+    /// record, the days, the calculation, or setup. The file is read in memory and never stored.
+    /// </summary>
+    Task<GoLiveV2LegacyCompareOutput> CompareWithLegacySalary(GoLiveV2LegacyCompareInput input);
+
+    /// <summary>
     /// What Clear would remove from the payroll area, counted: the employees, their time and salary registers,
     /// everything else that belongs to them, and the payroll month. Nothing is changed.
     /// </summary>

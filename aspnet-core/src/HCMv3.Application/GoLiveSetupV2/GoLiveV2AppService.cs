@@ -79,6 +79,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly IBackgroundJobManager _backgroundJobs;
     private readonly IPayrollSheetReportAppService _payrollSheetReport;
     private readonly ITempFileCacheManager _tempFiles;
+    private readonly GoLiveV2LegacyComparer _legacyComparer;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -109,7 +110,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         GoLiveV2EngineBatches batches,
         IBackgroundJobManager backgroundJobs,
         IPayrollSheetReportAppService payrollSheetReport,
-        ITempFileCacheManager tempFiles)
+        ITempFileCacheManager tempFiles,
+        GoLiveV2LegacyComparer legacyComparer)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -140,6 +142,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _backgroundJobs = backgroundJobs;
         _payrollSheetReport = payrollSheetReport;
         _tempFiles = tempFiles;
+        _legacyComparer = legacyComparer;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -561,6 +564,16 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
 
         return found.GroupBy(w => w.Code).ToDictionary(g => g.Key, g => g.First().Id);
     }
+
+    [HttpPost]
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<GoLiveV2LegacyExportQueryDto> GetLegacySalaryExportQuery(GoLiveV2PayrollResultsInput input) =>
+        _legacyComparer.GetExportQueryAsync(input.PayrollAreaName, MonthEnd(input.PayDate.Value));
+
+    /// <remarks>Reads salary records as well as registers, so it needs the salary register permission.</remarks>
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<GoLiveV2LegacyCompareOutput> CompareWithLegacySalary(GoLiveV2LegacyCompareInput input) =>
+        _legacyComparer.CompareAsync(input, MonthEnd(input.PayDate.Value));
 
     /// <remarks>Shows employee records, so it needs the employee screen's permission too.</remarks>
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees)]
