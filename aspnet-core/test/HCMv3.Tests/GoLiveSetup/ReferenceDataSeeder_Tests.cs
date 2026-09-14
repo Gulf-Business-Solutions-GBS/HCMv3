@@ -34,6 +34,32 @@ public class ReferenceDataSeeder_Tests : AppTestBase
         pack.Currencies.ShouldNotBeEmpty();
     }
 
+    /// <summary>
+    /// Every wage type is paid on fixed 26 days a month, never on the month's calendar days: a full month
+    /// is 26 days whatever its length, as the legacy payroll customers compare against pays it.
+    /// </summary>
+    [Fact]
+    public void Should_Pay_Every_Wage_Type_On_Fixed_26_Days()
+    {
+        var wageTypes = _seeder.GetPack("payroll").WageTypes;
+
+        wageTypes.ShouldNotBeEmpty();
+        wageTypes.Where(w => w.BillingMethod != HCMv3.PayrollManagement.BillingMethod.FixedDaysPerMonth)
+            .Select(w => w.Code).ShouldBeEmpty();
+        wageTypes.Where(w => w.FixedDays != 26).Select(w => w.Code).ShouldBeEmpty();
+    }
+
+    /// <summary>Basic Salary, the wage type the day counts are taken from, reaches a new tenant on fixed 26 days.</summary>
+    [Fact]
+    public async Task Should_Seed_Basic_Salary_On_Fixed_26_Days()
+    {
+        await _seeder.SeedPackAsync("payroll", TenantId);
+
+        var basic = UsingDbContext(context => context.WageTypes.Single(w => w.TenantId == TenantId && w.Code == "1000"));
+        basic.BillingMethod.ShouldBe(HCMv3.PayrollManagement.BillingMethod.FixedDaysPerMonth);
+        basic.FixedDays.ShouldBe(26);
+    }
+
     [Fact]
     public void Should_Load_The_Kuwait_Pack_From_Embedded_Resources()
     {
