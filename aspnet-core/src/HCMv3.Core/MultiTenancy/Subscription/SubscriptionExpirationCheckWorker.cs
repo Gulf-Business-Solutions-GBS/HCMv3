@@ -11,10 +11,11 @@ using Abp.Threading.Timers;
 using Abp.Timing;
 using HCMv3.Authorization.Users;
 using HCMv3.Editions;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.MultiTenancy.Subscription;
 
-public class SubscriptionExpirationCheckWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class SubscriptionExpirationCheckWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     private const int CheckPeriodAsMilliseconds = 1 * 60 * 60 * 1000; //1 hour
 
@@ -45,7 +46,7 @@ public class SubscriptionExpirationCheckWorker : PeriodicBackgroundWorkerBase, I
         _unitOfWorkManager = unitOfWorkManager;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         _unitOfWorkManager.WithUnitOfWork(() =>
         {

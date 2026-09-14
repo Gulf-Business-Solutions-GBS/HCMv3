@@ -9,10 +9,11 @@ using Abp.Threading.Timers;
 using Abp.Timing;
 using HCMv3.Authorization.Users;
 using HCMv3.Configuration;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.MultiTenancy.Subscription;
 
-public class SubscriptionExpireEmailNotifierWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class SubscriptionExpireEmailNotifierWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     private const int CheckPeriodAsMilliseconds = 1 * 60 * 60 * 1000 * 24; //1 day
 
@@ -36,7 +37,7 @@ public class SubscriptionExpireEmailNotifierWorker : PeriodicBackgroundWorkerBas
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         _unitOfWorkManager.WithUnitOfWork(() =>
         {

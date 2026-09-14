@@ -9,6 +9,7 @@ using Abp.Threading.Timers;
 using Abp.Timing;
 using HCMv3.MultiTenancy;
 using HCMv3.ReportManagement.Services;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.ReportManagement;
 
@@ -28,7 +29,7 @@ namespace HCMv3.ReportManagement;
 /// <see cref="IReportScheduleExecutor"/> that the Run Now button uses, so a scheduled run and a manual
 /// run cannot drift apart in behaviour.
 /// </summary>
-public class ReportScheduleDispatcherWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class ReportScheduleDispatcherWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     /// <summary>
     /// Five minutes. The occurrence patterns are daily at coarsest, so a tighter poll buys nothing but
@@ -61,7 +62,7 @@ public class ReportScheduleDispatcherWorker : PeriodicBackgroundWorkerBase, ISin
         Timer.RunOnStart = false;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         var tenantIds = _unitOfWorkManager.WithUnitOfWork(() =>
             _tenantRepository.GetAll().Where(t => t.IsActive).Select(t => t.Id).ToList());

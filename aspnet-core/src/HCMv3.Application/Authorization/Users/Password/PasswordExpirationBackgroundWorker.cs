@@ -2,10 +2,11 @@ using Abp.Dependency;
 using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.Authorization.Users.Password;
 
-public class PasswordExpirationBackgroundWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class PasswordExpirationBackgroundWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     private const int CheckPeriodAsMilliseconds = 1 * 60 * 60 * 1000 * 24; //1 day
 
@@ -27,7 +28,7 @@ public class PasswordExpirationBackgroundWorker : PeriodicBackgroundWorkerBase, 
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         _unitOfWorkManager.WithUnitOfWork(() =>
         {

@@ -65,6 +65,7 @@ public static class ScreenCatalog
         new("app.admin.screen-codes", "SAD022", "Administration", "ManageScreenCodes", "/app/admin/screen-codes", "Pages.Administration.Navigation.ManageScreenCodes"),
         new("app.admin.quick-links", "SAD023", "Administration", "ManageQuickLinks", "/app/admin/quick-links", "Pages.Administration.Navigation.ManageQuickLinks"),
         new("app.admin.api-dictionary", "SAD024", "Administration", "ApiDictionary", "/app/admin/api-dictionary", "Pages.Administration.ApiDictionary"),
+        new("app.admin.background-jobs", "SAD025", "Administration", "BackgroundJobs", "/app/admin/background-jobs", "Pages.Administration.BackgroundJobs"),
         new("app.admin.ui-customization", "SAD019", "Administration", "VisualSettings", "/app/admin/ui-customization", "Pages.Administration.UiCustomization"),
         new("app.admin.users", "SAD020", "Administration", "Users", "/app/admin/users", "Pages.Administration.Users"),
         new("app.admin.webhook-subscriptions", "SAD021", "Administration", "WebhookSubscriptions", "/app/admin/webhook-subscriptions", "Pages.Administration.WebhookSubscription"),

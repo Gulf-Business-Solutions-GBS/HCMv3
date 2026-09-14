@@ -15,10 +15,11 @@ using Abp.EntityFrameworkCore.Repositories;
 using Microsoft.EntityFrameworkCore;
 using HCMv3.Configuration;
 using HCMv3.MultiTenancy;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.Auditing;
 
-public class ExpiredAuditLogDeleterWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class ExpiredAuditLogDeleterWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     /// <summary>
     /// Set this const field to true if you want to enable ExpiredAuditLogDeleterWorker.
@@ -56,7 +57,7 @@ public class ExpiredAuditLogDeleterWorker : PeriodicBackgroundWorkerBase, ISingl
                     true.ToString();
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         if (!IsEnabled)
         {

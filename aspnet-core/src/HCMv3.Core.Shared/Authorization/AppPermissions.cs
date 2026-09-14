@@ -741,6 +741,12 @@ public static class AppPermissions
     /// </summary>
     public const string Pages_Administration_ApiDictionary = "Pages.Administration.ApiDictionary";
 
+    /// <summary>
+    /// The Background Jobs screen: scheduled tasks and queued jobs. Granted on both sides -- the host sees every
+    /// company's jobs and errors, a company sees its own jobs and when the system-wide tasks last ran.
+    /// </summary>
+    public const string Pages_Administration_BackgroundJobs = "Pages.Administration.BackgroundJobs";
+
     public const string Pages_Administration_WebhookSubscription = "Pages.Administration.WebhookSubscription";
     public const string Pages_Administration_WebhookSubscription_Create = "Pages.Administration.WebhookSubscription.Create";
     public const string Pages_Administration_WebhookSubscription_Edit = "Pages.Administration.WebhookSubscription.Edit";

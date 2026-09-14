@@ -1,0 +1,23 @@
+/* Dates and counts never wrap; the task name and the error are the columns allowed to. */
+.bg-jobs-table th,
+.bg-jobs-table td {
+    white-space: nowrap;
+}
+
+/*
+ * An error can be a long message. It is capped at three lines so one bad run cannot push the table off the page;
+ * the full text is in the cell's title, and in full in the server log.
+ */
+.bg-jobs-error {
+    white-space: normal;
+    min-width: 16rem;
+    max-width: 32rem;
+}
+
+.bg-jobs-error span {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}

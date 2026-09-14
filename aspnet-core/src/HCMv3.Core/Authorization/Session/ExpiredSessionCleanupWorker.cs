@@ -9,10 +9,11 @@ using Abp.Logging;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
 using HCMv3.MultiTenancy;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.Authorization.Session;
 
-public class ExpiredSessionCleanupWorker : AsyncPeriodicBackgroundWorkerBase, ISingletonDependency
+public class ExpiredSessionCleanupWorker : RecordedAsyncPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     private const int CleanupPeriodHours = 24;
     private const int RetentionDays = 30;
@@ -31,7 +32,7 @@ public class ExpiredSessionCleanupWorker : AsyncPeriodicBackgroundWorkerBase, IS
         Timer.Period = (int)TimeSpan.FromHours(CleanupPeriodHours).TotalMilliseconds;
     }
 
-    protected override async Task DoWorkAsync()
+    protected override async Task DoRecordedWorkAsync()
     {
         List<int> tenantIdsWithSeparateDatabase;
 

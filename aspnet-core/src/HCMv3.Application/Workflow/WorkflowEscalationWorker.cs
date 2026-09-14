@@ -11,6 +11,7 @@ using HCMv3.MultiTenancy;
 using HCMv3.Notifications;
 using HCMv3.PersonnelAdministration;
 using HCMv3.Workflow.Services;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.Workflow;
 
@@ -32,7 +33,7 @@ namespace HCMv3.Workflow;
 /// dispatcher and the nightly Time Engine run.
 /// </para>
 /// </summary>
-public class WorkflowEscalationWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class WorkflowEscalationWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     /// <summary>
     /// Hourly. Both rules are expressed in whole days, so a tighter poll buys nothing; but a daily poll
@@ -73,7 +74,7 @@ public class WorkflowEscalationWorker : PeriodicBackgroundWorkerBase, ISingleton
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         var tenantIds = _unitOfWorkManager.WithUnitOfWork(() =>
             _tenantRepository.GetAll().Where(t => t.IsActive).Select(t => t.Id).ToList());

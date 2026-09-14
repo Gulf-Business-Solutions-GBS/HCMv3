@@ -52,6 +52,7 @@ using HCMv3.SystemSettings;
 using HCMv3.TimeManagement;
 using HCMv3.TrainingManagement;
 using HCMv3.TravelManagement;
+using HCMv3.BackgroundJobs;
 using HCMv3.BusinessRules;
 using HCMv3.Workflow;
 
@@ -804,6 +805,10 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<BusinessRuleExecutionLog> BusinessRuleExecutionLogs { get; set; }
 
+    public virtual DbSet<BackgroundWorkerStatus> BackgroundWorkerStatuses { get; set; }
+
+    public virtual DbSet<BackgroundJobFailure> BackgroundJobFailures { get; set; }
+
     public virtual DbSet<Applicant> Applicants { get; set; }
 
     public virtual DbSet<ApplicantCV> ApplicantCVs { get; set; }
@@ -1405,6 +1410,21 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         // The rule engine. Code is unique per tenant because seed data, imports and the routing hook all
         // find a rule by its code -- a duplicate would make "which rule is PROBATION_END_DATE" depend on
         // insertion order.
+        modelBuilder.Entity<BackgroundWorkerStatus>(b =>
+        {
+            // One row per task: the recorder finds a task's row by name and updates it in place.
+            b.HasIndex(e => e.WorkerName)
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
+        });
+
+        modelBuilder.Entity<BackgroundJobFailure>(b =>
+        {
+            // The screen lists a company's recent failures newest first; the prune deletes by age.
+            b.HasIndex(e => new { e.TenantId, e.FailedTime });
+            b.HasIndex(e => e.JobId);
+        });
+
         modelBuilder.Entity<BusinessRule>(b =>
         {
             b.HasIndex(e => new { e.TenantId, e.Code })

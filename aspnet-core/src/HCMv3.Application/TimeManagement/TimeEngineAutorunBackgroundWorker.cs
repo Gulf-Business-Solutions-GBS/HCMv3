@@ -11,6 +11,7 @@ using Abp.Timing;
 using HCMv3.MultiTenancy;
 using HCMv3.PayrollManagement;
 using HCMv3.SystemSettings.Services;
+using HCMv3.BackgroundJobs;
 
 namespace HCMv3.TimeManagement;
 
@@ -41,7 +42,7 @@ namespace HCMv3.TimeManagement;
 /// (2) Legacy was single-tenant; this worker iterates active tenants and enqueues per tenant per payroll
 /// area. (3) Legacy's blanket <c>catch { }</c> that swallowed every failure is replaced with logging.</para>
 /// </summary>
-public class TimeEngineAutorunBackgroundWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
+public class TimeEngineAutorunBackgroundWorker : RecordedPeriodicBackgroundWorkerBase, ISingletonDependency
 {
     /// <summary>
     /// Legacy had no timer of its own -- <c>TimeAttendanceService.RunTimeEngine</c> was invoked by the host's
@@ -79,7 +80,7 @@ public class TimeEngineAutorunBackgroundWorker : PeriodicBackgroundWorkerBase, I
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
     }
 
-    protected override void DoWork()
+    protected override void DoRecordedWork()
     {
         var tenantIds = _unitOfWorkManager.WithUnitOfWork(() =>
             _tenantRepository.GetAll().Where(t => t.IsActive).Select(t => t.Id).ToList());
