@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit, computed, effect, inject, signal, untracked } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { DateTime } from 'luxon';
-import { firstValueFrom, forkJoin } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import {
     BillingType,
-    EngineRunStatusDto,
     GetPayrollSheetReportInput,
     GoLiveV2BankFileLayoutDto,
     GoLiveV2BankFileLeftOutReason,
@@ -29,6 +28,8 @@ import {
     GoLiveV2PayslipsServiceProxy,
     GoLiveV2PayrollResultsOutput,
     GoLiveV2PayrollResultRowDto,
+    GoLiveV2PayrollRunProgressDto,
+    GoLiveV2RunStatus,
     GoLiveV2SalaryRegisterDto,
     GoLiveV2SalaryRegisterInput,
     GoLiveV2SalaryRegisterLineDto,
@@ -38,10 +39,8 @@ import {
     GoLiveV2SetUpPayrollMonthInput,
     GoLiveV2SetUpPayrollMonthOutput,
     GoLiveV2StoppedAt,
-    PayrollEngineServiceProxy,
     PayrollRunType,
     PayrollSheetReportServiceProxy,
-    TimeEngineServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { V2DocViewerComponent, V2Document } from './doc-viewer/v2-doc-viewer.component';
 import { FileDownloadService } from '@shared/utils/file-download.service';
@@ -79,19 +78,21 @@ interface LoadProgress {
 }
 
 /**
- * Live state of Run payroll, for its progress window. The run itself is one request; while it is open the
- * two engines' own progress records -- written on a separate connection so they can be read mid-run -- are
- * polled. Only runs newer than the ones there before the click are this run's.
+ * Live state of Run payroll, for its progress window. The run goes on in the background on the server, which
+ * keeps where it stands; the window polls that, so a reload or a new login finds the same run.
  */
 interface RunProgress {
     month: string;
     startedAt: number;
     finishedAt: number | null;
-    baselineTimeRunId: number;
-    baselinePayrollRunId: number;
-    time: EngineRunStatusDto | null;
-    payroll: EngineRunStatusDto | null;
+    server: GoLiveV2PayrollRunProgressDto | null;
 }
+
+/** Remembers, per browser, which finished run has been seen, so its result is shown once after a return and not every visit. */
+const SeenRunStorageKey = 'GoLiveV2.SeenPayrollRun';
+
+/** How often the screen tells the idle lock someone is here while a run or load is going. */
+const KeepAwakeMs = 30000;
 
 /** Two letters, two check digits, then 10 to 30 letters and digits: every country's IBAN has this shape. */
 const IbanShape = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{10,30}$/;
@@ -126,13 +127,12 @@ const DefaultPayrollArea = 'Default Payroll Area';
 })
 export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDestroy {
     private readonly proxy = inject(GoLiveV2ServiceProxy);
-    private readonly payrollEngineProxy = inject(PayrollEngineServiceProxy);
-    private readonly timeEngineProxy = inject(TimeEngineServiceProxy);
     private readonly payrollSheetProxy = inject(PayrollSheetReportServiceProxy);
     private readonly fileDownload = inject(FileDownloadService);
     private readonly payslipsProxy = inject(GoLiveV2PayslipsServiceProxy);
     private runPoll: ReturnType<typeof setInterval> | null = null;
     private ticker: ReturnType<typeof setInterval> | null = null;
+    private keepAwake: ReturnType<typeof setInterval> | null = null;
 
     readonly StoppedAt = GoLiveV2StoppedAt;
     readonly NextStep = GoLiveV2NextStep;
@@ -398,11 +398,20 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     readonly running = signal(false);
     readonly runProgress = signal<RunProgress | null>(null);
+
+    /** The run goes on without the window, so it can be put away and brought back. */
+    readonly runWindowHidden = signal(false);
     readonly BillingType = BillingType;
 
     // ---------------------------------------------------------------- step 3: see the results
 
     readonly results = signal<GoLiveV2PayrollResultsOutput | null>(null);
+
+    /** The results worth showing: a month nobody has been paid for yet is an empty table, so it stays hidden. */
+    readonly paidResults = computed(() => {
+        const results = this.results();
+        return results && results.employeesPaid > 0 ? results : null;
+    });
     readonly loadingResults = signal(false);
     readonly exporting = signal<'sheet' | 'register' | 'payslips' | null>(null);
     readonly register = signal<GoLiveV2SalaryRegisterDto | null>(null);
@@ -563,11 +572,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     ngOnInit(): void {
         this.proxy.getBankNames().subscribe((names) => this.bankNames.set(names.items ?? []));
         this.showPreviouslyLoaded();
+        this.findRunInProgress();
     }
 
     ngOnDestroy(): void {
         this.stopTicker();
         this.stopRunPoll();
+        this.stopKeepAwake();
     }
 
     // ---------------------------------------------------------------- step 1
@@ -604,6 +615,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             recent: [],
         });
         this.startTicker();
+        this.startKeepAwake();
 
         let outcome: LoadProgress['outcome'] = 'finished';
         let errorRow: number | null = null;
@@ -647,6 +659,9 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             }
         } finally {
             this.stopTicker();
+            if (!this.running()) {
+                this.stopKeepAwake();
+            }
             this.loading.set(false);
             this.progress.update((p) => ({ ...p, current: null, finishedAt: Date.now(), outcome, errorRow }));
         }
@@ -768,105 +783,125 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     // ---------------------------------------------------------------- step 2
 
     /**
-     * Sets up the month if it needs it, runs the time engine, then the payroll engine -- all in one request --
-     * while a progress window shows each engine's own progress, employee by employee.
+     * Starts the run on the server and follows it there. The month set-up and the payroll-month check are
+     * answered at once, before any engine starts; the engines then run in the background, so a locked screen,
+     * a reload or a new login no longer loses the run -- the window just picks it up again.
      */
-    async runPayroll(): Promise<void> {
+    runPayroll(): void {
         if (this.running()) {
+            // Already going: the button brings the window back.
+            this.runWindowHidden.set(false);
             return;
         }
 
         this.running.set(true);
         this.stopRequested.set(false);
-
-        // The engines' latest runs before this click: anything newer is this run.
-        const baseline = await firstValueFrom(
-            forkJoin([this.timeEngineProxy.getTimeEngineStatus(), this.payrollEngineProxy.getPayrollEngineStatus()])
-        ).catch(() => null);
+        this.runWindowHidden.set(false);
 
         const end = this.monthEnd();
         this.runProgress.set({
             month: end ? end.toFormat('MMMM yyyy') : '',
             startedAt: Date.now(),
             finishedAt: null,
-            baselineTimeRunId: baseline?.[0]?.hasRun ? baseline[0].runId : 0,
-            baselinePayrollRunId: baseline?.[1]?.hasRun ? baseline[1].runId : 0,
-            time: null,
-            payroll: null,
+            server: null,
         });
         this.startTicker();
-        this.startRunPoll();
+        this.startKeepAwake();
 
-        this.proxy
-            .runPayroll(this.buildRunInput())
-            .pipe(
-                finalize(() => {
-                    this.stopRunPoll();
-                    this.stopTicker();
-                    this.running.set(false);
-                    this.pollRunProgress();
-                    this.runProgress.update((p) => (p ? { ...p, finishedAt: Date.now() } : p));
-                })
-            )
-            .subscribe({
-                next: (result) => {
-                    this.lastSetUp.set(null);
-                    this.lastLoad.set(null);
-                    this.latest.set(result);
-                    this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
-                    // Whatever the run did, the results below now describe it.
-                    this.showResults();
-                    this.refreshBankFileSetup();
-
-                    if (result.succeeded) {
-                        this.unlockedStep.update((step) => Math.max(step, 3));
-                    }
-                },
-                error: () => this.runProgress.set(null),
-            });
+        this.proxy.startPayrollRun(this.buildRunInput()).subscribe({
+            next: (progress) => this.followRun(progress, true),
+            error: () => {
+                this.endRunWatch();
+                this.runProgress.set(null);
+            },
+        });
     }
 
     /** Which engine is working now: the payroll engine once it has started, the time engine before that. */
     runPhase(p: RunProgress): 'starting' | 'time' | 'payroll' {
-        if (p.payroll) {
+        const s = p.server;
+        if (!s) {
+            return 'starting';
+        }
+        if (s.payrollDone > 0 || (s.totalEmployees > 0 && s.timeDone >= s.totalEmployees)) {
             return 'payroll';
         }
-        return p.time ? 'time' : 'starting';
+        return s.timeDone > 0 ? 'time' : 'starting';
     }
 
-    runStatus(p: RunProgress): EngineRunStatusDto | null {
-        return p.payroll ?? p.time;
+    /** Employees the engine now working has finished. */
+    runDone(p: RunProgress): number {
+        const s = p.server;
+        if (!s) {
+            return 0;
+        }
+        return this.runPhase(p) === 'payroll' ? s.payrollDone : s.timeDone;
+    }
+
+    runFailed(p: RunProgress): number {
+        const s = p.server;
+        if (!s) {
+            return 0;
+        }
+        return this.runPhase(p) === 'payroll' ? s.payrollFailed : s.timeFailed;
+    }
+
+    runTotal(p: RunProgress): number {
+        return p.server?.totalEmployees ?? 0;
+    }
+
+    runPercent(p: RunProgress): number {
+        const total = this.runTotal(p);
+        return total === 0 ? 0 : Math.min(100, Math.round((this.runDone(p) / total) * 100));
     }
 
     runElapsedText(p: RunProgress): string {
         return this.duration((p.finishedAt ?? this.now()) - p.startedAt);
     }
 
-    runAverageText(s: EngineRunStatusDto | null): string {
-        return s?.averageSecondsPerEmployee
-            ? this.l('GoLiveV2ProgressSeconds', s.averageSecondsPerEmployee.toFixed(1))
-            : '—';
+    runAverageText(p: RunProgress): string {
+        const ms = p.server?.averageMilliseconds ?? 0;
+        return ms > 0 ? this.l('GoLiveV2ProgressSeconds', (ms / 1000).toFixed(1)) : '—';
     }
 
-    runTimeLeftText(s: EngineRunStatusDto | null): string {
-        return s?.estimatedSecondsRemaining ? this.duration(s.estimatedSecondsRemaining * 1000) : '—';
+    /** What both engines still have to do, at the pace so far. */
+    runTimeLeftText(p: RunProgress): string {
+        const s = p.server;
+        if (!s || !s.averageMilliseconds || s.totalEmployees === 0) {
+            return '—';
+        }
+        const left = Math.max(0, s.totalEmployees - s.timeDone) + Math.max(0, s.totalEmployees - s.payrollDone);
+        return this.duration(left * s.averageMilliseconds);
     }
 
-    /** Asks whichever engine is running to stop after the employee it is on; both check between employees. */
+    /** How the run ended, in one sentence, for the window's footer. */
+    runEndText(p: RunProgress): string {
+        const s = p.server;
+        switch (s?.status) {
+            case GoLiveV2RunStatus.Stopped:
+                return this.l('GoLiveV2RunStoppedNote', this.runElapsedText(p));
+            case GoLiveV2RunStatus.Failed:
+                return this.l('GoLiveV2RunFailedNote', s.result?.message ?? '');
+            default:
+                return this.l('GoLiveV2RunFinished', this.runElapsedText(p));
+        }
+    }
+
+    /** Asks the run to stop after the batch in hand; what ran before stays saved. */
     stopRun(): void {
-        const p = this.runProgress();
-        if (!p) {
+        if (!this.running()) {
             return;
         }
         this.stopRequested.set(true);
-        const stop =
-            this.runPhase(p) === 'payroll'
-                ? this.payrollEngineProxy.stopPayrollEngine()
-                : this.timeEngineProxy.stopTimeEngine();
-        stop.subscribe();
+        this.proxy.stopPayrollRun().subscribe();
+    }
+
+    hideRunProgress(): void {
+        this.runWindowHidden.set(true);
     }
 
     closeRunProgress(): void {
+        this.markRunSeen(this.runProgress()?.server ?? null);
         this.runProgress.set(null);
     }
 
@@ -1168,6 +1203,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 return 'GoLiveV2StoppedAtTimeEngine';
             case GoLiveV2StoppedAt.MonthSetUp:
                 return 'GoLiveV2StoppedAtMonthSetUp';
+            case GoLiveV2StoppedAt.ByUser:
+                return 'GoLiveV2StoppedAtByUser';
             default:
                 return 'GoLiveV2Succeeded';
         }
@@ -1271,7 +1308,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     private startRunPoll(): void {
         this.stopRunPoll();
-        this.runPoll = setInterval(() => this.pollRunProgress(), 1500);
+        this.runPoll = setInterval(() => this.pollRunProgress(), 2000);
     }
 
     private stopRunPoll(): void {
@@ -1282,30 +1319,153 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     }
 
     private pollRunProgress(): void {
-        const p = this.runProgress();
-        if (!p) {
-            return;
-        }
-        forkJoin([
-            this.timeEngineProxy.getTimeEngineStatus(),
-            this.payrollEngineProxy.getPayrollEngineStatus(),
-        ]).subscribe({
-            next: ([time, payroll]) =>
-                this.runProgress.update((current) =>
-                    current
-                        ? {
-                              ...current,
-                              time: time.hasRun && time.runId > current.baselineTimeRunId ? time : current.time,
-                              payroll:
-                                  payroll.hasRun && payroll.runId > current.baselinePayrollRunId
-                                      ? payroll
-                                      : current.payroll,
-                          }
-                        : current
-                ),
-            // A missed poll is not worth a dialog: the next one, a second and a half later, will do.
+        this.proxy.getPayrollRunProgress(this.payrollAreaName().trim()).subscribe({
+            next: (progress) => this.followRun(progress, true),
+            // A missed poll is not worth a dialog: the next one, two seconds later, will do.
             error: () => undefined,
         });
+    }
+
+    private isGoing(status: GoLiveV2RunStatus | undefined): boolean {
+        return status === GoLiveV2RunStatus.Queued || status === GoLiveV2RunStatus.Running;
+    }
+
+    /**
+     * Brings the screen up to where the server's run stands. Going: the window shows its progress and polling
+     * carries on. Over: polling stops and the result lands where a finished run's always has -- the result card,
+     * the results grid, the bank file setup, and step 3 if everyone could be paid.
+     *
+     * @param onScreen whether this run was being watched from this page, rather than found on arrival.
+     */
+    private followRun(progress: GoLiveV2PayrollRunProgressDto, onScreen: boolean): void {
+        if (this.isGoing(progress.status)) {
+            this.running.set(true);
+            this.stopRequested.set(progress.stopRequested);
+            this.runProgress.update((p) => ({
+                month: progress.payInDate ? progress.payInDate.toFormat('MMMM yyyy') : (p?.month ?? ''),
+                startedAt: progress.startedAt ? progress.startedAt.toMillis() : (p?.startedAt ?? Date.now()),
+                finishedAt: null,
+                server: progress,
+            }));
+            if (this.runPoll === null) {
+                this.startTicker();
+                this.startKeepAwake();
+                this.startRunPoll();
+            }
+            return;
+        }
+
+        const wasRunning = this.running();
+        this.endRunWatch();
+
+        const result = progress.result;
+        if (progress.status === GoLiveV2RunStatus.None || !result || (!onScreen && !wasRunning && !this.isUnseen(progress))) {
+            this.runProgress.set(null);
+            return;
+        }
+
+        this.lastSetUp.set(null);
+        this.lastLoad.set(null);
+        this.latest.set(result);
+        this.attempts.update((list) => [{ at: new Date(), result }, ...list]);
+        this.showResults();
+        this.refreshBankFileSetup();
+        if (result.succeeded) {
+            this.unlockedStep.update((step) => Math.max(step, 3));
+        }
+
+        // Refused before any engine started -- the payroll month, say: the answer is the result card, not a window.
+        if (progress.timeDone + progress.payrollDone === 0) {
+            this.markRunSeen(progress);
+            this.runProgress.set(null);
+            return;
+        }
+
+        this.runProgress.update((p) => ({
+            month: progress.payInDate ? progress.payInDate.toFormat('MMMM yyyy') : (p?.month ?? ''),
+            startedAt: progress.startedAt ? progress.startedAt.toMillis() : (p?.startedAt ?? Date.now()),
+            finishedAt: progress.finishedAt ? progress.finishedAt.toMillis() : Date.now(),
+            server: progress,
+        }));
+        this.runWindowHidden.set(false);
+    }
+
+    /**
+     * On arrival: a run still going opens its window on step 2, and one that finished while nobody was looking
+     * -- the screen locked, the tab closed -- shows how it ended, once.
+     */
+    private findRunInProgress(): void {
+        this.proxy.getPayrollRunProgress(this.payrollAreaName().trim()).subscribe({
+            next: (progress) => {
+                const found = this.isGoing(progress.status) || (progress.result && this.isUnseen(progress));
+                if (!found) {
+                    return;
+                }
+                if (progress.payInDate) {
+                    this.payMonth.set(progress.payInDate.toFormat('yyyy-MM'));
+                }
+                this.unlockedStep.update((step) => Math.max(step, 2));
+                this.activeStep.set(2);
+                this.followRun(progress, false);
+            },
+            error: () => undefined,
+        });
+    }
+
+    private endRunWatch(): void {
+        this.stopRunPoll();
+        this.stopTicker();
+        this.running.set(false);
+        if (!this.loading()) {
+            this.stopKeepAwake();
+        }
+    }
+
+    private runKey(progress: GoLiveV2PayrollRunProgressDto | null): string | null {
+        return progress?.startedAt ? `${abp.session.tenantId ?? 0}:${progress.startedAt.toISO()}` : null;
+    }
+
+    private isUnseen(progress: GoLiveV2PayrollRunProgressDto): boolean {
+        const key = this.runKey(progress);
+        if (!key) {
+            return false;
+        }
+        try {
+            return localStorage.getItem(SeenRunStorageKey) !== key;
+        } catch {
+            return false;
+        }
+    }
+
+    private markRunSeen(progress: GoLiveV2PayrollRunProgressDto | null): void {
+        const key = this.runKey(progress);
+        if (!key || this.isGoing(progress?.status)) {
+            return;
+        }
+        try {
+            localStorage.setItem(SeenRunStorageKey, key);
+        } catch {
+            // Not remembered: at worst the result is shown again next visit.
+        }
+    }
+
+    /**
+     * The idle lock counts mouse and keyboard only, so a long run watched without touching anything would lock
+     * the screen part-way. While a run or a load is going this counts as activity, the same way a mouse move does.
+     */
+    private startKeepAwake(): void {
+        if (this.keepAwake !== null) {
+            return;
+        }
+        window.dispatchEvent(new Event('mousemove'));
+        this.keepAwake = setInterval(() => window.dispatchEvent(new Event('mousemove')), KeepAwakeMs);
+    }
+
+    private stopKeepAwake(): void {
+        if (this.keepAwake !== null) {
+            clearInterval(this.keepAwake);
+            this.keepAwake = null;
+        }
     }
 
     private startTicker(): void {

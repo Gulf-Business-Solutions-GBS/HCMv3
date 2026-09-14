@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.Transactions;
 using Abp.Application.Services.Dto;
+using Abp.BackgroundJobs;
+using Abp.Timing;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
@@ -70,6 +74,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly GoLiveV2BankFileStep _bankFileStep;
     private readonly GoLiveV2GridReader _gridReader;
     private readonly GoLiveV2CompanyClearer _companyClearer;
+    private readonly GoLiveV2RunTracker _runTracker;
+    private readonly GoLiveV2EngineBatches _batches;
+    private readonly IBackgroundJobManager _backgroundJobs;
     private readonly IPayrollSheetReportAppService _payrollSheetReport;
     private readonly ITempFileCacheManager _tempFiles;
 
@@ -98,6 +105,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         GoLiveV2BankFileStep bankFileStep,
         GoLiveV2GridReader gridReader,
         GoLiveV2CompanyClearer companyClearer,
+        GoLiveV2RunTracker runTracker,
+        GoLiveV2EngineBatches batches,
+        IBackgroundJobManager backgroundJobs,
         IPayrollSheetReportAppService payrollSheetReport,
         ITempFileCacheManager tempFiles)
     {
@@ -125,6 +135,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _bankFileStep = bankFileStep;
         _gridReader = gridReader;
         _companyClearer = companyClearer;
+        _runTracker = runTracker;
+        _batches = batches;
+        _backgroundJobs = backgroundJobs;
         _payrollSheetReport = payrollSheetReport;
         _tempFiles = tempFiles;
     }
@@ -136,18 +149,100 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         RequireAllPermissions = true)]
     public async Task<GoLiveV2RunPayrollOutput> RunPayroll(GoLiveV2RunPayrollInput input)
     {
+        var prepared = await PrepareRunAsync(input);
+        if (prepared.Refusal != null)
+        {
+            return prepared.Refusal;
+        }
+
+        var output = await RunEnginesAsync(prepared.AreaName, prepared.PayInDate);
+        output.MonthSetUp = prepared.MonthSetUp;
+        output.LeavePayLinksAdded = prepared.LeavePayLinksAdded;
+        return output;
+    }
+
+    /// <remarks>The same permissions as a direct run: it is one, only not waited on.</remarks>
+    [AbpAuthorize(
+        AppPermissions.Pages_PayrollManagement_PayrollEngine_Run,
+        AppPermissions.Pages_TimeManagement_TimeEngine_Run,
+        RequireAllPermissions = true)]
+    public async Task<GoLiveV2PayrollRunProgressDto> StartPayrollRun(GoLiveV2RunPayrollInput input)
+    {
+        var current = await _runTracker.ProgressAsync();
+        if (GoLiveV2RunTracker.IsGoing(current.Status))
+        {
+            return current;
+        }
+
+        var prepared = await PrepareRunAsync(input);
+        var state = new GoLiveV2PayrollRunState
+        {
+            PayrollAreaName = prepared.AreaName,
+            PayInDate = prepared.PayInDate,
+            StartedAt = Clock.Now,
+            MonthSetUp = prepared.MonthSetUp,
+            LeavePayLinksAdded = prepared.LeavePayLinksAdded,
+        };
+
+        if (prepared.Refusal != null)
+        {
+            prepared.Refusal.MonthSetUp ??= prepared.MonthSetUp;
+            state.Status = GoLiveV2RunStatus.Completed;
+            state.FinishedAt = Clock.Now;
+            state.Result = prepared.Refusal;
+            await _runTracker.SaveAsync(state);
+            return await _runTracker.ProgressAsync();
+        }
+
+        state.Status = GoLiveV2RunStatus.Queued;
+        state.TotalEmployees = (await _timeEngineStep.EmployeeCodesAsync(prepared.AreaName, prepared.PayInDate)).Count;
+        state.BaselineEngineRunId = await _runTracker.LastEngineRunIdAsync();
+        await _runTracker.SaveAsync(state);
+
+        await _backgroundJobs.EnqueueAsync<GoLiveV2PayrollRunJob, GoLiveV2PayrollRunJobArgs>(new GoLiveV2PayrollRunJobArgs
+        {
+            TenantId = AbpSession.GetTenantId(),
+            UserId = AbpSession.GetUserId(),
+            PayrollAreaName = prepared.AreaName,
+            PayInDate = prepared.PayInDate,
+        });
+
+        return await _runTracker.ProgressAsync();
+    }
+
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]
+    public Task<GoLiveV2PayrollRunProgressDto> GetPayrollRunProgress(string payrollAreaName) =>
+        _runTracker.ProgressAsync();
+
+    [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollEngine_Run)]
+    public Task StopPayrollRun() =>
+        _runTracker.UpdateAsync(state =>
+        {
+            if (GoLiveV2RunTracker.IsGoing(state.Status))
+            {
+                state.StopRequested = true;
+            }
+        });
+
+    /// <summary>
+    /// Everything a run needs answered before an engine starts, in the order the engine would ask: the inputs,
+    /// the month set up, the payroll month being the one asked for, the leave pay links. A refusal here costs
+    /// nobody a wait.
+    /// </summary>
+    private async Task<PreparedRun> PrepareRunAsync(GoLiveV2RunPayrollInput input)
+    {
         input ??= new GoLiveV2RunPayrollInput();
 
         // The same two checks, in the same words, as IPayrollEngineAppService.RunPayrollEngine makes before it
         // queues a run -- so V2 meets exactly the refusals production does, in the same order.
         if (input.PayDate == null)
         {
-            return Stopped(GoLiveV2StoppedAt.Input, L("PayrollEnginePayInDateRequired"));
+            return PreparedRun.Refused(Stopped(GoLiveV2StoppedAt.Input, L("PayrollEnginePayInDateRequired")));
         }
 
         if (string.IsNullOrWhiteSpace(input.PayrollAreaName))
         {
-            return Stopped(GoLiveV2StoppedAt.Input, L("PayrollEnginePayrollAreaRequired"));
+            return PreparedRun.Refused(Stopped(GoLiveV2StoppedAt.Input, L("PayrollEnginePayrollAreaRequired")));
         }
 
         var areaName = input.PayrollAreaName.Trim();
@@ -165,16 +260,55 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             }
             catch (UserFriendlyException ex)
             {
-                return Stopped(GoLiveV2StoppedAt.MonthSetUp, ex.Message);
+                return PreparedRun.Refused(Stopped(GoLiveV2StoppedAt.MonthSetUp, ex.Message));
             }
+        }
+
+        // The payroll engine refuses a month its control record is not for -- locked, and ending on the pay
+        // date -- but only after the time engine has worked out every employee's days. Asked here instead.
+        var area = await _payrollAreaRepository.FirstOrDefaultAsync(a => a.Name == areaName);
+        var record = area == null ? null : await _controlRecordRepository.FirstOrDefaultAsync(r => r.PayrollAreaId == area.Id);
+        if (record != null && (record.CalendarMonthEnd.Date != payInDate.Date || !record.PeriodLocked))
+        {
+            var refusal = Stopped(
+                GoLiveV2StoppedAt.MonthSetUp,
+                L("GoLiveV2ControlRecordNotCurrent", MonthName(record.CalendarMonthEnd), MonthName(payInDate)));
+            refusal.PayInDate = payInDate;
+            return PreparedRun.Refused(refusal, areaName, payInDate, monthSetUp);
         }
 
         var leavePayLinksAdded = await EnsureLeavePayLinksAsync();
 
-        var output = await RunEnginesAsync(areaName, payInDate);
-        output.MonthSetUp = monthSetUp;
-        output.LeavePayLinksAdded = leavePayLinksAdded;
-        return output;
+        return new PreparedRun
+        {
+            AreaName = areaName,
+            PayInDate = payInDate,
+            MonthSetUp = monthSetUp,
+            LeavePayLinksAdded = leavePayLinksAdded,
+        };
+    }
+
+    private static string MonthName(DateTime date) => date.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
+
+    /// <summary>What preparing a run found: a refusal, or the area and month to run, and what it set up.</summary>
+    private sealed class PreparedRun
+    {
+        public GoLiveV2RunPayrollOutput Refusal { get; init; }
+
+        public string AreaName { get; init; }
+
+        public DateTime PayInDate { get; init; }
+
+        public GoLiveV2SetUpPayrollMonthOutput MonthSetUp { get; init; }
+
+        public int LeavePayLinksAdded { get; init; }
+
+        public static PreparedRun Refused(
+            GoLiveV2RunPayrollOutput refusal,
+            string areaName = null,
+            DateTime payInDate = default,
+            GoLiveV2SetUpPayrollMonthOutput monthSetUp = null) =>
+            new() { Refusal = refusal, AreaName = areaName, PayInDate = payInDate, MonthSetUp = monthSetUp };
     }
 
     /// <summary>
@@ -207,16 +341,48 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             return timeEngineStopped;
         }
 
-        PayrollEngineRunResult run;
+        var codes = await _timeEngineStep.EmployeeCodesAsync(areaName, payInDate);
+        var results = new List<GoLiveV2EmployeeResultDto>();
+        var paidFor = payInDate;
+        var aborted = false;
+
+        // A batch at a time, each saved on its own: the engine keeps everything it writes for a call in memory
+        // until the call ends, so one call for everyone gets slower with every employee. With nobody to pay,
+        // one call as before -- the engine then says so in its own words.
+        var batches = codes.Count == 0 ? new List<string[]> { null } : codes.Chunk(Math.Max(1, _batches.Size)).ToList();
+
         try
         {
-            run = await _payrollEngine.RunAsync(new PayrollEngineRunInput
+            foreach (var batch in batches)
             {
-                PayrollRunType = PayrollRunType.Regular,
-                PayInDate = payInDate,
-                PayrollAreaName = areaName,
-                RegisterTarget = PayrollRegisterTarget.Live,
-            });
+                if (await _runTracker.IsStopRequestedAsync())
+                {
+                    return StoppedByUser(payInDate, results);
+                }
+
+                PayrollEngineRunResult batchRun;
+                using (var uow = UnitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+                {
+                    batchRun = await _payrollEngine.RunAsync(new PayrollEngineRunInput
+                    {
+                        PayrollRunType = PayrollRunType.Regular,
+                        PayInDate = payInDate,
+                        PayrollAreaName = areaName,
+                        RegisterTarget = PayrollRegisterTarget.Live,
+                        EmployeeCodes = batch == null ? null : string.Join(",", batch),
+                    });
+                    await uow.CompleteAsync();
+                }
+
+                paidFor = batchRun.PayInDate;
+                aborted |= batchRun.Aborted;
+                results.AddRange(batchRun.EmployeeResults.Select(e => new GoLiveV2EmployeeResultDto
+                {
+                    EmployeeCode = e.EmployeeCode,
+                    Succeeded = e.Succeeded,
+                    Message = e.Message,
+                }));
+            }
         }
         catch (UserFriendlyException ex)
         {
@@ -227,17 +393,11 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             return stopped;
         }
 
+        var run = new { PayInDate = paidFor, Aborted = aborted };
         var output = new GoLiveV2RunPayrollOutput
         {
             PayInDate = run.PayInDate,
-            Employees = run.EmployeeResults
-                .Select(e => new GoLiveV2EmployeeResultDto
-                {
-                    EmployeeCode = e.EmployeeCode,
-                    Succeeded = e.Succeeded,
-                    Message = e.Message,
-                })
-                .ToList(),
+            Employees = results,
         };
 
         var firstFailure = output.Employees.FirstOrDefault(e => !e.Succeeded);
@@ -470,8 +630,20 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         AppPermissions.Pages_PersonnelAdministration_Employees_Delete,
         AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Delete,
         RequireAllPermissions = true)]
-    public Task<GoLiveV2ClearCompanyDto> ClearCompany(GoLiveV2ClearCompanyInput input) =>
-        _companyClearer.ClearAsync(input);
+    public async Task<GoLiveV2ClearCompanyDto> ClearCompany(GoLiveV2ClearCompanyInput input)
+    {
+        // A background run still writing registers would put back part of what Clear removes.
+        if (GoLiveV2RunTracker.IsGoing((await _runTracker.ProgressAsync()).Status))
+        {
+            throw new UserFriendlyException(L("GoLiveV2ClearWhileRunning"));
+        }
+
+        var cleared = await _companyClearer.ClearAsync(input);
+
+        // The last run described employees that are gone now: nothing of it is shown again.
+        await _runTracker.ForgetAsync();
+        return cleared;
+    }
 
     public async Task<ListResultDto<string>> GetBankNames()
     {
@@ -644,4 +816,12 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
 
     private static GoLiveV2RunPayrollOutput Stopped(GoLiveV2StoppedAt stoppedAt, string message) =>
         new() { StoppedAt = stoppedAt, Message = message };
+
+    private GoLiveV2RunPayrollOutput StoppedByUser(DateTime payInDate, List<GoLiveV2EmployeeResultDto> soFar)
+    {
+        var stopped = Stopped(GoLiveV2StoppedAt.ByUser, L("GoLiveV2RunStoppedByUser"));
+        stopped.PayInDate = payInDate;
+        stopped.Employees = soFar ?? new List<GoLiveV2EmployeeResultDto>();
+        return stopped;
+    }
 }

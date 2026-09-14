@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Abp;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
@@ -40,6 +41,8 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
     private readonly IRepository<ManagePayrollSettings> _payrollSettings;
     private readonly IRepository<ManagePersonnelSettings> _personnelSettings;
     private readonly IRepository<ManageSecuritySettings> _securitySettings;
+    private readonly GoLiveV2EngineBatches _batches;
+    private readonly GoLiveV2RunTracker _runTracker;
 
     public GoLiveV2TimeEngineStep(
         ITimeEngineService timeEngine,
@@ -49,7 +52,9 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
         IRepository<ManageTimeSettings> timeSettings,
         IRepository<ManagePayrollSettings> payrollSettings,
         IRepository<ManagePersonnelSettings> personnelSettings,
-        IRepository<ManageSecuritySettings> securitySettings)
+        IRepository<ManageSecuritySettings> securitySettings,
+        GoLiveV2EngineBatches batches,
+        GoLiveV2RunTracker runTracker)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
 
@@ -61,6 +66,22 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
         _payrollSettings = payrollSettings;
         _personnelSettings = personnelSettings;
         _securitySettings = securitySettings;
+        _batches = batches;
+        _runTracker = runTracker;
+    }
+
+    /// <summary>
+    /// The codes of the area's active employees on the pay date, in code order -- the people both engines run
+    /// for, and the batches they run them in.
+    /// </summary>
+    public async Task<List<string>> EmployeeCodesAsync(string payrollAreaName, DateTime payInDate)
+    {
+        var ids = await _payrollAreaResolver.GetEmployeeIdsInPayrollAreaAsync(payrollAreaName, payInDate);
+        return await _employeeRepository.GetAll()
+            .Where(e => ids.Contains(e.Id) && e.Status == EmployeeStatus.Active)
+            .OrderBy(e => e.Code)
+            .Select(e => e.Code)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -92,16 +113,31 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
 
         try
         {
-            await _timeEngine.CreateTimeRegisterAsync(new TimeEngineRunInput
+            // A batch at a time, each saved on its own, so the tenth batch is as quick as the first.
+            foreach (var batch in employees.Select(e => e.Code).Chunk(Math.Max(1, _batches.Size)))
             {
-                StartDate = new DateTime(payInDate.Year, payInDate.Month, 1),
-                EndDate = payInDate,
-                PayrollAreaName = payrollAreaName,
-                EmployeeCodes = string.Join(",", employees.Select(e => e.Code)),
-                CurrentUserName = currentUserName,
-                // As the payroll engine would run it: someone joining after the month end is skipped, not an error.
-                IsRanFromPayrollEngine = true,
-            });
+                if (await _runTracker.IsStopRequestedAsync())
+                {
+                    return new GoLiveV2RunPayrollOutput
+                    {
+                        StoppedAt = GoLiveV2StoppedAt.ByUser,
+                        Message = L("GoLiveV2RunStoppedByUser"),
+                    };
+                }
+
+                using var uow = UnitOfWorkManager.Begin(TransactionScopeOption.RequiresNew);
+                await _timeEngine.CreateTimeRegisterAsync(new TimeEngineRunInput
+                {
+                    StartDate = new DateTime(payInDate.Year, payInDate.Month, 1),
+                    EndDate = payInDate,
+                    PayrollAreaName = payrollAreaName,
+                    EmployeeCodes = string.Join(",", batch),
+                    CurrentUserName = currentUserName,
+                    // As the payroll engine would run it: someone joining after the month end is skipped, not an error.
+                    IsRanFromPayrollEngine = true,
+                });
+                await uow.CompleteAsync();
+            }
         }
         catch (Exception ex)
         {

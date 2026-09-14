@@ -46,6 +46,9 @@ public enum GoLiveV2StoppedAt
 
     /// <summary>The month's control record or pay calendar was missing, and V2 could not set them up.</summary>
     MonthSetUp = 6,
+
+    /// <summary>Stopped on request between two batches. What ran before is saved.</summary>
+    ByUser = 7,
 }
 
 public class GoLiveV2RunPayrollOutput

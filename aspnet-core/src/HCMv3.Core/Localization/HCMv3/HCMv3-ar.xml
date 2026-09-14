@@ -6162,5 +6162,17 @@
     <text name="GoLiveV2ClearNothing">لا يوجد ما يمكن مسحه.</text>
     <text name="GoLiveV2ClearTypeName">اكتب {0} للتأكيد</text>
     <text name="GoLiveV2ClearDone">تم المسح. حمّل الموظفين مجددًا.</text>
+    <text name="GoLiveV2ControlRecordNotCurrent">شهر الرواتب محدد على {0}، لذا لا يمكن تشغيل {1}. شغّل {0}، أو امسح بيانات الشركة للبدء من شهر مختلف.</text>
+    <text name="GoLiveV2RunStoppedByUser">تم إيقاف التشغيل بناءً على الطلب. تم حفظ الموظفين الذين تمت معالجتهم قبل الإيقاف.</text>
+    <text name="GoLiveV2BackToStep">العودة إلى الخطوة {0}</text>
+    <text name="GoLiveV2StoppedAtByUser">تم الإيقاف بناءً على الطلب، لذلك لم يكتمل تشغيل الرواتب</text>
+    <text name="GoLiveV2RunStopBatch">إيقاف بعد هذه الدفعة</text>
+    <text name="GoLiveV2RunStoppingBatch">جارٍ الإيقاف بعد هذه الدفعة…</text>
+    <text name="GoLiveV2RunHide">إخفاء</text>
+    <text name="GoLiveV2RunShowProgress">عرض التقدم</text>
+    <text name="GoLiveV2RunCarriesOn">يستمر التشغيل على الخادم. يمكنك إخفاء هذه النافذة أو مغادرة الصفحة، وستظهر مجددًا عند عودتك.</text>
+    <text name="GoLiveV2RunStoppedNote">تم الإيقاف بعد {0}. الموظفون الذين تمت معالجتهم قبل الإيقاف محفوظون.</text>
+    <text name="GoLiveV2RunFailedNote">لم يكتمل التشغيل: {0}</text>
+    <text name="GoLiveV2ClearWhileRunning">لا يزال تشغيل الرواتب جاريًا لهذه الشركة. انتظر حتى يكتمل أو أوقفه قبل المسح.</text>
   </texts>
 </localizationDictionary>

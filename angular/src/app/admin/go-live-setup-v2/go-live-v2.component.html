@@ -142,10 +142,18 @@
                     </div>
 
                     <div class="v2-results-actions">
-                        <button type="button" class="btn btn-primary v2-run" [disabled]="running()" (click)="runPayroll()">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary v2-step-back"
+                            [title]="l('GoLiveV2BackToStep', 1)"
+                            [attr.aria-label]="l('GoLiveV2BackToStep', 1)"
+                            (click)="goToStep(1)">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary v2-run" (click)="runPayroll()">
                             @if (running()) {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                                {{ 'GoLiveV2Running' | localize }}
+                                {{ (runWindowHidden() ? 'GoLiveV2RunShowProgress' : 'GoLiveV2Running') | localize }}
                             } @else {
                                 <i class="fa fa-play me-2" aria-hidden="true"></i>
                                 {{ 'GoLiveV2RunPayroll' | localize }}
@@ -348,7 +356,7 @@
                     </p>
                 }
 
-                @if (results(); as res) {
+                @if (paidResults(); as res) {
                     <div class="v2-results-bar">
                         <p class="v2-results-summary">
                             {{ l('GoLiveV2ResultsPaidCount', res.employeesPaid, res.employees.length, resultsMonth()) }}
@@ -491,18 +499,28 @@
                         <p class="v2-step-hint">{{ 'GoLiveV2BankFileHint' | localize }}</p>
                     </div>
 
-                    <button
-                        type="button"
-                        class="btn btn-primary v2-run"
-                        [disabled]="!canMakeBankFile()"
-                        (click)="makeBankFile()">
-                        @if (generatingBankFile()) {
-                            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                        } @else {
-                            <i class="fa fa-university me-2" aria-hidden="true"></i>
-                        }
-                        {{ 'GoLiveV2MakeBankFile' | localize }}
-                    </button>
+                    <div class="v2-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary v2-step-back"
+                            [title]="l('GoLiveV2BackToStep', 2)"
+                            [attr.aria-label]="l('GoLiveV2BackToStep', 2)"
+                            (click)="goToStep(2)">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary v2-run"
+                            [disabled]="!canMakeBankFile()"
+                            (click)="makeBankFile()">
+                            @if (generatingBankFile()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-university me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveV2MakeBankFile' | localize }}
+                        </button>
+                    </div>
                 </div>
 
                 @if (!monthEnd()) {
@@ -853,23 +871,23 @@
     }
 
     @if (runProgress(); as rp) {
+        @if (!runWindowHidden()) {
         <!-- Run payroll's progress: which engine is working, how far it has got, how long is left. -->
         <div class="v2-modal-backdrop">
             <div class="v2-modal" role="dialog" aria-modal="true" aria-labelledby="v2-run-title">
                 <h4 class="v2-modal-title" id="v2-run-title">{{ l('GoLiveV2RunProgressTitle', rp.month) }}</h4>
 
-                @if (runStatus(rp); as s) {
+                @if (rp.server) {
                     <div
                         class="v2-progress-bar"
                         role="progressbar"
-                        [attr.aria-valuenow]="s.progressPercent ?? 0"
+                        [attr.aria-valuenow]="runPercent(rp)"
                         aria-valuemin="0"
                         aria-valuemax="100">
-                        <div class="v2-progress-fill" [style.width.%]="s.progressPercent ?? 0"></div>
+                        <div class="v2-progress-fill" [style.width.%]="runPercent(rp)"></div>
                     </div>
                     <div class="v2-progress-caption">
-                        {{ l('GoLiveV2ProgressOf', s.processedEmployees + s.skippedEmployees, s.totalEmployees) }} ·
-                        {{ s.progressPercent ?? 0 }}%
+                        {{ l('GoLiveV2ProgressOf', runDone(rp), runTotal(rp)) }} · {{ runPercent(rp) }}%
                     </div>
                 }
 
@@ -893,21 +911,19 @@
                 <div class="v2-progress-stats">
                     <div>
                         <span>{{ 'GoLiveV2RunSucceeded' | localize }}</span>
-                        <strong>{{ runStatus(rp)?.succeededEmployees ?? 0 }}</strong>
+                        <strong>{{ runDone(rp) - runFailed(rp) }}</strong>
                     </div>
                     <div>
                         <span>{{ 'GoLiveV2RunFailed' | localize }}</span>
-                        <strong [class.text-danger]="(runStatus(rp)?.failedEmployees ?? 0) > 0">
-                            {{ runStatus(rp)?.failedEmployees ?? 0 }}
-                        </strong>
+                        <strong [class.text-danger]="runFailed(rp) > 0">{{ runFailed(rp) }}</strong>
                     </div>
                     <div>
                         <span>{{ 'GoLiveV2ProgressRemaining' | localize }}</span>
-                        <strong>{{ runStatus(rp)?.remainingEmployees ?? '—' }}</strong>
+                        <strong>{{ rp.server ? runTotal(rp) - runDone(rp) : '—' }}</strong>
                     </div>
                     <div>
                         <span>{{ 'GoLiveV2ProgressAverage' | localize }}</span>
-                        <strong>{{ runAverageText(runStatus(rp)) }}</strong>
+                        <strong>{{ runAverageText(rp) }}</strong>
                     </div>
                     <div>
                         <span>{{ 'GoLiveV2ProgressElapsed' | localize }}</span>
@@ -915,12 +931,14 @@
                     </div>
                     <div>
                         <span>{{ 'GoLiveV2ProgressLeft' | localize }}</span>
-                        <strong>{{ rp.finishedAt ? '—' : runTimeLeftText(runStatus(rp)) }}</strong>
+                        <strong>{{ rp.finishedAt ? '—' : runTimeLeftText(rp) }}</strong>
                     </div>
                 </div>
 
                 @if (rp.finishedAt) {
-                    <div class="v2-progress-note">{{ l('GoLiveV2RunFinished', runElapsedText(rp)) }}</div>
+                    <div class="v2-progress-note">{{ runEndText(rp) }}</div>
+                } @else {
+                    <div class="v2-progress-note">{{ 'GoLiveV2RunCarriesOn' | localize }}</div>
                 }
 
                 <div class="v2-modal-actions">
@@ -928,9 +946,12 @@
                         <button
                             type="button"
                             class="btn btn-light"
-                            [disabled]="stopRequested() || runPhase(rp) === 'starting'"
+                            [disabled]="stopRequested() || !rp.server"
                             (click)="stopRun()">
-                            {{ (stopRequested() ? 'GoLiveV2ProgressStopping' : 'GoLiveV2ProgressStop') | localize }}
+                            {{ (stopRequested() ? 'GoLiveV2RunStoppingBatch' : 'GoLiveV2RunStopBatch') | localize }}
+                        </button>
+                        <button type="button" class="btn btn-primary" (click)="hideRunProgress()">
+                            {{ 'GoLiveV2RunHide' | localize }}
                         </button>
                     } @else {
                         <button type="button" class="btn btn-primary" (click)="closeRunProgress()">
@@ -940,6 +961,7 @@
                 </div>
             </div>
         </div>
+        }
     }
 
     @if (progress(); as p) {

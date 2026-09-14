@@ -156,6 +156,8 @@ public class AppSettingProvider : SettingProvider
     {
         return new[]
         {
+                // Go-Live Setup V2's background payroll run. Not client-visible: it is read through its endpoint.
+                new SettingDefinition(AppSettings.GoLiveV2.PayrollRun, string.Empty, scopes: SettingScopes.Tenant),
                 // Screen Codes after menu names. Per USER and default ON: codes only become the shared
                 // vocabulary they are meant to be if people see them, but anyone who never uses them can
                 // quieten their own menu without affecting colleagues.

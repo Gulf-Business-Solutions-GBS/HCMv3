@@ -66414,6 +66414,163 @@ export class GoLiveV2ServiceProxy {
      * @return OK
      */
     getLoadedEmployees(payrollAreaName?: string | null | undefined): Observable<GoLiveV2LoadedEmployeesOutput> {
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    startPayrollRun(body?: GoLiveV2RunPayrollInput | undefined): Observable<GoLiveV2PayrollRunProgressDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/StartPayrollRun";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStartPayrollRun(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStartPayrollRun(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+        }));
+    }
+
+    protected processStartPayrollRun(response: HttpResponseBase): Observable<GoLiveV2PayrollRunProgressDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2PayrollRunProgressDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getPayrollRunProgress(payrollAreaName?: string | null | undefined): Observable<GoLiveV2PayrollRunProgressDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollRunProgress?";
+        if (payrollAreaName !== undefined && payrollAreaName !== null)
+            url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollRunProgress(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollRunProgress(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+        }));
+    }
+
+    protected processGetPayrollRunProgress(response: HttpResponseBase): Observable<GoLiveV2PayrollRunProgressDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2PayrollRunProgressDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    stopPayrollRun(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/StopPayrollRun";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStopPayrollRun(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStopPayrollRun(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processStopPayrollRun(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLoadedEmployees?";
         if (payrollAreaName !== undefined && payrollAreaName !== null)
             url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
@@ -262613,6 +262770,90 @@ export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMont
     }
 
     static fromJS(data: any): GoLiveV2SetUpPayrollMonthInput {
+export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgressDto {
+    status!: GoLiveV2RunStatus;
+    payrollAreaName!: string | undefined;
+    payInDate!: DateTime | undefined;
+    startedAt!: DateTime | undefined;
+    finishedAt!: DateTime | undefined;
+    totalEmployees!: number;
+    timeDone!: number;
+    timeFailed!: number;
+    payrollDone!: number;
+    payrollFailed!: number;
+    averageMilliseconds!: number;
+    stopRequested!: boolean;
+    result!: GoLiveV2RunPayrollOutput;
+
+    constructor(data?: IGoLiveV2PayrollRunProgressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
+            this.startedAt = _data["startedAt"] ? DateTime.fromISO(_data["startedAt"].toString()) : undefined as any;
+            this.finishedAt = _data["finishedAt"] ? DateTime.fromISO(_data["finishedAt"].toString()) : undefined as any;
+            this.totalEmployees = _data["totalEmployees"];
+            this.timeDone = _data["timeDone"];
+            this.timeFailed = _data["timeFailed"];
+            this.payrollDone = _data["payrollDone"];
+            this.payrollFailed = _data["payrollFailed"];
+            this.averageMilliseconds = _data["averageMilliseconds"];
+            this.stopRequested = _data["stopRequested"];
+            this.result = _data["result"] ? GoLiveV2RunPayrollOutput.fromJS(_data["result"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayrollRunProgressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayrollRunProgressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
+        data["startedAt"] = this.startedAt ? this.startedAt.toString() : undefined as any;
+        data["finishedAt"] = this.finishedAt ? this.finishedAt.toString() : undefined as any;
+        data["totalEmployees"] = this.totalEmployees;
+        data["timeDone"] = this.timeDone;
+        data["timeFailed"] = this.timeFailed;
+        data["payrollDone"] = this.payrollDone;
+        data["payrollFailed"] = this.payrollFailed;
+        data["averageMilliseconds"] = this.averageMilliseconds;
+        data["stopRequested"] = this.stopRequested;
+        data["result"] = this.result ? this.result.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayrollRunProgressDto {
+    status: GoLiveV2RunStatus;
+    payrollAreaName: string | undefined;
+    payInDate: DateTime | undefined;
+    startedAt: DateTime | undefined;
+    finishedAt: DateTime | undefined;
+    totalEmployees: number;
+    timeDone: number;
+    timeFailed: number;
+    payrollDone: number;
+    payrollFailed: number;
+    averageMilliseconds: number;
+    stopRequested: boolean;
+    result: GoLiveV2RunPayrollOutput;
+}
+
         data = typeof data === 'object' ? data : {};
         let result = new GoLiveV2SetUpPayrollMonthInput();
         result.init(data);
@@ -262765,6 +263006,15 @@ export class GovtJobTitleDto implements IGovtJobTitleDto {
     nameAr!: string | undefined;
     govtJobCategoryId!: number;
     govtJobCategoryName!: string | undefined;
+export enum GoLiveV2RunStatus {
+    None = 0,
+    Queued = 1,
+    Running = 2,
+    Completed = 3,
+    Stopped = 4,
+    Failed = 5,
+}
+
 
     constructor(data?: IGovtJobTitleDto) {
         if (data) {
@@ -263109,6 +263359,7 @@ export class HostBillingSettingsEditDto implements IHostBillingSettingsEditDto {
         }
     }
 
+    ByUser = 7,
     init(_data?: any) {
         if (_data) {
             this.legalName = _data["legalName"];

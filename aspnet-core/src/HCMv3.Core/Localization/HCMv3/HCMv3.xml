@@ -6323,5 +6323,17 @@
     <text name="GoLiveV2ClearNothing">There is nothing to clear.</text>
     <text name="GoLiveV2ClearTypeName">Type {0} to confirm</text>
     <text name="GoLiveV2ClearDone">Cleared. Load your employees again.</text>
+    <text name="GoLiveV2ControlRecordNotCurrent">The payroll month is set to {0}, so {1} cannot be run. Run {0}, or clear the company to start again from a different month.</text>
+    <text name="GoLiveV2RunStoppedByUser">The run was stopped on request. Employees processed before the stop are saved.</text>
+    <text name="GoLiveV2BackToStep">Back to Step {0}</text>
+    <text name="GoLiveV2StoppedAtByUser">Stopped on request, so payroll did not finish</text>
+    <text name="GoLiveV2RunStopBatch">Stop after this batch</text>
+    <text name="GoLiveV2RunStoppingBatch">Stopping after this batch…</text>
+    <text name="GoLiveV2RunHide">Hide</text>
+    <text name="GoLiveV2RunShowProgress">Show progress</text>
+    <text name="GoLiveV2RunCarriesOn">The run carries on on the server. You can hide this window or leave the page; it comes back when you return.</text>
+    <text name="GoLiveV2RunStoppedNote">Stopped after {0}. Employees processed before the stop are saved.</text>
+    <text name="GoLiveV2RunFailedNote">The run did not finish: {0}</text>
+    <text name="GoLiveV2ClearWhileRunning">Payroll is still running for this company. Wait for it to finish, or stop it, before clearing.</text>
   </texts>
 </localizationDictionary>

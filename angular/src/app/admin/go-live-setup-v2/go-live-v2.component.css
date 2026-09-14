@@ -308,6 +308,16 @@
     font-size: 0.95rem;
 }
 
+/* A square arrow button: back to the previous step. */
+.v2-step-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
 /* ---------- the three steps ---------- */
 .v2-steps {
     display: flex;

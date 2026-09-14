@@ -30,6 +30,22 @@ public interface IGoLiveV2AppService : IApplicationService
     Task<GoLiveV2RunPayrollOutput> RunPayroll(GoLiveV2RunPayrollInput input);
 
     /// <summary>
+    /// Starts Run payroll in the background and returns at once. What needs no engine -- the inputs, setting up
+    /// the month, whether the payroll month is the one asked for -- is answered straight away, and a refusal
+    /// comes back finished without queuing anything. A run already going is returned rather than started twice.
+    /// </summary>
+    Task<GoLiveV2PayrollRunProgressDto> StartPayrollRun(GoLiveV2RunPayrollInput input);
+
+    /// <summary>
+    /// Where the company's background run stands: how far each engine has got and, once it is over, its result.
+    /// Read from the server, so a reload or a new login finds the same run.
+    /// </summary>
+    Task<GoLiveV2PayrollRunProgressDto> GetPayrollRunProgress(string payrollAreaName);
+
+    /// <summary>Asks the background run to stop after the batch in hand. What ran before stays saved.</summary>
+    Task StopPayrollRun();
+
+    /// <summary>
     /// Answers "Payroll Control Record not found": makes the payroll area the run named, if the tenant does not
     /// have it, and its control record for the month, locked as the engine requires for a regular run. An area
     /// that already exists is used as it is, and one that already has a control record keeps it.
