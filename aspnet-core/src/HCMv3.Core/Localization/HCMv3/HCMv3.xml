@@ -6451,5 +6451,13 @@
     <text name="GoLiveV2CompareColLines">Lines</text>
     <text name="GoLiveV2CompareNoLines">Nothing matches these filters.</text>
     <text name="GoLiveV2CompareShowing">{0}–{1} of {2}</text>
+    <text name="GoLiveV2CompareSummaryTitle">Summary by wage type (all lines)</text>
+    <text name="GoLiveV2CompareFullyMatched">Matched 100% on rate, days and amount: {0}</text>
+    <text name="GoLiveV2CompareNotFullyMatched">Did not match: {0}</text>
+    <text name="GoLiveV2CompareNoneFullyMatched">No wage type matched on every line.</text>
+    <text name="GoLiveV2CompareAllFullyMatched">Every wage type matched on every line.</text>
+    <text name="GoLiveV2CompareColCode">Code</text>
+    <text name="GoLiveV2CompareColDiffers">Differs in</text>
+    <text name="GoLiveV2CompareColLinesDiffering">Lines differing</text>
   </texts>
 </localizationDictionary>

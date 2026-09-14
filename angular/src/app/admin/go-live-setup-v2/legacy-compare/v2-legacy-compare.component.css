@@ -276,3 +276,47 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
+
+/* ---------- closing summary ---------- */
+.lc-summary {
+    border-top: 1px solid var(--bs-gray-300);
+    padding-top: 1rem;
+}
+
+.lc-summary h5 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.lc-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 1rem;
+}
+
+.lc-summary-box {
+    border: 1px solid var(--bs-gray-300);
+    border-radius: 0.6rem;
+    padding: 0.75rem 1rem;
+    max-height: 22rem;
+    overflow: auto;
+}
+
+.lc-summary-box h6 {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.lc-summary-good h6 {
+    color: var(--bs-success);
+}
+
+.lc-summary-bad h6 {
+    color: var(--bs-danger);
+}
+
+.lc-summary-table {
+    margin: 0;
+    font-size: 0.875rem;
+}

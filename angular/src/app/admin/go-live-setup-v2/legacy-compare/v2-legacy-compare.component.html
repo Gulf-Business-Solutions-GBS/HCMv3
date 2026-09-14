@@ -262,6 +262,74 @@
                     </table>
                 </div>
             }
+
+            <!-- The closing summary: every line, whatever the filters above. -->
+            @if (fullMatch(); as fm) {
+                <section class="lc-summary">
+                    <h5>{{ 'GoLiveV2CompareSummaryTitle' | localize }}</h5>
+                    <div class="lc-summary-grid">
+                        <div class="lc-summary-box lc-summary-good">
+                            <h6>
+                                <i class="fa fa-check-circle me-2" aria-hidden="true"></i>
+                                {{ l('GoLiveV2CompareFullyMatched', fm.matched.length) }}
+                            </h6>
+                            @if (fm.matched.length === 0) {
+                                <p class="lc-hint">{{ 'GoLiveV2CompareNoneFullyMatched' | localize }}</p>
+                            } @else {
+                                <table class="table table-sm lc-summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
+                                            <th>{{ 'GoLiveV2CompareColWageType' | localize }}</th>
+                                            <th class="text-end">{{ 'GoLiveV2CompareColLines' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (w of fm.matched; track w.code) {
+                                            <tr>
+                                                <td class="fw-semibold">{{ w.code }}</td>
+                                                <td>{{ w.name }}</td>
+                                                <td class="text-end v2-num">{{ w.lines }}</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+
+                        <div class="lc-summary-box lc-summary-bad">
+                            <h6>
+                                <i class="fa fa-times-circle me-2" aria-hidden="true"></i>
+                                {{ l('GoLiveV2CompareNotFullyMatched', fm.notMatched.length) }}
+                            </h6>
+                            @if (fm.notMatched.length === 0) {
+                                <p class="lc-hint">{{ 'GoLiveV2CompareAllFullyMatched' | localize }}</p>
+                            } @else {
+                                <table class="table table-sm table-hover lc-summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
+                                            <th>{{ 'GoLiveV2CompareColWageType' | localize }}</th>
+                                            <th>{{ 'GoLiveV2CompareColDiffers' | localize }}</th>
+                                            <th class="text-end">{{ 'GoLiveV2CompareColLinesDiffering' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (w of fm.notMatched; track w.code) {
+                                            <tr class="lc-clickable" (click)="showWageType(w.code); hideMatched.set(false)">
+                                                <td class="fw-semibold">{{ w.code }}</td>
+                                                <td>{{ w.name }}</td>
+                                                <td class="text-danger">{{ differingFields(w) }}</td>
+                                                <td class="text-end v2-num">{{ w.linesDiffering }} / {{ w.lines }}</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </section>
+            }
         }
 
         <div class="v2-modal-actions">

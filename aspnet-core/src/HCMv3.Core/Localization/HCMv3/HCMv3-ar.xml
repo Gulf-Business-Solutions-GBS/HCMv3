@@ -6290,5 +6290,13 @@
     <text name="GoLiveV2CompareColLines">البنود</text>
     <text name="GoLiveV2CompareNoLines">لا توجد نتائج مطابقة لهذه المرشحات.</text>
     <text name="GoLiveV2CompareShowing">{0}–{1} من {2}</text>
+    <text name="GoLiveV2CompareSummaryTitle">ملخص حسب نوع الأجر (كل البنود)</text>
+    <text name="GoLiveV2CompareFullyMatched">مطابق 100% في المعدل والأيام والمبلغ: {0}</text>
+    <text name="GoLiveV2CompareNotFullyMatched">غير مطابق: {0}</text>
+    <text name="GoLiveV2CompareNoneFullyMatched">لم يتطابق أي نوع أجر في كل البنود.</text>
+    <text name="GoLiveV2CompareAllFullyMatched">تطابقت كل أنواع الأجور في كل البنود.</text>
+    <text name="GoLiveV2CompareColCode">الرمز</text>
+    <text name="GoLiveV2CompareColDiffers">الاختلاف في</text>
+    <text name="GoLiveV2CompareColLinesDiffering">البنود المختلفة</text>
   </texts>
 </localizationDictionary>

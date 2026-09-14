@@ -28,6 +28,20 @@ interface WageTypeSummary {
     difference: number;
 }
 
+/** How close two values must be to count as the same: one fils, as the server compares. */
+const Tolerance = 0.001;
+
+/** A wage type that did not match on every line: which of rate, days and amount differed, and how often. */
+interface WageTypeMismatch {
+    code: string;
+    name: string;
+    lines: number;
+    linesDiffering: number;
+    rate: boolean;
+    number: boolean;
+    amount: boolean;
+}
+
 /**
  * Compare with legacy salary: the legacy payroll's registers for the month -- exported by a read-only query the
  * window hands out -- set beside HCMv3's, wage type by wage type, with the likely reason for each difference.
@@ -206,6 +220,58 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         this.filteredLines().length === 0 ? 0 : (this.currentPage() - 1) * this.pageSize() + 1
     );
     readonly showingTo = computed(() => Math.min(this.currentPage() * this.pageSize(), this.filteredLines().length));
+
+    /**
+     * The closing summary, over every line whatever the filters: wage types where rate, days and amount all agree
+     * on every employee's line, and the rest with what differed. Stricter than the Matched count, which looks
+     * at the amount alone (days for time types).
+     */
+    readonly fullMatch = computed(() => {
+        const byCode = new Map<string, WageTypeMismatch>();
+        for (const l of this.result()?.lines ?? []) {
+            const code = l.wageTypeCode ?? '';
+            let row = byCode.get(code);
+            if (!row) {
+                row = { code, name: l.wageTypeName ?? '', lines: 0, linesDiffering: 0, rate: false, number: false, amount: false };
+                byCode.set(code, row);
+            }
+            const rate = !this.same(l.legacyRate, l.hcmv3Rate);
+            const number = !this.same(l.legacyNumber, l.hcmv3Number);
+            const amount = !this.same(l.legacyAmount, l.hcmv3Amount);
+            row.lines++;
+            row.linesDiffering += rate || number || amount ? 1 : 0;
+            row.rate ||= rate;
+            row.number ||= number;
+            row.amount ||= amount;
+        }
+
+        const all = [...byCode.values()].sort((a, b) => a.code.localeCompare(b.code));
+        return {
+            matched: all.filter((w) => w.linesDiffering === 0),
+            notMatched: all.filter((w) => w.linesDiffering > 0),
+        };
+    });
+
+    /** What differed, for a wage type that did not match: "Rate, Amount". */
+    differingFields(w: WageTypeMismatch): string {
+        return [
+            w.rate ? this.l('GoLiveV2CompareColRate') : null,
+            w.number ? this.l('GoLiveV2CompareColDays') : null,
+            w.amount ? this.l('GoLiveV2CompareColAmount') : null,
+        ]
+            .filter((f) => f !== null)
+            .join(', ');
+    }
+
+    /** Equal within a fils; a zero on one side and nothing on the other counts as equal too. */
+    private same(a: number | undefined, b: number | undefined): boolean {
+        const x = a ?? null;
+        const y = b ?? null;
+        if (x === null || y === null) {
+            return Math.abs(x ?? y ?? 0) < Tolerance;
+        }
+        return Math.abs(x - y) < Tolerance;
+    }
 
     /** Every wage type in the result, worst first: the ones that differ most often lead. */
     readonly wageTypeSummary = computed<WageTypeSummary[]>(() => {
