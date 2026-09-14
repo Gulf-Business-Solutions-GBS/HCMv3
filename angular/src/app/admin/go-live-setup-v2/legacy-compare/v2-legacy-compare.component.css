@@ -355,3 +355,24 @@
 .lc-reason {
     min-width: 26rem;
 }
+
+/* The tab in front, unmistakably: filled, not just a darker label. */
+.lc-tabs .nav-link {
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.6rem 1.1rem;
+    color: var(--bs-gray-700);
+}
+
+.lc-tabs .nav-link:not(:disabled):not(.active):hover {
+    background: var(--bs-gray-100);
+}
+
+.lc-tabs .nav-link.active {
+    background: var(--bs-primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.lc-tabs .nav-link.active .fa {
+    color: #fff;
+}
