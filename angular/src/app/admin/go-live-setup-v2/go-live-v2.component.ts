@@ -150,8 +150,30 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     /** The furthest step opened so far: 1 on arrival, 2 once employees are loaded, 3 once payroll runs. */
     readonly unlockedStep = signal(1);
 
+    /**
+     * The employees as last loaded -- read back on arrival, or just sent -- in the same form as the grid's
+     * snapshot below. Null until anything is loaded.
+     */
+    private readonly loadedSnapshot = signal<string | null>(null);
+
+    /**
+     * Whether the grid or the company differs from what was last loaded. Edited, pasted or undone back:
+     * the grid is compared by value, so a change put back the way it was counts as no change.
+     */
+    readonly gridChanged = computed(
+        () =>
+            this.snapshotOf(this.employeeRows(), this.organizationUnitName()) !==
+            (this.loadedSnapshot() ?? this.snapshotOf([], ''))
+    );
+
+    /**
+     * The furthest step open now. Unsaved changes in the grid shut steps 2 and 3: they would run payroll
+     * and make the bank file for employees as they were, not as the grid now shows them.
+     */
+    readonly openStep = computed(() => (this.gridChanged() ? 1 : this.unlockedStep()));
+
     readonly steps = computed(() => {
-        const unlocked = this.unlockedStep();
+        const unlocked = this.openStep();
 
         return [
             {
@@ -185,10 +207,10 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     });
 
     /** The step on screen, never one that is still shut. */
-    readonly currentStep = computed(() => Math.min(this.activeStep(), this.unlockedStep()));
+    readonly currentStep = computed(() => Math.min(this.activeStep(), this.openStep()));
 
     goToStep(step: number): void {
-        if (step <= this.unlockedStep()) {
+        if (step <= this.openStep()) {
             this.activeStep.set(step);
         }
     }
@@ -258,6 +280,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             .pipe(finalize(() => this.clearing.set(false)))
             .subscribe(() => {
                 this.clearPreview.set(null);
+                this.loadedSnapshot.set(null);
                 this.employeeRows.set([]);
                 this.lastLoad.set(null);
                 this.latest.set(null);
@@ -379,8 +402,12 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.organizationUnitName().trim().length > 0 &&
             this.filledEmployeeCount() > 0 &&
             this.gridIssues().length === 0 &&
-            this.payrollAreaName().trim().length > 0
+            this.payrollAreaName().trim().length > 0 &&
+            this.gridChanged()
     );
+
+    /** Why Load is shut, for its tooltip: nothing has changed since the last load. */
+    readonly loadUnchanged = computed(() => this.loadedSnapshot() !== null && !this.gridChanged());
 
     // ---------------------------------------------------------------- step 2: run payroll
 
@@ -593,6 +620,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             return;
         }
 
+        const sending = this.snapshotOf(this.employeeRows(), this.organizationUnitName());
         const items = this.buildEmployeeRows()
             .map((dto, i) => ({ dto, row: i + 1 }))
             .filter((item) => !this.isEmptyRow(item.dto));
@@ -673,6 +701,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             this.lastLoad.set(combined);
             if (combined.rows.some((r) => r.succeeded)) {
                 this.restartFromStepTwo();
+                // Loaded to the end: the grid as sent is now what is loaded, so Load shuts until it changes.
+                // A stopped or broken load keeps Load open to carry on.
+                if (outcome === 'finished') {
+                    this.loadedSnapshot.set(sending);
+                }
             }
             this.refreshBankFileSetup();
             this.attempts.update((list) => [{ at: new Date(), load: combined }, ...list]);
@@ -1494,6 +1527,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             if (this.filledEmployeeCount() === 0 && loaded.employees?.length) {
                 this.employeeRows.set(loaded.employees.map((e) => this.toGridRow(e)));
             }
+
+            if (loaded.employees?.length) {
+                this.loadedSnapshot.set(
+                    this.snapshotOf(loaded.employees.map((e) => this.toGridRow(e)), loaded.organizationUnitName ?? '')
+                );
+                this.unlockedStep.update((step) => Math.max(step, 2));
+            }
         });
     }
 
@@ -1530,32 +1570,66 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             }
         });
 
-        return rows.slice(0, last + 1).map((row) => {
-            const dto = new GoLiveV2EmployeeRowDto();
-            dto.code = this.text(row['code']);
-            dto.fullName = this.text(row['fullName']);
-            dto.civilId = this.text(row['civilId']);
-            dto.basicSalary = this.amount(row['basicSalary']);
-            dto.accommodationAllowance = this.amount(row['accommodationAllowance']);
-            dto.mobileAllowance = this.amount(row['mobileAllowance']);
-            dto.transportAllowance = this.amount(row['transportAllowance']);
-            dto.foodAllowance = this.amount(row['foodAllowance']);
-            dto.housingAllowance = this.amount(row['housingAllowance']);
-            dto.otherAllowance = this.amount(row['otherAllowance']);
-            dto.bankName = this.text(row['bankName']);
-            dto.iban = this.text(row['iban']);
-            dto.accountNumber = this.text(row['accountNumber']);
+        return rows.slice(0, last + 1).map((row) => this.toEmployeeDto(row));
+    }
 
-            const joined = this.text(row['joiningDate']);
-            if (joined) {
-                const date = DateTime.fromISO(joined);
-                if (date.isValid) {
-                    dto.joiningDate = date.plus({ hours: 12 });
-                }
+    private toEmployeeDto(row: PasteGridRow): GoLiveV2EmployeeRowDto {
+        const dto = new GoLiveV2EmployeeRowDto();
+        dto.code = this.text(row['code']);
+        dto.fullName = this.text(row['fullName']);
+        dto.civilId = this.text(row['civilId']);
+        dto.basicSalary = this.amount(row['basicSalary']);
+        dto.accommodationAllowance = this.amount(row['accommodationAllowance']);
+        dto.mobileAllowance = this.amount(row['mobileAllowance']);
+        dto.transportAllowance = this.amount(row['transportAllowance']);
+        dto.foodAllowance = this.amount(row['foodAllowance']);
+        dto.housingAllowance = this.amount(row['housingAllowance']);
+        dto.otherAllowance = this.amount(row['otherAllowance']);
+        dto.bankName = this.text(row['bankName']);
+        dto.iban = this.text(row['iban']);
+        dto.accountNumber = this.text(row['accountNumber']);
+
+        const joined = this.text(row['joiningDate']);
+        if (joined) {
+            const date = DateTime.fromISO(joined);
+            if (date.isValid) {
+                dto.joiningDate = date.plus({ hours: 12 });
             }
+        }
 
-            return dto;
-        });
+        return dto;
+    }
+
+    /**
+     * The grid and company by value, as the server would take them: text trimmed, amounts as numbers, blank
+     * rows dropped, employees in code order -- so re-sorting the grid, or typing 500 where 500.000 was, is not
+     * a change.
+     */
+    private snapshotOf(rows: PasteGridRow[], company: string): string {
+        const employees = rows
+            .filter((row) => !isRowEmpty(row))
+            .map((row) => {
+                const dto = this.toEmployeeDto(row);
+                return [
+                    dto.code ?? '',
+                    dto.fullName ?? '',
+                    dto.joiningDate ? dto.joiningDate.toISODate() : (this.text(row['joiningDate']) ?? ''),
+                    dto.civilId ?? '',
+                    dto.basicSalary ?? null,
+                    dto.accommodationAllowance ?? null,
+                    dto.mobileAllowance ?? null,
+                    dto.transportAllowance ?? null,
+                    dto.foodAllowance ?? null,
+                    dto.housingAllowance ?? null,
+                    dto.otherAllowance ?? null,
+                    dto.bankName ?? '',
+                    (dto.iban ?? '').replace(/\s+/g, '').toUpperCase(),
+                    dto.accountNumber ?? '',
+                ];
+            })
+            .sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+
+        return JSON.stringify({ company: company.trim().toLowerCase(), employees });
     }
 
     /** A blank cell is "not paid", sent as nothing -- never as 0, which the server would read the same way anyway. */

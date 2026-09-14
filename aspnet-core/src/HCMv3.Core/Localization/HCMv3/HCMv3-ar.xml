@@ -6174,5 +6174,7 @@
     <text name="GoLiveV2RunStoppedNote">تم الإيقاف بعد {0}. الموظفون الذين تمت معالجتهم قبل الإيقاف محفوظون.</text>
     <text name="GoLiveV2RunFailedNote">لم يكتمل التشغيل: {0}</text>
     <text name="GoLiveV2ClearWhileRunning">لا يزال تشغيل الرواتب جاريًا لهذه الشركة. انتظر حتى يكتمل أو أوقفه قبل المسح.</text>
+    <text name="GoLiveV2LoadNoChanges">لم يتغير شيء منذ آخر تحميل للموظفين.</text>
+    <text name="GoLiveV2LoadChangesFirst">في الجدول تغييرات لم تُحمَّل بعد. قم بتحميل الموظفين أولًا.</text>
   </texts>
 </localizationDictionary>

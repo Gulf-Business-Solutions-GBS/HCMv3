@@ -6335,5 +6335,7 @@
     <text name="GoLiveV2RunStoppedNote">Stopped after {0}. Employees processed before the stop are saved.</text>
     <text name="GoLiveV2RunFailedNote">The run did not finish: {0}</text>
     <text name="GoLiveV2ClearWhileRunning">Payroll is still running for this company. Wait for it to finish, or stop it, before clearing.</text>
+    <text name="GoLiveV2LoadNoChanges">Nothing has changed since the employees were last loaded.</text>
+    <text name="GoLiveV2LoadChangesFirst">The grid has changes that are not loaded yet. Load employees first.</text>
   </texts>
 </localizationDictionary>

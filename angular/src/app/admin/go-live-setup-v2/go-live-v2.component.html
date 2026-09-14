@@ -46,6 +46,7 @@
                             type="button"
                             class="btn btn-primary v2-run"
                             [disabled]="loading() || !canLoad()"
+                            [title]="loadUnchanged() ? ('GoLiveV2LoadNoChanges' | localize) : ''"
                             (click)="loadEmployees()">
                             @if (loading()) {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -62,8 +63,14 @@
                         <button
                             type="button"
                             class="btn btn-light-primary"
-                            [disabled]="unlockedStep() < 2"
-                            [title]="unlockedStep() < 2 ? ('GoLiveV2StepNeedsEmployees' | localize) : ''"
+                            [disabled]="openStep() < 2"
+                            [title]="
+                                gridChanged() && unlockedStep() >= 2
+                                    ? ('GoLiveV2LoadChangesFirst' | localize)
+                                    : openStep() < 2
+                                      ? ('GoLiveV2StepNeedsEmployees' | localize)
+                                      : ''
+                            "
                             (click)="goToStep(2)">
                             {{ l('GoLiveV2GoToStep', 2) }}
                             <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
@@ -201,8 +208,8 @@
                         <button
                             type="button"
                             class="btn btn-light-primary"
-                            [disabled]="unlockedStep() < 3"
-                            [title]="unlockedStep() < 3 ? ('GoLiveV2StepNeedsPayroll' | localize) : ''"
+                            [disabled]="openStep() < 3"
+                            [title]="openStep() < 3 ? ('GoLiveV2StepNeedsPayroll' | localize) : ''"
                             (click)="goToStep(3)">
                             {{ l('GoLiveV2GoToStep', 3) }}
                             <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
