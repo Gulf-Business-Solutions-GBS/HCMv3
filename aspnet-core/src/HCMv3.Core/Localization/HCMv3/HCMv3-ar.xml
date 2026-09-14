@@ -6263,7 +6263,7 @@
     <text name="GoLiveV2CompareOtherMonths">تم استبعاد {0} صفًا لشهر آخر.</text>
     <text name="GoLiveV2CompareUnreadableRows">تم استبعاد {0} صفًا بدون رقم موظف أو رمز نوع أجر.</text>
     <text name="GoLiveV2CompareNotInFile">لم يكن {0} من موظفي HCMv3 في منطقة الرواتب هذه ضمن الملف، لذلك لم تتم مقارنتهم.</text>
-    <text name="GoLiveV2CompareSearch">ابحث برقم الموظف أو اسمه</text>
+    <text name="GoLiveV2CompareSearch">ابحث برقم الموظف</text>
     <text name="GoLiveV2CompareAllStatuses">كل النتائج</text>
     <text name="GoLiveV2CompareAllCauses">كل الأسباب</text>
     <text name="GoLiveV2CompareAllGroups">كل المجموعات</text>

@@ -158,10 +158,7 @@
                         <tbody>
                             @for (line of pagedLines(); track line.employeeCode + '|' + line.wageTypeCode) {
                                 <tr>
-                                    <td>
-                                        <div class="fw-semibold">{{ line.employeeCode }}</div>
-                                        <div class="lc-sub">{{ line.employeeName }}</div>
-                                    </td>
+                                    <td class="fw-semibold">{{ line.employeeCode }}</td>
                                     <td>
                                         <div class="fw-semibold">{{ line.wageTypeCode }}</div>
                                         <div class="lc-sub">{{ line.wageTypeName }} · {{ groupKey(line.billingType) | localize }}</div>

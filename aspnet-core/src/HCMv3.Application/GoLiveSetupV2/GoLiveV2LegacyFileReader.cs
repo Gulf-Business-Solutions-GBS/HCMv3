@@ -14,8 +14,6 @@ public class GoLiveV2LegacyRow
 {
     public string EmployeeCode { get; set; }
 
-    public string EmployeeName { get; set; }
-
     public DateTime? PayMonth { get; set; }
 
     public string WageTypeCode { get; set; }
@@ -52,7 +50,7 @@ public class GoLiveV2LegacyFileReader : ITransientDependency
     /// <summary>The query's columns, in the order it selects them.</summary>
     public static readonly string[] Columns =
     {
-        "EmployeeCode", "EmployeeName", "PayMonth", "WageTypeCode", "WageTypeName",
+        "EmployeeCode", "PayMonth", "WageTypeCode", "WageTypeName",
         "BillingType", "Rate", "Number", "Amount",
     };
 
@@ -97,7 +95,6 @@ public class GoLiveV2LegacyFileReader : ITransientDependency
             var row = new GoLiveV2LegacyRow
             {
                 EmployeeCode = Cell("EmployeeCode"),
-                EmployeeName = Cell("EmployeeName"),
                 PayMonth = Date(Cell("PayMonth")),
                 WageTypeCode = Cell("WageTypeCode"),
                 WageTypeName = Cell("WageTypeName"),

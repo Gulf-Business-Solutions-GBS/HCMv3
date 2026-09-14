@@ -27,7 +27,7 @@ namespace HCMv3.Tests.GoLiveSetupV2;
 public class GoLiveV2LegacyCompare_Tests : AppTestBase
 {
     private const string DefaultArea = "Default Payroll Area";
-    private const string Header = "EmployeeCode,EmployeeName,PayMonth,WageTypeCode,WageTypeName,BillingType,Rate,Number,Amount";
+    private const string Header = "EmployeeCode,PayMonth,WageTypeCode,WageTypeName,BillingType,Rate,Number,Amount";
     private static readonly DateTime September = new(2026, 9, 30);
 
     private readonly IGoLiveV2AppService _goLive;
@@ -49,8 +49,8 @@ public class GoLiveV2LegacyCompare_Tests : AppTestBase
     {
         var lines = await GivenAPaidEmployee("E001");
         var csv = Csv(lines.Select(l => Row("E001", l.WageCode, l.Group, l.Rate, l.Number, l.Amount)))
-                  + "\nE001,Employee E001,2026-08-31,1000,Basic Salary,Earning,1,1,1"
-                  + "\n,,2026-09-30,,,,,,";
+                  + "\nE001,2026-08-31,1000,Basic Salary,Earning,1,1,1"
+                  + "\n,2026-09-30,,,,,,";
 
         var result = await Compare(csv, "legacy.csv");
 
@@ -168,7 +168,7 @@ public class GoLiveV2LegacyCompare_Tests : AppTestBase
 
     private static string Row(string employee, string wage, BillingType group, double rate, double number, double amount) =>
         string.Join(",",
-            employee, "Employee " + employee, "2026-09-30", wage, "Wage " + wage, group,
+            employee, "2026-09-30", wage, "Wage " + wage, group,
             rate.ToString("R", CultureInfo.InvariantCulture),
             number.ToString("R", CultureInfo.InvariantCulture),
             amount.ToString("R", CultureInfo.InvariantCulture));

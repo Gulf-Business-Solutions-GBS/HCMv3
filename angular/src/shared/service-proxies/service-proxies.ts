@@ -262435,7 +262435,6 @@ export interface IGoLiveV2LegacyCompareInput {
 
 export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineDto {
     employeeCode!: string | undefined;
-    employeeName!: string | undefined;
     wageTypeCode!: string | undefined;
     wageTypeName!: string | undefined;
     billingType!: BillingType;
@@ -262464,7 +262463,6 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
     init(_data?: any) {
         if (_data) {
             this.employeeCode = _data["employeeCode"];
-            this.employeeName = _data["employeeName"];
             this.wageTypeCode = _data["wageTypeCode"];
             this.wageTypeName = _data["wageTypeName"];
             this.billingType = _data["billingType"];
@@ -262493,7 +262491,6 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeCode"] = this.employeeCode;
-        data["employeeName"] = this.employeeName;
         data["wageTypeCode"] = this.wageTypeCode;
         data["wageTypeName"] = this.wageTypeName;
         data["billingType"] = this.billingType;
@@ -262515,7 +262512,6 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
 
 export interface IGoLiveV2LegacyCompareLineDto {
     employeeCode: string | undefined;
-    employeeName: string | undefined;
     wageTypeCode: string | undefined;
     wageTypeName: string | undefined;
     billingType: BillingType;

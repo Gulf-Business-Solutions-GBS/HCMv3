@@ -23,8 +23,8 @@ public class GoLiveV2LegacyFileReader_Tests
     public void Should_Read_A_Csv_Without_Headers_In_The_Query_Order()
     {
         var file = Read("legacy.csv",
-            "E001,Employee One,2026-09-30,1000,Basic Salary,Earning,12.5,30,12.5\n" +
-            "E001,Employee One,2026-09-30,4015,Paid Days,TimeType,NULL,30,NULL\n");
+            "E001,2026-09-30,1000,Basic Salary,Earning,12.5,30,12.5\n" +
+            "E001,2026-09-30,4015,Paid Days,TimeType,NULL,30,NULL\n");
 
         file.Rows.Count.ShouldBe(2);
         file.Rows[0].Rate.ShouldBe(12.5m);
@@ -38,12 +38,12 @@ public class GoLiveV2LegacyFileReader_Tests
     public void Should_Find_Columns_By_Header_Name_In_Any_Order()
     {
         var file = Read("legacy.txt",
-            "Amount\tWageTypeCode\tEmployeeCode\tEmployeeName\n" +
-            "7.25\t1000\tE002\t\"Two, Employee\"\n");
+            "Amount\tWageTypeCode\tEmployeeCode\tWageTypeName\n" +
+            "7.25\t1000\tE002\t\"Basic, Salary\"\n");
 
         file.Rows.ShouldHaveSingleItem();
         file.Rows[0].EmployeeCode.ShouldBe("E002");
-        file.Rows[0].EmployeeName.ShouldBe("Two, Employee");
+        file.Rows[0].WageTypeName.ShouldBe("Basic, Salary");
         file.Rows[0].Amount.ShouldBe(7.25m);
     }
 

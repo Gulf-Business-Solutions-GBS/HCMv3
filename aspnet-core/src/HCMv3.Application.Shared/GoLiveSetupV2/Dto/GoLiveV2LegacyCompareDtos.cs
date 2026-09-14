@@ -65,8 +65,6 @@ public class GoLiveV2LegacyCompareLineDto
 {
     public string EmployeeCode { get; set; }
 
-    public string EmployeeName { get; set; }
-
     public string WageTypeCode { get; set; }
 
     public string WageTypeName { get; set; }

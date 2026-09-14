@@ -185,9 +185,7 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
 
         return (this.result()?.lines ?? []).filter(
             (l) =>
-                (!query ||
-                    (l.employeeCode ?? '').toLowerCase().includes(query) ||
-                    (l.employeeName ?? '').toLowerCase().includes(query)) &&
+                (!query || (l.employeeCode ?? '').toLowerCase().includes(query)) &&
                 (status === null || l.status === status) &&
                 (cause === null || l.cause === cause) &&
                 (group === null || l.billingType === group) &&

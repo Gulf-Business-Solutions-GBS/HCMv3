@@ -132,20 +132,17 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
                 Number = SumOrNull(g.Select(r => r.Number)),
                 Amount = SumOrNull(g.Select(r => r.Amount)),
             });
-        var legacyNames = legacyRows
-            .GroupBy(r => r.EmployeeCode)
-            .ToDictionary(g => g.Key, g => g.Select(r => r.EmployeeName).FirstOrDefault(n => n != null));
         var legacyWageNames = legacyRows
             .GroupBy(r => r.WageTypeCode)
             .ToDictionary(g => g.Key, g => g.Select(r => r.WageTypeName).FirstOrDefault(n => n != null));
 
-        var fileCodes = legacyNames.Keys.ToList();
+        var fileCodes = legacyRows.Select(r => r.EmployeeCode).Distinct().ToList();
         output.Employees = fileCodes.Count;
 
         // The HCMv3 side, for the same employees.
         var employees = await _employeeRepository.GetAll()
             .Where(e => fileCodes.Contains(e.Code))
-            .Select(e => new { e.Id, e.Code, e.FullNameEn })
+            .Select(e => new { e.Id, e.Code })
             .ToListAsync();
         var employeeIds = employees.Select(e => e.Id).ToList();
         var codeById = employees.ToDictionary(e => e.Id, e => e.Code);
@@ -200,7 +197,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             .ToListAsync();
         var wageByCode = wageTypes.GroupBy(w => w.Code).ToDictionary(g => g.Key, g => g.First());
 
-        var hcmv3Names = employees.ToDictionary(e => e.Code, e => e.FullNameEn);
+        var hcmv3Codes = employees.Select(e => e.Code).ToHashSet();
 
         foreach (var key in legacy.Keys.Union(hcmv3.Keys).Distinct())
         {
@@ -218,7 +215,6 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             var line = new GoLiveV2LegacyCompareLineDto
             {
                 EmployeeCode = key.Employee,
-                EmployeeName = hcmv3Names.GetValueOrDefault(key.Employee) ?? legacyNames.GetValueOrDefault(key.Employee),
                 WageTypeCode = key.Wage,
                 WageTypeName = wage?.NameEn ?? legacyWageNames.GetValueOrDefault(key.Wage),
                 BillingType = billing,
@@ -232,7 +228,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
                 Hcmv3PayRecordAmount = now?.PayRecordAmount,
             };
 
-            Judge(line, hcmv3Names.ContainsKey(key.Employee), wage != null, withRegister.Contains(key.Employee));
+            Judge(line, hcmv3Codes.Contains(key.Employee), wage != null, withRegister.Contains(key.Employee));
             output.Lines.Add(line);
         }
 

@@ -5,8 +5,8 @@
     Management Studio, then save the result as CSV or Excel: in the results grid, right-click, then
     "Save Results As..." (CSV), or "Copy with Headers" and paste into Excel. Upload that file in V2.
 
-    One row per employee and wage type for the month: what the legacy payroll calculated -- Rate, Number
-    and Amount. A wage type's lines in one register are added up.
+    One row per employee code and wage type for the month, with no names: what the legacy payroll
+    calculated -- Rate, Number and Amount. A wage type's lines in one register are added up.
 
     Only the month's own regular, current results are exported: ForPeriod = InPeriod = the month end,
     PayrollRunType Regular (0), PayrollResultType Current (0). Retro lines for earlier months and off-cycle
@@ -23,7 +23,7 @@ DECLARE @PayrollAreaCode nvarchar(100) = N'';          -- blank = every payroll 
 DECLARE @MonthEnd date = EOMONTH(@PayMonth);
 
 WITH Employees AS (
-    SELECT e.OID, e.Code, e.FullNameEn
+    SELECT e.OID, e.Code
     FROM dbo.Employee e
     WHERE e.GCRecord IS NULL
       -- Not STRING_SPLIT: legacy databases often run at a compatibility level that does not have it.
@@ -56,7 +56,6 @@ Calculated AS (
     GROUP BY s.Employee, d.WageType
 )
 SELECT e.Code                                         AS EmployeeCode,
-       e.FullNameEn                                   AS EmployeeName,
        CONVERT(char(10), @MonthEnd, 23)               AS PayMonth,
        w.Code                                         AS WageTypeCode,
        w.NameEn                                       AS WageTypeName,

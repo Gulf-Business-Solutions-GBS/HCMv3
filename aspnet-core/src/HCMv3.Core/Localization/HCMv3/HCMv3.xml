@@ -6424,7 +6424,7 @@
     <text name="GoLiveV2CompareOtherMonths">{0} rows for another month were left out.</text>
     <text name="GoLiveV2CompareUnreadableRows">{0} rows without an employee or wage type code were left out.</text>
     <text name="GoLiveV2CompareNotInFile">{0} HCMv3 employees in this payroll area were not in the file, so they were not compared.</text>
-    <text name="GoLiveV2CompareSearch">Search employee code or name</text>
+    <text name="GoLiveV2CompareSearch">Search employee code</text>
     <text name="GoLiveV2CompareAllStatuses">All results</text>
     <text name="GoLiveV2CompareAllCauses">All reasons</text>
     <text name="GoLiveV2CompareAllGroups">All groups</text>
