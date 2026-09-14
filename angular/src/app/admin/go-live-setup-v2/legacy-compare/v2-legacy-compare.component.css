@@ -266,3 +266,27 @@
 .lc-count-link {
     cursor: pointer;
 }
+
+.lc-count-open {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 1px var(--bs-primary);
+}
+
+/* ---------- the wage types a count opens ---------- */
+.lc-list {
+    border: 1px solid var(--bs-gray-300);
+    border-radius: 0.6rem;
+    padding: 0.75rem 1rem;
+    max-height: 22rem;
+    overflow: auto;
+}
+
+.lc-list h6 {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.lc-list-table {
+    margin: 0;
+    font-size: 0.875rem;
+}

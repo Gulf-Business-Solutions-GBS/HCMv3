@@ -177,30 +177,72 @@
                 </div>
             </div>
 
-            <!-- The summary: counts only, over every line whatever the filters. -->
-            @if (wageTypeCounts(); as wc) {
+            <!-- The summary, over every line whatever the filters: counts that open their wage types. -->
+            @if (wageTypes(); as wt) {
                 <section class="lc-summary">
                     <div class="lc-count">
-                        <strong>{{ wc.total }}</strong>
+                        <strong>{{ wt.total }}</strong>
                         <span>{{ 'GoLiveV2CompareWageTypesTotal' | localize }}</span>
                     </div>
-                    <div class="lc-count lc-count-good">
-                        <strong>{{ wc.matched }}</strong>
-                        <span>{{ 'GoLiveV2CompareWageTypesMatched' | localize }}</span>
-                    </div>
-                    <div class="lc-count lc-count-bad">
-                        <strong>{{ wc.notMatched }}</strong>
-                        <span>{{ 'GoLiveV2CompareWageTypesNotMatched' | localize }}</span>
-                    </div>
-                    <button type="button" class="lc-count lc-count-good lc-count-link" (click)="showStatus('matched')">
-                        <strong>{{ linesMatched() }}</strong>
-                        <span>{{ 'GoLiveV2CompareLinesMatched' | localize }}</span>
+                    <button
+                        type="button"
+                        class="lc-count lc-count-good lc-count-link"
+                        [class.lc-count-open]="openList() === 'matched'"
+                        [attr.aria-expanded]="openList() === 'matched'"
+                        (click)="toggleList('matched')">
+                        <strong>{{ wt.matched.length }}</strong>
+                        <span>
+                            {{ 'GoLiveV2CompareWageTypesMatched' | localize }}
+                            <i class="fa ms-1" [class.fa-chevron-down]="openList() !== 'matched'" [class.fa-chevron-up]="openList() === 'matched'" aria-hidden="true"></i>
+                        </span>
                     </button>
-                    <button type="button" class="lc-count lc-count-bad lc-count-link" (click)="showStatus('notMatched')">
-                        <strong>{{ linesNotMatched() }}</strong>
-                        <span>{{ 'GoLiveV2CompareLinesNotMatched' | localize }}</span>
+                    <button
+                        type="button"
+                        class="lc-count lc-count-bad lc-count-link"
+                        [class.lc-count-open]="openList() === 'notMatched'"
+                        [attr.aria-expanded]="openList() === 'notMatched'"
+                        (click)="toggleList('notMatched')">
+                        <strong>{{ wt.notMatched.length }}</strong>
+                        <span>
+                            {{ 'GoLiveV2CompareWageTypesNotMatched' | localize }}
+                            <i class="fa ms-1" [class.fa-chevron-down]="openList() !== 'notMatched'" [class.fa-chevron-up]="openList() === 'notMatched'" aria-hidden="true"></i>
+                        </span>
                     </button>
                 </section>
+
+                @if (openList(); as list) {
+                    <div class="lc-list">
+                        <h6 [class.text-success]="list === 'matched'" [class.text-danger]="list === 'notMatched'">
+                            {{ (list === 'matched' ? 'GoLiveV2CompareWageTypesMatched' : 'GoLiveV2CompareWageTypesNotMatched') | localize }}
+                        </h6>
+                        <table class="table table-sm table-hover align-middle lc-list-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'GoLiveV2CompareColWageTypeCode' | localize }}</th>
+                                    <th>{{ 'GoLiveV2CompareColWageTypeName' | localize }}</th>
+                                    @if (list === 'notMatched') {
+                                        <th class="text-end">{{ 'GoLiveV2CompareColLinesDiffering' | localize }}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (w of list === 'matched' ? wt.matched : wt.notMatched; track w.code) {
+                                    <tr class="lc-count-link" (click)="showWageTypeLines(w.code)">
+                                        <td class="fw-semibold">{{ w.code }}</td>
+                                        <td>{{ w.name }}</td>
+                                        @if (list === 'notMatched') {
+                                            <td class="text-end v2-num text-danger">{{ w.linesNotMatched }} / {{ w.lines }}</td>
+                                        }
+                                    </tr>
+                                } @empty {
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">{{ 'GoLiveV2CompareNoLines' | localize }}</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             }
         }
 

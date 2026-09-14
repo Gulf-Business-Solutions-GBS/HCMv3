@@ -140,21 +140,40 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
 
     // ---------------------------------------------------------------- counts
 
-    readonly linesMatched = computed(
-        () => (this.result()?.lines ?? []).filter((l) => l.status === GoLiveV2CompareStatus.Matched).length
-    );
-    readonly linesNotMatched = computed(() => (this.result()?.lines.length ?? 0) - this.linesMatched());
-
-    /** A wage type is matched only when every employee's line for it is. */
-    readonly wageTypeCounts = computed(() => {
-        const matched = new Map<string, boolean>();
+    /** Every wage type, by code, and whether each is matched -- only when every employee's line for it is. */
+    readonly wageTypes = computed(() => {
+        const byCode = new Map<string, { code: string; name: string; lines: number; linesNotMatched: number }>();
         for (const l of this.result()?.lines ?? []) {
             const code = l.wageTypeCode ?? '';
-            matched.set(code, (matched.get(code) ?? true) && l.status === GoLiveV2CompareStatus.Matched);
+            let row = byCode.get(code);
+            if (!row) {
+                row = { code, name: l.wageTypeName ?? '', lines: 0, linesNotMatched: 0 };
+                byCode.set(code, row);
+            }
+            row.lines++;
+            row.linesNotMatched += l.status === GoLiveV2CompareStatus.Matched ? 0 : 1;
         }
-        const all = [...matched.values()];
-        return { total: all.length, matched: all.filter((m) => m).length, notMatched: all.filter((m) => !m).length };
+        const all = [...byCode.values()].sort((a, b) => a.code.localeCompare(b.code));
+        return {
+            total: all.length,
+            matched: all.filter((w) => w.linesNotMatched === 0),
+            notMatched: all.filter((w) => w.linesNotMatched > 0),
+        };
     });
+
+    /** Which list the counts have opened, if any. */
+    readonly openList = signal<'matched' | 'notMatched' | null>(null);
+
+    toggleList(list: 'matched' | 'notMatched'): void {
+        this.openList.set(this.openList() === list ? null : list);
+    }
+
+    /** From a wage type in the list to its lines in the grid above. */
+    showWageTypeLines(code: string): void {
+        this.resetFilters();
+        this.wageType.set(code);
+        document.querySelector('.lc-filters')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     // ---------------------------------------------------------------- filters
 
