@@ -246,58 +246,62 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
         return output;
     }
 
-    /// <summary>Whether the line matches, and if not, the most likely reason.</summary>
+    /// <summary>
+    /// Whether the line matches -- rate, number and amount all three, never one or two of them -- and if not, the
+    /// most likely reason.
+    /// </summary>
     private void Judge(GoLiveV2LegacyCompareLineDto line, bool employeeInHcmv3, bool wageTypeInHcmv3, bool hasHcmv3Register)
     {
-        var oldValue = line.ComparesDays ? line.LegacyNumber : line.LegacyAmount;
-        var newValue = line.ComparesDays ? line.Hcmv3Number : line.Hcmv3Amount;
+        line.RateMatches = Same(line.LegacyRate, line.Hcmv3Rate);
+        line.NumberMatches = Same(line.LegacyNumber, line.Hcmv3Number);
+        line.AmountMatches = Same(line.LegacyAmount, line.Hcmv3Amount);
+        line.Difference = (line.Hcmv3Amount ?? 0) - (line.LegacyAmount ?? 0);
 
-        // For fixed pay the legacy rate is the salary record's amount, so it tells whether the records agree.
-        var recordDiffers = line.Hcmv3PayRecordAmount != null
-                            && line.LegacyRate != null
-                            && Differ(line.LegacyRate, line.Hcmv3PayRecordAmount);
-
-        if (oldValue != null && newValue != null)
+        if (line.RateMatches && line.NumberMatches && line.AmountMatches)
         {
-            line.Difference = newValue - oldValue;
-            if (Math.Abs(line.Difference.Value) < Tolerance)
-            {
-                Set(line, GoLiveV2CompareStatus.Matched, GoLiveV2CompareCause.None, L("GoLiveV2CompareMatched"));
-                return;
-            }
+            Set(line, GoLiveV2CompareStatus.Matched, GoLiveV2CompareCause.None, L("GoLiveV2CompareMatched"));
+            return;
+        }
 
-            var rateDiffers = Differ(line.LegacyRate, line.Hcmv3Rate);
-            var daysDiffer = Differ(line.LegacyNumber, line.Hcmv3Number);
+        var inLegacy = line.LegacyRate != null || line.LegacyNumber != null || line.LegacyAmount != null;
+        var inHcmv3 = line.Hcmv3Rate != null || line.Hcmv3Number != null || line.Hcmv3Amount != null;
 
-            if (line.ComparesDays)
+        if (inLegacy && inHcmv3)
+        {
+            // For fixed pay the legacy rate is the salary record's amount, so it tells whether the records agree.
+            var recordDiffers = line.Hcmv3PayRecordAmount != null
+                                && line.LegacyRate != null
+                                && !Same(line.LegacyRate, line.Hcmv3PayRecordAmount);
+
+            if (!line.NumberMatches && line.ComparesDays)
             {
                 Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Days,
-                    L("GoLiveV2CompareDaysDiffer", Days(oldValue), Days(newValue)));
+                    L("GoLiveV2CompareDaysDiffer", Days(line.LegacyNumber), Days(line.Hcmv3Number)));
             }
-            else if (Math.Abs(line.Difference.Value) < RoundingTolerance)
-            {
-                Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Rounding, L("GoLiveV2CompareRounding"));
-            }
-            else if (rateDiffers && recordDiffers)
+            else if (!line.RateMatches && recordDiffers)
             {
                 Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Data,
                     L("GoLiveV2CompareSalaryRecordDiffers", Money(line.LegacyRate), Money(line.Hcmv3PayRecordAmount)));
             }
-            else if (rateDiffers && daysDiffer)
+            else if (!line.RateMatches && !line.NumberMatches)
             {
                 Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Logic,
                     L("GoLiveV2CompareRateAndDaysDiffer", Money(line.LegacyRate), Money(line.Hcmv3Rate),
                         Days(line.LegacyNumber), Days(line.Hcmv3Number)));
             }
-            else if (daysDiffer)
+            else if (!line.NumberMatches)
             {
                 Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Days,
                     L("GoLiveV2CompareSameRateDaysDiffer", Days(line.LegacyNumber), Days(line.Hcmv3Number)));
             }
-            else if (rateDiffers)
+            else if (!line.RateMatches)
             {
                 Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Logic,
                     L("GoLiveV2CompareRateDiffers", Money(line.LegacyRate), Money(line.Hcmv3Rate)));
+            }
+            else if (Math.Abs(line.Difference.Value) < RoundingTolerance)
+            {
+                Set(line, GoLiveV2CompareStatus.Different, GoLiveV2CompareCause.Rounding, L("GoLiveV2CompareRounding"));
             }
             else
             {
@@ -307,16 +311,9 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             return;
         }
 
-        if (oldValue != null)
+        if (inLegacy)
         {
-            line.Difference = line.ComparesDays ? null : -oldValue;
-
-            if (Math.Abs(oldValue.Value) < Tolerance)
-            {
-                // A zero line in legacy and none in HCMv3 is not a difference.
-                Set(line, GoLiveV2CompareStatus.Matched, GoLiveV2CompareCause.None, L("GoLiveV2CompareMatchedZero"));
-            }
-            else if (!employeeInHcmv3)
+            if (!employeeInHcmv3)
             {
                 Set(line, GoLiveV2CompareStatus.OnlyInLegacy, GoLiveV2CompareCause.Data, L("GoLiveV2CompareEmployeeNotLoaded"));
             }
@@ -341,13 +338,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             return;
         }
 
-        line.Difference = line.ComparesDays ? null : newValue;
-
-        if (Math.Abs(newValue!.Value) < Tolerance)
-        {
-            Set(line, GoLiveV2CompareStatus.Matched, GoLiveV2CompareCause.None, L("GoLiveV2CompareMatchedZero"));
-        }
-        else if (line.Hcmv3PayRecordAmount != null)
+        if (line.Hcmv3PayRecordAmount != null)
         {
             Set(line, GoLiveV2CompareStatus.OnlyInHcmv3, GoLiveV2CompareCause.Data, L("GoLiveV2CompareNotOnLegacyRecord"));
         }
@@ -402,8 +393,11 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
         return bytes;
     }
 
-    private static bool Differ(decimal? a, decimal? b) =>
-        (a == null) != (b == null) || (a != null && Math.Abs(a.Value - b.Value) >= Tolerance);
+    /// <summary>Equal within a fils; nothing on one side and zero on the other counts as equal.</summary>
+    private static bool Same(decimal? a, decimal? b) =>
+        a == null || b == null
+            ? Math.Abs(a ?? b ?? 0) < Tolerance
+            : Math.Abs(a.Value - b.Value) < Tolerance;
 
     private static decimal? SumOrNull(IEnumerable<decimal?> values)
     {

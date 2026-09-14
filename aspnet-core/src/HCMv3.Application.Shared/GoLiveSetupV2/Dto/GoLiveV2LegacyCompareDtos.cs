@@ -24,7 +24,7 @@ public class GoLiveV2LegacyCompareInput
     public string Base64Content { get; set; }
 }
 
-/// <summary>How a wage type compares.</summary>
+/// <summary>How a wage type compares. Matched means rate, number and amount all agree.</summary>
 public enum GoLiveV2CompareStatus
 {
     Matched = 0,
@@ -71,7 +71,7 @@ public class GoLiveV2LegacyCompareLineDto
 
     public BillingType? BillingType { get; set; }
 
-    /// <summary>Time types are compared on their number of days; everything else on its amount.</summary>
+    /// <summary>A time type: it counts days, so a different number is a difference in days.</summary>
     public bool ComparesDays { get; set; }
 
     public decimal? LegacyRate { get; set; }
@@ -92,7 +92,13 @@ public class GoLiveV2LegacyCompareLineDto
     /// </summary>
     public decimal? Hcmv3PayRecordAmount { get; set; }
 
-    /// <summary>HCMv3 less legacy, in whatever is compared: days for time types, the amount otherwise.</summary>
+    public bool RateMatches { get; set; }
+
+    public bool NumberMatches { get; set; }
+
+    public bool AmountMatches { get; set; }
+
+    /// <summary>HCMv3's amount less legacy's.</summary>
     public decimal? Difference { get; set; }
 
     public GoLiveV2CompareStatus Status { get; set; }

@@ -6298,5 +6298,22 @@
     <text name="GoLiveV2CompareColCode">الرمز</text>
     <text name="GoLiveV2CompareColDiffers">الاختلاف في</text>
     <text name="GoLiveV2CompareColLinesDiffering">البنود المختلفة</text>
+    <text name="GoLiveV2CompareNotMatched">غير مطابق</text>
+    <text name="GoLiveV2CompareMatchRule">يُعتبر البند مطابقًا فقط عندما يتطابق المعدل والعدد والمبلغ جميعًا. ويُعتبر نوع الأجر مطابقًا فقط عندما تتطابق بنود جميع الموظفين له.</text>
+    <text name="GoLiveV2CompareColWageTypeCode">رمز نوع الأجر</text>
+    <text name="GoLiveV2CompareColWageTypeName">اسم نوع الأجر</text>
+    <text name="GoLiveV2CompareColRateLegacy">المعدل في النظام السابق</text>
+    <text name="GoLiveV2CompareColRateNew">المعدل في الجديد</text>
+    <text name="GoLiveV2CompareColNumberLegacy">العدد في النظام السابق</text>
+    <text name="GoLiveV2CompareColNumberNew">العدد في الجديد</text>
+    <text name="GoLiveV2CompareColAmountLegacy">المبلغ في النظام السابق</text>
+    <text name="GoLiveV2CompareColAmountNew">المبلغ في الجديد</text>
+    <text name="GoLiveV2CompareColStatus">الحالة</text>
+    <text name="GoLiveV2CompareColPossibleReason">السبب المحتمل</text>
+    <text name="GoLiveV2CompareWageTypesTotal">أنواع الأجور التي تمت مقارنتها</text>
+    <text name="GoLiveV2CompareWageTypesMatched">أنواع الأجور المطابقة</text>
+    <text name="GoLiveV2CompareWageTypesNotMatched">أنواع الأجور غير المطابقة</text>
+    <text name="GoLiveV2CompareLinesMatched">البنود المطابقة</text>
+    <text name="GoLiveV2CompareLinesNotMatched">البنود غير المطابقة</text>
   </texts>
 </localizationDictionary>

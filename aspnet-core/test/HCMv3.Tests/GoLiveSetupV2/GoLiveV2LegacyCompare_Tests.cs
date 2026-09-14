@@ -100,6 +100,28 @@ public class GoLiveV2LegacyCompare_Tests : AppTestBase
         Line(result, "X999", "1000").Reason.ShouldBe(Localized("GoLiveV2CompareEmployeeNotLoaded"));
     }
 
+    /// <summary>
+    /// Matched means rate, number and amount all agree. The same amount reached with a different rate is a
+    /// difference, and each value says on its own whether it matched.
+    /// </summary>
+    [Fact]
+    public async Task Should_Not_Call_A_Line_Matched_When_Only_The_Amount_Agrees()
+    {
+        var lines = await GivenAPaidEmployee("E001");
+        var csv = Csv(lines.Select(l => l.WageCode == "1000"
+            ? Row("E001", l.WageCode, l.Group, l.Rate + 1, l.Number, l.Amount)
+            : Row("E001", l.WageCode, l.Group, l.Rate, l.Number, l.Amount)));
+
+        var result = await Compare(csv, "legacy.csv");
+
+        var basic = Line(result, "E001", "1000");
+        basic.Status.ShouldBe(GoLiveV2CompareStatus.Different);
+        basic.RateMatches.ShouldBeFalse();
+        basic.NumberMatches.ShouldBeTrue();
+        basic.AmountMatches.ShouldBeTrue();
+        result.Matched.ShouldBe(lines.Count - 1);
+    }
+
     /// <summary>A wage type HCMv3 paid that the legacy payroll did not is listed as only in HCMv3.</summary>
     [Fact]
     public async Task Should_List_What_Only_HCMv3_Paid()

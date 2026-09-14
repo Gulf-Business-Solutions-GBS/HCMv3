@@ -9,42 +9,20 @@ import {
     GoLiveV2CompareCause,
     GoLiveV2CompareStatus,
     GoLiveV2LegacyCompareInput,
-    GoLiveV2LegacyCompareLineDto,
     GoLiveV2LegacyCompareOutput,
     GoLiveV2PayrollResultsInput,
     GoLiveV2ServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
-/** One wage type across every employee: how often it matched, and how far apart the amounts are in total. */
-interface WageTypeSummary {
-    code: string;
-    name: string;
-    group: BillingType | undefined;
-    lines: number;
-    matched: number;
-    different: number;
-    onlyInLegacy: number;
-    onlyInHcmv3: number;
-    difference: number;
-}
-
-/** How close two values must be to count as the same: one fils, as the server compares. */
-const Tolerance = 0.001;
-
-/** A wage type that did not match on every line: which of rate, days and amount differed, and how often. */
-interface WageTypeMismatch {
-    code: string;
-    name: string;
-    lines: number;
-    linesDiffering: number;
-    rate: boolean;
-    number: boolean;
-    amount: boolean;
-}
+type StatusFilter = 'all' | 'matched' | 'notMatched';
 
 /**
  * Compare with legacy salary: the legacy payroll's registers for the month -- exported by a read-only query the
- * window hands out -- set beside HCMv3's, wage type by wage type, with the likely reason for each difference.
+ * window hands out -- set beside HCMv3's in one grid, rate, number and amount side by side, each cell coloured by
+ * whether its pair agrees.
+ *
+ * <p>A line is matched only when all three agree, and a wage type only when every employee's line does -- the
+ * server decides per value, so the colours and the counts cannot disagree.</p>
  *
  * <p>Salaries are confidential. The file goes to the server only to be compared and is not kept there; the
  * result lives in this window and is dropped when it closes.</p>
@@ -63,16 +41,8 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     readonly payrollAreaName = input.required<string>();
     readonly closed = output<void>();
 
-    readonly Status = GoLiveV2CompareStatus;
     readonly Cause = GoLiveV2CompareCause;
-    readonly BillingType = BillingType;
 
-    readonly statuses = [
-        GoLiveV2CompareStatus.Matched,
-        GoLiveV2CompareStatus.Different,
-        GoLiveV2CompareStatus.OnlyInLegacy,
-        GoLiveV2CompareStatus.OnlyInHcmv3,
-    ];
     readonly causes = [
         GoLiveV2CompareCause.Data,
         GoLiveV2CompareCause.Days,
@@ -102,7 +72,9 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     }
 
     copyQuery(): void {
-        this.withQuery((sql) => navigator.clipboard.writeText(sql).then(() => this.notify.success(this.l('GoLiveV2CompareQueryCopied'))));
+        this.withQuery((sql) =>
+            navigator.clipboard.writeText(sql).then(() => this.notify.success(this.l('GoLiveV2CompareQueryCopied')))
+        );
     }
 
     private withQuery(use: (sql: string, fileName: string) => void): void {
@@ -124,8 +96,7 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     readonly result = signal<GoLiveV2LegacyCompareOutput | null>(null);
 
     onFile(event: Event): void {
-        const picked = (event.target as HTMLInputElement).files?.[0] ?? null;
-        this.file.set(picked);
+        this.file.set((event.target as HTMLInputElement).files?.[0] ?? null);
     }
 
     async compare(): Promise<void> {
@@ -167,15 +138,31 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         });
     }
 
+    // ---------------------------------------------------------------- counts
+
+    readonly linesMatched = computed(
+        () => (this.result()?.lines ?? []).filter((l) => l.status === GoLiveV2CompareStatus.Matched).length
+    );
+    readonly linesNotMatched = computed(() => (this.result()?.lines.length ?? 0) - this.linesMatched());
+
+    /** A wage type is matched only when every employee's line for it is. */
+    readonly wageTypeCounts = computed(() => {
+        const matched = new Map<string, boolean>();
+        for (const l of this.result()?.lines ?? []) {
+            const code = l.wageTypeCode ?? '';
+            matched.set(code, (matched.get(code) ?? true) && l.status === GoLiveV2CompareStatus.Matched);
+        }
+        const all = [...matched.values()];
+        return { total: all.length, matched: all.filter((m) => m).length, notMatched: all.filter((m) => !m).length };
+    });
+
     // ---------------------------------------------------------------- filters
 
-    readonly tab = signal<'lines' | 'wages'>('lines');
     readonly search = signal('');
-    readonly status = signal<GoLiveV2CompareStatus | null>(null);
+    readonly status = signal<StatusFilter>('all');
     readonly cause = signal<GoLiveV2CompareCause | null>(null);
     readonly group = signal<BillingType | null>(null);
     readonly wageType = signal('');
-    readonly hideMatched = signal(true);
     readonly page = signal(1);
     readonly pageSize = signal(50);
 
@@ -195,17 +182,17 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         const cause = this.cause();
         const group = this.group();
         const wage = this.wageType();
-        const hideMatched = this.hideMatched() && status !== GoLiveV2CompareStatus.Matched;
 
-        return (this.result()?.lines ?? []).filter(
-            (l) =>
+        return (this.result()?.lines ?? []).filter((l) => {
+            const matched = l.status === GoLiveV2CompareStatus.Matched;
+            return (
                 (!query || (l.employeeCode ?? '').toLowerCase().includes(query)) &&
-                (status === null || l.status === status) &&
+                (status === 'all' || (status === 'matched') === matched) &&
                 (cause === null || l.cause === cause) &&
                 (group === null || l.billingType === group) &&
-                (!wage || l.wageTypeCode === wage) &&
-                (!hideMatched || l.status !== GoLiveV2CompareStatus.Matched)
-        );
+                (!wage || l.wageTypeCode === wage)
+            );
+        });
     });
 
     readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filteredLines().length / this.pageSize())));
@@ -221,99 +208,13 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     );
     readonly showingTo = computed(() => Math.min(this.currentPage() * this.pageSize(), this.filteredLines().length));
 
-    /**
-     * The closing summary, over every line whatever the filters: wage types where rate, days and amount all agree
-     * on every employee's line, and the rest with what differed. Stricter than the Matched count, which looks
-     * at the amount alone (days for time types).
-     */
-    readonly fullMatch = computed(() => {
-        const byCode = new Map<string, WageTypeMismatch>();
-        for (const l of this.result()?.lines ?? []) {
-            const code = l.wageTypeCode ?? '';
-            let row = byCode.get(code);
-            if (!row) {
-                row = { code, name: l.wageTypeName ?? '', lines: 0, linesDiffering: 0, rate: false, number: false, amount: false };
-                byCode.set(code, row);
-            }
-            const rate = !this.same(l.legacyRate, l.hcmv3Rate);
-            const number = !this.same(l.legacyNumber, l.hcmv3Number);
-            const amount = !this.same(l.legacyAmount, l.hcmv3Amount);
-            row.lines++;
-            row.linesDiffering += rate || number || amount ? 1 : 0;
-            row.rate ||= rate;
-            row.number ||= number;
-            row.amount ||= amount;
-        }
-
-        const all = [...byCode.values()].sort((a, b) => a.code.localeCompare(b.code));
-        return {
-            matched: all.filter((w) => w.linesDiffering === 0),
-            notMatched: all.filter((w) => w.linesDiffering > 0),
-        };
-    });
-
-    /** What differed, for a wage type that did not match: "Rate, Amount". */
-    differingFields(w: WageTypeMismatch): string {
-        return [
-            w.rate ? this.l('GoLiveV2CompareColRate') : null,
-            w.number ? this.l('GoLiveV2CompareColDays') : null,
-            w.amount ? this.l('GoLiveV2CompareColAmount') : null,
-        ]
-            .filter((f) => f !== null)
-            .join(', ');
-    }
-
-    /** Equal within a fils; a zero on one side and nothing on the other counts as equal too. */
-    private same(a: number | undefined, b: number | undefined): boolean {
-        const x = a ?? null;
-        const y = b ?? null;
-        if (x === null || y === null) {
-            return Math.abs(x ?? y ?? 0) < Tolerance;
-        }
-        return Math.abs(x - y) < Tolerance;
-    }
-
-    /** Every wage type in the result, worst first: the ones that differ most often lead. */
-    readonly wageTypeSummary = computed<WageTypeSummary[]>(() => {
-        const byCode = new Map<string, WageTypeSummary>();
-        for (const l of this.result()?.lines ?? []) {
-            const code = l.wageTypeCode ?? '';
-            let row = byCode.get(code);
-            if (!row) {
-                row = {
-                    code,
-                    name: l.wageTypeName ?? '',
-                    group: l.billingType,
-                    lines: 0,
-                    matched: 0,
-                    different: 0,
-                    onlyInLegacy: 0,
-                    onlyInHcmv3: 0,
-                    difference: 0,
-                };
-                byCode.set(code, row);
-            }
-            row.lines++;
-            row.matched += l.status === GoLiveV2CompareStatus.Matched ? 1 : 0;
-            row.different += l.status === GoLiveV2CompareStatus.Different ? 1 : 0;
-            row.onlyInLegacy += l.status === GoLiveV2CompareStatus.OnlyInLegacy ? 1 : 0;
-            row.onlyInHcmv3 += l.status === GoLiveV2CompareStatus.OnlyInHcmv3 ? 1 : 0;
-            row.difference += l.comparesDays ? 0 : (l.difference ?? 0);
-        }
-        return [...byCode.values()].sort(
-            (a, b) => b.lines - b.matched - (a.lines - a.matched) || a.code.localeCompare(b.code)
-        );
-    });
-
     onSearch(event: Event): void {
         this.search.set((event.target as HTMLInputElement).value);
         this.page.set(1);
     }
 
     onStatus(event: Event): void {
-        const value = (event.target as HTMLSelectElement).value;
-        this.status.set(value === '' ? null : (Number(value) as GoLiveV2CompareStatus));
-        this.page.set(1);
+        this.showStatus((event.target as HTMLSelectElement).value as StatusFilter);
     }
 
     onCause(event: Event): void {
@@ -333,11 +234,6 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         this.page.set(1);
     }
 
-    onHideMatched(event: Event): void {
-        this.hideMatched.set((event.target as HTMLInputElement).checked);
-        this.page.set(1);
-    }
-
     onPageSize(event: Event): void {
         this.pageSize.set(Number((event.target as HTMLSelectElement).value));
         this.page.set(1);
@@ -347,54 +243,24 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         this.page.set(Math.max(1, Math.min(page, this.pageCount())));
     }
 
-    /** A tile or a wage type row narrows the lines to what it counts. */
-    showStatus(status: GoLiveV2CompareStatus): void {
-        this.resetFilters();
+    showStatus(status: StatusFilter): void {
         this.status.set(status);
-        this.hideMatched.set(status !== GoLiveV2CompareStatus.Matched);
-        this.tab.set('lines');
-    }
-
-    showWageType(code: string): void {
-        this.resetFilters();
-        this.wageType.set(code);
-        this.tab.set('lines');
+        this.page.set(1);
     }
 
     resetFilters(): void {
         this.search.set('');
-        this.status.set(null);
+        this.status.set('all');
         this.cause.set(null);
         this.group.set(null);
         this.wageType.set('');
-        this.hideMatched.set(true);
         this.page.set(1);
     }
 
     // ---------------------------------------------------------------- labels
 
-    statusKey(status: GoLiveV2CompareStatus): string {
-        switch (status) {
-            case GoLiveV2CompareStatus.Matched:
-                return 'GoLiveV2CompareMatchedCount';
-            case GoLiveV2CompareStatus.Different:
-                return 'GoLiveV2CompareDifferentCount';
-            case GoLiveV2CompareStatus.OnlyInLegacy:
-                return 'GoLiveV2CompareOnlyLegacyCount';
-            default:
-                return 'GoLiveV2CompareOnlyHcmv3Count';
-        }
-    }
-
-    statusClass(status: GoLiveV2CompareStatus): string {
-        switch (status) {
-            case GoLiveV2CompareStatus.Matched:
-                return 'badge-light-success';
-            case GoLiveV2CompareStatus.Different:
-                return 'badge-light-danger';
-            default:
-                return 'badge-light-warning';
-        }
+    isMatched(status: GoLiveV2CompareStatus): boolean {
+        return status === GoLiveV2CompareStatus.Matched;
     }
 
     causeKey(cause: GoLiveV2CompareCause): string {
@@ -403,17 +269,6 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
 
     groupKey(group: BillingType | undefined): string {
         return group === undefined || group === null ? '' : 'GoLiveV2RegisterGroup' + BillingType[group];
-    }
-
-    /** Days for time types, which count days; the amount for everything else. */
-    valueOf(line: GoLiveV2LegacyCompareLineDto, side: 'legacy' | 'hcmv3'): number | undefined {
-        return side === 'legacy'
-            ? line.comparesDays
-                ? line.legacyNumber
-                : line.legacyAmount
-            : line.comparesDays
-              ? line.hcmv3Number
-              : line.hcmv3Amount;
     }
 
     close(): void {

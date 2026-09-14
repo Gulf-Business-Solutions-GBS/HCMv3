@@ -6459,5 +6459,22 @@
     <text name="GoLiveV2CompareColCode">Code</text>
     <text name="GoLiveV2CompareColDiffers">Differs in</text>
     <text name="GoLiveV2CompareColLinesDiffering">Lines differing</text>
+    <text name="GoLiveV2CompareNotMatched">Not matched</text>
+    <text name="GoLiveV2CompareMatchRule">A line is matched only when rate, number and amount all match. A wage type is matched only when every employee's line for it matches.</text>
+    <text name="GoLiveV2CompareColWageTypeCode">Wage type code</text>
+    <text name="GoLiveV2CompareColWageTypeName">Wage type name</text>
+    <text name="GoLiveV2CompareColRateLegacy">Rate in Legacy</text>
+    <text name="GoLiveV2CompareColRateNew">Rate in New</text>
+    <text name="GoLiveV2CompareColNumberLegacy">Number in Legacy</text>
+    <text name="GoLiveV2CompareColNumberNew">Number in New</text>
+    <text name="GoLiveV2CompareColAmountLegacy">Amount in Legacy</text>
+    <text name="GoLiveV2CompareColAmountNew">Amount in New</text>
+    <text name="GoLiveV2CompareColStatus">Status</text>
+    <text name="GoLiveV2CompareColPossibleReason">Possible reason</text>
+    <text name="GoLiveV2CompareWageTypesTotal">Wage types compared</text>
+    <text name="GoLiveV2CompareWageTypesMatched">Wage types matched</text>
+    <text name="GoLiveV2CompareWageTypesNotMatched">Wage types not matched</text>
+    <text name="GoLiveV2CompareLinesMatched">Lines matched</text>
+    <text name="GoLiveV2CompareLinesNotMatched">Lines not matched</text>
   </texts>
 </localizationDictionary>

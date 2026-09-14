@@ -47,57 +47,11 @@
     max-width: 100%;
 }
 
-.lc-tiles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    gap: 0.75rem;
-}
-
-.lc-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.15rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--bs-gray-300);
-    border-radius: 0.6rem;
-    background: var(--bs-body-bg, #fff);
-    text-align: start;
-    cursor: pointer;
-}
-
-.lc-tile strong {
-    font-size: 1.6rem;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-}
-
-.lc-tile span {
-    color: var(--bs-gray-700);
-}
-
-.lc-tile-good strong {
-    color: var(--bs-success);
-}
-
-.lc-tile-bad strong {
-    color: var(--bs-danger);
-}
-
-.lc-tile-active {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 1px var(--bs-primary);
-}
-
 .lc-notes {
     margin: 0;
     padding-inline-start: 1.1rem;
     color: var(--bs-gray-700);
     font-size: 0.9rem;
-}
-
-.lc-tabs {
-    margin-top: 0.25rem;
 }
 
 .lc-filters {
@@ -110,13 +64,6 @@
 .lc-filters .form-select {
     width: auto;
     max-width: 16rem;
-}
-
-.lc-check {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0 0 0 0.25rem;
 }
 
 .lc-table-wrap {
@@ -147,19 +94,6 @@
 .lc-table td,
 .lc-table th {
     padding: 0.45rem 0.6rem;
-}
-
-.lc-side {
-    border-inline-start: 2px solid var(--bs-gray-300);
-}
-
-.lc-compared {
-    font-weight: 600;
-}
-
-.lc-sub {
-    color: var(--bs-gray-600);
-    font-size: 0.8rem;
 }
 
 .lc-reason {
@@ -194,10 +128,6 @@
 .lc-cause-1,
 .lc-cause-6 {
     color: var(--bs-gray-600);
-}
-
-.lc-clickable {
-    cursor: pointer;
 }
 
 /* ---------- copied from the V2 page: component styles do not reach across components ---------- */
@@ -277,46 +207,62 @@
     white-space: nowrap;
 }
 
-/* ---------- closing summary ---------- */
+
+/* ---------- the grid: each legacy/new pair green when it agrees, red when it does not ---------- */
+.lc-table td.lc-ok {
+    background: rgba(25, 135, 84, 0.12);
+    color: #0f5132;
+}
+
+.lc-table td.lc-bad {
+    background: rgba(220, 53, 69, 0.14);
+    color: #842029;
+    font-weight: 600;
+}
+
+.lc-pair-start {
+    border-inline-start: 2px solid var(--bs-gray-300);
+}
+
+/* ---------- closing counts ---------- */
 .lc-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.75rem;
     border-top: 1px solid var(--bs-gray-300);
     padding-top: 1rem;
 }
 
-.lc-summary h5 {
-    margin: 0 0 0.75rem;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.lc-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    gap: 1rem;
-}
-
-.lc-summary-box {
+.lc-count {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var(--bs-gray-300);
     border-radius: 0.6rem;
-    padding: 0.75rem 1rem;
-    max-height: 22rem;
-    overflow: auto;
+    background: var(--bs-body-bg, #fff);
+    text-align: start;
 }
 
-.lc-summary-box h6 {
-    margin: 0 0 0.5rem;
-    font-weight: 600;
+.lc-count strong {
+    font-size: 1.6rem;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
 }
 
-.lc-summary-good h6 {
+.lc-count span {
+    color: var(--bs-gray-700);
+}
+
+.lc-count-good strong {
     color: var(--bs-success);
 }
 
-.lc-summary-bad h6 {
+.lc-count-bad strong {
     color: var(--bs-danger);
 }
 
-.lc-summary-table {
-    margin: 0;
-    font-size: 0.875rem;
+.lc-count-link {
+    cursor: pointer;
 }

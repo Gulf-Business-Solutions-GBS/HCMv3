@@ -40,32 +40,6 @@
         </div>
 
         @if (result(); as r) {
-            <!-- The counts double as filters. -->
-            <div class="lc-tiles">
-                @for (s of statuses; track s) {
-                    <button
-                        type="button"
-                        class="lc-tile"
-                        [class.lc-tile-good]="s === Status.Matched"
-                        [class.lc-tile-bad]="s === Status.Different"
-                        [class.lc-tile-active]="status() === s"
-                        (click)="showStatus(s)">
-                        <strong>
-                            {{
-                                s === Status.Matched
-                                    ? r.matched
-                                    : s === Status.Different
-                                      ? r.different
-                                      : s === Status.OnlyInLegacy
-                                        ? r.onlyInLegacy
-                                        : r.onlyInHcmv3
-                            }}
-                        </strong>
-                        <span>{{ statusKey(s) | localize }}</span>
-                    </button>
-                }
-            </div>
-
             <ul class="lc-notes">
                 <li>{{ l('GoLiveV2CompareFileNote', r.fileRows, r.employees) }}</li>
                 @if (r.rowsForOtherMonths > 0) {
@@ -77,257 +51,155 @@
                 @if (r.hcmv3EmployeesNotInFile > 0) {
                     <li>{{ l('GoLiveV2CompareNotInFile', r.hcmv3EmployeesNotInFile) }}</li>
                 }
+                <li>{{ 'GoLiveV2CompareMatchRule' | localize }}</li>
             </ul>
 
-            <ul class="nav nav-tabs lc-tabs">
-                <li class="nav-item">
-                    <button type="button" class="nav-link" [class.active]="tab() === 'lines'" (click)="tab.set('lines')">
-                        {{ 'GoLiveV2CompareTabLines' | localize }}
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="nav-link" [class.active]="tab() === 'wages'" (click)="tab.set('wages')">
-                        {{ 'GoLiveV2CompareTabWageTypes' | localize }}
-                    </button>
-                </li>
-            </ul>
-
-            @if (tab() === 'lines') {
-                <div class="lc-filters">
-                    <div class="v2-results-search">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                        <input
-                            type="search"
-                            class="form-control form-control-sm"
-                            [value]="search()"
-                            [placeholder]="'GoLiveV2CompareSearch' | localize"
-                            (input)="onSearch($event)" />
-                    </div>
-                    <select class="form-select form-select-sm" [value]="status() ?? ''" (change)="onStatus($event)">
-                        <option value="">{{ 'GoLiveV2CompareAllStatuses' | localize }}</option>
-                        @for (s of statuses; track s) {
-                            <option [value]="s" [selected]="status() === s">{{ statusKey(s) | localize }}</option>
-                        }
-                    </select>
-                    <select class="form-select form-select-sm" (change)="onCause($event)">
-                        <option value="">{{ 'GoLiveV2CompareAllCauses' | localize }}</option>
-                        @for (c of causes; track c) {
-                            <option [value]="c" [selected]="cause() === c">{{ causeKey(c) | localize }}</option>
-                        }
-                    </select>
-                    <select class="form-select form-select-sm" (change)="onGroup($event)">
-                        <option value="">{{ 'GoLiveV2CompareAllGroups' | localize }}</option>
-                        @for (g of groups; track g) {
-                            <option [value]="g" [selected]="group() === g">{{ groupKey(g) | localize }}</option>
-                        }
-                    </select>
-                    <select class="form-select form-select-sm" (change)="onWageType($event)">
-                        <option value="">{{ 'GoLiveV2CompareAllWageTypes' | localize }}</option>
-                        @for (w of wageTypeOptions(); track w.code) {
-                            <option [value]="w.code" [selected]="wageType() === w.code">{{ w.code }} {{ w.name }}</option>
-                        }
-                    </select>
-                    <label class="form-check form-check-sm lc-check">
-                        <input class="form-check-input" type="checkbox" [checked]="hideMatched()" (change)="onHideMatched($event)" />
-                        <span class="form-check-label">{{ 'GoLiveV2CompareHideMatched' | localize }}</span>
-                    </label>
+            <div class="lc-filters">
+                <div class="v2-results-search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input
+                        type="search"
+                        class="form-control form-control-sm"
+                        [value]="search()"
+                        [placeholder]="'GoLiveV2CompareSearch' | localize"
+                        (input)="onSearch($event)" />
                 </div>
+                <select class="form-select form-select-sm" (change)="onStatus($event)">
+                    <option value="all" [selected]="status() === 'all'">{{ 'GoLiveV2CompareAllStatuses' | localize }}</option>
+                    <option value="matched" [selected]="status() === 'matched'">{{ 'GoLiveV2CompareMatchedCount' | localize }}</option>
+                    <option value="notMatched" [selected]="status() === 'notMatched'">{{ 'GoLiveV2CompareNotMatched' | localize }}</option>
+                </select>
+                <select class="form-select form-select-sm" (change)="onCause($event)">
+                    <option value="">{{ 'GoLiveV2CompareAllCauses' | localize }}</option>
+                    @for (c of causes; track c) {
+                        <option [value]="c" [selected]="cause() === c">{{ causeKey(c) | localize }}</option>
+                    }
+                </select>
+                <select class="form-select form-select-sm" (change)="onGroup($event)">
+                    <option value="">{{ 'GoLiveV2CompareAllGroups' | localize }}</option>
+                    @for (g of groups; track g) {
+                        <option [value]="g" [selected]="group() === g">{{ groupKey(g) | localize }}</option>
+                    }
+                </select>
+                <select class="form-select form-select-sm" (change)="onWageType($event)">
+                    <option value="">{{ 'GoLiveV2CompareAllWageTypes' | localize }}</option>
+                    @for (w of wageTypeOptions(); track w.code) {
+                        <option [value]="w.code" [selected]="wageType() === w.code">{{ w.code }} {{ w.name }}</option>
+                    }
+                </select>
+            </div>
 
-                <div class="lc-table-wrap">
-                    <table class="table table-row-dashed align-middle lc-table">
-                        <thead>
+            <div class="lc-table-wrap">
+                <table class="table align-middle lc-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
+                            <th>{{ 'GoLiveV2CompareColWageTypeCode' | localize }}</th>
+                            <th>{{ 'GoLiveV2CompareColWageTypeName' | localize }}</th>
+                            <th class="text-end lc-pair-start">{{ 'GoLiveV2CompareColRateLegacy' | localize }}</th>
+                            <th class="text-end">{{ 'GoLiveV2CompareColRateNew' | localize }}</th>
+                            <th class="text-end lc-pair-start">{{ 'GoLiveV2CompareColNumberLegacy' | localize }}</th>
+                            <th class="text-end">{{ 'GoLiveV2CompareColNumberNew' | localize }}</th>
+                            <th class="text-end lc-pair-start">{{ 'GoLiveV2CompareColAmountLegacy' | localize }}</th>
+                            <th class="text-end">{{ 'GoLiveV2CompareColAmountNew' | localize }}</th>
+                            <th class="lc-pair-start">{{ 'GoLiveV2CompareColStatus' | localize }}</th>
+                            <th>{{ 'GoLiveV2CompareColPossibleReason' | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (line of pagedLines(); track line.employeeCode + '|' + line.wageTypeCode) {
                             <tr>
-                                <th rowspan="2">{{ 'GoLiveV2CompareColEmployee' | localize }}</th>
-                                <th rowspan="2">{{ 'GoLiveV2CompareColWageType' | localize }}</th>
-                                <th colspan="3" class="lc-side">{{ 'GoLiveV2CompareColLegacy' | localize }}</th>
-                                <th colspan="4" class="lc-side">HCMv3</th>
-                                <th rowspan="2" class="text-end">{{ 'GoLiveV2CompareColDifference' | localize }}</th>
-                                <th rowspan="2">{{ 'GoLiveV2CompareColResult' | localize }}</th>
-                                <th rowspan="2">{{ 'GoLiveV2CompareColReason' | localize }}</th>
-                            </tr>
-                            <tr>
-                                <th class="text-end lc-side">{{ 'GoLiveV2CompareColRate' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColDays' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColAmount' | localize }}</th>
-                                <th class="text-end lc-side">{{ 'GoLiveV2CompareColRate' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColDays' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColAmount' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColRecord' | localize }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (line of pagedLines(); track line.employeeCode + '|' + line.wageTypeCode) {
-                                <tr>
-                                    <td class="fw-semibold">{{ line.employeeCode }}</td>
-                                    <td>
-                                        <div class="fw-semibold">{{ line.wageTypeCode }}</div>
-                                        <div class="lc-sub">{{ line.wageTypeName }} · {{ groupKey(line.billingType) | localize }}</div>
-                                    </td>
-                                    <td class="text-end v2-num lc-side">{{ line.legacyRate ?? '—' }}</td>
-                                    <td class="text-end v2-num" [class.lc-compared]="line.comparesDays">{{ line.legacyNumber ?? '—' }}</td>
-                                    <td class="text-end v2-num" [class.lc-compared]="!line.comparesDays">
-                                        {{ line.legacyAmount === undefined || line.legacyAmount === null ? '—' : (line.legacyAmount | number: '1.3-3') }}
-                                    </td>
-                                    <td class="text-end v2-num lc-side">{{ line.hcmv3Rate ?? '—' }}</td>
-                                    <td class="text-end v2-num" [class.lc-compared]="line.comparesDays">{{ line.hcmv3Number ?? '—' }}</td>
-                                    <td class="text-end v2-num" [class.lc-compared]="!line.comparesDays">
-                                        {{ line.hcmv3Amount === undefined || line.hcmv3Amount === null ? '—' : (line.hcmv3Amount | number: '1.3-3') }}
-                                    </td>
-                                    <td class="text-end v2-num">
-                                        {{
-                                            line.hcmv3PayRecordAmount === undefined || line.hcmv3PayRecordAmount === null
-                                                ? '—'
-                                                : (line.hcmv3PayRecordAmount | number: '1.3-3')
-                                        }}
-                                    </td>
-                                    <td class="text-end v2-num" [class.text-danger]="line.status !== Status.Matched">
-                                        @if (line.difference === undefined || line.difference === null) {
-                                            —
-                                        } @else if (line.comparesDays) {
-                                            {{ line.difference | number: '1.0-2' }}
-                                        } @else {
-                                            {{ line.difference | number: '1.3-3' }}
-                                        }
-                                    </td>
-                                    <td>
-                                        <span class="badge" [class]="'badge ' + statusClass(line.status)">{{ statusKey(line.status) | localize }}</span>
+                                <td class="fw-semibold">{{ line.employeeCode }}</td>
+                                <td class="fw-semibold">{{ line.wageTypeCode }}</td>
+                                <td>{{ line.wageTypeName }}</td>
+
+                                <td class="text-end v2-num lc-pair-start" [class.lc-ok]="line.rateMatches" [class.lc-bad]="!line.rateMatches">
+                                    {{ line.legacyRate === undefined || line.legacyRate === null ? '—' : (line.legacyRate | number: '1.0-6') }}
+                                </td>
+                                <td class="text-end v2-num" [class.lc-ok]="line.rateMatches" [class.lc-bad]="!line.rateMatches">
+                                    {{ line.hcmv3Rate === undefined || line.hcmv3Rate === null ? '—' : (line.hcmv3Rate | number: '1.0-6') }}
+                                </td>
+
+                                <td class="text-end v2-num lc-pair-start" [class.lc-ok]="line.numberMatches" [class.lc-bad]="!line.numberMatches">
+                                    {{ line.legacyNumber === undefined || line.legacyNumber === null ? '—' : (line.legacyNumber | number: '1.0-6') }}
+                                </td>
+                                <td class="text-end v2-num" [class.lc-ok]="line.numberMatches" [class.lc-bad]="!line.numberMatches">
+                                    {{ line.hcmv3Number === undefined || line.hcmv3Number === null ? '—' : (line.hcmv3Number | number: '1.0-6') }}
+                                </td>
+
+                                <td class="text-end v2-num lc-pair-start" [class.lc-ok]="line.amountMatches" [class.lc-bad]="!line.amountMatches">
+                                    {{ line.legacyAmount === undefined || line.legacyAmount === null ? '—' : (line.legacyAmount | number: '1.3-3') }}
+                                </td>
+                                <td class="text-end v2-num" [class.lc-ok]="line.amountMatches" [class.lc-bad]="!line.amountMatches">
+                                    {{ line.hcmv3Amount === undefined || line.hcmv3Amount === null ? '—' : (line.hcmv3Amount | number: '1.3-3') }}
+                                </td>
+
+                                <td class="lc-pair-start">
+                                    @if (isMatched(line.status)) {
+                                        <span class="badge badge-light-success">{{ 'GoLiveV2CompareMatchedCount' | localize }}</span>
+                                    } @else {
+                                        <span class="badge badge-light-danger">{{ 'GoLiveV2CompareNotMatched' | localize }}</span>
+                                    }
+                                </td>
+                                <td class="lc-reason">
+                                    @if (!isMatched(line.status)) {
                                         @if (line.cause !== Cause.None) {
-                                            <div class="lc-cause lc-cause-{{ line.cause }}">{{ causeKey(line.cause) | localize }}</div>
+                                            <span class="lc-cause lc-cause-{{ line.cause }}">{{ causeKey(line.cause) | localize }}:</span>
                                         }
-                                    </td>
-                                    <td class="lc-reason">{{ line.reason }}</td>
-                                </tr>
-                            } @empty {
-                                <tr>
-                                    <td colspan="12" class="text-center text-muted py-6">{{ 'GoLiveV2CompareNoLines' | localize }}</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="v2-pager">
-                    <span class="v2-pager-info">{{ l('GoLiveV2CompareShowing', showingFrom(), showingTo(), filteredLines().length) }}</span>
-                    <select class="form-select form-select-sm v2-pager-size" (change)="onPageSize($event)">
-                        @for (size of pageSizes; track size) {
-                            <option [value]="size" [selected]="pageSize() === size">{{ size }}</option>
-                        }
-                    </select>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light" [disabled]="currentPage() <= 1" (click)="goToPage(currentPage() - 1)">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </button>
-                        <span class="btn btn-sm btn-light disabled v2-num">{{ currentPage() }} / {{ pageCount() }}</span>
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-light"
-                            [disabled]="currentPage() >= pageCount()"
-                            (click)="goToPage(currentPage() + 1)">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-            } @else {
-                <div class="lc-table-wrap">
-                    <table class="table table-row-dashed table-hover align-middle lc-table">
-                        <thead>
-                            <tr>
-                                <th>{{ 'GoLiveV2CompareColWageType' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColLines' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareMatchedCount' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareDifferentCount' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareOnlyLegacyCount' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareOnlyHcmv3Count' | localize }}</th>
-                                <th class="text-end">{{ 'GoLiveV2CompareColDifference' | localize }}</th>
+                                        {{ line.reason }}
+                                    }
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @for (w of wageTypeSummary(); track w.code) {
-                                <tr class="lc-clickable" (click)="showWageType(w.code)">
-                                    <td>
-                                        <div class="fw-semibold">{{ w.code }} {{ w.name }}</div>
-                                        <div class="lc-sub">{{ groupKey(w.group) | localize }}</div>
-                                    </td>
-                                    <td class="text-end v2-num">{{ w.lines }}</td>
-                                    <td class="text-end v2-num text-success">{{ w.matched }}</td>
-                                    <td class="text-end v2-num" [class.text-danger]="w.different > 0">{{ w.different }}</td>
-                                    <td class="text-end v2-num" [class.text-warning]="w.onlyInLegacy > 0">{{ w.onlyInLegacy }}</td>
-                                    <td class="text-end v2-num" [class.text-warning]="w.onlyInHcmv3 > 0">{{ w.onlyInHcmv3 }}</td>
-                                    <td class="text-end v2-num">
-                                        {{ w.group === BillingType.TimeType ? '—' : (w.difference | number: '1.3-3') }}
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        } @empty {
+                            <tr>
+                                <td colspan="11" class="text-center text-muted py-6">{{ 'GoLiveV2CompareNoLines' | localize }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="v2-pager">
+                <span class="v2-pager-info">{{ l('GoLiveV2CompareShowing', showingFrom(), showingTo(), filteredLines().length) }}</span>
+                <select class="form-select form-select-sm v2-pager-size" (change)="onPageSize($event)">
+                    @for (size of pageSizes; track size) {
+                        <option [value]="size" [selected]="pageSize() === size">{{ size }}</option>
+                    }
+                </select>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-light" [disabled]="currentPage() <= 1" (click)="goToPage(currentPage() - 1)">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <span class="btn btn-sm btn-light disabled v2-num">{{ currentPage() }} / {{ pageCount() }}</span>
+                    <button type="button" class="btn btn-sm btn-light" [disabled]="currentPage() >= pageCount()" (click)="goToPage(currentPage() + 1)">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </button>
                 </div>
-            }
+            </div>
 
-            <!-- The closing summary: every line, whatever the filters above. -->
-            @if (fullMatch(); as fm) {
+            <!-- The summary: counts only, over every line whatever the filters. -->
+            @if (wageTypeCounts(); as wc) {
                 <section class="lc-summary">
-                    <h5>{{ 'GoLiveV2CompareSummaryTitle' | localize }}</h5>
-                    <div class="lc-summary-grid">
-                        <div class="lc-summary-box lc-summary-good">
-                            <h6>
-                                <i class="fa fa-check-circle me-2" aria-hidden="true"></i>
-                                {{ l('GoLiveV2CompareFullyMatched', fm.matched.length) }}
-                            </h6>
-                            @if (fm.matched.length === 0) {
-                                <p class="lc-hint">{{ 'GoLiveV2CompareNoneFullyMatched' | localize }}</p>
-                            } @else {
-                                <table class="table table-sm lc-summary-table">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
-                                            <th>{{ 'GoLiveV2CompareColWageType' | localize }}</th>
-                                            <th class="text-end">{{ 'GoLiveV2CompareColLines' | localize }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (w of fm.matched; track w.code) {
-                                            <tr>
-                                                <td class="fw-semibold">{{ w.code }}</td>
-                                                <td>{{ w.name }}</td>
-                                                <td class="text-end v2-num">{{ w.lines }}</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                        </div>
-
-                        <div class="lc-summary-box lc-summary-bad">
-                            <h6>
-                                <i class="fa fa-times-circle me-2" aria-hidden="true"></i>
-                                {{ l('GoLiveV2CompareNotFullyMatched', fm.notMatched.length) }}
-                            </h6>
-                            @if (fm.notMatched.length === 0) {
-                                <p class="lc-hint">{{ 'GoLiveV2CompareAllFullyMatched' | localize }}</p>
-                            } @else {
-                                <table class="table table-sm table-hover lc-summary-table">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
-                                            <th>{{ 'GoLiveV2CompareColWageType' | localize }}</th>
-                                            <th>{{ 'GoLiveV2CompareColDiffers' | localize }}</th>
-                                            <th class="text-end">{{ 'GoLiveV2CompareColLinesDiffering' | localize }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (w of fm.notMatched; track w.code) {
-                                            <tr class="lc-clickable" (click)="showWageType(w.code); hideMatched.set(false)">
-                                                <td class="fw-semibold">{{ w.code }}</td>
-                                                <td>{{ w.name }}</td>
-                                                <td class="text-danger">{{ differingFields(w) }}</td>
-                                                <td class="text-end v2-num">{{ w.linesDiffering }} / {{ w.lines }}</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                        </div>
+                    <div class="lc-count">
+                        <strong>{{ wc.total }}</strong>
+                        <span>{{ 'GoLiveV2CompareWageTypesTotal' | localize }}</span>
                     </div>
+                    <div class="lc-count lc-count-good">
+                        <strong>{{ wc.matched }}</strong>
+                        <span>{{ 'GoLiveV2CompareWageTypesMatched' | localize }}</span>
+                    </div>
+                    <div class="lc-count lc-count-bad">
+                        <strong>{{ wc.notMatched }}</strong>
+                        <span>{{ 'GoLiveV2CompareWageTypesNotMatched' | localize }}</span>
+                    </div>
+                    <button type="button" class="lc-count lc-count-good lc-count-link" (click)="showStatus('matched')">
+                        <strong>{{ linesMatched() }}</strong>
+                        <span>{{ 'GoLiveV2CompareLinesMatched' | localize }}</span>
+                    </button>
+                    <button type="button" class="lc-count lc-count-bad lc-count-link" (click)="showStatus('notMatched')">
+                        <strong>{{ linesNotMatched() }}</strong>
+                        <span>{{ 'GoLiveV2CompareLinesNotMatched' | localize }}</span>
+                    </button>
                 </section>
             }
         }

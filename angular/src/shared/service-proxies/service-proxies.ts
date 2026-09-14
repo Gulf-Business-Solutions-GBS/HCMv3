@@ -262446,6 +262446,9 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
     hcmv3Number!: number | undefined;
     hcmv3Amount!: number | undefined;
     hcmv3PayRecordAmount!: number | undefined;
+    rateMatches!: boolean;
+    numberMatches!: boolean;
+    amountMatches!: boolean;
     difference!: number | undefined;
     status!: GoLiveV2CompareStatus;
     cause!: GoLiveV2CompareCause;
@@ -262474,6 +262477,9 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
             this.hcmv3Number = _data["hcmv3Number"];
             this.hcmv3Amount = _data["hcmv3Amount"];
             this.hcmv3PayRecordAmount = _data["hcmv3PayRecordAmount"];
+            this.rateMatches = _data["rateMatches"];
+            this.numberMatches = _data["numberMatches"];
+            this.amountMatches = _data["amountMatches"];
             this.difference = _data["difference"];
             this.status = _data["status"];
             this.cause = _data["cause"];
@@ -262502,6 +262508,9 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
         data["hcmv3Number"] = this.hcmv3Number;
         data["hcmv3Amount"] = this.hcmv3Amount;
         data["hcmv3PayRecordAmount"] = this.hcmv3PayRecordAmount;
+        data["rateMatches"] = this.rateMatches;
+        data["numberMatches"] = this.numberMatches;
+        data["amountMatches"] = this.amountMatches;
         data["difference"] = this.difference;
         data["status"] = this.status;
         data["cause"] = this.cause;
@@ -262523,6 +262532,9 @@ export interface IGoLiveV2LegacyCompareLineDto {
     hcmv3Number: number | undefined;
     hcmv3Amount: number | undefined;
     hcmv3PayRecordAmount: number | undefined;
+    rateMatches: boolean;
+    numberMatches: boolean;
+    amountMatches: boolean;
     difference: number | undefined;
     status: GoLiveV2CompareStatus;
     cause: GoLiveV2CompareCause;
