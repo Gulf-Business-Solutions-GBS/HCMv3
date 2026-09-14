@@ -3884,6 +3884,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Navigation.ManageQuickLinks' },
                     },
                     {
+                        path: 'api-dictionary',
+                        loadComponent: () =>
+                            import('./admin/api-dictionary/api-dictionary.component').then(
+                                (m) => m.ApiDictionaryComponent
+                            ),
+                        data: { permission: 'Pages.Administration.ApiDictionary' },
+                    },
+                    {
                         path: 'ui-customization',
                         loadComponent: () =>
                             import('./admin/ui-customization/ui-customization.component').then(

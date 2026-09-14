@@ -529,6 +529,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.TravelDetailCostsServiceProxy,
     ApiServiceProxies.TravelFeedbacksServiceProxy,
     ApiServiceProxies.BusinessRulesServiceProxy,
+    ApiServiceProxies.ApiDictionaryServiceProxy,
     ApiServiceProxies.WorkflowRolesServiceProxy,
     ApiServiceProxies.WorkflowGroupsServiceProxy,
     ApiServiceProxies.WorkflowGroupDetailsServiceProxy,
