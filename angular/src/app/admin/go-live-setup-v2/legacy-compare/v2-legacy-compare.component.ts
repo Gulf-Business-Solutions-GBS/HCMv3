@@ -173,6 +173,34 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         };
     });
 
+    /** Every employee in the comparison, and whether each is matched -- only when every one of their lines is. */
+    readonly employees = computed(() => {
+        const byCode = new Map<string, { code: string; lines: number; linesNotMatched: number }>();
+        for (const l of this.result()?.lines ?? []) {
+            const code = l.employeeCode ?? '';
+            let row = byCode.get(code);
+            if (!row) {
+                row = { code, lines: 0, linesNotMatched: 0 };
+                byCode.set(code, row);
+            }
+            row.lines++;
+            row.linesNotMatched += l.status === GoLiveV2CompareStatus.Matched ? 0 : 1;
+        }
+        const all = [...byCode.values()].sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+        return {
+            total: all.length,
+            matched: all.filter((e) => e.linesNotMatched === 0),
+            notMatched: all.filter((e) => e.linesNotMatched > 0),
+        };
+    });
+
+    /** From an employee on the Summary tab to their lines on the Lines tab. */
+    showEmployeeLines(code: string): void {
+        this.resetFilters();
+        this.search.set(code);
+        this.tab.set('lines');
+    }
+
     /** From a wage type on the Summary tab to its lines on the Lines tab. */
     showWageTypeLines(code: string): void {
         this.resetFilters();

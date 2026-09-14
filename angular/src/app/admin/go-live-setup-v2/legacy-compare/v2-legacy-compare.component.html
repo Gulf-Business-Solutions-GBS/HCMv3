@@ -91,7 +91,90 @@
                             <li>{{ 'GoLiveV2CompareMatchRule' | localize }}</li>
                         </ul>
 
+                        @if (employees(); as em) {
+                            <h5 class="lc-section-title">
+                                <i class="fa fa-users me-2" aria-hidden="true"></i>{{ 'GoLiveV2CompareSectionEmployees' | localize }}
+                            </h5>
+                            <section class="lc-summary">
+                                <div class="lc-count">
+                                    <strong>{{ em.total }}</strong>
+                                    <span>{{ 'GoLiveV2CompareEmployeesTotal' | localize }}</span>
+                                </div>
+                                <div class="lc-count lc-count-good">
+                                    <strong>{{ em.matched.length }}</strong>
+                                    <span>{{ 'GoLiveV2CompareEmployeesMatched' | localize }}</span>
+                                </div>
+                                <div class="lc-count lc-count-bad">
+                                    <strong>{{ em.notMatched.length }}</strong>
+                                    <span>{{ 'GoLiveV2CompareEmployeesNotMatched' | localize }}</span>
+                                </div>
+                            </section>
+
+                            <div class="lc-lists">
+                                <div class="lc-list">
+                                    <h6 class="text-danger">
+                                        <i class="fa fa-times-circle me-2" aria-hidden="true"></i>
+                                        {{ 'GoLiveV2CompareEmployeesNotMatched' | localize }} ({{ em.notMatched.length }})
+                                    </h6>
+                                    <div class="lc-list-scroll">
+                                        <table class="table table-sm table-hover align-middle lc-list-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
+                                                    <th class="text-end">{{ 'GoLiveV2CompareColLinesDiffering' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (e of em.notMatched; track e.code) {
+                                                    <tr class="lc-count-link" (click)="showEmployeeLines(e.code)">
+                                                        <td class="fw-semibold">{{ e.code }}</td>
+                                                        <td class="text-end v2-num text-danger">{{ e.linesNotMatched }} / {{ e.lines }}</td>
+                                                    </tr>
+                                                } @empty {
+                                                    <tr>
+                                                        <td colspan="2" class="text-center text-muted">{{ 'GoLiveV2CompareNoLines' | localize }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="lc-list">
+                                    <h6 class="text-success">
+                                        <i class="fa fa-check-circle me-2" aria-hidden="true"></i>
+                                        {{ 'GoLiveV2CompareEmployeesMatched' | localize }} ({{ em.matched.length }})
+                                    </h6>
+                                    <div class="lc-list-scroll">
+                                        <table class="table table-sm table-hover align-middle lc-list-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ 'GoLiveV2CompareColCode' | localize }}</th>
+                                                    <th class="text-end">{{ 'GoLiveV2CompareColLines' | localize }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (e of em.matched; track e.code) {
+                                                    <tr class="lc-count-link" (click)="showEmployeeLines(e.code)">
+                                                        <td class="fw-semibold">{{ e.code }}</td>
+                                                        <td class="text-end v2-num">{{ e.lines }}</td>
+                                                    </tr>
+                                                } @empty {
+                                                    <tr>
+                                                        <td colspan="2" class="text-center text-muted">{{ 'GoLiveV2CompareNoLines' | localize }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                         @if (wageTypes(); as wt) {
+                            <h5 class="lc-section-title">
+                                <i class="fa fa-list me-2" aria-hidden="true"></i>{{ 'GoLiveV2CompareSectionWageTypes' | localize }}
+                            </h5>
                             <section class="lc-summary">
                                 <div class="lc-count">
                                     <strong>{{ wt.total }}</strong>

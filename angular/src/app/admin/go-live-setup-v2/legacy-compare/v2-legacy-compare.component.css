@@ -376,3 +376,19 @@
 .lc-tabs .nav-link.active .fa {
     color: #fff;
 }
+
+/* ---------- summary sections: employees, then wage types; the tab scrolls, each list keeps its own height ---------- */
+.lc-section-title {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bs-gray-800);
+}
+
+.lc-body .lc-lists {
+    flex: 0 0 auto;
+}
+
+.lc-body .lc-lists .lc-list {
+    height: 18rem;
+}
