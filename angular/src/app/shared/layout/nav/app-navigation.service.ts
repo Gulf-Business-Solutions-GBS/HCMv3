@@ -3561,6 +3561,12 @@ export class AppNavigationService {
                         '/app/admin/quick-links'
                     ),
                     new AppMenuItem(
+                        'ApiDictionary',
+                        'Pages.Administration.ApiDictionary',
+                        'flaticon-book',
+                        '/app/admin/api-dictionary'
+                    ),
+                    new AppMenuItem(
                         'WebhookSubscriptions',
                         'Pages.Administration.WebhookSubscription',
                         'flaticon2-world',

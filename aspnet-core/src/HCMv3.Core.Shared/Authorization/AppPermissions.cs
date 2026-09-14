@@ -735,6 +735,12 @@ public static class AppPermissions
     /// <summary>Publish tenant-wide quick links onto everyone's dashboard.</summary>
     public const string Pages_Administration_Navigation_ManageQuickLinks = "Pages.Administration.Navigation.ManageQuickLinks";
 
+    /// <summary>
+    /// The API dictionary: every documented record type, its operations and fields. Its own permission because
+    /// it describes the whole data model -- including which fields hold sensitive personal data.
+    /// </summary>
+    public const string Pages_Administration_ApiDictionary = "Pages.Administration.ApiDictionary";
+
     public const string Pages_Administration_WebhookSubscription = "Pages.Administration.WebhookSubscription";
     public const string Pages_Administration_WebhookSubscription_Create = "Pages.Administration.WebhookSubscription.Create";
     public const string Pages_Administration_WebhookSubscription_Edit = "Pages.Administration.WebhookSubscription.Edit";

@@ -5193,6 +5193,123 @@ export class AnnualLeaveSheetReportServiceProxy {
 }
 
 @Injectable()
+export class ApiDictionaryServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getEntities(): Observable<ListResultDtoOfApiDictionaryEntitySummaryDto> {
+        let url_ = this.baseUrl + "/api/services/app/ApiDictionary/GetEntities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntities(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntities(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfApiDictionaryEntitySummaryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfApiDictionaryEntitySummaryDto>;
+        }));
+    }
+
+    protected processGetEntities(response: HttpResponseBase): Observable<ListResultDtoOfApiDictionaryEntitySummaryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfApiDictionaryEntitySummaryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param name (optional) 
+     * @return OK
+     */
+    getEntity(name?: string | null | undefined): Observable<ApiDictionaryEntityDto> {
+        let url_ = this.baseUrl + "/api/services/app/ApiDictionary/GetEntity?";
+        if (name !== undefined && name !== null)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntity(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntity(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiDictionaryEntityDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiDictionaryEntityDto>;
+        }));
+    }
+
+    protected processGetEntity(response: HttpResponseBase): Observable<ApiDictionaryEntityDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiDictionaryEntityDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class ApplicantCVsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -66301,123 +66418,6 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    setUpPayrollMonth(body?: GoLiveV2SetUpPayrollMonthInput | undefined): Observable<GoLiveV2SetUpPayrollMonthOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/SetUpPayrollMonth";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSetUpPayrollMonth(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processSetUpPayrollMonth(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
-        }));
-    }
-
-    protected processSetUpPayrollMonth(response: HttpResponseBase): Observable<GoLiveV2SetUpPayrollMonthOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2SetUpPayrollMonthOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    loadEmployees(body?: GoLiveV2LoadEmployeesInput | undefined): Observable<GoLiveV2LoadEmployeesOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/LoadEmployees";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLoadEmployees(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processLoadEmployees(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LoadEmployeesOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LoadEmployeesOutput>;
-        }));
-    }
-
-    protected processLoadEmployees(response: HttpResponseBase): Observable<GoLiveV2LoadEmployeesOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LoadEmployeesOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param payrollAreaName (optional) 
-     * @return OK
-     */
-    getLoadedEmployees(payrollAreaName?: string | null | undefined): Observable<GoLiveV2LoadedEmployeesOutput> {
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
     startPayrollRun(body?: GoLiveV2RunPayrollInput | undefined): Observable<GoLiveV2PayrollRunProgressDto> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/StartPayrollRun";
         url_ = url_.replace(/[?&]$/, "");
@@ -66571,6 +66571,123 @@ export class GoLiveV2ServiceProxy {
         return _observableOf(null as any);
     }
 
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    setUpPayrollMonth(body?: GoLiveV2SetUpPayrollMonthInput | undefined): Observable<GoLiveV2SetUpPayrollMonthOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/SetUpPayrollMonth";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetUpPayrollMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetUpPayrollMonth(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+        }));
+    }
+
+    protected processSetUpPayrollMonth(response: HttpResponseBase): Observable<GoLiveV2SetUpPayrollMonthOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2SetUpPayrollMonthOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    loadEmployees(body?: GoLiveV2LoadEmployeesInput | undefined): Observable<GoLiveV2LoadEmployeesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/LoadEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLoadEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLoadEmployees(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+        }));
+    }
+
+    protected processLoadEmployees(response: HttpResponseBase): Observable<GoLiveV2LoadEmployeesOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2LoadEmployeesOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param payrollAreaName (optional) 
+     * @return OK
+     */
+    getLoadedEmployees(payrollAreaName?: string | null | undefined): Observable<GoLiveV2LoadedEmployeesOutput> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLoadedEmployees?";
         if (payrollAreaName !== undefined && payrollAreaName !== null)
             url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
@@ -161907,6 +162024,286 @@ export interface IAnnualLeaveSheetReportRowDto {
     quotaAdjusted: number;
     quotaForfeited: number;
     quotaBalance: number;
+}
+
+export class ApiDictionaryEntityDto implements IApiDictionaryEntityDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+    baseUrl!: string | undefined;
+    operations!: ApiDictionaryOperationDto[] | undefined;
+    fields!: ApiDictionaryFieldDto[] | undefined;
+
+    constructor(data?: IApiDictionaryEntityDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+            this.baseUrl = _data["baseUrl"];
+            if (Array.isArray(_data["operations"])) {
+                this.operations = [] as any;
+                for (let item of _data["operations"])
+                    this.operations!.push(ApiDictionaryOperationDto.fromJS(item));
+            }
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields!.push(ApiDictionaryFieldDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ApiDictionaryEntityDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiDictionaryEntityDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["baseUrl"] = this.baseUrl;
+        if (Array.isArray(this.operations)) {
+            data["operations"] = [];
+            for (let item of this.operations)
+                data["operations"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IApiDictionaryEntityDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    baseUrl: string | undefined;
+    operations: ApiDictionaryOperationDto[] | undefined;
+    fields: ApiDictionaryFieldDto[] | undefined;
+}
+
+export class ApiDictionaryEntitySummaryDto implements IApiDictionaryEntitySummaryDto {
+    name!: string | undefined;
+    displayName!: string | undefined;
+
+    constructor(data?: IApiDictionaryEntitySummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): ApiDictionaryEntitySummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiDictionaryEntitySummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        return data;
+    }
+}
+
+export interface IApiDictionaryEntitySummaryDto {
+    name: string | undefined;
+    displayName: string | undefined;
+}
+
+export class ApiDictionaryFieldDto implements IApiDictionaryFieldDto {
+    propertyName!: string | undefined;
+    label!: string | undefined;
+    type!: string | undefined;
+    enumValues!: string[] | undefined;
+    isKey!: boolean;
+    isRequired!: boolean;
+    maxLength!: number | undefined;
+    isNullable!: boolean;
+    inQueryResults!: boolean;
+    inReadResult!: boolean;
+    isCreatable!: boolean;
+    isUpdatable!: boolean;
+    linksTo!: string | undefined;
+    sensitiveCategory!: string | undefined;
+    note!: string | undefined;
+
+    constructor(data?: IApiDictionaryFieldDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.propertyName = _data["propertyName"];
+            this.label = _data["label"];
+            this.type = _data["type"];
+            if (Array.isArray(_data["enumValues"])) {
+                this.enumValues = [] as any;
+                for (let item of _data["enumValues"])
+                    this.enumValues!.push(item);
+            }
+            this.isKey = _data["isKey"];
+            this.isRequired = _data["isRequired"];
+            this.maxLength = _data["maxLength"];
+            this.isNullable = _data["isNullable"];
+            this.inQueryResults = _data["inQueryResults"];
+            this.inReadResult = _data["inReadResult"];
+            this.isCreatable = _data["isCreatable"];
+            this.isUpdatable = _data["isUpdatable"];
+            this.linksTo = _data["linksTo"];
+            this.sensitiveCategory = _data["sensitiveCategory"];
+            this.note = _data["note"];
+        }
+    }
+
+    static fromJS(data: any): ApiDictionaryFieldDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiDictionaryFieldDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["propertyName"] = this.propertyName;
+        data["label"] = this.label;
+        data["type"] = this.type;
+        if (Array.isArray(this.enumValues)) {
+            data["enumValues"] = [];
+            for (let item of this.enumValues)
+                data["enumValues"].push(item);
+        }
+        data["isKey"] = this.isKey;
+        data["isRequired"] = this.isRequired;
+        data["maxLength"] = this.maxLength;
+        data["isNullable"] = this.isNullable;
+        data["inQueryResults"] = this.inQueryResults;
+        data["inReadResult"] = this.inReadResult;
+        data["isCreatable"] = this.isCreatable;
+        data["isUpdatable"] = this.isUpdatable;
+        data["linksTo"] = this.linksTo;
+        data["sensitiveCategory"] = this.sensitiveCategory;
+        data["note"] = this.note;
+        return data;
+    }
+}
+
+export interface IApiDictionaryFieldDto {
+    propertyName: string | undefined;
+    label: string | undefined;
+    type: string | undefined;
+    enumValues: string[] | undefined;
+    isKey: boolean;
+    isRequired: boolean;
+    maxLength: number | undefined;
+    isNullable: boolean;
+    inQueryResults: boolean;
+    inReadResult: boolean;
+    isCreatable: boolean;
+    isUpdatable: boolean;
+    linksTo: string | undefined;
+    sensitiveCategory: string | undefined;
+    note: string | undefined;
+}
+
+export class ApiDictionaryOperationDto implements IApiDictionaryOperationDto {
+    operation!: string | undefined;
+    httpMethod!: string | undefined;
+    url!: string | undefined;
+    permissions!: string[] | undefined;
+    requestFields!: string[] | undefined;
+    response!: string | undefined;
+
+    constructor(data?: IApiDictionaryOperationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.operation = _data["operation"];
+            this.httpMethod = _data["httpMethod"];
+            this.url = _data["url"];
+            if (Array.isArray(_data["permissions"])) {
+                this.permissions = [] as any;
+                for (let item of _data["permissions"])
+                    this.permissions!.push(item);
+            }
+            if (Array.isArray(_data["requestFields"])) {
+                this.requestFields = [] as any;
+                for (let item of _data["requestFields"])
+                    this.requestFields!.push(item);
+            }
+            this.response = _data["response"];
+        }
+    }
+
+    static fromJS(data: any): ApiDictionaryOperationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiDictionaryOperationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["operation"] = this.operation;
+        data["httpMethod"] = this.httpMethod;
+        data["url"] = this.url;
+        if (Array.isArray(this.permissions)) {
+            data["permissions"] = [];
+            for (let item of this.permissions)
+                data["permissions"].push(item);
+        }
+        if (Array.isArray(this.requestFields)) {
+            data["requestFields"] = [];
+            for (let item of this.requestFields)
+                data["requestFields"].push(item);
+        }
+        data["response"] = this.response;
+        return data;
+    }
+}
+
+export interface IApiDictionaryOperationDto {
+    operation: string | undefined;
+    httpMethod: string | undefined;
+    url: string | undefined;
+    permissions: string[] | undefined;
+    requestFields: string[] | undefined;
+    response: string | undefined;
 }
 
 export class AppSettingsJsonDto implements IAppSettingsJsonDto {
@@ -262373,6 +262770,90 @@ export interface IGoLiveV2PayrollResultsOutput {
     employeesPaid: number;
 }
 
+export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgressDto {
+    status!: GoLiveV2RunStatus;
+    payrollAreaName!: string | undefined;
+    payInDate!: DateTime | undefined;
+    startedAt!: DateTime | undefined;
+    finishedAt!: DateTime | undefined;
+    totalEmployees!: number;
+    timeDone!: number;
+    timeFailed!: number;
+    payrollDone!: number;
+    payrollFailed!: number;
+    averageMilliseconds!: number;
+    stopRequested!: boolean;
+    result!: GoLiveV2RunPayrollOutput;
+
+    constructor(data?: IGoLiveV2PayrollRunProgressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.payrollAreaName = _data["payrollAreaName"];
+            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
+            this.startedAt = _data["startedAt"] ? DateTime.fromISO(_data["startedAt"].toString()) : undefined as any;
+            this.finishedAt = _data["finishedAt"] ? DateTime.fromISO(_data["finishedAt"].toString()) : undefined as any;
+            this.totalEmployees = _data["totalEmployees"];
+            this.timeDone = _data["timeDone"];
+            this.timeFailed = _data["timeFailed"];
+            this.payrollDone = _data["payrollDone"];
+            this.payrollFailed = _data["payrollFailed"];
+            this.averageMilliseconds = _data["averageMilliseconds"];
+            this.stopRequested = _data["stopRequested"];
+            this.result = _data["result"] ? GoLiveV2RunPayrollOutput.fromJS(_data["result"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2PayrollRunProgressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2PayrollRunProgressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["payrollAreaName"] = this.payrollAreaName;
+        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
+        data["startedAt"] = this.startedAt ? this.startedAt.toString() : undefined as any;
+        data["finishedAt"] = this.finishedAt ? this.finishedAt.toString() : undefined as any;
+        data["totalEmployees"] = this.totalEmployees;
+        data["timeDone"] = this.timeDone;
+        data["timeFailed"] = this.timeFailed;
+        data["payrollDone"] = this.payrollDone;
+        data["payrollFailed"] = this.payrollFailed;
+        data["averageMilliseconds"] = this.averageMilliseconds;
+        data["stopRequested"] = this.stopRequested;
+        data["result"] = this.result ? this.result.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGoLiveV2PayrollRunProgressDto {
+    status: GoLiveV2RunStatus;
+    payrollAreaName: string | undefined;
+    payInDate: DateTime | undefined;
+    startedAt: DateTime | undefined;
+    finishedAt: DateTime | undefined;
+    totalEmployees: number;
+    timeDone: number;
+    timeFailed: number;
+    payrollDone: number;
+    payrollFailed: number;
+    averageMilliseconds: number;
+    stopRequested: boolean;
+    result: GoLiveV2RunPayrollOutput;
+}
+
 export class GoLiveV2PayslipsInput implements IGoLiveV2PayslipsInput {
     payDate!: DateTime;
     payrollAreaName!: string;
@@ -262523,6 +263004,15 @@ export interface IGoLiveV2RunPayrollOutput {
     employees: GoLiveV2EmployeeResultDto[] | undefined;
     monthSetUp: GoLiveV2SetUpPayrollMonthOutput;
     leavePayLinksAdded: number;
+}
+
+export enum GoLiveV2RunStatus {
+    None = 0,
+    Queued = 1,
+    Running = 2,
+    Completed = 3,
+    Stopped = 4,
+    Failed = 5,
 }
 
 export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDaysDto {
@@ -262770,90 +263260,6 @@ export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMont
     }
 
     static fromJS(data: any): GoLiveV2SetUpPayrollMonthInput {
-export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgressDto {
-    status!: GoLiveV2RunStatus;
-    payrollAreaName!: string | undefined;
-    payInDate!: DateTime | undefined;
-    startedAt!: DateTime | undefined;
-    finishedAt!: DateTime | undefined;
-    totalEmployees!: number;
-    timeDone!: number;
-    timeFailed!: number;
-    payrollDone!: number;
-    payrollFailed!: number;
-    averageMilliseconds!: number;
-    stopRequested!: boolean;
-    result!: GoLiveV2RunPayrollOutput;
-
-    constructor(data?: IGoLiveV2PayrollRunProgressDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.status = _data["status"];
-            this.payrollAreaName = _data["payrollAreaName"];
-            this.payInDate = _data["payInDate"] ? DateTime.fromISO(_data["payInDate"].toString()) : undefined as any;
-            this.startedAt = _data["startedAt"] ? DateTime.fromISO(_data["startedAt"].toString()) : undefined as any;
-            this.finishedAt = _data["finishedAt"] ? DateTime.fromISO(_data["finishedAt"].toString()) : undefined as any;
-            this.totalEmployees = _data["totalEmployees"];
-            this.timeDone = _data["timeDone"];
-            this.timeFailed = _data["timeFailed"];
-            this.payrollDone = _data["payrollDone"];
-            this.payrollFailed = _data["payrollFailed"];
-            this.averageMilliseconds = _data["averageMilliseconds"];
-            this.stopRequested = _data["stopRequested"];
-            this.result = _data["result"] ? GoLiveV2RunPayrollOutput.fromJS(_data["result"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GoLiveV2PayrollRunProgressDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayrollRunProgressDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["status"] = this.status;
-        data["payrollAreaName"] = this.payrollAreaName;
-        data["payInDate"] = this.payInDate ? this.payInDate.toString() : undefined as any;
-        data["startedAt"] = this.startedAt ? this.startedAt.toString() : undefined as any;
-        data["finishedAt"] = this.finishedAt ? this.finishedAt.toString() : undefined as any;
-        data["totalEmployees"] = this.totalEmployees;
-        data["timeDone"] = this.timeDone;
-        data["timeFailed"] = this.timeFailed;
-        data["payrollDone"] = this.payrollDone;
-        data["payrollFailed"] = this.payrollFailed;
-        data["averageMilliseconds"] = this.averageMilliseconds;
-        data["stopRequested"] = this.stopRequested;
-        data["result"] = this.result ? this.result.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGoLiveV2PayrollRunProgressDto {
-    status: GoLiveV2RunStatus;
-    payrollAreaName: string | undefined;
-    payInDate: DateTime | undefined;
-    startedAt: DateTime | undefined;
-    finishedAt: DateTime | undefined;
-    totalEmployees: number;
-    timeDone: number;
-    timeFailed: number;
-    payrollDone: number;
-    payrollFailed: number;
-    averageMilliseconds: number;
-    stopRequested: boolean;
-    result: GoLiveV2RunPayrollOutput;
-}
-
         data = typeof data === 'object' ? data : {};
         let result = new GoLiveV2SetUpPayrollMonthInput();
         result.init(data);
@@ -262953,6 +263359,7 @@ export enum GoLiveV2StoppedAt {
     NoEmployees = 4,
     TimeEngine = 5,
     MonthSetUp = 6,
+    ByUser = 7,
 }
 
 export class GoogleExternalLoginProviderSettings implements IGoogleExternalLoginProviderSettings {
@@ -263006,15 +263413,6 @@ export class GovtJobTitleDto implements IGovtJobTitleDto {
     nameAr!: string | undefined;
     govtJobCategoryId!: number;
     govtJobCategoryName!: string | undefined;
-export enum GoLiveV2RunStatus {
-    None = 0,
-    Queued = 1,
-    Running = 2,
-    Completed = 3,
-    Stopped = 4,
-    Failed = 5,
-}
-
 
     constructor(data?: IGovtJobTitleDto) {
         if (data) {
@@ -263359,7 +263757,6 @@ export class HostBillingSettingsEditDto implements IHostBillingSettingsEditDto {
         }
     }
 
-    ByUser = 7,
     init(_data?: any) {
         if (_data) {
             this.legalName = _data["legalName"];
@@ -268420,6 +268817,50 @@ export interface ILinkedUserDto {
     tenantId: number | undefined;
     tenancyName: string | undefined;
     username: string | undefined;
+}
+
+export class ListResultDtoOfApiDictionaryEntitySummaryDto implements IListResultDtoOfApiDictionaryEntitySummaryDto {
+    items!: ApiDictionaryEntitySummaryDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfApiDictionaryEntitySummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ApiDictionaryEntitySummaryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfApiDictionaryEntitySummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfApiDictionaryEntitySummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfApiDictionaryEntitySummaryDto {
+    items: ApiDictionaryEntitySummaryDto[] | undefined;
 }
 
 export class ListResultDtoOfCacheDto implements IListResultDtoOfCacheDto {

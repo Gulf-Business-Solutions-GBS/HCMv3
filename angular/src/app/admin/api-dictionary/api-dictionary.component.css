@@ -1,0 +1,48 @@
+.api-entity-select {
+    max-width: 320px;
+}
+
+.api-filter {
+    max-width: 320px;
+}
+
+/* Identifiers, URLs and types: monospace, so a reader copying one by eye does not mistake l for 1. */
+.api-mono,
+.api-url {
+    font-family: SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.api-url {
+    word-break: break-all;
+}
+
+.api-hint {
+    max-width: 220px;
+    white-space: normal;
+}
+
+.api-steps li {
+    margin-bottom: 0.5rem;
+}
+
+/*
+ * The field table is wide -- fourteen columns -- so it scrolls inside its own box, with the header kept in view
+ * while the rows scroll, the way the SAP dictionary this is modelled on behaves.
+ */
+.api-fields-scroll {
+    max-height: 70vh;
+}
+
+.api-fields-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--bs-body-bg, #ffffff);
+    white-space: nowrap;
+}
+
+.api-table td,
+.api-table th {
+    padding-inline: 0.75rem;
+}
