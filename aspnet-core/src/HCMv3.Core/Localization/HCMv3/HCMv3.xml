@@ -6545,6 +6545,6 @@
     <text name="GoLiveV2ExportComparisonFileName">Legacy salary comparison {0}.xlsx</text>
     <text name="GoLiveV2CompareEmployeesMatchedPercent">Employees Matched Percent</text>
     <text name="GoLiveV2SaturdayRestDay">Saturday is a rest day</text>
-    <text name="GoLiveV2SaturdayRestDayHint">Tick if the company gives Saturday as a rest day. It is then counted as Rest Days (4009). Friday is always the weekly off.</text>
+    <text name="GoLiveV2SaturdayRestDayHint">Tick if the company gives Saturday as a rest day. Friday is always the weekly off.</text>
   </texts>
 </localizationDictionary>
