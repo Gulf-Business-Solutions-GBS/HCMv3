@@ -85,6 +85,11 @@
                             @if (r.rowsUnreadable > 0) {
                                 <li>{{ l('GoLiveV2CompareUnreadableRows', r.rowsUnreadable) }}</li>
                             }
+                            @if (r.legacyEmployeesNotInHcmv3?.length) {
+                                <li class="text-danger fw-semibold">
+                                    {{ l('GoLiveV2CompareNotInHcmv3Note', r.legacyEmployeesNotInHcmv3.length, r.legacyEmployeesNotInHcmv3.join(', ')) }}
+                                </li>
+                            }
                             @if (r.hcmv3EmployeesNotInFile > 0) {
                                 <li>{{ l('GoLiveV2CompareNotInFile', r.hcmv3EmployeesNotInFile) }}</li>
                             }
@@ -300,7 +305,20 @@
                         </select>
                         <button
                             type="button"
-                            class="btn btn-sm btn-light-success ms-auto"
+                            class="btn btn-sm btn-light-primary ms-auto"
+                            [disabled]="addingPayments() || payableLines().length === 0"
+                            [title]="'GoLiveV2CompareAddPaymentHint' | localize"
+                            (click)="addAllPayments()">
+                            @if (addingPayments()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>
+                            }
+                            {{ l('GoLiveV2CompareAddAllPayments', payableLines().length) }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-light-success"
                             [disabled]="exporting() || filteredLines().length === 0"
                             (click)="exportLines()">
                             @if (exporting()) {
@@ -362,6 +380,20 @@
                                                 <span class="badge badge-light-success">{{ 'GoLiveV2CompareMatchedCount' | localize }}</span>
                                             } @else {
                                                 <span class="badge badge-light-danger">{{ 'GoLiveV2CompareNotMatched' | localize }}</span>
+                                            }
+                                            @if (addedPayments().has(paymentKey(line))) {
+                                                <div class="lc-payment-added">
+                                                    <i class="fa fa-check me-1" aria-hidden="true"></i>{{ 'GoLiveV2ComparePaymentAdded' | localize }}
+                                                </div>
+                                            } @else if (line.canAddPayment) {
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-xs btn-light-primary lc-add-payment"
+                                                    [disabled]="addingPayments()"
+                                                    [title]="'GoLiveV2CompareAddPaymentHint' | localize"
+                                                    (click)="addPayment(line)">
+                                                    <i class="fa fa-plus me-1" aria-hidden="true"></i>{{ 'GoLiveV2CompareAddPayment' | localize }}
+                                                </button>
                                             }
                                         </td>
                                         <td class="lc-reason">

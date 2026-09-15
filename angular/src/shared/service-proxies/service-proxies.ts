@@ -66802,6 +66802,62 @@ export class GoLiveV2ServiceProxy {
     getLegacySalaryExportQuery(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2LegacyExportQueryDto> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLegacySalaryExportQuery";
         url_ = url_.replace(/[?&]$/, "");
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addLegacyPayments(body?: GoLiveV2LegacyPaymentsInput | undefined): Observable<GoLiveV2LegacyPaymentsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/AddLegacyPayments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddLegacyPayments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddLegacyPayments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyPaymentsOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyPaymentsOutput>;
+        }));
+    }
+
+    protected processAddLegacyPayments(response: HttpResponseBase): Observable<GoLiveV2LegacyPaymentsOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GoLiveV2LegacyPaymentsOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
 
         const content_ = JSON.stringify(body);
 
@@ -262864,6 +262920,7 @@ export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryD
         data = typeof data === 'object' ? data : {};
         data["fileName"] = this.fileName;
         data["sql"] = this.sql;
+    canAddPayment!: boolean;
         return data;
     }
 }
@@ -262895,6 +262952,7 @@ export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
                     this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+            this.canAddPayment = _data["canAddPayment"];
             }
         }
     }
@@ -262926,6 +262984,7 @@ export interface IGoLiveV2LoadEmployeesInput {
 }
 
 export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput {
+        data["canAddPayment"] = this.canAddPayment;
     organizationUnitName!: string | undefined;
     organizationUnitCreated!: boolean;
     payrollAreaName!: string | undefined;
@@ -262950,6 +263009,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }
+    canAddPayment: boolean;
         }
     }
 
@@ -262959,6 +263019,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
             this.organizationUnitCreated = _data["organizationUnitCreated"];
             this.payrollAreaName = _data["payrollAreaName"];
             this.payrollAreaCreated = _data["payrollAreaCreated"];
+    legacyEmployeesNotInHcmv3!: string[] | undefined;
             this.employeeGroupName = _data["employeeGroupName"];
             this.employeeGroupCreated = _data["employeeGroupCreated"];
             this.employeeSubGroupName = _data["employeeSubGroupName"];
@@ -262982,6 +263043,11 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
     static fromJS(data: any): GoLiveV2LoadEmployeesOutput {
         data = typeof data === 'object' ? data : {};
         let result = new GoLiveV2LoadEmployeesOutput();
+            if (Array.isArray(_data["legacyEmployeesNotInHcmv3"])) {
+                this.legacyEmployeesNotInHcmv3 = [] as any;
+                for (let item of _data["legacyEmployeesNotInHcmv3"])
+                    this.legacyEmployeesNotInHcmv3!.push(item);
+            }
         result.init(data);
         return result;
     }
@@ -263009,6 +263075,11 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
             for (let item of this.rows)
                 data["rows"].push(item ? item.toJSON() : undefined as any);
         }
+        if (Array.isArray(this.legacyEmployeesNotInHcmv3)) {
+            data["legacyEmployeesNotInHcmv3"] = [];
+            for (let item of this.legacyEmployeesNotInHcmv3)
+                data["legacyEmployeesNotInHcmv3"].push(item);
+        }
         return data;
     }
 }
@@ -263029,6 +263100,7 @@ export interface IGoLiveV2LoadEmployeesOutput {
     placeholdersCreated: number;
     employeesCreated: number;
     employeesAlreadyLoaded: number;
+    legacyEmployeesNotInHcmv3: string[] | undefined;
     employeesUpdated: number;
     rows: GoLiveV2EmployeeRowResultDto[] | undefined;
 }
@@ -263074,6 +263146,198 @@ export class GoLiveV2LoadedEmployeesOutput implements IGoLiveV2LoadedEmployeesOu
         }
         return data;
     }
+}
+
+export class GoLiveV2LegacyPaymentLineDto implements IGoLiveV2LegacyPaymentLineDto {
+    employeeCode!: string | undefined;
+    wageTypeCode!: string | undefined;
+    amount!: number;
+
+    constructor(data?: IGoLiveV2LegacyPaymentLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.wageTypeCode = _data["wageTypeCode"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyPaymentLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyPaymentLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["wageTypeCode"] = this.wageTypeCode;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyPaymentLineDto {
+    employeeCode: string | undefined;
+    wageTypeCode: string | undefined;
+    amount: number;
+}
+
+export class GoLiveV2LegacyPaymentRefusalDto implements IGoLiveV2LegacyPaymentRefusalDto {
+    employeeCode!: string | undefined;
+    wageTypeCode!: string | undefined;
+    reason!: string | undefined;
+
+    constructor(data?: IGoLiveV2LegacyPaymentRefusalDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeCode = _data["employeeCode"];
+            this.wageTypeCode = _data["wageTypeCode"];
+            this.reason = _data["reason"];
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyPaymentRefusalDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyPaymentRefusalDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeCode"] = this.employeeCode;
+        data["wageTypeCode"] = this.wageTypeCode;
+        data["reason"] = this.reason;
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyPaymentRefusalDto {
+    employeeCode: string | undefined;
+    wageTypeCode: string | undefined;
+    reason: string | undefined;
+}
+
+export class GoLiveV2LegacyPaymentsInput implements IGoLiveV2LegacyPaymentsInput {
+    payDate!: DateTime;
+    lines!: GoLiveV2LegacyPaymentLineDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LegacyPaymentsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payDate = _data["payDate"] ? DateTime.fromISO(_data["payDate"].toString()) : undefined as any;
+            if (Array.isArray(_data["lines"])) {
+                this.lines = [] as any;
+                for (let item of _data["lines"])
+                    this.lines!.push(GoLiveV2LegacyPaymentLineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyPaymentsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyPaymentsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payDate"] = this.payDate ? this.payDate.toString() : undefined as any;
+        if (Array.isArray(this.lines)) {
+            data["lines"] = [];
+            for (let item of this.lines)
+                data["lines"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyPaymentsInput {
+    payDate: DateTime;
+    lines: GoLiveV2LegacyPaymentLineDto[] | undefined;
+}
+
+export class GoLiveV2LegacyPaymentsOutput implements IGoLiveV2LegacyPaymentsOutput {
+    added!: number;
+    updated!: number;
+    alreadyThere!: number;
+    refused!: GoLiveV2LegacyPaymentRefusalDto[] | undefined;
+
+    constructor(data?: IGoLiveV2LegacyPaymentsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.added = _data["added"];
+            this.updated = _data["updated"];
+            this.alreadyThere = _data["alreadyThere"];
+            if (Array.isArray(_data["refused"])) {
+                this.refused = [] as any;
+                for (let item of _data["refused"])
+                    this.refused!.push(GoLiveV2LegacyPaymentRefusalDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GoLiveV2LegacyPaymentsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoLiveV2LegacyPaymentsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["added"] = this.added;
+        data["updated"] = this.updated;
+        data["alreadyThere"] = this.alreadyThere;
+        if (Array.isArray(this.refused)) {
+            data["refused"] = [];
+            for (let item of this.refused)
+                data["refused"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGoLiveV2LegacyPaymentsOutput {
+    added: number;
+    updated: number;
+    alreadyThere: number;
+    refused: GoLiveV2LegacyPaymentRefusalDto[] | undefined;
 }
 
 export interface IGoLiveV2LoadedEmployeesOutput {

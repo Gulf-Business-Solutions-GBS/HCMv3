@@ -11,7 +11,10 @@ import {
     GoLiveV2CompareStatus,
     GoLiveV2LegacyCompareExportInput,
     GoLiveV2LegacyCompareInput,
+    GoLiveV2LegacyCompareLineDto,
     GoLiveV2LegacyCompareOutput,
+    GoLiveV2LegacyPaymentLineDto,
+    GoLiveV2LegacyPaymentsInput,
     GoLiveV2PayrollResultsInput,
     GoLiveV2ServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -139,6 +142,7 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
             .pipe(finalize(() => this.comparing.set(false)))
             .subscribe((result) => {
                 this.result.set(result);
+                this.addedPayments.set(new Set<string>());
                 this.resetFilters();
                 this.tab.set('summary');
             });
@@ -274,6 +278,81 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
     readonly showingTo = computed(() => Math.min(this.currentPage() * this.pageSize(), this.filteredLines().length));
 
     readonly exporting = signal(false);
+
+    // ---------------------------------------------------------------- payments for what only legacy paid
+
+    /** Lines a payment was added for in this window, by employee and wage type. */
+    readonly addedPayments = signal(new Set<string>());
+    readonly addingPayments = signal(false);
+
+    paymentKey(line: GoLiveV2LegacyCompareLineDto): string {
+        return `${line.employeeCode}|${line.wageTypeCode}`;
+    }
+
+    /** The filtered lines a payment can still be added for. */
+    readonly payableLines = computed(() =>
+        this.filteredLines().filter((l) => l.canAddPayment && !this.addedPayments().has(this.paymentKey(l)))
+    );
+
+    addPayment(line: GoLiveV2LegacyCompareLineDto): void {
+        this.addPayments([line]);
+    }
+
+    /** Every filtered line a payment can be added for, after a confirmation that says how many and for which month. */
+    addAllPayments(): void {
+        const lines = this.payableLines();
+        if (lines.length === 0) {
+            return;
+        }
+        this.message.confirm(
+            this.l('GoLiveV2CompareAddAllPaymentsConfirm', lines.length, this.month()),
+            this.l('AreYouSure'),
+            (confirmed) => {
+                if (confirmed) {
+                    this.addPayments(lines);
+                }
+            }
+        );
+    }
+
+    private addPayments(lines: GoLiveV2LegacyCompareLineDto[]): void {
+        if (this.addingPayments() || lines.length === 0) {
+            return;
+        }
+
+        const input = new GoLiveV2LegacyPaymentsInput();
+        input.payDate = this.monthEnd().plus({ hours: 12 });
+        input.lines = lines.map((l) => {
+            const dto = new GoLiveV2LegacyPaymentLineDto();
+            dto.employeeCode = l.employeeCode;
+            dto.wageTypeCode = l.wageTypeCode;
+            dto.amount = l.legacyAmount ?? 0;
+            return dto;
+        });
+
+        this.addingPayments.set(true);
+        this.proxy
+            .addLegacyPayments(input)
+            .pipe(finalize(() => this.addingPayments.set(false)))
+            .subscribe((out) => {
+                const refused = new Set((out.refused ?? []).map((r) => `${r.employeeCode}|${r.wageTypeCode}`));
+                this.addedPayments.update((added) => {
+                    const next = new Set(added);
+                    lines.filter((l) => !refused.has(this.paymentKey(l))).forEach((l) => next.add(this.paymentKey(l)));
+                    return next;
+                });
+
+                if (out.added + out.updated + out.alreadyThere > 0) {
+                    this.notify.success(this.l('GoLiveV2ComparePaymentsDone', out.added, out.updated, out.alreadyThere));
+                }
+                if (out.refused?.length) {
+                    this.message.warn(
+                        out.refused.map((r) => `${r.employeeCode} / ${r.wageTypeCode}: ${r.reason}`).join('\n'),
+                        this.l('GoLiveV2ComparePaymentsRefused', out.refused.length, '')
+                    );
+                }
+            });
+    }
 
     /** The lines as the grid shows them, filters applied, as Excel for a customer to check. */
     exportLines(): void {

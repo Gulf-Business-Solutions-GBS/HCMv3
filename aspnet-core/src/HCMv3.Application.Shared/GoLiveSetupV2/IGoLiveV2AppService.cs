@@ -106,6 +106,13 @@ public interface IGoLiveV2AppService : IApplicationService
     Task<FileDto> ExportLegacyComparison(GoLiveV2LegacyCompareExportInput input);
 
     /// <summary>
+    /// Turns comparison lines the legacy payroll paid and HCMv3 did not into payments on the Payment screen, for
+    /// the month and the legacy amount, so the next run pays them. One-off earnings and deductions only -- never a
+    /// salary wage type, an arrear, leave pay or net pay. Adding a line again corrects its payment.
+    /// </summary>
+    Task<GoLiveV2LegacyPaymentsOutput> AddLegacyPayments(GoLiveV2LegacyPaymentsInput input);
+
+    /// <summary>
     /// The read-only query to run against the legacy HRMS database, filled in with the month and the payroll
     /// area's employee codes. Its result is what Compare with legacy salary takes.
     /// </summary>

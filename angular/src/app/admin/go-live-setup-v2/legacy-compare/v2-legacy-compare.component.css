@@ -411,3 +411,21 @@
     height: 100%;
     background: var(--bs-success);
 }
+
+/* Add payment, under the status of a line only legacy paid. */
+.lc-add-payment {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.lc-payment-added {
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--bs-success);
+    white-space: nowrap;
+}

@@ -6385,5 +6385,15 @@
     <text name="GoLiveV2CompareEmployeesMatchedPercent">نسبة الموظفين المطابقين</text>
     <text name="GoLiveV2SaturdayRestDay">يوم السبت يوم راحة</text>
     <text name="GoLiveV2SaturdayRestDayHint">ضع علامة إذا كانت الشركة تمنح يوم السبت يوم راحة. يوم الجمعة هو دائمًا العطلة الأسبوعية.</text>
+    <text name="GoLiveV2CompareNotInHcmv3Note">{0} موظفين في الملف غير موجودين في HCMv3: {1}</text>
+    <text name="GoLiveV2CompareAddPayment">إضافة دفعة</text>
+    <text name="GoLiveV2CompareAddPaymentHint">إنشاء هذا المبلغ في شاشة الدفعات لهذا الشهر ليتم دفعه في التشغيل التالي للرواتب.</text>
+    <text name="GoLiveV2CompareAddAllPayments">إضافة كل الدفعات الناقصة ({0})</text>
+    <text name="GoLiveV2CompareAddAllPaymentsConfirm">هل تريد إنشاء {0} دفعات في شاشة الدفعات لشهر {1} بالمبالغ التي دفعها النظام السابق؟ أعد تشغيل الرواتب بعد ذلك لتضمينها.</text>
+    <text name="GoLiveV2ComparePaymentsDone">تمت إضافة {0} دفعات، وتحديث {1}، و{2} موجودة مسبقًا. أعد تشغيل الرواتب لتضمينها.</text>
+    <text name="GoLiveV2ComparePaymentsRefused">تعذرت إضافة {0}: {1}</text>
+    <text name="GoLiveV2ComparePaymentAdded">تمت إضافة الدفعة</text>
+    <text name="GoLiveV2PaymentNotPayable">نوع الأجر {0} يُدفع من خلال سجل الراتب أو يُحسب من الرواتب، وليس كدفعة.</text>
+    <text name="GoLiveV2PaymentNoAmount">لا يوجد مبلغ للدفع.</text>
   </texts>
 </localizationDictionary>

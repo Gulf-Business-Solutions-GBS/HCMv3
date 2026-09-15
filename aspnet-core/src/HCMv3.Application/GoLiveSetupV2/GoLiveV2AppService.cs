@@ -82,6 +82,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     private readonly GoLiveV2LegacyComparer _legacyComparer;
     private readonly GoLiveV2OpeningBalances _openingBalances;
     private readonly GoLiveV2ExcelExports _excelExports;
+    private readonly GoLiveV2LegacyPayments _legacyPayments;
 
     public GoLiveV2AppService(
         IPayrollEngineService payrollEngine,
@@ -115,7 +116,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         ITempFileCacheManager tempFiles,
         GoLiveV2LegacyComparer legacyComparer,
         GoLiveV2OpeningBalances openingBalances,
-        GoLiveV2ExcelExports excelExports)
+        GoLiveV2ExcelExports excelExports,
+        GoLiveV2LegacyPayments legacyPayments)
     {
         _payrollEngine = payrollEngine;
         _payrollAreas = payrollAreas;
@@ -149,6 +151,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         _legacyComparer = legacyComparer;
         _openingBalances = openingBalances;
         _excelExports = excelExports;
+        _legacyPayments = legacyPayments;
     }
 
     /// <remarks>Runs the time engine too, so it needs that engine's permission as well as the payroll engine's.</remarks>
@@ -577,6 +580,11 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees)]
     public async Task<FileDto> ExportEmployeeSheet(GoLiveV2EmployeeSheetInput input) =>
         _excelExports.EmployeeSheet(input?.Employees ?? new List<GoLiveV2EmployeeRowDto>(), (await GetBankNames()).Items);
+
+    /// <remarks>Creates payments, so it needs the Payment screen's own create permission.</remarks>
+    [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Create)]
+    public Task<GoLiveV2LegacyPaymentsOutput> AddLegacyPayments(GoLiveV2LegacyPaymentsInput input) =>
+        _legacyPayments.AddAsync(input, MonthEnd(input.PayDate.Value));
 
     /// <remarks>The lines hold salaries, so it needs the salary register permission the comparison itself needs.</remarks>
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_SalaryRegisters)]

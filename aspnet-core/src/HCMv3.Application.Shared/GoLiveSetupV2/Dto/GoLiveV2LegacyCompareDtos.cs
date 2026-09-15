@@ -107,6 +107,12 @@ public class GoLiveV2LegacyCompareLineDto
 
     /// <summary>The likely reason, as a sentence.</summary>
     public string Reason { get; set; }
+
+    /// <summary>
+    /// A one-off earning or deduction the legacy payroll paid and HCMv3 did not, for an employee HCMv3 has: a
+    /// payment for it on the Payment screen would make the next run pay it.
+    /// </summary>
+    public bool CanAddPayment { get; set; }
 }
 
 public class GoLiveV2LegacyCompareOutput
@@ -127,6 +133,9 @@ public class GoLiveV2LegacyCompareOutput
 
     /// <summary>HCMv3 employees in the payroll area the file did not include, so not compared.</summary>
     public int Hcmv3EmployeesNotInFile { get; set; }
+
+    /// <summary>Employee codes in the file that HCMv3 does not have.</summary>
+    public List<string> LegacyEmployeesNotInHcmv3 { get; set; } = new();
 
     public int Matched { get; set; }
 

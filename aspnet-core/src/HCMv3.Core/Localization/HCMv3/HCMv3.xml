@@ -6546,5 +6546,15 @@
     <text name="GoLiveV2CompareEmployeesMatchedPercent">Employees Matched Percent</text>
     <text name="GoLiveV2SaturdayRestDay">Saturday is a rest day</text>
     <text name="GoLiveV2SaturdayRestDayHint">Tick if the company gives Saturday as a rest day. Friday is always the weekly off.</text>
+    <text name="GoLiveV2CompareNotInHcmv3Note">{0} employees in the file are not in HCMv3: {1}</text>
+    <text name="GoLiveV2CompareAddPayment">Add payment</text>
+    <text name="GoLiveV2CompareAddPaymentHint">Create this amount on the Payment screen for the month, so the next payroll run pays it.</text>
+    <text name="GoLiveV2CompareAddAllPayments">Add all missing payments ({0})</text>
+    <text name="GoLiveV2CompareAddAllPaymentsConfirm">Create {0} payments on the Payment screen for {1}, for the amounts the legacy payroll paid? Re-run payroll afterwards to include them.</text>
+    <text name="GoLiveV2ComparePaymentsDone">{0} payments added, {1} updated, {2} already there. Re-run payroll to include them.</text>
+    <text name="GoLiveV2ComparePaymentsRefused">{0} could not be added: {1}</text>
+    <text name="GoLiveV2ComparePaymentAdded">Payment added</text>
+    <text name="GoLiveV2PaymentNotPayable">Wage type {0} is paid through the salary record or calculated by the payroll, not as a payment.</text>
+    <text name="GoLiveV2PaymentNoAmount">There is no amount to pay.</text>
   </texts>
 </localizationDictionary>

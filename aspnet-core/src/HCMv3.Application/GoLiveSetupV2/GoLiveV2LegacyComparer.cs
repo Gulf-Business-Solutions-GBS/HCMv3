@@ -51,6 +51,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
     private readonly IRepository<SalaryRegister> _registerRepository;
     private readonly IRepository<SalaryRegisterDetail> _detailRepository;
     private readonly IRepository<EmployeeBasicPayDetail> _payRecordDetailRepository;
+    private readonly GoLiveV2LegacyPayments _legacyPayments;
 
     public GoLiveV2LegacyComparer(
         GoLiveV2LegacyFileReader fileReader,
@@ -59,7 +60,8 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
         IRepository<WageType> wageTypeRepository,
         IRepository<SalaryRegister> registerRepository,
         IRepository<SalaryRegisterDetail> detailRepository,
-        IRepository<EmployeeBasicPayDetail> payRecordDetailRepository)
+        IRepository<EmployeeBasicPayDetail> payRecordDetailRepository,
+        GoLiveV2LegacyPayments legacyPayments)
     {
         LocalizationSourceName = HCMv3Consts.LocalizationSourceName;
 
@@ -70,6 +72,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
         _registerRepository = registerRepository;
         _detailRepository = detailRepository;
         _payRecordDetailRepository = payRecordDetailRepository;
+        _legacyPayments = legacyPayments;
     }
 
     /// <summary>
@@ -145,7 +148,18 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             .Select(e => new { e.Id, e.Code })
             .ToListAsync();
         var employeeIds = employees.Select(e => e.Id).ToList();
-        var codeById = employees.ToDictionary(e => e.Id, e => e.Code);
+        // Keyed by the file's own spelling of the code, so an employee written "e001" in one and "E001 " in the
+        // other is one employee, not two.
+        var fileCodeByUpper = fileCodes
+            .GroupBy(c => c.Trim().ToUpperInvariant())
+            .ToDictionary(g => g.Key, g => g.First());
+        var codeById = employees.ToDictionary(
+            e => e.Id,
+            e => fileCodeByUpper.GetValueOrDefault(e.Code.Trim().ToUpperInvariant()) ?? e.Code);
+        output.LegacyEmployeesNotInHcmv3 = fileCodes
+            .Where(c => !codeById.Values.Contains(c))
+            .OrderBy(c => c)
+            .ToList();
 
         var areaIds = await _payrollAreaResolver.GetEmployeeIdsInPayrollAreaAsync(input.PayrollAreaName.Trim(), monthEnd);
         output.Hcmv3EmployeesNotInFile = areaIds.Count(id => !employeeIds.Contains(id));
@@ -197,7 +211,8 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             .ToListAsync();
         var wageByCode = wageTypes.GroupBy(w => w.Code).ToDictionary(g => g.Key, g => g.First());
 
-        var hcmv3Codes = employees.Select(e => e.Code).ToHashSet();
+        var hcmv3Codes = codeById.Values.ToHashSet();
+        var payableWageTypes = await _legacyPayments.PayableWageTypeCodesAsync();
 
         foreach (var key in legacy.Keys.Union(hcmv3.Keys).Distinct())
         {
@@ -229,6 +244,10 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             };
 
             Judge(line, hcmv3Codes.Contains(key.Employee), wage != null, withRegister.Contains(key.Employee));
+            line.CanAddPayment = line.Status == GoLiveV2CompareStatus.OnlyInLegacy
+                                 && hcmv3Codes.Contains(key.Employee)
+                                 && payableWageTypes.Contains(key.Wage)
+                                 && line.LegacyAmount is not (null or 0);
             output.Lines.Add(line);
         }
 
