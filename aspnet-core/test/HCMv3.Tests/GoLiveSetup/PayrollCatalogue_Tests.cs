@@ -201,7 +201,7 @@ public class PayrollCatalogue_Tests : AppTestBase
     }
 
     /// <summary>
-    /// Which wage types are paid during which leave -- legacy WageTypeLeave, all 230 links. Without them a leave
+    /// Which wage types are paid during which leave -- legacy WageTypeLeave's 230 links, plus the Load Employee Data salary wage types for annual leave. Without them a leave
     /// day is priced at nothing, so annual leave pay and the annual leave provision come out as zero.
     /// </summary>
     [Fact]

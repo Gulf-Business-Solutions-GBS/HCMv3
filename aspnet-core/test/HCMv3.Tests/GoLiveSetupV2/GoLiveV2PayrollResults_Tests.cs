@@ -117,7 +117,8 @@ public class GoLiveV2PayrollResults_Tests : AppTestBase
         var run = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = PayDate, PayrollAreaName = DefaultArea });
 
         run.Succeeded.ShouldBeTrue(run.Message);
-        run.LeavePayLinksAdded.ShouldBe(230);
+        // The catalogue's own links: legacy's 230, and the grid's salary wage types for annual leave.
+        run.LeavePayLinksAdded.ShouldBe(Resolve<IReferenceDataSeeder>().GetPack("payroll").WageTypeLeaves.Count);
 
         var employeeId = (await _goLive.GetPayrollResults(Input())).Employees.Single().EmployeeId;
         var register = await _goLive.GetSalaryRegister(new GoLiveV2SalaryRegisterInput { PayDate = PayDate, EmployeeId = employeeId });
