@@ -88,7 +88,11 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
     /// Runs the month for the area's active employees. Returns null when the time engine went through -- or had
     /// nobody to run, which the payroll engine then reports in its own way -- and the refusal otherwise.
     /// </summary>
-    public async Task<GoLiveV2RunPayrollOutput> RunAsync(string payrollAreaName, DateTime payInDate, string currentUserName)
+    public async Task<GoLiveV2RunPayrollOutput> RunAsync(
+        string payrollAreaName,
+        DateTime payInDate,
+        string currentUserName,
+        IReadOnlyCollection<string> onlyCodes = null)
     {
         // The engine's own payroll-area filter does not filter -- it takes every active employee -- so the area's
         // employees are found the way the payroll engine finds them, and named.
@@ -97,6 +101,13 @@ public class GoLiveV2TimeEngineStep : AbpServiceBase, ITransientDependency
             .Where(e => ids.Contains(e.Id) && e.Status == EmployeeStatus.Active)
             .Select(e => new { e.Id, e.Code })
             .ToListAsync();
+
+        // Only the employees picked to run, when some were.
+        if (onlyCodes != null)
+        {
+            var picked = new HashSet<string>(onlyCodes, StringComparer.OrdinalIgnoreCase);
+            employees = employees.Where(e => picked.Contains(e.Code)).ToList();
+        }
 
         if (employees.Count == 0)
         {

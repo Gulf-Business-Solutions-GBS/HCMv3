@@ -177,7 +177,11 @@
                             (click)="goToStep(1)">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-primary v2-run" (click)="runPayroll()">
+                        <button
+                            type="button"
+                            class="btn btn-primary v2-run"
+                            [disabled]="!running() && runMode() === 'selected' && selectedCodes().length === 0"
+                            (click)="runPayroll()">
                             @if (running()) {
                                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                                 {{ (runWindowHidden() ? 'GoLiveV2RunShowProgress' : 'GoLiveV2Running') | localize }}
@@ -257,6 +261,52 @@
                         @if (monthEnd(); as end) {
                             <div class="v2-field-note">{{ l('GoLiveV2PaysUpTo', end.toFormat('dd/MM/yyyy')) }}</div>
                         }
+                    </div>
+
+                    <div class="v2-field v2-run-employees">
+                        <label class="form-label" for="v2-run-codes">{{ 'GoLiveV2RunEmployees' | localize }}</label>
+                        <div class="v2-run-employees-bar">
+                            <div class="btn-group btn-group-sm" role="group" [attr.aria-label]="'GoLiveV2RunEmployees' | localize">
+                                <button
+                                    type="button"
+                                    class="btn"
+                                    [class.btn-primary]="runMode() === 'all'"
+                                    [class.btn-light]="runMode() !== 'all'"
+                                    [attr.aria-pressed]="runMode() === 'all'"
+                                    [disabled]="running()"
+                                    (click)="setRunMode('all')">
+                                    {{ 'GoLiveV2RunEmployeesAll' | localize }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn"
+                                    [class.btn-primary]="runMode() === 'selected'"
+                                    [class.btn-light]="runMode() !== 'selected'"
+                                    [attr.aria-pressed]="runMode() === 'selected'"
+                                    [disabled]="running()"
+                                    (click)="setRunMode('selected')">
+                                    {{ 'GoLiveV2RunEmployeesSelected' | localize }}
+                                </button>
+                            </div>
+                            <span class="v2-run-count">{{ l('GoLiveV2RunEmployeesCount', runCount()) }}</span>
+                            @if (runMode() === 'selected' && selectedCodesText()) {
+                                <button type="button" class="btn btn-sm btn-light-danger" (click)="clearSelectedCodes()">
+                                    <i class="fa fa-eraser me-1" aria-hidden="true"></i>{{ 'GoLiveV2RunEmployeesClear' | localize }}
+                                </button>
+                            }
+                        </div>
+                        <textarea
+                            id="v2-run-codes"
+                            class="form-control v2-codes"
+                            rows="8"
+                            spellcheck="false"
+                            [readonly]="runMode() === 'all'"
+                            [class.v2-codes-readonly]="runMode() === 'all'"
+                            [value]="runCodesText()"
+                            (input)="onSelectedCodes($event)"></textarea>
+                        <div class="v2-field-note">
+                            {{ (runMode() === 'all' ? 'GoLiveV2RunEmployeesHintAll' : 'GoLiveV2RunEmployeesHintSelected') | localize }}
+                        </div>
                     </div>
                 </div>
 

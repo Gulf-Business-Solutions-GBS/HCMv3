@@ -6395,5 +6395,13 @@
     <text name="GoLiveV2ComparePaymentAdded">تمت إضافة الدفعة</text>
     <text name="GoLiveV2PaymentNotPayable">نوع الأجر {0} يُدفع من خلال سجل الراتب أو يُحسب من الرواتب، وليس كدفعة.</text>
     <text name="GoLiveV2PaymentNoAmount">لا يوجد مبلغ للدفع.</text>
+    <text name="GoLiveV2RunCodesNotInArea">{0} من الرموز المحددة ليست لموظفين نشطين في منطقة الرواتب هذه، لذلك لم يتم التشغيل: {1}</text>
+    <text name="GoLiveV2RunEmployees">الموظفون المراد تشغيلهم</text>
+    <text name="GoLiveV2RunEmployeesAll">الكل</text>
+    <text name="GoLiveV2RunEmployeesSelected">المحددون</text>
+    <text name="GoLiveV2RunEmployeesHintAll">يتم تشغيل كل موظفي الشركة.</text>
+    <text name="GoLiveV2RunEmployeesHintSelected">الصق رموز الموظفين، رمزًا في كل سطر (تعمل الفواصل أو علامات الجدولة أيضًا). يتم تشغيل هؤلاء الموظفين فقط.</text>
+    <text name="GoLiveV2RunEmployeesCount">{0} موظفين</text>
+    <text name="GoLiveV2RunEmployeesClear">مسح القائمة</text>
   </texts>
 </localizationDictionary>

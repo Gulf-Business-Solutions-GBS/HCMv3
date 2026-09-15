@@ -18,6 +18,12 @@ public class GoLiveV2RunPayrollInput
 
     /// <summary>Name of the payroll area to run, as the engine matches it.</summary>
     public string PayrollAreaName { get; set; }
+
+    /// <summary>
+    /// The employees to run, by code. Empty or null runs everyone in the payroll area; a code the area does not
+    /// have refuses the run before either engine starts.
+    /// </summary>
+    public List<string> EmployeeCodes { get; set; }
 }
 
 /// <summary>Where a run stopped. <see cref="None"/> means it went all the way through.</summary>

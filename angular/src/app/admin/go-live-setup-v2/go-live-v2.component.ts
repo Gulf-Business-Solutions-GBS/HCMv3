@@ -456,6 +456,57 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
     /** 'yyyy-MM' from the month picker; empty until one is chosen. */
     readonly payMonth = signal('');
 
+    /** Everyone, or only the employees whose codes are pasted in. */
+    readonly runMode = signal<'all' | 'selected'>('all');
+    readonly selectedCodesText = signal('');
+
+    /** Every loaded employee's code, for the All list. Step 2 is shut while the grid has unloaded changes. */
+    readonly allCodes = computed(() =>
+        this.employeeRows()
+            .map((row) => this.text(row['code']))
+            .filter((code): code is string => !!code)
+    );
+
+    /** The pasted codes: one per line, or split by commas, tabs or spaces; repeats dropped. */
+    readonly selectedCodes = computed(() => {
+        const seen = new Set<string>();
+        const codes: string[] = [];
+        for (const part of this.selectedCodesText().split(/[\s,;]+/)) {
+            const code = part.trim();
+            if (code && !seen.has(code.toUpperCase())) {
+                seen.add(code.toUpperCase());
+                codes.push(code);
+            }
+        }
+        return codes;
+    });
+
+    readonly runCodesText = computed(() =>
+        this.runMode() === 'all' ? this.allCodes().join('\n') : this.selectedCodesText()
+    );
+
+    readonly runCount = computed(() =>
+        this.runMode() === 'all' ? this.allCodes().length : this.selectedCodes().length
+    );
+
+    /** Selected starts from an empty list, ready to paste into. */
+    setRunMode(mode: 'all' | 'selected'): void {
+        if (this.runMode() !== mode) {
+            this.runMode.set(mode);
+            this.selectedCodesText.set('');
+        }
+    }
+
+    onSelectedCodes(event: Event): void {
+        if (this.runMode() === 'selected') {
+            this.selectedCodesText.set((event.target as HTMLTextAreaElement).value);
+        }
+    }
+
+    clearSelectedCodes(): void {
+        this.selectedCodesText.set('');
+    }
+
     /** The last day of the chosen month -- the only pay date the engine accepts. */
     readonly monthEnd = computed(() => {
         const month = this.payMonth();
@@ -1715,6 +1766,11 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
         const payrollArea = this.payrollAreaName().trim();
         if (payrollArea) {
             input.payrollAreaName = payrollArea;
+        }
+
+        // Only the pasted employees when Selected; nothing sent runs everyone.
+        if (this.runMode() === 'selected') {
+            input.employeeCodes = this.selectedCodes();
         }
 
         return input;

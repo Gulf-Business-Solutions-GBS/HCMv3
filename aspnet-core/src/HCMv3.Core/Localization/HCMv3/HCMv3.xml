@@ -6556,5 +6556,13 @@
     <text name="GoLiveV2ComparePaymentAdded">Payment added</text>
     <text name="GoLiveV2PaymentNotPayable">Wage type {0} is paid through the salary record or calculated by the payroll, not as a payment.</text>
     <text name="GoLiveV2PaymentNoAmount">There is no amount to pay.</text>
+    <text name="GoLiveV2RunCodesNotInArea">{0} of the selected codes are not active employees in this payroll area, so nothing was run: {1}</text>
+    <text name="GoLiveV2RunEmployees">Employees to run</text>
+    <text name="GoLiveV2RunEmployeesAll">All</text>
+    <text name="GoLiveV2RunEmployeesSelected">Selected</text>
+    <text name="GoLiveV2RunEmployeesHintAll">Every employee in the company is run.</text>
+    <text name="GoLiveV2RunEmployeesHintSelected">Paste employee codes, one per line (commas or tabs also work). Only these employees are run.</text>
+    <text name="GoLiveV2RunEmployeesCount">{0} employees</text>
+    <text name="GoLiveV2RunEmployeesClear">Clear list</text>
   </texts>
 </localizationDictionary>

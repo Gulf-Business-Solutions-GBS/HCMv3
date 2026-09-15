@@ -167,7 +167,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             return prepared.Refusal;
         }
 
-        var output = await RunEnginesAsync(prepared.AreaName, prepared.PayInDate);
+        var output = await RunEnginesAsync(prepared.AreaName, prepared.PayInDate, prepared.EmployeeCodes);
         output.MonthSetUp = prepared.MonthSetUp;
         output.LeavePayLinksAdded = prepared.LeavePayLinksAdded;
         return output;
@@ -207,7 +207,8 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         }
 
         state.Status = GoLiveV2RunStatus.Queued;
-        state.TotalEmployees = (await _timeEngineStep.EmployeeCodesAsync(prepared.AreaName, prepared.PayInDate)).Count;
+        state.TotalEmployees = prepared.EmployeeCodes?.Count
+                               ?? (await _timeEngineStep.EmployeeCodesAsync(prepared.AreaName, prepared.PayInDate)).Count;
         state.BaselineEngineRunId = await _runTracker.LastEngineRunIdAsync();
         await _runTracker.SaveAsync(state);
 
@@ -217,6 +218,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             UserId = AbpSession.GetUserId(),
             PayrollAreaName = prepared.AreaName,
             PayInDate = prepared.PayInDate,
+            EmployeeCodes = prepared.EmployeeCodes?.ToList(),
         });
 
         return await _runTracker.ProgressAsync();
@@ -289,6 +291,31 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             return PreparedRun.Refused(refusal, areaName, payInDate, monthSetUp);
         }
 
+        // The employees picked to run, if any, in the payroll area's own spelling. A code the area does not have
+        // stops the run here, before either engine starts, and says which.
+        IReadOnlyList<string> employeeCodes = null;
+        var picked = (input.EmployeeCodes ?? new List<string>())
+            .Select(c => c?.Trim())
+            .Where(c => !string.IsNullOrEmpty(c))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        if (picked.Count > 0)
+        {
+            var inArea = (await _timeEngineStep.EmployeeCodesAsync(areaName, payInDate))
+                .ToDictionary(c => c.Trim(), c => c, StringComparer.OrdinalIgnoreCase);
+            var unknown = picked.Where(c => !inArea.ContainsKey(c)).ToList();
+            if (unknown.Count > 0)
+            {
+                var refusal = Stopped(
+                    GoLiveV2StoppedAt.Input,
+                    L("GoLiveV2RunCodesNotInArea", unknown.Count, string.Join(", ", unknown)));
+                refusal.PayInDate = payInDate;
+                return PreparedRun.Refused(refusal, areaName, payInDate, monthSetUp);
+            }
+
+            employeeCodes = picked.Select(c => inArea[c]).ToList();
+        }
+
         var leavePayLinksAdded = await EnsureLeavePayLinksAsync();
 
         // Opening balances count in the month they are dated: moved onto this month for anyone not yet paid.
@@ -300,6 +327,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
             PayInDate = payInDate,
             MonthSetUp = monthSetUp,
             LeavePayLinksAdded = leavePayLinksAdded,
+            EmployeeCodes = employeeCodes,
         };
     }
 
@@ -317,6 +345,9 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         public GoLiveV2SetUpPayrollMonthOutput MonthSetUp { get; init; }
 
         public int LeavePayLinksAdded { get; init; }
+
+        /// <summary>The employees picked to run; null runs everyone in the payroll area.</summary>
+        public IReadOnlyList<string> EmployeeCodes { get; init; }
 
         public static PreparedRun Refused(
             GoLiveV2RunPayrollOutput refusal,
@@ -345,18 +376,18 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
     }
 
     /// <summary>The time engine, then the payroll engine, for a month that is set up.</summary>
-    private async Task<GoLiveV2RunPayrollOutput> RunEnginesAsync(string areaName, DateTime payInDate)
+    private async Task<GoLiveV2RunPayrollOutput> RunEnginesAsync(string areaName, DateTime payInDate, IReadOnlyList<string> employeeCodes = null)
     {
         // The time engine first: the payroll pays days from the time registers it writes for the month. With
         // nobody in the area it has nothing to do, and the payroll engine says so in its own words.
-        var timeEngineStopped = await _timeEngineStep.RunAsync(areaName, payInDate, (await GetCurrentUserAsync()).UserName);
+        var timeEngineStopped = await _timeEngineStep.RunAsync(areaName, payInDate, (await GetCurrentUserAsync()).UserName, employeeCodes);
         if (timeEngineStopped != null)
         {
             timeEngineStopped.PayInDate = payInDate;
             return timeEngineStopped;
         }
 
-        var codes = await _timeEngineStep.EmployeeCodesAsync(areaName, payInDate);
+        var codes = employeeCodes?.ToList() ?? await _timeEngineStep.EmployeeCodesAsync(areaName, payInDate);
         var results = new List<GoLiveV2EmployeeResultDto>();
         var paidFor = payInDate;
         var aborted = false;

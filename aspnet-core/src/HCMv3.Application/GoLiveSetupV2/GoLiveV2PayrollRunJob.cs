@@ -20,6 +20,9 @@ public class GoLiveV2PayrollRunJobArgs
     public string PayrollAreaName { get; set; }
 
     public DateTime PayInDate { get; set; }
+
+    /// <summary>The employees picked to run; null runs everyone in the payroll area.</summary>
+    public System.Collections.Generic.List<string> EmployeeCodes { get; set; }
 }
 
 /// <summary>
@@ -68,6 +71,7 @@ public class GoLiveV2PayrollRunJob : AsyncBackgroundJob<GoLiveV2PayrollRunJobArg
                     {
                         PayDate = args.PayInDate,
                         PayrollAreaName = args.PayrollAreaName,
+                        EmployeeCodes = args.EmployeeCodes,
                     });
                     await uow.CompleteAsync();
                 }

@@ -263989,6 +263989,7 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
                     this.lines!.push(GoLiveV2SalaryRegisterLineDto.fromJS(item));
             }
             if (Array.isArray(_data["days"])) {
+    employeeCodes!: string[] | undefined;
                 this.days = [] as any;
                 for (let item of _data["days"])
                     this.days!.push(GoLiveV2SalaryRegisterDaysDto.fromJS(item));
@@ -264003,6 +264004,11 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
         return result;
     }
 
+            if (Array.isArray(_data["employeeCodes"])) {
+                this.employeeCodes = [] as any;
+                for (let item of _data["employeeCodes"])
+                    this.employeeCodes!.push(item);
+            }
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["employeeCode"] = this.employeeCode;
@@ -264017,6 +264023,11 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
         if (Array.isArray(this.days)) {
             data["days"] = [];
             for (let item of this.days)
+        if (Array.isArray(this.employeeCodes)) {
+            data["employeeCodes"] = [];
+            for (let item of this.employeeCodes)
+                data["employeeCodes"].push(item);
+        }
                 data["days"].push(item ? item.toJSON() : undefined as any);
         }
         return data;
@@ -264024,6 +264035,7 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
 }
 
 export interface IGoLiveV2SalaryRegisterDto {
+    employeeCodes: string[] | undefined;
     employeeCode: string | undefined;
     employeeName: string | undefined;
     forPeriod: DateTime;
