@@ -213,6 +213,8 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
 
         var hcmv3Codes = codeById.Values.ToHashSet();
         var payableWageTypes = await _legacyPayments.PayableWageTypeCodesAsync();
+        var monthPayments = await _legacyPayments.MonthPaymentsAsync(employeeIds, monthEnd);
+        var idByCode = codeById.ToDictionary(p => p.Value, p => p.Key);
 
         foreach (var key in legacy.Keys.Union(hcmv3.Keys).Distinct())
         {
@@ -244,10 +246,7 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
             };
 
             Judge(line, hcmv3Codes.Contains(key.Employee), wage != null, withRegister.Contains(key.Employee));
-            line.CanAddPayment = line.Status == GoLiveV2CompareStatus.OnlyInLegacy
-                                 && hcmv3Codes.Contains(key.Employee)
-                                 && payableWageTypes.Contains(key.Wage)
-                                 && line.LegacyAmount is not (null or 0);
+            OfferPayment(line, idByCode, payableWageTypes, monthPayments);
             output.Lines.Add(line);
         }
 
@@ -364,6 +363,45 @@ public class GoLiveV2LegacyComparer : AbpServiceBase, ITransientDependency
         else
         {
             Set(line, GoLiveV2CompareStatus.OnlyInHcmv3, GoLiveV2CompareCause.Logic, L("GoLiveV2CompareExtraInHcmv3"));
+        }
+    }
+
+    /// <summary>
+    /// Whether a payment can make a not-matched earning or deduction match, and for how much -- or why not. Only
+    /// money lines are offered: time types and provisions are worked out, never paid.
+    /// </summary>
+    private void OfferPayment(
+        GoLiveV2LegacyCompareLineDto line,
+        IReadOnlyDictionary<string, int> idByCode,
+        HashSet<string> payableWageTypes,
+        IReadOnlyDictionary<(int EmployeeId, string WageCode), (double Ours, double Others)> monthPayments)
+    {
+        if (line.Status == GoLiveV2CompareStatus.Matched
+            || line.BillingType is not (BillingType.Earning or BillingType.Deduction))
+        {
+            return;
+        }
+
+        if (!idByCode.TryGetValue(line.EmployeeCode, out var employeeId))
+        {
+            line.PaymentBlockedReason = L("GoLiveV2CompareEmployeeNotLoaded");
+        }
+        else if (!payableWageTypes.Contains(line.WageTypeCode))
+        {
+            line.PaymentBlockedReason = L("GoLiveV2PaymentNotPayable", line.WageTypeCode);
+        }
+        else
+        {
+            var others = monthPayments.TryGetValue((employeeId, line.WageTypeCode), out var paid) ? paid.Others : 0;
+            var suggested = Math.Round((line.LegacyAmount ?? 0) - (decimal)others, 3);
+            if (suggested == 0)
+            {
+                line.PaymentBlockedReason = L("GoLiveV2PaymentNoAmount");
+                return;
+            }
+
+            line.CanAddPayment = true;
+            line.SuggestedPaymentAmount = suggested;
         }
     }
 

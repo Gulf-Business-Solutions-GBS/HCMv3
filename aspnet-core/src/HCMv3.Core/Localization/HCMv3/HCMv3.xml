@@ -6564,5 +6564,8 @@
     <text name="GoLiveV2RunEmployeesHintSelected">Paste employee codes, one per line (commas or tabs also work). Only these employees are run.</text>
     <text name="GoLiveV2RunEmployeesCount">{0} employees</text>
     <text name="GoLiveV2RunEmployeesClear">Clear list</text>
+    <text name="GoLiveV2ComparePaymentPreviewTitle">Add payment for {0}, wage type {1}</text>
+    <text name="GoLiveV2ComparePaymentToAdd">Payment to add</text>
+    <text name="GoLiveV2ComparePaymentPreviewNote">Saved on the Payment screen for {0}. Once a wage type has payments in the month, the payroll pays it from them alone, so the suggestion is the legacy amount less any other payments already entered. Re-run payroll afterwards.</text>
   </texts>
 </localizationDictionary>

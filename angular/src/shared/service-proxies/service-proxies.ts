@@ -262921,6 +262921,9 @@ export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryD
         data["fileName"] = this.fileName;
         data["sql"] = this.sql;
     canAddPayment!: boolean;
+    suggestedPaymentAmount!: number | undefined;
+    paymentBlockedReason!: string | undefined;
+    canAddPayment!: boolean;
         return data;
     }
 }
@@ -262951,6 +262954,9 @@ export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
+            this.canAddPayment = _data["canAddPayment"];
+            this.suggestedPaymentAmount = _data["suggestedPaymentAmount"];
+            this.paymentBlockedReason = _data["paymentBlockedReason"];
                     this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
             this.canAddPayment = _data["canAddPayment"];
             }
@@ -262982,6 +262988,9 @@ export interface IGoLiveV2LoadEmployeesInput {
     payrollAreaName: string;
     employees: GoLiveV2EmployeeRowDto[] | undefined;
 }
+        data["canAddPayment"] = this.canAddPayment;
+        data["suggestedPaymentAmount"] = this.suggestedPaymentAmount;
+        data["paymentBlockedReason"] = this.paymentBlockedReason;
 
 export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput {
         data["canAddPayment"] = this.canAddPayment;
@@ -263006,6 +263015,9 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
     constructor(data?: IGoLiveV2LoadEmployeesOutput) {
         if (data) {
             for (var property in data) {
+    canAddPayment: boolean;
+    suggestedPaymentAmount: number | undefined;
+    paymentBlockedReason: string | undefined;
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }

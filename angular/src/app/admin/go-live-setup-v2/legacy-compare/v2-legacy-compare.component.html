@@ -391,7 +391,7 @@
                                                     class="btn btn-xs btn-light-primary lc-add-payment"
                                                     [disabled]="addingPayments()"
                                                     [title]="'GoLiveV2CompareAddPaymentHint' | localize"
-                                                    (click)="addPayment(line)">
+                                                    (click)="openPaymentPreview(line)">
                                                     <i class="fa fa-plus me-1" aria-hidden="true"></i>{{ 'GoLiveV2CompareAddPayment' | localize }}
                                                 </button>
                                             }
@@ -440,3 +440,62 @@
         </div>
     </div>
 </div>
+
+@if (previewLine(); as p) {
+    <!-- The payment a line would add, to look at and change before anything is saved. -->
+    <div class="v2-modal-backdrop lc-preview-backdrop">
+        <div class="v2-modal lc-preview" role="dialog" aria-modal="true" aria-labelledby="lc-preview-title">
+            <h4 class="v2-modal-title" id="lc-preview-title">
+                {{ l('GoLiveV2ComparePaymentPreviewTitle', p.employeeCode, p.wageTypeCode + ' ' + (p.wageTypeName ?? '')) }}
+            </h4>
+
+            <table class="table table-sm lc-preview-table">
+                <tbody>
+                    <tr>
+                        <th>{{ 'GoLiveV2CompareColAmountLegacy' | localize }}</th>
+                        <td class="text-end v2-num">
+                            {{ p.legacyAmount === undefined || p.legacyAmount === null ? '—' : (p.legacyAmount | number: '1.3-3') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'GoLiveV2CompareColAmountNew' | localize }}</th>
+                        <td class="text-end v2-num">
+                            {{ p.hcmv3Amount === undefined || p.hcmv3Amount === null ? '—' : (p.hcmv3Amount | number: '1.3-3') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'GoLiveV2CompareColPossibleReason' | localize }}</th>
+                        <td>{{ p.reason }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <label class="form-label fw-semibold" for="lc-preview-amount">{{ 'GoLiveV2ComparePaymentToAdd' | localize }}</label>
+            <input
+                id="lc-preview-amount"
+                class="form-control v2-num"
+                inputmode="decimal"
+                [value]="previewAmount()"
+                (input)="onPreviewAmount($event)" />
+            <div class="lc-hint mt-2">{{ l('GoLiveV2ComparePaymentPreviewNote', month()) }}</div>
+
+            <div class="v2-modal-actions lc-preview-actions">
+                <button type="button" class="btn btn-light" [disabled]="addingPayments()" (click)="closePaymentPreview()">
+                    {{ 'Cancel' | localize }}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="addingPayments() || !previewAmountValue()"
+                    (click)="confirmPaymentPreview()">
+                    @if (addingPayments()) {
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                    } @else {
+                        <i class="fa fa-plus me-2" aria-hidden="true"></i>
+                    }
+                    {{ 'GoLiveV2CompareAddPayment' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+}

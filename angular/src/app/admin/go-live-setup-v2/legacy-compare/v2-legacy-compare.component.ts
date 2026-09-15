@@ -294,8 +294,40 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
         this.filteredLines().filter((l) => l.canAddPayment && !this.addedPayments().has(this.paymentKey(l)))
     );
 
-    addPayment(line: GoLiveV2LegacyCompareLineDto): void {
-        this.addPayments([line]);
+    // The preview a line's button opens: what is compared, and the payment to add, which can be changed.
+    readonly previewLine = signal<GoLiveV2LegacyCompareLineDto | null>(null);
+    readonly previewAmount = signal('');
+
+    readonly previewAmountValue = computed(() => {
+        const value = Number(this.previewAmount().replace(/,/g, '').trim());
+        return Number.isFinite(value) ? value : NaN;
+    });
+
+    openPaymentPreview(line: GoLiveV2LegacyCompareLineDto): void {
+        if (!line.canAddPayment) {
+            return;
+        }
+        this.previewLine.set(line);
+        this.previewAmount.set(line.suggestedPaymentAmount === undefined ? '' : String(line.suggestedPaymentAmount));
+    }
+
+    onPreviewAmount(event: Event): void {
+        this.previewAmount.set((event.target as HTMLInputElement).value);
+    }
+
+    closePaymentPreview(): void {
+        if (!this.addingPayments()) {
+            this.previewLine.set(null);
+        }
+    }
+
+    confirmPaymentPreview(): void {
+        const line = this.previewLine();
+        const amount = this.previewAmountValue();
+        if (!line || !Number.isFinite(amount) || amount === 0) {
+            return;
+        }
+        this.addPayments([{ line, amount }], () => this.previewLine.set(null));
     }
 
     /** Every filtered line a payment can be added for, after a confirmation that says how many and for which month. */
@@ -309,24 +341,25 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
             this.l('AreYouSure'),
             (confirmed) => {
                 if (confirmed) {
-                    this.addPayments(lines);
+                    this.addPayments(lines.map((line) => ({ line, amount: line.suggestedPaymentAmount ?? 0 })));
                 }
             }
         );
     }
 
-    private addPayments(lines: GoLiveV2LegacyCompareLineDto[]): void {
-        if (this.addingPayments() || lines.length === 0) {
+    private addPayments(items: { line: GoLiveV2LegacyCompareLineDto; amount: number }[], done?: () => void): void {
+        if (this.addingPayments() || items.length === 0) {
             return;
         }
+        const lines = items.map((i) => i.line);
 
         const input = new GoLiveV2LegacyPaymentsInput();
         input.payDate = this.monthEnd().plus({ hours: 12 });
-        input.lines = lines.map((l) => {
+        input.lines = items.map(({ line, amount }) => {
             const dto = new GoLiveV2LegacyPaymentLineDto();
-            dto.employeeCode = l.employeeCode;
-            dto.wageTypeCode = l.wageTypeCode;
-            dto.amount = l.legacyAmount ?? 0;
+            dto.employeeCode = line.employeeCode;
+            dto.wageTypeCode = line.wageTypeCode;
+            dto.amount = amount;
             return dto;
         });
 
@@ -345,6 +378,7 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
                 if (out.added + out.updated + out.alreadyThere > 0) {
                     this.notify.success(this.l('GoLiveV2ComparePaymentsDone', out.added, out.updated, out.alreadyThere));
                 }
+                done?.();
                 if (out.refused?.length) {
                     this.message.warn(
                         out.refused.map((r) => `${r.employeeCode} / ${r.wageTypeCode}: ${r.reason}`).join('\n'),

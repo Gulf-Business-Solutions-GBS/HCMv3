@@ -6403,5 +6403,8 @@
     <text name="GoLiveV2RunEmployeesHintSelected">الصق رموز الموظفين، رمزًا في كل سطر (تعمل الفواصل أو علامات الجدولة أيضًا). يتم تشغيل هؤلاء الموظفين فقط.</text>
     <text name="GoLiveV2RunEmployeesCount">{0} موظفين</text>
     <text name="GoLiveV2RunEmployeesClear">مسح القائمة</text>
+    <text name="GoLiveV2ComparePaymentPreviewTitle">إضافة دفعة للموظف {0}، نوع الأجر {1}</text>
+    <text name="GoLiveV2ComparePaymentToAdd">الدفعة المراد إضافتها</text>
+    <text name="GoLiveV2ComparePaymentPreviewNote">تُحفظ في شاشة الدفعات لشهر {0}. عندما تكون لنوع الأجر دفعات في الشهر، تدفعه الرواتب منها فقط، لذلك المبلغ المقترح هو مبلغ النظام السابق مطروحًا منه أي دفعات أخرى مدخلة. أعد تشغيل الرواتب بعد ذلك.</text>
   </texts>
 </localizationDictionary>

@@ -109,10 +109,19 @@ public class GoLiveV2LegacyCompareLineDto
     public string Reason { get; set; }
 
     /// <summary>
-    /// A one-off earning or deduction the legacy payroll paid and HCMv3 did not, for an employee HCMv3 has: a
-    /// payment for it on the Payment screen would make the next run pay it.
+    /// A not-matched one-off earning or deduction for an employee HCMv3 has: a payment for it on the Payment
+    /// screen would make the next run pay what the legacy payroll paid.
     /// </summary>
     public bool CanAddPayment { get; set; }
+
+    /// <summary>
+    /// The payment that would do it: once a wage type has payments in the month the engine pays it from them
+    /// alone, so this is the legacy amount less the month's other payments for it. Null when none can be added.
+    /// </summary>
+    public decimal? SuggestedPaymentAmount { get; set; }
+
+    /// <summary>Why no payment can be added for a not-matched earning or deduction, as a sentence; null otherwise.</summary>
+    public string PaymentBlockedReason { get; set; }
 }
 
 public class GoLiveV2LegacyCompareOutput

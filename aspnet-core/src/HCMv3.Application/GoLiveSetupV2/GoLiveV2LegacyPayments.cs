@@ -76,6 +76,29 @@ public class GoLiveV2LegacyPayments : AbpServiceBase, ITransientDependency
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
     }
 
+    /// <summary>
+    /// The month's payments for these employees, added up by employee id and wage type code: those this
+    /// comparison made, and all others. Once a wage type has payments the engine pays it from them alone.
+    /// </summary>
+    public async Task<Dictionary<(int EmployeeId, string WageCode), (double Ours, double Others)>> MonthPaymentsAsync(
+        IReadOnlyCollection<int> employeeIds,
+        DateTime monthEnd)
+    {
+        var monthStart = new DateTime(monthEnd.Year, monthEnd.Month, 1);
+        var rows = await _paymentRepository.GetAll()
+            .Where(p => employeeIds.Contains(p.EmployeeId) && p.PaymentDate >= monthStart && p.PaymentDate <= monthEnd)
+            .Select(p => new { p.EmployeeId, p.WageType.Code, p.Amount, p.Comments, p.UnitType })
+            .ToListAsync();
+
+        return rows
+            .GroupBy(p => (p.EmployeeId, p.Code))
+            .ToDictionary(
+                g => g.Key,
+                g => (
+                    g.Where(p => p.Comments == Comment).Sum(p => p.Amount),
+                    g.Where(p => p.Comments != Comment && p.UnitType == UnitType.Amount).Sum(p => p.Amount)));
+    }
+
     public async Task<GoLiveV2LegacyPaymentsOutput> AddAsync(GoLiveV2LegacyPaymentsInput input, DateTime monthEnd)
     {
         var output = new GoLiveV2LegacyPaymentsOutput();

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Localization;
 using Abp.Threading;
 using HCMv3.GoLiveSetup.ReferenceData;
 using HCMv3.GoLiveSetupV2;
@@ -47,7 +48,9 @@ public class GoLiveV2LegacyPayments_Tests : AppTestBase
         var result = await Compare(csv);
 
         Line(result, "E001", "1053").CanAddPayment.ShouldBeTrue();
+        Line(result, "E001", "1053").SuggestedPaymentAmount.ShouldBe(100);
         Line(result, "E001", "1001").CanAddPayment.ShouldBeFalse();
+        Line(result, "E001", "1001").PaymentBlockedReason.ShouldBe(Localized("GoLiveV2PaymentNotPayable", "1001"));
         result.LegacyEmployeesNotInHcmv3.ShouldBe(new[] { "X999" });
     }
 
@@ -87,6 +90,35 @@ public class GoLiveV2LegacyPayments_Tests : AppTestBase
         });
         again.AlreadyThere.ShouldBe(1);
         again.Added.ShouldBe(0);
+    }
+
+    /// <summary>
+    /// Once a wage type has a payment in the month the payroll pays it from payments alone, so with 30 already
+    /// entered by hand and 100 paid by legacy, the line differs and the payment to add is 70.
+    /// </summary>
+    [Fact]
+    public async Task Should_Suggest_The_Legacy_Amount_Less_The_Months_Other_Payments()
+    {
+        var csv = await GivenAPaidEmployeeAndALegacyFile();
+        var employeeId = UsingDbContext(context => context.Employees.Single(e => e.Code == "E001" && !e.IsDeleted).Id);
+        var bonusId = UsingDbContext(context => context.WageTypes.Single(w => w.TenantId == TenantId && w.Code == "1053" && !w.IsDeleted).Id);
+        await Resolve<HCMv3.PersonnelAdministration.IEmployeePaymentsAppService>().CreateOrEdit(new HCMv3.PersonnelAdministration.Dto.CreateOrEditEmployeePaymentDto
+        {
+            EmployeeId = employeeId,
+            WageTypeId = bonusId,
+            Amount = 30,
+            PaymentDate = new DateTime(2026, 9, 15),
+            UnitType = HCMv3.PersonnelAdministration.UnitType.Amount,
+            Comments = "Entered by hand",
+        });
+        var run = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = September, PayrollAreaName = DefaultArea });
+        run.Succeeded.ShouldBeTrue(run.Message);
+
+        var bonus = Line(await Compare(csv), "E001", "1053");
+
+        bonus.Status.ShouldBe(GoLiveV2CompareStatus.Different);
+        bonus.CanAddPayment.ShouldBeTrue();
+        bonus.SuggestedPaymentAmount.ShouldBe(70);
     }
 
     // ---------------------------------------------------------------- arrange
@@ -147,6 +179,9 @@ public class GoLiveV2LegacyPayments_Tests : AppTestBase
             rate.ToString("R", CultureInfo.InvariantCulture),
             number.ToString("R", CultureInfo.InvariantCulture),
             amount.ToString("R", CultureInfo.InvariantCulture));
+
+    private string Localized(string key, params object[] args) =>
+        string.Format(Resolve<ILocalizationManager>().GetString(HCMv3Consts.LocalizationSourceName, key), args);
 
     private void GivenTheReferenceData()
     {

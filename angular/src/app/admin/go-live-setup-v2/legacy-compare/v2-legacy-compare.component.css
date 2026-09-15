@@ -429,3 +429,26 @@
     color: var(--bs-success);
     white-space: nowrap;
 }
+
+/* The payment preview, above the comparison window. */
+.lc-preview-backdrop {
+    z-index: 1070;
+}
+
+.v2-modal.lc-preview {
+    width: min(32rem, 100%);
+}
+
+.lc-preview-table {
+    margin: 0;
+}
+
+.lc-preview-table th {
+    width: 45%;
+    color: var(--bs-gray-700);
+    font-weight: 600;
+}
+
+.lc-preview-actions {
+    gap: 0.5rem;
+}
