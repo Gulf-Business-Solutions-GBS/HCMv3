@@ -6543,6 +6543,6 @@
     <text name="GoLiveV2ExportBanksSheet">Banks</text>
     <text name="GoLiveV2ExportEmployeesFileName">Employees.xlsx</text>
     <text name="GoLiveV2ExportComparisonFileName">Legacy salary comparison {0}.xlsx</text>
-    <text name="GoLiveV2CompareEmployeesMatchedPercent">Employees' salary matched</text>
+    <text name="GoLiveV2CompareEmployeesMatchedPercent">Employees Matched Percent</text>
   </texts>
 </localizationDictionary>
