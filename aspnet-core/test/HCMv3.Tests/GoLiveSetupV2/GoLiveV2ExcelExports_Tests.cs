@@ -89,6 +89,8 @@ public class GoLiveV2ExcelExports_Tests : AppTestBase
         var summary = book.Worksheet(1);
         Count(summary, "GoLiveV2CompareEmployeesMatched").ShouldBe(1);
         Count(summary, "GoLiveV2CompareEmployeesNotMatched").ShouldBe(1);
+        summary.RowsUsed().First(r => r.Cell(1).GetString() == Localized("GoLiveV2CompareEmployeesMatchedPercent"))
+            .Cell(2).GetDouble().ShouldBe(0.5);
         Count(summary, "GoLiveV2CompareWageTypesMatched").ShouldBe(1);
         Count(summary, "GoLiveV2CompareWageTypesNotMatched").ShouldBe(1);
 

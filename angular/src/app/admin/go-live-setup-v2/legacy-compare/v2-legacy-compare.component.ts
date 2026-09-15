@@ -190,10 +190,13 @@ export class V2LegacyCompareComponent extends AppComponentBase implements OnDest
             row.linesNotMatched += l.status === GoLiveV2CompareStatus.Matched ? 0 : 1;
         }
         const all = [...byCode.values()].sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+        const matched = all.filter((e) => e.linesNotMatched === 0);
         return {
             total: all.length,
-            matched: all.filter((e) => e.linesNotMatched === 0),
+            matched,
             notMatched: all.filter((e) => e.linesNotMatched > 0),
+            /** Share of employees whose whole salary matched, 0 to 100. */
+            matchedPercent: all.length === 0 ? 0 : Math.round((matched.length / all.length) * 1000) / 10,
         };
     });
 

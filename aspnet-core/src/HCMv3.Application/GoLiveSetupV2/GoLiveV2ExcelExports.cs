@@ -152,8 +152,15 @@ public class GoLiveV2ExcelExports : AbpServiceBase, ITransientDependency
             summary.Cell(4 + i, 2).Style.Font.Bold = true;
         }
 
+        // The headline: the share of employees whose whole salary matched.
+        var percentRow = 4 + counts.Length;
+        summary.Cell(percentRow, 1).Value = L("GoLiveV2CompareEmployeesMatchedPercent");
+        summary.Cell(percentRow, 2).Value = employees.Count == 0 ? 0 : (double)employeesMatched / employees.Count;
+        summary.Cell(percentRow, 2).Style.NumberFormat.Format = "0.0%";
+        summary.Cell(percentRow, 2).Style.Font.Bold = true;
+
         // The wage types that did not match, worst first, and on how many lines.
-        var listRow = 4 + counts.Length + 1;
+        var listRow = percentRow + 2;
         summary.Cell(listRow, 1).Value = L("GoLiveV2CompareWageTypesNotMatched");
         summary.Cell(listRow, 1).Style.Font.Bold = true;
         var listHeader = listRow + 1;

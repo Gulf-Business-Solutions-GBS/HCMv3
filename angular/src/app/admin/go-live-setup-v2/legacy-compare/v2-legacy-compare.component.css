@@ -392,3 +392,22 @@
 .lc-body .lc-lists .lc-list {
     height: 18rem;
 }
+
+/* The share of employees whose whole salary matched: the headline figure, with a bar under it. */
+.lc-count-percent strong {
+    color: var(--bs-primary);
+}
+
+.lc-percent-bar {
+    align-self: stretch;
+    height: 0.4rem;
+    margin-top: 0.35rem;
+    border-radius: 1rem;
+    background: var(--bs-gray-200);
+    overflow: hidden;
+}
+
+.lc-percent-fill {
+    height: 100%;
+    background: var(--bs-success);
+}

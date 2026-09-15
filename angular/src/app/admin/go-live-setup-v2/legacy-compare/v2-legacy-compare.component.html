@@ -108,6 +108,13 @@
                                     <strong>{{ em.notMatched.length }}</strong>
                                     <span>{{ 'GoLiveV2CompareEmployeesNotMatched' | localize }}</span>
                                 </div>
+                                <div class="lc-count lc-count-percent">
+                                    <strong>{{ em.matchedPercent | number: '1.0-1' }}%</strong>
+                                    <span>{{ 'GoLiveV2CompareEmployeesMatchedPercent' | localize }}</span>
+                                    <div class="lc-percent-bar" role="progressbar" [attr.aria-valuenow]="em.matchedPercent" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="lc-percent-fill" [style.width.%]="em.matchedPercent"></div>
+                                    </div>
+                                </div>
                             </section>
 
                             <div class="lc-lists">
