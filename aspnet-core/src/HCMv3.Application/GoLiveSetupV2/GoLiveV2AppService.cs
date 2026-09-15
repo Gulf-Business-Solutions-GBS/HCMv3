@@ -525,7 +525,7 @@ public class GoLiveV2AppService : HCMv3AppServiceBase, IGoLiveV2AppService
         var placeholders = await _placeholders.EnsureAsync();
         output.PlaceholdersCreated = placeholders.Created;
 
-        var workingTime = await _workingTime.EnsureCompanyAsync();
+        var workingTime = await _workingTime.EnsureCompanyAsync(input.SaturdayIsRestDay);
         output.WorkingTimeCreated = workingTime.Created;
         output.EmployeeGroupCreated = grade.GroupCreated;
         output.EmployeeSubGroupCreated = grade.SubGroupCreated;

@@ -99,6 +99,18 @@
                             (input)="onOrganizationUnitChange($event)" />
                         <div class="v2-field-note">{{ 'GoLiveV2OrganizationUnitHint' | localize }}</div>
                     </div>
+                    <div class="v2-field v2-field-check">
+                        <label class="form-check form-check-custom form-check-solid">
+                            <input
+                                id="v2-saturday-rest"
+                                class="form-check-input"
+                                type="checkbox"
+                                [checked]="saturdayIsRestDay()"
+                                (change)="onSaturdayRestDayChange($event)" />
+                            <span class="form-check-label fw-semibold">{{ 'GoLiveV2SaturdayRestDay' | localize }}</span>
+                        </label>
+                        <div class="v2-field-note">{{ 'GoLiveV2SaturdayRestDayHint' | localize }}</div>
+                    </div>
                 </div>
 
                 <div class="v2-grid">

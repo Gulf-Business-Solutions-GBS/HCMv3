@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
@@ -14,7 +15,8 @@ namespace HCMv3.GoLiveSetupV2;
 
 /// <summary>
 /// The working time the time engine needs before it can work out a single day, as the customer chose it for V2:
-/// planned time with no punches, 08:00 to 17:00, Friday the weekly off.
+/// planned time with no punches, 08:00 to 17:00, Friday the weekly off -- and Saturday a rest day when the company
+/// gives one.
 ///
 /// <para>For the company, once: the four settings records the engine reads (left at their defaults -- no
 /// autorun, no approvals, no roster, security switches off), an empty holiday calendar, a working-day duty and a
@@ -30,6 +32,8 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
     public const string WorkingDutyName = "Normal Day 08:00-17:00";
     public const string WeeklyOffDutyName = "Weekly Off";
     public const string DutyPeriodName = "Saturday-Thursday 08:00-17:00, Friday Off";
+    public const string RestDayDutyName = "Rest Day";
+    public const string RestDayDutyPeriodName = "Sunday-Thursday 08:00-17:00, Saturday Rest, Friday Off";
     public const string TimePolicyName = "Planned Time, No Punches";
     public const string HolidayCalendarName = "Default Holiday Calendar";
 
@@ -105,8 +109,14 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
         _employeeTimePolicyRepository = employeeTimePolicyRepository;
     }
 
-    /// <summary>The company's working time. Returns what every employee is then given, and whether any of it was new.</summary>
-    public async Task<GoLiveV2WorkingTimeIds> EnsureCompanyAsync()
+    /// <summary>
+    /// The company's working time. Returns what every employee is then given, and whether any of it was new.
+    ///
+    /// <para>A rest day is a duty marked as one: the time engine counts every day whose duty is a rest day as Rest
+    /// Days (4009). So a Saturday rest day is its own duty and its own duty period -- Saturday on the rest-day duty,
+    /// Sunday to Thursday working, Friday off -- made only once a company asks for it.</para>
+    /// </summary>
+    public async Task<GoLiveV2WorkingTimeIds> EnsureCompanyAsync(bool saturdayIsRestDay = false)
     {
         var ids = new GoLiveV2WorkingTimeIds();
 
@@ -152,7 +162,7 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
             d => d.Id,
             ids);
 
-        ids.DutyPeriodId = await EnsureAsync(
+        var normalWeekId = await EnsureAsync(
             () => _dutyPeriodRepository.FirstOrDefaultAsync(p => p.NameEn == DutyPeriodName),
             () => _dutyPeriods.CreateOrEdit(new CreateOrEditDutyPeriodDto
             {
@@ -173,6 +183,54 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
             p => p.Id,
             ids);
 
+        ids.DutyPeriodId = normalWeekId;
+        ids.V2DutyPeriodIds.Add(normalWeekId);
+
+        var restWeek = await _dutyPeriodRepository.FirstOrDefaultAsync(p => p.NameEn == RestDayDutyPeriodName);
+        if (restWeek != null)
+        {
+            ids.V2DutyPeriodIds.Add(restWeek.Id);
+        }
+
+        if (saturdayIsRestDay)
+        {
+            var restDutyId = await EnsureAsync(
+                () => _dutyRepository.FirstOrDefaultAsync(d => d.NameEn == RestDayDutyName),
+                () => _duties.CreateOrEdit(new CreateOrEditDutyDto
+                {
+                    Code = "REST-DAY",
+                    NameEn = RestDayDutyName,
+                    NameAr = RestDayDutyName,
+                    StartDate = ValidFrom,
+                    EndDate = OpenEnded,
+                    IsRestDay = true,
+                }),
+                d => d.Id,
+                ids);
+
+            ids.DutyPeriodId = await EnsureAsync(
+                () => _dutyPeriodRepository.FirstOrDefaultAsync(p => p.NameEn == RestDayDutyPeriodName),
+                () => _dutyPeriods.CreateOrEdit(new CreateOrEditDutyPeriodDto
+                {
+                    Code = "SUN-THU-SAT-REST-FRI-OFF",
+                    NameEn = RestDayDutyPeriodName,
+                    NameAr = RestDayDutyPeriodName,
+                    StartDate = ValidFrom,
+                    EndDate = OpenEnded,
+                    HolidayCalendarId = calendarId,
+                    SaturdayDutyId = restDutyId,
+                    SundayDutyId = workingDutyId,
+                    MondayDutyId = workingDutyId,
+                    TuesdayDutyId = workingDutyId,
+                    WednesdayDutyId = workingDutyId,
+                    ThursdayDutyId = workingDutyId,
+                    FridayDutyId = weeklyOffDutyId,
+                }),
+                p => p.Id,
+                ids);
+            ids.V2DutyPeriodIds.Add(ids.DutyPeriodId);
+        }
+
         ids.TimePolicyId = await EnsureAsync(
             () => _timePolicyRepository.FirstOrDefaultAsync(p => p.NameEn == TimePolicyName),
             () => _timePolicies.CreateOrEdit(new CreateOrEditTimePolicyDto
@@ -192,10 +250,18 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
         return ids;
     }
 
-    /// <summary>An employee's duty period and time policy from the joining date -- unless they already have some.</summary>
+    /// <summary>
+    /// An employee's duty period and time policy from the joining date -- unless they already have some. A duty
+    /// period this setup gave them is switched when the company's Saturday choice changes; one set on the Duty
+    /// Period screen is left alone.
+    /// </summary>
     public async Task EnsureEmployeeAsync(Employee employee, GoLiveV2WorkingTimeIds ids)
     {
-        if (!await _employeeDutyPeriodRepository.GetAll().AnyAsync(p => p.EmployeeId == employee.Id))
+        var dutyPeriods = await _employeeDutyPeriodRepository.GetAll()
+            .Where(p => p.EmployeeId == employee.Id)
+            .ToListAsync();
+
+        if (dutyPeriods.Count == 0)
         {
             await _employeeDutyPeriods.CreateOrEdit(new CreateOrEditEmployeeDutyPeriodDto
             {
@@ -204,6 +270,20 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
                 StartDate = employee.JoiningDate,
             });
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+        else
+        {
+            foreach (var other in dutyPeriods.Where(p => p.DutyPeriodId != ids.DutyPeriodId && ids.V2DutyPeriodIds.Contains(p.DutyPeriodId)))
+            {
+                await _employeeDutyPeriods.CreateOrEdit(new CreateOrEditEmployeeDutyPeriodDto
+                {
+                    Id = other.Id,
+                    EmployeeId = employee.Id,
+                    DutyPeriodId = ids.DutyPeriodId,
+                    StartDate = other.StartDate,
+                });
+                await CurrentUnitOfWork.SaveChangesAsync();
+            }
         }
 
         if (!await _employeeTimePolicyRepository.GetAll().AnyAsync(p => p.EmployeeId == employee.Id))
@@ -280,7 +360,11 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
 /// <summary>What each loaded employee is given, and whether the company's working time had to be created.</summary>
 public class GoLiveV2WorkingTimeIds
 {
+    /// <summary>The working week every loaded employee is given: with or without the Saturday rest day.</summary>
     public int DutyPeriodId { get; set; }
+
+    /// <summary>Both working weeks this setup makes, as far as they exist -- the ones a reload may switch between.</summary>
+    public System.Collections.Generic.HashSet<int> V2DutyPeriodIds { get; } = new();
 
     public int TimePolicyId { get; set; }
 

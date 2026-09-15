@@ -172,8 +172,8 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
      */
     readonly gridChanged = computed(
         () =>
-            this.snapshotOf(this.employeeRows(), this.organizationUnitName()) !==
-            (this.loadedSnapshot() ?? this.snapshotOf([], ''))
+            this.snapshotOf(this.employeeRows(), this.organizationUnitName(), this.saturdayIsRestDay()) !==
+            (this.loadedSnapshot() ?? this.snapshotOf([], '', false))
     );
 
     /**
@@ -315,6 +315,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
                 this.results.set(null);
                 this.bankFile.set(null);
                 this.payMonth.set('');
+                this.saturdayIsRestDay.set(false);
                 this.unlockedStep.set(1);
                 this.activeStep.set(1);
                 this.notify.success(this.l('GoLiveV2ClearDone'));
@@ -325,6 +326,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
     /** The company, created as the top organisation unit. Asked for, never guessed. */
     readonly organizationUnitName = signal('');
+
+    /** Whether the company gives Saturday as a rest day (Rest Days, 4009). Friday is always the weekly off. */
+    readonly saturdayIsRestDay = signal(false);
+
+    onSaturdayRestDayChange(event: Event): void {
+        this.saturdayIsRestDay.set((event.target as HTMLInputElement).checked);
+    }
 
     readonly employeeRows = signal<PasteGridRow[]>([]);
     readonly gridIssues = signal<PasteGridIssue[]>([]);
@@ -657,7 +665,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             return;
         }
 
-        const sending = this.snapshotOf(this.employeeRows(), this.organizationUnitName());
+        const sending = this.snapshotOf(this.employeeRows(), this.organizationUnitName(), this.saturdayIsRestDay());
         const items = this.buildEmployeeRows()
             .map((dto, i) => ({ dto, row: i + 1 }))
             .filter((item) => !this.isEmptyRow(item.dto));
@@ -699,6 +707,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
 
                 const input = new GoLiveV2LoadEmployeesInput();
                 input.organizationUnitName = this.organizationUnitName().trim();
+                input.saturdayIsRestDay = this.saturdayIsRestDay();
                 input.payrollAreaName = this.payrollAreaName().trim();
                 input.employees = [item.dto];
 
@@ -1566,8 +1575,13 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             }
 
             if (loaded.employees?.length) {
+                this.saturdayIsRestDay.set(loaded.saturdayIsRestDay);
                 this.loadedSnapshot.set(
-                    this.snapshotOf(loaded.employees.map((e) => this.toGridRow(e)), loaded.organizationUnitName ?? '')
+                    this.snapshotOf(
+                        loaded.employees.map((e) => this.toGridRow(e)),
+                        loaded.organizationUnitName ?? '',
+                        loaded.saturdayIsRestDay
+                    )
                 );
                 this.unlockedStep.update((step) => Math.max(step, 2));
             }
@@ -1644,7 +1658,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
      * rows dropped, employees in code order -- so re-sorting the grid, or typing 500 where 500.000 was, is not
      * a change.
      */
-    private snapshotOf(rows: PasteGridRow[], company: string): string {
+    private snapshotOf(rows: PasteGridRow[], company: string, saturdayIsRestDay: boolean): string {
         const employees = rows
             .filter((row) => !isRowEmpty(row))
             .map((row) => {
@@ -1669,7 +1683,7 @@ export class GoLiveV2Component extends AppComponentBase implements OnInit, OnDes
             })
             .sort((a, b) => String(a[0]).localeCompare(String(b[0])));
 
-        return JSON.stringify({ company: company.trim().toLowerCase(), employees });
+        return JSON.stringify({ company: company.trim().toLowerCase(), saturdayIsRestDay, employees });
     }
 
     /** A blank cell is "not paid", sent as nothing -- never as 0, which the server would read the same way anyway. */

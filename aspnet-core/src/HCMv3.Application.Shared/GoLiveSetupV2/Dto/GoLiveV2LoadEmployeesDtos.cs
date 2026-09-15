@@ -21,6 +21,12 @@ public class GoLiveV2LoadEmployeesInput
     [StringLength(SimpleLookupConsts.MaxNameLength)]
     public string PayrollAreaName { get; set; }
 
+    /// <summary>
+    /// Whether the company gives Saturday as a rest day (counted as Rest Days, 4009). Friday is always the weekly
+    /// off. Every loaded employee gets the matching working week.
+    /// </summary>
+    public bool SaturdayIsRestDay { get; set; }
+
     public List<GoLiveV2EmployeeRowDto> Employees { get; set; } = new();
 }
 
@@ -86,6 +92,9 @@ public class GoLiveV2LoadedEmployeesOutput
 {
     /// <summary>Null until a load has put someone in an organisation unit.</summary>
     public string OrganizationUnitName { get; set; }
+
+    /// <summary>Whether the employees were loaded with Saturday as a rest day -- the most of them, if they differ.</summary>
+    public bool SaturdayIsRestDay { get; set; }
 
     public List<GoLiveV2EmployeeRowDto> Employees { get; set; } = new();
 }

@@ -29,6 +29,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
     private readonly IRepository<OrganizationUnit, long> _orgUnitRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
     private readonly IRepository<TimeTransfer> _timeTransferRepository;
+    private readonly IRepository<EmployeeDutyPeriod> _employeeDutyPeriodRepository;
 
     public GoLiveV2LoadedEmployeesReader(
         IEmployeePayrollAreaResolver payrollAreaResolver,
@@ -38,7 +39,8 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
         IRepository<OrganizationUnit, long> orgUnitRepository,
         IRepository<EmployeeBank> employeeBankRepository,
-        IRepository<TimeTransfer> timeTransferRepository)
+        IRepository<TimeTransfer> timeTransferRepository,
+        IRepository<EmployeeDutyPeriod> employeeDutyPeriodRepository)
     {
         _payrollAreaResolver = payrollAreaResolver;
         _employeeRepository = employeeRepository;
@@ -48,6 +50,7 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
         _orgUnitRepository = orgUnitRepository;
         _employeeBankRepository = employeeBankRepository;
         _timeTransferRepository = timeTransferRepository;
+        _employeeDutyPeriodRepository = employeeDutyPeriodRepository;
     }
 
     public async Task<GoLiveV2LoadedEmployeesOutput> ReadAsync(string payrollAreaName)
@@ -72,6 +75,14 @@ public class GoLiveV2LoadedEmployeesReader : ITransientDependency
             .ToListAsync();
 
         output.OrganizationUnitName = await CompanyNameAsync(ids);
+
+        // Saturday a rest day when most of the employees are on the working week that makes it one.
+        var onRestWeek = await _employeeDutyPeriodRepository.GetAll()
+            .Where(p => ids.Contains(p.EmployeeId) && p.DutyPeriod.NameEn == GoLiveV2WorkingTime.RestDayDutyPeriodName)
+            .Select(p => p.EmployeeId)
+            .Distinct()
+            .CountAsync();
+        output.SaturdayIsRestDay = onRestWeek * 2 > ids.Count;
 
         // The latest pay record of each, and its lines by wage code.
         var pays = (await _basicPayRepository.GetAll()

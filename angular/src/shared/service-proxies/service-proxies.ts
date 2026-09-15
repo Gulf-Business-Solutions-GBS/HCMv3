@@ -263079,6 +263079,7 @@ export class GoLiveV2LoadedEmployeesOutput implements IGoLiveV2LoadedEmployeesOu
 export interface IGoLiveV2LoadedEmployeesOutput {
     organizationUnitName: string | undefined;
     employees: GoLiveV2EmployeeRowDto[] | undefined;
+    saturdayIsRestDay!: boolean;
 }
 
 export enum GoLiveV2NextStep {
@@ -263094,6 +263095,7 @@ export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
     employees!: number;
 
     constructor(data?: IGoLiveV2PayeeBankDto) {
+            this.saturdayIsRestDay = _data["saturdayIsRestDay"];
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263113,6 +263115,7 @@ export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
 
     static fromJS(data: any): GoLiveV2PayeeBankDto {
         data = typeof data === 'object' ? data : {};
+        data["saturdayIsRestDay"] = this.saturdayIsRestDay;
         let result = new GoLiveV2PayeeBankDto();
         result.init(data);
         return result;
@@ -263125,6 +263128,7 @@ export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
         data["code"] = this.code;
         data["employees"] = this.employees;
         return data;
+    saturdayIsRestDay: boolean;
     }
 }
 
@@ -263238,6 +263242,7 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
     }
 
     init(_data?: any) {
+    saturdayIsRestDay!: boolean;
         if (_data) {
             this.employeeId = _data["employeeId"];
             this.employeeCode = _data["employeeCode"];
@@ -263252,6 +263257,7 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
     static fromJS(data: any): GoLiveV2PayrollResultRowDto {
         data = typeof data === 'object' ? data : {};
         let result = new GoLiveV2PayrollResultRowDto();
+            this.saturdayIsRestDay = _data["saturdayIsRestDay"];
         result.init(data);
         return result;
     }
@@ -263270,6 +263276,7 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
 }
 
 export interface IGoLiveV2PayrollResultRowDto {
+        data["saturdayIsRestDay"] = this.saturdayIsRestDay;
     employeeId: number;
     employeeCode: string | undefined;
     employeeName: string | undefined;
@@ -263281,6 +263288,7 @@ export interface IGoLiveV2PayrollResultRowDto {
 
 export class GoLiveV2PayrollResultsInput implements IGoLiveV2PayrollResultsInput {
     payDate!: DateTime;
+    saturdayIsRestDay: boolean;
     payrollAreaName!: string;
 
     constructor(data?: IGoLiveV2PayrollResultsInput) {
