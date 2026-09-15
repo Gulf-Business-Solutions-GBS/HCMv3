@@ -1,0 +1,69 @@
+<div class="px-3 py-2">
+    @if ('Pages.PersonnelAdministration.EmployeeBasicPayDetails.Create' | permission) {
+        <div class="d-flex justify-content-end mb-2">
+            <button type="button" (click)="createLine()" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus"></i>
+                {{ 'Add' | localize }}
+            </button>
+        </div>
+    }
+    <p-tieredMenu #linesMenu [model]="activeMenuItems()" [popup]="true" appendTo="body" />
+    <div [busyIf]="loading()">
+        <p-table [value]="lines()" dataKey="id" size="small" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>
+                    <th
+                        style="width: 130px"
+                        [hidden]="
+                            !(
+                                [
+                                    'Pages.PersonnelAdministration.EmployeeBasicPayDetails.Edit',
+                                    'Pages.PersonnelAdministration.EmployeeBasicPayDetails.Delete'
+                                ] | permissionAny
+                            )
+                        ">
+                        {{ 'Actions' | localize }}
+                    </th>
+                    <th>{{ 'WageTypeId' | localize }}</th>
+                    <th>{{ 'Amount' | localize }}</th>
+                    <th>{{ 'CurrencyId' | localize }}</th>
+                    <th>{{ 'DependantUnit' | localize }}</th>
+                    <th>{{ 'DependantNumber' | localize }}</th>
+                    <th>{{ 'DependantWageTypeId' | localize }}</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-line="$implicit">
+                <tr>
+                    <td
+                        [hidden]="
+                            !(
+                                [
+                                    'Pages.PersonnelAdministration.EmployeeBasicPayDetails.Edit',
+                                    'Pages.PersonnelAdministration.EmployeeBasicPayDetails.Delete'
+                                ] | permissionAny
+                            )
+                        ">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary btn-sm dropdown-toggle"
+                            (click)="showMenu($event, line, linesMenu)">
+                            <i class="fa fa-cog"></i>
+                            {{ 'Actions' | localize }}
+                        </button>
+                    </td>
+                    <td>{{ line.wageTypeName }}</td>
+                    <td>{{ line.amount }}</td>
+                    <td>{{ line.currencyName }}</td>
+                    <td>{{ dependantUnitName(line.dependantUnit) }}</td>
+                    <td>{{ line.dependantNumber }}</td>
+                    <td>{{ line.dependantWageTypeName }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        @if (loaded() && lines().length === 0) {
+            <div class="primeng-no-data">{{ 'NoData' | localize }}</div>
+        }
+    </div>
+</div>
+
+<createOrEditEmployeeBasicPayDetailModal #createOrEditDetailModal (modalSave)="onLineSaved()" />

@@ -49,6 +49,31 @@ public class ReferenceDataSeeder_Tests : AppTestBase
         wageTypes.Where(w => w.FixedDays != 26).Select(w => w.Code).ShouldBeEmpty();
     }
 
+    /// <summary>Every arrear wage type names the wage type it is the arrear of, and that wage type is in the pack.</summary>
+    [Fact]
+    public void Should_Link_Every_Arrear_Wage_Type_To_Its_Source()
+    {
+        var wageTypes = _seeder.GetPack("payroll").WageTypes;
+        var codes = wageTypes.Select(w => w.Code).ToHashSet();
+
+        wageTypes.Where(w => w.IncludeInArrearPay && (string.IsNullOrWhiteSpace(w.ArrearSourceCode) || !codes.Contains(w.ArrearSourceCode)))
+            .Select(w => w.Code).ShouldBeEmpty();
+    }
+
+    /// <summary>Seeded, the arrear wage types point at their sources in the database too.</summary>
+    [Fact]
+    public async Task Should_Seed_The_Arrear_Source_Links()
+    {
+        await _seeder.SeedPackAsync("payroll", TenantId);
+
+        UsingDbContext(context => context.WageTypes
+                .Where(w => w.TenantId == TenantId && w.IncludeInArrearPay && w.ArrearSourceWageTypeId == null)
+                .Select(w => w.Code).ToList())
+            .ShouldBeEmpty();
+        UsingDbContext(context => context.WageTypes.Where(w => w.TenantId == TenantId && w.Code == "1041").Select(w => w.ArrearSourceWageType.Code).Single())
+            .ShouldBe("1040");
+    }
+
     /// <summary>Basic Salary, the wage type the day counts are taken from, reaches a new tenant on fixed 26 days.</summary>
     [Fact]
     public async Task Should_Seed_Basic_Salary_On_Fixed_26_Days()

@@ -193,7 +193,7 @@
                                     (ngModelChange)="updateField('arrearSourceWageTypeId', $event)">
                                     <option [ngValue]="undefined"></option>
                                     @for (wt of arrearSourceWageTypes(); track wt.id) {
-                                        <option [ngValue]="wt.id">{{ wt.nameEn }}</option>
+                                        <option [ngValue]="wt.id">{{ wt.code }} - {{ wt.nameEn }}</option>
                                     }
                                 </select>
                             </div>

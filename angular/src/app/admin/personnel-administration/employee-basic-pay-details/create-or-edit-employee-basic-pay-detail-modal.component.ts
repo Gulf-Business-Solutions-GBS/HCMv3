@@ -40,6 +40,8 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeBasicPayDetailDto>(new CreateOrEditEmployeeBasicPayDetailDto());
+    /** Set when opened from a basic pay row: the header is fixed, so its dropdown is hidden. */
+    readonly presetEmployeeBasicPayId = signal<number | undefined>(undefined);
 
     readonly employeeBasicPays = signal<EmployeeBasicPayDto[]>([]);
     readonly wageTypes = signal<WageTypeDto[]>([]);
@@ -50,12 +52,15 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
         { value: DependantUnit.Percentage, name: 'Percentage' },
     ];
 
-    show(id?: number): void {
+    show(id?: number, employeeBasicPayId?: number): void {
         this.active.set(true);
+        this.presetEmployeeBasicPayId.set(employeeBasicPayId || undefined);
 
-        this._employeeBasicPaysService
-            .getAll(new GetAllEmployeeBasicPaysInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
-            .subscribe((result) => this.employeeBasicPays.set(result.items));
+        if (!this.presetEmployeeBasicPayId()) {
+            this._employeeBasicPaysService
+                .getAll(new GetAllEmployeeBasicPaysInput({ employeeId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+                .subscribe((result) => this.employeeBasicPays.set(result.items));
+        }
 
         this._wageTypesService
             .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: undefined, filter: undefined }))
@@ -70,6 +75,7 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
             record.amount = 0;
             record.dependantNumber = 0;
             record.dependantUnit = DependantUnit.None;
+            record.employeeBasicPayId = this.presetEmployeeBasicPayId();
             this.record.set(record);
             this.modal().show();
         } else {
@@ -81,7 +87,8 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
     }
 
     onShown(): void {
-        document.getElementById('EmployeeBasicPayDetail_EmployeeBasicPayId')?.focus();
+        const firstFieldId = this.presetEmployeeBasicPayId() ? 'EmployeeBasicPayDetail_WageTypeId' : 'EmployeeBasicPayDetail_EmployeeBasicPayId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {
@@ -90,7 +97,7 @@ export class CreateOrEditEmployeeBasicPayDetailModalComponent extends AppCompone
             .createOrEdit(this.record())
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
+                this.notify.success(this.l('SuccessfullySaved'));
                 this.close();
                 this.modalSave.emit();
             });

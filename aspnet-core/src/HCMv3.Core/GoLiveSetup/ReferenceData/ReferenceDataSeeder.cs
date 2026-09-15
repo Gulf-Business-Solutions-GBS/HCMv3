@@ -298,7 +298,7 @@ public class ReferenceDataSeeder : HCMv3DomainServiceBase, IReferenceDataSeeder
     /// "Basic Pay" still has the row. An existing code is never touched -- a tenant may have tuned its
     /// payroll order or flags, and the seeder must not undo that.
     ///
-    /// <para>Two passes, because 162 of these point at another wage type as their arrear source and the
+    /// <para>Two passes, because every arrear wage type in the pack points at another wage type as its arrear source, and the
     /// target may be inserted later in the same run. The links are only set on rows this run created.</para>
     /// </summary>
     private async Task<ReferenceDataSeedCount> SeedWageTypesAsync(

@@ -11,6 +11,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditWageTypeModalComponent } from './create-or-edit-wage-type-modal.component';
+import { WageTypeLeaveLinesComponent } from './wage-type-leave-lines.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -29,6 +30,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         TieredMenu,
         Tooltip,
         CreateOrEditWageTypeModalComponent,
+        WageTypeLeaveLinesComponent,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,

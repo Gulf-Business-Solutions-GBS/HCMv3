@@ -12,6 +12,8 @@
         <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
             <p-table
                 #dataTable
+                dataKey="id"
+                [rowTrackBy]="trackById"
                 sortMode="multiple"
                 (onLazyLoad)="getRecords($event)"
                 [value]="primengTableHelper.records()"
@@ -21,6 +23,7 @@
                 [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template #header>
                     <tr>
+                        <th style="width: 3rem" [hidden]="!('Pages.PersonnelAdministration.EmployeeBasicPayDetails' | permission)"></th>
                         <th
                             style="width: 130px"
                             [hidden]="
@@ -46,8 +49,17 @@
                         <th>{{ 'PayInterval' | localize }}</th>
                     </tr>
                 </ng-template>
-                <ng-template #body let-record="$implicit">
+                <ng-template #body let-record="$implicit" let-expanded="expanded">
                     <tr>
+                        <td style="width: 3rem" [hidden]="!('Pages.PersonnelAdministration.EmployeeBasicPayDetails' | permission)">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-icon btn-light"
+                                [title]="(expanded ? 'Close' : 'Details') | localize"
+                                [pRowToggler]="record">
+                                <i [class]="expanded ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+                            </button>
+                        </td>
                         <td
                             [hidden]="
                                 !(
@@ -70,6 +82,14 @@
                         <td>{{ record.amount }}</td>
                         <td>{{ record.payType }}</td>
                         <td>{{ record.payInterval }}</td>
+                    </tr>
+                </ng-template>
+                <!-- Master-detail: the wage type lines of this basic pay record, edited in place. -->
+                <ng-template #expandedrow let-record="$implicit">
+                    <tr>
+                        <td colspan="7" class="p-0">
+                            <employee-basic-pay-detail-lines [employeeBasicPayId]="record.id" (changed)="reloadPage()" />
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>

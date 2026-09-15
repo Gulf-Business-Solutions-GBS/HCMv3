@@ -16,8 +16,7 @@ namespace HCMv3.PersonnelAdministration;
 /// IncludeInBasicPay, further filtered by the employee's EmployeeSubGroup wage-type whitelist) is an
 /// Angular-side/lookup-endpoint concern, not ported as an entity member.</description></item>
 /// <item><description>The legacy cascade that recomputes the parent <c>EmployeeBasicPay.Amount</c> total on
-/// save/delete of a detail row is NOT ported (same cross-entity-cascade omission approach as Wave 1's
-/// <c>EmployeeAbsAdjustment</c>/<c>EmployeeAbsQuotaForfeit</c>).</description></item>
+/// save/delete of a detail row lives in <c>EmployeeBasicPayDetailsAppService</c>, not on the entity.</description></item>
 /// </list>
 /// </summary>
 public class EmployeeBasicPayDetail : FullAuditedEntity, IMustHaveTenant

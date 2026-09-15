@@ -24,26 +24,28 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 mb-5">
-                                <label class="form-label required" for="EmployeeBasicPayDetail_EmployeeBasicPayId">{{ 'EmployeeBasicPayId' | localize }}</label>
-                                <select
-                                    id="EmployeeBasicPayDetail_EmployeeBasicPayId"
-                                    #employeeBasicPayIdInput="ngModel"
-                                    class="form-select"
-                                    name="EmployeeBasicPayId"
-                                    [ngModel]="record().employeeBasicPayId"
-                                    (ngModelChange)="updateField('employeeBasicPayId', $event)"
-                                    required>
-                                    <option [ngValue]="undefined"></option>
-                                    @for (basicPay of employeeBasicPays(); track basicPay.id) {
-                                        <option [ngValue]="basicPay.id">
-                                            {{ basicPay.employeeCode }} - {{ basicPay.employeeFullNameEn }} ({{ basicPay.startDate | luxonFormat: 'yyyy-MM-dd' }} - {{ basicPay.endDate | luxonFormat: 'yyyy-MM-dd' }})
-                                        </option>
-                                    }
-                                </select>
-                                <validation-messages [formCtrl]="employeeBasicPayIdInput" />
-                            </div>
-                            <div class="col-md-6 mb-5">
+                            @if (!presetEmployeeBasicPayId()) {
+                                <div class="col-md-6 mb-5">
+                                    <label class="form-label required" for="EmployeeBasicPayDetail_EmployeeBasicPayId">{{ 'EmployeeBasicPayId' | localize }}</label>
+                                    <select
+                                        id="EmployeeBasicPayDetail_EmployeeBasicPayId"
+                                        #employeeBasicPayIdInput="ngModel"
+                                        class="form-select"
+                                        name="EmployeeBasicPayId"
+                                        [ngModel]="record().employeeBasicPayId"
+                                        (ngModelChange)="updateField('employeeBasicPayId', $event)"
+                                        required>
+                                        <option [ngValue]="undefined"></option>
+                                        @for (basicPay of employeeBasicPays(); track basicPay.id) {
+                                            <option [ngValue]="basicPay.id">
+                                                {{ basicPay.employeeCode }} - {{ basicPay.employeeFullNameEn }} ({{ basicPay.startDate | luxonFormat: 'yyyy-MM-dd' }} - {{ basicPay.endDate | luxonFormat: 'yyyy-MM-dd' }})
+                                            </option>
+                                        }
+                                    </select>
+                                    <validation-messages [formCtrl]="employeeBasicPayIdInput" />
+                                </div>
+                            }
+                            <div [class]="presetEmployeeBasicPayId() ? 'col-md-12 mb-5' : 'col-md-6 mb-5'">
                                 <label class="form-label required" for="EmployeeBasicPayDetail_WageTypeId">{{ 'WageTypeId' | localize }}</label>
                                 <select
                                     id="EmployeeBasicPayDetail_WageTypeId"

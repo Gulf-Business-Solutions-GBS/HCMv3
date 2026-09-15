@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.UI;
@@ -154,5 +155,46 @@ public class EmployeeBasicPayDetailsAppService_Tests : AppTestBase
                 CurrencyId = currency.Id,
                 Amount = 500
             }));
+    }
+
+    [Fact]
+    public async Task Should_Keep_The_Basic_Pay_Amount_At_The_Total_Of_Its_Lines()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BPD300");
+        var basic = CreateTestWageType("WT300");
+        var housing = CreateTestWageType("WT301");
+        var currency = CreateTestCurrency("CUR300");
+        var basicPayId = await CreateTestBasicPayAsync(employee.Id, new DateTime(2024, 1, 1));
+
+        //Act & Assert: two lines add up
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+        {
+            EmployeeBasicPayId = basicPayId, WageTypeId = basic.Id, CurrencyId = currency.Id, Amount = 400
+        });
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+        {
+            EmployeeBasicPayId = basicPayId, WageTypeId = housing.Id, CurrencyId = currency.Id, Amount = 150.25
+        });
+        (await HeaderAmountAsync(employee.Id)).ShouldBe(550.25);
+
+        //Act & Assert: an edited line changes the total
+        var lines = await _appService.GetAll(new GetAllEmployeeBasicPayDetailsInput { EmployeeBasicPayId = basicPayId });
+        var housingLine = lines.Items.Single(l => l.WageTypeId == housing.Id);
+        await _appService.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+        {
+            Id = housingLine.Id, EmployeeBasicPayId = basicPayId, WageTypeId = housing.Id, CurrencyId = currency.Id, Amount = 100
+        });
+        (await HeaderAmountAsync(employee.Id)).ShouldBe(500);
+
+        //Act & Assert: a deleted line leaves the total
+        await _appService.Delete(new EntityDto(housingLine.Id));
+        (await HeaderAmountAsync(employee.Id)).ShouldBe(400);
+    }
+
+    private async Task<double> HeaderAmountAsync(int employeeId)
+    {
+        var result = await _basicPaysAppService.GetAll(new GetAllEmployeeBasicPaysInput { EmployeeId = employeeId });
+        return result.Items.Single().Amount;
     }
 }

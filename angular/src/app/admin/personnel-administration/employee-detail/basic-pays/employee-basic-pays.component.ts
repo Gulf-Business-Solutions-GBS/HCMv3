@@ -12,6 +12,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeBasicPayModalComponent } from './create-or-edit-employee-basic-pay-modal.component';
+import { EmployeeBasicPayDetailLinesComponent } from './employee-basic-pay-detail-lines.component';
 
 @Component({
     selector: 'employee-basic-pays',
@@ -26,6 +27,7 @@ import { CreateOrEditEmployeeBasicPayModalComponent } from './create-or-edit-emp
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeBasicPayModalComponent,
+        EmployeeBasicPayDetailLinesComponent,
     ],
 })
 export class EmployeeBasicPaysComponent extends AppComponentBase {
@@ -38,6 +40,12 @@ export class EmployeeBasicPaysComponent extends AppComponentBase {
     readonly paginator = viewChild<Paginator>('paginator');
 
     readonly activeMenuItems = signal<MenuItem[]>([]);
+
+    /**
+     * Track rows by id so reloading the grid (e.g. after a detail line changes the header amount)
+     * reuses the row views: expanded rows stay open and their detail lines are not re-fetched twice.
+     */
+    readonly trackById = (_index: number, record: EmployeeBasicPayDto) => record.id;
 
     constructor() {
         super();

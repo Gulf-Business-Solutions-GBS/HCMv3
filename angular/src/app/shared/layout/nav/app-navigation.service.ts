@@ -1921,12 +1921,6 @@ export class AppNavigationService {
                         '/app/admin/wage-accounts'
                     ),
                     new AppMenuItem(
-                        'WageTypeLeaves',
-                        'Pages.PayrollManagement.WageTypeLeaves',
-                        'flaticon-list-3',
-                        '/app/admin/wage-type-leaves'
-                    ),
-                    new AppMenuItem(
                         'WageTypeSecurityRoles',
                         'Pages.PayrollManagement.WageTypeSecurityRoles',
                         'flaticon-list-3',
@@ -2315,12 +2309,6 @@ export class AppNavigationService {
                         'Pages.PersonnelAdministration.News',
                         'flaticon-paper-plane',
                         '/app/admin/announcements'
-                    ),
-                    new AppMenuItem(
-                        'EmployeeBasicPayDetails',
-                        'Pages.PersonnelAdministration.EmployeeBasicPayDetails',
-                        'flaticon-list-3',
-                        '/app/admin/employee-basic-pay-details'
                     ),
                     new AppMenuItem(
                         'EmployeeLoanExemptions',

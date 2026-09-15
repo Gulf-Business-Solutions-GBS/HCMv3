@@ -30,6 +30,7 @@
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading()">
                         <p-table
                             #dataTable
+                            dataKey="id"
                             sortMode="multiple"
                             (onLazyLoad)="getWageTypes($event)"
                             [value]="primengTableHelper.records()"
@@ -42,6 +43,7 @@
                             [resizableColumns]="primengTableHelper.resizableColumns">
                             <ng-template #header>
                                 <tr>
+                                    <th style="width: 3rem"></th>
                                     <th
                                         style="width: 130px"
                                         [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
@@ -55,6 +57,7 @@
                                         {{ 'Name' | localize }}
                                         <p-sortIcon field="nameEn" />
                                     </th>
+                                    <th style="min-width: 180px">{{ 'ArrearSourceWageTypeId' | localize }}</th>
                                     <th style="min-width: 130px">{{ 'BillingType' | localize }}</th>
                                     <th style="min-width: 150px">{{ 'BillingMethod' | localize }}</th>
                                     <th style="min-width: 100px" pSortableColumn="rate">
@@ -68,8 +71,19 @@
                                     <th style="min-width: 90px">{{ 'Status' | localize }}</th>
                                 </tr>
                             </ng-template>
-                            <ng-template #body let-record="$implicit">
+                            <ng-template #body let-record="$implicit" let-expanded="expanded">
                                 <tr>
+                                    <td style="width: 3rem">
+                                        @if ('Pages.PayrollManagement.WageTypeLeaves' | permission) {
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-icon btn-light"
+                                                [pTooltip]="'WageTypeLeaves' | localize"
+                                                [pRowToggler]="record">
+                                                <i [class]="expanded ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+                                            </button>
+                                        }
+                                    </td>
                                     <td
                                         style="width: 130px"
                                         [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
@@ -83,12 +97,20 @@
                                     </td>
                                     <td style="min-width: 100px">{{ record.code }}</td>
                                     <td style="min-width: 180px">{{ record.nameEn }}</td>
+                                    <td style="min-width: 180px">{{ record.arrearSourceWageTypeName }}</td>
                                     <td style="min-width: 130px">{{ record.billingType }}</td>
                                     <td style="min-width: 150px">{{ record.billingMethod }}</td>
                                     <td style="min-width: 100px">{{ record.rate }}</td>
                                     <td style="min-width: 100px">{{ record.payrollOrder }}</td>
                                     <td style="min-width: 90px">
                                         <i class="fa" [class.fa-check]="record.status" [class.text-success]="record.status" [class.fa-times]="!record.status" [class.text-danger]="!record.status"></i>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template #expandedrow let-record="$implicit">
+                                <tr>
+                                    <td colspan="10">
+                                        <wageTypeLeaveLines [wageTypeId]="record.id" />
                                     </td>
                                 </tr>
                             </ng-template>
