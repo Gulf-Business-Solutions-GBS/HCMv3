@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using HCMv3.AccommodationManagement;
+using HCMv3.AiAgent;
 using HCMv3.Authorization.Delegation;
 using HCMv3.Authorization.Roles;
 using HCMv3.Authorization.Session;
@@ -791,6 +792,13 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<WorkflowComment> WorkflowComments { get; set; }
 
+    // AI assistant (feat/ai-agent) -- see AiAgent/ROLLBACK.md before removing.
+    public virtual DbSet<AiConversation> AiConversations { get; set; }
+
+    public virtual DbSet<AiMessage> AiMessages { get; set; }
+
+    public virtual DbSet<AiPendingAction> AiPendingActions { get; set; }
+
     public virtual DbSet<RequestLog> RequestLogs { get; set; }
 
     public virtual DbSet<WorkFlowApprover> WorkFlowApprovers { get; set; }
@@ -1305,6 +1313,35 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
+
+        // AI assistant (feat/ai-agent). The conversation list is "my conversations, newest first"; the
+        // thread and the pending-action card are both read per conversation. Messages and actions are
+        // never deleted with their conversation (Restrict): a deleted conversation is soft-deleted, and the
+        // record of what data the model was shown must outlive the user tidying their chat list.
+        modelBuilder.Entity<AiConversation>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.UserId, e.LastMessageTime });
+        });
+
+        modelBuilder.Entity<AiMessage>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.ConversationId });
+
+            b.HasOne(e => e.Conversation)
+                .WithMany(e => e.Messages)
+                .HasForeignKey(e => e.ConversationId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<AiPendingAction>(b =>
+        {
+            b.HasIndex(e => new { e.TenantId, e.ConversationId, e.Status });
+
+            b.HasOne(e => e.Conversation)
+                .WithMany()
+                .HasForeignKey(e => e.ConversationId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
         // Careers portal (wave R2): the Applicant <-> ABP User link that replaced the legacy plaintext
         // Applicant.UserName / Applicant.Password columns.

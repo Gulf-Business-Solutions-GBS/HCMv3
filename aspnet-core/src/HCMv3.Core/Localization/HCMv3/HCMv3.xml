@@ -6100,6 +6100,14 @@
     <text name="Everyone">Everyone</text>
 
     <text name="EssMyMobileDevices">My Mobile Devices</text>
+    <!-- AI Assistant (feat/ai-agent) -->
+    <text name="EssAiAgent">AI Assistant</text>
+    <text name="AiAgentModelUnavailable">The AI assistant is not available right now. Please try again later.</text>
+    <text name="AiAgentModelTimedOut">The AI assistant took too long to answer. Please try again.</text>
+    <text name="AiAgentCouldNotComplete">I couldn't finish answering that. Please try asking in a different way.</text>
+    <text name="AiAgentEmptyReply">I don't have an answer for that. Please try rephrasing your question.</text>
+    <text name="AiAgentConversationNotFound">Conversation not found.</text>
+    <text name="AiAgentMessageRequired">Please type a message.</text>
     <text name="MobileDeviceIdIsRequired">Enter the device ID.</text>
     <text name="MobileDeviceTypeIsRequired">Enter what the device is, for example iPhone 14.</text>
     <text name="ThisDeviceIsAlreadyRegisteredForYou">You have already registered this device.</text>

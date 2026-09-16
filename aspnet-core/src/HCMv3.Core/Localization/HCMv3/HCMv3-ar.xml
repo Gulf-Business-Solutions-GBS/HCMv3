@@ -5942,6 +5942,14 @@
     <text name="Scheduled">مجدول</text>
     <text name="Everyone">الجميع</text>
     <text name="EssMyMobileDevices">أجهزتي المحمولة</text>
+    <!-- AI Assistant (feat/ai-agent) -->
+    <text name="EssAiAgent">المساعد الذكي</text>
+    <text name="AiAgentModelUnavailable">المساعد الذكي غير متاح حالياً. يرجى المحاولة لاحقاً.</text>
+    <text name="AiAgentModelTimedOut">استغرق المساعد الذكي وقتاً طويلاً للرد. يرجى المحاولة مرة أخرى.</text>
+    <text name="AiAgentCouldNotComplete">تعذّر إكمال الإجابة. يرجى إعادة صياغة السؤال.</text>
+    <text name="AiAgentEmptyReply">لا تتوفر إجابة على ذلك. يرجى إعادة صياغة السؤال.</text>
+    <text name="AiAgentConversationNotFound">المحادثة غير موجودة.</text>
+    <text name="AiAgentMessageRequired">يرجى كتابة رسالة.</text>
     <text name="MobileDeviceIdIsRequired">أدخل معرّف الجهاز.</text>
     <text name="MobileDeviceTypeIsRequired">اذكر نوع الجهاز، مثل iPhone 14.</text>
     <text name="ThisDeviceIsAlreadyRegisteredForYou">سبق أن سجلت هذا الجهاز.</text>
