@@ -1,4 +1,6 @@
-import { Component, effect, inject, input, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, OnInit, effect, inject, input, signal, untracked, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { EmployeeBasicPayDto, EmployeeBasicPaysServiceProxy, GetAllEmployeeBasicPaysInput } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
@@ -12,8 +14,15 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { CreateOrEditEmployeeBasicPayModalComponent } from './create-or-edit-employee-basic-pay-modal.component';
-import { EmployeeBasicPayDetailLinesComponent } from './employee-basic-pay-detail-lines.component';
+import { EmployeeBasicPayDetailViewComponent } from './employee-basic-pay-detail-view.component';
 
+/** Query parameter holding the basic pay in view; the fragment stays the profile's section id. */
+const BASIC_PAY_QUERY_PARAM = 'basicPay';
+
+/**
+ * Basic Pays section of the employee profile: the list, or the detail view of one basic pay.
+ * The open basic pay is kept in `?basicPay=` so a refresh or a shared link lands on it.
+ */
 @Component({
     selector: 'employee-basic-pays',
     templateUrl: './employee-basic-pays.component.html',
@@ -27,11 +36,14 @@ import { EmployeeBasicPayDetailLinesComponent } from './employee-basic-pay-detai
         PermissionPipe,
         PermissionAnyPipe,
         CreateOrEditEmployeeBasicPayModalComponent,
-        EmployeeBasicPayDetailLinesComponent,
+        EmployeeBasicPayDetailViewComponent,
     ],
 })
-export class EmployeeBasicPaysComponent extends AppComponentBase {
+export class EmployeeBasicPaysComponent extends AppComponentBase implements OnInit {
     private _service = inject(EmployeeBasicPaysServiceProxy);
+    private _route = inject(ActivatedRoute);
+    private _router = inject(Router);
+    private _destroyRef = inject(DestroyRef);
 
     readonly employeeId = input<number>();
 
@@ -41,18 +53,23 @@ export class EmployeeBasicPaysComponent extends AppComponentBase {
 
     readonly activeMenuItems = signal<MenuItem[]>([]);
 
-    /**
-     * Track rows by id so reloading the grid (e.g. after a detail line changes the header amount)
-     * reuses the row views: expanded rows stay open and their detail lines are not re-fetched twice.
-     */
-    readonly trackById = (_index: number, record: EmployeeBasicPayDto) => record.id;
+    /** The basic pay shown in the detail view; undefined shows the list. */
+    readonly selectedBasicPayId = signal<number | undefined>(undefined);
 
     constructor() {
         super();
         effect(() => {
-            if (this.employeeId()) {
+            if (this.employeeId() && !untracked(() => this.selectedBasicPayId())) {
                 this.reloadPage();
             }
+        });
+    }
+
+    ngOnInit(): void {
+        // Browser back/forward, a refresh and a shared link all land on the basic pay named in the URL.
+        this._route.queryParamMap.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((params) => {
+            const id = Number(params.get(BASIC_PAY_QUERY_PARAM));
+            this.selectedBasicPayId.set(id > 0 ? id : undefined);
         });
     }
 
@@ -95,6 +112,15 @@ export class EmployeeBasicPaysComponent extends AppComponentBase {
         this.createOrEditModal()?.show(this.employeeId());
     }
 
+    openDetail(record: EmployeeBasicPayDto): void {
+        this.setSelectedBasicPay(record.id);
+    }
+
+    /** Back from the detail view. The list is rebuilt, so its (onLazyLoad) reloads it with any header or line changes. */
+    closeDetail(): void {
+        this.setSelectedBasicPay(undefined);
+    }
+
     showMenu(event: Event, record: EmployeeBasicPayDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -107,7 +133,7 @@ export class EmployeeBasicPaysComponent extends AppComponentBase {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal()?.show(this.employeeId(), record.id),
+                command: () => this.openDetail(record),
             });
         }
 
@@ -130,6 +156,19 @@ export class EmployeeBasicPaysComponent extends AppComponentBase {
                     this.notify.success(this.l('SuccessfullyDeleted'));
                 });
             }
+        });
+    }
+
+    private setSelectedBasicPay(id: number | undefined): void {
+        this.selectedBasicPayId.set(id);
+        // preserveFragment keeps the profile on this section; replaceUrl matches how the profile treats
+        // moving around inside one record (not a separate place for the back button to visit).
+        this._router.navigate([], {
+            relativeTo: this._route,
+            queryParams: { [BASIC_PAY_QUERY_PARAM]: id ?? null },
+            queryParamsHandling: 'merge',
+            preserveFragment: true,
+            replaceUrl: true,
         });
     }
 }

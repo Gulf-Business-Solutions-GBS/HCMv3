@@ -221503,6 +221503,7 @@ export class GetAllEmployeeContractsInput implements IGetAllEmployeeContractsInp
     }
 
     init(_data?: any) {
+    filter!: string | undefined;
         if (_data) {
             this.maxResultCount = _data["maxResultCount"];
             this.skipCount = _data["skipCount"];
@@ -221519,6 +221520,7 @@ export class GetAllEmployeeContractsInput implements IGetAllEmployeeContractsInp
     }
 
     toJSON(data?: any) {
+            this.filter = _data["filter"];
         data = typeof data === 'object' ? data : {};
         data["maxResultCount"] = this.maxResultCount;
         data["skipCount"] = this.skipCount;
@@ -221535,6 +221537,7 @@ export interface IGetAllEmployeeContractsInput {
     employeeId: number | undefined;
 }
 
+        data["filter"] = this.filter;
 export class GetAllEmployeeCostDistributionsInput implements IGetAllEmployeeCostDistributionsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -221544,6 +221547,7 @@ export class GetAllEmployeeCostDistributionsInput implements IGetAllEmployeeCost
     constructor(data?: IGetAllEmployeeCostDistributionsInput) {
         if (data) {
             for (var property in data) {
+    filter: string | undefined;
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }

@@ -51,7 +51,7 @@ export class CreateOrEditEmployeeFnFPaymentModalComponent extends AppComponentBa
         // filter is exposed by the backend, so the full lookup list is fetched here, consistent with the
         // EmployeeFundExemptions modal precedent (Wave 3 deferred bucket) for cross-parent dropdowns.
         this._employeeBasicPayDetailsService
-            .getAll(new GetAllEmployeeBasicPayDetailsInput({ employeeBasicPayId: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
+            .getAll(new GetAllEmployeeBasicPayDetailsInput({ employeeBasicPayId: undefined, filter: undefined, maxResultCount: 1000, skipCount: 0, sorting: undefined }))
             .subscribe((result) => this.employeeBasicPayDetails.set(result.items));
 
         if (!id) {

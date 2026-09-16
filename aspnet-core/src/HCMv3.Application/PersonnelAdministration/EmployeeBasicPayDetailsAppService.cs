@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -44,7 +45,11 @@ public class EmployeeBasicPayDetailsAppService : HCMv3AppServiceBase, IEmployeeB
             .Include(d => d.WageType)
             .Include(d => d.Currency)
             .Include(d => d.DependantWageType)
-            .WhereIf(input.EmployeeBasicPayId.HasValue, d => d.EmployeeBasicPayId == input.EmployeeBasicPayId.Value);
+            .WhereIf(input.EmployeeBasicPayId.HasValue, d => d.EmployeeBasicPayId == input.EmployeeBasicPayId.Value)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), d =>
+                d.WageType.Code.Contains(input.Filter) ||
+                d.WageType.NameEn.Contains(input.Filter) ||
+                d.WageType.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 

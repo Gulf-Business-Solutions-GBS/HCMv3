@@ -192,6 +192,31 @@ public class EmployeeBasicPayDetailsAppService_Tests : AppTestBase
         (await HeaderAmountAsync(employee.Id)).ShouldBe(400);
     }
 
+    [Fact]
+    public async Task Should_Filter_Lines_By_Wage_Type()
+    {
+        //Arrange
+        var employee = CreateTestEmployee("BPD400");
+        var housing = CreateTestWageType("HOUSING400");
+        var transport = CreateTestWageType("TRANSPORT400");
+        var currency = CreateTestCurrency("CUR400");
+        var basicPayId = await CreateTestBasicPayAsync(employee.Id, new DateTime(2024, 1, 1));
+        foreach (var wageType in new[] { housing, transport })
+        {
+            await _appService.CreateOrEdit(new CreateOrEditEmployeeBasicPayDetailDto
+            {
+                EmployeeBasicPayId = basicPayId, WageTypeId = wageType.Id, CurrencyId = currency.Id, Amount = 10
+            });
+        }
+
+        //Act
+        var result = await _appService.GetAll(new GetAllEmployeeBasicPayDetailsInput { EmployeeBasicPayId = basicPayId, Filter = "TRANS" });
+
+        //Assert
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].WageTypeId.ShouldBe(transport.Id);
+    }
+
     private async Task<double> HeaderAmountAsync(int employeeId)
     {
         var result = await _basicPaysAppService.GetAll(new GetAllEmployeeBasicPaysInput { EmployeeId = employeeId });
