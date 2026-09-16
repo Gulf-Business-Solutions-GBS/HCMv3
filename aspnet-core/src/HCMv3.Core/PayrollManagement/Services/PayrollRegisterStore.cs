@@ -117,6 +117,7 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
         existing.IsSystemGenerated = true;
 
         var saved = await _salaryRegisterDetailRepository.InsertOrUpdateAndGetIdAsync(existing);
+        await FlushAsync();
 
         line.Id = saved;
         line.WageTypeId = wageTypeId;
@@ -189,6 +190,8 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
                 Amount = day.Amount
             });
         }
+
+        await FlushAsync();
     }
 
     private IQueryable<PayrollRegisterLine> QueryLines(int registerId)
@@ -243,6 +246,22 @@ public class PayrollRegisterStore : HCMv3DomainServiceBase, IPayrollRegisterStor
         }
 
         await _salaryRegisterDetailRepository.DeleteAsync(detailId);
+        await FlushAsync();
+    }
+
+    /// <summary>
+    /// Writes pending changes before the next read. Every read here is a database query, and an UPDATE of a line
+    /// that already exists is otherwise held until the unit of work ends -- so on a re-run, a line worked out from
+    /// another one (4022 from 4010, the leave provisions from 4010/4022, ...) read the PREVIOUS run's value.
+    /// Inserts were unaffected (getting the id saves them), which is why a first run was always right.
+    /// </summary>
+    private async Task FlushAsync()
+    {
+        var unitOfWork = UnitOfWorkManager?.Current;
+        if (unitOfWork != null)
+        {
+            await unitOfWork.SaveChangesAsync();
+        }
     }
 
     private static void GuardTarget(PayrollRegisterRef register)

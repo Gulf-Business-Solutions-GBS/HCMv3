@@ -78,6 +78,28 @@ public class GoLiveV2OpeningBalance_Tests : AppTestBase
         (await Days("E001", "4010") - await Days("E002", "4010")).ShouldBe(10, 0.001);
     }
 
+    /// <summary>
+    /// Re-running after the balance changes: the closing balance and the leave provisions follow the new
+    /// accrual in the same run, not the one before it. They are worked out from 4010 after it is rewritten,
+    /// so a stale read of 4010 left them one run behind.
+    /// </summary>
+    [Fact]
+    public async Task Should_Follow_A_Changed_Opening_Balance_In_The_Same_Rerun()
+    {
+        GivenTheReferenceData();
+        await _goLive.LoadEmployees(Load(("E001", 8.88)));
+        (await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = September, PayrollAreaName = DefaultArea })).Succeeded.ShouldBeTrue();
+
+        await _goLive.LoadEmployees(Load(("E001", 8.888)));
+        var rerun = await _goLive.RunPayroll(new GoLiveV2RunPayrollInput { PayDate = September, PayrollAreaName = DefaultArea });
+        rerun.Succeeded.ShouldBeTrue(rerun.Message);
+
+        var accrual = await Days("E001", "4010");
+        (await Days("E001", "4022")).ShouldBe(accrual, 0.000001);
+        (await Days("E001", "3001")).ShouldBe(accrual, 0.000001);
+        (await Days("E001", "3004")).ShouldBe(accrual, 0.000001);
+    }
+
     /// <summary>Clear takes the balance with the employee, so a fresh load does not find an old one.</summary>
     [Fact]
     public async Task Should_Remove_The_Balance_When_The_Company_Is_Cleared()
