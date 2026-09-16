@@ -8,9 +8,9 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppBsModalDirective } from '../../../../shared/common/appBsModal/app-bs-modal.directive';
 import { FormsModule } from '@angular/forms';
-import { ValidationMessagesComponent } from '../../../../shared/utils/validation-messages.component';
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
+import { AbsenceDeductionRuleFormComponent } from './absence-deduction-rule-form.component';
 
 @Component({
     selector: 'createOrEditAbsenceDeductionRuleModal',
@@ -18,9 +18,9 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
     imports: [
         AppBsModalDirective,
         FormsModule,
-        ValidationMessagesComponent,
         ButtonBusyDirective,
         LocalizePipe,
+        AbsenceDeductionRuleFormComponent,
     ],
 })
 export class CreateOrEditAbsenceDeductionRuleModalComponent extends AppComponentBase {
@@ -66,13 +66,5 @@ export class CreateOrEditAbsenceDeductionRuleModalComponent extends AppComponent
     close(): void {
         this.active.set(false);
         this.modal().hide();
-    }
-
-    updateField(field: keyof CreateOrEditAbsenceDeductionRuleDto, value: any): void {
-        const current = this.absenceDeductionRule();
-        (current as any)[field] = value;
-        const next = new CreateOrEditAbsenceDeductionRuleDto();
-        Object.assign(next, current);
-        this.absenceDeductionRule.set(next);
     }
 }

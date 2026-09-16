@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -37,6 +39,8 @@ public class AbsenceDedRuleDetailsAppService : HCMv3AppServiceBase, IAbsenceDedR
             .Include(d => d.AbsenceDeductionRule)
             .WhereIf(input.AbsenceDeductionRuleId.HasValue, d => d.AbsenceDeductionRuleId == input.AbsenceDeductionRuleId);
 
+        query = ApplyFilter(query, input.Filter);
+
         var totalCount = await query.CountAsync();
 
         var items = await query
@@ -47,6 +51,35 @@ public class AbsenceDedRuleDetailsAppService : HCMv3AppServiceBase, IAbsenceDedR
         return new PagedResultDto<AbsenceDedRuleDetailDto>(
             totalCount,
             items.Select(ToDto).ToList());
+    }
+
+    /// <summary>See <see cref="GetAllAbsenceDedRuleDetailsInput.Filter"/>. Text that is none of those matches nothing.</summary>
+    private static IQueryable<AbsenceDedRuleDetail> ApplyFilter(IQueryable<AbsenceDedRuleDetail> query, string filter)
+    {
+        filter = filter?.Trim();
+        if (string.IsNullOrEmpty(filter))
+        {
+            return query;
+        }
+
+        if (filter.Length == 4 && int.TryParse(filter, NumberStyles.None, CultureInfo.InvariantCulture, out var year) && year >= 1900)
+        {
+            var yearStart = new DateTime(year, 1, 1);
+            var nextYear = yearStart.AddYears(1);
+            return query.Where(d => d.StartDate < nextYear && d.EndDate >= yearStart);
+        }
+
+        if (DateTime.TryParseExact(filter, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+        {
+            return query.Where(d => d.StartDate <= date && d.EndDate >= date);
+        }
+
+        if (double.TryParse(filter, NumberStyles.Number, CultureInfo.InvariantCulture, out var number))
+        {
+            return query.Where(d => d.DaysCount == number || d.DeductionNumber == number);
+        }
+
+        return query.Where(d => false);
     }
 
     public async Task<GetAbsenceDedRuleDetailForEditOutput> GetAbsenceDedRuleDetailForEdit(EntityDto input)

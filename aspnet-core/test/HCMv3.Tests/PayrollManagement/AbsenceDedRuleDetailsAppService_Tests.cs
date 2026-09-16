@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PayrollManagement;
@@ -136,5 +137,39 @@ public class AbsenceDedRuleDetailsAppService_Tests : PayrollManagementAppService
                 StartDate = new DateTime(2026, 1, 15),
                 EndDate = new DateTime(2026, 2, 15)
             }));
+    }
+
+    [Theory]
+    [InlineData("2025", new[] { 2025 })]
+    [InlineData("2026-03-10", new[] { 2026 })]
+    [InlineData("7", new[] { 2026 })]
+    [InlineData("2", new[] { 2025 })]
+    [InlineData("holiday", new int[0])]
+    public async Task Should_Search_Lines_By_Year_Date_Or_Number(string filter, int[] expectedStartYears)
+    {
+        var ruleId = CreateAbsenceDeductionRule("ADRF");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditAbsenceDedRuleDetailDto
+        {
+            AbsenceDeductionRuleId = ruleId,
+            StartDate = new DateTime(2025, 1, 1),
+            EndDate = new DateTime(2025, 12, 31),
+            DaysCount = 3,
+            DeductionUnit = DeductionUnit.Fixed,
+            DeductionNumber = 2
+        });
+        await service.CreateOrEdit(new CreateOrEditAbsenceDedRuleDetailDto
+        {
+            AbsenceDeductionRuleId = ruleId,
+            StartDate = new DateTime(2026, 1, 1),
+            EndDate = new DateTime(2026, 12, 31),
+            DaysCount = 7,
+            DeductionUnit = DeductionUnit.Fixed,
+            DeductionNumber = 1
+        });
+
+        var result = await service.GetAll(new GetAllAbsenceDedRuleDetailsInput { AbsenceDeductionRuleId = ruleId, Filter = filter });
+
+        result.Items.Select(x => x.StartDate.Year).ShouldBe(expectedStartYears);
     }
 }

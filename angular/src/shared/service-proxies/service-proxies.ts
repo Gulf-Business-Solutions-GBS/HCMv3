@@ -217581,6 +217581,7 @@ export class GetAllAbsenceDedRuleDetailsInput implements IGetAllAbsenceDedRuleDe
     skipCount!: number;
     sorting!: string | undefined;
     absenceDeductionRuleId!: number | undefined;
+    filter!: string | undefined;
 
     constructor(data?: IGetAllAbsenceDedRuleDetailsInput) {
         if (data) {
@@ -217597,6 +217598,7 @@ export class GetAllAbsenceDedRuleDetailsInput implements IGetAllAbsenceDedRuleDe
             this.skipCount = _data["skipCount"];
             this.sorting = _data["sorting"];
             this.absenceDeductionRuleId = _data["absenceDeductionRuleId"];
+            this.filter = _data["filter"];
         }
     }
 
@@ -217613,6 +217615,7 @@ export class GetAllAbsenceDedRuleDetailsInput implements IGetAllAbsenceDedRuleDe
         data["skipCount"] = this.skipCount;
         data["sorting"] = this.sorting;
         data["absenceDeductionRuleId"] = this.absenceDeductionRuleId;
+        data["filter"] = this.filter;
         return data;
     }
 }
@@ -217622,6 +217625,7 @@ export interface IGetAllAbsenceDedRuleDetailsInput {
     skipCount: number;
     sorting: string | undefined;
     absenceDeductionRuleId: number | undefined;
+    filter: string | undefined;
 }
 
 export class GetAllAbsenceDeductionRulesInput implements IGetAllAbsenceDeductionRulesInput {

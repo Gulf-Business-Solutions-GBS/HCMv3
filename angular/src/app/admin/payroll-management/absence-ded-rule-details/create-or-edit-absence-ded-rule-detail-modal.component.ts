@@ -45,7 +45,11 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
         { value: DeductionUnit.Percentage, name: 'Percentage' },
     ];
 
-    show(absenceDedRuleDetailId?: number): void {
+    /** Set when opened from an absence deduction rule's detail page: the rule is fixed. */
+    readonly presetAbsenceDeductionRuleId = signal<number | undefined>(undefined);
+
+    show(absenceDedRuleDetailId?: number, absenceDeductionRuleId?: number): void {
+        this.presetAbsenceDeductionRuleId.set(absenceDeductionRuleId);
         this.active.set(true);
 
         this._absenceDeductionRulesService
@@ -53,7 +57,11 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
             .subscribe((result) => this.absenceDeductionRules.set(result.items));
 
         if (!absenceDedRuleDetailId) {
-            this.absenceDedRuleDetail.set(new CreateOrEditAbsenceDedRuleDetailDto());
+            const dto = new CreateOrEditAbsenceDedRuleDetailDto();
+            if (absenceDeductionRuleId) {
+                dto.absenceDeductionRuleId = absenceDeductionRuleId;
+            }
+            this.absenceDedRuleDetail.set(dto);
             this.modal().show();
         } else {
             this._absenceDedRuleDetailsService.getAbsenceDedRuleDetailForEdit(absenceDedRuleDetailId).subscribe((result) => {
@@ -64,7 +72,10 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('AbsenceDedRuleDetail_AbsenceDeductionRuleId')?.focus();
+        const firstFieldId = this.presetAbsenceDeductionRuleId()
+            ? 'AbsenceDedRuleDetail_StartDate'
+            : 'AbsenceDedRuleDetail_AbsenceDeductionRuleId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {

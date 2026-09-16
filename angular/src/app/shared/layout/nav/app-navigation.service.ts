@@ -1780,12 +1780,6 @@ export class AppNavigationService {
                         '/app/admin/absence-deduction-rules'
                     ),
                     new AppMenuItem(
-                        'AbsenceDedRuleDetails',
-                        'Pages.PayrollManagement.AbsenceDedRuleDetails',
-                        'flaticon-list-3',
-                        '/app/admin/absence-ded-rule-details'
-                    ),
-                    new AppMenuItem(
                         'AbsenceViolationRules',
                         'Pages.PayrollManagement.AbsenceViolationRules',
                         'flaticon-list-3',

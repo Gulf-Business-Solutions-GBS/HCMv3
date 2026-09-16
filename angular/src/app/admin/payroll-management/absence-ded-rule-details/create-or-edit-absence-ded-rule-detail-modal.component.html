@@ -38,6 +38,7 @@
                                     name="AbsenceDeductionRuleId"
                                     [ngModel]="absenceDedRuleDetail().absenceDeductionRuleId"
                                     (ngModelChange)="updateField('absenceDeductionRuleId', $event)"
+                                    [disabled]="!!presetAbsenceDeductionRuleId()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (rule of absenceDeductionRules(); track rule.id) {

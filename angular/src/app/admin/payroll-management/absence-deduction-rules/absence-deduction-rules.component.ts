@@ -13,6 +13,7 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
 import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditAbsenceDeductionRuleModalComponent } from './create-or-edit-absence-deduction-rule-modal.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
@@ -28,6 +29,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,
+        RouterLink,
         TableModule,
         PaginatorModule,
         TieredMenu,
@@ -40,6 +42,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 })
 export class AbsenceDeductionRulesComponent extends AppComponentBase implements OnInit {
     private _absenceDeductionRulesService = inject(AbsenceDeductionRulesServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditAbsenceDeductionRuleModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -86,6 +89,10 @@ export class AbsenceDeductionRulesComponent extends AppComponentBase implements 
         this.createOrEditModal().show();
     }
 
+    editAbsenceDeductionRule(record: AbsenceDeductionRuleDto): void {
+        this._router.navigate(['/app/admin/absence-deduction-rules', record.id]);
+    }
+
     showMenu(event: Event, record: AbsenceDeductionRuleDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -98,7 +105,7 @@ export class AbsenceDeductionRulesComponent extends AppComponentBase implements 
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.editAbsenceDeductionRule(record),
             });
         }
 

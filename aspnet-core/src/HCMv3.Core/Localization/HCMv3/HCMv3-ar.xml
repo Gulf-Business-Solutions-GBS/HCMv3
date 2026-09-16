@@ -6417,5 +6417,6 @@
     <text name="RecentSearches">عمليات البحث الأخيرة</text>
     <text name="ClearRecentSearches">مسح عمليات البحث الأخيرة</text>
     <text name="RemoveFromRecentSearches">إزالة من عمليات البحث الأخيرة</text>
+    <text name="AbsenceDedRuleDetailsSearchHint">ابحث بالسنة أو التاريخ (yyyy-mm-dd) أو الرقم</text>
   </texts>
 </localizationDictionary>

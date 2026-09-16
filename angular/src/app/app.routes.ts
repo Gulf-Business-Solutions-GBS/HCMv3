@@ -1085,6 +1085,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.AbsenceDeductionRules' },
                     },
                     {
+                        path: 'absence-deduction-rules/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/absence-deduction-rules/absence-deduction-rule-detail/absence-deduction-rule-detail.component').then(
+                                (m) => m.AbsenceDeductionRuleDetailComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceDeductionRules' },
+                    },
+                    {
                         path: 'absence-ded-rule-details',
                         loadComponent: () =>
                             import('./admin/payroll-management/absence-ded-rule-details/absence-ded-rule-details.component').then(

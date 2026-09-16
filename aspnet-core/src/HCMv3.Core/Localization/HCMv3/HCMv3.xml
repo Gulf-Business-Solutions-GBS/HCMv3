@@ -6578,5 +6578,6 @@
     <text name="RecentSearches">Recent</text>
     <text name="ClearRecentSearches">Clear recent</text>
     <text name="RemoveFromRecentSearches">Remove from recent</text>
+    <text name="AbsenceDedRuleDetailsSearchHint">Search by year, date (yyyy-mm-dd) or number</text>
   </texts>
 </localizationDictionary>
