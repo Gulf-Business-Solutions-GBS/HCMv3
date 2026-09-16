@@ -3916,6 +3916,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.ApiDictionary' },
                     },
                     {
+                        path: 'background-jobs',
+                        loadComponent: () =>
+                            import('./admin/background-jobs/background-jobs.component').then(
+                                (m) => m.BackgroundJobsComponent
+                            ),
+                        data: { permission: 'Pages.Administration.BackgroundJobs' },
+                    },
+                    {
                         path: 'ui-customization',
                         loadComponent: () =>
                             import('./admin/ui-customization/ui-customization.component').then(

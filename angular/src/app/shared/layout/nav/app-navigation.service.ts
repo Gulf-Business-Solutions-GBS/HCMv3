@@ -3525,6 +3525,12 @@ export class AppNavigationService {
                         '/app/admin/api-dictionary'
                     ),
                     new AppMenuItem(
+                        'BackgroundJobs',
+                        'Pages.Administration.BackgroundJobs',
+                        'flaticon-time-2',
+                        '/app/admin/background-jobs'
+                    ),
+                    new AppMenuItem(
                         'WebhookSubscriptions',
                         'Pages.Administration.WebhookSubscription',
                         'flaticon2-world',
