@@ -13,4 +13,16 @@ namespace HCMv3.Navigation;
 public interface IGlobalSearchAppService : IApplicationService
 {
     Task<GlobalSearchPeopleResultDto> SearchPeople(SearchPeopleInput input);
+
+    /// <summary>The current user's recently opened results, newest first; people who no longer exist are left out.</summary>
+    Task<GlobalSearchRecentResultDto> GetRecentSearches();
+
+    /// <summary>Records a result the current user opened, moving it to the top if it is already there.</summary>
+    Task AddRecentSearch(GlobalSearchRecentItemInput input);
+
+    /// <summary>Removes one result from the current user's recent list.</summary>
+    Task RemoveRecentSearch(GlobalSearchRecentItemInput input);
+
+    /// <summary>Empties the current user's recent list.</summary>
+    Task ClearRecentSearches();
 }

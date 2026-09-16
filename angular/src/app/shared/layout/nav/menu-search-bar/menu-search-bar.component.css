@@ -31,6 +31,38 @@
     color: var(--bs-gray-600, #7e8299);
 }
 
+.global-search__group-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+/* "Clear recent" and the per-row ✕: small and quiet, so they read as housekeeping, not results. */
+.global-search__clear,
+.global-search__remove {
+    border: 0;
+    background: transparent;
+    padding: 2px 6px;
+    color: var(--bs-gray-600, #7e8299);
+    cursor: pointer;
+}
+
+.global-search__clear {
+    font-size: 0.8rem;
+}
+
+.global-search__clear:hover,
+.global-search__remove:hover {
+    color: var(--bs-primary, #1b84ff);
+}
+
+.global-search__remove {
+    margin-inline-start: auto;
+    font-size: 0.8rem;
+}
+
 .global-search__action {
     display: inline-flex;
     align-items: center;
@@ -82,4 +114,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Lets the ✕ on a recent row sit at the far end. */
+.global-search__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 
 namespace HCMv3.Navigation.Dto;
@@ -67,4 +68,51 @@ public class GlobalSearchPeopleResultDto
     /// implying these are all the matches.
     /// </summary>
     public bool HasMore { get; set; }
+}
+
+/// <summary>What a recent-search entry points at.</summary>
+public static class GlobalSearchRecentKind
+{
+    public const string Action = "action";
+
+    public const string Person = "person";
+}
+
+/// <summary>
+/// A result the user opened: a screen (by <see cref="Route"/>) or a person (by <see cref="EmployeeId"/>).
+/// No names are kept -- the client labels a screen from its own menu and the server looks a person up again,
+/// so a renamed screen or employee shows as it is now.
+/// </summary>
+public class GlobalSearchRecentItemInput
+{
+    [Required]
+    [StringLength(10)]
+    public string Kind { get; set; }
+
+    [StringLength(GlobalSearchRecentItemDto.MaxRouteLength)]
+    public string Route { get; set; }
+
+    public int? EmployeeId { get; set; }
+}
+
+public class GlobalSearchRecentItemDto
+{
+    public const int MaxRouteLength = 256;
+
+    /// <summary>How many entries are kept per user.</summary>
+    public const int MaxItems = 5;
+
+    public string Kind { get; set; }
+
+    public string Route { get; set; }
+
+    public int? EmployeeId { get; set; }
+
+    /// <summary>For a person: as they are now.</summary>
+    public GlobalSearchPersonDto Person { get; set; }
+}
+
+public class GlobalSearchRecentResultDto
+{
+    public List<GlobalSearchRecentItemDto> Items { get; set; } = new List<GlobalSearchRecentItemDto>();
 }

@@ -8,11 +8,18 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { AppConsts } from '@shared/AppConsts';
-import { GlobalSearchServiceProxy, SearchPeopleInput } from '@shared/service-proxies/service-proxies';
+import {
+    GlobalSearchRecentItemDto,
+    GlobalSearchRecentItemInput,
+    GlobalSearchServiceProxy,
+    SearchPeopleInput,
+} from '@shared/service-proxies/service-proxies';
 
 /** One row in the dropdown. `kind` decides which template renders it and what selecting it does. */
 interface GlobalSearchResult {
     kind: 'action' | 'person';
+    /** Shown under "Recent", with a remove button. */
+    recent?: boolean;
     name: string;
     /** Job title and department, for a person. */
     subtitle?: string;
@@ -28,6 +35,8 @@ interface GlobalSearchResult {
 interface GlobalSearchGroup {
     label: string;
     items: GlobalSearchResult[];
+    /** The "Recent" group, whose heading carries a "Clear recent" link. */
+    recent?: boolean;
 }
 
 /**
@@ -77,6 +86,9 @@ export class MenuSearchBarComponent extends AppComponentBase {
      */
     readonly selected = signal<string | GlobalSearchResult>('');
 
+    /** Off while the empty field shows the recent list, so a user with no history sees nothing, not "No results found". */
+    readonly showEmptyMessage = signal(true);
+
     /**
      * Fires as soon as a result is chosen, so a host that opened this in an overlay -- the mobile header
      * does -- can close itself. Emitted before navigation rather than after, because the overlay should
@@ -100,6 +112,15 @@ export class MenuSearchBarComponent extends AppComponentBase {
      */
     search(event: { query: string }): void {
         const query = (event.query || '').trim();
+
+        // An empty box -- the field was just focused -- shows what this user opened last instead.
+        if (!query) {
+            this.showEmptyMessage.set(false);
+            this.showRecent();
+            return;
+        }
+
+        this.showEmptyMessage.set(true);
 
         const actions = this.searchActions(query);
         this.searchResults.set(this.buildGroups(actions, []));
@@ -127,6 +148,7 @@ export class MenuSearchBarComponent extends AppComponentBase {
 
         if (item.kind === 'person') {
             this.selected.set('');
+            this.remember(item);
             this.navigate(`/app/admin/employees/${item.employeeId}`, undefined, false);
             return;
         }
@@ -135,7 +157,83 @@ export class MenuSearchBarComponent extends AppComponentBase {
             return;
         }
 
+        this.remember(item);
         this.navigate(item.route, item.parameters, item.external);
+    }
+
+    /**
+     * The ✕ on a recent row. Stops the click reaching the row, which would otherwise open the result it is
+     * removing.
+     */
+    removeRecent(event: Event, item: GlobalSearchResult): void {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this._globalSearchService.removeRecentSearch(this.toRecentInput(item)).subscribe(() => this.showRecent());
+    }
+
+    clearRecent(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this._globalSearchService.clearRecentSearches().subscribe(() => this.searchResults.set([]));
+    }
+
+    /**
+     * The user's last opened results, from the server each time the empty field is focused -- so a list
+     * changed in another tab or on another machine is current. A screen the user can no longer open is
+     * left out: only routes in the menu built from their permissions are shown.
+     */
+    private showRecent(): void {
+        this._globalSearchService.getRecentSearches().subscribe({
+            next: (result) => {
+                const items = (result.items ?? [])
+                    .map((entry) => this.toRecentResult(entry))
+                    .filter((entry): entry is GlobalSearchResult => !!entry);
+
+                this.searchResults.set(
+                    items.length ? [{ label: this.l('RecentSearches'), items, recent: true }] : []
+                );
+            },
+            // The recent list is a convenience; failing to load it must not show an error in the header.
+            error: () => this.searchResults.set([]),
+        });
+    }
+
+    private toRecentResult(entry: GlobalSearchRecentItemDto): GlobalSearchResult | null {
+        if (entry.kind === 'person' && entry.person) {
+            return { ...this.toPersonResult(entry.person), recent: true };
+        }
+
+        const menuItem = this.allMenuItems?.find((item) => item.route === entry.route);
+        if (!menuItem) {
+            return null;
+        }
+
+        return {
+            kind: 'action',
+            recent: true,
+            name: this.labelFor(menuItem.name, this._screenNavigation.codeForRoute(menuItem.route)),
+            route: menuItem.route,
+            external: menuItem.external,
+            parameters: menuItem.parameters,
+        };
+    }
+
+    /** Saved in the background; the user is already on their way, so a failure is not worth telling them about. */
+    private remember(item: GlobalSearchResult): void {
+        this._globalSearchService.addRecentSearch(this.toRecentInput(item)).subscribe({ error: () => undefined });
+    }
+
+    private toRecentInput(item: GlobalSearchResult): GlobalSearchRecentItemInput {
+        const input = new GlobalSearchRecentItemInput();
+        input.kind = item.kind;
+        if (item.kind === 'person') {
+            input.employeeId = item.employeeId;
+        } else {
+            input.route = item.route;
+        }
+        return input;
     }
 
     /**

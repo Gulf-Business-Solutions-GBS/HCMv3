@@ -261,6 +261,10 @@ public class AppSettingProvider : SettingProvider
                 new SettingDefinition(AppSettings.UserManagement.AllowUsingGravatarProfilePicture,
                     GetFromAppSettings(AppSettings.UserManagement.AllowUsingGravatarProfilePicture, "false"),
                     clientVisibilityProvider: _visibleSettingClientVisibilityProvider, scopes: SettingScopes.Application | SettingScopes.Tenant),
+                // Not visible to clients: the search bar reads it through GlobalSearchAppService, which leaves
+                // out people who no longer exist before anything reaches the browser.
+                new SettingDefinition(AppSettings.UserManagement.RecentGlobalSearches, "[]",
+                    scopes: SettingScopes.User),
                 new SettingDefinition(AppSettings.UserManagement.UseGravatarProfilePicture,
                     GetFromAppSettings(AppSettings.UserManagement.UseGravatarProfilePicture, "false"),
                     clientVisibilityProvider: _visibleSettingClientVisibilityProvider, scopes: SettingScopes.User),

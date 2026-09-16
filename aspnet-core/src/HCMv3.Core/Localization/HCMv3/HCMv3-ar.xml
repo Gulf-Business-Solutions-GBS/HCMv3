@@ -6413,5 +6413,9 @@
     <text name="AddAllLeaveTypesResult">تمت إضافة {0} من أنواع الإجازات.</text>
     <text name="ShortNameEn">الاسم المختصر (بالإنجليزية)</text>
     <text name="ShortNameAr">الاسم المختصر (بالعربية)</text>
+    <text name="InvalidRecentSearch">إدخال البحث الأخير هذا غير صالح.</text>
+    <text name="RecentSearches">عمليات البحث الأخيرة</text>
+    <text name="ClearRecentSearches">مسح عمليات البحث الأخيرة</text>
+    <text name="RemoveFromRecentSearches">إزالة من عمليات البحث الأخيرة</text>
   </texts>
 </localizationDictionary>

@@ -66136,6 +66136,208 @@ export class GoLiveApplyServiceProxy {
     /**
      * @return OK
      */
+    getRecentSearches(): Observable<GlobalSearchRecentResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/GlobalSearch/GetRecentSearches";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRecentSearches(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRecentSearches(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GlobalSearchRecentResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GlobalSearchRecentResultDto>;
+        }));
+    }
+
+    protected processGetRecentSearches(response: HttpResponseBase): Observable<GlobalSearchRecentResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GlobalSearchRecentResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addRecentSearch(body?: GlobalSearchRecentItemInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GlobalSearch/AddRecentSearch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddRecentSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddRecentSearch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processAddRecentSearch(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    removeRecentSearch(body?: GlobalSearchRecentItemInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GlobalSearch/RemoveRecentSearch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveRecentSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveRecentSearch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRemoveRecentSearch(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    clearRecentSearches(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/GlobalSearch/ClearRecentSearches";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processClearRecentSearches(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processClearRecentSearches(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processClearRecentSearches(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     apply(): Observable<GoLiveApplyResultDto> {
         let url_ = this.baseUrl + "/api/services/app/GoLiveApply/Apply";
         url_ = url_.replace(/[?&]$/, "");
@@ -261830,6 +262032,142 @@ export class GoLiveLookupListDto implements IGoLiveLookupListDto {
             if (Array.isArray(_data["options"])) {
                 this.options = [] as any;
                 for (let item of _data["options"])
+export class GlobalSearchRecentItemDto implements IGlobalSearchRecentItemDto {
+    kind!: string | undefined;
+    route!: string | undefined;
+    employeeId!: number | undefined;
+    person!: GlobalSearchPersonDto;
+
+    constructor(data?: IGlobalSearchRecentItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.route = _data["route"];
+            this.employeeId = _data["employeeId"];
+            this.person = _data["person"] ? GlobalSearchPersonDto.fromJS(_data["person"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): GlobalSearchRecentItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GlobalSearchRecentItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["route"] = this.route;
+        data["employeeId"] = this.employeeId;
+        data["person"] = this.person ? this.person.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IGlobalSearchRecentItemDto {
+    kind: string | undefined;
+    route: string | undefined;
+    employeeId: number | undefined;
+    person: GlobalSearchPersonDto;
+}
+
+export class GlobalSearchRecentItemInput implements IGlobalSearchRecentItemInput {
+    kind!: string;
+    route!: string | undefined;
+    employeeId!: number | undefined;
+
+    constructor(data?: IGlobalSearchRecentItemInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.kind = _data["kind"];
+            this.route = _data["route"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): GlobalSearchRecentItemInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GlobalSearchRecentItemInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["kind"] = this.kind;
+        data["route"] = this.route;
+        data["employeeId"] = this.employeeId;
+        return data;
+    }
+}
+
+export interface IGlobalSearchRecentItemInput {
+    kind: string;
+    route: string | undefined;
+    employeeId: number | undefined;
+}
+
+export class GlobalSearchRecentResultDto implements IGlobalSearchRecentResultDto {
+    items!: GlobalSearchRecentItemDto[] | undefined;
+
+    constructor(data?: IGlobalSearchRecentResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GlobalSearchRecentItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GlobalSearchRecentResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GlobalSearchRecentResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IGlobalSearchRecentResultDto {
+    items: GlobalSearchRecentItemDto[] | undefined;
+}
+
                     this.options!.push(item);
             }
         }

@@ -6574,5 +6574,9 @@
     <text name="AddAllLeaveTypesResult">{0} leave type(s) added.</text>
     <text name="ShortNameEn">Short Name (English)</text>
     <text name="ShortNameAr">Short Name (Arabic)</text>
+    <text name="InvalidRecentSearch">This recent search entry is not valid.</text>
+    <text name="RecentSearches">Recent</text>
+    <text name="ClearRecentSearches">Clear recent</text>
+    <text name="RemoveFromRecentSearches">Remove from recent</text>
   </texts>
 </localizationDictionary>

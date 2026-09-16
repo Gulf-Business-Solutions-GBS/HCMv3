@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Organizations;
+using Abp.Runtime.Session;
+using Abp.UI;
+using HCMv3.Configuration;
 using HCMv3.Navigation.Dto;
 using HCMv3.OrganizationManagement;
 using HCMv3.PersonnelAdministration;
@@ -121,6 +126,165 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                 })
                 .ToList()
         };
+    }
+
+    public async Task<GlobalSearchRecentResultDto> GetRecentSearches()
+    {
+        var stored = await ReadRecentAsync();
+        var employeeIds = stored
+            .Where(x => x.Kind == GlobalSearchRecentKind.Person)
+            .Select(x => x.EmployeeId.Value)
+            .ToList();
+
+        var people = new Dictionary<int, GlobalSearchPersonDto>();
+        if (employeeIds.Count > 0)
+        {
+            var found = await _employeeRepository.GetAll()
+                .Where(x => employeeIds.Contains(x.Id))
+                .Select(x => new GlobalSearchPersonDto
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    FullNameEn = x.FullNameEn,
+                    FullNameAr = x.FullNameAr,
+                    HasPhoto = x.Photo != null
+                })
+                .ToListAsync();
+
+            var placements = await LoadPlacementsAsync(found.Select(x => x.Id).ToList());
+            foreach (var person in found)
+            {
+                if (placements.TryGetValue(person.Id, out var placement))
+                {
+                    person.JobTitleEn = placement.JobTitleEn;
+                    person.JobTitleAr = placement.JobTitleAr;
+                    person.DepartmentEn = placement.DepartmentEn;
+                    person.DepartmentAr = placement.DepartmentAr;
+                }
+
+                people[person.Id] = person;
+            }
+        }
+
+        var result = new GlobalSearchRecentResultDto();
+        foreach (var item in stored)
+        {
+            if (item.Kind == GlobalSearchRecentKind.Action)
+            {
+                // Whether the user may still open the screen is the client's call: it only shows routes in
+                // the menu it built from the user's permissions.
+                result.Items.Add(new GlobalSearchRecentItemDto { Kind = item.Kind, Route = item.Route });
+            }
+            else if (people.TryGetValue(item.EmployeeId.Value, out var person))
+            {
+                // A deleted employee is simply not found, and so not shown.
+                result.Items.Add(new GlobalSearchRecentItemDto { Kind = item.Kind, EmployeeId = item.EmployeeId, Person = person });
+            }
+        }
+
+        return result;
+    }
+
+    public async Task AddRecentSearch(GlobalSearchRecentItemInput input)
+    {
+        var entry = ToStoredItem(input);
+        if (entry.Kind == GlobalSearchRecentKind.Person
+            && !await _employeeRepository.GetAll().AnyAsync(x => x.Id == entry.EmployeeId.Value))
+        {
+            return;
+        }
+
+        var items = (await ReadRecentAsync()).Where(x => !IsSameEntry(x, entry)).ToList();
+        items.Insert(0, entry);
+        await WriteRecentAsync(items.Take(GlobalSearchRecentItemDto.MaxItems).ToList());
+    }
+
+    /// <summary>POST, not ABP's default DELETE for "Remove", so the input travels as a body like the others.</summary>
+    [HttpPost]
+    public async Task RemoveRecentSearch(GlobalSearchRecentItemInput input)
+    {
+        var entry = ToStoredItem(input);
+        var items = await ReadRecentAsync();
+        var kept = items.Where(x => !IsSameEntry(x, entry)).ToList();
+        if (kept.Count != items.Count)
+        {
+            await WriteRecentAsync(kept);
+        }
+    }
+
+    public async Task ClearRecentSearches()
+    {
+        await WriteRecentAsync(new List<StoredRecentItem>());
+    }
+
+    private StoredRecentItem ToStoredItem(GlobalSearchRecentItemInput input)
+    {
+        var kind = (input.Kind ?? string.Empty).Trim().ToLowerInvariant();
+        if (kind == GlobalSearchRecentKind.Person && input.EmployeeId > 0)
+        {
+            return new StoredRecentItem { Kind = kind, EmployeeId = input.EmployeeId };
+        }
+
+        var route = (input.Route ?? string.Empty).Trim();
+        if (kind == GlobalSearchRecentKind.Action
+            && route.StartsWith('/')
+            && route.Length <= GlobalSearchRecentItemDto.MaxRouteLength)
+        {
+            return new StoredRecentItem { Kind = kind, Route = route };
+        }
+
+        throw new UserFriendlyException(L("InvalidRecentSearch"));
+    }
+
+    private static bool IsSameEntry(StoredRecentItem a, StoredRecentItem b) =>
+        a.Kind == b.Kind
+        && (a.Kind == GlobalSearchRecentKind.Person
+            ? a.EmployeeId == b.EmployeeId
+            : string.Equals(a.Route, b.Route, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>A missing or unreadable value reads as an empty list -- never an error in the header.</summary>
+    private async Task<List<StoredRecentItem>> ReadRecentAsync()
+    {
+        var json = await SettingManager.GetSettingValueForUserAsync(
+            AppSettings.UserManagement.RecentGlobalSearches, AbpSession.ToUserIdentifier());
+
+        List<StoredRecentItem> items;
+        try
+        {
+            items = JsonSerializer.Deserialize<List<StoredRecentItem>>(string.IsNullOrWhiteSpace(json) ? "[]" : json);
+        }
+        catch (JsonException)
+        {
+            return new List<StoredRecentItem>();
+        }
+
+        return (items ?? new List<StoredRecentItem>())
+            .Where(x => x != null
+                        && ((x.Kind == GlobalSearchRecentKind.Person && x.EmployeeId > 0)
+                            || (x.Kind == GlobalSearchRecentKind.Action && !string.IsNullOrEmpty(x.Route))))
+            .Take(GlobalSearchRecentItemDto.MaxItems)
+            .ToList();
+    }
+
+    private Task WriteRecentAsync(List<StoredRecentItem> items) =>
+        SettingManager.ChangeSettingForUserAsync(
+            AbpSession.ToUserIdentifier(),
+            AppSettings.UserManagement.RecentGlobalSearches,
+            JsonSerializer.Serialize(items, RecentJsonOptions));
+
+    private static readonly JsonSerializerOptions RecentJsonOptions = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
+
+    /// <summary>What is kept in the setting: only enough to find the result again.</summary>
+    private class StoredRecentItem
+    {
+        public string Kind { get; set; }
+
+        public string Route { get; set; }
+
+        public int? EmployeeId { get; set; }
     }
 
     /// <summary>

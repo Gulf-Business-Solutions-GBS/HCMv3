@@ -124,6 +124,12 @@ public static class AppSettings
     }
     public static class UserManagement
     {
+        /// <summary>
+        /// The last few results a user opened from the header search, as JSON. User scope only -- one row per
+        /// user in AbpSettings. See GlobalSearchAppService.
+        /// </summary>
+        public const string RecentGlobalSearches = "App.UserManagement.RecentGlobalSearches";
+
         public static class TwoFactorLogin
         {
             public const string IsGoogleAuthenticatorEnabled = "App.UserManagement.TwoFactorLogin.IsGoogleAuthenticatorEnabled";
