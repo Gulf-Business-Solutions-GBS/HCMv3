@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Transactions;
 using Abp.Dependency;
 using Abp.Domain.Uow;
@@ -29,8 +30,13 @@ public static class SeedHelper
         new DefaultTenantBuilder(context).Create();
         new TenantRoleAndUserBuilder(context, 1).Create();
 
-        //Print report catalog for the default tenant (rows the "Print Reports" launcher lists).
-        new PrintReportCatalogBuilder(context, 1).Create();
+        //Print report catalog (rows the "Print Reports" launcher lists) for EVERY tenant, not only the default one:
+        //tenants created before tenant creation seeded it had an empty launcher. Existing rows are skipped.
+        var tenantIds = context.Tenants.IgnoreQueryFilters().Where(t => !t.IsDeleted).Select(t => t.Id).ToList();
+        foreach (var tenantId in tenantIds)
+        {
+            new PrintReportCatalogBuilder(context, tenantId).Create();
+        }
 
         //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a
         //type must not start routing live transactions through approval. See the builder's remarks.

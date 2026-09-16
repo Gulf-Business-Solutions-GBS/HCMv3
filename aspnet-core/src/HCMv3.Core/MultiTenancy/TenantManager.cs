@@ -8,6 +8,7 @@ using Abp.Domain.Uow;
 using Abp.IdentityFramework;
 using Abp.MultiTenancy;
 using HCMv3.Authorization.Roles;
+using HCMv3.ReportManagement;
 using HCMv3.Authorization.Users;
 using HCMv3.Editions;
 using HCMv3.MultiTenancy.Demo;
@@ -62,6 +63,7 @@ public class TenantManager :
 
     protected readonly IBackgroundJobManager _backgroundJobManager;
     private readonly IReferenceDataSeeder _referenceDataSeeder;
+    private readonly PrintReportCatalogSeeder _printReportCatalogSeeder;
 
 
     public TenantManager(
@@ -81,7 +83,8 @@ public class TenantManager :
         EditionManager editionManager,
         IBackgroundJobManager backgroundJobManager,
         IPaymentManager paymentManager,
-        IReferenceDataSeeder referenceDataSeeder) : base(
+        IReferenceDataSeeder referenceDataSeeder,
+        PrintReportCatalogSeeder printReportCatalogSeeder) : base(
         tenantRepository,
         tenantFeatureRepository,
         editionManager,
@@ -106,6 +109,7 @@ public class TenantManager :
         _paymentManager = paymentManager;
         _subscriptionPaymentRepository = subscriptionPaymentRepository;
         _referenceDataSeeder = referenceDataSeeder;
+        _printReportCatalogSeeder = printReportCatalogSeeder;
     }
 
     public async Task<int> CreateWithAdminUserAsync(
@@ -216,6 +220,9 @@ public class TenantManager :
                 // currency -- so a silent job failure would leave a broken tenant looking created.
                 await _referenceDataSeeder.SeedDefaultsAsync(tenant.Id);
                 await _unitOfWorkManager.Current.SaveChangesAsync();
+
+                // The standard Print Reports list, so the new tenant's launcher is not empty.
+                await _printReportCatalogSeeder.SeedAsync(tenant.Id);
 
                 await _backgroundJobManager.EnqueueAsync<TenantDemoDataBuilderJob, int>(tenant.Id);
 
