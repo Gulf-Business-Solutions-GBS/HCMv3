@@ -68,4 +68,17 @@ public class AbsencePaymentsAppService_Tests : PayrollManagementAppServiceTestBa
                 WageTypeId = wageTypeId
             }));
     }
+
+    [Fact]
+    public async Task Should_Filter_Payments_By_Wage_Type()
+    {
+        var absenceTypeId = CreateAbsenceType("AP_AT3");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditAbsencePaymentDto { AbsenceTypeId = absenceTypeId, WageTypeId = CreateWageType("LEAVEPAY3") });
+        await service.CreateOrEdit(new CreateOrEditAbsencePaymentDto { AbsenceTypeId = absenceTypeId, WageTypeId = CreateWageType("TICKET3") });
+
+        var result = await service.GetAll(new GetAllAbsencePaymentsInput { AbsenceTypeId = absenceTypeId, Filter = "TICK" });
+
+        result.TotalCount.ShouldBe(1);
+    }
 }

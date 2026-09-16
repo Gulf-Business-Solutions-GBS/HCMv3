@@ -38,7 +38,11 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
     readonly absenceTypeException = signal<CreateOrEditAbsenceTypeExceptionDto>(new CreateOrEditAbsenceTypeExceptionDto());
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
-    show(absenceTypeExceptionId?: number): void {
+    /** Set when opened from an absence type's detail page: the absence type is fixed. */
+    readonly presetAbsenceTypeId = signal<number | undefined>(undefined);
+
+    show(absenceTypeExceptionId?: number, absenceTypeId?: number): void {
+        this.presetAbsenceTypeId.set(absenceTypeId);
         this.active.set(true);
 
         this._absenceTypesService
@@ -46,7 +50,11 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
             .subscribe((result) => this.absenceTypes.set(result.items));
 
         if (!absenceTypeExceptionId) {
-            this.absenceTypeException.set(new CreateOrEditAbsenceTypeExceptionDto());
+            const dto = new CreateOrEditAbsenceTypeExceptionDto();
+            if (absenceTypeId) {
+                dto.absenceTypeId = absenceTypeId;
+            }
+            this.absenceTypeException.set(dto);
             this.modal().show();
         } else {
             this._absenceTypeExceptionsService.getAbsenceTypeExceptionForEdit(absenceTypeExceptionId).subscribe((result) => {
@@ -57,7 +65,10 @@ export class CreateOrEditAbsenceTypeExceptionModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('AbsenceTypeException_AbsenceTypeId')?.focus();
+        const firstFieldId = this.presetAbsenceTypeId()
+            ? 'AbsenceTypeException_ExceptAbsenceTypeId'
+            : 'AbsenceTypeException_AbsenceTypeId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {

@@ -14,6 +14,7 @@ import { TieredMenu } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
 import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditAbsenceTypeModalComponent } from './create-or-edit-absence-type-modal.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
@@ -30,6 +31,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         BusyIfDirective,
         FormsModule,
         NgClass,
+        RouterLink,
         TableModule,
         PaginatorModule,
         TieredMenu,
@@ -42,6 +44,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 })
 export class AbsenceTypesComponent extends AppComponentBase implements OnInit {
     private _absenceTypesService = inject(AbsenceTypesServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditAbsenceTypeModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -88,6 +91,10 @@ export class AbsenceTypesComponent extends AppComponentBase implements OnInit {
         this.createOrEditModal().show();
     }
 
+    editAbsenceType(record: AbsenceTypeDto): void {
+        this._router.navigate(['/app/admin/absence-types', record.id]);
+    }
+
     showMenu(event: Event, record: AbsenceTypeDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -100,7 +107,7 @@ export class AbsenceTypesComponent extends AppComponentBase implements OnInit {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.editAbsenceType(record),
             });
         }
 

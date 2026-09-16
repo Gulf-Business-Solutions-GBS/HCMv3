@@ -41,8 +41,12 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
     /** Set when opened from a wage type's detail page: the wage type is fixed. */
     readonly presetWageTypeId = signal<number | undefined>(undefined);
 
-    show(wageTypeLeaveId?: number, wageTypeId?: number): void {
+    /** Set when opened from an absence type's detail page: the absence type is fixed. */
+    readonly presetAbsenceTypeId = signal<number | undefined>(undefined);
+
+    show(wageTypeLeaveId?: number, wageTypeId?: number, absenceTypeId?: number): void {
         this.presetWageTypeId.set(wageTypeId);
+        this.presetAbsenceTypeId.set(absenceTypeId);
         this.active.set(true);
 
         this._wageTypesService
@@ -58,6 +62,9 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
             if (wageTypeId) {
                 dto.wageTypeId = wageTypeId;
             }
+            if (absenceTypeId) {
+                dto.absenceTypeId = absenceTypeId;
+            }
             this.wageTypeLeave.set(dto);
             this.modal().show();
         } else {
@@ -69,7 +76,8 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
     }
 
     onShown(): void {
-        const firstFieldId = this.presetWageTypeId() ? 'WageTypeLeave_AbsenceTypeId' : 'WageTypeLeave_WageTypeId';
+        const firstFieldId =
+            this.presetWageTypeId() && !this.presetAbsenceTypeId() ? 'WageTypeLeave_AbsenceTypeId' : 'WageTypeLeave_WageTypeId';
         document.getElementById(firstFieldId)?.focus();
     }
 

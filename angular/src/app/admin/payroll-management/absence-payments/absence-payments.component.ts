@@ -63,6 +63,7 @@ export class AbsencePaymentsComponent extends AppComponentBase implements OnInit
             .getAll(
                 new GetAllAbsencePaymentsInput({
                     absenceTypeId: undefined,
+                    filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),

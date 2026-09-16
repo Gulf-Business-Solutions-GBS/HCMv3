@@ -43,7 +43,11 @@ export class CreateOrEditAbsencePaymentModalComponent extends AppComponentBase {
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
     readonly wageTypes = signal<WageTypeDto[]>([]);
 
-    show(absencePaymentId?: number): void {
+    /** Set when opened from an absence type's detail page: the absence type is fixed. */
+    readonly presetAbsenceTypeId = signal<number | undefined>(undefined);
+
+    show(absencePaymentId?: number, absenceTypeId?: number): void {
+        this.presetAbsenceTypeId.set(absenceTypeId);
         this.active.set(true);
 
         this._absenceTypesService
@@ -55,7 +59,11 @@ export class CreateOrEditAbsencePaymentModalComponent extends AppComponentBase {
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!absencePaymentId) {
-            this.absencePayment.set(new CreateOrEditAbsencePaymentDto());
+            const dto = new CreateOrEditAbsencePaymentDto();
+            if (absenceTypeId) {
+                dto.absenceTypeId = absenceTypeId;
+            }
+            this.absencePayment.set(dto);
             this.modal().show();
         } else {
             this._absencePaymentsService.getAbsencePaymentForEdit(absencePaymentId).subscribe((result) => {
@@ -66,7 +74,8 @@ export class CreateOrEditAbsencePaymentModalComponent extends AppComponentBase {
     }
 
     onShown(): void {
-        document.getElementById('AbsencePayment_AbsenceTypeId')?.focus();
+        const firstFieldId = this.presetAbsenceTypeId() ? 'AbsencePayment_WageTypeId' : 'AbsencePayment_AbsenceTypeId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {

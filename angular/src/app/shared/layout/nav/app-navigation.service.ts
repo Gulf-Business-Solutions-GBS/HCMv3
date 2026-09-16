@@ -1774,12 +1774,6 @@ export class AppNavigationService {
                         '/app/admin/absence-types'
                     ),
                     new AppMenuItem(
-                        'AbsenceTypeExceptions',
-                        'Pages.PayrollManagement.AbsenceTypeExceptions',
-                        'flaticon-list-3',
-                        '/app/admin/absence-type-exceptions'
-                    ),
-                    new AppMenuItem(
                         'AbsenceDeductionRules',
                         'Pages.PayrollManagement.AbsenceDeductionRules',
                         'flaticon-list-3',
@@ -1820,12 +1814,6 @@ export class AppNavigationService {
                         'Pages.PayrollManagement.AbsenceViolationActionLogs',
                         'flaticon-list-3',
                         '/app/admin/absence-violation-action-logs'
-                    ),
-                    new AppMenuItem(
-                        'AbsencePayments',
-                        'Pages.PayrollManagement.AbsencePayments',
-                        'flaticon-list-3',
-                        '/app/admin/absence-payments'
                     ),
                     new AppMenuItem(
                         'EmployeeGroups',

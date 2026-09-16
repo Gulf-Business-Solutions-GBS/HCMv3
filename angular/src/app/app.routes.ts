@@ -1157,6 +1157,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.AbsenceTypes' },
                     },
                     {
+                        path: 'absence-types/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/absence-types/absence-type-detail/absence-type-detail.component').then(
+                                (m) => m.AbsenceTypeDetailComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.AbsenceTypes' },
+                    },
+                    {
                         path: 'employee-groups',
                         loadComponent: () =>
                             import('./admin/payroll-management/employee-groups/employee-groups.component').then(

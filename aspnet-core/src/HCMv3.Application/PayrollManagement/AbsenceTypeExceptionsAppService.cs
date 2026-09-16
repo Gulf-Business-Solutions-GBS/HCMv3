@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -36,7 +37,11 @@ public class AbsenceTypeExceptionsAppService : HCMv3AppServiceBase, IAbsenceType
         var query = _absenceTypeExceptionRepository.GetAll()
             .Include(e => e.AbsenceType)
             .Include(e => e.ExceptAbsenceType)
-            .WhereIf(input.AbsenceTypeId.HasValue, e => e.AbsenceTypeId == input.AbsenceTypeId);
+            .WhereIf(input.AbsenceTypeId.HasValue, e => e.AbsenceTypeId == input.AbsenceTypeId)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), e =>
+                e.ExceptAbsenceType.Code.Contains(input.Filter) ||
+                e.ExceptAbsenceType.NameEn.Contains(input.Filter) ||
+                e.ExceptAbsenceType.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 

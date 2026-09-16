@@ -59,6 +59,7 @@ export class WageTypeLeavesComponent extends AppComponentBase implements OnInit 
             .getAll(
                 new GetAllWageTypeLeavesInput({
                     wageTypeId: undefined,
+                    absenceTypeId: undefined,
                     filter: undefined,
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),

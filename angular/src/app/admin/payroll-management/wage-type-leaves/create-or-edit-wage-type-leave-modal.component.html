@@ -56,6 +56,7 @@
                                     name="AbsenceTypeId"
                                     [ngModel]="wageTypeLeave().absenceTypeId"
                                     (ngModelChange)="updateField('absenceTypeId', $event)"
+                                    [disabled]="!!presetAbsenceTypeId()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (at of absenceTypes(); track at.id) {

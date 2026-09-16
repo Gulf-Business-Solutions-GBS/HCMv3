@@ -38,6 +38,7 @@
                                     name="AbsenceTypeId"
                                     [ngModel]="absenceTypeException().absenceTypeId"
                                     (ngModelChange)="updateField('absenceTypeId', $event)"
+                                    [disabled]="!!presetAbsenceTypeId()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (absenceType of absenceTypes(); track absenceType.id) {

@@ -42,7 +42,11 @@ public class WageTypeLeavesAppService : HCMv3AppServiceBase, IWageTypeLeavesAppS
             .Include(l => l.WageType)
             .Include(l => l.AbsenceType)
             .WhereIf(input.WageTypeId.HasValue, l => l.WageTypeId == input.WageTypeId)
+            .WhereIf(input.AbsenceTypeId.HasValue, l => l.AbsenceTypeId == input.AbsenceTypeId)
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), l =>
+                l.WageType.Code.Contains(input.Filter) ||
+                l.WageType.NameEn.Contains(input.Filter) ||
+                l.WageType.NameAr.Contains(input.Filter) ||
                 l.AbsenceType.Code.Contains(input.Filter) ||
                 l.AbsenceType.NameEn.Contains(input.Filter) ||
                 l.AbsenceType.NameAr.Contains(input.Filter));

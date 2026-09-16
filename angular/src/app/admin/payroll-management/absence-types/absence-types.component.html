@@ -107,7 +107,7 @@
                                         </button>
                                     </td>
                                     <td style="min-width: 120px">
-                                        <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
+                                        <a [routerLink]="['/app/admin/absence-types', record.id]" pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</a>
                                     </td>
                                     <td style="min-width: 200px">
                                         <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>

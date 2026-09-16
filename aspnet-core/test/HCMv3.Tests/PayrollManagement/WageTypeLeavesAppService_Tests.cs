@@ -116,4 +116,19 @@ public class WageTypeLeavesAppService_Tests : PayrollManagementAppServiceTestBas
         (await service.GetAll(new GetAllWageTypeLeavesInput { WageTypeId = wageTypeId })).TotalCount.ShouldBe(3);
         (await service.AddAllLeaveTypes(new Abp.Application.Services.Dto.EntityDto(wageTypeId))).ShouldBe(0);
     }
+
+    [Fact]
+    public async Task Should_List_Leaves_By_Absence_Type_And_Filter_By_Wage_Type()
+    {
+        var absenceTypeId = CreateAbsenceType("ATL5");
+        var service = CreateAppService();
+        foreach (var code in new[] { "HOUSING5", "TRANSPORT5" })
+        {
+            await service.CreateOrEdit(new CreateOrEditWageTypeLeaveDto { WageTypeId = CreateWageType(code), AbsenceTypeId = absenceTypeId });
+        }
+        await service.CreateOrEdit(new CreateOrEditWageTypeLeaveDto { WageTypeId = CreateWageType("OTHER5"), AbsenceTypeId = CreateAbsenceType("ATL6") });
+
+        (await service.GetAll(new GetAllWageTypeLeavesInput { AbsenceTypeId = absenceTypeId })).TotalCount.ShouldBe(2);
+        (await service.GetAll(new GetAllWageTypeLeavesInput { AbsenceTypeId = absenceTypeId, Filter = "TRANS" })).TotalCount.ShouldBe(1);
+    }
 }

@@ -11,7 +11,9 @@ public class GetAllWageTypeLeavesInput : PagedAndSortedResultRequestDto, IShould
 {
     public int? WageTypeId { get; set; }
 
-    /// <summary>Free-text filter matched against the absence type code and names.</summary>
+    public int? AbsenceTypeId { get; set; }
+
+    /// <summary>Free-text filter matched against the wage type and absence type codes and names.</summary>
     public string Filter { get; set; }
 
     public void Normalize()

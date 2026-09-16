@@ -81,4 +81,17 @@ public class AbsenceTypeExceptionsAppService_Tests : PayrollManagementAppService
                 ExceptAbsenceTypeId = absenceTypeId
             }));
     }
+
+    [Fact]
+    public async Task Should_Filter_Exceptions_By_Excepted_Absence_Type()
+    {
+        var absenceTypeId = CreateAbsenceType("AT_F1");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditAbsenceTypeExceptionDto { AbsenceTypeId = absenceTypeId, ExceptAbsenceTypeId = CreateAbsenceType("SICKF") });
+        await service.CreateOrEdit(new CreateOrEditAbsenceTypeExceptionDto { AbsenceTypeId = absenceTypeId, ExceptAbsenceTypeId = CreateAbsenceType("HAJJF") });
+
+        var result = await service.GetAll(new GetAllAbsenceTypeExceptionsInput { AbsenceTypeId = absenceTypeId, Filter = "HAJ" });
+
+        result.TotalCount.ShouldBe(1);
+    }
 }
