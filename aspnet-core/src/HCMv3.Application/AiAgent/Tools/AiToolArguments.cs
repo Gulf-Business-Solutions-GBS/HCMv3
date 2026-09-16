@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -89,6 +91,61 @@ public class AiToolArguments
         }
 
         throw new AiToolArgumentException($"'{name}' must be a whole number.");
+    }
+
+    /// <summary>A money amount or other decimal. Accepts "50", "50.000" and "50 KD" -- models copy the user's units.</summary>
+    public double? GetNumber(string name)
+    {
+        if (!TryGet(name, out var value))
+        {
+            return null;
+        }
+
+        if (value.ValueKind == JsonValueKind.Number)
+        {
+            return value.GetDouble();
+        }
+
+        if (value.ValueKind == JsonValueKind.String)
+        {
+            var text = value.GetString()!.Trim();
+            foreach (var unit in new[] { "KWD", "KD", "د.ك", "دينار" })
+            {
+                text = text.Replace(unit, string.Empty, StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (double.TryParse(text.Replace(",", string.Empty).Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed))
+            {
+                return parsed;
+            }
+        }
+
+        throw new AiToolArgumentException($"'{name}' must be a number, e.g. 50 or 12.500.");
+    }
+
+    public bool TryGetArray(string name, out List<JsonElement> items)
+    {
+        items = new List<JsonElement>();
+
+        if (!TryGet(name, out var value))
+        {
+            return false;
+        }
+
+        if (value.ValueKind == JsonValueKind.Array)
+        {
+            items.AddRange(value.EnumerateArray().Where(e => e.ValueKind == JsonValueKind.Object));
+            return true;
+        }
+
+        // Some models send a single object where the schema says array.
+        if (value.ValueKind == JsonValueKind.Object)
+        {
+            items.Add(value);
+            return true;
+        }
+
+        return false;
     }
 
     public bool? GetBool(string name)

@@ -213,8 +213,10 @@ public class AiAgentAppService_Tests : AiAgentTestBase
 
         await Service.SendMessage(new SendAiMessageInput { Message = "hi" });
 
-        Model.Requests[0].Tools.Select(t => t.Name)
-            .ShouldBe(new[] { "get_my_leave_balances", "get_my_leave_requests", "list_leave_types", "prepare_leave_cancellation", "prepare_leave_request" }, ignoreOrder: true);
+        // The admin also holds the pay administration permissions, so only the leave tools are asserted here;
+        // who gets the admin tools is covered in AiAgentAdminPayTools_Tests.
+        new[] { "get_my_leave_balances", "get_my_leave_requests", "list_leave_types", "prepare_leave_cancellation", "prepare_leave_request" }
+            .ShouldBeSubsetOf(Model.Requests[0].Tools.Select(t => t.Name));
     }
 
     [Fact]

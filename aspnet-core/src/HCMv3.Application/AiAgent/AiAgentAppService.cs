@@ -28,6 +28,12 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
 {
     private const int MaxConversationsListed = 100;
 
+    /// <summary>Being offered any of these is what makes the prompt describe the user as an administrator.</summary>
+    private static readonly HashSet<string> AdministrationToolNames = new(StringComparer.Ordinal)
+    {
+        "find_employee", "find_wage_types", "get_employee_basic_pay", "prepare_basic_pay_change", "prepare_one_time_payment"
+    };
+
     private static readonly Regex Whitespace = new(@"\s+", RegexOptions.Compiled);
 
     private readonly IRepository<AiConversation> _conversationRepository;
@@ -126,7 +132,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             conversation.LastMessageTime = Clock.Now;
 
             tools = await _toolRegistry.GetAvailableToolsAsync();
-            systemPrompt = AiAgentSystemPrompt.Build(await BuildPromptContextAsync());
+            systemPrompt = AiAgentSystemPrompt.Build(await BuildPromptContextAsync(tools));
 
             await uow.CompleteAsync();
         }
@@ -500,7 +506,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             .Where(m => m.Role == AiMessageRole.User
                         || (m.Role == AiMessageRole.Assistant && m.ToolCallsJson == null && m.Content != null));
 
-    private async Task<AiAgentPromptContext> BuildPromptContextAsync()
+    private async Task<AiAgentPromptContext> BuildPromptContextAsync(IReadOnlyCollection<IAiAgentTool> tools)
     {
         var employee = await _employeeSessionService.GetCurrentEmployeeAsync();
 
@@ -511,7 +517,8 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             EmployeeNameEn = employee?.FullNameEn,
             EmployeeNameAr = employee?.FullNameAr,
             CanUseLeave = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyLeave),
-            CanViewTeam = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyTeam)
+            CanViewTeam = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyTeam),
+            IsPayAdministrator = tools.Any(t => AdministrationToolNames.Contains(t.Name))
         };
     }
 
