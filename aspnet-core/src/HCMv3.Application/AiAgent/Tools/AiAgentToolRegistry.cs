@@ -81,7 +81,7 @@ public class AiAgentToolRegistry : ITransientDependency
     };
 
     /// <returns>The JSON handed back to the model: the tool's result, or <c>{"error": "..."}</c>.</returns>
-    public async Task<string> ExecuteAsync(AiToolCall call, IReadOnlyCollection<IAiAgentTool> offeredTools)
+    public async Task<string> ExecuteAsync(AiToolCall call, IReadOnlyCollection<IAiAgentTool> offeredTools, AiToolContext context)
     {
         var tool = offeredTools.FirstOrDefault(t => string.Equals(t.Name, call.Name, StringComparison.Ordinal));
 
@@ -93,7 +93,7 @@ public class AiAgentToolRegistry : ITransientDependency
         try
         {
             var arguments = AiToolArguments.Parse(call.ArgumentsJson);
-            var result = await tool.ExecuteAsync(arguments);
+            var result = await tool.ExecuteAsync(arguments, context);
             return Truncate(JsonSerializer.Serialize(result, ResultJsonOptions));
         }
         catch (AiToolArgumentException ex)

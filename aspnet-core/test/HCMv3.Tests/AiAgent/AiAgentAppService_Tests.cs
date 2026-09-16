@@ -26,26 +26,14 @@ namespace HCMv3.Tests.AiAgent;
 /// services it stands in for still apply when it is the one asking.
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public class AiAgentAppService_Tests : AppTestBase
+public class AiAgentAppService_Tests : AiAgentTestBase
 {
-    private readonly FakeAiChatClient _model = new();
-
-    public AiAgentAppService_Tests()
-    {
-        LoginAsDefaultTenantAdmin();
-        LocalIocManager.IocContainer.Register(Component.For<IAiChatClient>().Instance(_model).IsDefault());
-    }
-
-    private IAiAgentAppService Service => Resolve<IAiAgentAppService>();
-
-    private int TenantId => AbpSession.TenantId ?? 1;
-
     // ------------------------------------------------------------------ conversations
 
     [Fact]
     public async Task Should_Save_The_Question_And_The_Reply_In_A_New_Conversation()
     {
-        _model.RepliesWith("Hello! How can I help?");
+        Model.RepliesWith("Hello! How can I help?");
 
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "  Hi there  " });
 
@@ -65,12 +53,12 @@ public class AiAgentAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Replay_The_Earlier_Conversation_To_The_Model()
     {
-        _model.RepliesWith("First answer").RepliesWith("Second answer");
+        Model.RepliesWith("First answer").RepliesWith("Second answer");
 
         var first = await Service.SendMessage(new SendAiMessageInput { Message = "First question" });
         await Service.SendMessage(new SendAiMessageInput { ConversationId = first.ConversationId, Message = "Second question" });
 
-        var second = _model.Requests[1].Messages;
+        var second = Model.Requests[1].Messages;
         second.Select(m => m.Role).ShouldBe(new[]
         {
             AiChatMessage.SystemRole, AiChatMessage.UserRole, AiChatMessage.AssistantRole, AiChatMessage.UserRole
@@ -83,7 +71,7 @@ public class AiAgentAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Delete_A_Conversation_From_The_List()
     {
-        _model.RepliesWith("ok");
+        Model.RepliesWith("ok");
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "hello" });
 
         await Service.DeleteConversation(new EntityDto(output.ConversationId));
@@ -95,7 +83,7 @@ public class AiAgentAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Never_Show_A_Conversation_To_Another_User()
     {
-        _model.RepliesWith("private answer");
+        Model.RepliesWith("private answer");
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "my private question" });
 
         AbpSession.UserId = CreateUser(AppPermissions.Ess, AppPermissions.Ess_AiAgent);
@@ -107,7 +95,7 @@ public class AiAgentAppService_Tests : AppTestBase
         // Nor may they write into it -- and the model must not be called at all.
         await Should.ThrowAsync<UserFriendlyException>(() =>
             Service.SendMessage(new SendAiMessageInput { ConversationId = output.ConversationId, Message = "what did they ask?" }));
-        _model.Requests.Count.ShouldBe(1);
+        Model.Requests.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -136,7 +124,7 @@ public class AiAgentAppService_Tests : AppTestBase
         }
 
         (refusal is AbpValidationException || refusal is UserFriendlyException).ShouldBeTrue(refusal?.GetType().Name ?? "nothing thrown");
-        _model.Requests.ShouldBeEmpty();
+        Model.Requests.ShouldBeEmpty();
     }
 
     // ------------------------------------------------------------------ tools
@@ -148,14 +136,14 @@ public class AiAgentAppService_Tests : AppTestBase
         var annual = CreateAbsenceType("Annual Leave", "إجازة سنوية");
         CreateQuota(employeeId, annual, accrued: 30, used: 5);
 
-        _model.CallsTool("get_my_leave_balances").RepliesWith("You have 25 days of annual leave left.");
+        Model.CallsTool("get_my_leave_balances").RepliesWith("You have 25 days of annual leave left.");
 
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "How much leave do I have?" });
 
         output.AssistantMessage.Content.ShouldBe("You have 25 days of annual leave left.");
 
-        _model.Requests.Count.ShouldBe(2);
-        var toolResult = _model.Requests[1].Messages.Last();
+        Model.Requests.Count.ShouldBe(2);
+        var toolResult = Model.Requests[1].Messages.Last();
         toolResult.Role.ShouldBe(AiChatMessage.ToolRole);
         toolResult.ToolName.ShouldBe("get_my_leave_balances");
         toolResult.Content.ShouldContain(@"""remaining"":25");
@@ -183,11 +171,11 @@ public class AiAgentAppService_Tests : AppTestBase
         CreateLeave(mine, annual, DateTime.Today.AddDays(10), 3, "my leave");
         CreateLeave(someoneElse, annual, DateTime.Today.AddDays(10), 5, "their leave");
 
-        _model.CallsTool("get_my_leave_requests").RepliesWith("You have one upcoming leave.");
+        Model.CallsTool("get_my_leave_requests").RepliesWith("You have one upcoming leave.");
 
         await Service.SendMessage(new SendAiMessageInput { Message = "Show my leave requests" });
 
-        var toolResult = _model.Requests[1].Messages.Last().Content;
+        var toolResult = Model.Requests[1].Messages.Last().Content;
         toolResult.ShouldContain("my leave");
         toolResult.ShouldNotContain("their leave");
         toolResult.ShouldContain(@"""status"":""Approved""");
@@ -198,35 +186,35 @@ public class AiAgentAppService_Tests : AppTestBase
     {
         // The admin is deliberately not linked to an employee, so the leave service refuses. That must reach
         // the model as data it can explain -- not end the conversation with an exception.
-        _model.CallsTool("get_my_leave_balances").RepliesWith("Your login is not linked to an employee record.");
+        Model.CallsTool("get_my_leave_balances").RepliesWith("Your login is not linked to an employee record.");
 
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "my balance?" });
 
         output.AssistantMessage.Content.ShouldBe("Your login is not linked to an employee record.");
-        _model.Requests[1].Messages.Last().Content.ShouldStartWith(@"{""error"":");
+        Model.Requests[1].Messages.Last().Content.ShouldStartWith(@"{""error"":");
     }
 
     [Fact]
     public async Task Should_Not_Offer_Leave_Tools_To_A_User_Without_Leave_Access()
     {
         AbpSession.UserId = CreateUser(AppPermissions.Ess, AppPermissions.Ess_AiAgent);
-        _model.RepliesWith("I can't see leave information.");
+        Model.RepliesWith("I can't see leave information.");
 
         await Service.SendMessage(new SendAiMessageInput { Message = "how much leave do I have" });
 
-        _model.Requests[0].Tools.ShouldBeEmpty();
-        _model.Requests[0].Messages[0].Content.ShouldContain("does not have access to leave information");
+        Model.Requests[0].Tools.ShouldBeEmpty();
+        Model.Requests[0].Messages[0].Content.ShouldContain("does not have access to leave information");
     }
 
     [Fact]
     public async Task Should_Offer_The_Leave_Tools_To_A_User_With_Leave_Access()
     {
-        _model.RepliesWith("hi");
+        Model.RepliesWith("hi");
 
         await Service.SendMessage(new SendAiMessageInput { Message = "hi" });
 
-        _model.Requests[0].Tools.Select(t => t.Name)
-            .ShouldBe(new[] { "get_my_leave_balances", "get_my_leave_requests", "list_leave_types" }, ignoreOrder: true);
+        Model.Requests[0].Tools.Select(t => t.Name)
+            .ShouldBe(new[] { "get_my_leave_balances", "get_my_leave_requests", "list_leave_types", "prepare_leave_cancellation", "prepare_leave_request" }, ignoreOrder: true);
     }
 
     [Fact]
@@ -234,15 +222,15 @@ public class AiAgentAppService_Tests : AppTestBase
     {
         for (var i = 0; i < AiAgentConsts.MaxModelCallsPerMessage; i++)
         {
-            _model.CallsTool("list_leave_types");
+            Model.CallsTool("list_leave_types");
         }
 
         var output = await Service.SendMessage(new SendAiMessageInput { Message = "loop forever" });
 
-        _model.Requests.Count.ShouldBe(AiAgentConsts.MaxModelCallsPerMessage);
-        _model.Requests.First().Tools.ShouldNotBeEmpty();
+        Model.Requests.Count.ShouldBe(AiAgentConsts.MaxModelCallsPerMessage);
+        Model.Requests.First().Tools.ShouldNotBeEmpty();
         // On the last call nothing is offered, so the model has to answer.
-        _model.Requests.Last().Tools.ShouldBeEmpty();
+        Model.Requests.Last().Tools.ShouldBeEmpty();
         output.AssistantMessage.Content.ShouldNotBeNullOrWhiteSpace();
     }
 
@@ -251,7 +239,7 @@ public class AiAgentAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Keep_The_Question_When_The_Model_Is_Down()
     {
-        _model.Fails();
+        Model.Fails();
 
         await Should.ThrowAsync<UserFriendlyException>(() => Service.SendMessage(new SendAiMessageInput { Message = "anyone there?" }));
 
@@ -263,7 +251,7 @@ public class AiAgentAppService_Tests : AppTestBase
     [Fact]
     public async Task Should_Tell_The_User_When_The_Model_Timed_Out()
     {
-        _model.Fails(isTimeout: true);
+        Model.Fails(isTimeout: true);
 
         var ex = await Should.ThrowAsync<UserFriendlyException>(() => Service.SendMessage(new SendAiMessageInput { Message = "slow?" }));
 
@@ -301,136 +289,4 @@ public class AiAgentAppService_Tests : AppTestBase
         AiAgentAppService.MakeTitle(message).ShouldBe(expected);
     }
 
-    // ------------------------------------------------------------------ data helpers
-
-    private long CreateUser(params string[] grantedPermissions)
-    {
-        var userId = 0L;
-
-        UsingDbContext(context =>
-        {
-            var unique = Guid.NewGuid().ToString("N").Substring(0, 8);
-            var user = new User
-            {
-                TenantId = TenantId,
-                UserName = "ai" + unique,
-                Name = "AI",
-                Surname = "Tester",
-                EmailAddress = "ai" + unique + "@testdomain.com",
-                IsEmailConfirmed = true,
-                Password = "AM4OLBpptxBYmM79lGOX9egzZk3vIQU3d/gFCJzaBjAPXzYIK3tQ2N7X4fcrHtElTw=="
-            };
-            user.SetNormalizedNames();
-
-            userId = context.Users.Add(user).Entity.Id;
-            context.SaveChanges();
-            userId = user.Id;
-
-            foreach (var permission in grantedPermissions)
-            {
-                context.UserPermissions.Add(new UserPermissionSetting
-                {
-                    TenantId = TenantId,
-                    UserId = userId,
-                    Name = permission,
-                    IsGranted = true
-                });
-            }
-        });
-
-        return userId;
-    }
-
-    private int CreateEmployee(string code, long? userId = null)
-    {
-        Nationality nationality = null;
-        UsingDbContext(context =>
-        {
-            nationality = context.Set<Nationality>().Add(new Nationality
-            {
-                TenantId = TenantId,
-                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
-                NameEn = "N",
-                NameAr = "N"
-            }).Entity;
-        });
-
-        Employee employee = null;
-        UsingDbContext(context =>
-        {
-            employee = context.Set<Employee>().Add(new Employee
-            {
-                TenantId = TenantId,
-                Code = code,
-                FirstNameEn = code,
-                LastNameEn = "T",
-                FirstNameAr = "ت",
-                LastNameAr = "ت",
-                FullNameEn = code + " T",
-                FullNameAr = "ت ت",
-                BirthDate = new DateTime(1990, 1, 1),
-                JoiningDate = new DateTime(2020, 1, 1),
-                ProbationEndDate = new DateTime(2020, 4, 1),
-                UserId = userId,
-                NationalityId = nationality.Id
-            }).Entity;
-        });
-
-        return employee.Id;
-    }
-
-    private int CreateAbsenceType(string nameEn, string nameAr)
-    {
-        AbsenceType absenceType = null;
-        UsingDbContext(context =>
-        {
-            absenceType = context.Set<AbsenceType>().Add(new AbsenceType
-            {
-                TenantId = TenantId,
-                Code = Guid.NewGuid().ToString("N").Substring(0, 8),
-                NameEn = nameEn,
-                NameAr = nameAr
-            }).Entity;
-        });
-
-        return absenceType.Id;
-    }
-
-    private void CreateQuota(int employeeId, int absenceTypeId, double accrued, double used)
-    {
-        UsingDbContext(context =>
-        {
-            context.Set<EmployeeAbsenceQuota>().Add(new EmployeeAbsenceQuota
-            {
-                TenantId = TenantId,
-                EmployeeId = employeeId,
-                AbsenceTypeId = absenceTypeId,
-                EntitlementFrom = DateTime.Today.AddYears(-1),
-                EntitlementTo = DateTime.Today.AddYears(1),
-                DeductionFrom = DateTime.Today.AddYears(-1),
-                DeductionTo = DateTime.Today.AddYears(1),
-                QuotaAccrued = accrued,
-                QuotaUsed = used
-            });
-        });
-    }
-
-    private void CreateLeave(int employeeId, int absenceTypeId, DateTime start, int days, string comments)
-    {
-        UsingDbContext(context =>
-        {
-            context.Set<EmployeeAbsence>().Add(new EmployeeAbsence
-            {
-                TenantId = TenantId,
-                EmployeeId = employeeId,
-                AbsenceTypeId = absenceTypeId,
-                StartDate = start,
-                EndDate = start.AddDays(days - 1),
-                InitialEndDate = start.AddDays(days - 1),
-                CalendarDays = days,
-                TotalLeaveDays = days,
-                Comments = comments
-            });
-        });
-    }
 }

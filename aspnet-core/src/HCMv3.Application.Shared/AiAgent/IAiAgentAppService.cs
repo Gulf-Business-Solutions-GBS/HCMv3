@@ -31,4 +31,13 @@ public interface IAiAgentAppService : IApplicationService
     Task<AiConversationDto> GetConversation(EntityDto input);
 
     Task DeleteConversation(EntityDto input);
+
+    /// <summary>
+    /// Carries out something the assistant prepared -- the only way anything the assistant drafts is ever
+    /// submitted. Runs through the same service as the ordinary screen, so a refusal there (no balance,
+    /// overlap, no approver) is recorded on the card rather than thrown.
+    /// </summary>
+    Task<AiActionResultDto> ConfirmAction(EntityDto input);
+
+    Task<AiActionResultDto> CancelAction(EntityDto input);
 }

@@ -46,5 +46,17 @@ public interface IAiAgentTool : ITransientDependency
     /// <see cref="AiToolArgumentException"/> for arguments the model got wrong -- the message is shown to the
     /// model so it can correct itself.
     /// </summary>
-    Task<object> ExecuteAsync(AiToolArguments arguments);
+    Task<object> ExecuteAsync(AiToolArguments arguments, AiToolContext context);
+}
+
+/// <summary>Where a tool is running: whose conversation, and what it left behind for the reply.</summary>
+public class AiToolContext
+{
+    public int ConversationId { get; set; }
+
+    /// <summary>
+    /// Set by a tool that prepared something for the user to confirm, so the reply it produced carries the
+    /// confirmation card. A later draft in the same message replaces an earlier one.
+    /// </summary>
+    public int? CreatedPendingActionId { get; set; }
 }

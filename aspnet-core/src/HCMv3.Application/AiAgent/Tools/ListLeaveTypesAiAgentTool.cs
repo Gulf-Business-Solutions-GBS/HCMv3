@@ -30,7 +30,7 @@ public class ListLeaveTypesAiAgentTool : IAiAgentTool
 
     public JsonObject BuildParameters() => AiToolArguments.NoParameters();
 
-    public async Task<object> ExecuteAsync(AiToolArguments arguments)
+    public async Task<object> ExecuteAsync(AiToolArguments arguments, AiToolContext context)
     {
         var types = await _essLookupAppService.GetAbsenceTypes();
 

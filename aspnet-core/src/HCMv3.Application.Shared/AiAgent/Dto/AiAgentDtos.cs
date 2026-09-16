@@ -34,6 +34,42 @@ public class AiMessageDto : EntityDto
     public string Content { get; set; }
 
     public DateTime CreationTime { get; set; }
+
+    /// <summary>The confirmation card shown under this reply, if the assistant prepared something.</summary>
+    public AiPendingActionDto PendingAction { get; set; }
+}
+
+/// <summary>
+/// Something prepared for the user to confirm, as the card shows it. Title and details are already in the
+/// user's language; the page renders them as given.
+/// </summary>
+public class AiPendingActionDto : EntityDto
+{
+    public string ActionType { get; set; }
+
+    public AiPendingActionStatus Status { get; set; }
+
+    public string Title { get; set; }
+
+    public List<AiActionDetailDto> Details { get; set; } = new();
+
+    /// <summary>What happened once confirmed, or why it was refused.</summary>
+    public string ResultMessage { get; set; }
+}
+
+public class AiActionDetailDto
+{
+    public string Label { get; set; }
+
+    public string Value { get; set; }
+}
+
+/// <summary>The outcome of pressing Confirm or Cancel: the card's new state, and the line added to the chat.</summary>
+public class AiActionResultDto
+{
+    public AiPendingActionDto Action { get; set; }
+
+    public AiMessageDto Message { get; set; }
 }
 
 public class AiConversationListDto : EntityDto

@@ -43,7 +43,7 @@ public class GetMyLeaveRequestsAiAgentTool : IAiAgentTool
         }
     };
 
-    public async Task<object> ExecuteAsync(AiToolArguments arguments)
+    public async Task<object> ExecuteAsync(AiToolArguments arguments, AiToolContext context)
     {
         var page = await _myLeaveAppService.GetMyLeaves(new GetMyLeavesInput
         {

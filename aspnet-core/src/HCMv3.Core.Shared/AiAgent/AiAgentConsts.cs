@@ -31,4 +31,10 @@ public static class AiAgentConsts
     /// <summary>Tool output handed back to the model. Small models lose the thread on long results, and
     /// nothing a leave or payslip question needs comes close.</summary>
     public const int MaxToolResultLength = 8000;
+
+    /// <summary>
+    /// How long a prepared action stays confirmable. A card found the next morning should not submit leave on
+    /// dates the user worked out yesterday against yesterday's balance; they ask again instead.
+    /// </summary>
+    public const int PendingActionLifetimeHours = 12;
 }

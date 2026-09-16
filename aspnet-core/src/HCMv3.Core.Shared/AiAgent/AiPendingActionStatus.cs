@@ -19,5 +19,11 @@ public enum AiPendingActionStatus
     Failed = 3,
 
     /// <summary>Left unconfirmed too long, or superseded by a newer draft in the same conversation.</summary>
-    Expired = 4
+    Expired = 4,
+
+    /// <summary>
+    /// Confirmed and running. Claimed with a single conditional update from <see cref="Pending"/>, so a
+    /// double-click or two open tabs cannot submit the same leave twice: only one claim changes a row.
+    /// </summary>
+    Processing = 5
 }

@@ -28,7 +28,7 @@ public class GetMyLeaveBalancesAiAgentTool : IAiAgentTool
 
     public JsonObject BuildParameters() => AiToolArguments.NoParameters();
 
-    public async Task<object> ExecuteAsync(AiToolArguments arguments)
+    public async Task<object> ExecuteAsync(AiToolArguments arguments, AiToolContext context)
     {
         var balances = await _myLeaveAppService.GetMyBalances();
 

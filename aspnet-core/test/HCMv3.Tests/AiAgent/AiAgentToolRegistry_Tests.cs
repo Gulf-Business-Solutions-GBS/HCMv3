@@ -52,7 +52,8 @@ public class AiAgentToolRegistry_Tests : AppTestBase
 
         var result = await registry.ExecuteAsync(
             new AiToolCall { Id = "c1", Name = "get_my_leave_balances", ArgumentsJson = "{}" },
-            Array.Empty<IAiAgentTool>());
+            Array.Empty<IAiAgentTool>(),
+            new AiToolContext());
 
         result.ShouldContain("There is no tool named 'get_my_leave_balances'");
     }
@@ -64,7 +65,8 @@ public class AiAgentToolRegistry_Tests : AppTestBase
 
         var result = await registry.ExecuteAsync(
             new AiToolCall { Id = "c1", Name = "get_my_leave_requests", ArgumentsJson = "{oops" },
-            registry.AllTools);
+            registry.AllTools,
+            new AiToolContext());
 
         result.ShouldStartWith(@"{""error"":");
         result.ShouldContain("not valid JSON");

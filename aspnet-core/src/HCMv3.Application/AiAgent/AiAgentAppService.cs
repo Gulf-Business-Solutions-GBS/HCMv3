@@ -9,8 +9,10 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Runtime.Session;
+using Abp.Runtime.Validation;
 using Abp.Timing;
 using Abp.UI;
+using HCMv3.AiAgent.Actions;
 using HCMv3.AiAgent.Chat;
 using HCMv3.AiAgent.Dto;
 using HCMv3.AiAgent.Tools;
@@ -30,23 +32,29 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
 
     private readonly IRepository<AiConversation> _conversationRepository;
     private readonly IRepository<AiMessage> _messageRepository;
+    private readonly IRepository<AiPendingAction> _actionRepository;
     private readonly IAiChatClient _chatClient;
     private readonly AiAgentToolRegistry _toolRegistry;
+    private readonly AiPendingActionHandlerResolver _actionHandlers;
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public AiAgentAppService(
         IRepository<AiConversation> conversationRepository,
         IRepository<AiMessage> messageRepository,
+        IRepository<AiPendingAction> actionRepository,
         IAiChatClient chatClient,
         AiAgentToolRegistry toolRegistry,
+        AiPendingActionHandlerResolver actionHandlers,
         IEmployeeSessionService employeeSessionService,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _conversationRepository = conversationRepository;
         _messageRepository = messageRepository;
+        _actionRepository = actionRepository;
         _chatClient = chatClient;
         _toolRegistry = toolRegistry;
+        _actionHandlers = actionHandlers;
         _employeeSessionService = employeeSessionService;
         _unitOfWorkManager = unitOfWorkManager;
     }
@@ -123,33 +131,39 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             await uow.CompleteAsync();
         }
 
-        var reply = await RunModelAsync(conversationId, systemPrompt, history, text, tools);
+        var toolContext = new AiToolContext { ConversationId = conversationId };
 
-        AiMessage assistantMessage;
+        var reply = await RunModelAsync(systemPrompt, history, text, tools, toolContext);
+
         using (var uow = _unitOfWorkManager.Begin())
         {
-            assistantMessage = new AiMessage
+            var assistantMessage = new AiMessage
             {
                 TenantId = AbpSession.GetTenantId(),
                 ConversationId = conversationId,
                 Role = AiMessageRole.Assistant,
-                Content = reply
+                Content = reply,
+                PendingActionId = toolContext.CreatedPendingActionId
             };
             await _messageRepository.InsertAsync(assistantMessage);
 
             var conversation = await _conversationRepository.GetAsync(conversationId);
             conversation.LastMessageTime = Clock.Now;
 
-            await uow.CompleteAsync();
-        }
+            await CurrentUnitOfWork.SaveChangesAsync();
 
-        return new SendAiMessageOutput
-        {
-            ConversationId = conversationId,
-            ConversationTitle = conversationTitle,
-            UserMessage = ToDto(userMessage),
-            AssistantMessage = ToDto(assistantMessage)
-        };
+            var dtos = await ToDtosAsync(new List<AiMessage> { userMessage, assistantMessage });
+
+            await uow.CompleteAsync();
+
+            return new SendAiMessageOutput
+            {
+                ConversationId = conversationId,
+                ConversationTitle = conversationTitle,
+                UserMessage = dtos[0],
+                AssistantMessage = dtos[1]
+            };
+        }
     }
 
     public async Task<ListResultDto<AiConversationListDto>> GetMyConversations()
@@ -183,7 +197,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         {
             Id = conversation.Id,
             Title = conversation.Title,
-            Messages = messages.Select(ToDto).ToList()
+            Messages = await ToDtosAsync(messages)
         };
     }
 
@@ -195,11 +209,114 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         await _conversationRepository.DeleteAsync(conversation);
     }
 
+    /// <remarks>
+    /// Three short steps rather than one transaction, so that whatever the underlying service does, the card
+    /// ends in a final state:
+    /// <list type="number">
+    /// <item><description>CLAIM the action with one conditional update (Pending -&gt; Processing). Two
+    /// concurrent confirmations cannot both change the row, so a double-click submits once.</description></item>
+    /// <item><description>RUN the handler with no surrounding unit of work. The leave service opens its own;
+    /// if it refuses, only its work rolls back.</description></item>
+    /// <item><description>RECORD the outcome on the action and as a line in the conversation, so the next
+    /// question the user asks is answered knowing what happened.</description></item>
+    /// </list>
+    /// </remarks>
+    [UnitOfWork(IsDisabled = true)]
+    public async Task<AiActionResultDto> ConfirmAction(EntityDto input)
+    {
+        AiPendingAction action;
+        bool expired;
+
+        using (var uow = _unitOfWorkManager.Begin())
+        {
+            action = await GetOwnActionAsync(input.Id);
+
+            if (action.Status != AiPendingActionStatus.Pending)
+            {
+                throw new UserFriendlyException(L("AiAgentActionNoLongerPending"));
+            }
+
+            var claimed = await _actionRepository.GetAll()
+                .Where(a => a.Id == action.Id && a.Status == AiPendingActionStatus.Pending)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(a => a.Status, AiPendingActionStatus.Processing));
+
+            await uow.CompleteAsync();
+
+            if (claimed == 0)
+            {
+                throw new UserFriendlyException(L("AiAgentActionNoLongerPending"));
+            }
+
+            expired = action.CreationTime < Clock.Now.AddHours(-AiAgentConsts.PendingActionLifetimeHours);
+        }
+
+        if (expired)
+        {
+            return await FinishActionAsync(action.Id, AiPendingActionStatus.Expired, L("AiAgentActionExpired"));
+        }
+
+        AiPendingActionStatus outcome;
+        string message;
+
+        try
+        {
+            message = await _actionHandlers.Get(action.ActionType).ExecuteAsync(action.PayloadJson);
+            outcome = AiPendingActionStatus.Completed;
+        }
+        catch (UserFriendlyException ex)
+        {
+            outcome = AiPendingActionStatus.Failed;
+            message = L("AiAgentActionFailed", string.IsNullOrWhiteSpace(ex.Details) ? ex.Message : ex.Message + " " + ex.Details);
+        }
+        catch (AbpAuthorizationException ex)
+        {
+            outcome = AiPendingActionStatus.Failed;
+            message = L("AiAgentActionFailed", ex.Message);
+        }
+        catch (AbpValidationException ex)
+        {
+            outcome = AiPendingActionStatus.Failed;
+            message = L("AiAgentActionFailed", string.Join(" ", ex.ValidationErrors.Select(e => e.ErrorMessage)));
+        }
+        catch (Exception ex)
+        {
+            // Must not escape: the action is already claimed, and an escaping exception would strand it in
+            // Processing, unconfirmable and uncancellable, with the user unsure whether leave was booked.
+            Logger.Error($"AI agent action {action.Id} ({action.ActionType}) failed.", ex);
+            outcome = AiPendingActionStatus.Failed;
+            message = L("AiAgentActionFailedUnexpectedly");
+        }
+
+        return await FinishActionAsync(action.Id, outcome, message);
+    }
+
+    [UnitOfWork(IsDisabled = true)]
+    public async Task<AiActionResultDto> CancelAction(EntityDto input)
+    {
+        using (var uow = _unitOfWorkManager.Begin())
+        {
+            var action = await GetOwnActionAsync(input.Id);
+
+            var claimed = await _actionRepository.GetAll()
+                .Where(a => a.Id == action.Id && a.Status == AiPendingActionStatus.Pending)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(a => a.Status, AiPendingActionStatus.Processing));
+
+            await uow.CompleteAsync();
+
+            if (claimed == 0)
+            {
+                throw new UserFriendlyException(L("AiAgentActionNoLongerPending"));
+            }
+        }
+
+        return await FinishActionAsync(input.Id, AiPendingActionStatus.Cancelled, L("AiAgentActionCancelledByUser"));
+    }
+
     /// <summary>
     /// Runs the model until it replies in words, executing the tools it asks for along the way.
     /// </summary>
     private async Task<string> RunModelAsync(
-        int conversationId, string systemPrompt, List<AiChatMessage> history, string text, List<IAiAgentTool> tools)
+        string systemPrompt, List<AiChatMessage> history, string text, List<IAiAgentTool> tools, AiToolContext toolContext)
     {
         var definitions = tools.Select(AiAgentToolRegistry.ToDefinition).ToList();
 
@@ -237,7 +354,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
 
             foreach (var toolCall in response.ToolCalls)
             {
-                var result = await _toolRegistry.ExecuteAsync(toolCall, tools);
+                var result = await _toolRegistry.ExecuteAsync(toolCall, tools, toolContext);
 
                 request.Messages.Add(AiChatMessage.Tool(toolCall.Id, toolCall.Name, result));
 
@@ -250,7 +367,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
                 });
             }
 
-            await SaveStepsAsync(conversationId, steps);
+            await SaveStepsAsync(toolContext.ConversationId, steps);
         }
 
         return L("AiAgentCouldNotComplete");
@@ -284,6 +401,42 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         await uow.CompleteAsync();
     }
 
+    private async Task<AiActionResultDto> FinishActionAsync(int actionId, AiPendingActionStatus status, string message)
+    {
+        using var uow = _unitOfWorkManager.Begin();
+
+        var action = await _actionRepository.GetAsync(actionId);
+        action.Status = status;
+        action.ResultMessage = Truncate(message, AiPendingAction.MaxResultMessageLength);
+        action.ResolvedTime = Clock.Now;
+
+        // Written into the conversation as the assistant's line, so it shows in the thread and the model
+        // knows the outcome if the user follows up ("did it go through?").
+        var line = new AiMessage
+        {
+            TenantId = AbpSession.GetTenantId(),
+            ConversationId = action.ConversationId,
+            Role = AiMessageRole.Assistant,
+            Content = message
+        };
+        await _messageRepository.InsertAsync(line);
+
+        var conversation = await _conversationRepository.GetAsync(action.ConversationId);
+        conversation.LastMessageTime = Clock.Now;
+
+        await CurrentUnitOfWork.SaveChangesAsync();
+
+        var result = new AiActionResultDto
+        {
+            Action = ToActionDto(action),
+            Message = (await ToDtosAsync(new List<AiMessage> { line }))[0]
+        };
+
+        await uow.CompleteAsync();
+
+        return result;
+    }
+
     private async Task<AiConversation> StartConversationAsync(string firstMessage)
     {
         var conversation = new AiConversation
@@ -309,6 +462,16 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         var conversation = await _conversationRepository.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
 
         return conversation ?? throw new UserFriendlyException(L("AiAgentConversationNotFound"));
+    }
+
+    /// <summary>Owner-checked, for the same reason -- and because confirming is a write.</summary>
+    private async Task<AiPendingAction> GetOwnActionAsync(int id)
+    {
+        var userId = AbpSession.GetUserId();
+
+        var action = await _actionRepository.FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
+
+        return action ?? throw new UserFriendlyException(L("AiAgentActionNotFound"));
     }
 
     /// <summary>
@@ -352,6 +515,51 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         };
     }
 
+    private async Task<List<AiMessageDto>> ToDtosAsync(List<AiMessage> messages)
+    {
+        var actionIds = messages.Where(m => m.PendingActionId.HasValue).Select(m => m.PendingActionId!.Value).Distinct().ToList();
+
+        var actions = actionIds.Count == 0
+            ? new Dictionary<int, AiPendingActionDto>()
+            : (await _actionRepository.GetAll().Where(a => actionIds.Contains(a.Id)).ToListAsync())
+                .ToDictionary(a => a.Id, ToActionDto);
+
+        return messages.Select(m => new AiMessageDto
+        {
+            Id = m.Id,
+            Role = m.Role,
+            Content = m.Content,
+            CreationTime = m.CreationTime,
+            PendingAction = m.PendingActionId.HasValue && actions.TryGetValue(m.PendingActionId.Value, out var action) ? action : null
+        }).ToList();
+    }
+
+    private AiPendingActionDto ToActionDto(AiPendingAction action)
+    {
+        AiPendingActionPreview preview;
+        try
+        {
+            preview = _actionHandlers.Get(action.ActionType).Describe(action.PayloadJson);
+        }
+        catch (Exception ex)
+        {
+            // A card that cannot be described still has to render -- with its status -- rather than break the
+            // whole conversation for one unreadable row.
+            Logger.Warn($"AI agent action {action.Id} could not be described.", ex);
+            preview = new AiPendingActionPreview { Title = action.ActionType };
+        }
+
+        return new AiPendingActionDto
+        {
+            Id = action.Id,
+            ActionType = action.ActionType,
+            Status = action.Status,
+            Title = preview.Title,
+            Details = preview.Details,
+            ResultMessage = action.ResultMessage
+        };
+    }
+
     public static string MakeTitle(string firstMessage)
     {
         const int maxLength = 60;
@@ -360,14 +568,6 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
 
         return title.Length <= maxLength ? title : title.Substring(0, maxLength).TrimEnd() + "…";
     }
-
-    private static AiMessageDto ToDto(AiMessage message) => new()
-    {
-        Id = message.Id,
-        Role = message.Role,
-        Content = message.Content,
-        CreationTime = message.CreationTime
-    };
 
     private static string Truncate(string value, int length) =>
         value == null || value.Length <= length ? value : value.Substring(0, length);
