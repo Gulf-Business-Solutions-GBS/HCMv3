@@ -70,4 +70,17 @@ public class WageTypeExceptionsAppService_Tests : PayrollManagementAppServiceTes
                 ExceptWageTypeId = exceptWageTypeId
             }));
     }
+
+    [Fact]
+    public async Task Should_Filter_Exceptions_By_Excepted_Wage_Type()
+    {
+        var wageTypeId = CreateWageType("WTE5");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditWageTypeExceptionDto { WageTypeId = wageTypeId, ExceptWageTypeId = CreateWageType("HOUSING") });
+        await service.CreateOrEdit(new CreateOrEditWageTypeExceptionDto { WageTypeId = wageTypeId, ExceptWageTypeId = CreateWageType("TRANSPORT") });
+
+        var result = await service.GetAll(new GetAllWageTypeExceptionsInput { WageTypeId = wageTypeId, Filter = "TRANS" });
+
+        result.TotalCount.ShouldBe(1);
+    }
 }

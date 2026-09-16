@@ -1828,12 +1828,6 @@ export class AppNavigationService {
                         '/app/admin/absence-payments'
                     ),
                     new AppMenuItem(
-                        'WageTypeExceptions',
-                        'Pages.PayrollManagement.WageTypeExceptions',
-                        'flaticon-list-3',
-                        '/app/admin/wage-type-exceptions'
-                    ),
-                    new AppMenuItem(
                         'EmployeeGroups',
                         'Pages.PayrollManagement.EmployeeGroups',
                         'flaticon-list-3',
@@ -1919,12 +1913,6 @@ export class AppNavigationService {
                         'Pages.PayrollManagement.WageAccounts',
                         'flaticon-list-3',
                         '/app/admin/wage-accounts'
-                    ),
-                    new AppMenuItem(
-                        'WageTypeSecurityRoles',
-                        'Pages.PayrollManagement.WageTypeSecurityRoles',
-                        'flaticon-list-3',
-                        '/app/admin/wage-type-security-roles'
                     ),
                     new AppMenuItem(
                         'WageTypeRegisters',

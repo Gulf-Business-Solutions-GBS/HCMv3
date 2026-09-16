@@ -11,6 +11,9 @@ public class GetAllWageTypeExceptionsInput : PagedAndSortedResultRequestDto, ISh
 {
     public int? WageTypeId { get; set; }
 
+    /// <summary>Free-text filter matched against the excepted wage type code and names.</summary>
+    public string Filter { get; set; }
+
     public void Normalize()
     {
         if (Sorting.IsNullOrWhiteSpace())

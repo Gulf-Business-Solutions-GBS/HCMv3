@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -37,7 +38,11 @@ public class WageTypeExceptionsAppService : HCMv3AppServiceBase, IWageTypeExcept
         var query = _wageTypeExceptionRepository.GetAll()
             .Include(e => e.WageType)
             .Include(e => e.ExceptWageType)
-            .WhereIf(input.WageTypeId.HasValue, e => e.WageTypeId == input.WageTypeId);
+            .WhereIf(input.WageTypeId.HasValue, e => e.WageTypeId == input.WageTypeId)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), e =>
+                e.ExceptWageType.Code.Contains(input.Filter) ||
+                e.ExceptWageType.NameEn.Contains(input.Filter) ||
+                e.ExceptWageType.NameAr.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 

@@ -38,7 +38,11 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly roles = signal<RoleListDto[]>([]);
 
-    show(wageTypeSecurityRoleId?: number): void {
+    /** Set when opened from a wage type's detail page: the wage type is fixed. */
+    readonly presetWageTypeId = signal<number | undefined>(undefined);
+
+    show(wageTypeSecurityRoleId?: number, wageTypeId?: number): void {
+        this.presetWageTypeId.set(wageTypeId);
         this.active.set(true);
 
         this._wageTypesService
@@ -48,7 +52,11 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
         this._roleService.getRoles(new GetRolesInput({ permissions: undefined })).subscribe((result) => this.roles.set(result.items));
 
         if (!wageTypeSecurityRoleId) {
-            this.wageTypeSecurityRole.set(new CreateOrEditWageTypeSecurityRoleDto());
+            const dto = new CreateOrEditWageTypeSecurityRoleDto();
+            if (wageTypeId) {
+                dto.wageTypeId = wageTypeId;
+            }
+            this.wageTypeSecurityRole.set(dto);
             this.modal().show();
         } else {
             this._wageTypeSecurityRolesService.getWageTypeSecurityRoleForEdit(wageTypeSecurityRoleId).subscribe((result) => {
@@ -59,7 +67,8 @@ export class CreateOrEditWageTypeSecurityRoleModalComponent extends AppComponent
     }
 
     onShown(): void {
-        document.getElementById('WageTypeSecurityRole_WageTypeId')?.focus();
+        const firstFieldId = this.presetWageTypeId() ? 'WageTypeSecurityRole_RoleId' : 'WageTypeSecurityRole_WageTypeId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {

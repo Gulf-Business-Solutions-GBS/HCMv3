@@ -38,6 +38,7 @@
                                     name="WageTypeId"
                                     [ngModel]="wageTypeSecurityRole().wageTypeId"
                                     (ngModelChange)="updateField('wageTypeId', $event)"
+                                    [disabled]="!!presetWageTypeId()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (wt of wageTypes(); track wt.id) {

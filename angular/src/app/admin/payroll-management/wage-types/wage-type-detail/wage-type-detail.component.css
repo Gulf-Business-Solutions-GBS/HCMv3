@@ -1,0 +1,42 @@
+/*
+ * Wage type detail: tab strip for the child lists.
+ * The active tab is a filled primary pill with white text so it reads as selected at a glance.
+ */
+.wt-detail-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--bs-gray-300, #e4e6ef);
+}
+
+.wt-detail-tab {
+    border: 1px solid var(--bs-gray-300, #e4e6ef);
+    border-radius: 0.475rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-gray-700, #5e6278);
+    font-weight: 600;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.wt-detail-tab:hover {
+    color: var(--bs-primary, #009ef7);
+    border-color: var(--bs-primary, #009ef7);
+}
+
+.wt-detail-tab:focus-visible {
+    outline: 2px solid var(--bs-primary, #009ef7);
+    outline-offset: 2px;
+}
+
+.wt-detail-tab.wt-detail-tab-active,
+.wt-detail-tab.wt-detail-tab-active:hover {
+    background: var(--bs-primary, #009ef7);
+    border-color: var(--bs-primary, #009ef7);
+    color: #fff;
+}

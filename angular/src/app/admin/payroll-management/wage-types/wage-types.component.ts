@@ -7,11 +7,10 @@ import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
-import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditWageTypeModalComponent } from './create-or-edit-wage-type-modal.component';
-import { WageTypeLeaveLinesComponent } from './wage-type-leave-lines.component';
 import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
@@ -25,12 +24,11 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         SubHeaderComponent,
         BusyIfDirective,
         FormsModule,
+        RouterLink,
         TableModule,
         PaginatorModule,
         TieredMenu,
-        Tooltip,
         CreateOrEditWageTypeModalComponent,
-        WageTypeLeaveLinesComponent,
         LocalizePipe,
         PermissionPipe,
         PermissionAnyPipe,
@@ -38,6 +36,7 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 })
 export class WageTypesComponent extends AppComponentBase implements OnInit {
     private _wageTypesService = inject(WageTypesServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditWageTypeModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -84,6 +83,10 @@ export class WageTypesComponent extends AppComponentBase implements OnInit {
         this.createOrEditModal().show();
     }
 
+    openWageType(record: WageTypeDto): void {
+        this._router.navigate(['/app/admin/wage-types', record.id]);
+    }
+
     showMenu(event: Event, record: WageTypeDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -96,7 +99,7 @@ export class WageTypesComponent extends AppComponentBase implements OnInit {
             items.push({
                 label: this.l('Edit'),
                 icon: 'pi pi-pencil',
-                command: () => this.createOrEditModal().show(record.id),
+                command: () => this.openWageType(record),
             });
         }
 

@@ -12,7 +12,9 @@ public class WageTypeLeavesAppService_Tests : PayrollManagementAppServiceTestBas
 {
     private WageTypeLeavesAppService CreateAppService()
     {
-        return CreateService(() => new WageTypeLeavesAppService(FakeRepository.For<WageTypeLeave>(Context)));
+        return CreateService(() => new WageTypeLeavesAppService(
+            FakeRepository.For<WageTypeLeave>(Context),
+            FakeRepository.For<HCMv3.PayrollManagement.AbsenceType>(Context)));
     }
 
     private int CreateWageType(string code)
@@ -80,5 +82,38 @@ public class WageTypeLeavesAppService_Tests : PayrollManagementAppServiceTestBas
                 WageTypeId = wageTypeId,
                 AbsenceTypeId = absenceTypeId
             }));
+    }
+
+    [Fact]
+    public async Task Should_Filter_Leaves_By_Absence_Type_Name()
+    {
+        var wageTypeId = CreateWageType("WTL3");
+        var service = CreateAppService();
+        foreach (var code in new[] { "SICK", "ANNUAL" })
+        {
+            await service.CreateOrEdit(new CreateOrEditWageTypeLeaveDto { WageTypeId = wageTypeId, AbsenceTypeId = CreateAbsenceType(code) });
+        }
+
+        var result = await service.GetAll(new GetAllWageTypeLeavesInput { WageTypeId = wageTypeId, Filter = "ANN" });
+
+        result.TotalCount.ShouldBe(1);
+        result.Items[0].AbsenceTypeName.ShouldBe("ANNUAL");
+    }
+
+    [Fact]
+    public async Task Should_Add_Every_Leave_Type_Not_Yet_Linked()
+    {
+        var wageTypeId = CreateWageType("WTL4");
+        var linked = CreateAbsenceType("ATL4A");
+        CreateAbsenceType("ATL4B");
+        CreateAbsenceType("ATL4C");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditWageTypeLeaveDto { WageTypeId = wageTypeId, AbsenceTypeId = linked });
+
+        var added = await service.AddAllLeaveTypes(new Abp.Application.Services.Dto.EntityDto(wageTypeId));
+
+        added.ShouldBe(2);
+        (await service.GetAll(new GetAllWageTypeLeavesInput { WageTypeId = wageTypeId })).TotalCount.ShouldBe(3);
+        (await service.AddAllLeaveTypes(new Abp.Application.Services.Dto.EntityDto(wageTypeId))).ShouldBe(0);
     }
 }

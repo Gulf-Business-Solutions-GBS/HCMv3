@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
@@ -37,7 +38,10 @@ public class WageTypeSecurityRolesAppService : HCMv3AppServiceBase, IWageTypeSec
         var query = _wageTypeSecurityRoleRepository.GetAll()
             .Include(r => r.WageType)
             .Include(r => r.Role)
-            .WhereIf(input.WageTypeId.HasValue, r => r.WageTypeId == input.WageTypeId);
+            .WhereIf(input.WageTypeId.HasValue, r => r.WageTypeId == input.WageTypeId)
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), r =>
+                r.Role.DisplayName.Contains(input.Filter) ||
+                r.Role.Name.Contains(input.Filter));
 
         var totalCount = await query.CountAsync();
 

@@ -1247,6 +1247,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.WageTypes' },
                     },
                     {
+                        path: 'wage-types/:id',
+                        loadComponent: () =>
+                            import('./admin/payroll-management/wage-types/wage-type-detail/wage-type-detail.component').then(
+                                (m) => m.WageTypeDetailComponent
+                            ),
+                        data: { permission: 'Pages.PayrollManagement.WageTypes' },
+                    },
+                    {
                         path: 'wage-acc-group-details',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-acc-group-details/wage-acc-group-details.component').then(

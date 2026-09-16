@@ -38,7 +38,7 @@ export class CreateOrEditWageTypeLeaveModalComponent extends AppComponentBase {
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly absenceTypes = signal<AbsenceTypeDto[]>([]);
 
-    /** Set when opened from a wage type's detail lines on the Wage Types screen: the wage type is fixed. */
+    /** Set when opened from a wage type's detail page: the wage type is fixed. */
     readonly presetWageTypeId = signal<number | undefined>(undefined);
 
     show(wageTypeLeaveId?: number, wageTypeId?: number): void {

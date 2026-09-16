@@ -38,6 +38,7 @@
                                     name="WageTypeId"
                                     [ngModel]="wageTypeException().wageTypeId"
                                     (ngModelChange)="updateField('wageTypeId', $event)"
+                                    [disabled]="!!presetWageTypeId()"
                                     required>
                                     <option [ngValue]="undefined"></option>
                                     @for (wageType of wageTypes(); track wageType.id) {

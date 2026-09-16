@@ -38,7 +38,11 @@ export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBas
     readonly wageTypeException = signal<CreateOrEditWageTypeExceptionDto>(new CreateOrEditWageTypeExceptionDto());
     readonly wageTypes = signal<WageTypeDto[]>([]);
 
-    show(wageTypeExceptionId?: number): void {
+    /** Set when opened from a wage type's detail page: the wage type is fixed. */
+    readonly presetWageTypeId = signal<number | undefined>(undefined);
+
+    show(wageTypeExceptionId?: number, wageTypeId?: number): void {
+        this.presetWageTypeId.set(wageTypeId);
         this.active.set(true);
 
         this._wageTypesService
@@ -46,7 +50,11 @@ export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBas
             .subscribe((result) => this.wageTypes.set(result.items));
 
         if (!wageTypeExceptionId) {
-            this.wageTypeException.set(new CreateOrEditWageTypeExceptionDto());
+            const dto = new CreateOrEditWageTypeExceptionDto();
+            if (wageTypeId) {
+                dto.wageTypeId = wageTypeId;
+            }
+            this.wageTypeException.set(dto);
             this.modal().show();
         } else {
             this._wageTypeExceptionsService.getWageTypeExceptionForEdit(wageTypeExceptionId).subscribe((result) => {
@@ -57,7 +65,8 @@ export class CreateOrEditWageTypeExceptionModalComponent extends AppComponentBas
     }
 
     onShown(): void {
-        document.getElementById('WageTypeException_WageTypeId')?.focus();
+        const firstFieldId = this.presetWageTypeId() ? 'WageTypeException_ExceptWageTypeId' : 'WageTypeException_WageTypeId';
+        document.getElementById(firstFieldId)?.focus();
     }
 
     save(): void {

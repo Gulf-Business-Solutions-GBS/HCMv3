@@ -13,5 +13,7 @@ public interface IWageTypeLeavesAppService : IApplicationService
 
     Task CreateOrEdit(CreateOrEditWageTypeLeaveDto input);
 
+    Task<int> AddAllLeaveTypes(EntityDto input);
+
     Task Delete(EntityDto input);
 }

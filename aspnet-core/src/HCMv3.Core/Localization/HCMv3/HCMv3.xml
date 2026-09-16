@@ -6567,5 +6567,12 @@
     <text name="GoLiveV2ComparePaymentPreviewTitle">Add payment for {0}, wage type {1}</text>
     <text name="GoLiveV2ComparePaymentToAdd">Payment to add</text>
     <text name="GoLiveV2ComparePaymentPreviewNote">Saved on the Payment screen for {0}. Once a wage type has payments in the month, the payroll pays it from them alone, so the suggestion is the legacy amount less any other payments already entered. Re-run payroll afterwards.</text>
+    <text name="LeaveTypes">Leave Types</text>
+    <text name="SecurityRoles">Security Roles</text>
+    <text name="AddAllLeaveTypes">Add All Leave Types</text>
+    <text name="AddAllLeaveTypesConfirmation">Are you sure you want to add all leave types?</text>
+    <text name="AddAllLeaveTypesResult">{0} leave type(s) added.</text>
+    <text name="ShortNameEn">Short Name (English)</text>
+    <text name="ShortNameAr">Short Name (Arabic)</text>
   </texts>
 </localizationDictionary>

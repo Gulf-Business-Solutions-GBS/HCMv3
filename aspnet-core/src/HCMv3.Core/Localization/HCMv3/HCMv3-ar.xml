@@ -6406,5 +6406,12 @@
     <text name="GoLiveV2ComparePaymentPreviewTitle">إضافة دفعة للموظف {0}، نوع الأجر {1}</text>
     <text name="GoLiveV2ComparePaymentToAdd">الدفعة المراد إضافتها</text>
     <text name="GoLiveV2ComparePaymentPreviewNote">تُحفظ في شاشة الدفعات لشهر {0}. عندما تكون لنوع الأجر دفعات في الشهر، تدفعه الرواتب منها فقط، لذلك المبلغ المقترح هو مبلغ النظام السابق مطروحًا منه أي دفعات أخرى مدخلة. أعد تشغيل الرواتب بعد ذلك.</text>
+    <text name="LeaveTypes">أنواع الإجازات</text>
+    <text name="SecurityRoles">أدوار الأمان</text>
+    <text name="AddAllLeaveTypes">إضافة جميع أنواع الإجازات</text>
+    <text name="AddAllLeaveTypesConfirmation">هل أنت متأكد أنك تريد إضافة جميع أنواع الإجازات؟</text>
+    <text name="AddAllLeaveTypesResult">تمت إضافة {0} من أنواع الإجازات.</text>
+    <text name="ShortNameEn">الاسم المختصر (بالإنجليزية)</text>
+    <text name="ShortNameAr">الاسم المختصر (بالعربية)</text>
   </texts>
 </localizationDictionary>

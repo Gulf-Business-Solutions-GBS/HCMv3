@@ -76,4 +76,17 @@ public class WageTypeSecurityRolesAppService_Tests : PayrollManagementAppService
                 RoleId = roleId
             }));
     }
+
+    [Fact]
+    public async Task Should_Filter_Security_Roles_By_Role_Name()
+    {
+        var wageTypeId = CreateWageType("WTS3");
+        var service = CreateAppService();
+        await service.CreateOrEdit(new CreateOrEditWageTypeSecurityRoleDto { WageTypeId = wageTypeId, RoleId = CreateRole("PayrollClerk3") });
+        await service.CreateOrEdit(new CreateOrEditWageTypeSecurityRoleDto { WageTypeId = wageTypeId, RoleId = CreateRole("HrManager3") });
+
+        var result = await service.GetAll(new GetAllWageTypeSecurityRolesInput { WageTypeId = wageTypeId, Filter = "Clerk" });
+
+        result.TotalCount.ShouldBe(1);
+    }
 }

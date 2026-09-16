@@ -154702,6 +154702,63 @@ export class WageTypeRegistersServiceProxy {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
     }
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addAllLeaveTypes(body?: EntityDto | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/WageTypeLeaves/AddAllLeaveTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddAllLeaveTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddAllLeaveTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processAddAllLeaveTypes(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
 
     /**
      * @param body (optional) 
@@ -235234,6 +235291,7 @@ export class GetAllWageTypesInput implements IGetAllWageTypesInput {
     }
 
     init(_data?: any) {
+    filter!: string | undefined;
         if (_data) {
             this.maxResultCount = _data["maxResultCount"];
             this.skipCount = _data["skipCount"];
@@ -235250,6 +235308,7 @@ export class GetAllWageTypesInput implements IGetAllWageTypesInput {
     }
 
     toJSON(data?: any) {
+            this.filter = _data["filter"];
         data = typeof data === 'object' ? data : {};
         data["maxResultCount"] = this.maxResultCount;
         data["skipCount"] = this.skipCount;
@@ -235266,6 +235325,7 @@ export interface IGetAllWageTypesInput {
     filter: string | undefined;
 }
 
+        data["filter"] = this.filter;
 export class GetAllWorkFlowApproversInput implements IGetAllWorkFlowApproversInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -235275,6 +235335,7 @@ export class GetAllWorkFlowApproversInput implements IGetAllWorkFlowApproversInp
     constructor(data?: IGetAllWorkFlowApproversInput) {
         if (data) {
             for (var property in data) {
+    filter: string | undefined;
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }
@@ -235282,6 +235343,7 @@ export class GetAllWorkFlowApproversInput implements IGetAllWorkFlowApproversInp
     }
 
     init(_data?: any) {
+    filter!: string | undefined;
         if (_data) {
             this.maxResultCount = _data["maxResultCount"];
             this.skipCount = _data["skipCount"];
@@ -235298,6 +235360,7 @@ export class GetAllWorkFlowApproversInput implements IGetAllWorkFlowApproversInp
     }
 
     toJSON(data?: any) {
+            this.filter = _data["filter"];
         data = typeof data === 'object' ? data : {};
         data["maxResultCount"] = this.maxResultCount;
         data["skipCount"] = this.skipCount;
@@ -235314,6 +235377,7 @@ export interface IGetAllWorkFlowApproversInput {
     workflowRequestId: number | undefined;
 }
 
+        data["filter"] = this.filter;
 export class GetAllWorkLocationDutyPeriodsInput implements IGetAllWorkLocationDutyPeriodsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -235323,6 +235387,7 @@ export class GetAllWorkLocationDutyPeriodsInput implements IGetAllWorkLocationDu
     constructor(data?: IGetAllWorkLocationDutyPeriodsInput) {
         if (data) {
             for (var property in data) {
+    filter: string | undefined;
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }
@@ -235378,6 +235443,7 @@ export class GetAllWorkLocationsInput implements IGetAllWorkLocationsInput {
     }
 
     init(_data?: any) {
+    filter!: string | undefined;
         if (_data) {
             this.maxResultCount = _data["maxResultCount"];
             this.skipCount = _data["skipCount"];
@@ -235394,6 +235460,7 @@ export class GetAllWorkLocationsInput implements IGetAllWorkLocationsInput {
     }
 
     toJSON(data?: any) {
+            this.filter = _data["filter"];
         data = typeof data === 'object' ? data : {};
         data["maxResultCount"] = this.maxResultCount;
         data["skipCount"] = this.skipCount;
@@ -235410,6 +235477,7 @@ export interface IGetAllWorkLocationsInput {
     filter: string | undefined;
 }
 
+        data["filter"] = this.filter;
 export class GetAllWorkflowGroupDetailsInput implements IGetAllWorkflowGroupDetailsInput {
     maxResultCount!: number;
     skipCount!: number;
@@ -235419,6 +235487,7 @@ export class GetAllWorkflowGroupDetailsInput implements IGetAllWorkflowGroupDeta
     constructor(data?: IGetAllWorkflowGroupDetailsInput) {
         if (data) {
             for (var property in data) {
+    filter: string | undefined;
                 if (data.hasOwnProperty(property))
                     (this as any)[property] = (data as any)[property];
             }
