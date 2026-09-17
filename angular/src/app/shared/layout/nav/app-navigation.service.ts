@@ -23,6 +23,10 @@ export class AppNavigationService {
             // administrator sees it.
             new AppMenuItem('Home', 'Pages.Tenant.Dashboard', 'flaticon-home', '/app/main/home'),
 
+            // AI ASSISTANT (feat/ai-agent). Right under Home while it is on trial; granted per user or role through
+            // Ess.AiAgent, which the default Employee role does not hold.
+            new AppMenuItem('EssAiAgent', 'Ess.AiAgent', 'flaticon-chat-2', '/app/main/ai-assistant'),
+
             // GO-LIVE SETUP. Deliberately near the top: while a tenant is being set up this is
             // the only screen that matters, and burying it under Administration is how onboarding stalls.
             // Once the configuration is locked the permission is revoked and the item disappears on its

@@ -269,6 +269,18 @@ public class AiAgentAppService_Tests : AiAgentTestBase
 
         info.IsLinkedToEmployee.ShouldBeFalse();
         info.CanUseLeave.ShouldBeTrue();
+        info.CanManagePay.ShouldBeTrue(); // the admin holds the pay screens
+    }
+
+    [Fact]
+    public async Task An_Employee_Should_Not_Be_Offered_Pay_Administration()
+    {
+        AbpSession.UserId = CreateUser(AppPermissions.Ess, AppPermissions.Ess_AiAgent, AppPermissions.Ess_MyLeave);
+
+        var info = await Service.GetStartupInfo();
+
+        info.CanManagePay.ShouldBeFalse();
+        info.CanUseLeave.ShouldBeTrue();
     }
 
     [Fact]

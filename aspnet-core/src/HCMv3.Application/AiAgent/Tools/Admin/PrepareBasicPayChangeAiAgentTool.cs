@@ -337,7 +337,7 @@ public class PrepareBasicPayChangeAiAgentTool : IAiAgentTool
             return new
             {
                 status = "not_possible",
-                instruction = $"'{match.NotAllowed.NameEn}' is not a basic pay wage type (it is not active or not marked 'include in basic pay'). " +
+                instruction = $"'{match.NotAllowed.NameEn}' is not a basic pay wage type (it is inactive, not marked 'include in basic pay', or a system arrear wage type). " +
                               "Nothing was prepared. If this is a one-off amount, prepare_one_time_payment may be right; otherwise ask the user.",
                 basicPayWageTypes = match.Candidates.Select(AiPayLookup.Summarise)
             };

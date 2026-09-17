@@ -103,4 +103,7 @@ public class AiAgentStartupDto
     public bool CanUseLeave { get; set; }
 
     public bool CanViewTeam { get; set; }
+
+    /// <summary>Holds a pay administration permission the assistant's pay tools use, so the page can suggest them.</summary>
+    public bool CanManagePay { get; set; }
 }

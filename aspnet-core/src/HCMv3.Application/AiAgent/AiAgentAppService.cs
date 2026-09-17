@@ -75,7 +75,9 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             FirstNameEn = employee?.FirstNameEn,
             FirstNameAr = employee?.FirstNameAr,
             CanUseLeave = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyLeave),
-            CanViewTeam = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyTeam)
+            CanViewTeam = await PermissionChecker.IsGrantedAsync(AppPermissions.Ess_MyTeam),
+            CanManagePay = await PermissionChecker.IsGrantedAsync(AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPays_Create)
+                           || await PermissionChecker.IsGrantedAsync(AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Create)
         };
     }
 

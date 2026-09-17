@@ -108,7 +108,7 @@ public class PrepareOneTimePaymentAiAgentTool : IAiAgentTool
             {
                 status = match.NotAllowed != null ? "not_possible" : "needs_more_information",
                 instruction = match.NotAllowed != null
-                    ? $"'{match.NotAllowed.NameEn}' cannot be used for a one-time payment (it is inactive, or not an earning or deduction). Nothing was prepared. Ask the user which of these to use."
+                    ? $"'{match.NotAllowed.NameEn}' cannot be used for a one-time payment (it is inactive, not an earning or deduction, or a system arrear wage type). Nothing was prepared. Ask the user which of these to use."
                     : match.IsAmbiguous
                         ? $"'{wageTypeText}' matches more than one wage type. Nothing was prepared. Ask the user which one."
                         : $"No earning or deduction wage type matches '{wageTypeText}'. Nothing was prepared. Ask the user which of these to use.",

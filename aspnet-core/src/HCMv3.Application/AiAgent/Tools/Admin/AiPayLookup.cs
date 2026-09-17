@@ -36,6 +36,26 @@ public class AiPayLookup : ITransientDependency
 {
     private const int MaxCandidates = 30;
 
+    /// <summary>
+    /// Words that say what KIND of wage type something is rather than which one. "Traffic violation deduction"
+    /// must find "Traffic Fines Ded" because of "traffic", not because both happen to be deductions -- so these
+    /// count for little on their own, and matching one of them alone never picks a wage type.
+    /// </summary>
+    private static readonly HashSet<string> GenericWords = new(StringComparer.Ordinal)
+    {
+        "allowance", "allowances", "alw", "deduction", "deductions", "ded", "pay", "payment", "payments",
+        "amount", "monthly", "fixed", "other", "misc", "بدل", "خصم", "خصومات", "مبلغ", "دفعة"
+    };
+
+    /// <summary>Words that carry no meaning in a wage type name.</summary>
+    private static readonly HashSet<string> IgnoredWords = new(StringComparer.Ordinal)
+    {
+        "the", "for", "and", "of", "to", "as", "in", "on", "kd", "kwd", "في", "من", "على"
+    };
+
+    private const double DistinctiveWordScore = 1;
+    private const double GenericWordScore = 0.25;
+
     private readonly IEmployeesAppService _employeesAppService;
     private readonly IWageTypesAppService _wageTypesAppService;
 
@@ -76,20 +96,42 @@ public class AiPayLookup : ITransientDependency
         return _wageTypes ??= (await _wageTypesAppService.GetAll(new GetAllWageTypesInput { MaxResultCount = 1000 })).Items.ToList();
     }
 
-    public static bool IsAllowed(WageTypeDto wageType, AiWageTypeUsage usage) => usage switch
+    /// <summary>
+    /// <para>
+    /// Arrear wage types (<c>ArrearSourceWageTypeId</c> set -- "Bonus Pay Arrear", "Car Allowance Arrear") are
+    /// never offered. The payroll run creates those lines itself when pay is back-dated; nobody enters them by
+    /// hand, and offering them doubled every match ("bonus" found four wage types instead of two).
+    /// </para>
+    /// </summary>
+    public static bool IsAllowed(WageTypeDto wageType, AiWageTypeUsage usage)
     {
-        AiWageTypeUsage.BasicPay => wageType.Status && wageType.IncludeInBasicPay,
-        AiWageTypeUsage.OneTimePayment => wageType.Status && wageType.BillingType is BillingType.Earning or BillingType.Deduction,
-        _ => false
-    };
+        if (!wageType.Status || wageType.ArrearSourceWageTypeId.HasValue)
+        {
+            return false;
+        }
+
+        return usage switch
+        {
+            AiWageTypeUsage.BasicPay => wageType.IncludeInBasicPay,
+            AiWageTypeUsage.OneTimePayment => wageType.BillingType is BillingType.Earning or BillingType.Deduction,
+            _ => false
+        };
+    }
 
     public async Task<List<WageTypeDto>> GetAllowedWageTypesAsync(AiWageTypeUsage usage) =>
         (await GetAllWageTypesAsync()).Where(w => IsAllowed(w, usage)).OrderBy(w => w.Code, StringComparer.Ordinal).ToList();
 
     /// <summary>
-    /// Matches in order of certainty: id or code, then the whole name, then a partial name -- and a partial
-    /// match only counts when it is the only one. "Allowance" matching both Housing and Car Allowance is a
-    /// question for the user, not a guess.
+    /// Matches in order of certainty, stopping at the first step that settles it:
+    /// <list type="number">
+    /// <item><description>id, code or the whole name;</description></item>
+    /// <item><description>one name containing the other ("car" in "Car Allowance");</description></item>
+    /// <item><description>shared WORDS, scored so a distinctive word ("traffic") outweighs a generic one
+    /// ("deduction") -- which is how "traffic violation deduction" finds "Traffic Fines Ded".</description></item>
+    /// </list>
+    /// A step only picks a wage type when exactly one comes out on top. Two equally good answers are a question
+    /// for the user, not a guess -- and whatever is picked is shown by code and name on the card before anything
+    /// is saved.
     /// </summary>
     public async Task<WageTypeMatch> ResolveWageTypeAsync(string text, AiWageTypeUsage usage)
     {
@@ -116,27 +158,71 @@ public class AiPayLookup : ITransientDependency
             return new WageTypeMatch { Match = exact[0] };
         }
 
-        var partial = exact.Count > 1
+        // Named exactly, but not allowed ("Bonus Pay Arrear"): say so, rather than let the partial steps below
+        // quietly substitute the similarly named allowed one ("Bonus Pay").
+        if (exact.Count == 0)
+        {
+            var namedButNotAllowed = (await GetAllWageTypesAsync()).FirstOrDefault(w => !IsAllowed(w, usage)
+                && (Normalise(w.Code) == wanted || Normalise(w.NameEn) == wanted || Normalise(w.NameAr) == wanted));
+
+            if (namedButNotAllowed != null)
+            {
+                return new WageTypeMatch { NotAllowed = namedButNotAllowed, Candidates = allowed.Take(MaxCandidates).ToList() };
+            }
+        }
+
+        var contained = exact.Count > 1
             ? exact
             : allowed.Where(w => Overlaps(w.NameEn, wanted) || Overlaps(w.NameAr, wanted)).ToList();
 
-        if (partial.Count == 1)
+        if (contained.Count == 1)
         {
-            return new WageTypeMatch { Match = partial[0] };
+            return new WageTypeMatch { Match = contained[0] };
         }
 
-        if (partial.Count > 1)
+        if (contained.Count > 1)
         {
-            return new WageTypeMatch { Candidates = partial.Take(MaxCandidates).ToList(), IsAmbiguous = true };
+            return new WageTypeMatch { Candidates = contained.Take(MaxCandidates).ToList(), IsAmbiguous = true };
         }
 
-        // Nothing allowed matches. Say so specifically when the wage type exists but is not allowed here, so
-        // the model can explain that rather than claim it does not exist.
-        var disallowed = (await GetAllWageTypesAsync()).FirstOrDefault(w =>
+        var scored = allowed
+            .Select(w => (WageType: w, Score: Math.Max(WordScore(text, w.NameEn), WordScore(text, w.NameAr))))
+            .Where(s => s.Score > 0)
+            .OrderByDescending(s => s.Score)
+            .ThenBy(s => s.WageType.Code, StringComparer.Ordinal)
+            .ToList();
+
+        if (scored.Count > 0)
+        {
+            var best = scored[0].Score;
+            var top = scored.Where(s => s.Score == best).Select(s => s.WageType).ToList();
+
+            // Only a distinctive word decides; "deduction" alone matches every deduction equally.
+            if (top.Count == 1 && best >= DistinctiveWordScore)
+            {
+                return new WageTypeMatch { Match = top[0] };
+            }
+
+            if (best >= DistinctiveWordScore)
+            {
+                return new WageTypeMatch { Candidates = scored.Select(s => s.WageType).Take(MaxCandidates).ToList(), IsAmbiguous = true };
+            }
+        }
+
+        // Nothing allowed matches well enough. Say so specifically when the wage type exists but is not allowed
+        // here, so the model can explain that rather than claim it does not exist.
+        var disallowed = (await GetAllWageTypesAsync()).Where(w => !IsAllowed(w, usage)).FirstOrDefault(w =>
             Normalise(w.Code) == wanted || Normalise(w.NameEn) == wanted || Normalise(w.NameAr) == wanted
             || Overlaps(w.NameEn, wanted) || Overlaps(w.NameAr, wanted));
 
-        return new WageTypeMatch { NotAllowed = disallowed, Candidates = allowed.Take(MaxCandidates).ToList() };
+        // The best partial scorers first, so "which of these?" leads with the likeliest.
+        var candidates = scored.Select(s => s.WageType)
+            .Concat(allowed)
+            .Distinct()
+            .Take(MaxCandidates)
+            .ToList();
+
+        return new WageTypeMatch { NotAllowed = disallowed, Candidates = candidates };
     }
 
     public static object Summarise(WageTypeDto w) => new
@@ -146,7 +232,7 @@ public class AiPayLookup : ITransientDependency
         nameEn = w.NameEn,
         nameAr = w.NameAr,
         type = w.BillingType.ToString(),
-        allowedInBasicPay = w.Status && w.IncludeInBasicPay
+        allowedInBasicPay = IsAllowed(w, AiWageTypeUsage.BasicPay)
     };
 
     public static object Summarise(EmployeeDto e) => new
@@ -159,12 +245,85 @@ public class AiPayLookup : ITransientDependency
 
     public static string FormatAmount(double amount) => amount.ToString("#,##0.000", CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// How well the words someone typed match a wage type's name. Each typed word scores once, for its best
+    /// match among the name's words: a distinctive word 1, a generic one a quarter.
+    /// </summary>
+    public static double WordScore(string typed, string name)
+    {
+        var nameWords = Words(name);
+        if (nameWords.Count == 0)
+        {
+            return 0;
+        }
+
+        return Words(typed)
+            .Where(word => nameWords.Any(nameWord => WordsMatch(word, nameWord)))
+            .Sum(word => GenericWords.Contains(word) ? GenericWordScore : DistinctiveWordScore);
+    }
+
+    /// <summary>
+    /// Equal, or one a prefix of the other when both are at least three letters -- so "ded" matches "deduction"
+    /// and "fine" matches "fines", but "a" matches nothing.
+    /// </summary>
+    private static bool WordsMatch(string a, string b)
+    {
+        if (a == b)
+        {
+            return true;
+        }
+
+        return a.Length >= 3 && b.Length >= 3 && (a.StartsWith(b, StringComparison.Ordinal) || b.StartsWith(a, StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    /// Lower-cased words, split on anything that is not a letter or digit (so "Allowance(NP)" gives
+    /// "allowance" and "np"). The Arabic definite article is dropped, so "بدل السكن" matches "بدل سكن".
+    /// </summary>
+    private static List<string> Words(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return new List<string>();
+        }
+
+        var words = new List<string>();
+        var current = new System.Text.StringBuilder();
+
+        foreach (var ch in value.ToLowerInvariant() + " ")
+        {
+            if (char.IsLetterOrDigit(ch))
+            {
+                current.Append(ch);
+                continue;
+            }
+
+            if (current.Length > 0)
+            {
+                var word = current.ToString();
+                if (word.Length > 3 && word.StartsWith("ال", StringComparison.Ordinal))
+                {
+                    word = word.Substring(2);
+                }
+
+                if (!IgnoredWords.Contains(word))
+                {
+                    words.Add(word);
+                }
+
+                current.Clear();
+            }
+        }
+
+        return words;
+    }
+
     private static string Normalise(string value) =>
         string.IsNullOrWhiteSpace(value) ? string.Empty : string.Join(' ', value.Trim().ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries));
 
     /// <summary>
-    /// Either contains the other, so "car" finds "Car Allowance" and "traffic violation deduction" finds
-    /// "Traffic Violation". Short fragments are ignored or "a" would match everything.
+    /// Either contains the other, so "car" finds "Car Allowance" and "traffic violation" finds "Traffic
+    /// Violation Ded". Short fragments are ignored or "a" would match everything.
     /// </summary>
     private static bool Overlaps(string name, string wanted)
     {
@@ -182,7 +341,7 @@ public class WageTypeMatch
 {
     public WageTypeDto Match { get; set; }
 
-    /// <summary>What to offer the user when there is no single match.</summary>
+    /// <summary>What to offer the user when there is no single match, likeliest first.</summary>
     public List<WageTypeDto> Candidates { get; set; } = new();
 
     public bool IsAmbiguous { get; set; }
