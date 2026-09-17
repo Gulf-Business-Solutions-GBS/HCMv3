@@ -82,6 +82,7 @@
                                         {{ 'OvertimeRate' | localize }}
                                         <p-sortIcon field="overtimeRate" />
                                     </th>
+                                    <th style="min-width: 200px">{{ 'WageType' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -115,6 +116,11 @@
                                     </td>
                                     <td style="min-width: 120px">
                                         {{ record.overtimeRate }}
+                                    </td>
+                                    <td style="min-width: 200px">
+                                        @if (record.wageTypeId) {
+                                            {{ record.wageTypeCode }} - {{ record.wageTypeNameEn }}
+                                        }
                                     </td>
                                 </tr>
                             </ng-template>

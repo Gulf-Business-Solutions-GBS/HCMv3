@@ -87,6 +87,21 @@
                                 min="0" />
                             <validation-messages [formCtrl]="overtimeRateInput" />
                         </div>
+
+                        <div class="mb-5">
+                            <label class="form-label" for="OvertimeType_WageTypeId">{{ 'WageType' | localize }}</label>
+                            <select
+                                id="OvertimeType_WageTypeId"
+                                class="form-select"
+                                name="WageTypeId"
+                                [ngModel]="overtimeType().wageTypeId"
+                                (ngModelChange)="updateField('wageTypeId', $event)">
+                                <option [ngValue]="undefined"></option>
+                                @for (wt of wageTypes(); track wt.id) {
+                                    <option [ngValue]="wt.id">{{ wt.code }} - {{ wt.nameEn }}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button

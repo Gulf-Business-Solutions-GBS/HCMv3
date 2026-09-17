@@ -3,9 +3,9 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     OvertimeTypesServiceProxy,
     CreateOrEditOvertimeTypeDto,
-
-
-
+    GetAllWageTypesInput,
+    WageTypeDto,
+    WageTypesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
@@ -28,6 +28,7 @@ import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 })
 export class CreateOrEditOvertimeTypeModalComponent extends AppComponentBase {
     private _overtimeTypeService = inject(OvertimeTypesServiceProxy);
+    private _wageTypesService = inject(WageTypesServiceProxy);
 
     readonly modal = viewChild<ModalDirective>('createOrEditModal');
     readonly modalSave = output<void>();
@@ -36,8 +37,15 @@ export class CreateOrEditOvertimeTypeModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly overtimeType = signal<CreateOrEditOvertimeTypeDto>(new CreateOrEditOvertimeTypeDto());
 
+    /** The wage type the payroll pays this overtime through; without one the payroll skips it. */
+    readonly wageTypes = signal<WageTypeDto[]>([]);
+
     show(overtimeTypeId?: number): void {
         this.active.set(true);
+
+        this._wageTypesService
+            .getAll(new GetAllWageTypesInput({ maxResultCount: 1000, skipCount: 0, sorting: 'Code ASC', filter: undefined }))
+            .subscribe((result) => this.wageTypes.set(result.items ?? []));
 
         if (!overtimeTypeId) {
             this.overtimeType.set(new CreateOrEditOvertimeTypeDto());

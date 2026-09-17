@@ -298,6 +298,9 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
         }
     }
 
+    /// <summary>Hours in a working day, the divisor of the overtime hourly rate: basic pay / 26 / 8.</summary>
+    public const double DefaultWorkingHours = 8;
+
     /// <summary>Each of the four at its defaults, through its own screen's service (an Id of 0 creates).</summary>
     private async Task<bool> EnsureSettingsAsync()
     {
@@ -311,8 +314,18 @@ public class GoLiveV2WorkingTime : AbpServiceBase, ITransientDependency
 
         if (!await _payrollSettingsRepository.GetAll().AnyAsync())
         {
-            await _payrollSettings.CreateOrEditPayrollSettings(new PayrollSettingsEditDto());
+            await _payrollSettings.CreateOrEditPayrollSettings(new PayrollSettingsEditDto { DefaultWorkingHours = DefaultWorkingHours });
             created = true;
+        }
+        else
+        {
+            // Overtime is paid per hour of a day's pay, and zero working hours pays nothing. Zero is never a
+            // choice anyone made, so settings made before this default are given it too.
+            foreach (var settings in await _payrollSettingsRepository.GetAllListAsync(s => s.DefaultWorkingHours <= 0))
+            {
+                settings.DefaultWorkingHours = DefaultWorkingHours;
+                created = true;
+            }
         }
 
         if (!await _personnelSettingsRepository.GetAll().AnyAsync())
