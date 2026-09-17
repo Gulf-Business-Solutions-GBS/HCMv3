@@ -18,7 +18,10 @@ public class AiAgentConfiguration : ITransientDependency
 {
     public const string DefaultBaseUrl = "http://localhost:11434/v1";
     public const string DefaultModel = "qwen3:4b";
-    public const int DefaultTimeoutSeconds = 300;
+    // Measured on the dev laptop (no GPU) with qwen3:4b: a leave question took ~70s, an administrator's pay
+    // sentence with the full tool list 170-270s. 300 would have cut the slowest answers off, so the default
+    // allows for the worst case rather than the typical one; a GPU host answers in seconds and never waits.
+    public const int DefaultTimeoutSeconds = 900;
     public const double DefaultTemperature = 0.2;
 
     private readonly IConfigurationRoot _appConfiguration;

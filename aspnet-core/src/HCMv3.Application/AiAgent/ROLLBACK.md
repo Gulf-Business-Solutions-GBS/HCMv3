@@ -68,7 +68,7 @@ No NuGet or npm packages were added.
 | `BaseUrl` | `http://localhost:11434/v1` | Any OpenAI-compatible endpoint **on this machine or the private network** |
 | `Model` | `qwen3:4b` | e.g. `qwen3:32b` on a GPU server |
 | `ApiKey` | *(none)* | Keep out of source control: `AiAgent__ApiKey` environment variable |
-| `TimeoutSeconds` | `300` | CPU-only hosts are slow |
+| `TimeoutSeconds` | `900` | CPU-only hosts are slow: measured 70-270s per answer on this laptop |
 | `Temperature` | `0.2` | |
 | `DisableThinking` | `true` | Qwen3 `/no_think` switch |
 | `AllowExternalModelHost` | `false` | **Leave false.** See below. |
