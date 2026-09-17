@@ -65,9 +65,49 @@ No NuGet or npm packages were added.
 
 | Key | Default | Notes |
 |---|---|---|
-| `BaseUrl` | `http://localhost:11434/v1` | Any OpenAI-compatible endpoint |
+| `BaseUrl` | `http://localhost:11434/v1` | Any OpenAI-compatible endpoint **on this machine or the private network** |
 | `Model` | `qwen3:4b` | e.g. `qwen3:32b` on a GPU server |
 | `ApiKey` | *(none)* | Keep out of source control: `AiAgent__ApiKey` environment variable |
 | `TimeoutSeconds` | `300` | CPU-only hosts are slow |
 | `Temperature` | `0.2` | |
 | `DisableThinking` | `true` | Qwen3 `/no_think` switch |
+| `AllowExternalModelHost` | `false` | **Leave false.** See below. |
+
+# Keeping employee data on the server
+
+**What the code guarantees**
+
+- The assistant makes one kind of outbound call: to `AiAgent:BaseUrl`. The code **refuses** that call, before sending
+  anything, unless the address is this machine (`localhost`, `127.x`, `::1`) or a private network address
+  (`10.x`, `172.16–31.x`, `192.168.x`, IPv6 `fc00::/7`). A hostname is checked by what it resolves to.
+  Only `AiAgent:AllowExternalModelHost = true` lifts this — a data-protection decision, not a setting to flip
+  to "make it work".
+- Model traffic never follows a redirect and never goes through a Windows/server proxy.
+- Tenant isolation: every table the assistant reads or writes is tenant-filtered by ABP; the assistant never
+  switches the filter off; the tenant comes from the login, never from the request. Proven by
+  `AiAgentTenantIsolation_Tests`.
+
+**What the code cannot guarantee — Ollama itself.** Ollama runs the model locally and states that prompts do not
+leave the machine; it only goes online to download models and check for updates. To make that certain rather
+than trusted, block Ollama's internet access once the model is downloaded. Run in an **administrator**
+PowerShell:
+
+```powershell
+# Block Ollama from the internet. Local calls from Web.Host (127.0.0.1) are not affected by firewall rules.
+$ollama = "$env:LOCALAPPDATA\Programs\Ollama"
+New-NetFirewallRule -DisplayName "Ollama - block internet (HCMv3 AI)" -Direction Outbound -Action Block -Program "$ollama\ollama.exe"
+New-NetFirewallRule -DisplayName "Ollama app - block internet (HCMv3 AI)" -Direction Outbound -Action Block -Program "$ollama\ollama app.exe"
+
+# Check: Ollama should only be listening on 127.0.0.1:11434 (not 0.0.0.0).
+Get-NetTCPConnection -LocalPort 11434 -State Listen | Select-Object LocalAddress, LocalPort
+```
+
+- If Ollama is installed for all users, the program path is under `C:\Program Files\Ollama` instead.
+- Do **not** set the `OLLAMA_HOST` environment variable to `0.0.0.0`; that would let other computers use the model.
+- To download a different model later, disable the two rules, run `ollama pull <model>`, then enable them again:
+  `Disable-NetFirewallRule -DisplayName "Ollama*HCMv3 AI*"` / `Enable-NetFirewallRule -DisplayName "Ollama*HCMv3 AI*"`.
+- Do not enable `OLLAMA_DEBUG`: debug logging can write prompts to Ollama's log file.
+
+**Where the data lives.** Questions, replies and tool results (which include salary figures for pay questions)
+are stored in the HCMv3 database tables `AiConversations`, `AiMessages` and `AiPendingActions`, tenant-scoped.
+Deleting a chat hides it from the user but keeps the rows as the audit trail.

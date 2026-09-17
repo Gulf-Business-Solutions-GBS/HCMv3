@@ -132,7 +132,8 @@ public class HttpAiChatClient_Tests
         {
             ["AiAgent:BaseUrl"] = "https://gpu.example.com/v1/",
             ["AiAgent:Model"] = "qwen3-32b",
-            ["AiAgent:ApiKey"] = "secret"
+            ["AiAgent:ApiKey"] = "secret",
+            ["AiAgent:AllowExternalModelHost"] = "true"
         });
 
         var response = await client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } });
@@ -175,6 +176,112 @@ public class HttpAiChatClient_Tests
         ex.IsTimeout.ShouldBeTrue();
     }
 
+    // ------------------------------------------------------------------ data stays on the network
+
+    [Theory]
+    [InlineData("http://localhost:11434/v1")]
+    [InlineData("http://127.0.0.1:11434/v1")]
+    [InlineData("http://10.0.0.5:11434/v1")]
+    [InlineData("http://172.20.1.9/v1")]
+    [InlineData("http://192.168.1.20:8000/v1")]
+    [InlineData("http://[::1]:11434/v1")]
+    public async Task Should_Allow_A_Model_On_This_Machine_Or_The_Private_Network(string baseUrl)
+    {
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler, new Dictionary<string, string> { ["AiAgent:BaseUrl"] = baseUrl });
+
+        (await client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } })).Content.ShouldBe("hi");
+    }
+
+    [Theory]
+    [InlineData("https://api.openai.com/v1")]
+    [InlineData("https://dashscope.aliyuncs.com/compatible-mode/v1")]
+    [InlineData("http://8.8.8.8/v1")]
+    [InlineData("http://172.32.0.1/v1")]
+    [InlineData("http://11.0.0.1/v1")]
+    public async Task Should_Refuse_A_Model_Outside_The_Network_Without_Sending_Anything(string baseUrl)
+    {
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler, new Dictionary<string, string> { ["AiAgent:BaseUrl"] = baseUrl });
+        // What the public names really resolve to, without depending on the test machine's DNS.
+        client.HostResolver = _ => Task.FromResult(new[] { System.Net.IPAddress.Parse("104.18.33.45") });
+
+        var ex = await Should.ThrowAsync<AiChatClientException>(() =>
+            client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("my salary is 1200 KD") } }));
+
+        ex.Message.ShouldContain("may not be sent there");
+        handler.LastRequest.ShouldBeNull(); // nothing left the server
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Local_Sounding_Name_That_Resolves_To_A_Public_Address()
+    {
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler, new Dictionary<string, string> { ["AiAgent:BaseUrl"] = "http://gpu-server:11434/v1" });
+        client.HostResolver = _ => Task.FromResult(new[] { System.Net.IPAddress.Parse("10.0.0.7"), System.Net.IPAddress.Parse("203.0.113.9") });
+
+        await Should.ThrowAsync<AiChatClientException>(() =>
+            client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+
+        handler.LastRequest.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Allow_A_Private_Server_Name()
+    {
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler, new Dictionary<string, string> { ["AiAgent:BaseUrl"] = "http://gpu-server:11434/v1" });
+        client.HostResolver = _ => Task.FromResult(new[] { System.Net.IPAddress.Parse("10.0.0.7") });
+
+        (await client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } })).Content.ShouldBe("hi");
+    }
+
+    [Fact]
+    public async Task Should_Refuse_A_Name_That_Cannot_Be_Resolved()
+    {
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler, new Dictionary<string, string> { ["AiAgent:BaseUrl"] = "http://no-such-host:11434/v1" });
+        client.HostResolver = _ => throw new System.Net.Sockets.SocketException(11001);
+
+        await Should.ThrowAsync<AiChatClientException>(() =>
+            client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+
+        handler.LastRequest.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task Should_Not_Follow_A_Redirect_From_The_Model_Host()
+    {
+        // A local host answering "moved" must not get the request forwarded anywhere; it is simply an error.
+        var handler = new StubHandler(HttpStatusCode.TemporaryRedirect, "");
+        var client = CreateClient(handler);
+
+        await Should.ThrowAsync<AiChatClientException>(() =>
+            client.CompleteAsync(new AiChatRequest { Messages = { AiChatMessage.User("hi") } }));
+    }
+
+    [Fact]
+    public void The_Production_Handler_Should_Not_Follow_Redirects_Or_Use_A_Proxy()
+    {
+        using var provider = new AiModelHttpHandlerProvider();
+
+        var field = typeof(AiModelHttpHandlerProvider).GetField("_handler",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var handler = (System.Net.Http.SocketsHttpHandler)field!.GetValue(provider);
+
+        handler!.AllowAutoRedirect.ShouldBeFalse();
+        handler.UseProxy.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void External_Hosts_Should_Be_Off_Unless_Explicitly_Switched_On()
+    {
+        var accessor = Substitute.For<IAppConfigurationAccessor>();
+        accessor.Configuration.Returns(new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build());
+
+        new AiAgentConfiguration(accessor).AllowExternalModelHost.ShouldBeFalse();
+    }
+
     private static string Completion(string messageJson) => @"{""choices"":[{""index"":0,""message"":" + messageJson + "}]}";
 
     private static HttpAiChatClient CreateClient(StubHandler handler, Dictionary<string, string> settings = null)
@@ -186,10 +293,7 @@ public class HttpAiChatClient_Tests
         var accessor = Substitute.For<IAppConfigurationAccessor>();
         accessor.Configuration.Returns(configuration);
 
-        var factory = Substitute.For<IHttpClientFactory>();
-        factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(handler, disposeHandler: false));
-
-        return new HttpAiChatClient(factory, new AiAgentConfiguration(accessor));
+        return new HttpAiChatClient(new AiModelHttpHandlerProvider(handler), new AiAgentConfiguration(accessor));
     }
 
     private class StubHandler : HttpMessageHandler

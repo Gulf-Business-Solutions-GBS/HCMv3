@@ -24,31 +24,39 @@ namespace HCMv3.AiAgent.Chat;
 /// </summary>
 public class HttpAiChatClient : IAiChatClient, ITransientDependency
 {
-    public const string HttpClientName = "AiAgent";
-
     private static readonly Regex ThinkBlock =
         new(@"<think>.*?</think>", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static readonly Regex TextToolCall =
         new(@"<tool_call>\s*(\{.*?\})\s*</tool_call>", RegexOptions.Singleline | RegexOptions.Compiled);
 
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly AiModelHttpHandlerProvider _handlerProvider;
     private readonly AiAgentConfiguration _configuration;
 
-    public HttpAiChatClient(IHttpClientFactory httpClientFactory, AiAgentConfiguration configuration)
+    public HttpAiChatClient(AiModelHttpHandlerProvider handlerProvider, AiAgentConfiguration configuration)
     {
-        _httpClientFactory = httpClientFactory;
+        _handlerProvider = handlerProvider;
         _configuration = configuration;
     }
 
+    /// <summary>For tests: how a hostname is resolved when checking it is on the private network.</summary>
+    public Func<string, Task<System.Net.IPAddress[]>> HostResolver { get; set; }
+
     public async Task<AiChatResponse> CompleteAsync(AiChatRequest request, CancellationToken cancellationToken = default)
     {
+        if (!Uri.TryCreate(_configuration.ChatCompletionsUrl, UriKind.Absolute, out var endpoint))
+        {
+            throw new AiChatClientException($"AiAgent:BaseUrl '{_configuration.BaseUrl}' is not a valid address.");
+        }
+
+        // Before anything is built or sent: employee data may only go to this machine or the private network.
+        await AiModelHostGuard.EnsureAllowedAsync(endpoint, _configuration.AllowExternalModelHost, HostResolver);
+
         var body = BuildRequestBody(request);
 
-        var client = _httpClientFactory.CreateClient(HttpClientName);
-        client.Timeout = TimeSpan.FromSeconds(_configuration.TimeoutSeconds);
+        using var client = _handlerProvider.CreateClient(TimeSpan.FromSeconds(_configuration.TimeoutSeconds));
 
-        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, _configuration.ChatCompletionsUrl)
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, endpoint)
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json")
         };

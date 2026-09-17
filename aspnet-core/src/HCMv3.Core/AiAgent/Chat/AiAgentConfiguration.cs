@@ -61,6 +61,14 @@ public class AiAgentConfiguration : ITransientDependency
     public bool DisableThinking =>
         !bool.TryParse(_appConfiguration["AiAgent:DisableThinking"], out var value) || value;
 
+    /// <summary>
+    /// False unless explicitly set to <c>true</c>: the model may only be on this machine or the private network,
+    /// so employee data never leaves it. See <see cref="AiModelHostGuard"/>. Turning this on is a data-protection
+    /// decision, not a configuration detail.
+    /// </summary>
+    public bool AllowExternalModelHost =>
+        bool.TryParse(_appConfiguration["AiAgent:AllowExternalModelHost"], out var value) && value;
+
     private string NonEmpty(string key)
     {
         var value = _appConfiguration[key];
