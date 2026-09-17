@@ -1919,6 +1919,14 @@ public static class AppPermissions
     /// </summary>
     public const string Ess_MyMobileDevices = "Ess.MyMobileDevices";
 
+    /// <summary>
+    /// The AI assistant page. Only opens the door: every question it answers runs through a tool that checks
+    /// the permission of the screen it stands in for (Ess.MyLeave for leave, Ess.MyTeam for team views), so
+    /// granting this alone shows a user nothing they could not already see. Not in the default Employee role
+    /// while the assistant is being trialled.
+    /// </summary>
+    public const string Ess_AiAgent = "Ess.AiAgent";
+
     #endregion
 
     public const string Pages_Workflow_RequestDetails = "Pages.Workflow.RequestDetails";

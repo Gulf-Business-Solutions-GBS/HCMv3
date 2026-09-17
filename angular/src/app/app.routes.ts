@@ -151,6 +151,14 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Tenant.Dashboard' },
                     },
                     {
+                        // AI assistant (feat/ai-agent). On trial behind Ess.AiAgent; making it the landing page
+                        // later means pointing the empty /app redirect and AppRouteGuard.selectBestRoute here.
+                        path: 'ai-assistant',
+                        loadComponent: () =>
+                            import('./main/ai-assistant/ai-assistant.component').then((m) => m.AiAssistantComponent),
+                        data: { permission: 'Ess.AiAgent' },
+                    },
+                    {
                         // Employee Self Service. Lives under /app/main alongside the tenant dashboard, in
                         // the same application as the admin screens -- those are permission-filtered, so an
                         // employee holding only the Employee role never sees them. The per-transaction
