@@ -76,6 +76,10 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
     private readonly IRepository<EmployeeBasicPayDetail> _basicPayDetailRepository;
     private readonly IRepository<EmployeePayrollStatus> _payrollStatusRepository;
     private readonly IRepository<EmployeeBank> _employeeBankRepository;
+    private readonly IRepository<EmployeeDutyPeriod> _dutyPeriodRepository;
+    private readonly IRepository<EmployeeTimePolicy> _timePolicyRepository;
+    private readonly IRepository<EmployeeAbsenceQuota> _absenceQuotaRepository;
+    private readonly IRepository<EmployeeGratuityQuota> _gratuityQuotaRepository;
     private readonly GoLiveV2WorkingTime _workingTime;
     private readonly ITimeTransfersAppService _timeTransfers;
     private readonly GoLiveV2OpeningBalances _openingBalances;
@@ -95,6 +99,10 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         IRepository<EmployeeBasicPayDetail> basicPayDetailRepository,
         IRepository<EmployeePayrollStatus> payrollStatusRepository,
         IRepository<EmployeeBank> employeeBankRepository,
+        IRepository<EmployeeDutyPeriod> dutyPeriodRepository,
+        IRepository<EmployeeTimePolicy> timePolicyRepository,
+        IRepository<EmployeeAbsenceQuota> absenceQuotaRepository,
+        IRepository<EmployeeGratuityQuota> gratuityQuotaRepository,
         GoLiveV2WorkingTime workingTime,
         ITimeTransfersAppService timeTransfers,
         GoLiveV2OpeningBalances openingBalances)
@@ -115,6 +123,10 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         _basicPayDetailRepository = basicPayDetailRepository;
         _payrollStatusRepository = payrollStatusRepository;
         _employeeBankRepository = employeeBankRepository;
+        _dutyPeriodRepository = dutyPeriodRepository;
+        _timePolicyRepository = timePolicyRepository;
+        _absenceQuotaRepository = absenceQuotaRepository;
+        _gratuityQuotaRepository = gratuityQuotaRepository;
         _workingTime = workingTime;
         _timeTransfers = timeTransfers;
         _openingBalances = openingBalances;
@@ -387,7 +399,8 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
 
     /// <summary>
     /// A joining date corrected in the sheet moves the open-ended records the load laid down from the old one:
-    /// the contract, the org assignment, the salary and where both engines start. One the customer dated
+    /// the contract, the org assignment, the salary, the duty period and time policy the time engine needs for
+    /// every day, the bank record and where both engines start. One the customer dated
     /// differently by hand is left where it is.
     /// </summary>
     private async Task MoveStartDatesAsync(int employeeId, DateTime wasJoined, DateTime joined)
@@ -424,6 +437,22 @@ public class GoLiveV2EmployeeLoader : AbpServiceBase, ITransientDependency
         {
             bank.StartDate = joined;
         }
+
+        // Without these the time engine refuses every day before the old joining date, and the run stops there.
+        foreach (var dutyPeriod in await _dutyPeriodRepository.GetAllListAsync(p => p.EmployeeId == employeeId && p.StartDate == wasJoined))
+        {
+            dutyPeriod.StartDate = joined;
+        }
+
+        foreach (var timePolicy in await _timePolicyRepository.GetAllListAsync(p => p.EmployeeId == employeeId && p.StartDate == wasJoined))
+        {
+            timePolicy.StartDate = joined;
+        }
+
+        // The leave and indemnity quotas a run already built from the old joining date: the time engine refuses a
+        // day outside an existing quota, and builds them itself, so they are removed and rebuilt from the new date.
+        await _absenceQuotaRepository.DeleteAsync(q => q.EmployeeId == employeeId && q.EntitlementFrom == wasJoined);
+        await _gratuityQuotaRepository.DeleteAsync(q => q.EmployeeId == employeeId && q.EntitlementFrom == wasJoined);
 
         await CurrentUnitOfWork.SaveChangesAsync();
     }
