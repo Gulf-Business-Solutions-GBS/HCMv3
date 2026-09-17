@@ -62,6 +62,7 @@ public class GoLiveV2ExcelExports_Tests : AppTestBase
         sheet.Cell(2, 3).GetDateTime().ShouldBe(new DateTime(2020, 1, 15));
         sheet.Cell(2, 5).GetDouble().ShouldBe(500);
         sheet.Cell(2, 12).GetDouble().ShouldBe(12.5);
+        sheet.Cell(2, 5).Style.NumberFormat.Format.ShouldBe(GoLiveV2ExcelExports.AmountFormat);
 
         using var empty = Open((await _goLive.ExportEmployeeSheet(new GoLiveV2EmployeeSheetInput())).FileToken);
         empty.Worksheet(1).LastRowUsed().RowNumber().ShouldBe(1);
@@ -100,6 +101,11 @@ public class GoLiveV2ExcelExports_Tests : AppTestBase
         var agreeing = Enumerable.Range(2, 3).First(r => lines.Cell(r, 2).GetString() == "1000");
         lines.Cell(differing, 6).Style.Fill.BackgroundColor.ShouldNotBe(lines.Cell(agreeing, 6).Style.Fill.BackgroundColor);
         lines.Cell(differing, 10).GetString().ShouldBe(Localized("GoLiveV2CompareNotMatched"));
+
+        // No stray decimal point after a whole number and no thousand separators.
+        lines.Cell(agreeing, 4).Style.NumberFormat.Format.ShouldBe(GoLiveV2ExcelExports.NumberAsIsFormat);
+        lines.Cell(agreeing, 8).Style.NumberFormat.Format.ShouldBe(GoLiveV2ExcelExports.AmountFormat);
+        GoLiveV2ExcelExports.AmountFormat.ShouldNotContain(",");
     }
 
     private static GoLiveV2LegacyCompareLineDto Line(string employee, string wage, bool matched) =>

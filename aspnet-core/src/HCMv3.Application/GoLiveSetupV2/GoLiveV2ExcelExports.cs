@@ -24,6 +24,12 @@ namespace HCMv3.GoLiveSetupV2;
 /// </summary>
 public class GoLiveV2ExcelExports : AbpServiceBase, ITransientDependency
 {
+    /// <summary>Three decimals, no thousand separators.</summary>
+    public const string AmountFormat = "0.000";
+
+    /// <summary>Excel's General: whole numbers without a point, fractions with the digits they have.</summary>
+    public const string NumberAsIsFormat = "General";
+
     private static readonly XLColor HeaderFill = XLColor.FromHtml("#E9EEF6");
     private static readonly XLColor MatchFill = XLColor.FromHtml("#DDF0E4");
     private static readonly XLColor MatchText = XLColor.FromHtml("#0F5132");
@@ -66,7 +72,8 @@ public class GoLiveV2ExcelExports : AbpServiceBase, ITransientDependency
         sheet.Column(3).Style.DateFormat.Format = "dd-mm-yyyy";
         foreach (var amountColumn in Enumerable.Range(5, 8))
         {
-            sheet.Column(amountColumn).Style.NumberFormat.Format = "#,##0.000";
+            // No thousand separators: the sheet is pasted back into the grid, which reads 1,500 as text.
+            sheet.Column(amountColumn).Style.NumberFormat.Format = AmountFormat;
         }
 
         var r = 2;
@@ -204,8 +211,10 @@ public class GoLiveV2ExcelExports : AbpServiceBase, ITransientDependency
         };
         WriteHeader(sheet, headers.Select(h => L(h)).ToArray());
         sheet.Columns(1, 3).Style.NumberFormat.Format = "@";
-        sheet.Columns(4, 7).Style.NumberFormat.Format = "#,##0.######";
-        sheet.Columns(8, 9).Style.NumberFormat.Format = "#,##0.000";
+        // Rate and number as they are (450, 60.410959) -- a decimals mask left "450." with a stray point -- and
+        // amounts to the fils, neither with thousand separators.
+        sheet.Columns(4, 7).Style.NumberFormat.Format = NumberAsIsFormat;
+        sheet.Columns(8, 9).Style.NumberFormat.Format = AmountFormat;
 
         var r = 2;
         foreach (var line in lines)
