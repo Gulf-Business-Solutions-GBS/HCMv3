@@ -68,7 +68,11 @@ if (Test-Path $exe) {
 } else {
     $setup = Join-Path $here "OllamaSetup.exe"
     if (-not (Test-Path $setup)) { throw "OllamaSetup.exe not found next to this script." }
-    Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=`"$InstallDir`"" -Wait
+    # Not "Start-Process -Wait": that waits for the installer AND every process it starts, and the installer
+    # finishes by starting Ollama, which never exits -- so -Wait hangs forever. WaitForExit waits for the
+    # installer alone; the Ollama it started is stopped just below.
+    $installer = Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=`"$InstallDir`"" -PassThru
+    $installer.WaitForExit()
     if (-not (Test-Path $exe)) { throw "Install finished but $exe is missing. Check where it installed." }
     Write-Host "Installed: $(& $exe --version)"
 }
