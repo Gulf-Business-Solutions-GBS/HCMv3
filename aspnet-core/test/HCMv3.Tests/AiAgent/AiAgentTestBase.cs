@@ -16,10 +16,35 @@ public abstract class AiAgentTestBase : AppTestBase
 {
     protected readonly FakeAiChatClient Model = new();
 
+    /// <summary>
+    /// The model's limits, as the server is configured: the hcmv3-qwen3-4b variant with 8192 tokens. Tests that
+    /// are about the limit change these. (The code's own default, 4096, is too small for an administrator's ten
+    /// tools -- which is exactly why the server install sets up the larger variant.)
+    /// </summary>
+    protected readonly TestModelLimits ModelLimits;
+
     protected AiAgentTestBase()
     {
         LoginAsDefaultTenantAdmin();
         LocalIocManager.IocContainer.Register(Component.For<IAiChatClient>().Instance(Model).IsDefault());
+
+        ModelLimits = new TestModelLimits(Resolve<HCMv3.Configuration.IAppConfigurationAccessor>());
+        LocalIocManager.IocContainer.Register(Component.For<AiAgentConfiguration>().Instance(ModelLimits).IsDefault());
+    }
+
+    protected class TestModelLimits : AiAgentConfiguration
+    {
+        public TestModelLimits(HCMv3.Configuration.IAppConfigurationAccessor accessor) : base(accessor)
+        {
+        }
+
+        public int Context { get; set; } = 8192;
+
+        public int Reserved { get; set; } = 1024;
+
+        public override int ContextTokens => Context;
+
+        public override int ReservedOutputTokens => Reserved;
     }
 
     protected IAiAgentAppService Service => Resolve<IAiAgentAppService>();

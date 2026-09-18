@@ -5950,6 +5950,8 @@
     <text name="AiAgentEmptyReply">لا تتوفر إجابة على ذلك. يرجى إعادة صياغة السؤال.</text>
     <text name="AiAgentConversationNotFound">المحادثة غير موجودة.</text>
     <text name="AiAgentMessageRequired">يرجى كتابة رسالة.</text>
+    <text name="AiAgentMessageTooLong">هذه الرسالة أطول مما يستطيع المساعد معالجته. يرجى اختصارها أو بدء محادثة جديدة.</text>
+    <text name="AiAgentModelTooSmall">نموذج الذكاء الاصطناعي الخاص بالمساعد مُعدّ بسعة لا تكفي لكل ما يحتاجه. يرجى مراجعة مسؤول النظام للتحقق من إعدادات المساعد الذكي (Model و ContextTokens).</text>
     <text name="AiAgentActionApplyForLeave">طلب إجازة</text>
     <text name="AiAgentActionCancelLeave">سحب طلب الإجازة</text>
     <text name="AiAgentLeaveType">نوع الإجازة</text>

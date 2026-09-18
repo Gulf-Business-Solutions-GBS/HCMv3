@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Abp.Dependency;
 using HCMv3.Configuration;
@@ -71,6 +72,31 @@ public class AiAgentConfiguration : ITransientDependency
     /// </summary>
     public bool AllowExternalModelHost =>
         bool.TryParse(_appConfiguration["AiAgent:AllowExternalModelHost"], out var value) && value;
+
+    /// <summary>Ollama's own default. Assumed unless the host is known to be set up for more.</summary>
+    public const int DefaultContextTokens = 4096;
+
+    public const int DefaultReservedOutputTokens = 1024;
+
+    /// <summary>
+    /// The model's context window: question and answer together. MUST NOT be larger than what the model host
+    /// really uses -- a host given more than it holds drops the start of the request, the system prompt, without
+    /// any error. Defaults to Ollama's 4096, which is safe on an unconfigured host; the server install creates a
+    /// model variant with 8192 built in and sets this to match.
+    /// </summary>
+    public virtual int ContextTokens =>
+        int.TryParse(_appConfiguration["AiAgent:ContextTokens"], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value >= 1024
+            ? value
+            : DefaultContextTokens;
+
+    /// <summary>Kept free for the answer, and sent as the answer's maximum length so the two never overlap.</summary>
+    public virtual int ReservedOutputTokens =>
+        int.TryParse(_appConfiguration["AiAgent:ReservedOutputTokens"], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value >= 256
+            ? value
+            : DefaultReservedOutputTokens;
+
+    /// <summary>What a request may use. See <see cref="AiPromptBudget"/>.</summary>
+    public int PromptBudgetTokens => Math.Max(512, ContextTokens - ReservedOutputTokens);
 
     private string NonEmpty(string key)
     {

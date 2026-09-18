@@ -282,6 +282,47 @@ public class HttpAiChatClient_Tests
         new AiAgentConfiguration(accessor).AllowExternalModelHost.ShouldBeFalse();
     }
 
+    // ------------------------------------------------------------------ the model's limit
+
+    [Fact]
+    public async Task Should_Refuse_To_Send_A_Request_Bigger_Than_The_Model_Allows()
+    {
+        // Last line of defence: the model host would otherwise drop the start of it -- the rules -- silently.
+        var handler = new StubHandler(HttpStatusCode.OK, Completion(@"{""content"":""hi""}"));
+        var client = CreateClient(handler);
+
+        await Should.ThrowAsync<AiPromptTooLargeException>(() => client.CompleteAsync(new AiChatRequest
+        {
+            Messages = { AiChatMessage.System("rules"), AiChatMessage.User(new string('x', 20_000)) }
+        }));
+
+        handler.LastRequest.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Should_Cap_The_Answer_So_Question_And_Answer_Fit_Together()
+    {
+        var client = CreateClient(new StubHandler(HttpStatusCode.OK, ""), new Dictionary<string, string>
+        {
+            ["AiAgent:ContextTokens"] = "8192",
+            ["AiAgent:ReservedOutputTokens"] = "1500"
+        });
+
+        client.BuildRequestBody(new AiChatRequest { Messages = { AiChatMessage.User("hi") } })["max_tokens"]!.GetValue<int>().ShouldBe(1500);
+    }
+
+    [Fact]
+    public void The_Limit_Should_Default_To_What_An_Unconfigured_Ollama_Uses()
+    {
+        var accessor = Substitute.For<IAppConfigurationAccessor>();
+        accessor.Configuration.Returns(new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build());
+
+        var configuration = new AiAgentConfiguration(accessor);
+
+        configuration.ContextTokens.ShouldBe(4096);
+        configuration.PromptBudgetTokens.ShouldBe(4096 - 1024);
+    }
+
     private static string Completion(string messageJson) => @"{""choices"":[{""index"":0,""message"":" + messageJson + "}]}";
 
     private static HttpAiChatClient CreateClient(StubHandler handler, Dictionary<string, string> settings = null)

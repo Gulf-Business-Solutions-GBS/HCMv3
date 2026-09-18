@@ -44,6 +44,7 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
     private readonly AiPendingActionHandlerResolver _actionHandlers;
     private readonly IEmployeeSessionService _employeeSessionService;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly AiAgentConfiguration _configuration;
 
     public AiAgentAppService(
         IRepository<AiConversation> conversationRepository,
@@ -53,8 +54,10 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         AiAgentToolRegistry toolRegistry,
         AiPendingActionHandlerResolver actionHandlers,
         IEmployeeSessionService employeeSessionService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        AiAgentConfiguration configuration)
     {
+        _configuration = configuration;
         _conversationRepository = conversationRepository;
         _messageRepository = messageRepository;
         _actionRepository = actionRepository;
@@ -339,7 +342,27 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             // has instead of asking for one more lookup that would never run.
             request.Tools = call < AiAgentConsts.MaxModelCallsPerMessage ? definitions : new List<AiToolDefinition>();
 
-            var response = await CompleteAsync(request);
+            AiChatResponse response;
+            try
+            {
+                response = await CompleteAsync(request);
+            }
+            catch (AiPromptTooLargeException ex)
+            {
+                // The rules, the tools and the question alone do not fit. Refused rather than sent short: a
+                // shortened request loses its START, which is the rules.
+                Logger.Warn("AI agent request too large for the model: " + ex.Message);
+
+                if (call == 1)
+                {
+                    // A short question that still does not fit means the rules and tools alone are too big for the
+                    // model: a set-up problem for an administrator, not something the user can fix by typing less.
+                    var questionIsSmall = AiPromptBudget.EstimateTokens(text) < _configuration.PromptBudgetTokens / 4;
+                    throw new UserFriendlyException(L(questionIsSmall ? "AiAgentModelTooSmall" : "AiAgentMessageTooLong"));
+                }
+
+                return L("AiAgentCouldNotComplete");
+            }
 
             if (response.ToolCalls.Count == 0 || request.Tools.Count == 0)
             {
@@ -381,11 +404,25 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         return L("AiAgentCouldNotComplete");
     }
 
+    /// <summary>
+    /// Sends the request, first fitted to the model's context window by <see cref="AiPromptBudget"/>: the oldest
+    /// conversation goes before the rules ever could. Only what is sent is trimmed; <paramref name="request"/>
+    /// keeps the whole conversation.
+    /// </summary>
     private async Task<AiChatResponse> CompleteAsync(AiChatRequest request)
     {
+        var fitted = AiPromptBudget.Fit(request, _configuration.PromptBudgetTokens, out var report);
+
+        if (report.Trimmed)
+        {
+            Logger.Info($"AI agent request trimmed to fit the model: {report.EstimatedTokensBefore} -> {report.EstimatedTokensAfter} " +
+                        $"of {report.BudgetTokens} tokens; {report.HistoryMessagesDropped} earlier message(s) left out, " +
+                        $"{report.ToolResultsShortened} tool result(s) shortened.");
+        }
+
         try
         {
-            return await _chatClient.CompleteAsync(request);
+            return await _chatClient.CompleteAsync(fitted);
         }
         catch (AiChatClientException ex)
         {

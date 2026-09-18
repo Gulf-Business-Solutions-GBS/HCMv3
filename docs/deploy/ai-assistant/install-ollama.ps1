@@ -129,6 +129,16 @@ Step "4. Downloading $Model (the only internet access Ollama needs)"
 $env:OLLAMA_HOST = "127.0.0.1:11434"
 & $exe pull $Model
 if ($LASTEXITCODE -ne 0) { throw "Model download failed." }
+
+# A named variant with the context window BUILT IN, so the size the API is configured for (AiAgent:ContextTokens
+# = 8192) is guaranteed by the model itself, not by an environment variable someone could lose. The API trims
+# every request to that size; a model that silently held less would drop the rules at the start.
+$variant = "hcmv3-" + ($Model -replace '[:/]', '-')
+$modelfile = Join-Path $InstallDir "Modelfile.$variant"
+"FROM $Model`nPARAMETER num_ctx 8192" | Set-Content -Path $modelfile -Encoding ASCII
+& $exe create $variant -f $modelfile
+if ($LASTEXITCODE -ne 0) { throw "Could not create the model variant $variant." }
+Write-Host "Created $variant (8192-token context). Set AiAgent:Model to '$variant' and AiAgent:ContextTokens to 8192."
 & $exe list
 
 # ------------------------------------------------------------------ 5. firewall
@@ -146,6 +156,6 @@ foreach ($program in @($exe, (Join-Path $InstallDir "ollama app.exe"))) {
 
 # ------------------------------------------------------------------ 6. check
 Step "6. Checking it answers"
-& (Join-Path $here "test-ollama.ps1") -Model $Model
+& (Join-Path $here "test-ollama.ps1") -Model $variant
 
 Write-Host "`nDone. To download another model later: Disable-NetFirewallRule -DisplayName 'HCMv3 AI - block internet*', pull, then Enable-NetFirewallRule -DisplayName 'HCMv3 AI - block internet*'." -ForegroundColor Green

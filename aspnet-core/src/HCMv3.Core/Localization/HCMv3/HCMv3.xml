@@ -6108,6 +6108,8 @@
     <text name="AiAgentEmptyReply">I don't have an answer for that. Please try rephrasing your question.</text>
     <text name="AiAgentConversationNotFound">Conversation not found.</text>
     <text name="AiAgentMessageRequired">Please type a message.</text>
+    <text name="AiAgentMessageTooLong">This message is too long for the assistant. Please shorten it, or start a new chat.</text>
+    <text name="AiAgentModelTooSmall">The assistant's AI model is set up with too little room for everything it needs. Please ask your system administrator to check the AI assistant settings (Model and ContextTokens).</text>
     <text name="AiAgentActionApplyForLeave">Apply for leave</text>
     <text name="AiAgentActionCancelLeave">Withdraw leave request</text>
     <text name="AiAgentLeaveType">Leave type</text>

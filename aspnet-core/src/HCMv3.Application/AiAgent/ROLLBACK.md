@@ -66,7 +66,9 @@ No NuGet or npm packages were added.
 | Key | Default | Notes |
 |---|---|---|
 | `BaseUrl` | `http://localhost:11434/v1` | Any OpenAI-compatible endpoint **on this machine or the private network** |
-| `Model` | `qwen3:4b` | e.g. `qwen3:32b` on a GPU server |
+| `Model` | `qwen3:4b` | The server uses `hcmv3-qwen3-4b` (8192-token variant made by the install script) |
+| `ContextTokens` | `4096` | Must not exceed what the model really holds. `8192` with `hcmv3-qwen3-4b`. An administrator's rules + tools need ~3,800, so admins need the 8192 variant |
+| `ReservedOutputTokens` | `1024` | Kept free for the answer; also sent as the answer's maximum length |
 | `ApiKey` | *(none)* | Keep out of source control: `AiAgent__ApiKey` environment variable |
 | `TimeoutSeconds` | `900` | CPU-only hosts are slow: measured 70-270s per answer on this laptop |
 | `Temperature` | `0.2` | |

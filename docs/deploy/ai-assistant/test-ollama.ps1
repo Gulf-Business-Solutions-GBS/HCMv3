@@ -4,7 +4,7 @@
     request into a tool call with the right arguments. Takes one to several minutes on a server without a GPU.
 #>
 [CmdletBinding()]
-param([string] $Model = "qwen3:4b")
+param([string] $Model = "hcmv3-qwen3-4b")
 
 $ErrorActionPreference = "Stop"
 $url = "http://127.0.0.1:11434/v1/chat/completions"

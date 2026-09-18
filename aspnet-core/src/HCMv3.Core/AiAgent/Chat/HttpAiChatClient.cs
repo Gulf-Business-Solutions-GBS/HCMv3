@@ -52,6 +52,15 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
         // Before anything is built or sent: employee data may only go to this machine or the private network.
         await AiModelHostGuard.EnsureAllowedAsync(endpoint, _configuration.AllowExternalModelHost, HostResolver);
 
+        // Last line of defence: callers trim with AiPromptBudget.Fit before calling. Anything still too big is a
+        // bug, and it must fail loudly here -- the model host would otherwise drop the system prompt silently.
+        var estimated = AiPromptBudget.Estimate(request);
+        if (estimated > _configuration.PromptBudgetTokens)
+        {
+            throw new AiPromptTooLargeException(
+                $"Refusing to send about {estimated} tokens to a model limited to {_configuration.PromptBudgetTokens}; it would drop the start of the request.");
+        }
+
         var body = BuildRequestBody(request);
 
         using var client = _handlerProvider.CreateClient(TimeSpan.FromSeconds(_configuration.TimeoutSeconds));
@@ -151,7 +160,9 @@ public class HttpAiChatClient : IAiChatClient, ITransientDependency
             ["model"] = _configuration.Model,
             ["messages"] = messages,
             ["stream"] = false,
-            ["temperature"] = _configuration.Temperature
+            ["temperature"] = _configuration.Temperature,
+            // The answer's own share of the context window, so question plus answer never exceed it.
+            ["max_tokens"] = _configuration.ReservedOutputTokens
         };
 
         if (request.Tools is { Count: > 0 })
