@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using Abp.Domain.Uow;
 using Abp.Authorization;
 using Abp.Configuration;
 using Abp.Application.Services.Dto;
@@ -64,7 +68,11 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
 
         var allScreens = await _screenRepository.GetAll().ToListAsync();
         var visible = await FilterToPermittedAsync(allScreens);
-        var visibleByKey = visible.ToDictionary(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase);
+        // Grouped rather than ToDictionary'd outright. The unique index should make a duplicate impossible, but
+        // this call feeds the menu of every page: one stray row must cost a duplicate entry, not the whole shell.
+        var visibleByKey = visible
+            .GroupBy(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
         var usage = await _usageRepository.GetAll().Where(u => u.UserId == userId).ToListAsync();
 
@@ -256,35 +264,93 @@ public class ScreensAppService : HCMv3AppServiceBase, IScreensAppService
     /// the fields the application owns, since a rename or a moved route has to reach people too. The
     /// projection costs one query over small columns, on a path that loads every screen a line later
     /// anyway.
+    ///
+    /// <para>
+    /// <b>One seeder per company at a time.</b> This used to seed inside whichever request found the catalogue out of
+    /// date, and the first page after signing in sends two such requests at once -- the side menu and the Home quick
+    /// links each ask for the navigation. On a new company, or on any company after a deployment added a screen, both
+    /// requests inserted the same rows and the second failed on IX_Screens_TenantId_Code: an "internal error" dialog
+    /// on a new customer's very first screen, gone on refresh because by then the first request had finished.
+    /// </para>
+    ///
+    /// <para>
+    /// Now the seeding runs under a lock held per company, in its own unit of work that commits before the lock is
+    /// released. A request that waited re-checks, finds the finished catalogue, and seeds nothing. The lock is per
+    /// process, so a second server could still race; for that the unique index stays the backstop, and losing that
+    /// race is treated as the success it is -- the other server wrote the same rows.
+    /// </para>
     /// </summary>
     private async Task EnsureCatalogSeededAsync()
+    {
+        // The common case, and lock-free: the catalogue is already current.
+        if (await IsCatalogueCurrentAsync())
+        {
+            return;
+        }
+
+        var gate = SeedGates.GetOrAdd(AbpSession.TenantId ?? HostGateKey, _ => new SemaphoreSlim(1, 1));
+
+        await gate.WaitAsync();
+
+        try
+        {
+            using var uow = UnitOfWorkManager.Begin(TransactionScopeOption.RequiresNew);
+
+            using (UnitOfWorkManager.Current.SetTenantId(AbpSession.TenantId))
+            {
+                // Checked again inside the lock, on this unit of work's own fresh context: a request that waited
+                // for another to finish seeding finds it done here.
+                if (!await IsCatalogueCurrentAsync())
+                {
+                    _screenSeeder.SeedForTenant(AbpSession.TenantId);
+                }
+
+                try
+                {
+                    // Committed here, before the lock is released and before the caller reads the catalogue back,
+                    // so neither a waiting request nor this one's own read can see a half-written list.
+                    await uow.CompleteAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Another server seeded the same rows at the same moment. Its rows are the ones wanted.
+                    Logger.Warn("Screen catalogue seeding lost a race for tenant " + AbpSession.TenantId
+                                + "; another writer seeded it first.", ex);
+                }
+            }
+        }
+        finally
+        {
+            gate.Release();
+        }
+    }
+
+    /// <summary>
+    /// Whether every screen the application declares exists with the fields the application owns. A rename or a moved
+    /// route has to reach people too, so the keys alone are not enough.
+    /// </summary>
+    private async Task<bool> IsCatalogueCurrentAsync()
     {
         var existing = await _screenRepository.GetAll()
             .Select(s => new { s.ScreenKey, s.Module, s.NameKey, s.Route, s.PermissionName })
             .ToListAsync();
 
-        var existingByKey = existing.ToDictionary(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase);
+        var existingByKey = existing
+            .GroupBy(s => s.ScreenKey, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-        var catalogueIsCurrent = ScreenCatalog.All.All(seed =>
+        return ScreenCatalog.All.All(seed =>
             existingByKey.TryGetValue(seed.Key, out var row)
             && row.Module == seed.Module
             && row.NameKey == seed.NameKey
             && row.Route == seed.Route
             && row.PermissionName == seed.PermissionName);
-
-        if (catalogueIsCurrent)
-        {
-            return;
-        }
-
-        _screenSeeder.SeedForTenant(AbpSession.TenantId);
-
-        // Flush before reading them back. ABP saves at the END of the unit of work, so without this the
-        // GetAll() immediately below queries the database and sees none of what was just inserted -- the
-        // first caller after a deployment would get an empty catalogue and the second would get a full
-        // one, which is the kind of bug that never reproduces when you go looking for it.
-        await CurrentUnitOfWork.SaveChangesAsync();
     }
+
+    /// <summary>One gate per company, shared by every request in this process. The host uses <see cref="HostGateKey"/>.</summary>
+    private static readonly ConcurrentDictionary<int, SemaphoreSlim> SeedGates = new();
+
+    private const int HostGateKey = 0;
 
     /// <summary>
     /// Drops screens the caller has no permission for.

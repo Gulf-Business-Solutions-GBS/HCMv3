@@ -227,4 +227,59 @@ public class ScreensAppService_Tests : AppTestBase
         bootstrap.Screens.ShouldNotBeEmpty();
         bootstrap.Screens.ShouldNotContain(s => s.ScreenKey == "app.admin.removed-feature");
     }
+
+    /// <summary>
+    /// A company created after a release is missing screens until its first page load fills them in. That first load
+    /// once failed with "An internal error occurred" because the side menu and the Home quick links both asked at the
+    /// same moment and both tried to add the same rows.
+    /// </summary>
+    [Fact]
+    public async Task Should_Refill_A_Missing_Screen_On_The_Next_Read()
+    {
+        await _appService.GetNavigationBootstrap();
+        var complete = ScreenCount();
+
+        var removedKey = await UsingDbContextAsync(async context =>
+        {
+            var row = context.Screens.First(s => s.TenantId == AbpSession.TenantId);
+            context.Screens.Remove(row);
+            await context.SaveChangesAsync();
+            return row.ScreenKey;
+        });
+
+        await _appService.GetNavigationBootstrap();
+
+        ScreenCount().ShouldBe(complete);
+        UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId && s.ScreenKey == removedKey))
+            .ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Should_Answer_Two_Simultaneous_First_Reads_Without_An_Error()
+    {
+        var results = await Task.WhenAll(_appService.GetNavigationBootstrap(), _appService.GetNavigationBootstrap());
+
+        results.ShouldAllBe(r => r.Screens.Count > 0);
+
+        var keys = UsingDbContext(context =>
+            context.Screens.Where(s => s.TenantId == AbpSession.TenantId).Select(s => s.ScreenKey).ToList());
+        keys.Count.ShouldBe(keys.Distinct().Count());
+    }
+
+    [Fact]
+    public async Task Should_Not_Add_Rows_When_The_Catalogue_Is_Already_Complete()
+    {
+        await _appService.GetNavigationBootstrap();
+        var before = ScreenCount();
+
+        await _appService.GetNavigationBootstrap();
+        await _appService.GetNavigationBootstrap();
+
+        ScreenCount().ShouldBe(before);
+    }
+
+    private int ScreenCount()
+    {
+        return UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId));
+    }
 }

@@ -1,4 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 import {
     ScreensServiceProxy,
     MyScreenShortcutsServiceProxy,
@@ -53,8 +54,24 @@ export class ScreenNavigationService {
 
     private readonly favoriteKeys = computed(() => new Set(this.favorites().map((f) => f.screenKey)));
 
+    /**
+     * True while the bootstrap request is on its way. The side menu and the Home quick links both call load() when
+     * the page first opens, and both guard on isLoaded() -- which only turns true once the response arrives. So the
+     * second caller used to see "not loaded" and send a second request while the first was still in flight. That
+     * doubled the work on every first page, and on a new company it made the two requests race to seed the screen
+     * catalogue, one of them failing with an "internal error" dialog. (The server now serialises the seeding too;
+     * this stops the page asking twice.)
+     */
+    private _isLoading = false;
+
     load(): void {
-        this._screensService.getNavigationBootstrap().subscribe({
+        if (this._isLoading) {
+            return;
+        }
+
+        this._isLoading = true;
+
+        this._screensService.getNavigationBootstrap().pipe(finalize(() => (this._isLoading = false))).subscribe({
             next: (result) => {
                 this.screens.set(result.screens ?? []);
                 this.favorites.set(result.favorites ?? []);
