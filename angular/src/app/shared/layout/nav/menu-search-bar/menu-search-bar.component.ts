@@ -289,13 +289,14 @@ export class MenuSearchBarComponent extends AppComponentBase {
     private toPersonResult(person: any): GlobalSearchResult {
         const name = this.isRtl ? person.fullNameAr || person.fullNameEn : person.fullNameEn;
         const jobTitle = this.isRtl ? person.jobTitleAr || person.jobTitleEn : person.jobTitleEn;
-        const department = this.isRtl ? person.departmentAr || person.departmentEn : person.departmentEn;
+        const title = [person.code, name].filter((part) => !!part).join(' - ');
 
         return {
             kind: 'person',
-            name: name ?? '',
+            // "E0012 - Ahmed Ali", then job title and work email beneath it.
+            name: title,
             // Both when known, whichever exists otherwise, and nothing at all rather than a stray dash.
-            subtitle: [jobTitle, department].filter((part) => !!part).join(' — ') || undefined,
+            subtitle: [jobTitle, person.email].filter((part) => !!part).join(' — ') || undefined,
             employeeId: person.id,
             photoUrl: person.hasPhoto
                 ? `${AppConsts.remoteServiceBaseUrl}/api/employee-photo/${person.id}?size=${MenuSearchBarComponent.PhotoSize}`

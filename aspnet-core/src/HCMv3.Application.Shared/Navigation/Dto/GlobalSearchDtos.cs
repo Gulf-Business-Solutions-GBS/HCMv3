@@ -29,6 +29,9 @@ public class GlobalSearchPersonDto : EntityDto
 
     public string DepartmentAr { get; set; }
 
+    /// <summary>The employee's work email, shown under their name so two people with the same name can be told apart.</summary>
+    public string Email { get; set; }
+
     /// <summary>True when <c>Employee.Photo</c> holds bytes. Computed without loading the blob.</summary>
     public bool HasPhoto { get; set; }
 }

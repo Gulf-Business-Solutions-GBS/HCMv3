@@ -262742,6 +262742,7 @@ export class GlobalSearchPersonDto implements IGlobalSearchPersonDto {
     jobTitleAr!: string | undefined;
     departmentEn!: string | undefined;
     departmentAr!: string | undefined;
+    email!: string | undefined;
     hasPhoto!: boolean;
 
     constructor(data?: IGlobalSearchPersonDto) {
@@ -262763,6 +262764,7 @@ export class GlobalSearchPersonDto implements IGlobalSearchPersonDto {
             this.jobTitleAr = _data["jobTitleAr"];
             this.departmentEn = _data["departmentEn"];
             this.departmentAr = _data["departmentAr"];
+            this.email = _data["email"];
             this.hasPhoto = _data["hasPhoto"];
         }
     }
@@ -262784,6 +262786,7 @@ export class GlobalSearchPersonDto implements IGlobalSearchPersonDto {
         data["jobTitleAr"] = this.jobTitleAr;
         data["departmentEn"] = this.departmentEn;
         data["departmentAr"] = this.departmentAr;
+        data["email"] = this.email;
         data["hasPhoto"] = this.hasPhoto;
         return data;
     }
@@ -262798,6 +262801,7 @@ export interface IGlobalSearchPersonDto {
     jobTitleAr: string | undefined;
     departmentEn: string | undefined;
     departmentAr: string | undefined;
+    email: string | undefined;
     hasPhoto: boolean;
 }
 

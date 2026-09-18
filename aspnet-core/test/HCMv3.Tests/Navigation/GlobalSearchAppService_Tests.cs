@@ -45,6 +45,28 @@ public class GlobalSearchAppService_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task Should_Return_The_Code_And_Work_Email_Of_Each_Person()
+    {
+        CreateEmployee("GS-010", "Email Person", "بريد", email: "email.person@gbskw.com");
+
+        var person = (await _globalSearchAppService.SearchPeople(new SearchPeopleInput { Filter = "GS-010" })).People.Single();
+
+        person.Code.ShouldBe("GS-010");
+        person.Email.ShouldBe("email.person@gbskw.com");
+    }
+
+    [Fact]
+    public async Task Should_Return_The_Work_Email_In_Recent_Searches()
+    {
+        var employee = CreateEmployee("GS-011", "Recent Email", "بريد", email: "recent.email@gbskw.com");
+        await _globalSearchAppService.AddRecentSearch(new GlobalSearchRecentItemInput { Kind = GlobalSearchRecentKind.Person, EmployeeId = employee.Id });
+
+        var recent = (await _globalSearchAppService.GetRecentSearches()).Items.Single(x => x.EmployeeId == employee.Id);
+
+        recent.Person.Email.ShouldBe("recent.email@gbskw.com");
+    }
+
+    [Fact]
     public async Task Should_Return_Nothing_For_A_Filter_Below_The_Minimum_Length()
     {
         CreateEmployee("GS-002", "Aaron Short", "آرون");
@@ -237,7 +259,7 @@ public class GlobalSearchAppService_Tests : AppTestBase
         });
     }
 
-    private Employee CreateEmployee(string code, string fullNameEn, string fullNameAr, byte[] photo = null)
+    private Employee CreateEmployee(string code, string fullNameEn, string fullNameAr, byte[] photo = null, string email = null)
     {
         Nationality nationality = null;
         UsingDbContext(context =>
@@ -267,7 +289,8 @@ public class GlobalSearchAppService_Tests : AppTestBase
                 BirthDate = new DateTime(1990, 1, 1),
                 Gender = Gender.Male,
                 NationalityId = nationality.Id,
-                Photo = photo
+                Photo = photo,
+                Email = email
             }).Entity;
         });
 

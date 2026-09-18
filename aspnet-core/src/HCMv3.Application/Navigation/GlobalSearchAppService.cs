@@ -28,7 +28,7 @@ namespace HCMv3.Navigation;
 /// of another's results.
 ///
 /// Note what is NOT returned: no salary, no personal contact details, no national ids. Name, code, job
-/// title and department are what identify a colleague in a dropdown, and nothing beyond that is needed to
+/// title, department and work email are what identify a colleague in a dropdown, and nothing beyond that is needed to
 /// pick the right one.
 /// </summary>
 [AbpAuthorize]
@@ -88,6 +88,7 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                 x.Code,
                 x.FullNameEn,
                 x.FullNameAr,
+                x.Email,
                 HasPhoto = x.Photo != null
             })
             .ToListAsync();
@@ -117,6 +118,7 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                         Code = employee.Code,
                         FullNameEn = employee.FullNameEn,
                         FullNameAr = employee.FullNameAr,
+                        Email = employee.Email,
                         HasPhoto = employee.HasPhoto,
                         JobTitleEn = placement?.JobTitleEn,
                         JobTitleAr = placement?.JobTitleAr,
@@ -147,6 +149,7 @@ public class GlobalSearchAppService : HCMv3AppServiceBase, IGlobalSearchAppServi
                     Code = x.Code,
                     FullNameEn = x.FullNameEn,
                     FullNameAr = x.FullNameAr,
+                    Email = x.Email,
                     HasPhoto = x.Photo != null
                 })
                 .ToListAsync();
