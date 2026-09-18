@@ -82,7 +82,7 @@ public class AiAgentConfiguration : ITransientDependency
     /// The model's context window: question and answer together. MUST NOT be larger than what the model host
     /// really uses -- a host given more than it holds drops the start of the request, the system prompt, without
     /// any error. Defaults to Ollama's 4096, which is safe on an unconfigured host; the server install creates a
-    /// model variant with 8192 built in and sets this to match.
+    /// model variant with 12288 built in and sets this to match.
     /// </summary>
     public virtual int ContextTokens =>
         int.TryParse(_appConfiguration["AiAgent:ContextTokens"], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value >= 1024

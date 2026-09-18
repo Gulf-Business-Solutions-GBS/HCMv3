@@ -61,11 +61,12 @@ public class AiAgentAppService_Tests : AiAgentTestBase
         var second = Model.Requests[1].Messages;
         second.Select(m => m.Role).ShouldBe(new[]
         {
-            AiChatMessage.SystemRole, AiChatMessage.UserRole, AiChatMessage.AssistantRole, AiChatMessage.UserRole
+            AiChatMessage.SystemRole, AiChatMessage.UserRole, AiChatMessage.AssistantRole, AiChatMessage.SystemRole, AiChatMessage.UserRole
         });
         second[1].Content.ShouldBe("First question");
         second[2].Content.ShouldBe("First answer");
-        second[3].Content.ShouldBe("Second question");
+        second[3].Content.ShouldStartWith("Details for this conversation:");
+        second[4].Content.ShouldBe("Second question");
     }
 
     [Fact]
@@ -203,7 +204,7 @@ public class AiAgentAppService_Tests : AiAgentTestBase
         await Service.SendMessage(new SendAiMessageInput { Message = "how much leave do I have" });
 
         Model.Requests[0].Tools.ShouldBeEmpty();
-        Model.Requests[0].Messages[0].Content.ShouldContain("does not have access to leave information");
+        Model.Requests[0].Messages[^2].Content.ShouldContain("does not have access to leave information");
     }
 
     [Fact]
@@ -292,6 +293,21 @@ public class AiAgentAppService_Tests : AiAgentTestBase
 
         info.IsLinkedToEmployee.ShouldBeTrue();
         info.FirstNameEn.ShouldBe("AI004");
+    }
+
+    [Fact]
+    public async Task The_Request_Should_Start_With_The_Shared_Rules_And_Put_The_Details_Just_Before_The_Question()
+    {
+        // Layout for speed: identical rules first so the model host can reuse its work, per-user details last.
+        Model.RepliesWith("hi");
+
+        await Service.SendMessage(new SendAiMessageInput { Message = "hello" });
+
+        var messages = Model.Requests.Single().Messages;
+        messages[0].Content.ShouldBe(AiAgentSystemPrompt.BuildRules(isPayAdministrator: true));
+        messages[^2].Role.ShouldBe(AiChatMessage.SystemRole);
+        messages[^2].Content.ShouldStartWith("Details for this conversation:");
+        messages[^1].Content.ShouldBe("hello");
     }
 
     [Theory]

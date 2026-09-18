@@ -76,6 +76,21 @@ public class AiPromptBudget_Tests
     }
 
     [Fact]
+    public void The_Per_User_Details_Message_Before_The_Question_Should_Never_Be_Dropped()
+    {
+        // Layout used for prompt caching: rules first, history, then the user's details, then the question.
+        var request = Conversation(10);
+        request.Messages.Insert(request.Messages.Count - 1, AiChatMessage.System("Today is 2026-09-18. You are talking to Sara."));
+
+        var fitted = AiPromptBudget.Fit(request, AiPromptBudget.Estimate(request) / 3, out var report);
+
+        report.HistoryMessagesDropped.ShouldBeGreaterThan(0);
+        fitted.Messages[0].Content.ShouldBe(Rules);
+        fitted.Messages[^2].Content.ShouldBe("Today is 2026-09-18. You are talking to Sara.");
+        fitted.Messages[^1].Content.ShouldBe("the current question");
+    }
+
+    [Fact]
     public void The_Original_Conversation_Should_Not_Be_Changed()
     {
         var request = Conversation(10);

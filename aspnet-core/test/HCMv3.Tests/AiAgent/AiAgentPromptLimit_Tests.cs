@@ -80,7 +80,7 @@ public class AiAgentPromptLimit_Tests : AiAgentTestBase
     [Fact]
     public async Task The_Rules_And_Every_Tool_Should_Fit_The_Server_Model_With_Room_For_A_Conversation()
     {
-        // The administrator is offered all ten tools -- the largest fixed part there is. On the server's 8192-token
+        // The administrator is offered all 18 tools -- the largest fixed part there is. On the server's 12288-token
         // model (the base class default) it must leave most of the room for the conversation itself.
         Model.RepliesWith("hi");
 
@@ -90,14 +90,14 @@ public class AiAgentPromptLimit_Tests : AiAgentTestBase
         var fixedPart = AiPromptBudget.Estimate(request);
         _output.WriteLine($"Rules + {request.Tools.Count} tools + question: about {fixedPart} tokens of {ModelLimits.PromptBudgetTokens}.");
 
-        request.Tools.Count.ShouldBeGreaterThanOrEqualTo(10);
+        request.Tools.Count.ShouldBeGreaterThanOrEqualTo(18);
         fixedPart.ShouldBeLessThan(ModelLimits.PromptBudgetTokens * 2 / 3);
     }
 
     [Fact]
     public async Task On_An_Unconfigured_4096_Model_An_Administrator_Is_Refused_Rather_Than_Sent_Without_Rules()
     {
-        // Documents WHY the server needs the 8192 variant: with Ollama's default 4096, the rules and ten tools do
+        // Documents WHY the server needs the larger variant: with Ollama's default 4096, the rules and tools do
         // not fit. The assistant says so instead of sending a request the model would cut the rules from.
         ModelLimits.Context = 4096;
         ModelLimits.Reserved = 1024;

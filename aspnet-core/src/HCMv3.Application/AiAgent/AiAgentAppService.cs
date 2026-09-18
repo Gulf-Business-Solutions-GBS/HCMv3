@@ -31,7 +31,9 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
     /// <summary>Being offered any of these is what makes the prompt describe the user as an administrator.</summary>
     private static readonly HashSet<string> AdministrationToolNames = new(StringComparer.Ordinal)
     {
-        "find_employee", "find_wage_types", "get_employee_basic_pay", "prepare_basic_pay_change", "prepare_one_time_payment"
+        "find_employee", "find_wage_types", "get_employee_basic_pay", "get_employee_leave_balances", "prepare_basic_pay_change", "prepare_one_time_payment",
+        "get_employee_job_details", "get_employee_punches", "prepare_manager_change", "prepare_contract_change",
+        "prepare_org_assignment_change", "prepare_personal_data_change", "prepare_duty_change"
     };
 
     private static readonly Regex Whitespace = new(@"\s+", RegexOptions.Compiled);
@@ -111,7 +113,8 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
         AiMessage userMessage;
         List<AiChatMessage> history;
         List<IAiAgentTool> tools;
-        string systemPrompt;
+        string rules;
+        string details;
 
         using (var uow = _unitOfWorkManager.Begin())
         {
@@ -137,14 +140,16 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
             conversation.LastMessageTime = Clock.Now;
 
             tools = await _toolRegistry.GetAvailableToolsAsync();
-            systemPrompt = AiAgentSystemPrompt.Build(await BuildPromptContextAsync(tools));
+            var promptContext = await BuildPromptContextAsync(tools);
+            rules = AiAgentSystemPrompt.BuildRules(promptContext.IsPayAdministrator);
+            details = AiAgentSystemPrompt.BuildDetails(promptContext);
 
             await uow.CompleteAsync();
         }
 
         var toolContext = new AiToolContext { ConversationId = conversationId };
 
-        var reply = await RunModelAsync(systemPrompt, history, text, tools, toolContext);
+        var reply = await RunModelAsync(rules, details, history, text, tools, toolContext);
 
         using (var uow = _unitOfWorkManager.Begin())
         {
@@ -327,13 +332,17 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
     /// Runs the model until it replies in words, executing the tools it asks for along the way.
     /// </summary>
     private async Task<string> RunModelAsync(
-        string systemPrompt, List<AiChatMessage> history, string text, List<IAiAgentTool> tools, AiToolContext toolContext)
+        string rules, string details, List<AiChatMessage> history, string text, List<IAiAgentTool> tools, AiToolContext toolContext)
     {
         var definitions = tools.Select(AiAgentToolRegistry.ToDefinition).ToList();
 
+        // Order matters for speed, see AiAgentSystemPrompt: identical rules first (the host renders the tools
+        // straight after them), then this conversation, then the per-user details, then the question. Each request
+        // then starts with the longest possible stretch the model host has already read.
         var request = new AiChatRequest();
-        request.Messages.Add(AiChatMessage.System(systemPrompt));
+        request.Messages.Add(AiChatMessage.System(rules));
         request.Messages.AddRange(history);
+        request.Messages.Add(AiChatMessage.System(details));
         request.Messages.Add(AiChatMessage.User(text));
 
         for (var call = 1; call <= AiAgentConsts.MaxModelCallsPerMessage; call++)

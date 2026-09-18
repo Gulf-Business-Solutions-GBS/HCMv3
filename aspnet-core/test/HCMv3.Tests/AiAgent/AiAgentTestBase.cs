@@ -17,8 +17,8 @@ public abstract class AiAgentTestBase : AppTestBase
     protected readonly FakeAiChatClient Model = new();
 
     /// <summary>
-    /// The model's limits, as the server is configured: the hcmv3-qwen3-4b variant with 8192 tokens. Tests that
-    /// are about the limit change these. (The code's own default, 4096, is too small for an administrator's ten
+    /// The model's limits, as the server is configured: the hcmv3-qwen3-4b variant with 12288 tokens. Tests that
+    /// are about the limit change these. (The code's own default, 4096, is too small for an administrator's 18
     /// tools -- which is exactly why the server install sets up the larger variant.)
     /// </summary>
     protected readonly TestModelLimits ModelLimits;
@@ -38,7 +38,7 @@ public abstract class AiAgentTestBase : AppTestBase
         {
         }
 
-        public int Context { get; set; } = 8192;
+        public int Context { get; set; } = 12288;
 
         public int Reserved { get; set; } = 1024;
 

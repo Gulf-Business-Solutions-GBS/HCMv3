@@ -92,7 +92,7 @@ New-Item -ItemType Directory -Force -Path $models | Out-Null
 # or session starts Ollama, and are visible in one file.
 #   OLLAMA_HOST            127.0.0.1 only: no other computer can reach the model.
 #   OLLAMA_MODELS          a fixed folder, not the SYSTEM account's profile.
-#   OLLAMA_CONTEXT_LENGTH  8192. The default (4096) is smaller than a long administrator conversation with
+#   OLLAMA_CONTEXT_LENGTH  12288. The default (4096) is smaller than a long administrator conversation with
 #                          all its tool definitions, and Ollama then drops the START of the request -- the
 #                          system prompt with the assistant's rules -- without any error.
 #   OLLAMA_NUM_PARALLEL    1: one answer at a time; others queue. Keeps memory predictable on a small server.
@@ -103,7 +103,7 @@ $startScript = Join-Path $InstallDir "start-ollama.cmd"
 @echo off
 set OLLAMA_HOST=127.0.0.1:11434
 set OLLAMA_MODELS=$models
-set OLLAMA_CONTEXT_LENGTH=8192
+set OLLAMA_CONTEXT_LENGTH=12288
 set OLLAMA_NUM_PARALLEL=1
 set OLLAMA_MAX_LOADED_MODELS=1
 set OLLAMA_KEEP_ALIVE=24h
@@ -135,14 +135,14 @@ $env:OLLAMA_HOST = "127.0.0.1:11434"
 if ($LASTEXITCODE -ne 0) { throw "Model download failed." }
 
 # A named variant with the context window BUILT IN, so the size the API is configured for (AiAgent:ContextTokens
-# = 8192) is guaranteed by the model itself, not by an environment variable someone could lose. The API trims
+# = 12288) is guaranteed by the model itself, not by an environment variable someone could lose. The API trims
 # every request to that size; a model that silently held less would drop the rules at the start.
 $variant = "hcmv3-" + ($Model -replace '[:/]', '-')
 $modelfile = Join-Path $InstallDir "Modelfile.$variant"
-"FROM $Model`nPARAMETER num_ctx 8192" | Set-Content -Path $modelfile -Encoding ASCII
+"FROM $Model`nPARAMETER num_ctx 12288" | Set-Content -Path $modelfile -Encoding ASCII
 & $exe create $variant -f $modelfile
 if ($LASTEXITCODE -ne 0) { throw "Could not create the model variant $variant." }
-Write-Host "Created $variant (8192-token context). Set AiAgent:Model to '$variant' and AiAgent:ContextTokens to 8192."
+Write-Host "Created $variant (12288-token context). Set AiAgent:Model to '$variant' and AiAgent:ContextTokens to 12288."
 & $exe list
 
 # ------------------------------------------------------------------ 5. firewall

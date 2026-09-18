@@ -45,7 +45,8 @@ public class AiAgentTenantIsolation_Tests : AiAgentTestBase
         AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails_Edit,
         AppPermissions.Pages_PersonnelAdministration_EmployeeBasicPayDetails_Delete,
         AppPermissions.Pages_PersonnelAdministration_EmployeePayments,
-        AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Create
+        AppPermissions.Pages_PersonnelAdministration_EmployeePayments_Create,
+        AppPermissions.Pages_PersonnelAdministration_EmployeeAbsenceQuotas
     };
 
     private readonly int _tenantA;
@@ -218,6 +219,22 @@ public class AiAgentTenantIsolation_Tests : AiAgentTestBase
             context.Set<AiPendingAction>().IgnoreQueryFilters().Count(a => a.TenantId == _tenantB).ShouldBe(0);
             context.Set<EmployeePayment>().IgnoreQueryFilters().Count(p => p.EmployeeId == _employeeA).ShouldBe(0);
         });
+    }
+
+    [Fact]
+    public async Task Tenant_B_Administrator_Should_Not_See_Tenant_A_Leave_Balances()
+    {
+        // Tenant A's employee 12001 has an annual leave quota; tenant B's administrator holds the Absence Quotas
+        // permission and asks for 12001 by its exact code.
+        CreateQuota(_employeeA, UsingDbContext(context => context.Set<AbsenceType>().First(t => t.TenantId == _tenantA).Id), accrued: 30);
+        LogInAsTenantBAdministrator();
+        var start = Model.Requests.Count;
+
+        Model.CallsTool("get_employee_leave_balances", @"{""employeeCode"":""12001""}").RepliesWith("nothing");
+        await Service.SendMessage(new SendAiMessageInput { Message = "what is the leave balance of 12001" });
+
+        ToolResult(start + 1).ShouldContain("employee_not_found");
+        ToolResult(start + 1).ShouldNotContain("Annual Leave");
     }
 
     [Fact]

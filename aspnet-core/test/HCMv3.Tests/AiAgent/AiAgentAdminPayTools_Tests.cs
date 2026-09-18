@@ -378,7 +378,7 @@ public class AiAgentAdminPayTools_Tests : AiAgentTestBase
         request.Tools.Select(t => t.Name).ShouldNotContain("prepare_basic_pay_change");
         request.Tools.Select(t => t.Name).ShouldNotContain("prepare_one_time_payment");
         request.Tools.Select(t => t.Name).ShouldNotContain("find_employee");
-        request.Messages[0].Content.ShouldContain("Refuse any request about other employees");
+        request.Messages[0].Content.ShouldContain("Refuse any other request about other employees");
     }
 
     // ------------------------------------------------------------------ helpers

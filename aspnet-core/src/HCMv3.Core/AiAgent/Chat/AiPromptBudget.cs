@@ -108,17 +108,33 @@ public static class AiPromptBudget
         }
 
         // 1. Oldest earlier conversation first. A history left starting with an assistant reply is an answer to a
-        //    question that is no longer there, so that goes too.
-        while (total > budgetTokens && currentQuestion > systemCount)
+        //    question that is no longer there, so that goes too. System messages anywhere before the question --
+        //    the rules, and the per-user details placed just before it -- are never candidates.
+        int OldestHistoryIndex()
+        {
+            for (var i = systemCount; i < currentQuestion; i++)
+            {
+                if (messages[i].Role != AiChatMessage.SystemRole)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        var oldest = OldestHistoryIndex();
+        while (total > budgetTokens && oldest >= 0)
         {
             do
             {
-                total -= Estimate(messages[systemCount]);
-                messages.RemoveAt(systemCount);
+                total -= Estimate(messages[oldest]);
+                messages.RemoveAt(oldest);
                 currentQuestion--;
                 report.HistoryMessagesDropped++;
+                oldest = OldestHistoryIndex();
             }
-            while (currentQuestion > systemCount && messages[systemCount].Role != AiChatMessage.UserRole);
+            while (oldest >= 0 && messages[oldest].Role != AiChatMessage.UserRole);
         }
 
         // 2. Then the results of tools already called for this question, oldest first -- shortened, not removed,

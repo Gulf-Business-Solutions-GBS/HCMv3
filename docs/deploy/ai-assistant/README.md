@@ -48,7 +48,7 @@ tokens) will not fit: the assistant refuses rather than send it without its rule
 "AiAgent": {
   "BaseUrl": "http://localhost:11434/v1",
   "Model": "hcmv3-qwen3-4b",
-  "ContextTokens": 8192,
+  "ContextTokens": 12288,
   "ReservedOutputTokens": 1024,
   "TimeoutSeconds": 900,
   "AllowExternalModelHost": false
@@ -58,7 +58,7 @@ tokens) will not fit: the assistant refuses rather than send it without its rule
 - **`AllowExternalModelHost` must stay `false`.** It is the switch that would let the API send employee data
   to an AI service outside the server. Do not change it to "make it work".
 - **`Model` and `ContextTokens` go together.** `hcmv3-qwen3-4b` is the variant the install script creates with
-  an 8,192-token limit built in. The API trims every request to `ContextTokens` (oldest conversation first,
+  a 12,288-token limit built in. The API trims every request to `ContextTokens` (oldest conversation first,
   never the assistant's rules) — so it must never be set higher than the model really holds, or the model
   would silently drop the start of the request, where the rules are. If `Model` is ever set back to plain
   `qwen3:4b`, set `ContextTokens` to 4096 (or remove it: 4096 is the default).
@@ -88,7 +88,7 @@ decision to take before going further, not something to force through.
 
 What it does, and the settings it uses, are commented at the top of the script. In short: installs to
 `C:\Ollama`, starts at boot as SYSTEM, listens on 127.0.0.1 only, holds the model in memory for 24 hours after
-use, downloads the model and creates the `hcmv3-qwen3-4b` variant with an 8,192-token limit built in, blocks Ollama from the internet, and runs
+use, downloads the model and creates the `hcmv3-qwen3-4b` variant with a 12,288-token limit built in, blocks Ollama from the internet, and runs
 `test-ollama.ps1`, which should end with **PASS**.
 
 ## 6. After deploying
@@ -109,7 +109,7 @@ use, downloads the model and creates the `hcmv3-qwen3-4b` variant with an 8,192-
 | API log: "outside this server and its private network" | `AiAgent:BaseUrl` was changed to another address. Put it back to `http://localhost:11434/v1`. |
 | "took too long to answer" | The server is too slow for the model or busy. Raise `TimeoutSeconds`, or consider a bigger server / GPU. |
 | "…set up with too little room for everything it needs" | `AiAgent:Model` / `AiAgent:ContextTokens` are missing or still the plain 4,096 model. Set them as in section 3, restart the site. |
-| "This message is too long for the assistant" | The question plus the assistant's rules and tools do not fit `ContextTokens`. Start a new chat. Check `Model` is `hcmv3-qwen3-4b` and `ContextTokens` is 8192. |
+| "This message is too long for the assistant" | The question plus the assistant's rules and tools do not fit `ContextTokens`. Start a new chat. Check `Model` is `hcmv3-qwen3-4b` and `ContextTokens` is 12288. |
 | API log: "request trimmed to fit the model" | Normal in long conversations: the oldest messages were left out of what was sent. The rules never are. |
 | Menu item missing | The user lacks the AI Assistant permission. Sign out and in after granting it. |
 
@@ -132,7 +132,7 @@ the migrator and before telling users about the new menu item.
          "AiAgent": {
            "BaseUrl": "http://localhost:11434/v1",
            "Model": "hcmv3-qwen3-4b",
-           "ContextTokens": 8192,
+           "ContextTokens": 12288,
            "ReservedOutputTokens": 1024,
            "TimeoutSeconds": 900,
            "AllowExternalModelHost": false
