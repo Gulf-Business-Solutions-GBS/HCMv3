@@ -318,8 +318,15 @@ public class AiPayLookup : ITransientDependency
         return words;
     }
 
+    /// <summary>
+    /// Lower case, single spaces, and underscores/hyphens read as spaces: the model sometimes writes a name the
+    /// way it would write a tool argument ("car_allowance" -- seen on the dev laptop), and that must still be
+    /// the exact name, not a near match that ties with "Car Allowance(NP)".
+    /// </summary>
     private static string Normalise(string value) =>
-        string.IsNullOrWhiteSpace(value) ? string.Empty : string.Join(' ', value.Trim().ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        string.IsNullOrWhiteSpace(value)
+            ? string.Empty
+            : string.Join(' ', value.Trim().ToLowerInvariant().Replace('_', ' ').Replace('-', ' ').Split(' ', StringSplitOptions.RemoveEmptyEntries));
 
     /// <summary>
     /// Either contains the other, so "car" finds "Car Allowance" and "traffic violation" finds "Traffic

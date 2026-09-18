@@ -89,6 +89,15 @@ public class AiPayLookup_Tests : AppTestBase
         (await Resolve("Car Allowance(NP)", AiWageTypeUsage.BasicPay)).Match.Id.ShouldBe(_carAllowanceNp);
     }
 
+    [Theory]
+    [InlineData("car_allowance")]
+    [InlineData("Car-Allowance")]
+    public async Task A_Name_Written_Like_An_Identifier_Should_Still_Be_Exact(string text)
+    {
+        // Qwen3-4B on the dev laptop sent "car_allowance" for "car allowance".
+        (await Resolve(text, AiWageTypeUsage.BasicPay)).Match.Id.ShouldBe(_carAllowance);
+    }
+
     [Fact]
     public async Task A_Short_Form_In_The_Name_Should_Still_Match()
     {
