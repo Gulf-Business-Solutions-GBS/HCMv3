@@ -41,7 +41,7 @@ Take the usual backup first.
 ## 3. API settings — `api\appsettings.Production.json`
 
 Add this section. **It is required** — without `Model` and `ContextTokens` the assistant assumes the plain
-model's 4,096-token limit, and an administrator's request (the assistant's rules plus ten tools, about 3,800
+model's 4,096-token limit, and an administrator's request (the assistant's rules plus 18 tools, about 5,900
 tokens) will not fit: the assistant refuses rather than send it without its rules.
 
 ```json
