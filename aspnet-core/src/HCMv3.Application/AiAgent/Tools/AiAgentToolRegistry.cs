@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Dependency;
+using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using Abp.UI;
 using Castle.Core.Logging;
@@ -37,13 +38,15 @@ public class AiAgentToolRegistry : ITransientDependency
 
     private readonly IReadOnlyList<IAiAgentTool> _tools;
     private readonly IPermissionChecker _permissionChecker;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public ILogger Logger { get; set; } = NullLogger.Instance;
 
-    public AiAgentToolRegistry(IEnumerable<IAiAgentTool> tools, IPermissionChecker permissionChecker)
+    public AiAgentToolRegistry(IEnumerable<IAiAgentTool> tools, IPermissionChecker permissionChecker, IUnitOfWorkManager unitOfWorkManager)
     {
         _tools = tools.OrderBy(t => t.Name, StringComparer.Ordinal).ToList();
         _permissionChecker = permissionChecker;
+        _unitOfWorkManager = unitOfWorkManager;
 
         var duplicate = _tools.GroupBy(t => t.Name, StringComparer.Ordinal).FirstOrDefault(g => g.Count() > 1);
         if (duplicate != null)
@@ -93,7 +96,18 @@ public class AiAgentToolRegistry : ITransientDependency
         try
         {
             var arguments = AiToolArguments.Parse(call.ArgumentsJson);
-            var result = await tool.ExecuteAsync(arguments, context);
+            object result;
+
+            // Each tool call gets its own short unit of work. The conversation deliberately holds none while the
+            // model thinks (that can take minutes), and not every service a tool calls opens one for itself -- the
+            // admin and self-service lookups did not, and failed with "Value cannot be null (Parameter 'unitOfWork')" on the
+            // server. Opening it here, around the tool only, keeps nothing open during the model's wait.
+            using (var uow = _unitOfWorkManager.Begin())
+            {
+                result = await tool.ExecuteAsync(arguments, context);
+                await uow.CompleteAsync();
+            }
+
             return Truncate(JsonSerializer.Serialize(result, ResultJsonOptions));
         }
         catch (AiToolArgumentException ex)

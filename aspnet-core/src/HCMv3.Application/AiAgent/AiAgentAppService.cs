@@ -91,8 +91,8 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
     /// <b>No unit of work around the whole method, deliberately.</b> A model reply can take minutes on a
     /// CPU-only host. Holding one transaction open across that would keep the conversation rows locked and a
     /// pooled connection checked out for the entire wait, and one slow answer would degrade everyone's
-    /// requests. Instead each database step is its own short unit of work, and each tool call opens its own
-    /// through the service it calls -- which also means a tool that fails rolls back only itself.
+    /// requests. Instead each database step is its own short unit of work, and the tool registry opens one around
+    /// each tool call -- which also means a tool that fails rolls back only itself.
     /// </para>
     /// <para>
     /// The user's message is saved BEFORE the model is called, so a model outage loses the reply, never the
@@ -231,8 +231,8 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
     /// <list type="number">
     /// <item><description>CLAIM the action with one conditional update (Pending -&gt; Processing). Two
     /// concurrent confirmations cannot both change the row, so a double-click submits once.</description></item>
-    /// <item><description>RUN the handler with no surrounding unit of work. The leave service opens its own;
-    /// if it refuses, only its work rolls back.</description></item>
+    /// <item><description>RUN the handler in its own unit of work, separate from the claim and the record, so a
+    /// refusal rolls back only the handler's work.</description></item>
     /// <item><description>RECORD the outcome on the action and as a line in the conversation, so the next
     /// question the user asks is answered knowing what happened.</description></item>
     /// </list>
@@ -276,7 +276,14 @@ public class AiAgentAppService : HCMv3AppServiceBase, IAiAgentAppService
 
         try
         {
-            message = await _actionHandlers.Get(action.ActionType).ExecuteAsync(action.PayloadJson);
+            // The handler's own unit of work: all of its saves or none of them, and never relying on the service it
+            // calls to open one (on the server they did not -- see AiAgentToolRegistry.ExecuteAsync).
+            using (var uow = _unitOfWorkManager.Begin())
+            {
+                message = await _actionHandlers.Get(action.ActionType).ExecuteAsync(action.PayloadJson);
+                await uow.CompleteAsync();
+            }
+
             outcome = AiPendingActionStatus.Completed;
         }
         catch (UserFriendlyException ex)

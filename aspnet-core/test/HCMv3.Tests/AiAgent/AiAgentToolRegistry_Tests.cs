@@ -73,6 +73,37 @@ public class AiAgentToolRegistry_Tests : AppTestBase
     }
 
     [Fact]
+    public async Task A_Tool_Should_Run_Inside_A_Unit_Of_Work_Even_When_The_Caller_Has_None()
+    {
+        // The conversation holds no unit of work while the model thinks. A tool calling a service that does
+        // not open its own (the self-service lookups) failed on the server with "Parameter 'unitOfWork'".
+        var registry = Resolve<AiAgentToolRegistry>();
+        var probe = new UnitOfWorkProbeTool(Resolve<Abp.Domain.Uow.IUnitOfWorkManager>());
+
+        var result = await registry.ExecuteAsync(new AiToolCall { Id = "c1", Name = probe.Name, ArgumentsJson = "{}" }, new[] { probe }, new AiToolContext());
+
+        result.ShouldContain(@"""hadUnitOfWork"":true");
+    }
+
+    private class UnitOfWorkProbeTool : IAiAgentTool
+    {
+        private readonly Abp.Domain.Uow.IUnitOfWorkManager _unitOfWorkManager;
+
+        public UnitOfWorkProbeTool(Abp.Domain.Uow.IUnitOfWorkManager unitOfWorkManager) => _unitOfWorkManager = unitOfWorkManager;
+
+        public string Name => "probe";
+
+        public string Description => "Test only: reports whether a unit of work is active while it runs.";
+
+        public string RequiredPermission => null;
+
+        public System.Text.Json.Nodes.JsonObject BuildParameters() => new() { ["type"] = "object" };
+
+        public Task<object> ExecuteAsync(AiToolArguments arguments, AiToolContext context) =>
+            Task.FromResult<object>(new { hadUnitOfWork = _unitOfWorkManager.Current != null });
+    }
+
+    [Fact]
     public void The_Rules_Should_Carry_The_Language_And_Safety_Rules_And_The_Details_The_Date_And_Name()
     {
         var rules = AiAgentSystemPrompt.BuildRules(isPayAdministrator: false);
