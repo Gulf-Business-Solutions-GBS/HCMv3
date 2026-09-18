@@ -11,6 +11,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.MyDashboardServiceProxy,
     ApiServiceProxies.MyScreenShortcutsServiceProxy,
     ApiServiceProxies.AuditLogServiceProxy,
+    ApiServiceProxies.AiAgentServiceProxy,
     ApiServiceProxies.EssSessionServiceProxy,
     ApiServiceProxies.EssLookupServiceProxy,
     ApiServiceProxies.WorkflowActivityServiceProxy,

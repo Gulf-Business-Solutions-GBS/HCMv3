@@ -27,7 +27,7 @@ import {
     SendAiMessageInput,
 } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
-import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header.component';
+import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
 
 /** A message on screen. `failed` marks a question the assistant never answered, so it can be asked again. */
 interface ChatLine {

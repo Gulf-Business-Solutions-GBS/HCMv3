@@ -4945,6 +4945,396 @@ export class ActionStatusesServiceProxy {
 }
 
 @Injectable()
+export class AiAgentServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getStartupInfo(): Observable<AiAgentStartupDto> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/GetStartupInfo";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStartupInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStartupInfo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AiAgentStartupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AiAgentStartupDto>;
+        }));
+    }
+
+    protected processGetStartupInfo(response: HttpResponseBase): Observable<AiAgentStartupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AiAgentStartupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    sendMessage(body?: SendAiMessageInput | undefined): Observable<SendAiMessageOutput> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/SendMessage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendMessage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendMessage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SendAiMessageOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SendAiMessageOutput>;
+        }));
+    }
+
+    protected processSendMessage(response: HttpResponseBase): Observable<SendAiMessageOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SendAiMessageOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getMyConversations(): Observable<ListResultDtoOfAiConversationListDto> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/GetMyConversations";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyConversations(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyConversations(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfAiConversationListDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfAiConversationListDto>;
+        }));
+    }
+
+    protected processGetMyConversations(response: HttpResponseBase): Observable<ListResultDtoOfAiConversationListDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfAiConversationListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getConversation(id?: number | undefined): Observable<AiConversationDto> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/GetConversation?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetConversation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetConversation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AiConversationDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AiConversationDto>;
+        }));
+    }
+
+    protected processGetConversation(response: HttpResponseBase): Observable<AiConversationDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AiConversationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteConversation(id?: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/DeleteConversation?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteConversation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteConversation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteConversation(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    confirmAction(body?: EntityDto | undefined): Observable<AiActionResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/ConfirmAction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmAction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmAction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AiActionResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AiActionResultDto>;
+        }));
+    }
+
+    protected processConfirmAction(response: HttpResponseBase): Observable<AiActionResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AiActionResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    cancelAction(body?: EntityDto | undefined): Observable<AiActionResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/AiAgent/CancelAction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelAction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelAction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AiActionResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AiActionResultDto>;
+        }));
+    }
+
+    protected processCancelAction(response: HttpResponseBase): Observable<AiActionResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AiActionResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AirTicketQuotaBalanceReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -162345,6 +162735,369 @@ export enum AdvancePaymentReminderDateType {
     LeavePaymentDate = 1,
 }
 
+export class AiActionDetailDto implements IAiActionDetailDto {
+    label!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: IAiActionDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): AiActionDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiActionDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["value"] = this.value;
+        return data;
+    }
+}
+
+export interface IAiActionDetailDto {
+    label: string | undefined;
+    value: string | undefined;
+}
+
+export class AiActionResultDto implements IAiActionResultDto {
+    action!: AiPendingActionDto;
+    message!: AiMessageDto;
+
+    constructor(data?: IAiActionResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.action = _data["action"] ? AiPendingActionDto.fromJS(_data["action"]) : undefined as any;
+            this.message = _data["message"] ? AiMessageDto.fromJS(_data["message"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): AiActionResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiActionResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["action"] = this.action ? this.action.toJSON() : undefined as any;
+        data["message"] = this.message ? this.message.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IAiActionResultDto {
+    action: AiPendingActionDto;
+    message: AiMessageDto;
+}
+
+export class AiAgentStartupDto implements IAiAgentStartupDto {
+    isLinkedToEmployee!: boolean;
+    firstNameEn!: string | undefined;
+    firstNameAr!: string | undefined;
+    canUseLeave!: boolean;
+    canViewTeam!: boolean;
+    canManagePay!: boolean;
+
+    constructor(data?: IAiAgentStartupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isLinkedToEmployee = _data["isLinkedToEmployee"];
+            this.firstNameEn = _data["firstNameEn"];
+            this.firstNameAr = _data["firstNameAr"];
+            this.canUseLeave = _data["canUseLeave"];
+            this.canViewTeam = _data["canViewTeam"];
+            this.canManagePay = _data["canManagePay"];
+        }
+    }
+
+    static fromJS(data: any): AiAgentStartupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiAgentStartupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isLinkedToEmployee"] = this.isLinkedToEmployee;
+        data["firstNameEn"] = this.firstNameEn;
+        data["firstNameAr"] = this.firstNameAr;
+        data["canUseLeave"] = this.canUseLeave;
+        data["canViewTeam"] = this.canViewTeam;
+        data["canManagePay"] = this.canManagePay;
+        return data;
+    }
+}
+
+export interface IAiAgentStartupDto {
+    isLinkedToEmployee: boolean;
+    firstNameEn: string | undefined;
+    firstNameAr: string | undefined;
+    canUseLeave: boolean;
+    canViewTeam: boolean;
+    canManagePay: boolean;
+}
+
+export class AiConversationDto implements IAiConversationDto {
+    id!: number;
+    title!: string | undefined;
+    messages!: AiMessageDto[] | undefined;
+
+    constructor(data?: IAiConversationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            if (Array.isArray(_data["messages"])) {
+                this.messages = [] as any;
+                for (let item of _data["messages"])
+                    this.messages!.push(AiMessageDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AiConversationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiConversationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        if (Array.isArray(this.messages)) {
+            data["messages"] = [];
+            for (let item of this.messages)
+                data["messages"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IAiConversationDto {
+    id: number;
+    title: string | undefined;
+    messages: AiMessageDto[] | undefined;
+}
+
+export class AiConversationListDto implements IAiConversationListDto {
+    id!: number;
+    title!: string | undefined;
+    lastMessageTime!: DateTime;
+
+    constructor(data?: IAiConversationListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.lastMessageTime = _data["lastMessageTime"] ? DateTime.fromISO(_data["lastMessageTime"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): AiConversationListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiConversationListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["lastMessageTime"] = this.lastMessageTime ? this.lastMessageTime.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IAiConversationListDto {
+    id: number;
+    title: string | undefined;
+    lastMessageTime: DateTime;
+}
+
+export class AiMessageDto implements IAiMessageDto {
+    id!: number;
+    role!: AiMessageRole;
+    content!: string | undefined;
+    creationTime!: DateTime;
+    pendingAction!: AiPendingActionDto;
+
+    constructor(data?: IAiMessageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.role = _data["role"];
+            this.content = _data["content"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : undefined as any;
+            this.pendingAction = _data["pendingAction"] ? AiPendingActionDto.fromJS(_data["pendingAction"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): AiMessageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiMessageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["role"] = this.role;
+        data["content"] = this.content;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : undefined as any;
+        data["pendingAction"] = this.pendingAction ? this.pendingAction.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface IAiMessageDto {
+    id: number;
+    role: AiMessageRole;
+    content: string | undefined;
+    creationTime: DateTime;
+    pendingAction: AiPendingActionDto;
+}
+
+export enum AiMessageRole {
+    User = 0,
+    Assistant = 1,
+    Tool = 2,
+}
+
+export class AiPendingActionDto implements IAiPendingActionDto {
+    id!: number;
+    actionType!: string | undefined;
+    status!: AiPendingActionStatus;
+    title!: string | undefined;
+    details!: AiActionDetailDto[] | undefined;
+    resultMessage!: string | undefined;
+
+    constructor(data?: IAiPendingActionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.actionType = _data["actionType"];
+            this.status = _data["status"];
+            this.title = _data["title"];
+            if (Array.isArray(_data["details"])) {
+                this.details = [] as any;
+                for (let item of _data["details"])
+                    this.details!.push(AiActionDetailDto.fromJS(item));
+            }
+            this.resultMessage = _data["resultMessage"];
+        }
+    }
+
+    static fromJS(data: any): AiPendingActionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AiPendingActionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["actionType"] = this.actionType;
+        data["status"] = this.status;
+        data["title"] = this.title;
+        if (Array.isArray(this.details)) {
+            data["details"] = [];
+            for (let item of this.details)
+                data["details"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["resultMessage"] = this.resultMessage;
+        return data;
+    }
+}
+
+export interface IAiPendingActionDto {
+    id: number;
+    actionType: string | undefined;
+    status: AiPendingActionStatus;
+    title: string | undefined;
+    details: AiActionDetailDto[] | undefined;
+    resultMessage: string | undefined;
+}
+
+export enum AiPendingActionStatus {
+    Pending = 0,
+    Completed = 1,
+    Cancelled = 2,
+    Failed = 3,
+    Expired = 4,
+    Processing = 5,
+}
+
 export enum AirTicketPayType {
     FareAmount = 0,
     FixAmount = 1,
@@ -270358,6 +271111,50 @@ export interface ILinkedUserDto {
     username: string | undefined;
 }
 
+export class ListResultDtoOfAiConversationListDto implements IListResultDtoOfAiConversationListDto {
+    items!: AiConversationListDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfAiConversationListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AiConversationListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfAiConversationListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfAiConversationListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfAiConversationListDto {
+    items: AiConversationListDto[] | undefined;
+}
+
 export class ListResultDtoOfApiDictionaryEntitySummaryDto implements IListResultDtoOfApiDictionaryEntitySummaryDto {
     items!: ApiDictionaryEntitySummaryDto[] | undefined;
 
@@ -323611,6 +324408,94 @@ export interface ISelfServiceSettingsListDto {
     isPassportWithdrawalRequired: boolean;
     passportWithdrawalSubmissionStep: number;
     isWithdrawalReasonMandatory: boolean;
+}
+
+export class SendAiMessageInput implements ISendAiMessageInput {
+    conversationId!: number | undefined;
+    message!: string;
+
+    constructor(data?: ISendAiMessageInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.conversationId = _data["conversationId"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): SendAiMessageInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SendAiMessageInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["conversationId"] = this.conversationId;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface ISendAiMessageInput {
+    conversationId: number | undefined;
+    message: string;
+}
+
+export class SendAiMessageOutput implements ISendAiMessageOutput {
+    conversationId!: number;
+    conversationTitle!: string | undefined;
+    userMessage!: AiMessageDto;
+    assistantMessage!: AiMessageDto;
+
+    constructor(data?: ISendAiMessageOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.conversationId = _data["conversationId"];
+            this.conversationTitle = _data["conversationTitle"];
+            this.userMessage = _data["userMessage"] ? AiMessageDto.fromJS(_data["userMessage"]) : undefined as any;
+            this.assistantMessage = _data["assistantMessage"] ? AiMessageDto.fromJS(_data["assistantMessage"]) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): SendAiMessageOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SendAiMessageOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["conversationId"] = this.conversationId;
+        data["conversationTitle"] = this.conversationTitle;
+        data["userMessage"] = this.userMessage ? this.userMessage.toJSON() : undefined as any;
+        data["assistantMessage"] = this.assistantMessage ? this.assistantMessage.toJSON() : undefined as any;
+        return data;
+    }
+}
+
+export interface ISendAiMessageOutput {
+    conversationId: number;
+    conversationTitle: string | undefined;
+    userMessage: AiMessageDto;
+    assistantMessage: AiMessageDto;
 }
 
 export class SendBackRequestInput implements ISendBackRequestInput {
