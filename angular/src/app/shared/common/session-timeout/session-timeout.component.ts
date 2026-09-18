@@ -22,9 +22,18 @@ export class SessionTimeoutComponent extends AppComponentBase implements AfterVi
     private notifierIsOpened = false;
     private subscriptions: Subscription[] = [];
 
+    /**
+     * Raised by a page doing work the user started and is waiting on -- the AI assistant answering a question,
+     * which can take minutes on a server without a GPU. Counts as activity only while that work is running, so a
+     * screen left alone still locks as usual once it finishes.
+     */
+    static readonly keepAliveEvent = 'app.sessionTimeout.keepAlive';
+    private readonly onKeepAlive = () => this.setUserActivity();
+
     destroy$ = new Subject<void>();
 
     ngAfterViewInit() {
+        abp.event.on(SessionTimeoutComponent.keepAliveEvent, this.onKeepAlive);
         this.bindActions();
         this.writeToStorage(); // initialize store
         this.subscriptions.push(
@@ -35,6 +44,7 @@ export class SessionTimeoutComponent extends AppComponentBase implements AfterVi
     }
 
     ngOnDestroy(): void {
+        abp.event.off(SessionTimeoutComponent.keepAliveEvent, this.onKeepAlive);
         this.destroy$.next();
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }

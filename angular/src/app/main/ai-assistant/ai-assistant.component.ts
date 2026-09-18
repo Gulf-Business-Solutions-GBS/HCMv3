@@ -28,6 +28,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { SubHeaderComponent } from '../../shared/common/sub-header/sub-header.component';
+import { SessionTimeoutComponent } from '../../shared/common/session-timeout/session-timeout.component';
 
 /** A message on screen. `failed` marks a question the assistant never answered, so it can be asked again. */
 interface ChatLine {
@@ -364,7 +365,21 @@ export class AiAssistantComponent extends AppComponentBase implements OnInit, On
     private startWaitTimer(): void {
         this.stopWaitTimer();
         this.waitingSeconds.set(0);
-        this.waitTimer = setInterval(() => this.waitingSeconds.update((s) => s + 1), 1000);
+        this.keepSessionAlive();
+        this.waitTimer = setInterval(() => {
+            this.waitingSeconds.update((s) => s + 1);
+
+            // The user is waiting on their own question, not idle. Without this the session-timeout lock fires
+            // part-way through a slow answer (seen on the Webtropia server) and signs them out. Only while the
+            // request is in flight -- once the answer arrives, an unattended screen locks as normal.
+            if (this.waitingSeconds() % 20 === 0) {
+                this.keepSessionAlive();
+            }
+        }, 1000);
+    }
+
+    private keepSessionAlive(): void {
+        abp.event.trigger(SessionTimeoutComponent.keepAliveEvent);
     }
 
     private stopWaitTimer(): void {
