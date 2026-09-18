@@ -131,8 +131,20 @@ Write-Host "Listening on 127.0.0.1:11434 only."
 # ------------------------------------------------------------------ 4. model
 Step "4. Downloading $Model (the only internet access Ollama needs)"
 $env:OLLAMA_HOST = "127.0.0.1:11434"
-& $exe pull $Model
-if ($LASTEXITCODE -ne 0) { throw "Model download failed." }
+# Skip the download when the model is already here. On a re-run step 5 has already blocked Ollama from the
+# internet, so pulling again fails with "access a socket in a way forbidden" even though nothing is missing.
+# "ollama show" reads the local copy only; it needs no network.
+& $exe show $Model *> $null
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "$Model is already downloaded - skipping the download."
+} else {
+    & $exe pull $Model
+    if ($LASTEXITCODE -ne 0) {
+        throw "Model download failed. If the 'HCMv3 AI - block internet' firewall rules already exist, allow them " +
+              "for the download: Disable-NetFirewallRule -DisplayName 'HCMv3 AI - block internet*', re-run this " +
+              "script, then Enable-NetFirewallRule -DisplayName 'HCMv3 AI - block internet*'."
+    }
+}
 
 # A named variant with the context window BUILT IN, so the size the API is configured for (AiAgent:ContextTokens
 # = 12288) is guaranteed by the model itself, not by an environment variable someone could lose. The API trims
@@ -153,7 +165,9 @@ foreach ($program in @($exe, (Join-Path $InstallDir "ollama app.exe"))) {
         New-NetFirewallRule -DisplayName $name -Direction Outbound -Action Block -Program $program -Profile Any | Out-Null
         Write-Host "Created: $name"
     } else {
-        Write-Host "Already present: $name"
+        # Present is not enough: it may have been disabled for a download. Make sure it is ON.
+        Enable-NetFirewallRule -DisplayName $name
+        Write-Host "Already present, made sure it is on: $name"
     }
 }
 # Loopback traffic (the app calling 127.0.0.1:11434) is not subject to these rules.
