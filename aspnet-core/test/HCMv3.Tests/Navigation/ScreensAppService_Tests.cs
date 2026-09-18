@@ -259,7 +259,7 @@ public class ScreensAppService_Tests : AppTestBase
     {
         var results = await Task.WhenAll(_appService.GetNavigationBootstrap(), _appService.GetNavigationBootstrap());
 
-        results.ShouldAllBe(r => r.Screens.Count > 0);
+        results.ShouldAllBe(r => r.Screens.Length > 0);
 
         var keys = UsingDbContext(context =>
             context.Screens.Where(s => s.TenantId == AbpSession.TenantId).Select(s => s.ScreenKey).ToList());
