@@ -1,10 +1,10 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal, viewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppNavigationService } from '../app-navigation.service';
 import { ScreenNavigationService } from '../screen-navigation.service';
 import { Router } from '@angular/router';
 
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { AppConsts } from '@shared/AppConsts';
@@ -105,6 +105,11 @@ export class MenuSearchBarComponent extends AppComponentBase {
         return this._appNavigationService.showMenuItem(menuItem);
     }
 
+    private readonly _autoComplete = viewChild(AutoComplete);
+
+    /** Identifies the latest search, so answers to superseded keystrokes can be dropped. */
+    private _searchId = 0;
+
     /**
      * Actions are resolved synchronously and shown at once; people arrive when the server answers and are
      * merged in. Doing it this way means the dropdown never waits on the network to show a screen match,
@@ -116,6 +121,7 @@ export class MenuSearchBarComponent extends AppComponentBase {
         // An empty box -- the field was just focused -- shows what this user opened last instead.
         if (!query) {
             this.showEmptyMessage.set(false);
+            this._searchId++;
             this.showRecent();
             return;
         }
@@ -123,16 +129,31 @@ export class MenuSearchBarComponent extends AppComponentBase {
         this.showEmptyMessage.set(true);
 
         const actions = this.searchActions(query);
-        this.searchResults.set(this.buildGroups(actions, []));
+        const searchId = ++this._searchId;
+
+        // PrimeNG decides whether to open the dropdown on the FIRST suggestions it gets after a search and
+        // ignores later ones for that purpose. Publishing an empty action list here -- "1002" matches no
+        // screen -- made it settle on "nothing", and the people that arrived a moment later never showed
+        // until another keystroke searched again. So an empty action list waits for the people.
+        if (actions.length) {
+            this.searchResults.set(this.buildGroups(actions, []));
+        }
 
         this._globalSearchService.searchPeople(this.buildPeopleInput(query)).subscribe({
             next: (result) => {
+                // A slower answer to an earlier keystroke must not replace the results for what is typed now.
+                if (searchId !== this._searchId) {
+                    return;
+                }
+
                 const people = (result.people ?? []).map((person) => this.toPersonResult(person));
                 this.searchResults.set(this.buildGroups(actions, people));
             },
             // A failed people lookup must not blank the action results that already rendered.
             error: () => {
-                this.searchResults.set(this.buildGroups(actions, []));
+                if (searchId === this._searchId) {
+                    this.searchResults.set(this.buildGroups(actions, []));
+                }
             },
         });
     }
@@ -176,7 +197,7 @@ export class MenuSearchBarComponent extends AppComponentBase {
         event.preventDefault();
         event.stopPropagation();
 
-        this._globalSearchService.clearRecentSearches().subscribe(() => this.searchResults.set([]));
+        this._globalSearchService.clearRecentSearches().subscribe(() => this.setRecent([]));
     }
 
     /**
@@ -191,13 +212,26 @@ export class MenuSearchBarComponent extends AppComponentBase {
                     .map((entry) => this.toRecentResult(entry))
                     .filter((entry): entry is GlobalSearchResult => !!entry);
 
-                this.searchResults.set(
-                    items.length ? [{ label: this.l('RecentSearches'), items, recent: true }] : []
-                );
+                this.setRecent(items);
             },
             // The recent list is a convenience; failing to load it must not show an error in the header.
-            error: () => this.searchResults.set([]),
+            error: () => this.setRecent([]),
         });
+    }
+
+    /**
+     * Shows the recent list, or closes the dropdown when there is nothing left in it. Clearing the list, or
+     * removing its last entry, otherwise left an empty white panel open under the field: PrimeNG only
+     * decides to hide the dropdown right after a search, not when the list empties later.
+     */
+    private setRecent(items: GlobalSearchResult[]): void {
+        if (items.length) {
+            this.searchResults.set([{ label: this.l('RecentSearches'), items, recent: true }]);
+            return;
+        }
+
+        this.searchResults.set([]);
+        this._autoComplete()?.hide();
     }
 
     private toRecentResult(entry: GlobalSearchRecentItemDto): GlobalSearchResult | null {

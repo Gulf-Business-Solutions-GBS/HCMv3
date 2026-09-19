@@ -129,8 +129,14 @@
                     @if (employeeId() && activeComponent()) {
                         <!-- One section is built at a time. The previous screen mounted all 65 grids
                              on load, with their paging state and lookup calls, to show one of them. -->
-                        <ng-container
-                            *ngComponentOutlet="activeComponent(); inputs: sectionInputs()"></ng-container>
+                        <!-- Rebuilt when the employee changes, not just handed the new id. Opening another
+                             person from the header search reuses this page, and the sections load their
+                             data once on creation -- so the old person's details stayed under the new
+                             person's name. Tracking by id gives each employee a fresh section. -->
+                        @for (id of [employeeId()]; track id) {
+                            <ng-container
+                                *ngComponentOutlet="activeComponent(); inputs: sectionInputs()"></ng-container>
+                        }
                     } @else if (isSectionLoading()) {
                         <div class="emp-main-loading">
                             <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
