@@ -1,0 +1,59 @@
+<div [@routerTransition]>
+    <sub-header [title]="'EmployeeGroups' | localize" [description]="'PayrollManagement' | localize">
+        <div role="actions">
+            <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
+                <i class="fa fa-arrow-left btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">{{ 'Back' | localize }}</span>
+            </button>
+            @if (canEdit && employeeGroup()) {
+                <button type="button" class="btn btn-primary float-end me-2" (click)="edit()">
+                    <i class="fa fa-edit btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">{{ 'Edit' | localize }}</span>
+                </button>
+            }
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <record-breadcrumb [steps]="breadcrumb()" />
+
+        <!-- The group's own settings, for reading. Edit opens the same dialog as the list. -->
+        <div class="card card-custom mb-5" [busyIf]="loading()">
+            <div class="card-body">
+                @if (employeeGroup(); as group) {
+                    <h3 class="fw-bold text-gray-900 mb-5">{{ title() }}</h3>
+                    <div class="row g-5">
+                        <div class="col-md-4">
+                            <div class="text-muted fs-7">{{ 'NameAr' | localize }}</div>
+                            <div class="fw-semibold" dir="rtl">{{ group.nameAr }}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted fs-7">{{ 'IndemnityMaxNumber' | localize }}</div>
+                            <div class="fw-semibold">
+                                {{ group.indemnityMaxNumber }}
+                                {{ group.indemnityMaxUnit === 0 ? ('Day' | localize) : ('Month' | localize) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted fs-7">{{ 'IndemnityMaxAccruePercentage' | localize }}</div>
+                            <div class="fw-semibold">{{ group.indemnityMaxAccruePercentage }}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (canSeeSubGroups && employeeGroupId(); as id) {
+            <div class="card card-custom">
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title fw-bold text-gray-900">{{ 'EmployeeSubGroups' | localize }}</h3>
+                </div>
+                <div class="card-body pt-0">
+                    <employee-sub-groups [employeeGroupId]="id" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <createOrEditEmployeeGroupModal #editModal (modalSave)="load(employeeGroupId())" />
+</div>

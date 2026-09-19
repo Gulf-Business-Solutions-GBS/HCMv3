@@ -1820,12 +1820,6 @@ export class AppNavigationService {
                         '/app/admin/employee-groups'
                     ),
                     new AppMenuItem(
-                        'EmployeeSubGroups',
-                        'Pages.PayrollManagement.EmployeeSubGroups',
-                        'flaticon-list-3',
-                        '/app/admin/employee-sub-groups'
-                    ),
-                    new AppMenuItem(
                         'PayrollAreas',
                         'Pages.PayrollManagement.PayrollAreas',
                         'flaticon-list-3',

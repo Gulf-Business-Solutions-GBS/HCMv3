@@ -55,15 +55,7 @@
                             <ng-template #header>
                                 <tr>
                                     <th
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.PayrollManagement.EmployeeGroups.Edit',
-                                                    'Pages.PayrollManagement.EmployeeGroups.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                        style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 120px" pSortableColumn="code">
@@ -92,15 +84,7 @@
                             <ng-template #body let-record="$implicit">
                                 <tr>
                                     <td
-                                        style="width: 130px"
-                                        [hidden]="
-                                            !(
-                                                [
-                                                    'Pages.PayrollManagement.EmployeeGroups.Edit',
-                                                    'Pages.PayrollManagement.EmployeeGroups.Delete',
-                                                ] | permissionAny
-                                            )
-                                        ">
+                                        style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"
@@ -113,7 +97,7 @@
                                         <span pTooltip="{{ record.code }}" class="hide-overflown">{{ record.code }}</span>
                                     </td>
                                     <td style="min-width: 200px">
-                                        <span pTooltip="{{ record.nameEn }}" class="hide-overflown">{{ record.nameEn }}</span>
+                                        <a href="javascript:;" (click)="viewDetails(record)">{{ record.nameEn }}</a>
                                     </td>
                                     <td style="min-width: 200px">
                                         <span pTooltip="{{ record.nameAr }}" class="hide-overflown">{{ record.nameAr }}</span>

@@ -1,7 +1,6 @@
-import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { Component, OnInit, inject, input, viewChild, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     EmployeeSubGroupDto,
@@ -16,17 +15,18 @@ import { Tooltip } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { CreateOrEditEmployeeSubGroupModalComponent } from './create-or-edit-employee-sub-group-modal.component';
-import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
+/**
+ * The sub groups of one employee group. Shown as a tab on the group's page -- a sub group always belongs to
+ * exactly one group, so that is where it is looked for -- and no longer a screen of its own.
+ */
 @Component({
+    selector: 'employee-sub-groups',
     templateUrl: './employee-sub-groups.component.html',
-    animations: [appModuleAnimation()],
     imports: [
-        SubHeaderComponent,
         BusyIfDirective,
         FormsModule,
         NgClass,
@@ -37,12 +37,14 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         CreateOrEditEmployeeSubGroupModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class EmployeeSubGroupsComponent extends AppComponentBase implements OnInit {
     private _service = inject(EmployeeSubGroupsServiceProxy);
     private _router = inject(Router);
+
+    /** The group whose sub groups are listed. */
+    readonly employeeGroupId = input.required<number>();
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeSubGroupModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -67,7 +69,7 @@ export class EmployeeSubGroupsComponent extends AppComponentBase implements OnIn
             .getAll(
                 new GetAllEmployeeSubGroupsInput({
                     filter: this.filterText(),
-                    employeeGroupId: undefined,
+                    employeeGroupId: this.employeeGroupId(),
                     sorting: this.primengTableHelper.getSorting(this.dataTable()),
                     maxResultCount: this.primengTableHelper.getMaxResultCount(this.paginator(), event),
                     skipCount: this.primengTableHelper.getSkipCount(this.paginator(), event),
@@ -87,7 +89,7 @@ export class EmployeeSubGroupsComponent extends AppComponentBase implements OnIn
     }
 
     createEmployeeSubGroup(): void {
-        this.createOrEditModal().show();
+        this.createOrEditModal().show(undefined, this.employeeGroupId());
     }
 
     viewDetails(record: EmployeeSubGroupDto): void {

@@ -1189,12 +1189,18 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.EmployeeGroups' },
                     },
                     {
-                        path: 'employee-sub-groups',
+                        path: 'employee-groups/:id',
                         loadComponent: () =>
-                            import('./admin/payroll-management/employee-sub-groups/employee-sub-groups.component').then(
-                                (m) => m.EmployeeSubGroupsComponent
+                            import('./admin/payroll-management/employee-groups/employee-group-detail/employee-group-detail.component').then(
+                                (m) => m.EmployeeGroupDetailComponent
                             ),
-                        data: { permission: 'Pages.PayrollManagement.EmployeeSubGroups' },
+                        data: { permission: 'Pages.PayrollManagement.EmployeeGroups' },
+                    },
+                    {
+                        // Sub groups are listed inside their employee group now; old links and bookmarks land there.
+                        path: 'employee-sub-groups',
+                        redirectTo: 'employee-groups',
+                        pathMatch: 'full',
                     },
                     {
                         path: 'employee-sub-groups/:id',

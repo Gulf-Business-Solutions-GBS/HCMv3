@@ -62,7 +62,8 @@ export class CreateOrEditEmployeeSubGroupModalComponent extends AppComponentBase
         { value: CustomStartMonth.December, name: 'December' },
     ];
 
-    show(id?: number): void {
+    /** `employeeGroupId` presets the group when adding from inside that group's page. */
+    show(id?: number, employeeGroupId?: number): void {
         this.active.set(true);
 
         this._employeeGroupsService
@@ -74,7 +75,9 @@ export class CreateOrEditEmployeeSubGroupModalComponent extends AppComponentBase
             .subscribe((result) => this.ticketClasses.set(result.items));
 
         if (!id) {
-            this.record.set(new CreateOrEditEmployeeSubGroupDto());
+            const record = new CreateOrEditEmployeeSubGroupDto();
+            record.employeeGroupId = employeeGroupId;
+            this.record.set(record);
             this.modal().show();
         } else {
             this._service.getEmployeeSubGroupForEdit(id).subscribe((result) => {

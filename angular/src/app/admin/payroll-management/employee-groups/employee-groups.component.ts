@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, viewChild, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { EmployeeGroupDto, EmployeeGroupsServiceProxy, GetAllEmployeeGroupsInput } from '@shared/service-proxies/service-proxies';
@@ -14,7 +15,6 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
 import { BusyIfDirective } from '@shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
 @Component({
     templateUrl: './employee-groups.component.html',
@@ -30,11 +30,11 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         CreateOrEditEmployeeGroupModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class EmployeeGroupsComponent extends AppComponentBase implements OnInit {
     private _employeeGroupsService = inject(EmployeeGroupsServiceProxy);
+    private _router = inject(Router);
 
     readonly createOrEditModal = viewChild<CreateOrEditEmployeeGroupModalComponent>('createOrEditModal');
     readonly dataTable = viewChild<Table>('dataTable');
@@ -81,6 +81,11 @@ export class EmployeeGroupsComponent extends AppComponentBase implements OnInit 
         this.createOrEditModal().show();
     }
 
+    /** The group's page, where its sub groups are. */
+    viewDetails(record: EmployeeGroupDto): void {
+        this._router.navigate(['/app/admin/employee-groups', record.id]);
+    }
+
     showMenu(event: Event, record: EmployeeGroupDto, menu: any): void {
         this.activeMenuItems.set(this.getMenuItems(record));
         menu.toggle(event);
@@ -88,6 +93,12 @@ export class EmployeeGroupsComponent extends AppComponentBase implements OnInit 
 
     getMenuItems(record: EmployeeGroupDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
 
         if (this.permission.isGranted('Pages.PayrollManagement.EmployeeGroups.Edit')) {
             items.push({
