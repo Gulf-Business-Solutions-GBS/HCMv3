@@ -97,7 +97,6 @@ public static class ScreenCatalog
         new("app.main.ess.travel-claim", "SGEN011", "General", "EssMyTravelClaims", "/app/main/ess/travel-claim", "Ess.MyTravelClaims"),
         new("app.notifications", "SGEN012", "General", "Inbox", "/app/notifications", null),
         new("app.admin.go-live-setup", "SGL001", "GoLiveSetup", "GoLiveSetup", "/app/admin/go-live-setup", "Pages.GoLiveSetup"),
-        new("app.admin.go-live-setup-v2", "SGL002", "GoLiveSetup", "GoLiveSetupV2", "/app/admin/go-live-setup-v2", "Pages.GoLiveSetup"),
         new("app.admin.access-units", "SGM001", "GeneralMasterInfo", "AccessUnits", "/app/admin/access-units", "Pages.GeneralMasterInfo.AccessUnits"),
         new("app.admin.asset-types", "SGM002", "GeneralMasterInfo", "AssetTypes", "/app/admin/asset-types", "Pages.GeneralMasterInfo.AssetTypes"),
         new("app.admin.assets", "SGM003", "GeneralMasterInfo", "Assets", "/app/admin/assets", "Pages.GeneralMasterInfo.Assets"),

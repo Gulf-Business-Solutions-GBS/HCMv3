@@ -38,12 +38,6 @@ export class AppNavigationService {
                 'flaticon-interface-8',
                 '/app/admin/go-live-setup'
             ),
-            new AppMenuItem(
-                'GoLiveSetupV2',
-                'Pages.GoLiveSetup',
-                'flaticon-interface-8',
-                '/app/admin/go-live-setup-v2'
-            ),
 
             // EMPLOYEE SELF SERVICE. Placed first because for most users it is the only section they can
             // see at all: everything below is Pages.* and does not render for someone holding only the

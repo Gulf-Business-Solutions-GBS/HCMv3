@@ -103,13 +103,13 @@ public static class AppSettings
     /// <summary>
     /// Navigation shell: Screen Codes, favourites and quick links.
     /// </summary>
-    public static class GoLiveV2
+    public static class GoLive
     {
         /// <summary>
         /// Where the company's background Go-Live payroll run stands, as JSON: what was asked, when, how it
         /// ended. Per tenant, and never sent to the browser -- the screen reads it through its own endpoint.
         /// </summary>
-        public const string PayrollRun = "App.GoLiveV2.PayrollRun";
+        public const string PayrollRun = "App.GoLive.PayrollRun";
     }
 
     public static class Navigation

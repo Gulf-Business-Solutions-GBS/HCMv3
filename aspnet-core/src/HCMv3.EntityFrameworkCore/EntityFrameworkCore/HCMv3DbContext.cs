@@ -29,7 +29,6 @@ using HCMv3.ExtraProperties;
 using HCMv3.Friendships;
 using HCMv3.GatePassManagement;
 using HCMv3.GeneralMasterInfo;
-using HCMv3.GoLiveSetup;
 using HCMv3.GovtRelationsManagement;
 using HCMv3.HealthAndSafetyManagement;
 using HCMv3.JobProfileManagement;
@@ -231,7 +230,6 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
     public virtual DbSet<OrgUnitProfile> OrgUnitProfiles { get; set; }
 
-    public virtual DbSet<GoLiveStepState> GoLiveStepStates { get; set; }
 
     public virtual DbSet<Employee> Employees { get; set; }
 
@@ -1666,18 +1664,6 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
                 .WithMany()
                 .HasForeignKey(e => e.PayrollAreaId)
                 .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        modelBuilder.Entity<GoLiveStepState>(b =>
-        {
-            // One draft per step per tenant. The unique index is what makes the save an upsert.
-            //
-            // Filtered on IsDeleted because this is a soft-deleted entity: clearing a step leaves the
-            // row physically present, and without the filter the next save of that same step would hit
-            // a unique violation against a row the repository can no longer see.
-            b.HasIndex(e => new { e.TenantId, e.StepId })
-                .IsUnique()
-                .HasFilter("[IsDeleted] = 0");
         });
 
         modelBuilder.Entity<OrgUnitProfile>(b =>

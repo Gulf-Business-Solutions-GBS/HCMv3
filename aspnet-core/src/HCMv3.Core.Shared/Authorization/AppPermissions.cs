@@ -12,7 +12,7 @@ public static class AppPermissions
 
 
     /// <summary>
-    /// Go-Live Setup -- the guided go-live setup (questions, bulk sheets, readiness board).
+    /// Go-Live Setup -- taking a new company live: load the employees, run the payroll, make the bank file.
     /// Granted to whoever configures a tenant for its first payroll: the customer's own admin in the
     /// self-serve tier, a GBS consultant in the consultant-led tier.
     /// </summary>

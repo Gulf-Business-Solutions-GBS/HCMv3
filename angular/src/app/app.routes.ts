@@ -3869,41 +3869,17 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.Administration.Host.Dashboard' },
                     },
                     {
-                        // Go-Live Setup. The only feature-level nested route block in this file:
-                        // the shell owns the navigation rail and overall progress, and the board and the
-                        // individual steps render into its outlet. Steps are dispatched by :stepPath from
-                        // the registry (go-live-setup/shared/go-live-registry.ts) rather than
-                        // enumerated here, so adding a step does not touch this file.
+                        // Go-Live Setup -- built backwards from Run payroll.
                         path: 'go-live-setup',
                         loadComponent: () =>
-                            import('./admin/go-live-setup/go-live-shell.component').then(
-                                (m) => m.GoLiveShellComponent
-                            ),
+                            import('./admin/go-live-setup/go-live-setup.component').then((m) => m.GoLiveSetupComponent),
                         data: { permission: 'Pages.GoLiveSetup' },
-                        children: [
-                            {
-                                path: '',
-                                loadComponent: () =>
-                                    import(
-                                        './admin/go-live-setup/readiness-board/readiness-board.component'
-                                    ).then((m) => m.ReadinessBoardComponent),
-                            },
-                            {
-                                path: 'step/:stepPath',
-                                loadComponent: () =>
-                                    import(
-                                        './admin/go-live-setup/go-live-step/go-live-step.component'
-                                    ).then((m) => m.GoLiveStepComponent),
-                            },
-                        ],
                     },
                     {
-                        // Go-Live Setup V2 -- built backwards from Run payroll. Kept beside V1, not in place of it,
-                        // so the two approaches can be shown side by side.
+                        // Its address while it was "Go-Live Setup V2", so bookmarks and saved links still land.
                         path: 'go-live-setup-v2',
-                        loadComponent: () =>
-                            import('./admin/go-live-setup-v2/go-live-v2.component').then((m) => m.GoLiveV2Component),
-                        data: { permission: 'Pages.GoLiveSetup' },
+                        redirectTo: 'go-live-setup',
+                        pathMatch: 'full',
                     },
                     {
                         path: 'screen-codes',

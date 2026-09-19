@@ -23,7 +23,7 @@
     <ProjectReference Include="..\HCMv3.EntityFrameworkCore\HCMv3.EntityFrameworkCore.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GoLiveSetupV2\LegacySalaryRegisterExport.sql" />
+    <EmbeddedResource Include="GoLiveSetup\LegacySalaryRegisterExport.sql" />
   </ItemGroup>
 
 </Project>

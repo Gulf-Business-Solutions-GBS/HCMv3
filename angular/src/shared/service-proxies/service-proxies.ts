@@ -66727,7 +66727,7 @@ export class GlobalSearchServiceProxy {
 }
 
 @Injectable()
-export class GoLiveApplyServiceProxy {
+export class GoLivePayslipsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -66735,179 +66735,14 @@ export class GoLiveApplyServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @return OK
-     */
-    preview(): Observable<GoLiveApplyResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveApply/Preview";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPreview(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processPreview(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveApplyResultDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GoLiveApplyResultDto>;
-        }));
-    }
-
-    protected processPreview(response: HttpResponseBase): Observable<GoLiveApplyResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveApplyResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    apply(): Observable<GoLiveApplyResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveApply/Apply";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processApply(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processApply(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveApplyResultDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GoLiveApplyResultDto>;
-        }));
-    }
-
-    protected processApply(response: HttpResponseBase): Observable<GoLiveApplyResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveApplyResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
-export class GoLiveStateServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @return OK
-     */
-    getState(): Observable<GetGoLiveStateOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveState/GetState";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetState(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetState(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetGoLiveStateOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetGoLiveStateOutput>;
-        }));
-    }
-
-    protected processGetState(response: HttpResponseBase): Observable<GetGoLiveStateOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetGoLiveStateOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    saveStep(body?: SaveGoLiveStepInput | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveState/SaveStep";
+    getPayslipsPdf(body?: GoLivePayslipsInput | undefined): Observable<ReportPdfOutput> {
+        let url_ = this.baseUrl + "/api/services/app/goLivePayslips/GetPayslipsPdf";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -66918,24 +66753,25 @@ export class GoLiveStateServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSaveStep(response_);
+            return this.processGetPayslipsPdf(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processSaveStep(response_ as any);
+                    return this.processGetPayslipsPdf(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
         }));
     }
 
-    protected processSaveStep(response: HttpResponseBase): Observable<void> {
+    protected processGetPayslipsPdf(response: HttpResponseBase): Observable<ReportPdfOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -66944,54 +66780,10 @@ export class GoLiveStateServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    clearState(): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveState/ClearState";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processClearState(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processClearState(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processClearState(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReportPdfOutput.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -67003,7 +66795,7 @@ export class GoLiveStateServiceProxy {
 }
 
 @Injectable()
-export class GoLiveV2ServiceProxy {
+export class GoLiveSetupServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -67017,8 +66809,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    runPayroll(body?: GoLiveV2RunPayrollInput | undefined): Observable<GoLiveV2RunPayrollOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/RunPayroll";
+    runPayroll(body?: GoLiveRunPayrollInput | undefined): Observable<GoLiveRunPayrollOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/RunPayroll";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67040,14 +66832,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processRunPayroll(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2RunPayrollOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveRunPayrollOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2RunPayrollOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveRunPayrollOutput>;
         }));
     }
 
-    protected processRunPayroll(response: HttpResponseBase): Observable<GoLiveV2RunPayrollOutput> {
+    protected processRunPayroll(response: HttpResponseBase): Observable<GoLiveRunPayrollOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67058,7 +66850,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2RunPayrollOutput.fromJS(resultData200);
+            result200 = GoLiveRunPayrollOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67073,8 +66865,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    startPayrollRun(body?: GoLiveV2RunPayrollInput | undefined): Observable<GoLiveV2PayrollRunProgressDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/StartPayrollRun";
+    startPayrollRun(body?: GoLiveRunPayrollInput | undefined): Observable<GoLivePayrollRunProgressDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/StartPayrollRun";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67096,14 +66888,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processStartPayrollRun(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                    return _observableThrow(e) as any as Observable<GoLivePayrollRunProgressDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                return _observableThrow(response_) as any as Observable<GoLivePayrollRunProgressDto>;
         }));
     }
 
-    protected processStartPayrollRun(response: HttpResponseBase): Observable<GoLiveV2PayrollRunProgressDto> {
+    protected processStartPayrollRun(response: HttpResponseBase): Observable<GoLivePayrollRunProgressDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67114,7 +66906,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2PayrollRunProgressDto.fromJS(resultData200);
+            result200 = GoLivePayrollRunProgressDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67129,8 +66921,8 @@ export class GoLiveV2ServiceProxy {
      * @param payrollAreaName (optional) 
      * @return OK
      */
-    getPayrollRunProgress(payrollAreaName?: string | null | undefined): Observable<GoLiveV2PayrollRunProgressDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollRunProgress?";
+    getPayrollRunProgress(payrollAreaName?: string | null | undefined): Observable<GoLivePayrollRunProgressDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetPayrollRunProgress?";
         if (payrollAreaName !== undefined && payrollAreaName !== null)
             url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -67150,14 +66942,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetPayrollRunProgress(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                    return _observableThrow(e) as any as Observable<GoLivePayrollRunProgressDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollRunProgressDto>;
+                return _observableThrow(response_) as any as Observable<GoLivePayrollRunProgressDto>;
         }));
     }
 
-    protected processGetPayrollRunProgress(response: HttpResponseBase): Observable<GoLiveV2PayrollRunProgressDto> {
+    protected processGetPayrollRunProgress(response: HttpResponseBase): Observable<GoLivePayrollRunProgressDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67168,7 +66960,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2PayrollRunProgressDto.fromJS(resultData200);
+            result200 = GoLivePayrollRunProgressDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67183,7 +66975,7 @@ export class GoLiveV2ServiceProxy {
      * @return OK
      */
     stopPayrollRun(): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/StopPayrollRun";
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/StopPayrollRun";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -67230,8 +67022,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    setUpPayrollMonth(body?: GoLiveV2SetUpPayrollMonthInput | undefined): Observable<GoLiveV2SetUpPayrollMonthOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/SetUpPayrollMonth";
+    setUpPayrollMonth(body?: GoLiveSetUpPayrollMonthInput | undefined): Observable<GoLiveSetUpPayrollMonthOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/SetUpPayrollMonth";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67253,14 +67045,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processSetUpPayrollMonth(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveSetUpPayrollMonthOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2SetUpPayrollMonthOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveSetUpPayrollMonthOutput>;
         }));
     }
 
-    protected processSetUpPayrollMonth(response: HttpResponseBase): Observable<GoLiveV2SetUpPayrollMonthOutput> {
+    protected processSetUpPayrollMonth(response: HttpResponseBase): Observable<GoLiveSetUpPayrollMonthOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67271,7 +67063,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2SetUpPayrollMonthOutput.fromJS(resultData200);
+            result200 = GoLiveSetUpPayrollMonthOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67286,8 +67078,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    loadEmployees(body?: GoLiveV2LoadEmployeesInput | undefined): Observable<GoLiveV2LoadEmployeesOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/LoadEmployees";
+    loadEmployees(body?: GoLiveLoadEmployeesInput | undefined): Observable<GoLiveLoadEmployeesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/LoadEmployees";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67309,14 +67101,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processLoadEmployees(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveLoadEmployeesOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LoadEmployeesOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveLoadEmployeesOutput>;
         }));
     }
 
-    protected processLoadEmployees(response: HttpResponseBase): Observable<GoLiveV2LoadEmployeesOutput> {
+    protected processLoadEmployees(response: HttpResponseBase): Observable<GoLiveLoadEmployeesOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67327,7 +67119,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LoadEmployeesOutput.fromJS(resultData200);
+            result200 = GoLiveLoadEmployeesOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67342,8 +67134,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    exportEmployeeSheet(body?: GoLiveV2EmployeeSheetInput | undefined): Observable<FileDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ExportEmployeeSheet";
+    exportEmployeeSheet(body?: GoLiveEmployeeSheetInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/ExportEmployeeSheet";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67398,8 +67190,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    addLegacyPayments(body?: GoLiveV2LegacyPaymentsInput | undefined): Observable<GoLiveV2LegacyPaymentsOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/AddLegacyPayments";
+    addLegacyPayments(body?: GoLiveLegacyPaymentsInput | undefined): Observable<GoLiveLegacyPaymentsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/AddLegacyPayments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67421,14 +67213,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processAddLegacyPayments(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyPaymentsOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveLegacyPaymentsOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyPaymentsOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveLegacyPaymentsOutput>;
         }));
     }
 
-    protected processAddLegacyPayments(response: HttpResponseBase): Observable<GoLiveV2LegacyPaymentsOutput> {
+    protected processAddLegacyPayments(response: HttpResponseBase): Observable<GoLiveLegacyPaymentsOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67439,7 +67231,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LegacyPaymentsOutput.fromJS(resultData200);
+            result200 = GoLiveLegacyPaymentsOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67454,8 +67246,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    exportLegacyComparison(body?: GoLiveV2LegacyCompareExportInput | undefined): Observable<FileDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ExportLegacyComparison";
+    exportLegacyComparison(body?: GoLiveLegacyCompareExportInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/ExportLegacyComparison";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67510,8 +67302,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getLegacySalaryExportQuery(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2LegacyExportQueryDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLegacySalaryExportQuery";
+    getLegacySalaryExportQuery(body?: GoLivePayrollResultsInput | undefined): Observable<GoLiveLegacyExportQueryDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetLegacySalaryExportQuery";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67533,14 +67325,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetLegacySalaryExportQuery(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyExportQueryDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveLegacyExportQueryDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyExportQueryDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveLegacyExportQueryDto>;
         }));
     }
 
-    protected processGetLegacySalaryExportQuery(response: HttpResponseBase): Observable<GoLiveV2LegacyExportQueryDto> {
+    protected processGetLegacySalaryExportQuery(response: HttpResponseBase): Observable<GoLiveLegacyExportQueryDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67551,7 +67343,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LegacyExportQueryDto.fromJS(resultData200);
+            result200 = GoLiveLegacyExportQueryDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67566,8 +67358,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    compareWithLegacySalary(body?: GoLiveV2LegacyCompareInput | undefined): Observable<GoLiveV2LegacyCompareOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/CompareWithLegacySalary";
+    compareWithLegacySalary(body?: GoLiveLegacyCompareInput | undefined): Observable<GoLiveLegacyCompareOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/CompareWithLegacySalary";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67589,14 +67381,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processCompareWithLegacySalary(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LegacyCompareOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveLegacyCompareOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LegacyCompareOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveLegacyCompareOutput>;
         }));
     }
 
-    protected processCompareWithLegacySalary(response: HttpResponseBase): Observable<GoLiveV2LegacyCompareOutput> {
+    protected processCompareWithLegacySalary(response: HttpResponseBase): Observable<GoLiveLegacyCompareOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67607,7 +67399,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LegacyCompareOutput.fromJS(resultData200);
+            result200 = GoLiveLegacyCompareOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67622,8 +67414,8 @@ export class GoLiveV2ServiceProxy {
      * @param payrollAreaName (optional) 
      * @return OK
      */
-    getLoadedEmployees(payrollAreaName?: string | null | undefined): Observable<GoLiveV2LoadedEmployeesOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetLoadedEmployees?";
+    getLoadedEmployees(payrollAreaName?: string | null | undefined): Observable<GoLiveLoadedEmployeesOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetLoadedEmployees?";
         if (payrollAreaName !== undefined && payrollAreaName !== null)
             url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -67643,14 +67435,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetLoadedEmployees(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2LoadedEmployeesOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveLoadedEmployeesOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2LoadedEmployeesOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveLoadedEmployeesOutput>;
         }));
     }
 
-    protected processGetLoadedEmployees(response: HttpResponseBase): Observable<GoLiveV2LoadedEmployeesOutput> {
+    protected processGetLoadedEmployees(response: HttpResponseBase): Observable<GoLiveLoadedEmployeesOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67661,7 +67453,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2LoadedEmployeesOutput.fromJS(resultData200);
+            result200 = GoLiveLoadedEmployeesOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67676,8 +67468,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getPayrollResults(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2PayrollResultsOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollResults";
+    getPayrollResults(body?: GoLivePayrollResultsInput | undefined): Observable<GoLivePayrollResultsOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetPayrollResults";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67699,14 +67491,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetPayrollResults(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2PayrollResultsOutput>;
+                    return _observableThrow(e) as any as Observable<GoLivePayrollResultsOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2PayrollResultsOutput>;
+                return _observableThrow(response_) as any as Observable<GoLivePayrollResultsOutput>;
         }));
     }
 
-    protected processGetPayrollResults(response: HttpResponseBase): Observable<GoLiveV2PayrollResultsOutput> {
+    protected processGetPayrollResults(response: HttpResponseBase): Observable<GoLivePayrollResultsOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67717,7 +67509,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2PayrollResultsOutput.fromJS(resultData200);
+            result200 = GoLivePayrollResultsOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67732,8 +67524,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getSalaryRegister(body?: GoLiveV2SalaryRegisterInput | undefined): Observable<GoLiveV2SalaryRegisterDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegister";
+    getSalaryRegister(body?: GoLiveSalaryRegisterInput | undefined): Observable<GoLiveSalaryRegisterDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetSalaryRegister";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67755,14 +67547,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetSalaryRegister(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2SalaryRegisterDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveSalaryRegisterDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2SalaryRegisterDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveSalaryRegisterDto>;
         }));
     }
 
-    protected processGetSalaryRegister(response: HttpResponseBase): Observable<GoLiveV2SalaryRegisterDto> {
+    protected processGetSalaryRegister(response: HttpResponseBase): Observable<GoLiveSalaryRegisterDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67773,7 +67565,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2SalaryRegisterDto.fromJS(resultData200);
+            result200 = GoLiveSalaryRegisterDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67788,8 +67580,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getSalaryRegisterExcel(body?: GoLiveV2PayrollResultsInput | undefined): Observable<FileDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegisterExcel";
+    getSalaryRegisterExcel(body?: GoLivePayrollResultsInput | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetSalaryRegisterExcel";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67844,8 +67636,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getPayrollSheetGrid(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2GridDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollSheetGrid";
+    getPayrollSheetGrid(body?: GoLivePayrollResultsInput | undefined): Observable<GoLiveGridDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetPayrollSheetGrid";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67867,14 +67659,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetPayrollSheetGrid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2GridDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveGridDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2GridDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveGridDto>;
         }));
     }
 
-    protected processGetPayrollSheetGrid(response: HttpResponseBase): Observable<GoLiveV2GridDto> {
+    protected processGetPayrollSheetGrid(response: HttpResponseBase): Observable<GoLiveGridDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67885,7 +67677,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2GridDto.fromJS(resultData200);
+            result200 = GoLiveGridDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67900,8 +67692,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getSalaryRegisterGrid(body?: GoLiveV2PayrollResultsInput | undefined): Observable<GoLiveV2GridDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetSalaryRegisterGrid";
+    getSalaryRegisterGrid(body?: GoLivePayrollResultsInput | undefined): Observable<GoLiveGridDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetSalaryRegisterGrid";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -67923,14 +67715,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetSalaryRegisterGrid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2GridDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveGridDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2GridDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveGridDto>;
         }));
     }
 
-    protected processGetSalaryRegisterGrid(response: HttpResponseBase): Observable<GoLiveV2GridDto> {
+    protected processGetSalaryRegisterGrid(response: HttpResponseBase): Observable<GoLiveGridDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67941,7 +67733,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2GridDto.fromJS(resultData200);
+            result200 = GoLiveGridDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -67956,8 +67748,8 @@ export class GoLiveV2ServiceProxy {
      * @param payrollAreaName (optional) 
      * @return OK
      */
-    getClearPreview(payrollAreaName?: string | null | undefined): Observable<GoLiveV2ClearCompanyDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetClearPreview?";
+    getClearPreview(payrollAreaName?: string | null | undefined): Observable<GoLiveClearCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetClearPreview?";
         if (payrollAreaName !== undefined && payrollAreaName !== null)
             url_ += "payrollAreaName=" + encodeURIComponent("" + payrollAreaName) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -67977,14 +67769,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetClearPreview(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2ClearCompanyDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveClearCompanyDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2ClearCompanyDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveClearCompanyDto>;
         }));
     }
 
-    protected processGetClearPreview(response: HttpResponseBase): Observable<GoLiveV2ClearCompanyDto> {
+    protected processGetClearPreview(response: HttpResponseBase): Observable<GoLiveClearCompanyDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67995,7 +67787,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2ClearCompanyDto.fromJS(resultData200);
+            result200 = GoLiveClearCompanyDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -68010,8 +67802,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    clearCompany(body?: GoLiveV2ClearCompanyInput | undefined): Observable<GoLiveV2ClearCompanyDto> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/ClearCompany";
+    clearCompany(body?: GoLiveClearCompanyInput | undefined): Observable<GoLiveClearCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/ClearCompany";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -68033,14 +67825,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processClearCompany(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2ClearCompanyDto>;
+                    return _observableThrow(e) as any as Observable<GoLiveClearCompanyDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2ClearCompanyDto>;
+                return _observableThrow(response_) as any as Observable<GoLiveClearCompanyDto>;
         }));
     }
 
-    protected processClearCompany(response: HttpResponseBase): Observable<GoLiveV2ClearCompanyDto> {
+    protected processClearCompany(response: HttpResponseBase): Observable<GoLiveClearCompanyDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -68051,7 +67843,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2ClearCompanyDto.fromJS(resultData200);
+            result200 = GoLiveClearCompanyDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -68066,7 +67858,7 @@ export class GoLiveV2ServiceProxy {
      * @return OK
      */
     getBankNames(): Observable<ListResultDtoOfString> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetBankNames";
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetBankNames";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -68117,8 +67909,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    getBankFileSetup(body?: GoLiveV2BankFileSetupInput | undefined): Observable<GoLiveV2BankFileSetupOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetBankFileSetup";
+    getBankFileSetup(body?: GoLiveBankFileSetupInput | undefined): Observable<GoLiveBankFileSetupOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetBankFileSetup";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -68140,14 +67932,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGetBankFileSetup(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2BankFileSetupOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveBankFileSetupOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2BankFileSetupOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveBankFileSetupOutput>;
         }));
     }
 
-    protected processGetBankFileSetup(response: HttpResponseBase): Observable<GoLiveV2BankFileSetupOutput> {
+    protected processGetBankFileSetup(response: HttpResponseBase): Observable<GoLiveBankFileSetupOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -68158,7 +67950,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2BankFileSetupOutput.fromJS(resultData200);
+            result200 = GoLiveBankFileSetupOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -68173,8 +67965,8 @@ export class GoLiveV2ServiceProxy {
      * @param body (optional) 
      * @return OK
      */
-    generateBankFile(body?: GoLiveV2GenerateBankFileInput | undefined): Observable<GoLiveV2GenerateBankFileOutput> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GenerateBankFile";
+    generateBankFile(body?: GoLiveGenerateBankFileInput | undefined): Observable<GoLiveGenerateBankFileOutput> {
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GenerateBankFile";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -68196,14 +67988,14 @@ export class GoLiveV2ServiceProxy {
                 try {
                     return this.processGenerateBankFile(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveV2GenerateBankFileOutput>;
+                    return _observableThrow(e) as any as Observable<GoLiveGenerateBankFileOutput>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GoLiveV2GenerateBankFileOutput>;
+                return _observableThrow(response_) as any as Observable<GoLiveGenerateBankFileOutput>;
         }));
     }
 
-    protected processGenerateBankFile(response: HttpResponseBase): Observable<GoLiveV2GenerateBankFileOutput> {
+    protected processGenerateBankFile(response: HttpResponseBase): Observable<GoLiveGenerateBankFileOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -68214,7 +68006,7 @@ export class GoLiveV2ServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GoLiveV2GenerateBankFileOutput.fromJS(resultData200);
+            result200 = GoLiveGenerateBankFileOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -68229,7 +68021,7 @@ export class GoLiveV2ServiceProxy {
      * @return OK
      */
     getPayrollAreaNames(): Observable<ListResultDtoOfString> {
-        let url_ = this.baseUrl + "/api/services/app/GoLiveV2/GetPayrollAreaNames";
+        let url_ = this.baseUrl + "/api/services/app/GoLiveSetup/GetPayrollAreaNames";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -68266,74 +68058,6 @@ export class GoLiveV2ServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = ListResultDtoOfString.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
-export class GoLiveV2PayslipsServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    getPayslipsPdf(body?: GoLiveV2PayslipsInput | undefined): Observable<ReportPdfOutput> {
-        let url_ = this.baseUrl + "/api/services/app/goLiveV2Payslips/GetPayslipsPdf";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPayslipsPdf(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPayslipsPdf(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReportPdfOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReportPdfOutput>;
-        }));
-    }
-
-    protected processGetPayslipsPdf(response: HttpResponseBase): Observable<ReportPdfOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReportPdfOutput.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -120590,190 +120314,6 @@ export class RecruitmentTypesServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
-export class ReferenceDataServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    /**
-     * @return OK
-     */
-    getLookupOptions(): Observable<GoLiveLookupListDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/ReferenceData/GetLookupOptions";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetLookupOptions(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetLookupOptions(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GoLiveLookupListDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GoLiveLookupListDto[]>;
-        }));
-    }
-
-    protected processGetLookupOptions(response: HttpResponseBase): Observable<GoLiveLookupListDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GoLiveLookupListDto.fromJS(item));
-            }
-            else {
-                result200 = null as any;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    getPacks(): Observable<ReferenceDataPackDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/ReferenceData/GetPacks";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPacks(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPacks(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReferenceDataPackDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReferenceDataPackDto[]>;
-        }));
-    }
-
-    protected processGetPacks(response: HttpResponseBase): Observable<ReferenceDataPackDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ReferenceDataPackDto.fromJS(item));
-            }
-            else {
-                result200 = null as any;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    seedReferenceData(body?: SeedReferenceDataInput | undefined): Observable<SeedReferenceDataOutput> {
-        let url_ = this.baseUrl + "/api/services/app/ReferenceData/SeedReferenceData";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSeedReferenceData(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processSeedReferenceData(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<SeedReferenceDataOutput>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<SeedReferenceDataOutput>;
-        }));
-    }
-
-    protected processSeedReferenceData(response: HttpResponseBase): Observable<SeedReferenceDataOutput> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SeedReferenceDataOutput.fromJS(resultData200);
-            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -248049,54 +247589,6 @@ export interface IGetGeneralStatsOutput {
     bouncePercent: number;
 }
 
-export class GetGoLiveStateOutput implements IGetGoLiveStateOutput {
-    steps!: GoLiveStepStateDto[] | undefined;
-    lastSavedUtc!: DateTime | undefined;
-
-    constructor(data?: IGetGoLiveStateOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["steps"])) {
-                this.steps = [] as any;
-                for (let item of _data["steps"])
-                    this.steps!.push(GoLiveStepStateDto.fromJS(item));
-            }
-            this.lastSavedUtc = _data["lastSavedUtc"] ? DateTime.fromISO(_data["lastSavedUtc"].toString()) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GetGoLiveStateOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetGoLiveStateOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.steps)) {
-            data["steps"] = [];
-            for (let item of this.steps)
-                data["steps"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["lastSavedUtc"] = this.lastSavedUtc ? this.lastSavedUtc.toString() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGetGoLiveStateOutput {
-    steps: GoLiveStepStateDto[] | undefined;
-    lastSavedUtc: DateTime | undefined;
-}
-
 export class GetGovtJobTitleForEditOutput implements IGetGovtJobTitleForEditOutput {
     govtJobTitle!: CreateOrEditGovtJobTitleDto;
 
@@ -262941,288 +262433,12 @@ export interface IGlobalSearchRecentResultDto {
     items: GlobalSearchRecentItemDto[] | undefined;
 }
 
-export class GoLiveApplyIssueDto implements IGoLiveApplyIssueDto {
-    row!: number;
-    key!: string | undefined;
-    message!: string | undefined;
-
-    constructor(data?: IGoLiveApplyIssueDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.row = _data["row"];
-            this.key = _data["key"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): GoLiveApplyIssueDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveApplyIssueDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["row"] = this.row;
-        data["key"] = this.key;
-        data["message"] = this.message;
-        return data;
-    }
-}
-
-export interface IGoLiveApplyIssueDto {
-    row: number;
-    key: string | undefined;
-    message: string | undefined;
-}
-
-export class GoLiveApplyResultDto implements IGoLiveApplyResultDto {
-    applied!: boolean;
-    stages!: GoLiveApplyStageDto[] | undefined;
-    totalCreated!: number;
-    totalUpdated!: number;
-    totalSkipped!: number;
-    totalFailed!: number;
-    readonly isClean!: boolean;
-
-    constructor(data?: IGoLiveApplyResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.applied = _data["applied"];
-            if (Array.isArray(_data["stages"])) {
-                this.stages = [] as any;
-                for (let item of _data["stages"])
-                    this.stages!.push(GoLiveApplyStageDto.fromJS(item));
-            }
-            this.totalCreated = _data["totalCreated"];
-            this.totalUpdated = _data["totalUpdated"];
-            this.totalSkipped = _data["totalSkipped"];
-            this.totalFailed = _data["totalFailed"];
-            (this as any).isClean = _data["isClean"];
-        }
-    }
-
-    static fromJS(data: any): GoLiveApplyResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveApplyResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["applied"] = this.applied;
-        if (Array.isArray(this.stages)) {
-            data["stages"] = [];
-            for (let item of this.stages)
-                data["stages"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["totalCreated"] = this.totalCreated;
-        data["totalUpdated"] = this.totalUpdated;
-        data["totalSkipped"] = this.totalSkipped;
-        data["totalFailed"] = this.totalFailed;
-        data["isClean"] = this.isClean;
-        return data;
-    }
-}
-
-export interface IGoLiveApplyResultDto {
-    applied: boolean;
-    stages: GoLiveApplyStageDto[] | undefined;
-    totalCreated: number;
-    totalUpdated: number;
-    totalSkipped: number;
-    totalFailed: number;
-    isClean: boolean;
-}
-
-export class GoLiveApplyStageDto implements IGoLiveApplyStageDto {
-    stepId!: string | undefined;
-    target!: string | undefined;
-    created!: number;
-    updated!: number;
-    skipped!: number;
-    failed!: number;
-    issues!: GoLiveApplyIssueDto[] | undefined;
-    issuesTruncated!: number;
-
-    constructor(data?: IGoLiveApplyStageDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.stepId = _data["stepId"];
-            this.target = _data["target"];
-            this.created = _data["created"];
-            this.updated = _data["updated"];
-            this.skipped = _data["skipped"];
-            this.failed = _data["failed"];
-            if (Array.isArray(_data["issues"])) {
-                this.issues = [] as any;
-                for (let item of _data["issues"])
-                    this.issues!.push(GoLiveApplyIssueDto.fromJS(item));
-            }
-            this.issuesTruncated = _data["issuesTruncated"];
-        }
-    }
-
-    static fromJS(data: any): GoLiveApplyStageDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveApplyStageDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["stepId"] = this.stepId;
-        data["target"] = this.target;
-        data["created"] = this.created;
-        data["updated"] = this.updated;
-        data["skipped"] = this.skipped;
-        data["failed"] = this.failed;
-        if (Array.isArray(this.issues)) {
-            data["issues"] = [];
-            for (let item of this.issues)
-                data["issues"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["issuesTruncated"] = this.issuesTruncated;
-        return data;
-    }
-}
-
-export interface IGoLiveApplyStageDto {
-    stepId: string | undefined;
-    target: string | undefined;
-    created: number;
-    updated: number;
-    skipped: number;
-    failed: number;
-    issues: GoLiveApplyIssueDto[] | undefined;
-    issuesTruncated: number;
-}
-
-export class GoLiveLookupListDto implements IGoLiveLookupListDto {
-    lookup!: string | undefined;
-    options!: string[] | undefined;
-
-    constructor(data?: IGoLiveLookupListDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.lookup = _data["lookup"];
-            if (Array.isArray(_data["options"])) {
-                this.options = [] as any;
-                for (let item of _data["options"])
-                    this.options!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): GoLiveLookupListDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveLookupListDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["lookup"] = this.lookup;
-        if (Array.isArray(this.options)) {
-            data["options"] = [];
-            for (let item of this.options)
-                data["options"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IGoLiveLookupListDto {
-    lookup: string | undefined;
-    options: string[] | undefined;
-}
-
-export class GoLiveStepStateDto implements IGoLiveStepStateDto {
-    stepId!: string | undefined;
-    payload!: string | undefined;
-    lastSavedUtc!: DateTime;
-
-    constructor(data?: IGoLiveStepStateDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.stepId = _data["stepId"];
-            this.payload = _data["payload"];
-            this.lastSavedUtc = _data["lastSavedUtc"] ? DateTime.fromISO(_data["lastSavedUtc"].toString()) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GoLiveStepStateDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoLiveStepStateDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["stepId"] = this.stepId;
-        data["payload"] = this.payload;
-        data["lastSavedUtc"] = this.lastSavedUtc ? this.lastSavedUtc.toString() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGoLiveStepStateDto {
-    stepId: string | undefined;
-    payload: string | undefined;
-    lastSavedUtc: DateTime;
-}
-
-export class GoLiveV2BankFileEmployeeDto implements IGoLiveV2BankFileEmployeeDto {
+export class GoLiveBankFileEmployeeDto implements IGoLiveBankFileEmployeeDto {
     employeeCode!: string | undefined;
     employeeName!: string | undefined;
-    reason!: GoLiveV2BankFileLeftOutReason;
+    reason!: GoLiveBankFileLeftOutReason;
 
-    constructor(data?: IGoLiveV2BankFileEmployeeDto) {
+    constructor(data?: IGoLiveBankFileEmployeeDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263239,9 +262455,9 @@ export class GoLiveV2BankFileEmployeeDto implements IGoLiveV2BankFileEmployeeDto
         }
     }
 
-    static fromJS(data: any): GoLiveV2BankFileEmployeeDto {
+    static fromJS(data: any): GoLiveBankFileEmployeeDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2BankFileEmployeeDto();
+        let result = new GoLiveBankFileEmployeeDto();
         result.init(data);
         return result;
     }
@@ -263255,13 +262471,13 @@ export class GoLiveV2BankFileEmployeeDto implements IGoLiveV2BankFileEmployeeDto
     }
 }
 
-export interface IGoLiveV2BankFileEmployeeDto {
+export interface IGoLiveBankFileEmployeeDto {
     employeeCode: string | undefined;
     employeeName: string | undefined;
-    reason: GoLiveV2BankFileLeftOutReason;
+    reason: GoLiveBankFileLeftOutReason;
 }
 
-export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
+export class GoLiveBankFileLayoutDto implements IGoLiveBankFileLayoutDto {
     formatCode!: string | undefined;
     isText!: boolean;
     needsCompanyAccount!: boolean;
@@ -263270,7 +262486,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     writesPayeeBankCodes!: boolean;
     needsMosalId!: boolean;
 
-    constructor(data?: IGoLiveV2BankFileLayoutDto) {
+    constructor(data?: IGoLiveBankFileLayoutDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263291,9 +262507,9 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2BankFileLayoutDto {
+    static fromJS(data: any): GoLiveBankFileLayoutDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2BankFileLayoutDto();
+        let result = new GoLiveBankFileLayoutDto();
         result.init(data);
         return result;
     }
@@ -263311,7 +262527,7 @@ export class GoLiveV2BankFileLayoutDto implements IGoLiveV2BankFileLayoutDto {
     }
 }
 
-export interface IGoLiveV2BankFileLayoutDto {
+export interface IGoLiveBankFileLayoutDto {
     formatCode: string | undefined;
     isText: boolean;
     needsCompanyAccount: boolean;
@@ -263321,17 +262537,17 @@ export interface IGoLiveV2BankFileLayoutDto {
     needsMosalId: boolean;
 }
 
-export enum GoLiveV2BankFileLeftOutReason {
+export enum GoLiveBankFileLeftOutReason {
     NoBankDetails = 0,
     NotPaid = 1,
     NoAccountNumber = 2,
 }
 
-export class GoLiveV2BankFileSetupInput implements IGoLiveV2BankFileSetupInput {
+export class GoLiveBankFileSetupInput implements IGoLiveBankFileSetupInput {
     payDate!: DateTime;
     payrollAreaName!: string;
 
-    constructor(data?: IGoLiveV2BankFileSetupInput) {
+    constructor(data?: IGoLiveBankFileSetupInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263347,9 +262563,9 @@ export class GoLiveV2BankFileSetupInput implements IGoLiveV2BankFileSetupInput {
         }
     }
 
-    static fromJS(data: any): GoLiveV2BankFileSetupInput {
+    static fromJS(data: any): GoLiveBankFileSetupInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2BankFileSetupInput();
+        let result = new GoLiveBankFileSetupInput();
         result.init(data);
         return result;
     }
@@ -263362,19 +262578,19 @@ export class GoLiveV2BankFileSetupInput implements IGoLiveV2BankFileSetupInput {
     }
 }
 
-export interface IGoLiveV2BankFileSetupInput {
+export interface IGoLiveBankFileSetupInput {
     payDate: DateTime;
     payrollAreaName: string;
 }
 
-export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput {
-    payingBanks!: GoLiveV2PayingBankDto[] | undefined;
-    employeesWithoutBank!: GoLiveV2BankFileEmployeeDto[] | undefined;
+export class GoLiveBankFileSetupOutput implements IGoLiveBankFileSetupOutput {
+    payingBanks!: GoLivePayingBankDto[] | undefined;
+    employeesWithoutBank!: GoLiveBankFileEmployeeDto[] | undefined;
     employeesWithBank!: number;
     mosalId!: number | undefined;
     employeesWithAccountNumber!: number;
 
-    constructor(data?: IGoLiveV2BankFileSetupOutput) {
+    constructor(data?: IGoLiveBankFileSetupOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263388,12 +262604,12 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
             if (Array.isArray(_data["payingBanks"])) {
                 this.payingBanks = [] as any;
                 for (let item of _data["payingBanks"])
-                    this.payingBanks!.push(GoLiveV2PayingBankDto.fromJS(item));
+                    this.payingBanks!.push(GoLivePayingBankDto.fromJS(item));
             }
             if (Array.isArray(_data["employeesWithoutBank"])) {
                 this.employeesWithoutBank = [] as any;
                 for (let item of _data["employeesWithoutBank"])
-                    this.employeesWithoutBank!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
+                    this.employeesWithoutBank!.push(GoLiveBankFileEmployeeDto.fromJS(item));
             }
             this.employeesWithBank = _data["employeesWithBank"];
             this.mosalId = _data["mosalId"];
@@ -263401,9 +262617,9 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
         }
     }
 
-    static fromJS(data: any): GoLiveV2BankFileSetupOutput {
+    static fromJS(data: any): GoLiveBankFileSetupOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2BankFileSetupOutput();
+        let result = new GoLiveBankFileSetupOutput();
         result.init(data);
         return result;
     }
@@ -263427,15 +262643,15 @@ export class GoLiveV2BankFileSetupOutput implements IGoLiveV2BankFileSetupOutput
     }
 }
 
-export interface IGoLiveV2BankFileSetupOutput {
-    payingBanks: GoLiveV2PayingBankDto[] | undefined;
-    employeesWithoutBank: GoLiveV2BankFileEmployeeDto[] | undefined;
+export interface IGoLiveBankFileSetupOutput {
+    payingBanks: GoLivePayingBankDto[] | undefined;
+    employeesWithoutBank: GoLiveBankFileEmployeeDto[] | undefined;
     employeesWithBank: number;
     mosalId: number | undefined;
     employeesWithAccountNumber: number;
 }
 
-export class GoLiveV2ClearCompanyDto implements IGoLiveV2ClearCompanyDto {
+export class GoLiveClearCompanyDto implements IGoLiveClearCompanyDto {
     companyName!: string | undefined;
     employees!: number;
     timeRegisters!: number;
@@ -263444,7 +262660,7 @@ export class GoLiveV2ClearCompanyDto implements IGoLiveV2ClearCompanyDto {
     payrollMonthEnd!: DateTime | undefined;
     calendarMonths!: number;
 
-    constructor(data?: IGoLiveV2ClearCompanyDto) {
+    constructor(data?: IGoLiveClearCompanyDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263465,9 +262681,9 @@ export class GoLiveV2ClearCompanyDto implements IGoLiveV2ClearCompanyDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2ClearCompanyDto {
+    static fromJS(data: any): GoLiveClearCompanyDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2ClearCompanyDto();
+        let result = new GoLiveClearCompanyDto();
         result.init(data);
         return result;
     }
@@ -263485,7 +262701,7 @@ export class GoLiveV2ClearCompanyDto implements IGoLiveV2ClearCompanyDto {
     }
 }
 
-export interface IGoLiveV2ClearCompanyDto {
+export interface IGoLiveClearCompanyDto {
     companyName: string | undefined;
     employees: number;
     timeRegisters: number;
@@ -263495,11 +262711,11 @@ export interface IGoLiveV2ClearCompanyDto {
     calendarMonths: number;
 }
 
-export class GoLiveV2ClearCompanyInput implements IGoLiveV2ClearCompanyInput {
+export class GoLiveClearCompanyInput implements IGoLiveClearCompanyInput {
     payrollAreaName!: string;
     confirmCompanyName!: string;
 
-    constructor(data?: IGoLiveV2ClearCompanyInput) {
+    constructor(data?: IGoLiveClearCompanyInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263515,9 +262731,9 @@ export class GoLiveV2ClearCompanyInput implements IGoLiveV2ClearCompanyInput {
         }
     }
 
-    static fromJS(data: any): GoLiveV2ClearCompanyInput {
+    static fromJS(data: any): GoLiveClearCompanyInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2ClearCompanyInput();
+        let result = new GoLiveClearCompanyInput();
         result.init(data);
         return result;
     }
@@ -263530,12 +262746,12 @@ export class GoLiveV2ClearCompanyInput implements IGoLiveV2ClearCompanyInput {
     }
 }
 
-export interface IGoLiveV2ClearCompanyInput {
+export interface IGoLiveClearCompanyInput {
     payrollAreaName: string;
     confirmCompanyName: string;
 }
 
-export enum GoLiveV2CompareCause {
+export enum GoLiveCompareCause {
     None = 0,
     Rounding = 1,
     Data = 2,
@@ -263545,19 +262761,19 @@ export enum GoLiveV2CompareCause {
     FollowsOtherLines = 6,
 }
 
-export enum GoLiveV2CompareStatus {
+export enum GoLiveCompareStatus {
     Matched = 0,
     Different = 1,
     OnlyInLegacy = 2,
     OnlyInHcmv3 = 3,
 }
 
-export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
+export class GoLiveEmployeeResultDto implements IGoLiveEmployeeResultDto {
     employeeCode!: string | undefined;
     succeeded!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IGoLiveV2EmployeeResultDto) {
+    constructor(data?: IGoLiveEmployeeResultDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263574,9 +262790,9 @@ export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2EmployeeResultDto {
+    static fromJS(data: any): GoLiveEmployeeResultDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2EmployeeResultDto();
+        let result = new GoLiveEmployeeResultDto();
         result.init(data);
         return result;
     }
@@ -263590,13 +262806,13 @@ export class GoLiveV2EmployeeResultDto implements IGoLiveV2EmployeeResultDto {
     }
 }
 
-export interface IGoLiveV2EmployeeResultDto {
+export interface IGoLiveEmployeeResultDto {
     employeeCode: string | undefined;
     succeeded: boolean;
     message: string | undefined;
 }
 
-export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
+export class GoLiveEmployeeRowDto implements IGoLiveEmployeeRowDto {
     code!: string | undefined;
     fullName!: string | undefined;
     joiningDate!: DateTime | undefined;
@@ -263613,7 +262829,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     iban!: string | undefined;
     accountNumber!: string | undefined;
 
-    constructor(data?: IGoLiveV2EmployeeRowDto) {
+    constructor(data?: IGoLiveEmployeeRowDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263642,9 +262858,9 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2EmployeeRowDto {
+    static fromJS(data: any): GoLiveEmployeeRowDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2EmployeeRowDto();
+        let result = new GoLiveEmployeeRowDto();
         result.init(data);
         return result;
     }
@@ -263670,7 +262886,7 @@ export class GoLiveV2EmployeeRowDto implements IGoLiveV2EmployeeRowDto {
     }
 }
 
-export interface IGoLiveV2EmployeeRowDto {
+export interface IGoLiveEmployeeRowDto {
     code: string | undefined;
     fullName: string | undefined;
     joiningDate: DateTime | undefined;
@@ -263688,7 +262904,7 @@ export interface IGoLiveV2EmployeeRowDto {
     accountNumber: string | undefined;
 }
 
-export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultDto {
+export class GoLiveEmployeeRowResultDto implements IGoLiveEmployeeRowResultDto {
     rowNumber!: number;
     code!: string | undefined;
     succeeded!: boolean;
@@ -263696,7 +262912,7 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
     updated!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IGoLiveV2EmployeeRowResultDto) {
+    constructor(data?: IGoLiveEmployeeRowResultDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263716,9 +262932,9 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
         }
     }
 
-    static fromJS(data: any): GoLiveV2EmployeeRowResultDto {
+    static fromJS(data: any): GoLiveEmployeeRowResultDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2EmployeeRowResultDto();
+        let result = new GoLiveEmployeeRowResultDto();
         result.init(data);
         return result;
     }
@@ -263735,7 +262951,7 @@ export class GoLiveV2EmployeeRowResultDto implements IGoLiveV2EmployeeRowResultD
     }
 }
 
-export interface IGoLiveV2EmployeeRowResultDto {
+export interface IGoLiveEmployeeRowResultDto {
     rowNumber: number;
     code: string | undefined;
     succeeded: boolean;
@@ -263744,10 +262960,10 @@ export interface IGoLiveV2EmployeeRowResultDto {
     message: string | undefined;
 }
 
-export class GoLiveV2EmployeeSheetInput implements IGoLiveV2EmployeeSheetInput {
-    employees!: GoLiveV2EmployeeRowDto[] | undefined;
+export class GoLiveEmployeeSheetInput implements IGoLiveEmployeeSheetInput {
+    employees!: GoLiveEmployeeRowDto[] | undefined;
 
-    constructor(data?: IGoLiveV2EmployeeSheetInput) {
+    constructor(data?: IGoLiveEmployeeSheetInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263761,14 +262977,14 @@ export class GoLiveV2EmployeeSheetInput implements IGoLiveV2EmployeeSheetInput {
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
-                    this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+                    this.employees!.push(GoLiveEmployeeRowDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2EmployeeSheetInput {
+    static fromJS(data: any): GoLiveEmployeeSheetInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2EmployeeSheetInput();
+        let result = new GoLiveEmployeeSheetInput();
         result.init(data);
         return result;
     }
@@ -263784,11 +263000,11 @@ export class GoLiveV2EmployeeSheetInput implements IGoLiveV2EmployeeSheetInput {
     }
 }
 
-export interface IGoLiveV2EmployeeSheetInput {
-    employees: GoLiveV2EmployeeRowDto[] | undefined;
+export interface IGoLiveEmployeeSheetInput {
+    employees: GoLiveEmployeeRowDto[] | undefined;
 }
 
-export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileInput {
+export class GoLiveGenerateBankFileInput implements IGoLiveGenerateBankFileInput {
     payDate!: DateTime;
     payrollAreaName!: string;
     paymentBankId!: number;
@@ -263797,7 +263013,7 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
     companyCode!: string | undefined;
     mosalId!: number | undefined;
 
-    constructor(data?: IGoLiveV2GenerateBankFileInput) {
+    constructor(data?: IGoLiveGenerateBankFileInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263818,9 +263034,9 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
         }
     }
 
-    static fromJS(data: any): GoLiveV2GenerateBankFileInput {
+    static fromJS(data: any): GoLiveGenerateBankFileInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2GenerateBankFileInput();
+        let result = new GoLiveGenerateBankFileInput();
         result.init(data);
         return result;
     }
@@ -263838,7 +263054,7 @@ export class GoLiveV2GenerateBankFileInput implements IGoLiveV2GenerateBankFileI
     }
 }
 
-export interface IGoLiveV2GenerateBankFileInput {
+export interface IGoLiveGenerateBankFileInput {
     payDate: DateTime;
     payrollAreaName: string;
     paymentBankId: number;
@@ -263848,7 +263064,7 @@ export interface IGoLiveV2GenerateBankFileInput {
     mosalId: number | undefined;
 }
 
-export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFileOutput {
+export class GoLiveGenerateBankFileOutput implements IGoLiveGenerateBankFileOutput {
     fileName!: string | undefined;
     base64Content!: string | undefined;
     contentType!: string | undefined;
@@ -263856,10 +263072,10 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
     recordCount!: number;
     totalAmount!: number;
     bankCodeCorrectedFrom!: string | undefined;
-    leftOut!: GoLiveV2BankFileEmployeeDto[] | undefined;
-    contents!: GoLiveV2GridDto;
+    leftOut!: GoLiveBankFileEmployeeDto[] | undefined;
+    contents!: GoLiveGridDto;
 
-    constructor(data?: IGoLiveV2GenerateBankFileOutput) {
+    constructor(data?: IGoLiveGenerateBankFileOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263880,15 +263096,15 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
             if (Array.isArray(_data["leftOut"])) {
                 this.leftOut = [] as any;
                 for (let item of _data["leftOut"])
-                    this.leftOut!.push(GoLiveV2BankFileEmployeeDto.fromJS(item));
+                    this.leftOut!.push(GoLiveBankFileEmployeeDto.fromJS(item));
             }
-            this.contents = _data["contents"] ? GoLiveV2GridDto.fromJS(_data["contents"]) : undefined as any;
+            this.contents = _data["contents"] ? GoLiveGridDto.fromJS(_data["contents"]) : undefined as any;
         }
     }
 
-    static fromJS(data: any): GoLiveV2GenerateBankFileOutput {
+    static fromJS(data: any): GoLiveGenerateBankFileOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2GenerateBankFileOutput();
+        let result = new GoLiveGenerateBankFileOutput();
         result.init(data);
         return result;
     }
@@ -263912,7 +263128,7 @@ export class GoLiveV2GenerateBankFileOutput implements IGoLiveV2GenerateBankFile
     }
 }
 
-export interface IGoLiveV2GenerateBankFileOutput {
+export interface IGoLiveGenerateBankFileOutput {
     fileName: string | undefined;
     base64Content: string | undefined;
     contentType: string | undefined;
@@ -263920,17 +263136,17 @@ export interface IGoLiveV2GenerateBankFileOutput {
     recordCount: number;
     totalAmount: number;
     bankCodeCorrectedFrom: string | undefined;
-    leftOut: GoLiveV2BankFileEmployeeDto[] | undefined;
-    contents: GoLiveV2GridDto;
+    leftOut: GoLiveBankFileEmployeeDto[] | undefined;
+    contents: GoLiveGridDto;
 }
 
-export class GoLiveV2GridDto implements IGoLiveV2GridDto {
+export class GoLiveGridDto implements IGoLiveGridDto {
     title!: string | undefined;
     columns!: string[] | undefined;
     rows!: string[][] | undefined;
     text!: string | undefined;
 
-    constructor(data?: IGoLiveV2GridDto) {
+    constructor(data?: IGoLiveGridDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -263956,9 +263172,9 @@ export class GoLiveV2GridDto implements IGoLiveV2GridDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2GridDto {
+    static fromJS(data: any): GoLiveGridDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2GridDto();
+        let result = new GoLiveGridDto();
         result.init(data);
         return result;
     }
@@ -263981,18 +263197,18 @@ export class GoLiveV2GridDto implements IGoLiveV2GridDto {
     }
 }
 
-export interface IGoLiveV2GridDto {
+export interface IGoLiveGridDto {
     title: string | undefined;
     columns: string[] | undefined;
     rows: string[][] | undefined;
     text: string | undefined;
 }
 
-export class GoLiveV2LegacyCompareExportInput implements IGoLiveV2LegacyCompareExportInput {
+export class GoLiveLegacyCompareExportInput implements IGoLiveLegacyCompareExportInput {
     payMonth!: DateTime | undefined;
-    lines!: GoLiveV2LegacyCompareLineDto[] | undefined;
+    lines!: GoLiveLegacyCompareLineDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LegacyCompareExportInput) {
+    constructor(data?: IGoLiveLegacyCompareExportInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264007,14 +263223,14 @@ export class GoLiveV2LegacyCompareExportInput implements IGoLiveV2LegacyCompareE
             if (Array.isArray(_data["lines"])) {
                 this.lines = [] as any;
                 for (let item of _data["lines"])
-                    this.lines!.push(GoLiveV2LegacyCompareLineDto.fromJS(item));
+                    this.lines!.push(GoLiveLegacyCompareLineDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyCompareExportInput {
+    static fromJS(data: any): GoLiveLegacyCompareExportInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyCompareExportInput();
+        let result = new GoLiveLegacyCompareExportInput();
         result.init(data);
         return result;
     }
@@ -264031,18 +263247,18 @@ export class GoLiveV2LegacyCompareExportInput implements IGoLiveV2LegacyCompareE
     }
 }
 
-export interface IGoLiveV2LegacyCompareExportInput {
+export interface IGoLiveLegacyCompareExportInput {
     payMonth: DateTime | undefined;
-    lines: GoLiveV2LegacyCompareLineDto[] | undefined;
+    lines: GoLiveLegacyCompareLineDto[] | undefined;
 }
 
-export class GoLiveV2LegacyCompareInput implements IGoLiveV2LegacyCompareInput {
+export class GoLiveLegacyCompareInput implements IGoLiveLegacyCompareInput {
     payDate!: DateTime;
     payrollAreaName!: string;
     fileName!: string;
     base64Content!: string;
 
-    constructor(data?: IGoLiveV2LegacyCompareInput) {
+    constructor(data?: IGoLiveLegacyCompareInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264060,9 +263276,9 @@ export class GoLiveV2LegacyCompareInput implements IGoLiveV2LegacyCompareInput {
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyCompareInput {
+    static fromJS(data: any): GoLiveLegacyCompareInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyCompareInput();
+        let result = new GoLiveLegacyCompareInput();
         result.init(data);
         return result;
     }
@@ -264077,14 +263293,14 @@ export class GoLiveV2LegacyCompareInput implements IGoLiveV2LegacyCompareInput {
     }
 }
 
-export interface IGoLiveV2LegacyCompareInput {
+export interface IGoLiveLegacyCompareInput {
     payDate: DateTime;
     payrollAreaName: string;
     fileName: string;
     base64Content: string;
 }
 
-export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineDto {
+export class GoLiveLegacyCompareLineDto implements IGoLiveLegacyCompareLineDto {
     employeeCode!: string | undefined;
     wageTypeCode!: string | undefined;
     wageTypeName!: string | undefined;
@@ -264101,14 +263317,14 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
     numberMatches!: boolean;
     amountMatches!: boolean;
     difference!: number | undefined;
-    status!: GoLiveV2CompareStatus;
-    cause!: GoLiveV2CompareCause;
+    status!: GoLiveCompareStatus;
+    cause!: GoLiveCompareCause;
     reason!: string | undefined;
     canAddPayment!: boolean;
     suggestedPaymentAmount!: number | undefined;
     paymentBlockedReason!: string | undefined;
 
-    constructor(data?: IGoLiveV2LegacyCompareLineDto) {
+    constructor(data?: IGoLiveLegacyCompareLineDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264144,9 +263360,9 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyCompareLineDto {
+    static fromJS(data: any): GoLiveLegacyCompareLineDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyCompareLineDto();
+        let result = new GoLiveLegacyCompareLineDto();
         result.init(data);
         return result;
     }
@@ -264179,7 +263395,7 @@ export class GoLiveV2LegacyCompareLineDto implements IGoLiveV2LegacyCompareLineD
     }
 }
 
-export interface IGoLiveV2LegacyCompareLineDto {
+export interface IGoLiveLegacyCompareLineDto {
     employeeCode: string | undefined;
     wageTypeCode: string | undefined;
     wageTypeName: string | undefined;
@@ -264196,15 +263412,15 @@ export interface IGoLiveV2LegacyCompareLineDto {
     numberMatches: boolean;
     amountMatches: boolean;
     difference: number | undefined;
-    status: GoLiveV2CompareStatus;
-    cause: GoLiveV2CompareCause;
+    status: GoLiveCompareStatus;
+    cause: GoLiveCompareCause;
     reason: string | undefined;
     canAddPayment: boolean;
     suggestedPaymentAmount: number | undefined;
     paymentBlockedReason: string | undefined;
 }
 
-export class GoLiveV2LegacyCompareOutput implements IGoLiveV2LegacyCompareOutput {
+export class GoLiveLegacyCompareOutput implements IGoLiveLegacyCompareOutput {
     payMonth!: DateTime;
     fileRows!: number;
     rowsForOtherMonths!: number;
@@ -264216,9 +263432,9 @@ export class GoLiveV2LegacyCompareOutput implements IGoLiveV2LegacyCompareOutput
     different!: number;
     onlyInLegacy!: number;
     onlyInHcmv3!: number;
-    lines!: GoLiveV2LegacyCompareLineDto[] | undefined;
+    lines!: GoLiveLegacyCompareLineDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LegacyCompareOutput) {
+    constructor(data?: IGoLiveLegacyCompareOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264247,14 +263463,14 @@ export class GoLiveV2LegacyCompareOutput implements IGoLiveV2LegacyCompareOutput
             if (Array.isArray(_data["lines"])) {
                 this.lines = [] as any;
                 for (let item of _data["lines"])
-                    this.lines!.push(GoLiveV2LegacyCompareLineDto.fromJS(item));
+                    this.lines!.push(GoLiveLegacyCompareLineDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyCompareOutput {
+    static fromJS(data: any): GoLiveLegacyCompareOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyCompareOutput();
+        let result = new GoLiveLegacyCompareOutput();
         result.init(data);
         return result;
     }
@@ -264285,7 +263501,7 @@ export class GoLiveV2LegacyCompareOutput implements IGoLiveV2LegacyCompareOutput
     }
 }
 
-export interface IGoLiveV2LegacyCompareOutput {
+export interface IGoLiveLegacyCompareOutput {
     payMonth: DateTime;
     fileRows: number;
     rowsForOtherMonths: number;
@@ -264297,14 +263513,14 @@ export interface IGoLiveV2LegacyCompareOutput {
     different: number;
     onlyInLegacy: number;
     onlyInHcmv3: number;
-    lines: GoLiveV2LegacyCompareLineDto[] | undefined;
+    lines: GoLiveLegacyCompareLineDto[] | undefined;
 }
 
-export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryDto {
+export class GoLiveLegacyExportQueryDto implements IGoLiveLegacyExportQueryDto {
     fileName!: string | undefined;
     sql!: string | undefined;
 
-    constructor(data?: IGoLiveV2LegacyExportQueryDto) {
+    constructor(data?: IGoLiveLegacyExportQueryDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264320,9 +263536,9 @@ export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryD
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyExportQueryDto {
+    static fromJS(data: any): GoLiveLegacyExportQueryDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyExportQueryDto();
+        let result = new GoLiveLegacyExportQueryDto();
         result.init(data);
         return result;
     }
@@ -264335,17 +263551,17 @@ export class GoLiveV2LegacyExportQueryDto implements IGoLiveV2LegacyExportQueryD
     }
 }
 
-export interface IGoLiveV2LegacyExportQueryDto {
+export interface IGoLiveLegacyExportQueryDto {
     fileName: string | undefined;
     sql: string | undefined;
 }
 
-export class GoLiveV2LegacyPaymentLineDto implements IGoLiveV2LegacyPaymentLineDto {
+export class GoLiveLegacyPaymentLineDto implements IGoLiveLegacyPaymentLineDto {
     employeeCode!: string | undefined;
     wageTypeCode!: string | undefined;
     amount!: number;
 
-    constructor(data?: IGoLiveV2LegacyPaymentLineDto) {
+    constructor(data?: IGoLiveLegacyPaymentLineDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264362,9 +263578,9 @@ export class GoLiveV2LegacyPaymentLineDto implements IGoLiveV2LegacyPaymentLineD
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyPaymentLineDto {
+    static fromJS(data: any): GoLiveLegacyPaymentLineDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyPaymentLineDto();
+        let result = new GoLiveLegacyPaymentLineDto();
         result.init(data);
         return result;
     }
@@ -264378,18 +263594,18 @@ export class GoLiveV2LegacyPaymentLineDto implements IGoLiveV2LegacyPaymentLineD
     }
 }
 
-export interface IGoLiveV2LegacyPaymentLineDto {
+export interface IGoLiveLegacyPaymentLineDto {
     employeeCode: string | undefined;
     wageTypeCode: string | undefined;
     amount: number;
 }
 
-export class GoLiveV2LegacyPaymentRefusalDto implements IGoLiveV2LegacyPaymentRefusalDto {
+export class GoLiveLegacyPaymentRefusalDto implements IGoLiveLegacyPaymentRefusalDto {
     employeeCode!: string | undefined;
     wageTypeCode!: string | undefined;
     reason!: string | undefined;
 
-    constructor(data?: IGoLiveV2LegacyPaymentRefusalDto) {
+    constructor(data?: IGoLiveLegacyPaymentRefusalDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264406,9 +263622,9 @@ export class GoLiveV2LegacyPaymentRefusalDto implements IGoLiveV2LegacyPaymentRe
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyPaymentRefusalDto {
+    static fromJS(data: any): GoLiveLegacyPaymentRefusalDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyPaymentRefusalDto();
+        let result = new GoLiveLegacyPaymentRefusalDto();
         result.init(data);
         return result;
     }
@@ -264422,17 +263638,17 @@ export class GoLiveV2LegacyPaymentRefusalDto implements IGoLiveV2LegacyPaymentRe
     }
 }
 
-export interface IGoLiveV2LegacyPaymentRefusalDto {
+export interface IGoLiveLegacyPaymentRefusalDto {
     employeeCode: string | undefined;
     wageTypeCode: string | undefined;
     reason: string | undefined;
 }
 
-export class GoLiveV2LegacyPaymentsInput implements IGoLiveV2LegacyPaymentsInput {
+export class GoLiveLegacyPaymentsInput implements IGoLiveLegacyPaymentsInput {
     payDate!: DateTime;
-    lines!: GoLiveV2LegacyPaymentLineDto[] | undefined;
+    lines!: GoLiveLegacyPaymentLineDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LegacyPaymentsInput) {
+    constructor(data?: IGoLiveLegacyPaymentsInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264447,14 +263663,14 @@ export class GoLiveV2LegacyPaymentsInput implements IGoLiveV2LegacyPaymentsInput
             if (Array.isArray(_data["lines"])) {
                 this.lines = [] as any;
                 for (let item of _data["lines"])
-                    this.lines!.push(GoLiveV2LegacyPaymentLineDto.fromJS(item));
+                    this.lines!.push(GoLiveLegacyPaymentLineDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyPaymentsInput {
+    static fromJS(data: any): GoLiveLegacyPaymentsInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyPaymentsInput();
+        let result = new GoLiveLegacyPaymentsInput();
         result.init(data);
         return result;
     }
@@ -264471,18 +263687,18 @@ export class GoLiveV2LegacyPaymentsInput implements IGoLiveV2LegacyPaymentsInput
     }
 }
 
-export interface IGoLiveV2LegacyPaymentsInput {
+export interface IGoLiveLegacyPaymentsInput {
     payDate: DateTime;
-    lines: GoLiveV2LegacyPaymentLineDto[] | undefined;
+    lines: GoLiveLegacyPaymentLineDto[] | undefined;
 }
 
-export class GoLiveV2LegacyPaymentsOutput implements IGoLiveV2LegacyPaymentsOutput {
+export class GoLiveLegacyPaymentsOutput implements IGoLiveLegacyPaymentsOutput {
     added!: number;
     updated!: number;
     alreadyThere!: number;
-    refused!: GoLiveV2LegacyPaymentRefusalDto[] | undefined;
+    refused!: GoLiveLegacyPaymentRefusalDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LegacyPaymentsOutput) {
+    constructor(data?: IGoLiveLegacyPaymentsOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264499,14 +263715,14 @@ export class GoLiveV2LegacyPaymentsOutput implements IGoLiveV2LegacyPaymentsOutp
             if (Array.isArray(_data["refused"])) {
                 this.refused = [] as any;
                 for (let item of _data["refused"])
-                    this.refused!.push(GoLiveV2LegacyPaymentRefusalDto.fromJS(item));
+                    this.refused!.push(GoLiveLegacyPaymentRefusalDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LegacyPaymentsOutput {
+    static fromJS(data: any): GoLiveLegacyPaymentsOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LegacyPaymentsOutput();
+        let result = new GoLiveLegacyPaymentsOutput();
         result.init(data);
         return result;
     }
@@ -264525,20 +263741,20 @@ export class GoLiveV2LegacyPaymentsOutput implements IGoLiveV2LegacyPaymentsOutp
     }
 }
 
-export interface IGoLiveV2LegacyPaymentsOutput {
+export interface IGoLiveLegacyPaymentsOutput {
     added: number;
     updated: number;
     alreadyThere: number;
-    refused: GoLiveV2LegacyPaymentRefusalDto[] | undefined;
+    refused: GoLiveLegacyPaymentRefusalDto[] | undefined;
 }
 
-export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
+export class GoLiveLoadEmployeesInput implements IGoLiveLoadEmployeesInput {
     organizationUnitName!: string;
     payrollAreaName!: string;
     saturdayIsRestDay!: boolean;
-    employees!: GoLiveV2EmployeeRowDto[] | undefined;
+    employees!: GoLiveEmployeeRowDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LoadEmployeesInput) {
+    constructor(data?: IGoLiveLoadEmployeesInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264555,14 +263771,14 @@ export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
-                    this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+                    this.employees!.push(GoLiveEmployeeRowDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LoadEmployeesInput {
+    static fromJS(data: any): GoLiveLoadEmployeesInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LoadEmployeesInput();
+        let result = new GoLiveLoadEmployeesInput();
         result.init(data);
         return result;
     }
@@ -264581,14 +263797,14 @@ export class GoLiveV2LoadEmployeesInput implements IGoLiveV2LoadEmployeesInput {
     }
 }
 
-export interface IGoLiveV2LoadEmployeesInput {
+export interface IGoLiveLoadEmployeesInput {
     organizationUnitName: string;
     payrollAreaName: string;
     saturdayIsRestDay: boolean;
-    employees: GoLiveV2EmployeeRowDto[] | undefined;
+    employees: GoLiveEmployeeRowDto[] | undefined;
 }
 
-export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput {
+export class GoLiveLoadEmployeesOutput implements IGoLiveLoadEmployeesOutput {
     organizationUnitName!: string | undefined;
     organizationUnitCreated!: boolean;
     payrollAreaName!: string | undefined;
@@ -264605,9 +263821,9 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
     employeesCreated!: number;
     employeesAlreadyLoaded!: number;
     employeesUpdated!: number;
-    rows!: GoLiveV2EmployeeRowResultDto[] | undefined;
+    rows!: GoLiveEmployeeRowResultDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LoadEmployeesOutput) {
+    constructor(data?: IGoLiveLoadEmployeesOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264637,14 +263853,14 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
             if (Array.isArray(_data["rows"])) {
                 this.rows = [] as any;
                 for (let item of _data["rows"])
-                    this.rows!.push(GoLiveV2EmployeeRowResultDto.fromJS(item));
+                    this.rows!.push(GoLiveEmployeeRowResultDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LoadEmployeesOutput {
+    static fromJS(data: any): GoLiveLoadEmployeesOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LoadEmployeesOutput();
+        let result = new GoLiveLoadEmployeesOutput();
         result.init(data);
         return result;
     }
@@ -264676,7 +263892,7 @@ export class GoLiveV2LoadEmployeesOutput implements IGoLiveV2LoadEmployeesOutput
     }
 }
 
-export interface IGoLiveV2LoadEmployeesOutput {
+export interface IGoLiveLoadEmployeesOutput {
     organizationUnitName: string | undefined;
     organizationUnitCreated: boolean;
     payrollAreaName: string | undefined;
@@ -264693,15 +263909,15 @@ export interface IGoLiveV2LoadEmployeesOutput {
     employeesCreated: number;
     employeesAlreadyLoaded: number;
     employeesUpdated: number;
-    rows: GoLiveV2EmployeeRowResultDto[] | undefined;
+    rows: GoLiveEmployeeRowResultDto[] | undefined;
 }
 
-export class GoLiveV2LoadedEmployeesOutput implements IGoLiveV2LoadedEmployeesOutput {
+export class GoLiveLoadedEmployeesOutput implements IGoLiveLoadedEmployeesOutput {
     organizationUnitName!: string | undefined;
     saturdayIsRestDay!: boolean;
-    employees!: GoLiveV2EmployeeRowDto[] | undefined;
+    employees!: GoLiveEmployeeRowDto[] | undefined;
 
-    constructor(data?: IGoLiveV2LoadedEmployeesOutput) {
+    constructor(data?: IGoLiveLoadedEmployeesOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264717,14 +263933,14 @@ export class GoLiveV2LoadedEmployeesOutput implements IGoLiveV2LoadedEmployeesOu
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
-                    this.employees!.push(GoLiveV2EmployeeRowDto.fromJS(item));
+                    this.employees!.push(GoLiveEmployeeRowDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2LoadedEmployeesOutput {
+    static fromJS(data: any): GoLiveLoadedEmployeesOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2LoadedEmployeesOutput();
+        let result = new GoLiveLoadedEmployeesOutput();
         result.init(data);
         return result;
     }
@@ -264742,25 +263958,25 @@ export class GoLiveV2LoadedEmployeesOutput implements IGoLiveV2LoadedEmployeesOu
     }
 }
 
-export interface IGoLiveV2LoadedEmployeesOutput {
+export interface IGoLiveLoadedEmployeesOutput {
     organizationUnitName: string | undefined;
     saturdayIsRestDay: boolean;
-    employees: GoLiveV2EmployeeRowDto[] | undefined;
+    employees: GoLiveEmployeeRowDto[] | undefined;
 }
 
-export enum GoLiveV2NextStep {
+export enum GoLiveNextStep {
     None = 0,
     SetUpPayrollMonth = 1,
     LoadEmployees = 2,
 }
 
-export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
+export class GoLivePayeeBankDto implements IGoLivePayeeBankDto {
     bankId!: number;
     bankName!: string | undefined;
     code!: string | undefined;
     employees!: number;
 
-    constructor(data?: IGoLiveV2PayeeBankDto) {
+    constructor(data?: IGoLivePayeeBankDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264778,9 +263994,9 @@ export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayeeBankDto {
+    static fromJS(data: any): GoLivePayeeBankDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayeeBankDto();
+        let result = new GoLivePayeeBankDto();
         result.init(data);
         return result;
     }
@@ -264795,14 +264011,14 @@ export class GoLiveV2PayeeBankDto implements IGoLiveV2PayeeBankDto {
     }
 }
 
-export interface IGoLiveV2PayeeBankDto {
+export interface IGoLivePayeeBankDto {
     bankId: number;
     bankName: string | undefined;
     code: string | undefined;
     employees: number;
 }
 
-export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
+export class GoLivePayingBankDto implements IGoLivePayingBankDto {
     bankId!: number;
     name!: string | undefined;
     code!: string | undefined;
@@ -264810,10 +264026,10 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
     companyAccountNo!: string | undefined;
     bankCode!: string | undefined;
     companyCode!: string | undefined;
-    layouts!: GoLiveV2BankFileLayoutDto[] | undefined;
-    payeeBanks!: GoLiveV2PayeeBankDto[] | undefined;
+    layouts!: GoLiveBankFileLayoutDto[] | undefined;
+    payeeBanks!: GoLivePayeeBankDto[] | undefined;
 
-    constructor(data?: IGoLiveV2PayingBankDto) {
+    constructor(data?: IGoLivePayingBankDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264834,19 +264050,19 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
             if (Array.isArray(_data["layouts"])) {
                 this.layouts = [] as any;
                 for (let item of _data["layouts"])
-                    this.layouts!.push(GoLiveV2BankFileLayoutDto.fromJS(item));
+                    this.layouts!.push(GoLiveBankFileLayoutDto.fromJS(item));
             }
             if (Array.isArray(_data["payeeBanks"])) {
                 this.payeeBanks = [] as any;
                 for (let item of _data["payeeBanks"])
-                    this.payeeBanks!.push(GoLiveV2PayeeBankDto.fromJS(item));
+                    this.payeeBanks!.push(GoLivePayeeBankDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayingBankDto {
+    static fromJS(data: any): GoLivePayingBankDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayingBankDto();
+        let result = new GoLivePayingBankDto();
         result.init(data);
         return result;
     }
@@ -264874,7 +264090,7 @@ export class GoLiveV2PayingBankDto implements IGoLiveV2PayingBankDto {
     }
 }
 
-export interface IGoLiveV2PayingBankDto {
+export interface IGoLivePayingBankDto {
     bankId: number;
     name: string | undefined;
     code: string | undefined;
@@ -264882,11 +264098,11 @@ export interface IGoLiveV2PayingBankDto {
     companyAccountNo: string | undefined;
     bankCode: string | undefined;
     companyCode: string | undefined;
-    layouts: GoLiveV2BankFileLayoutDto[] | undefined;
-    payeeBanks: GoLiveV2PayeeBankDto[] | undefined;
+    layouts: GoLiveBankFileLayoutDto[] | undefined;
+    payeeBanks: GoLivePayeeBankDto[] | undefined;
 }
 
-export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto {
+export class GoLivePayrollResultRowDto implements IGoLivePayrollResultRowDto {
     employeeId!: number;
     employeeCode!: string | undefined;
     employeeName!: string | undefined;
@@ -264895,7 +264111,7 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
     deductions!: number;
     netPay!: number;
 
-    constructor(data?: IGoLiveV2PayrollResultRowDto) {
+    constructor(data?: IGoLivePayrollResultRowDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264916,9 +264132,9 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayrollResultRowDto {
+    static fromJS(data: any): GoLivePayrollResultRowDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayrollResultRowDto();
+        let result = new GoLivePayrollResultRowDto();
         result.init(data);
         return result;
     }
@@ -264936,7 +264152,7 @@ export class GoLiveV2PayrollResultRowDto implements IGoLiveV2PayrollResultRowDto
     }
 }
 
-export interface IGoLiveV2PayrollResultRowDto {
+export interface IGoLivePayrollResultRowDto {
     employeeId: number;
     employeeCode: string | undefined;
     employeeName: string | undefined;
@@ -264946,11 +264162,11 @@ export interface IGoLiveV2PayrollResultRowDto {
     netPay: number;
 }
 
-export class GoLiveV2PayrollResultsInput implements IGoLiveV2PayrollResultsInput {
+export class GoLivePayrollResultsInput implements IGoLivePayrollResultsInput {
     payDate!: DateTime;
     payrollAreaName!: string;
 
-    constructor(data?: IGoLiveV2PayrollResultsInput) {
+    constructor(data?: IGoLivePayrollResultsInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -264966,9 +264182,9 @@ export class GoLiveV2PayrollResultsInput implements IGoLiveV2PayrollResultsInput
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayrollResultsInput {
+    static fromJS(data: any): GoLivePayrollResultsInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayrollResultsInput();
+        let result = new GoLivePayrollResultsInput();
         result.init(data);
         return result;
     }
@@ -264981,21 +264197,21 @@ export class GoLiveV2PayrollResultsInput implements IGoLiveV2PayrollResultsInput
     }
 }
 
-export interface IGoLiveV2PayrollResultsInput {
+export interface IGoLivePayrollResultsInput {
     payDate: DateTime;
     payrollAreaName: string;
 }
 
-export class GoLiveV2PayrollResultsOutput implements IGoLiveV2PayrollResultsOutput {
+export class GoLivePayrollResultsOutput implements IGoLivePayrollResultsOutput {
     payInDate!: DateTime;
     payrollAreaId!: number | undefined;
-    employees!: GoLiveV2PayrollResultRowDto[] | undefined;
+    employees!: GoLivePayrollResultRowDto[] | undefined;
     totalEarnings!: number;
     totalDeductions!: number;
     totalNetPay!: number;
     employeesPaid!: number;
 
-    constructor(data?: IGoLiveV2PayrollResultsOutput) {
+    constructor(data?: IGoLivePayrollResultsOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265011,7 +264227,7 @@ export class GoLiveV2PayrollResultsOutput implements IGoLiveV2PayrollResultsOutp
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
-                    this.employees!.push(GoLiveV2PayrollResultRowDto.fromJS(item));
+                    this.employees!.push(GoLivePayrollResultRowDto.fromJS(item));
             }
             this.totalEarnings = _data["totalEarnings"];
             this.totalDeductions = _data["totalDeductions"];
@@ -265020,9 +264236,9 @@ export class GoLiveV2PayrollResultsOutput implements IGoLiveV2PayrollResultsOutp
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayrollResultsOutput {
+    static fromJS(data: any): GoLivePayrollResultsOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayrollResultsOutput();
+        let result = new GoLivePayrollResultsOutput();
         result.init(data);
         return result;
     }
@@ -265044,18 +264260,18 @@ export class GoLiveV2PayrollResultsOutput implements IGoLiveV2PayrollResultsOutp
     }
 }
 
-export interface IGoLiveV2PayrollResultsOutput {
+export interface IGoLivePayrollResultsOutput {
     payInDate: DateTime;
     payrollAreaId: number | undefined;
-    employees: GoLiveV2PayrollResultRowDto[] | undefined;
+    employees: GoLivePayrollResultRowDto[] | undefined;
     totalEarnings: number;
     totalDeductions: number;
     totalNetPay: number;
     employeesPaid: number;
 }
 
-export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgressDto {
-    status!: GoLiveV2RunStatus;
+export class GoLivePayrollRunProgressDto implements IGoLivePayrollRunProgressDto {
+    status!: GoLiveRunStatus;
     payrollAreaName!: string | undefined;
     payInDate!: DateTime | undefined;
     startedAt!: DateTime | undefined;
@@ -265067,9 +264283,9 @@ export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgres
     payrollFailed!: number;
     averageMilliseconds!: number;
     stopRequested!: boolean;
-    result!: GoLiveV2RunPayrollOutput;
+    result!: GoLiveRunPayrollOutput;
 
-    constructor(data?: IGoLiveV2PayrollRunProgressDto) {
+    constructor(data?: IGoLivePayrollRunProgressDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265092,13 +264308,13 @@ export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgres
             this.payrollFailed = _data["payrollFailed"];
             this.averageMilliseconds = _data["averageMilliseconds"];
             this.stopRequested = _data["stopRequested"];
-            this.result = _data["result"] ? GoLiveV2RunPayrollOutput.fromJS(_data["result"]) : undefined as any;
+            this.result = _data["result"] ? GoLiveRunPayrollOutput.fromJS(_data["result"]) : undefined as any;
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayrollRunProgressDto {
+    static fromJS(data: any): GoLivePayrollRunProgressDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayrollRunProgressDto();
+        let result = new GoLivePayrollRunProgressDto();
         result.init(data);
         return result;
     }
@@ -265122,8 +264338,8 @@ export class GoLiveV2PayrollRunProgressDto implements IGoLiveV2PayrollRunProgres
     }
 }
 
-export interface IGoLiveV2PayrollRunProgressDto {
-    status: GoLiveV2RunStatus;
+export interface IGoLivePayrollRunProgressDto {
+    status: GoLiveRunStatus;
     payrollAreaName: string | undefined;
     payInDate: DateTime | undefined;
     startedAt: DateTime | undefined;
@@ -265135,14 +264351,14 @@ export interface IGoLiveV2PayrollRunProgressDto {
     payrollFailed: number;
     averageMilliseconds: number;
     stopRequested: boolean;
-    result: GoLiveV2RunPayrollOutput;
+    result: GoLiveRunPayrollOutput;
 }
 
-export class GoLiveV2PayslipsInput implements IGoLiveV2PayslipsInput {
+export class GoLivePayslipsInput implements IGoLivePayslipsInput {
     payDate!: DateTime;
     payrollAreaName!: string;
 
-    constructor(data?: IGoLiveV2PayslipsInput) {
+    constructor(data?: IGoLivePayslipsInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265158,9 +264374,9 @@ export class GoLiveV2PayslipsInput implements IGoLiveV2PayslipsInput {
         }
     }
 
-    static fromJS(data: any): GoLiveV2PayslipsInput {
+    static fromJS(data: any): GoLivePayslipsInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2PayslipsInput();
+        let result = new GoLivePayslipsInput();
         result.init(data);
         return result;
     }
@@ -265173,17 +264389,17 @@ export class GoLiveV2PayslipsInput implements IGoLiveV2PayslipsInput {
     }
 }
 
-export interface IGoLiveV2PayslipsInput {
+export interface IGoLivePayslipsInput {
     payDate: DateTime;
     payrollAreaName: string;
 }
 
-export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
+export class GoLiveRunPayrollInput implements IGoLiveRunPayrollInput {
     payDate!: DateTime | undefined;
     payrollAreaName!: string | undefined;
     employeeCodes!: string[] | undefined;
 
-    constructor(data?: IGoLiveV2RunPayrollInput) {
+    constructor(data?: IGoLiveRunPayrollInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265204,9 +264420,9 @@ export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
         }
     }
 
-    static fromJS(data: any): GoLiveV2RunPayrollInput {
+    static fromJS(data: any): GoLiveRunPayrollInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2RunPayrollInput();
+        let result = new GoLiveRunPayrollInput();
         result.init(data);
         return result;
     }
@@ -265224,23 +264440,23 @@ export class GoLiveV2RunPayrollInput implements IGoLiveV2RunPayrollInput {
     }
 }
 
-export interface IGoLiveV2RunPayrollInput {
+export interface IGoLiveRunPayrollInput {
     payDate: DateTime | undefined;
     payrollAreaName: string | undefined;
     employeeCodes: string[] | undefined;
 }
 
-export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
+export class GoLiveRunPayrollOutput implements IGoLiveRunPayrollOutput {
     succeeded!: boolean;
-    stoppedAt!: GoLiveV2StoppedAt;
+    stoppedAt!: GoLiveStoppedAt;
     message!: string | undefined;
-    nextStep!: GoLiveV2NextStep;
+    nextStep!: GoLiveNextStep;
     payInDate!: DateTime | undefined;
-    employees!: GoLiveV2EmployeeResultDto[] | undefined;
-    monthSetUp!: GoLiveV2SetUpPayrollMonthOutput;
+    employees!: GoLiveEmployeeResultDto[] | undefined;
+    monthSetUp!: GoLiveSetUpPayrollMonthOutput;
     leavePayLinksAdded!: number;
 
-    constructor(data?: IGoLiveV2RunPayrollOutput) {
+    constructor(data?: IGoLiveRunPayrollOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265259,16 +264475,16 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
-                    this.employees!.push(GoLiveV2EmployeeResultDto.fromJS(item));
+                    this.employees!.push(GoLiveEmployeeResultDto.fromJS(item));
             }
-            this.monthSetUp = _data["monthSetUp"] ? GoLiveV2SetUpPayrollMonthOutput.fromJS(_data["monthSetUp"]) : undefined as any;
+            this.monthSetUp = _data["monthSetUp"] ? GoLiveSetUpPayrollMonthOutput.fromJS(_data["monthSetUp"]) : undefined as any;
             this.leavePayLinksAdded = _data["leavePayLinksAdded"];
         }
     }
 
-    static fromJS(data: any): GoLiveV2RunPayrollOutput {
+    static fromJS(data: any): GoLiveRunPayrollOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2RunPayrollOutput();
+        let result = new GoLiveRunPayrollOutput();
         result.init(data);
         return result;
     }
@@ -265291,18 +264507,18 @@ export class GoLiveV2RunPayrollOutput implements IGoLiveV2RunPayrollOutput {
     }
 }
 
-export interface IGoLiveV2RunPayrollOutput {
+export interface IGoLiveRunPayrollOutput {
     succeeded: boolean;
-    stoppedAt: GoLiveV2StoppedAt;
+    stoppedAt: GoLiveStoppedAt;
     message: string | undefined;
-    nextStep: GoLiveV2NextStep;
+    nextStep: GoLiveNextStep;
     payInDate: DateTime | undefined;
-    employees: GoLiveV2EmployeeResultDto[] | undefined;
-    monthSetUp: GoLiveV2SetUpPayrollMonthOutput;
+    employees: GoLiveEmployeeResultDto[] | undefined;
+    monthSetUp: GoLiveSetUpPayrollMonthOutput;
     leavePayLinksAdded: number;
 }
 
-export enum GoLiveV2RunStatus {
+export enum GoLiveRunStatus {
     None = 0,
     Queued = 1,
     Running = 2,
@@ -265311,7 +264527,7 @@ export enum GoLiveV2RunStatus {
     Failed = 5,
 }
 
-export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDaysDto {
+export class GoLiveSalaryRegisterDaysDto implements IGoLiveSalaryRegisterDaysDto {
     wageCode!: string | undefined;
     wageName!: string | undefined;
     period!: DateTime;
@@ -265319,7 +264535,7 @@ export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDay
     number!: number;
     amount!: number;
 
-    constructor(data?: IGoLiveV2SalaryRegisterDaysDto) {
+    constructor(data?: IGoLiveSalaryRegisterDaysDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265339,9 +264555,9 @@ export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDay
         }
     }
 
-    static fromJS(data: any): GoLiveV2SalaryRegisterDaysDto {
+    static fromJS(data: any): GoLiveSalaryRegisterDaysDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SalaryRegisterDaysDto();
+        let result = new GoLiveSalaryRegisterDaysDto();
         result.init(data);
         return result;
     }
@@ -265358,7 +264574,7 @@ export class GoLiveV2SalaryRegisterDaysDto implements IGoLiveV2SalaryRegisterDay
     }
 }
 
-export interface IGoLiveV2SalaryRegisterDaysDto {
+export interface IGoLiveSalaryRegisterDaysDto {
     wageCode: string | undefined;
     wageName: string | undefined;
     period: DateTime;
@@ -265367,15 +264583,15 @@ export interface IGoLiveV2SalaryRegisterDaysDto {
     amount: number;
 }
 
-export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
+export class GoLiveSalaryRegisterDto implements IGoLiveSalaryRegisterDto {
     employeeCode!: string | undefined;
     employeeName!: string | undefined;
     forPeriod!: DateTime;
     inPeriod!: DateTime;
-    lines!: GoLiveV2SalaryRegisterLineDto[] | undefined;
-    days!: GoLiveV2SalaryRegisterDaysDto[] | undefined;
+    lines!: GoLiveSalaryRegisterLineDto[] | undefined;
+    days!: GoLiveSalaryRegisterDaysDto[] | undefined;
 
-    constructor(data?: IGoLiveV2SalaryRegisterDto) {
+    constructor(data?: IGoLiveSalaryRegisterDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265393,19 +264609,19 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
             if (Array.isArray(_data["lines"])) {
                 this.lines = [] as any;
                 for (let item of _data["lines"])
-                    this.lines!.push(GoLiveV2SalaryRegisterLineDto.fromJS(item));
+                    this.lines!.push(GoLiveSalaryRegisterLineDto.fromJS(item));
             }
             if (Array.isArray(_data["days"])) {
                 this.days = [] as any;
                 for (let item of _data["days"])
-                    this.days!.push(GoLiveV2SalaryRegisterDaysDto.fromJS(item));
+                    this.days!.push(GoLiveSalaryRegisterDaysDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): GoLiveV2SalaryRegisterDto {
+    static fromJS(data: any): GoLiveSalaryRegisterDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SalaryRegisterDto();
+        let result = new GoLiveSalaryRegisterDto();
         result.init(data);
         return result;
     }
@@ -265430,20 +264646,20 @@ export class GoLiveV2SalaryRegisterDto implements IGoLiveV2SalaryRegisterDto {
     }
 }
 
-export interface IGoLiveV2SalaryRegisterDto {
+export interface IGoLiveSalaryRegisterDto {
     employeeCode: string | undefined;
     employeeName: string | undefined;
     forPeriod: DateTime;
     inPeriod: DateTime;
-    lines: GoLiveV2SalaryRegisterLineDto[] | undefined;
-    days: GoLiveV2SalaryRegisterDaysDto[] | undefined;
+    lines: GoLiveSalaryRegisterLineDto[] | undefined;
+    days: GoLiveSalaryRegisterDaysDto[] | undefined;
 }
 
-export class GoLiveV2SalaryRegisterInput implements IGoLiveV2SalaryRegisterInput {
+export class GoLiveSalaryRegisterInput implements IGoLiveSalaryRegisterInput {
     payDate!: DateTime;
     employeeId!: number;
 
-    constructor(data?: IGoLiveV2SalaryRegisterInput) {
+    constructor(data?: IGoLiveSalaryRegisterInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265459,9 +264675,9 @@ export class GoLiveV2SalaryRegisterInput implements IGoLiveV2SalaryRegisterInput
         }
     }
 
-    static fromJS(data: any): GoLiveV2SalaryRegisterInput {
+    static fromJS(data: any): GoLiveSalaryRegisterInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SalaryRegisterInput();
+        let result = new GoLiveSalaryRegisterInput();
         result.init(data);
         return result;
     }
@@ -265474,12 +264690,12 @@ export class GoLiveV2SalaryRegisterInput implements IGoLiveV2SalaryRegisterInput
     }
 }
 
-export interface IGoLiveV2SalaryRegisterInput {
+export interface IGoLiveSalaryRegisterInput {
     payDate: DateTime;
     employeeId: number;
 }
 
-export class GoLiveV2SalaryRegisterLineDto implements IGoLiveV2SalaryRegisterLineDto {
+export class GoLiveSalaryRegisterLineDto implements IGoLiveSalaryRegisterLineDto {
     wageCode!: string | undefined;
     wageName!: string | undefined;
     group!: BillingType;
@@ -265487,7 +264703,7 @@ export class GoLiveV2SalaryRegisterLineDto implements IGoLiveV2SalaryRegisterLin
     number!: number;
     amount!: number;
 
-    constructor(data?: IGoLiveV2SalaryRegisterLineDto) {
+    constructor(data?: IGoLiveSalaryRegisterLineDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265507,9 +264723,9 @@ export class GoLiveV2SalaryRegisterLineDto implements IGoLiveV2SalaryRegisterLin
         }
     }
 
-    static fromJS(data: any): GoLiveV2SalaryRegisterLineDto {
+    static fromJS(data: any): GoLiveSalaryRegisterLineDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SalaryRegisterLineDto();
+        let result = new GoLiveSalaryRegisterLineDto();
         result.init(data);
         return result;
     }
@@ -265526,7 +264742,7 @@ export class GoLiveV2SalaryRegisterLineDto implements IGoLiveV2SalaryRegisterLin
     }
 }
 
-export interface IGoLiveV2SalaryRegisterLineDto {
+export interface IGoLiveSalaryRegisterLineDto {
     wageCode: string | undefined;
     wageName: string | undefined;
     group: BillingType;
@@ -265535,11 +264751,11 @@ export interface IGoLiveV2SalaryRegisterLineDto {
     amount: number;
 }
 
-export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMonthInput {
+export class GoLiveSetUpPayrollMonthInput implements IGoLiveSetUpPayrollMonthInput {
     payDate!: DateTime;
     payrollAreaName!: string;
 
-    constructor(data?: IGoLiveV2SetUpPayrollMonthInput) {
+    constructor(data?: IGoLiveSetUpPayrollMonthInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265555,9 +264771,9 @@ export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMont
         }
     }
 
-    static fromJS(data: any): GoLiveV2SetUpPayrollMonthInput {
+    static fromJS(data: any): GoLiveSetUpPayrollMonthInput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SetUpPayrollMonthInput();
+        let result = new GoLiveSetUpPayrollMonthInput();
         result.init(data);
         return result;
     }
@@ -265570,12 +264786,12 @@ export class GoLiveV2SetUpPayrollMonthInput implements IGoLiveV2SetUpPayrollMont
     }
 }
 
-export interface IGoLiveV2SetUpPayrollMonthInput {
+export interface IGoLiveSetUpPayrollMonthInput {
     payDate: DateTime;
     payrollAreaName: string;
 }
 
-export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMonthOutput {
+export class GoLiveSetUpPayrollMonthOutput implements IGoLiveSetUpPayrollMonthOutput {
     payrollAreaName!: string | undefined;
     payrollAreaCreated!: boolean;
     currencyCode!: string | undefined;
@@ -265587,7 +264803,7 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
     calendarYear!: number;
     calendarMonthsCreated!: number;
 
-    constructor(data?: IGoLiveV2SetUpPayrollMonthOutput) {
+    constructor(data?: IGoLiveSetUpPayrollMonthOutput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -265611,9 +264827,9 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
         }
     }
 
-    static fromJS(data: any): GoLiveV2SetUpPayrollMonthOutput {
+    static fromJS(data: any): GoLiveSetUpPayrollMonthOutput {
         data = typeof data === 'object' ? data : {};
-        let result = new GoLiveV2SetUpPayrollMonthOutput();
+        let result = new GoLiveSetUpPayrollMonthOutput();
         result.init(data);
         return result;
     }
@@ -265634,7 +264850,7 @@ export class GoLiveV2SetUpPayrollMonthOutput implements IGoLiveV2SetUpPayrollMon
     }
 }
 
-export interface IGoLiveV2SetUpPayrollMonthOutput {
+export interface IGoLiveSetUpPayrollMonthOutput {
     payrollAreaName: string | undefined;
     payrollAreaCreated: boolean;
     currencyCode: string | undefined;
@@ -265647,7 +264863,7 @@ export interface IGoLiveV2SetUpPayrollMonthOutput {
     calendarMonthsCreated: number;
 }
 
-export enum GoLiveV2StoppedAt {
+export enum GoLiveStoppedAt {
     None = 0,
     Input = 1,
     Engine = 2,
@@ -316107,114 +315323,6 @@ export enum RedirectAfterWFApproval {
     Dashboard = 2,
 }
 
-export class ReferenceDataPackDto implements IReferenceDataPackDto {
-    id!: string | undefined;
-    nameEn!: string | undefined;
-    nameAr!: string | undefined;
-    description!: string | undefined;
-    lines!: ReferenceDataPackLineDto[] | undefined;
-    totalRows!: number;
-
-    constructor(data?: IReferenceDataPackDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.nameEn = _data["nameEn"];
-            this.nameAr = _data["nameAr"];
-            this.description = _data["description"];
-            if (Array.isArray(_data["lines"])) {
-                this.lines = [] as any;
-                for (let item of _data["lines"])
-                    this.lines!.push(ReferenceDataPackLineDto.fromJS(item));
-            }
-            this.totalRows = _data["totalRows"];
-        }
-    }
-
-    static fromJS(data: any): ReferenceDataPackDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReferenceDataPackDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["nameEn"] = this.nameEn;
-        data["nameAr"] = this.nameAr;
-        data["description"] = this.description;
-        if (Array.isArray(this.lines)) {
-            data["lines"] = [];
-            for (let item of this.lines)
-                data["lines"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["totalRows"] = this.totalRows;
-        return data;
-    }
-}
-
-export interface IReferenceDataPackDto {
-    id: string | undefined;
-    nameEn: string | undefined;
-    nameAr: string | undefined;
-    description: string | undefined;
-    lines: ReferenceDataPackLineDto[] | undefined;
-    totalRows: number;
-}
-
-export class ReferenceDataPackLineDto implements IReferenceDataPackLineDto {
-    lookup!: string | undefined;
-    available!: number;
-    alreadyPresent!: number;
-
-    constructor(data?: IReferenceDataPackLineDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.lookup = _data["lookup"];
-            this.available = _data["available"];
-            this.alreadyPresent = _data["alreadyPresent"];
-        }
-    }
-
-    static fromJS(data: any): ReferenceDataPackLineDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReferenceDataPackLineDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["lookup"] = this.lookup;
-        data["available"] = this.available;
-        data["alreadyPresent"] = this.alreadyPresent;
-        return data;
-    }
-}
-
-export interface IReferenceDataPackLineDto {
-    lookup: string | undefined;
-    available: number;
-    alreadyPresent: number;
-}
-
 export class RefreshTokenResult implements IRefreshTokenResult {
     accessToken!: string | undefined;
     encryptedAccessToken!: string | undefined;
@@ -323386,46 +322494,6 @@ export interface ISaveClearanceChecklistInput {
     answers: ClearanceChecklistAnswerInput[] | undefined;
 }
 
-export class SaveGoLiveStepInput implements ISaveGoLiveStepInput {
-    stepId!: string;
-    payload!: string | undefined;
-
-    constructor(data?: ISaveGoLiveStepInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.stepId = _data["stepId"];
-            this.payload = _data["payload"];
-        }
-    }
-
-    static fromJS(data: any): SaveGoLiveStepInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new SaveGoLiveStepInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["stepId"] = this.stepId;
-        data["payload"] = this.payload;
-        return data;
-    }
-}
-
-export interface ISaveGoLiveStepInput {
-    stepId: string;
-    payload: string | undefined;
-}
-
 export class SavePageInput implements ISavePageInput {
     dashboardName!: string | undefined;
     application!: string | undefined;
@@ -324028,150 +323096,6 @@ export interface ISecuritySettingsEditDto {
     twoFactorLogin: TwoFactorLoginSettingsEditDto;
     userPasswordSettings: UserPasswordSettingsEditDto;
     sessionManagement: SessionManagementSettingsEditDto;
-}
-
-export class SeedReferenceDataInput implements ISeedReferenceDataInput {
-    packId!: string | undefined;
-
-    constructor(data?: ISeedReferenceDataInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.packId = _data["packId"];
-        }
-    }
-
-    static fromJS(data: any): SeedReferenceDataInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new SeedReferenceDataInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["packId"] = this.packId;
-        return data;
-    }
-}
-
-export interface ISeedReferenceDataInput {
-    packId: string | undefined;
-}
-
-export class SeedReferenceDataOutput implements ISeedReferenceDataOutput {
-    packs!: SeedReferenceDataPackResultDto[] | undefined;
-    totalInserted!: number;
-    totalSkipped!: number;
-
-    constructor(data?: ISeedReferenceDataOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["packs"])) {
-                this.packs = [] as any;
-                for (let item of _data["packs"])
-                    this.packs!.push(SeedReferenceDataPackResultDto.fromJS(item));
-            }
-            this.totalInserted = _data["totalInserted"];
-            this.totalSkipped = _data["totalSkipped"];
-        }
-    }
-
-    static fromJS(data: any): SeedReferenceDataOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new SeedReferenceDataOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.packs)) {
-            data["packs"] = [];
-            for (let item of this.packs)
-                data["packs"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["totalInserted"] = this.totalInserted;
-        data["totalSkipped"] = this.totalSkipped;
-        return data;
-    }
-}
-
-export interface ISeedReferenceDataOutput {
-    packs: SeedReferenceDataPackResultDto[] | undefined;
-    totalInserted: number;
-    totalSkipped: number;
-}
-
-export class SeedReferenceDataPackResultDto implements ISeedReferenceDataPackResultDto {
-    packId!: string | undefined;
-    lines!: ReferenceDataPackLineDto[] | undefined;
-    inserted!: number;
-    skipped!: number;
-
-    constructor(data?: ISeedReferenceDataPackResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.packId = _data["packId"];
-            if (Array.isArray(_data["lines"])) {
-                this.lines = [] as any;
-                for (let item of _data["lines"])
-                    this.lines!.push(ReferenceDataPackLineDto.fromJS(item));
-            }
-            this.inserted = _data["inserted"];
-            this.skipped = _data["skipped"];
-        }
-    }
-
-    static fromJS(data: any): SeedReferenceDataPackResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SeedReferenceDataPackResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["packId"] = this.packId;
-        if (Array.isArray(this.lines)) {
-            data["lines"] = [];
-            for (let item of this.lines)
-                data["lines"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["inserted"] = this.inserted;
-        data["skipped"] = this.skipped;
-        return data;
-    }
-}
-
-export interface ISeedReferenceDataPackResultDto {
-    packId: string | undefined;
-    lines: ReferenceDataPackLineDto[] | undefined;
-    inserted: number;
-    skipped: number;
 }
 
 export class SelfServiceSettingsEditDto implements ISelfServiceSettingsEditDto {

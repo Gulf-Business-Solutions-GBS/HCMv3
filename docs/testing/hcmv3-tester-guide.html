@@ -317,10 +317,7 @@
       <li><a href="#t99"><span class="n">99</span><span class="t">Test a rule without saving</span><span class="d">Sample values and a trace</span></a></li>
       <li><a href="#t100"><span class="n">100</span><span class="t">Write your own rule</span><span class="d">Make mobile number compulsory</span></a></li>
       <li><a href="#t101"><span class="n">101</span><span class="t">A rule that guards leave</span><span class="d">Maternity leave, female only</span></a></li>
-      <li class="mhead">Module 24 — Go-Live Setup</li>
-      <li class="first-in-module"><a href="#t102"><span class="n">102</span><span class="t">Answer the decisions</span><span class="d">Company, pay rules, leave</span></a></li>
-      <li><a href="#t103"><span class="n">103</span><span class="t">Paste employees from Excel</span><span class="d">Errors flagged cell by cell</span></a></li>
-      <li><a href="#t104"><span class="n">104</span><span class="t">Readiness check, then create</span><span class="d">Safe to run twice</span></a></li>
+      <li class="mhead">Module 24 — retired (Go-Live Setup is now Module 46)</li>
       <li class="mhead">Module 25 — Employee Self Service</li>
       <li class="first-in-module"><a href="#t105"><span class="n">105</span><span class="t">The Self Service home page</span><span class="d">Cards, team, shortcuts</span></a></li>
       <li><a href="#t106"><span class="n">106</span><span class="t">How every request screen works</span><span class="d">A letter request, and only your own</span></a></li>
@@ -413,7 +410,7 @@
       <li><a href="#t173"><span class="n">173</span><span class="t">Pay-related sections</span><span class="d">Fifteen sections, one payroll run</span></a></li>
       <li><a href="#t174"><span class="n">174</span><span class="t">Leaving, holding pay, and rejoining</span><span class="d">Separation to final settlement</span></a></li>
       <li><a href="#t175"><span class="n">175</span><span class="t">Talent, work and remaining sections</span><span class="d">The last twelve</span></a></li>
-      <li class="mhead">Module 46 — Go-Live Setup V2</li>
+      <li class="mhead">Module 46 — Go-Live Setup</li>
       <li class="first-in-module"><a href="#t176"><span class="n">176</span><span class="t">Step 1 — Load employee data</span><span class="d">Paste from Excel</span></a></li>
       <li><a href="#t177"><span class="n">177</span><span class="t">Step 2 — Run payroll and see what it paid</span><span class="d">Results, registers, payslips</span></a></li>
       <li><a href="#t178"><span class="n">178</span><span class="t">Step 3 — Generate the bank file</span><span class="d">Layouts and who is left out</span></a></li>
@@ -5702,148 +5699,10 @@
 
   <div class="module" id="m24">
     <span class="mnum">Module 24</span>
-    <h2>Go-Live Setup</h2>
-    <p>A guided checklist for setting up a new company for its first payroll: decisions first, then the people, then a readiness check that confirms everything fits together and creates the records.</p>
+    <h2>Retired</h2>
+    <p>This module tested the first version of Go-Live Setup, which has been removed. Go-Live Setup is now tested in <a href="#m46">Module 46</a>.</p>
     <hr>
   </div>
-
-  <div class="warn">
-    <p style="margin-bottom:0"><strong>Use a brand-new company for this module.</strong> Go-Live Setup is built for a company starting from nothing, and its final step creates real employees and settings. Create a fresh tenant as in Test 3 — for example <code>GOLIVE1</code> — and run every test in this module inside it.</p>
-  </div>
-
-  <section class="test" id="t102">
-    <span class="badge">Test 102</span>
-    <h2 class="tt">Answer the decisions</h2>
-
-    <div class="about">
-      <p><strong>What this screen is.</strong> <strong>Go-Live Setup</strong> opens on a readiness board, with steps grouped into stages. The first stage, <strong>Decisions</strong>, asks the questions that shape the payroll: the company basics, pay rules, pay elements, working time, leave, and end of service.</p>
-      <p style="margin-bottom:0"><strong>Nothing is locked</strong> until you sign off at the end. Answers can be changed at any time, and some carry a “Later” badge — they can wait until after the first payroll.</p>
-    </div>
-
-    <h3>Steps</h3>
-    <ol class="steps">
-      <li>Log in to <code>GOLIVE1</code> as <code>admin</code> and open <strong>Go-Live Setup</strong>.</li>
-      <li>Open the first step, <strong>Company</strong>, and answer each question.</li>
-      <li>Move to <strong>Pay rules</strong>. Find the question about paying someone who joins mid-month, and change your answer between the options. Watch the <strong>worked example</strong> beside it.</li>
-      <li>Add a note to one question.</li>
-      <li>Use <strong>Next step</strong> and <strong>Previous step</strong> to move through the stage, then <strong>Back to board</strong>.</li>
-      <li>Reload the page, and log out and back in.</li>
-    </ol>
-
-    <div class="expect">
-      <h3>Expected result</h3>
-      <ul>
-        <li>The worked example recalculates for each option — a joiner starting on the 16th of a month is paid a different amount depending on the rule.</li>
-        <li>Your answers and note are still there after a reload and a fresh login.</li>
-        <li>The readiness board shows each finished step as done.</li>
-        <li>Questions marked “Later” do not block the board.</li>
-      </ul>
-    </div>
-
-    <div class="result">
-      <span>Result:</span>
-      <span class="box"><i></i> Pass</span>
-      <span class="box"><i></i> Fail</span>
-      <span>Notes: <span class="fill">&nbsp;</span></span>
-    </div>
-    <a class="backtop" href="#top">↑ Back to the list of tests</a>
-  </section>
-
-  <section class="test" id="t103">
-    <span class="badge">Test 103</span>
-    <h2 class="tt">Paste employees from Excel</h2>
-
-    <div class="about">
-      <p><strong>What this screen is.</strong> The <strong>People</strong> stage takes the staff list, salaries, bank details and opening balances. Each is a grid you can paste straight into from Excel — one row per employee — with mistakes flagged cell by cell as you go.</p>
-    </div>
-
-    <h3>Steps</h3>
-    <ol class="steps">
-      <li>In Excel, type five employee rows matching the columns shown on the <strong>Employees</strong> step — name, civil ID, mobile, email, joining date and the rest.</li>
-      <li>Make two rows deliberately wrong: one with an invalid email, one with a joining date in the wrong format.</li>
-      <li>Copy all five rows and paste them into the grid.</li>
-      <li>Read the summary of how many cells need attention, and find the flagged cells.</li>
-      <li>Fix one error by typing in the grid. Use <strong>Undo</strong>, then fix it again.</li>
-      <li>Use <strong>Add rows</strong>, then <strong>Clear all</strong> on a copy, then paste again.</li>
-      <li>Continue to <strong>Salaries</strong> and paste a salary for each employee.</li>
-    </ol>
-
-    <div class="expect">
-      <h3>Expected result</h3>
-      <ul>
-        <li>All five rows paste in one go, in the right columns.</li>
-        <li>The two bad rows are flagged at the exact cells, with a reason — not the whole row rejected silently.</li>
-        <li>Fixing a cell clears its flag; Undo restores the previous value.</li>
-        <li>When everything is valid, the grid says so.</li>
-        <li>Arabic names paste and display correctly.</li>
-      </ul>
-    </div>
-
-    <div class="result">
-      <span>Result:</span>
-      <span class="box"><i></i> Pass</span>
-      <span class="box"><i></i> Fail</span>
-      <span>Notes: <span class="fill">&nbsp;</span></span>
-    </div>
-    <a class="backtop" href="#top">↑ Back to the list of tests</a>
-  </section>
-
-  <section class="test" id="t104">
-    <span class="badge">Test 104</span>
-    <h2 class="tt">Readiness check, then create the records</h2>
-
-    <div class="about">
-      <p><strong>The readiness board.</strong> Shows whether the company is ready for its first payroll. If not, it lists exactly what is holding it up, each with a <strong>Fix it</strong> link, plus <strong>consistency checks</strong> across steps — such as a salary for someone not on the staff list.</p>
-      <p style="margin-bottom:0"><strong>Check, then create.</strong> The final step first reports what <em>would</em> be created or updated, without writing anything. Creating is safe to repeat: it updates what already exists rather than adding it twice.</p>
-    </div>
-
-    <h3>Part 1 — Not ready yet</h3>
-    <ol class="steps">
-      <li>Leave one required step unfinished and open the readiness board.</li>
-      <li>Read the <strong>What is holding this up</strong> list, and click one <strong>Fix it</strong> link.</li>
-      <li>Add a salary for a person who is not on the Employees grid, and look at the consistency checks.</li>
-    </ol>
-
-    <div class="expect">
-      <h3>Expected result</h3>
-      <ul>
-        <li>The board says <strong>not ready</strong>, and lists the unfinished step.</li>
-        <li><strong>Fix it</strong> takes you straight to that step.</li>
-        <li>The consistency checks catch the salary with no matching employee.</li>
-      </ul>
-    </div>
-
-    <h3>Part 2 — Ready, check, create</h3>
-    <ol class="steps">
-      <li>Finish every required step and fix the consistency problem. The board should now say <strong>ready</strong>.</li>
-      <li>Under <strong>Create the records</strong>, click <strong>Check what will happen</strong>. Read the counts of <em>New</em>, <em>Updated</em> and <em>Skipped</em> for each step.</li>
-      <li>Confirm Personnel Administration → Employees is still empty — the check wrote nothing.</li>
-      <li>Now click <strong>Create the records</strong>.</li>
-      <li>Click <strong>Create the records</strong> a <strong>second</strong> time.</li>
-    </ol>
-
-    <div class="expect">
-      <h3>Expected result</h3>
-      <ul>
-        <li>The check reports what would be created, and changes nothing. With no problems it says everything checks out.</li>
-        <li>Creating adds the employees and settings, and its New counts match the check.</li>
-        <li>The second run shows them as <strong>Updated</strong>, not New — still five employees, not ten.</li>
-        <li>Any problems appear under <em>Rows that could not be used</em>, naming the step and row — not as a single failure.</li>
-      </ul>
-    </div>
-
-    <div class="warn">
-      <p style="margin-bottom:0"><strong>The last step, Trial payroll, is marked “Needs backend”.</strong> It is not built yet — it needs the payroll engine connected to a practice period and a comparison report against the old system. Do not report it; the readiness board is the last working check for now.</p>
-    </div>
-
-    <div class="result">
-      <span>Result:</span>
-      <span class="box"><i></i> Pass</span>
-      <span class="box"><i></i> Fail</span>
-      <span>Notes: <span class="fill">&nbsp;</span></span>
-    </div>
-    <a class="backtop" href="#top">↑ Back to the list of tests</a>
-  </section>
 
   <div class="module" id="m25">
     <span class="mnum">Module 25</span>
@@ -8947,14 +8806,14 @@
 
   <div class="module" id="m46">
     <span class="mnum">Module 46</span>
-    <h2>Go-Live Setup V2</h2>
-    <p>A second, much shorter way to take a new company live: paste the employees, run the payroll, make the bank file. It sits in the menu beside the original Go-Live Setup (Module 24) so the two approaches can be compared — test both.</p>
+    <h2>Go-Live Setup</h2>
+    <p>How a new company is taken live: paste the employees, run the payroll, make the bank file.</p>
     <hr>
   </div>
 
   <div class="warn">
-    <p><strong>Use a brand-new, empty company — never <code>Default</code>.</strong> V2 creates real employees, a payroll month and live salary registers. Create a fresh tenant as in Test 3, for example <code>GOLIVE2</code>, tick it <strong>Active</strong>, and run this whole module inside it.</p>
-    <p style="margin-bottom:0"><strong>The user needs payroll rights too.</strong> Besides Go-Live Setup, running V2 needs permission to run the payroll engine and the time engine, and to export the payroll sheet. The company's <code>admin</code> has all of these.</p>
+    <p><strong>Use a brand-new, empty company — never <code>Default</code>.</strong> Go-Live Setup creates real employees, a payroll month and live salary registers. Create a fresh tenant as in Test 3, for example <code>GOLIVE2</code>, tick it <strong>Active</strong>, and run this whole module inside it.</p>
+    <p style="margin-bottom:0"><strong>The user needs payroll rights too.</strong> Besides Go-Live Setup, running it needs permission to run the payroll engine and the time engine, and to export the payroll sheet. The company's <code>admin</code> has all of these.</p>
   </div>
 
   <section class="test" id="t176">
@@ -8968,7 +8827,7 @@
 
     <h3>Part 1 — Paste and check</h3>
     <ol class="steps">
-      <li>Log in to <code>GOLIVE2</code> as <code>admin</code> and open <strong>Go-Live Setup V2</strong>.</li>
+      <li>Log in to <code>GOLIVE2</code> as <code>admin</code> and open <strong>Go-Live Setup</strong>.</li>
       <li>Type the company name, for example <code>ABC Holding</code>, and leave the payroll area as <strong>Default Payroll Area</strong>.</li>
       <li>In Excel, prepare five employees with all the columns. Make three rows deliberately wrong: a civil ID with letters, an invalid IBAN, and a blank basic salary.</li>
       <li>Copy the rows and paste them into the grid. Try moving around with Enter, Tab and the arrow keys, and edit a cell with one click.</li>
@@ -9019,7 +8878,7 @@
     <h2 class="tt">Step 2 — Run payroll and see what it paid</h2>
 
     <div class="about">
-      <p><strong>What this step is.</strong> Pick a month and click <strong>Run payroll</strong>. If the payroll month does not exist yet, V2 sets it up first — the pay calendar for the year and the locked control record. Then it runs the <strong>time engine</strong> and the <strong>payroll engine</strong> for the month, and shows the results straight away.</p>
+      <p><strong>What this step is.</strong> Pick a month and click <strong>Run payroll</strong>. If the payroll month does not exist yet, Go-Live Setup sets it up first — the pay calendar for the year and the locked control record. Then it runs the <strong>time engine</strong> and the <strong>payroll engine</strong> for the month, and shows the results straight away.</p>
       <p style="margin-bottom:0"><strong>The results</strong> list every employee with earnings, deductions and net pay, with search and paging. From there you can view one person's salary register, or download the payroll sheet, the salary register and everyone's payslips.</p>
     </div>
 

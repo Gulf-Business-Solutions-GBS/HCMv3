@@ -1,0 +1,584 @@
+.gl-step,
+.gl-log {
+    margin-bottom: 1.5rem;
+}
+
+.gl-step-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.gl-step-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+}
+
+.gl-step-hint {
+    margin: 0;
+    color: var(--bs-gray-600);
+}
+
+.gl-run {
+    min-width: 11rem;
+}
+
+.gl-result {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.6rem;
+    border-inline-start: 4px solid var(--bs-warning);
+    background: var(--bs-warning-bg-subtle, #fff8e6);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.gl-result.gl-ok {
+    border-inline-start-color: var(--bs-success);
+    background: var(--bs-success-bg-subtle, #e8fff3);
+}
+
+.gl-outcome {
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gl-said-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bs-gray-600);
+    margin-top: 0.4rem;
+}
+
+/* The engine's own words are the point of this screen, so they are set apart and never reworded. */
+.gl-said {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.4rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+}
+
+.gl-period {
+    color: var(--bs-gray-700);
+}
+
+.gl-table {
+    margin: 0;
+}
+
+.gl-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: nowrap;
+}
+
+.gl-log-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.gl-empty {
+    margin: 0;
+    color: var(--bs-gray-600);
+}
+
+.gl-attempts {
+    margin: 0;
+    padding-inline-start: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.gl-attempt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.gl-time {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--bs-gray-600);
+}
+
+.gl-attempt-said {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9rem;
+}
+
+.gl-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem 1.5rem;
+    margin-top: 1.25rem;
+}
+
+.gl-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.gl-field .form-label {
+    margin: 0;
+    font-weight: 600;
+}
+
+.gl-field-note {
+    color: var(--bs-gray-700);
+    font-size: 0.9rem;
+}
+
+/* Every Go-Live Setup field records which engine refusal it was added for. */
+.gl-field-why {
+    color: var(--bs-gray-500);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* The step that answers the refusal sits inside it, so the two read as question and answer. */
+.gl-next {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--bs-gray-400);
+}
+
+.gl-next-text {
+    margin: 0;
+}
+
+.gl-step-number {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bs-primary);
+    margin-bottom: 0.2rem;
+}
+
+.gl-grid {
+    margin-top: 1.25rem;
+}
+
+.gl-grid-blocked {
+    margin: 0.5rem 0 0;
+    color: var(--bs-danger);
+    font-weight: 600;
+}
+
+/* Some rows loaded and some did not: amber, not green, so the failures are not missed. */
+.gl-result.gl-ok.gl-partial {
+    border-inline-start-color: var(--bs-warning);
+    background: var(--bs-warning-bg-subtle, #fff8e6);
+}
+
+.gl-failed-rows {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* ---------- load progress window ---------- */
+.gl-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.gl-modal {
+    width: min(34rem, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.75rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.gl-modal-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.gl-progress-bar {
+    height: 0.6rem;
+    border-radius: 1rem;
+    background: var(--bs-gray-200);
+    overflow: hidden;
+}
+
+.gl-progress-fill {
+    height: 100%;
+    background: var(--bs-primary);
+    transition: width 0.3s ease;
+}
+
+.gl-progress-caption {
+    font-size: 0.85rem;
+    color: var(--bs-gray-600);
+    font-variant-numeric: tabular-nums;
+}
+
+.gl-progress-now {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.gl-progress-warn {
+    color: var(--bs-warning-text-emphasis, #997404);
+}
+
+.gl-progress-note {
+    font-size: 0.85rem;
+    color: var(--bs-gray-600);
+}
+
+.gl-progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem 1rem;
+}
+
+.gl-progress-stats div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0.75rem;
+    background: var(--bs-gray-100);
+    border-radius: 0.4rem;
+}
+
+.gl-progress-stats span {
+    font-size: 0.75rem;
+    color: var(--bs-gray-600);
+}
+
+.gl-progress-stats strong {
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.gl-progress-recent {
+    margin: 0;
+    padding-inline-start: 1rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.gl-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+/* What Run payroll set up for the month before running, at the top of its result. */
+.gl-setup-line {
+    color: var(--bs-success-text-emphasis, #0a3622);
+    font-size: 0.95rem;
+}
+
+/* A square arrow button: back to the previous step. */
+.gl-step-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ---------- the three steps ---------- */
+.gl-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0 2rem;
+    flex-wrap: wrap;
+}
+
+/* Name and description above, the circle below -- the shape a roadmap is read in. */
+.gl-step-dot {
+    --gl-step-colour: var(--bs-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: min(15rem, 32vw);
+    background: none;
+    border: 0;
+    padding: 0.5rem;
+    color: var(--bs-gray-700);
+    text-align: center;
+}
+
+.gl-step-2 {
+    --gl-step-colour: #f1a02a;
+}
+
+.gl-step-3 {
+    --gl-step-colour: #7239ea;
+}
+
+.gl-step-dot:disabled {
+    --gl-step-colour: var(--bs-gray-400);
+    opacity: 0.7;
+}
+
+.gl-step-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--gl-step-colour);
+    white-space: nowrap;
+}
+
+.gl-step-what {
+    font-size: 0.9rem;
+    color: var(--bs-gray-600);
+    line-height: 1.3;
+    min-height: 2.6em;
+}
+
+.gl-step-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 8rem;
+    height: 8rem;
+    margin-top: 0.4rem;
+    border-radius: 50%;
+    border: 4px solid var(--gl-step-colour);
+    background: var(--bs-body-bg, #fff);
+    color: var(--gl-step-colour);
+    flex: none;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* The icon carries its own size: the theme sets one on .fa that would win over the circle. */
+.gl-step-circle .fa {
+    font-size: 4rem;
+    line-height: 1;
+}
+
+/* A finished step keeps its own colours; the green tick is what marks it done. */
+
+.gl-step-current .gl-step-circle {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--gl-step-colour) 20%, transparent);
+}
+
+/* A green tick beside the circle when the step is done -- no badge, nothing over the icon. */
+.gl-step-tick {
+    position: absolute;
+    right: -1.25rem;
+    bottom: -0.75rem;
+    line-height: 1;
+}
+
+/* Green, and its own size: inside the circle it would otherwise take the icon rule and, on a
+   finished step, the white the filled circle paints its icon. */
+.gl-step-circle .gl-step-tick .fa {
+    font-size: 4rem;
+    color: var(--bs-success, #17c653);
+    text-shadow: 0 0 4px var(--bs-body-bg, #fff);
+}
+
+/* Level with the middle of the circles: half the 8rem circle, plus the step's 0.5rem padding below it. */
+.gl-step-line {
+    flex: 0 1 5rem;
+    align-self: flex-end;
+    height: 0;
+    margin-bottom: 4.5rem;
+    border-top: 2px dashed var(--bs-gray-400);
+}
+
+/* ---------- step 3: results ---------- */
+.gl-results-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.gl-results-summary {
+    margin: 0;
+    color: var(--bs-gray-700);
+}
+
+/* The count on the left, the search on the right, above the grid. */
+.gl-results-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0.75rem;
+}
+
+.gl-results-search {
+    position: relative;
+    width: min(100%, 280px);
+}
+
+.gl-results-search .fa-search {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 0.75rem;
+    transform: translateY(-50%);
+    color: var(--bs-gray-500);
+    pointer-events: none;
+}
+
+.gl-results-search input {
+    padding-inline-start: 2.1rem;
+}
+
+.gl-pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.gl-pager-info {
+    color: var(--bs-gray-700);
+    font-variant-numeric: tabular-nums;
+}
+
+.gl-pager-size {
+    width: auto;
+}
+
+.gl-num {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.gl-results-table tfoot td {
+    border-top: 2px solid var(--bs-gray-300);
+}
+
+/* The paying bank's codes for the other banks: one box per bank employees are paid into. */
+.gl-payee-banks {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--bs-gray-400);
+}
+
+.gl-payee-list {
+    margin: 0.5rem 0 0;
+    padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* ---------- Salary Register drawer ---------- */
+.gl-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    background: rgba(15, 23, 42, 0.35);
+}
+
+.gl-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1056;
+    width: min(46rem, 100%);
+    background: var(--bs-body-bg, #fff);
+    box-shadow: -1rem 0 3rem rgba(0, 0, 0, 0.2);
+    padding: 1.5rem 1.75rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gl-drawer-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.gl-register-table {
+    margin-bottom: 0.75rem;
+}
+
+.gl-register-table tfoot td {
+    border-top: 2px solid var(--bs-gray-300);
+}
+
+/* A checkbox beside the company name, lined up with the name box rather than its label. */
+.gl-field-check {
+    justify-content: flex-start;
+    padding-top: 2.1rem;
+}
+
+.gl-field-check .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+/* Employees to run: All shows every code; Selected is a blank column to paste codes into. */
+.gl-run-employees-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.gl-run-count {
+    color: var(--bs-gray-700);
+    font-variant-numeric: tabular-nums;
+}
+
+.gl-codes {
+    font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.9rem;
+    min-height: 10rem;
+    resize: vertical;
+}
+
+.gl-codes-readonly {
+    background: var(--bs-gray-100);
+}

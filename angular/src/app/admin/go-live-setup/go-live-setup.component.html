@@ -1,0 +1,1152 @@
+<div [@routerTransition]>
+    <sub-header [title]="'GoLiveSetup' | localize" [description]="'GoLiveIntro' | localize" />
+
+    <div [class]="containerClass">
+        <!-- Where you are, and what the data says can be opened yet. -->
+        <nav class="gl-steps" [attr.aria-label]="'GoLiveSetup' | localize">
+            @for (step of steps(); track step.number; let last = $last) {
+                <button
+                    type="button"
+                    class="gl-step-dot"
+                    [class]="'gl-step-' + step.number"
+                    [class.gl-step-current]="step.number === currentStep()"
+                    [class.gl-step-done]="step.done"
+                    [disabled]="!step.ready"
+                    [title]="step.ready ? step.title : step.why"
+                    [attr.aria-current]="step.number === currentStep() ? 'step' : null"
+                    (click)="goToStep(step.number)">
+                    <span class="gl-step-name">{{ l('GoLiveStepNumbered', step.number, step.title) }}</span>
+                    <span class="gl-step-what">{{ step.what }}</span>
+                    <span class="gl-step-circle">
+                        <i class="fa" [class]="'fa ' + step.icon" aria-hidden="true"></i>
+                        @if (step.done) {
+                            <span class="gl-step-tick"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        }
+                    </span>
+                </button>
+
+                @if (!last) {
+                    <span class="gl-step-line" aria-hidden="true"></span>
+                }
+            }
+        </nav>
+
+        <!-- Step 1: Load employee data. Added because the engine found nobody to pay. -->
+        <div class="card card-custom gl-step" id="gl-load-employees" [hidden]="currentStep() !== 1">
+            <div class="card-body">
+                <div class="gl-step-head">
+                    <div>
+                        <div class="gl-step-number">{{ l('GoLiveStep', 1) }}</div>
+                        <h3 class="gl-step-title">{{ 'GoLiveLoadEmployees' | localize }}</h3>
+                        <p class="gl-step-hint">{{ 'GoLiveLoadEmployeesHint' | localize }}</p>
+                    </div>
+
+                    <div class="gl-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-primary gl-run"
+                            [disabled]="loading() || !canLoad()"
+                            [title]="loadUnchanged() ? ('GoLiveLoadNoChanges' | localize) : ''"
+                            (click)="loadEmployees()">
+                            @if (loading()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                {{ 'GoLiveLoading' | localize }}
+                            } @else {
+                                <i class="fa fa-user-plus me-2" aria-hidden="true"></i>
+                                {{ loadButtonLabel() }}
+                            }
+                        </button>
+                        <button type="button" class="btn btn-light-danger" [disabled]="loading()" (click)="openClear()">
+                            <i class="fa fa-eraser me-2" aria-hidden="true"></i>
+                            {{ 'GoLiveClear' | localize }}
+                        </button>
+                        <button type="button" class="btn btn-light-success" [disabled]="exportingEmployees()" (click)="exportEmployees()">
+                            @if (exportingEmployees()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'ExportToExcel' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="openStep() < 2"
+                            [title]="
+                                gridChanged() && unlockedStep() >= 2
+                                    ? ('GoLiveLoadChangesFirst' | localize)
+                                    : openStep() < 2
+                                      ? ('GoLiveStepNeedsEmployees' | localize)
+                                      : ''
+                            "
+                            (click)="goToStep(2)">
+                            {{ l('GoLiveGoToStep', 2) }}
+                            <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="gl-fields">
+                    <div class="gl-field">
+                        <label class="form-label" for="gl-org-unit">{{ 'GoLiveOrganizationUnit' | localize }}</label>
+                        <input
+                            id="gl-org-unit"
+                            type="text"
+                            class="form-control"
+                            maxlength="128"
+                            [placeholder]="'GoLiveOrganizationUnitPlaceholder' | localize"
+                            [value]="organizationUnitName()"
+                            (input)="onOrganizationUnitChange($event)" />
+                        <div class="gl-field-note">{{ 'GoLiveOrganizationUnitHint' | localize }}</div>
+                    </div>
+                    <div class="gl-field gl-field-check">
+                        <label class="form-check form-check-custom form-check-solid">
+                            <input
+                                id="gl-saturday-rest"
+                                class="form-check-input"
+                                type="checkbox"
+                                [checked]="saturdayIsRestDay()"
+                                (change)="onSaturdayRestDayChange($event)" />
+                            <span class="form-check-label fw-semibold">{{ 'GoLiveSaturdayRestDay' | localize }}</span>
+                        </label>
+                        <div class="gl-field-note">{{ 'GoLiveSaturdayRestDayHint' | localize }}</div>
+                    </div>
+                </div>
+
+                <div class="gl-grid">
+                    <app-paste-grid
+                        [columns]="employeeColumns()"
+                        [(rows)]="employeeRows"
+                        [padRows]="20"
+                        [viewportHeight]="320"
+                        (issuesChange)="gridIssues.set($event)" />
+                </div>
+
+                @if (gridIssues().length > 0) {
+                    <p class="gl-grid-blocked">{{ 'GoLiveFixGridFirst' | localize }}</p>
+                }
+
+                @if (lastLoad(); as load) {
+                    <div class="gl-result gl-ok" [class.gl-partial]="failedRows(load).length > 0" role="status">
+                        @for (line of describeLoad(load); track line) {
+                            <div class="gl-outcome">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                {{ line }}
+                            </div>
+                        }
+
+                        @if (failedRows(load); as failed) {
+                            @if (failed.length > 0) {
+                                <div class="gl-said-label">{{ l('GoLiveLoadRowsFailed', failed.length) }}</div>
+                                <ul class="gl-failed-rows">
+                                    @for (row of failed; track row.rowNumber) {
+                                        <li>
+                                            <span class="gl-code">{{ l('GoLiveRowLabel', row.rowNumber) }}</span>
+                                            @if (row.code) {
+                                                <span class="gl-code">· {{ row.code }}</span>
+                                            }
+                                            — {{ row.message }}
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        }
+
+                        <p class="gl-next-text">{{ 'GoLivePressRunAgain' | localize }}</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Step 2: Run payroll, and what it paid -- the goal every other step was added for. -->
+        <div class="card card-custom gl-step" [hidden]="currentStep() !== 2">
+            <div class="card-body">
+                <div class="gl-step-head">
+                    <div>
+                        <div class="gl-step-number">{{ l('GoLiveStep', 2) }}</div>
+                        <h3 class="gl-step-title">{{ 'GoLiveRunAndResults' | localize }}</h3>
+                        <p class="gl-step-hint">{{ 'GoLiveRunAndResultsHint' | localize }}</p>
+                    </div>
+
+                    <div class="gl-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary gl-step-back"
+                            [title]="l('GoLiveBackToStep', 1)"
+                            [attr.aria-label]="l('GoLiveBackToStep', 1)"
+                            (click)="goToStep(1)">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary gl-run"
+                            [disabled]="!running() && runMode() === 'selected' && selectedCodes().length === 0"
+                            (click)="runPayroll()">
+                            @if (running()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                {{ (runWindowHidden() ? 'GoLiveRunShowProgress' : 'GoLiveRunning') | localize }}
+                            } @else {
+                                <i class="fa fa-play me-2" aria-hidden="true"></i>
+                                {{ 'GoLiveRunPayroll' | localize }}
+                            }
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLivePayrollSheetHint' | localize"
+                            (click)="openPayrollSheet()">
+                            @if (exporting() === 'sheet') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLivePayrollSheet' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLiveSalaryRegisterHint' | localize"
+                            (click)="openSalaryRegister()">
+                            @if (exporting() === 'register') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-excel me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveSalaryRegister' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd() || exporting() !== null"
+                            [title]="'GoLivePayslipsHint' | localize"
+                            (click)="showPayslips()">
+                            @if (exporting() === 'payslips') {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-file-pdf me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLivePayslips' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="!monthEnd()"
+                            (click)="compareOpen.set(true)">
+                            <i class="fa fa-balance-scale me-2" aria-hidden="true"></i>
+                            {{ 'GoLiveCompareButton' | localize }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-light-primary"
+                            [disabled]="openStep() < 3"
+                            [title]="openStep() < 3 ? ('GoLiveStepNeedsPayroll' | localize) : ''"
+                            (click)="goToStep(3)">
+                            {{ l('GoLiveGoToStep', 3) }}
+                            <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="gl-fields">
+                    <div class="gl-field">
+                        <label class="form-label" for="gl-pay-month">{{ 'GoLivePayMonth' | localize }}</label>
+                        <input
+                            id="gl-pay-month"
+                            type="month"
+                            class="form-control"
+                            [value]="payMonth()"
+                            (input)="onPayMonthChange($event)" />
+                        @if (monthEnd(); as end) {
+                            <div class="gl-field-note">{{ l('GoLivePaysUpTo', end.toFormat('dd/MM/yyyy')) }}</div>
+                        }
+                    </div>
+
+                    <div class="gl-field gl-run-employees">
+                        <label class="form-label" for="gl-run-codes">{{ 'GoLiveRunEmployees' | localize }}</label>
+                        <div class="gl-run-employees-bar">
+                            <div class="btn-group btn-group-sm" role="group" [attr.aria-label]="'GoLiveRunEmployees' | localize">
+                                <button
+                                    type="button"
+                                    class="btn"
+                                    [class.btn-primary]="runMode() === 'all'"
+                                    [class.btn-light]="runMode() !== 'all'"
+                                    [attr.aria-pressed]="runMode() === 'all'"
+                                    [disabled]="running()"
+                                    (click)="setRunMode('all')">
+                                    {{ 'GoLiveRunEmployeesAll' | localize }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn"
+                                    [class.btn-primary]="runMode() === 'selected'"
+                                    [class.btn-light]="runMode() !== 'selected'"
+                                    [attr.aria-pressed]="runMode() === 'selected'"
+                                    [disabled]="running()"
+                                    (click)="setRunMode('selected')">
+                                    {{ 'GoLiveRunEmployeesSelected' | localize }}
+                                </button>
+                            </div>
+                            <span class="gl-run-count">{{ l('GoLiveRunEmployeesCount', runCount()) }}</span>
+                            @if (runMode() === 'selected' && selectedCodesText()) {
+                                <button type="button" class="btn btn-sm btn-light-danger" (click)="clearSelectedCodes()">
+                                    <i class="fa fa-eraser me-1" aria-hidden="true"></i>{{ 'GoLiveRunEmployeesClear' | localize }}
+                                </button>
+                            }
+                        </div>
+                        <textarea
+                            id="gl-run-codes"
+                            class="form-control gl-codes"
+                            rows="8"
+                            spellcheck="false"
+                            [readonly]="runMode() === 'all'"
+                            [class.gl-codes-readonly]="runMode() === 'all'"
+                            [value]="runCodesText()"
+                            (input)="onSelectedCodes($event)"></textarea>
+                        <div class="gl-field-note">
+                            {{ (runMode() === 'all' ? 'GoLiveRunEmployeesHintAll' : 'GoLiveRunEmployeesHintSelected') | localize }}
+                        </div>
+                    </div>
+                </div>
+
+                @if (latest(); as result) {
+                    <div
+                        class="gl-result"
+                        [class.gl-ok]="result.succeeded"
+                        [class.gl-stop]="!result.succeeded"
+                        role="status">
+                        <div class="gl-outcome">
+                            <i
+                                class="fa"
+                                [class.fa-check-circle]="result.succeeded"
+                                [class.fa-hand-paper]="!result.succeeded"
+                                aria-hidden="true"></i>
+                            {{ outcomeKey(result) | localize }}
+                        </div>
+
+                        @if (result.monthSetUp; as setUp) {
+                            @for (line of describeSetUp(setUp); track line) {
+                                <div class="gl-setup-line">
+                                    <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                    {{ line }}
+                                </div>
+                            }
+                        }
+
+                        @if (result.leavePayLinksAdded > 0) {
+                            <div class="gl-setup-line">
+                                <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                {{ l('GoLiveLeavePayLinksAdded', result.leavePayLinksAdded) }}
+                            </div>
+                        }
+
+                        @if (result.message) {
+                            <div class="gl-said-label">{{ saidLabel(result) | localize }}</div>
+                            <blockquote class="gl-said">{{ result.message }}</blockquote>
+                        }
+
+                        @if (result.nextStep === NextStep.SetUpPayrollMonth) {
+                            <div class="gl-next">
+                                <p class="gl-next-text">{{ 'GoLiveNextSetUpMonth' | localize }}</p>
+                                <button
+                                    type="button"
+                                    class="btn btn-success gl-next-button"
+                                    [disabled]="settingUp() || !canSetUp()"
+                                    (click)="setUpPayrollMonth()">
+                                    @if (settingUp()) {
+                                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                        {{ 'GoLiveSettingUp' | localize }}
+                                    } @else {
+                                        <i class="fa fa-tools me-2" aria-hidden="true"></i>
+                                        {{ setUpLabel() }}
+                                    }
+                                </button>
+                            </div>
+                        }
+
+                        @if (result.nextStep === NextStep.LoadEmployees) {
+                            <div class="gl-next">
+                                <p class="gl-next-text">{{ 'GoLiveNextLoadEmployees' | localize }}</p>
+                                <button
+                                    type="button"
+                                    class="btn btn-success gl-next-button"
+                                    (click)="goToLoadEmployees()">
+                                    <i class="fa fa-arrow-up me-2" aria-hidden="true"></i>
+                                    {{ 'GoLiveLoadEmployees' | localize }}
+                                </button>
+                            </div>
+                        }
+
+                        @if (payPeriod(result); as period) {
+                            <div class="gl-period">{{ period }}</div>
+                        }
+
+                        @if (result.employees?.length) {
+                            <div class="gl-said-label">{{ 'GoLiveEmployeeResults' | localize }}</div>
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle gl-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'GoLiveColEmployee' | localize }}</th>
+                                            <th>{{ 'GoLiveColResult' | localize }}</th>
+                                            <th>{{ 'GoLiveColMessage' | localize }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (employee of result.employees; track employee.employeeCode) {
+                                            <tr>
+                                                <td class="gl-code">{{ employee.employeeCode }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge"
+                                                        [class.badge-light-success]="employee.succeeded"
+                                                        [class.badge-light-danger]="!employee.succeeded">
+                                                        {{
+                                                            (employee.succeeded ? 'GoLivePaid' : 'GoLiveNotPaid')
+                                                                | localize
+                                                        }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ employee.message }}</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (lastSetUp(); as setUp) {
+                    <div class="gl-result gl-ok" role="status">
+                        @for (line of describeSetUp(setUp); track line) {
+                            <div class="gl-outcome">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                {{ line }}
+                            </div>
+                        }
+                        <p class="gl-next-text">{{ 'GoLivePressRunAgain' | localize }}</p>
+                    </div>
+                }
+
+                <!-- What the run paid, in the same step: the results follow the month on their own. -->
+                @if (!monthEnd()) {
+                    <p class="gl-progress-note mt-3">{{ 'GoLiveResultsPickMonth' | localize }}</p>
+                }
+
+                @if (loadingResults() && !results()) {
+                    <p class="gl-progress-note mt-3">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    </p>
+                }
+
+                @if (paidResults(); as res) {
+                    <div class="gl-results-bar">
+                        <p class="gl-results-summary">
+                            {{ l('GoLiveResultsPaidCount', res.employeesPaid, res.employees.length, resultsMonth()) }}
+                            @if (loadingResults()) {
+                                <span class="spinner-border spinner-border-sm ms-2" aria-hidden="true"></span>
+                            }
+                        </p>
+                        <div class="gl-results-search">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <input
+                                type="search"
+                                class="form-control form-control-sm"
+                                [value]="resultsSearch()"
+                                [placeholder]="'GoLiveResultsSearch' | localize"
+                                [attr.aria-label]="'GoLiveResultsSearch' | localize"
+                                (input)="onResultsSearch($event)" />
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-row-bordered align-middle gl-results-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'GoLiveColCode' | localize }}</th>
+                                    <th>{{ 'GoLiveColFullName' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveColEarnings' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveColDeductions' | localize }}</th>
+                                    <th class="text-end">{{ 'GoLiveColNetPay' | localize }}</th>
+                                    <th>{{ 'GoLiveColResult' | localize }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (row of pagedResults(); track row.employeeId) {
+                                    <tr>
+                                        <td class="gl-code">{{ row.employeeCode }}</td>
+                                        <td>{{ row.employeeName }}</td>
+                                        <td class="text-end gl-num">{{ row.earnings | number: '1.3-3' }}</td>
+                                        <td class="text-end gl-num">{{ row.deductions | number: '1.3-3' }}</td>
+                                        <td class="text-end gl-num fw-semibold">{{ row.netPay | number: '1.3-3' }}</td>
+                                        <td>
+                                            <span
+                                                class="badge"
+                                                [class.badge-light-success]="row.hasRegister"
+                                                [class.badge-light-danger]="!row.hasRegister">
+                                                {{ (row.hasRegister ? 'GoLivePaid' : 'GoLiveNotPaid') | localize }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light"
+                                                [disabled]="!row.hasRegister"
+                                                (click)="viewRegister(row)">
+                                                {{ 'GoLiveView' | localize }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                } @empty {
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-5">
+                                            {{ l('GoLiveResultsNoMatch', resultsSearch().trim()) }}
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="2">{{ 'GoLiveTotal' | localize }}</td>
+                                    <td class="text-end gl-num">{{ res.totalEarnings | number: '1.3-3' }}</td>
+                                    <td class="text-end gl-num">{{ res.totalDeductions | number: '1.3-3' }}</td>
+                                    <td class="text-end gl-num">{{ res.totalNetPay | number: '1.3-3' }}</td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    @if (filteredResults().length > 0) {
+                        <div class="gl-pager">
+                            <span class="gl-pager-info">
+                                {{ l('GoLiveResultsShowing', resultsFrom(), resultsTo(), filteredResults().length) }}
+                            </span>
+                            <select
+                                class="form-select form-select-sm gl-pager-size"
+                                [value]="resultsPageSize()"
+                                [attr.aria-label]="'GoLiveResultsPerPage' | localize"
+                                (change)="onResultsPageSize($event)">
+                                @for (size of resultsPageSizes; track size) {
+                                    <option [value]="size" [selected]="size === resultsPageSize()">
+                                        {{ l('GoLiveResultsPerPageOption', size) }}
+                                    </option>
+                                }
+                            </select>
+                            @if (resultsPageCount() > 1) {
+                                <nav class="ms-auto" [attr.aria-label]="'GoLiveResultsPages' | localize">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item" [class.disabled]="currentResultsPage() === 1">
+                                            <button
+                                                type="button"
+                                                class="page-link"
+                                                [disabled]="currentResultsPage() === 1"
+                                                (click)="goToResultsPage(currentResultsPage() - 1)">
+                                                {{ 'Previous' | localize }}
+                                            </button>
+                                        </li>
+                                        @for (page of resultsPageNumbers(); track page) {
+                                            <li class="page-item" [class.active]="page === currentResultsPage()">
+                                                <button type="button" class="page-link" (click)="goToResultsPage(page)">
+                                                    {{ page }}
+                                                </button>
+                                            </li>
+                                        }
+                                        <li
+                                            class="page-item"
+                                            [class.disabled]="currentResultsPage() === resultsPageCount()">
+                                            <button
+                                                type="button"
+                                                class="page-link"
+                                                [disabled]="currentResultsPage() === resultsPageCount()"
+                                                (click)="goToResultsPage(currentResultsPage() + 1)">
+                                                {{ 'Next' | localize }}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Step 3: Make the bank file -- the month's salary transfer, in the paying bank's layout. -->
+        <div class="card card-custom gl-step" [hidden]="currentStep() !== 3">
+            <div class="card-body">
+                <div class="gl-step-head">
+                    <div>
+                        <div class="gl-step-number">{{ l('GoLiveStep', 3) }}</div>
+                        <h3 class="gl-step-title">{{ 'GoLiveBankFileTitle' | localize }}</h3>
+                        <p class="gl-step-hint">{{ 'GoLiveBankFileHint' | localize }}</p>
+                    </div>
+
+                    <div class="gl-results-actions">
+                        <button
+                            type="button"
+                            class="btn btn-light-primary gl-step-back"
+                            [title]="l('GoLiveBackToStep', 2)"
+                            [attr.aria-label]="l('GoLiveBackToStep', 2)"
+                            (click)="goToStep(2)">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary gl-run"
+                            [disabled]="!canMakeBankFile()"
+                            (click)="makeBankFile()">
+                            @if (generatingBankFile()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-university me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveMakeBankFile' | localize }}
+                        </button>
+                    </div>
+                </div>
+
+                @if (!monthEnd()) {
+                    <p class="gl-progress-note mt-3">{{ 'GoLiveResultsPickMonth' | localize }}</p>
+                } @else if (bankSetup(); as setup) {
+                    @if (setup.payingBanks.length === 0) {
+                        <p class="gl-progress-note mt-3">{{ 'GoLiveBankFileNoBanks' | localize }}</p>
+                    } @else {
+                        <div class="gl-fields">
+                            <div class="gl-field">
+                                <label class="form-label" for="gl-paying-bank">{{ 'GoLivePayingBank' | localize }}</label>
+                                <select id="gl-paying-bank" class="form-select" (change)="onPayingBankChange($event)">
+                                    @for (bank of setup.payingBanks; track bank.bankId) {
+                                        <option [value]="bank.bankId" [selected]="bank.bankId === payingBankId()">
+                                            {{ bank.name }}
+                                        </option>
+                                    }
+                                </select>
+                                <div class="gl-field-note">{{ 'GoLivePayingBankHint' | localize }}</div>
+                            </div>
+
+                            @if (payingBank(); as bank) {
+                                <div class="gl-field">
+                                    <label class="form-label" for="gl-bank-layout">{{ 'GoLiveBankLayout' | localize }}</label>
+                                    <select id="gl-bank-layout" class="form-select" (change)="onBankLayoutChange($event)">
+                                        @for (layout of bank.layouts; track layout.formatCode) {
+                                            <option [value]="layout.formatCode" [selected]="layout.formatCode === bankLayout()">
+                                                {{ layoutLabel(layout) }}
+                                            </option>
+                                        }
+                                    </select>
+                                    <div class="gl-field-note">
+                                        @if (selectedLayout()?.needsEmployeeAccountNumber) {
+                                            {{
+                                                l(
+                                                    'GoLiveLayoutPaysIntoAccountNumbers',
+                                                    setup.employeesWithAccountNumber,
+                                                    setup.employeesWithBank
+                                                )
+                                            }}
+                                        } @else {
+                                            {{ 'GoLiveBankLayoutHint' | localize }}
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (selectedLayout(); as layout) {
+                                @if (layout.needsCompanyAccount) {
+                                    <div class="gl-field">
+                                        <label class="form-label" for="gl-company-account">
+                                            {{ 'GoLiveCompanyAccountNo' | localize }}
+                                        </label>
+                                        <input
+                                            id="gl-company-account"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="companyAccountNo()"
+                                            (input)="onBankFieldInput('account', $event)" />
+                                        <div class="gl-field-note">{{ 'GoLiveCompanyAccountNoHint' | localize }}</div>
+                                    </div>
+                                }
+                                @if (layout.needsMosalId) {
+                                    <div class="gl-field">
+                                        <label class="form-label" for="gl-mosal-id">{{ 'GoLiveCompanyMosalId' | localize }}</label>
+                                        <input
+                                            id="gl-mosal-id"
+                                            type="text"
+                                            inputmode="numeric"
+                                            class="form-control"
+                                            maxlength="20"
+                                            [value]="companyMosalId()"
+                                            (input)="onBankFieldInput('mosalId', $event)" />
+                                        <div class="gl-field-note">{{ 'GoLiveCompanyMosalIdHint' | localize }}</div>
+                                    </div>
+                                }
+                                @if (layout.needsCompanyCode) {
+                                    <div class="gl-field">
+                                        <label class="form-label" for="gl-company-code">{{ 'GoLiveCompanyCode' | localize }}</label>
+                                        <input
+                                            id="gl-company-code"
+                                            type="text"
+                                            class="form-control"
+                                            maxlength="128"
+                                            [value]="companyCode()"
+                                            (input)="onBankFieldInput('companyCode', $event)" />
+                                        <div class="gl-field-note">{{ 'GoLiveCompanyCodeHint' | localize }}</div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+
+                    @if (selectedLayout()?.writesPayeeBankCodes && payingBank(); as bank) {
+                        @if (bank.payeeBanks.length > 0) {
+                            <div class="gl-payee-banks">
+                                <div class="gl-said-label">{{ 'GoLivePayeeBankCodes' | localize }}</div>
+                                <p class="gl-field-note">{{ 'GoLivePayeeBankCodesHint' | localize }}</p>
+                                <ul class="gl-payee-list">
+                                    @for (payee of bank.payeeBanks; track payee.bankId) {
+                                        <li>
+                                            <span class="gl-code">{{ payee.code }}</span>
+                                            {{ payee.bankName }} &middot;
+                                            {{ l('GoLivePayeeBankEmployees', payee.employees) }}
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
+
+                    @if (setup.employeesWithoutBank.length > 0) {
+                        <div class="gl-result mt-4" role="status">
+                            <div class="gl-outcome">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                {{ l('GoLiveBankFileMissingBanks', setup.employeesWithoutBank.length) }}
+                            </div>
+                            <ul class="gl-failed-rows">
+                                @for (e of setup.employeesWithoutBank; track e.employeeCode) {
+                                    <li><span class="gl-code">{{ e.employeeCode }}</span> {{ e.employeeName }}</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+
+                @if (bankFile(); as file) {
+                    <div class="gl-result gl-ok" [class.gl-partial]="file.leftOut.length > 0" role="status">
+                        <div class="gl-outcome">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            {{ l('GoLiveBankFileMade', file.fileName, file.recordCount, (file.totalAmount | number: '1.3-3')) }}
+                        </div>
+                        @if (file.bankCodeCorrectedFrom) {
+                            <div class="gl-setup-line">
+                                <i class="fa fa-check-circle me-1" aria-hidden="true"></i>
+                                {{ l('GoLiveBankFileCodeCorrected', file.bankCodeCorrectedFrom, payingBank()?.code) }}
+                            </div>
+                        }
+                        @if (file.leftOut.length > 0) {
+                            <div class="gl-said-label">{{ l('GoLiveBankFileLeftOut', file.leftOut.length) }}</div>
+                            <ul class="gl-failed-rows">
+                                @for (e of file.leftOut; track e.employeeCode) {
+                                    <li>
+                                        <span class="gl-code">{{ e.employeeCode }}</span> {{ e.employeeName }} --
+                                        {{ leftOutReasonKey(e.reason) | localize }}
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-custom gl-log">
+            <div class="card-body">
+                <h4 class="gl-log-title">{{ 'GoLiveAttempts' | localize }}</h4>
+
+                @if (attempts().length === 0) {
+                    <p class="gl-empty">{{ 'GoLiveNoAttempts' | localize }}</p>
+                } @else {
+                    <ol class="gl-attempts" reversed>
+                        @for (attempt of attempts(); track attempt.at) {
+                            <li class="gl-attempt">
+                                <span class="gl-time">{{ attempt.at | date: 'HH:mm:ss' }}</span>
+                                @if (attempt.result; as result) {
+                                    <span
+                                        class="badge"
+                                        [class.badge-light-success]="result.succeeded"
+                                        [class.badge-light-warning]="!result.succeeded">
+                                        {{ outcomeKey(result) | localize }}
+                                    </span>
+                                    @if (result.message) {
+                                        <span class="gl-attempt-said">{{ result.message }}</span>
+                                    }
+                                }
+                                @if (attempt.setUp; as setUp) {
+                                    <span class="badge badge-light-primary">{{ 'GoLiveSetUpLog' | localize }}</span>
+                                    <span class="gl-attempt-said">{{ describeSetUp(setUp).join(' ') }}</span>
+                                }
+                                @if (attempt.load; as load) {
+                                    <span class="badge badge-light-primary">{{ 'GoLiveLoadLog' | localize }}</span>
+                                    <!-- The counts only: what was created is in the green panel above. -->
+                                    <span class="gl-attempt-said">
+                                        {{ 'GoLiveProgressLoaded' | localize }}: {{ load.employeesCreated }} ·
+                                        {{ 'GoLiveProgressFailed' | localize }}: {{ failedRows(load).length }}
+                                        @if (load.employeesAlreadyLoaded > 0) {
+                                            · {{ l('GoLiveLoadAlreadyLoaded', load.employeesAlreadyLoaded) }}
+                                        }
+                                    </span>
+                                }
+                            </li>
+                        }
+                    </ol>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (openDocument(); as document) {
+        <go-live-doc-viewer [doc]="document" (closed)="closeDocument()" />
+    }
+
+    @if (clearPreview(); as preview) {
+        <!-- Clear: what goes, in numbers, and the company name typed back before anything does. -->
+        <div class="gl-modal-backdrop" (click)="closeClear()">
+            <div class="gl-modal" role="dialog" aria-modal="true" aria-labelledby="gl-clear-title" (click)="$event.stopPropagation()">
+                <h4 class="gl-modal-title" id="gl-clear-title">{{ 'GoLiveClearTitle' | localize }}</h4>
+
+                @if (clearHasSomething()) {
+                    <p class="mb-0">{{ 'GoLiveClearIntro' | localize }}</p>
+                    <ul class="gl-failed-rows">
+                        <li>{{ l('GoLiveClearEmployees', preview.employees) }}</li>
+                        @if (preview.timeRegisters > 0) {
+                            <li>{{ l('GoLiveClearTimeRegisters', preview.timeRegisters) }}</li>
+                        }
+                        @if (preview.salaryRegisters > 0) {
+                            <li>{{ l('GoLiveClearSalaryRegisters', preview.salaryRegisters) }}</li>
+                        }
+                        @if (preview.otherRecords > 0) {
+                            <li>{{ l('GoLiveClearOtherRecords', preview.otherRecords) }}</li>
+                        }
+                        @if (preview.payrollMonthEnd; as monthEnd) {
+                            <li>{{ l('GoLiveClearPayrollMonth', monthEnd.toFormat('dd/MM/yyyy')) }}</li>
+                        }
+                    </ul>
+
+                    <label class="form-label mb-0" for="gl-clear-name">
+                        {{ l('GoLiveClearTypeName', preview.companyName) }}
+                    </label>
+                    <input
+                        id="gl-clear-name"
+                        type="text"
+                        class="form-control"
+                        autocomplete="off"
+                        [value]="clearTyped()"
+                        (input)="onClearTyped($event)"
+                        (keydown.enter)="confirmClear()" />
+                } @else {
+                    <p class="mb-0">{{ 'GoLiveClearNothing' | localize }}</p>
+                }
+
+                <div class="gl-modal-actions">
+                    <button type="button" class="btn btn-light" [disabled]="clearing()" (click)="closeClear()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    @if (clearHasSomething()) {
+                        <button type="button" class="btn btn-danger" [disabled]="!canConfirmClear()" (click)="confirmClear()">
+                            @if (clearing()) {
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                            } @else {
+                                <i class="fa fa-eraser me-2" aria-hidden="true"></i>
+                            }
+                            {{ 'GoLiveClear' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (registerFor(); as who) {
+        <!-- Salary Register of one employee: every wage type the engine wrote for the month. -->
+        <div class="gl-drawer-backdrop" (click)="closeRegister()"></div>
+        <aside class="gl-drawer" role="dialog" aria-modal="true" aria-labelledby="gl-register-title">
+            <div class="gl-drawer-head">
+                <div>
+                    <div class="gl-step-number">{{ 'GoLiveSalaryRegister' | localize }} · {{ resultsMonth() }}</div>
+                    <h4 class="gl-modal-title" id="gl-register-title">
+                        {{ who.employeeCode }} · {{ who.employeeName }}
+                    </h4>
+                </div>
+                <button type="button" class="btn btn-sm btn-light" (click)="closeRegister()">
+                    {{ 'GoLiveProgressClose' | localize }}
+                </button>
+            </div>
+
+            @if (register(); as reg) {
+                @if (reg.lines.length === 0) {
+                    <p class="gl-empty">{{ 'GoLiveRegisterNone' | localize }}</p>
+                }
+                @for (g of registerGroups(); track g.group) {
+                    <div class="gl-said-label">{{ groupKey(g.group) | localize }}</div>
+                    <table class="table table-sm align-middle gl-register-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'GoLiveRegisterWageCode' | localize }}</th>
+                                <th>{{ 'GoLiveRegisterWageType' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterRate' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterNumber' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterAmount' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (line of g.lines; track line.wageCode) {
+                                <tr>
+                                    <td class="gl-code">{{ line.wageCode }}</td>
+                                    <td>{{ line.wageName }}</td>
+                                    <td class="text-end gl-num">{{ line.rate | number: '1.3-3' }}</td>
+                                    <td class="text-end gl-num">{{ line.number | number: '1.0-3' }}</td>
+                                    <td class="text-end gl-num">{{ line.amount | number: '1.3-3' }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                        @if (g.group !== BillingType.TimeType) {
+                            <tfoot>
+                                <tr class="fw-semibold">
+                                    <td colspan="4">{{ 'GoLiveTotal' | localize }}</td>
+                                    <td class="text-end gl-num">{{ groupTotal(g.lines) | number: '1.3-3' }}</td>
+                                </tr>
+                            </tfoot>
+                        }
+                    </table>
+                }
+
+                @if (reg.days.length > 0) {
+                    <div class="gl-said-label">{{ 'GoLiveRegisterDays' | localize }}</div>
+                    <table class="table table-sm align-middle gl-register-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'GoLiveRegisterWageCode' | localize }}</th>
+                                <th>{{ 'GoLiveRegisterPeriod' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterRate' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterNumber' | localize }}</th>
+                                <th class="text-end">{{ 'GoLiveRegisterAmount' | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (d of reg.days; track $index) {
+                                <tr>
+                                    <td class="gl-code">{{ d.wageCode }}</td>
+                                    <td>{{ d.period.toFormat('dd-MM-yyyy') }}</td>
+                                    <td class="text-end gl-num">{{ d.rate | number: '1.3-3' }}</td>
+                                    <td class="text-end gl-num">{{ d.number | number: '1.0-3' }}</td>
+                                    <td class="text-end gl-num">{{ d.amount | number: '1.3-3' }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            } @else {
+                <div class="gl-progress-now">
+                    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                </div>
+            }
+        </aside>
+    }
+
+    @if (compareOpen() && monthEnd(); as end) {
+        <go-live-legacy-compare [monthEnd]="end" [payrollAreaName]="payrollAreaName().trim()" (closed)="compareOpen.set(false)" />
+    }
+
+    @if (runProgress(); as rp) {
+        @if (!runWindowHidden()) {
+        <!-- Run payroll's progress: which engine is working, how far it has got, how long is left. -->
+        <div class="gl-modal-backdrop">
+            <div class="gl-modal" role="dialog" aria-modal="true" aria-labelledby="gl-run-title">
+                <h4 class="gl-modal-title" id="gl-run-title">{{ l('GoLiveRunProgressTitle', rp.month) }}</h4>
+
+                @if (rp.server) {
+                    <div
+                        class="gl-progress-bar"
+                        role="progressbar"
+                        [attr.aria-valuenow]="runPercent(rp)"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                        <div class="gl-progress-fill" [style.width.%]="runPercent(rp)"></div>
+                    </div>
+                    <div class="gl-progress-caption">
+                        {{ l('GoLiveProgressOf', runDone(rp), runTotal(rp)) }} · {{ runPercent(rp) }}%
+                    </div>
+                }
+
+                <div class="gl-progress-now">
+                    @if (!rp.finishedAt) {
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                    }
+                    @switch (runPhase(rp)) {
+                        @case ('payroll') {
+                            {{ 'GoLiveRunPhasePayroll' | localize }}
+                        }
+                        @case ('time') {
+                            {{ 'GoLiveRunPhaseTime' | localize }}
+                        }
+                        @default {
+                            {{ 'GoLiveRunPhaseStarting' | localize }}
+                        }
+                    }
+                </div>
+
+                <div class="gl-progress-stats">
+                    <div>
+                        <span>{{ 'GoLiveRunSucceeded' | localize }}</span>
+                        <strong>{{ runDone(rp) - runFailed(rp) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveRunFailed' | localize }}</span>
+                        <strong [class.text-danger]="runFailed(rp) > 0">{{ runFailed(rp) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressRemaining' | localize }}</span>
+                        <strong>{{ rp.server ? runTotal(rp) - runDone(rp) : '—' }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressAverage' | localize }}</span>
+                        <strong>{{ runAverageText(rp) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressElapsed' | localize }}</span>
+                        <strong>{{ runElapsedText(rp) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressLeft' | localize }}</span>
+                        <strong>{{ rp.finishedAt ? '—' : runTimeLeftText(rp) }}</strong>
+                    </div>
+                </div>
+
+                @if (rp.finishedAt) {
+                    <div class="gl-progress-note">{{ runEndText(rp) }}</div>
+                } @else {
+                    <div class="gl-progress-note">{{ 'GoLiveRunCarriesOn' | localize }}</div>
+                }
+
+                <div class="gl-modal-actions">
+                    @if (!rp.finishedAt) {
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            [disabled]="stopRequested() || !rp.server"
+                            (click)="stopRun()">
+                            {{ (stopRequested() ? 'GoLiveRunStoppingBatch' : 'GoLiveRunStopBatch') | localize }}
+                        </button>
+                        <button type="button" class="btn btn-primary" (click)="hideRunProgress()">
+                            {{ 'GoLiveRunHide' | localize }}
+                        </button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" (click)="closeRunProgress()">
+                            {{ 'GoLiveProgressClose' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    }
+
+    @if (progress(); as p) {
+        <!-- The load's progress: who is being loaded now, how far it has got, how long it is taking. -->
+        <div class="gl-modal-backdrop">
+            <div class="gl-modal" role="dialog" aria-modal="true" aria-labelledby="gl-progress-title">
+                <h4 class="gl-modal-title" id="gl-progress-title">{{ 'GoLiveProgressTitle' | localize }}</h4>
+
+                <div
+                    class="gl-progress-bar"
+                    role="progressbar"
+                    [attr.aria-valuenow]="progressPercent(p)"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                    <div class="gl-progress-fill" [style.width.%]="progressPercent(p)"></div>
+                </div>
+                <div class="gl-progress-caption">
+                    {{ l('GoLiveProgressOf', p.done, p.total) }} · {{ progressPercent(p) }}%
+                </div>
+
+                @if (p.current; as current) {
+                    <div class="gl-progress-now">
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                        {{ l('GoLiveProgressNow', current.row, current.code, current.name) }}
+                    </div>
+                    @if (p.done === 0) {
+                        <div class="gl-progress-note">{{ 'GoLiveProgressPreparing' | localize }}</div>
+                    }
+                } @else if (p.outcome !== 'running') {
+                    <div class="gl-progress-now" [class.gl-progress-warn]="p.outcome !== 'finished'">
+                        {{ progressEndText(p) }}
+                    </div>
+                }
+
+                <div class="gl-progress-stats">
+                    <div>
+                        <span>{{ 'GoLiveProgressLoaded' | localize }}</span>
+                        <strong>{{ p.loaded }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressFailed' | localize }}</span>
+                        <strong [class.text-danger]="p.failed > 0">{{ p.failed }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressRemaining' | localize }}</span>
+                        <strong>{{ p.total - p.done }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressAverage' | localize }}</span>
+                        <strong>{{ averageText(p) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressElapsed' | localize }}</span>
+                        <strong>{{ elapsedText(p) }}</strong>
+                    </div>
+                    <div>
+                        <span>{{ 'GoLiveProgressLeft' | localize }}</span>
+                        <strong>{{ p.outcome === 'running' ? timeLeftText(p) : '—' }}</strong>
+                    </div>
+                </div>
+
+                @if (p.recent.length > 0) {
+                    <div class="gl-said-label">{{ 'GoLiveProgressRecent' | localize }}</div>
+                    <ul class="gl-progress-recent">
+                        @for (r of p.recent; track r.rowNumber + '|' + r.code) {
+                            <li [class.text-danger]="!r.succeeded">
+                                <i
+                                    class="fa me-1"
+                                    [class.fa-check]="r.succeeded"
+                                    [class.fa-times]="!r.succeeded"
+                                    aria-hidden="true"></i>
+                                <span class="gl-code">{{ l('GoLiveRowLabel', r.rowNumber) }} · {{ r.code }}</span>
+                                @if (!r.succeeded) {
+                                    — {{ r.message }}
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class="gl-modal-actions">
+                    @if (p.outcome === 'running') {
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            [disabled]="stopRequested()"
+                            (click)="stopLoading()">
+                            {{ (stopRequested() ? 'GoLiveProgressStopping' : 'GoLiveProgressStop') | localize }}
+                        </button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" (click)="closeProgress()">
+                            {{ 'GoLiveProgressClose' | localize }}
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
