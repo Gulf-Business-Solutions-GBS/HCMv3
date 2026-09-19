@@ -30,9 +30,27 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<RequestLog>(Context),
             FakeRepository.For<RequestDetail>(Context),
             FakeRepository.For<WFReadLog>(Context),
+            FakeRepository.For<Employee>(Context),
             CreateApproverResolver(),
             CreateResolver(),
             CreateHandlerResolver());
+    }
+
+    /// <summary>
+    /// The REAL delegation resolver, over the same fake repositories and with no delegation rows in them.
+    ///
+    /// <para>
+    /// Stubbing it would be easier and would quietly make these tests unable to notice if substitution ever
+    /// started firing when nobody had arranged cover -- which is precisely the regression that would take an
+    /// approver's own queue away from them. Delegation's own behaviour is covered by
+    /// <c>WorkflowDelegationSubstitution_Tests</c>.
+    /// </para>
+    /// </summary>
+    private IWorkflowDelegationResolver CreateDelegationResolver()
+    {
+        return new WorkflowDelegationResolver(
+            FakeRepository.For<EmployeeDelegation>(Context),
+            FakeRepository.For<Employee>(Context));
     }
 
     /// <summary>
@@ -50,7 +68,8 @@ public class WorkflowApprovalService_Tests : WorkflowAppServiceTestBase
             FakeRepository.For<EmployeeManager>(Context),
             FakeRepository.For<EmployeeOrgAssignment>(Context),
             FakeRepository.For<RequestDetail>(Context),
-            FakeRepository.For<RequestLog>(Context));
+            FakeRepository.For<RequestLog>(Context),
+            CreateDelegationResolver());
     }
 
     /// <summary>

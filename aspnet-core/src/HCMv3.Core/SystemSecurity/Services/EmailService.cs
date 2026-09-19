@@ -11,6 +11,7 @@ using HCMv3.GeneralMasterInfo;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings.Services;
 using HCMv3.Workflow;
+using HCMv3.Workflow.Services;
 
 namespace HCMv3.SystemSecurity.Services;
 
@@ -25,7 +26,7 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
     private readonly IRepository<EmailToken> _emailTokenRepository;
     private readonly IRepository<EmailNotificationLog> _emailNotificationLogRepository;
     private readonly IRepository<Employee> _employeeRepository;
-    private readonly IRepository<EmployeeDelegation> _employeeDelegationRepository;
+    private readonly IWorkflowDelegationResolver _delegationResolver;
     private readonly IRepository<EmployeeManager> _employeeManagerRepository;
     private readonly IRepository<RequestLog> _requestLogRepository;
     private readonly IEmailSender _emailSender;
@@ -36,7 +37,7 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         IRepository<EmailToken> emailTokenRepository,
         IRepository<EmailNotificationLog> emailNotificationLogRepository,
         IRepository<Employee> employeeRepository,
-        IRepository<EmployeeDelegation> employeeDelegationRepository,
+        IWorkflowDelegationResolver delegationResolver,
         IRepository<EmployeeManager> employeeManagerRepository,
         IRepository<RequestLog> requestLogRepository,
         IEmailSender emailSender,
@@ -46,7 +47,7 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         _emailTokenRepository = emailTokenRepository;
         _emailNotificationLogRepository = emailNotificationLogRepository;
         _employeeRepository = employeeRepository;
-        _employeeDelegationRepository = employeeDelegationRepository;
+        _delegationResolver = delegationResolver;
         _employeeManagerRepository = employeeManagerRepository;
         _requestLogRepository = requestLogRepository;
         _emailSender = emailSender;
@@ -608,18 +609,26 @@ public class EmailService : HCMv3DomainServiceBase, IEmailService
         }
     }
 
-    // NOTE: navigation properties (EmployeeDelegation.DelegateTo / EmployeeManager.Manager) are resolved via
+    // NOTE: navigation properties (EmployeeManager.Manager, and the delegate behind the id returned by
+    // IWorkflowDelegationResolver) are resolved via
     // a second flat-FK repository lookup rather than the navigation property itself: this Core-layer domain
     // service has no EF Core "Include()" available (see SysSettingsAccessor remarks), and without eager
     // loading or an already-tracked instance in the same DbContext, the navigation would come back null.
 
+    /// <summary>
+    /// The colleague currently covering for this employee, so notifications reach somebody who can act.
+    ///
+    /// <para>
+    /// The CC behaviour itself is unchanged -- the stand-in is copied and the employee still receives their
+    /// own mail. What moved is the "which delegation counts today" decision, into
+    /// <see cref="IWorkflowDelegationResolver"/>, shared with the approver resolver. Two near-identical
+    /// copies of that predicate is exactly how the person who gets the email and the person who can approve
+    /// the request end up being different people on the first or last day of the cover.
+    /// </para>
+    /// </summary>
     private Employee ResolveActiveDelegate(int employeeId)
     {
-        var today = DateTime.Now.Date;
-        var delegateToId = _employeeDelegationRepository.GetAll()
-            .Where(d => d.EmployeeId == employeeId && d.StartDate <= today && d.EndDate >= today)
-            .Select(d => (int?)d.DelegateToId)
-            .FirstOrDefault();
+        var delegateToId = _delegationResolver.ResolveDelegateFor(employeeId);
 
         return delegateToId == null ? null : _employeeRepository.GetAll().FirstOrDefault(e => e.Id == delegateToId);
     }

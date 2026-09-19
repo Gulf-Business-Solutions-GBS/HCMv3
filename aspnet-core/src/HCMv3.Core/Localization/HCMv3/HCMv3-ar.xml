@@ -6005,6 +6005,7 @@
     <text name="SelectAtLeastOneFieldToChange">حدد بياناً واحداً على الأقل ترغب في تغييره.</text>
     <text name="ProposedValueIsRequired">أدخل قيمة جديدة لـ {0}، أو ألغِ تحديده.</text>
     <text name="YouAlreadyHaveAPendingPersonalDataChange">لديك طلب تعديل بيانات شخصية بانتظار الاعتماد مسبقاً.</text>
+    <text name="WorkflowActionTakenOnBehalfOf">نيابةً عن {0}، بموجب تفويض معتمد.</text>
     <text name="ScreenNotPermittedOrUnavailable">تعذّر فتح هذه الشاشة. قد لا تكون لديك صلاحية عليها.</text>
     <!-- Header global search -->
     <text name="SearchActionsOrPeople">ابحث عن إجراء أو شخص</text>

@@ -36,6 +36,13 @@ public class WorkflowTestDbContext : DbContext
 
     public DbSet<HCMv3.PersonnelAdministration.Employee> Employees { get; set; }
     public DbSet<HCMv3.PersonnelAdministration.EmployeeManager> EmployeeManagers { get; set; }
+
+    /// <summary>
+    /// Needed since approver resolution substitutes a covering colleague for anyone with active cover; the
+    /// engine tests must be able to construct the real <c>WorkflowDelegationResolver</c> over this context
+    /// (with no rows, so they keep asserting on undelegated routing).
+    /// </summary>
+    public DbSet<HCMv3.PersonnelAdministration.EmployeeDelegation> EmployeeDelegations { get; set; }
     public DbSet<HCMv3.GeneralMasterInfo.Nationality> Nationalities { get; set; }
 
     public WorkflowTestDbContext(DbContextOptions<WorkflowTestDbContext> options) : base(options)
