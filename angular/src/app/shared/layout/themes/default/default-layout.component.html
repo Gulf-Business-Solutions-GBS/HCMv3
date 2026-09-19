@@ -148,7 +148,11 @@
               menu did nothing on exactly the phones the menu was hardest to escape on.
             -->
             @if (isMobileViewport() && isMobileSidebarOpen()) {
-                <div class="app-sidebar-backdrop" aria-hidden="true" (click)="closeMobileSidebar()"></div>
+                <div
+                    class="app-sidebar-backdrop"
+                    aria-hidden="true"
+                    (touchend)="closeMobileSidebarOnTouch($event)"
+                    (click)="closeMobileSidebar()"></div>
             }
             <!--end::sidebar backdrop-->
             <!--begin::sidebar-->
@@ -163,7 +167,8 @@
                 class="app-sidebar flex-column"
                 [class.drawer]="isMobileViewport()"
                 [class.drawer-start]="isMobileViewport()"
-                [class.drawer-on]="isMobileViewport() && isMobileSidebarOpen()">
+                [class.drawer-on]="isMobileViewport() && isMobileSidebarOpen()"
+                (click)="onSidebarClick($event)">
                 <!--begin::Logo-->
                 <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
                     <!--begin::Logo image-->
@@ -180,6 +185,7 @@
                         class="btn btn-icon btn-active-color-primary w-30px h-30px ms-auto d-lg-none"
                         [title]="'Close' | localize"
                         [attr.aria-label]="'Close' | localize"
+                        (touchend)="closeMobileSidebarOnTouch($event)"
                         (click)="closeMobileSidebar()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>

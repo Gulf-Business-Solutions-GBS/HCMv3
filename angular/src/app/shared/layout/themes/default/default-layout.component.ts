@@ -147,6 +147,39 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         this.isMobileSidebarOpen.update((open) => !open);
     }
 
+    /**
+     * Tapping a page in the open menu closes it, whether or not the page changes.
+     *
+     * Closing on NavigationEnd alone missed one case: tapping the page you are already on. The router does
+     * not navigate to the current URL, so no NavigationEnd arrives and the menu stayed over the page it had
+     * just "opened" -- on a phone that looks exactly like a menu that will not go away. A group header
+     * (.menu-toggle) only expands its children, and the favourite star stops its own click, so neither
+     * reaches here as a page tap.
+     */
+    onSidebarClick(event: MouseEvent): void {
+        if (!this.isMobileSidebarOpen()) {
+            return;
+        }
+
+        const link = (event.target as HTMLElement | null)?.closest('a.menu-link');
+        if (link && !link.classList.contains('menu-toggle')) {
+            this.closeMobileSidebar();
+        }
+    }
+
+    /**
+     * The X and the backdrop close on the finger lifting, not on the click that iOS may or may not send after.
+     *
+     * iPhone Safari (and Chrome on iPhone, which is Safari underneath) turns some taps into a hover and never
+     * fires the click -- the X went blue, its hover colour, and the menu stayed open. touchend always fires.
+     * preventDefault stops the click that would otherwise follow; without it that click would land on whatever
+     * was under the finger once the menu had slid away. Mouse and keyboard still close through (click).
+     */
+    closeMobileSidebarOnTouch(event: TouchEvent): void {
+        event.preventDefault();
+        this.closeMobileSidebar();
+    }
+
     /** Idempotent: closing a menu that is already closed does nothing, so no two close paths can collide. */
     closeMobileSidebar(): void {
         this.isMobileSidebarOpen.set(false);
