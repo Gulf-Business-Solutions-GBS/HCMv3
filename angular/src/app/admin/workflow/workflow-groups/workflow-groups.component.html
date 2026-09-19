@@ -55,8 +55,7 @@
                             <ng-template #header>
                                 <tr>
                                     <th
-                                        style="width: 130px"
-                                        [hidden]="!(['Pages.Workflow.WorkflowGroups.Edit', 'Pages.Workflow.WorkflowGroups.Delete'] | permissionAny)">
+                                        style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 120px" pSortableColumn="code">
@@ -77,8 +76,7 @@
                             <ng-template #body let-record="$implicit">
                                 <tr>
                                     <td
-                                        style="width: 130px"
-                                        [hidden]="!(['Pages.Workflow.WorkflowGroups.Edit', 'Pages.Workflow.WorkflowGroups.Delete'] | permissionAny)">
+                                        style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"

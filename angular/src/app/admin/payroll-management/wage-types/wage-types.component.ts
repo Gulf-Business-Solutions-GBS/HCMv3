@@ -15,7 +15,6 @@ import { SubHeaderComponent } from '../../../shared/common/sub-header/sub-header
 import { BusyIfDirective } from '../../../../shared/utils/busy-if.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
-import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 
 @Component({
     templateUrl: './wage-types.component.html',
@@ -31,7 +30,6 @@ import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
         CreateOrEditWageTypeModalComponent,
         LocalizePipe,
         PermissionPipe,
-        PermissionAnyPipe,
     ],
 })
 export class WageTypesComponent extends AppComponentBase implements OnInit {
@@ -83,8 +81,14 @@ export class WageTypesComponent extends AppComponentBase implements OnInit {
         this.createOrEditModal().show();
     }
 
-    openWageType(record: WageTypeDto): void {
+    /** Opens the record read-only. */
+    viewDetails(record: WageTypeDto): void {
         this._router.navigate(['/app/admin/wage-types', record.id]);
+    }
+
+    /** Opens the same page with its fields already unlocked. */
+    openWageType(record: WageTypeDto): void {
+        this._router.navigate(['/app/admin/wage-types', record.id], { queryParams: { edit: true } });
     }
 
     showMenu(event: Event, record: WageTypeDto, menu: any): void {
@@ -94,6 +98,12 @@ export class WageTypesComponent extends AppComponentBase implements OnInit {
 
     getMenuItems(record: WageTypeDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
 
         if (this.permission.isGranted('Pages.PayrollManagement.WageTypes.Edit')) {
             items.push({

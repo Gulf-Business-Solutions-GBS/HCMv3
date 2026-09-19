@@ -89,8 +89,14 @@ export class AbsenceDeductionRulesComponent extends AppComponentBase implements 
         this.createOrEditModal().show();
     }
 
-    editAbsenceDeductionRule(record: AbsenceDeductionRuleDto): void {
+    /** Opens the record read-only. */
+    viewDetails(record: AbsenceDeductionRuleDto): void {
         this._router.navigate(['/app/admin/absence-deduction-rules', record.id]);
+    }
+
+    /** Opens the same page with its fields already unlocked. */
+    editAbsenceDeductionRule(record: AbsenceDeductionRuleDto): void {
+        this._router.navigate(['/app/admin/absence-deduction-rules', record.id], { queryParams: { edit: true } });
     }
 
     showMenu(event: Event, record: AbsenceDeductionRuleDto, menu: any): void {
@@ -100,6 +106,12 @@ export class AbsenceDeductionRulesComponent extends AppComponentBase implements 
 
     getMenuItems(record: AbsenceDeductionRuleDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
 
         if (this.permission.isGranted('Pages.PayrollManagement.AbsenceDeductionRules.Edit')) {
             items.push({

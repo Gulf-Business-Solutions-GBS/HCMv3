@@ -43,8 +43,7 @@
                             <ng-template #header>
                                 <tr>
                                     <th
-                                        style="width: 130px"
-                                        [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
+                                        style="width: 130px">
                                         {{ 'Actions' | localize }}
                                     </th>
                                     <th style="min-width: 100px" pSortableColumn="code">
@@ -72,8 +71,7 @@
                             <ng-template #body let-record="$implicit">
                                 <tr>
                                     <td
-                                        style="width: 130px"
-                                        [hidden]="!(['Pages.PayrollManagement.WageTypes.Edit', 'Pages.PayrollManagement.WageTypes.Delete'] | permissionAny)">
+                                        style="width: 130px">
                                         <button
                                             type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle"

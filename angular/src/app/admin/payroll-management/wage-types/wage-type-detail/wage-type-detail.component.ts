@@ -58,6 +58,15 @@ export class WageTypeDetailComponent extends AppComponentBase implements OnInit 
     readonly loading = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
 
+    /**
+     * Whether the fields can be changed. The page opens read-only -- looking a record up should not leave it one
+     * keystroke from being changed -- and only a user with the Edit permission is offered the Edit button.
+     */
+    readonly editing = signal<boolean>(false);
+
+    /** The record as last loaded or saved, so Cancel can put back whatever was typed since. */
+    private _saved: CreateOrEditWageTypeDto | undefined;
+
     /** Code and name as last loaded or saved, so the title does not change while the name is being typed. */
     readonly savedCode = signal<string>('');
     readonly savedName = signal<string>('');
@@ -94,6 +103,9 @@ export class WageTypeDetailComponent extends AppComponentBase implements OnInit 
             .pipe(finalize(() => this.loading.set(false)))
             .subscribe((result) => {
                 this.wageType.set(result.wageType);
+                this._saved = this.copy(result.wageType);
+                this.editing.set(this.canEdit && this._route.snapshot.queryParamMap.get('edit') === 'true');
+                this.dropEditParam();
                 this.setSavedTitle(result.wageType);
                 this.loaded.set(true);
             });
@@ -120,12 +132,49 @@ export class WageTypeDetailComponent extends AppComponentBase implements OnInit 
             .pipe(finalize(() => this.saving.set(false)))
             .subscribe(() => {
                 this.setSavedTitle(this.wageType());
+                this._saved = this.copy(this.wageType());
+                this.editing.set(false);
                 this.notify.info(this.l('SavedSuccessfully'));
             });
     }
 
     goBack(): void {
         this._router.navigate(['/app/admin/wage-types']);
+    }
+
+    startEditing(): void {
+        if (this.canEdit) {
+            this.editing.set(true);
+        }
+    }
+
+    /**
+     * The list's Edit action opens this page with ?edit=true. Taken off once read, so a refresh or a shared
+     * link opens the record for viewing again rather than straight into editing.
+     */
+    private dropEditParam(): void {
+        if (this._route.snapshot.queryParamMap.has('edit')) {
+            this._router.navigate([], {
+                relativeTo: this._route,
+                queryParams: { edit: null },
+                queryParamsHandling: 'merge',
+                preserveFragment: true,
+                replaceUrl: true,
+            });
+        }
+    }
+
+    /** Throws away unsaved changes and goes back to viewing. */
+    cancelEditing(): void {
+        if (this._saved) {
+            this.wageType.set(this.copy(this._saved));
+        }
+        this.editing.set(false);
+    }
+
+    /** A detached copy: the form writes into the object it is given, and the saved version must not follow it. */
+    private copy(value: CreateOrEditWageTypeDto): CreateOrEditWageTypeDto {
+        return CreateOrEditWageTypeDto.fromJS(value.toJSON());
     }
 
     private setSavedTitle(wageType: CreateOrEditWageTypeDto): void {

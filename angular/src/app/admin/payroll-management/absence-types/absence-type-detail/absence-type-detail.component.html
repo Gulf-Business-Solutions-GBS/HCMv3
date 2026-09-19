@@ -1,6 +1,15 @@
 <div [@routerTransition]>
     <sub-header [title]="title()" [description]="'AbsenceTypes' | localize">
         <div role="actions">
+            <!-- View first: the page opens read-only, and editing is a deliberate step. -->
+            @if (canEdit && loaded() && !editing()) {
+                <button type="button" class="btn btn-primary float-end ms-2" (click)="startEditing()">
+                    <i class="fa fa-edit btn-md-icon"></i>
+                    <span class="d-none d-md-inline-block">
+                        {{ 'Edit' | localize }}
+                    </span>
+                </button>
+            }
             <button type="button" class="btn btn-light-primary float-end" (click)="goBack()">
                 <i class="fa fa-arrow-left btn-md-icon"></i>
                 <span class="d-none d-md-inline-block">
@@ -15,9 +24,12 @@
             <div class="card-body">
                 @if (loaded()) {
                     <form #absenceTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
-                        <absenceTypeForm [(absenceType)]="absenceType" [readOnly]="!canEdit" />
-                        @if (canEdit) {
-                            <div class="d-flex justify-content-end">
+                        <absenceTypeForm [(absenceType)]="absenceType" [readOnly]="!editing()" />
+                        @if (editing()) {
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-light fw-bold" [disabled]="saving()" (click)="cancelEditing()">
+                                    {{ 'Cancel' | localize }}
+                                </button>
                                 <button
                                     type="submit"
                                     class="btn btn-primary fw-bold"

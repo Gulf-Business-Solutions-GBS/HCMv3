@@ -91,8 +91,14 @@ export class AbsenceTypesComponent extends AppComponentBase implements OnInit {
         this.createOrEditModal().show();
     }
 
-    editAbsenceType(record: AbsenceTypeDto): void {
+    /** Opens the record read-only. */
+    viewDetails(record: AbsenceTypeDto): void {
         this._router.navigate(['/app/admin/absence-types', record.id]);
+    }
+
+    /** Opens the same page with its fields already unlocked. */
+    editAbsenceType(record: AbsenceTypeDto): void {
+        this._router.navigate(['/app/admin/absence-types', record.id], { queryParams: { edit: true } });
     }
 
     showMenu(event: Event, record: AbsenceTypeDto, menu: any): void {
@@ -102,6 +108,12 @@ export class AbsenceTypesComponent extends AppComponentBase implements OnInit {
 
     getMenuItems(record: AbsenceTypeDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        items.push({
+            label: this.l('Details'),
+            icon: 'pi pi-eye',
+            command: () => this.viewDetails(record),
+        });
 
         if (this.permission.isGranted('Pages.PayrollManagement.AbsenceTypes.Edit')) {
             items.push({
