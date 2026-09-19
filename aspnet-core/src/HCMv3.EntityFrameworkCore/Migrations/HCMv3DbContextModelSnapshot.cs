@@ -28525,7 +28525,7 @@ namespace HCMv3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysObjects");
+                    b.ToTable("AppSysObjects", (string)null);
                 });
 
             modelBuilder.Entity("HCMv3.SystemSecurity.SysTenantConfig", b =>

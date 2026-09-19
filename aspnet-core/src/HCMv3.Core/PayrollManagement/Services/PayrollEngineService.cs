@@ -14,6 +14,8 @@ using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement;
 
+using HCMv3.PayrollManagement.PayrollLock;
+
 namespace HCMv3.PayrollManagement.Services;
 
 /// <inheritdoc cref="IPayrollEngineService"/>
@@ -205,11 +207,21 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         AttendancePayService = attendancePayService ?? throw new ArgumentNullException(nameof(attendancePayService));
     }
 
+    /// <summary>
+    /// Exempts this run's unit of work from the payroll lock, as legacy's engines mark what they write
+    /// <c>IsSystemGenerated</c>. Property-injected so the tests that build this service by hand still compile;
+    /// if it were ever missing, a locked area would stop the run with the lock message -- loud, not silent.
+    /// </summary>
+    public IPayrollLockGuard PayrollLockGuard { get; set; }
+
     #region << Run (legacy Program.Main, lines 154-379) >>
 
     /// <inheritdoc/>
     public async Task<PayrollEngineRunResult> RunAsync(PayrollEngineRunInput input)
     {
+        // A regular run needs the period LOCKED, and it updates loans and absences as it goes.
+        PayrollLockGuard?.ExemptCurrentUnitOfWork();
+
         if (input == null)
         {
             throw new ArgumentNullException(nameof(input));

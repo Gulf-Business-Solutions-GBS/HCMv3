@@ -6407,5 +6407,6 @@
     <text name="ClearRecentSearches">مسح عمليات البحث الأخيرة</text>
     <text name="RemoveFromRecentSearches">إزالة من عمليات البحث الأخيرة</text>
     <text name="AbsenceDedRuleDetailsSearchHint">ابحث بالسنة أو التاريخ (yyyy-mm-dd) أو الرقم</text>
+    <text name="PayrollAreaLockedForEditing">منطقة الرواتب '{0}' مقفلة لمعالجة الرواتب. يرجى إلغاء القفل لتعديل هذا السجل.</text>
   </texts>
 </localizationDictionary>

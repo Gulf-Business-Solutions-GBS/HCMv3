@@ -36,6 +36,9 @@ public static class SeedHelper
         foreach (var tenantId in tenantIds)
         {
             new PrintReportCatalogBuilder(context, tenantId).Create();
+
+            //Default payroll-sensitive list, which the payroll lock reads. Companies that already had one keep it.
+            new PayrollSensitiveObjectBuilder(context, tenantId).Create();
         }
 
         //Workflow/ESS transaction-type catalog. Seeded dormant (workflow and ESS both off) -- registering a

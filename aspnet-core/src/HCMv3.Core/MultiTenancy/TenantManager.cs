@@ -8,6 +8,7 @@ using Abp.Domain.Uow;
 using Abp.IdentityFramework;
 using Abp.MultiTenancy;
 using HCMv3.Authorization.Roles;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.ReportManagement;
 using HCMv3.Authorization.Users;
 using HCMv3.Editions;
@@ -64,6 +65,7 @@ public class TenantManager :
     protected readonly IBackgroundJobManager _backgroundJobManager;
     private readonly IReferenceDataSeeder _referenceDataSeeder;
     private readonly PrintReportCatalogSeeder _printReportCatalogSeeder;
+    private readonly PayrollSensitiveObjectSeeder _payrollSensitiveObjectSeeder;
 
 
     public TenantManager(
@@ -84,7 +86,8 @@ public class TenantManager :
         IBackgroundJobManager backgroundJobManager,
         IPaymentManager paymentManager,
         IReferenceDataSeeder referenceDataSeeder,
-        PrintReportCatalogSeeder printReportCatalogSeeder) : base(
+        PrintReportCatalogSeeder printReportCatalogSeeder,
+        PayrollSensitiveObjectSeeder payrollSensitiveObjectSeeder) : base(
         tenantRepository,
         tenantFeatureRepository,
         editionManager,
@@ -110,6 +113,7 @@ public class TenantManager :
         _subscriptionPaymentRepository = subscriptionPaymentRepository;
         _referenceDataSeeder = referenceDataSeeder;
         _printReportCatalogSeeder = printReportCatalogSeeder;
+        _payrollSensitiveObjectSeeder = payrollSensitiveObjectSeeder;
     }
 
     public async Task<int> CreateWithAdminUserAsync(
@@ -223,6 +227,9 @@ public class TenantManager :
 
                 // The standard Print Reports list, so the new tenant's launcher is not empty.
                 await _printReportCatalogSeeder.SeedAsync(tenant.Id);
+
+                // The default payroll-sensitive list, so the payroll lock protects the new company from day one.
+                await _payrollSensitiveObjectSeeder.SeedAsync(tenant.Id);
 
                 await _backgroundJobManager.EnqueueAsync<TenantDemoDataBuilderJob, int>(tenant.Id);
 

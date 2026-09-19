@@ -15,6 +15,8 @@ using HCMv3.SystemSecurity;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
 
+using HCMv3.PayrollManagement.PayrollLock;
+
 namespace HCMv3.TimeManagement.Services;
 
 /// <inheritdoc cref="ITimeEngineService"/>
@@ -272,10 +274,20 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     // NOTE: HCMv3.Core has no EF Core reference, so ToListAsync()/FirstOrDefaultAsync() are unavailable.
     // All queries use the synchronous IQueryable from IRepository<T>.GetAll(). See class remarks.
 
+    /// <summary>
+    /// Exempts this run's unit of work from the payroll lock, as legacy's engines mark what they write
+    /// <c>IsSystemGenerated</c>. Property-injected so the tests that build this service by hand still compile;
+    /// if it were ever missing, a locked area would stop the run with the lock message -- loud, not silent.
+    /// </summary>
+    public IPayrollLockGuard PayrollLockGuard { get; set; }
+
     #region << Entry point >>
 
     public async Task<TimeEngineRunResult> CreateTimeRegisterAsync(TimeEngineRunInput input)
     {
+        // It creates tickets for employees whose payroll area may be locked. See PayrollLockGuard.
+        PayrollLockGuard?.ExemptCurrentUnitOfWork();
+
         // Legacy Main() validation: "No End Date defined for Time Calculation or Check Date format."
         if (input?.EndDate == null || input.EndDate.Value == default(DateTime))
         {

@@ -6568,5 +6568,6 @@
     <text name="ClearRecentSearches">Clear recent</text>
     <text name="RemoveFromRecentSearches">Remove from recent</text>
     <text name="AbsenceDedRuleDetailsSearchHint">Search by year, date (yyyy-mm-dd) or number</text>
+    <text name="PayrollAreaLockedForEditing">Payroll Area : '{0}' is locked for payroll processing. Kindly unlock it to edit this record.</text>
   </texts>
 </localizationDictionary>

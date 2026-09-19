@@ -1312,6 +1312,11 @@ public class HCMv3DbContext : AbpZeroDbContext<Tenant, Role, User, HCMv3DbContex
 
         modelBuilder.Entity<BinaryObject>(b => { b.HasIndex(e => new { e.TenantId }); });
 
+        // NOT "SysObjects". SQL Server resolves that name -- dbo-qualified or not, any case -- to its own
+        // backward-compatibility view sys.sysobjects, so every query against the table failed with "Invalid column
+        // name" and the System Objects screen could never have worked. The payroll lock reads this table.
+        modelBuilder.Entity<SysObject>().ToTable("AppSysObjects");
+
         // AI assistant (feat/ai-agent). The conversation list is "my conversations, newest first"; the
         // thread and the pending-action card are both read per conversation. Messages and actions are
         // never deleted with their conversation (Restrict): a deleted conversation is soft-deleted, and the

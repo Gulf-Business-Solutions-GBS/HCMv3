@@ -14,6 +14,7 @@ using Abp.Reflection.Extensions;
 using Abp.Timing;
 using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
+using Abp.Domain.Entities;
 using Abp.Events.Bus.Entities;
 using Abp.Events.Bus;
 using Abp.Events.Bus.Handlers;
@@ -42,6 +43,8 @@ using HCMv3.Authorization.QrLogin;
 using HCMv3.Authorization.Roles;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.BusinessRules;
+using HCMv3.PayrollManagement.PayrollLock;
+using HCMv3.SystemSecurity;
 using HCMv3.Authorization.Users;
 using HCMv3.Chat;
 using HCMv3.Configuration;
@@ -154,6 +157,26 @@ public class HCMv3CoreModule : AbpModule
         IocManager.RegisterAssemblyByConvention(typeof(HCMv3CoreModule).GetAssembly());
 
         RegisterBusinessRuleEntityHooks();
+        RegisterPayrollLockHooks();
+    }
+
+    /// <summary>
+    /// The payroll lock check on every save, and the cache reset when System Objects change. By hand, and with
+    /// the concrete types in the list, for the reasons given on <see cref="RegisterBusinessRuleEntityHooks"/>.
+    /// </summary>
+    private void RegisterPayrollLockHooks()
+    {
+        IocManager.IocContainer.Register(
+            Component
+                .For<IEventHandler<EntityChangingEventData<Entity<int>>>, PayrollLockEntityHook>()
+                .ImplementedBy<PayrollLockEntityHook>()
+                .LifestyleTransient());
+
+        IocManager.IocContainer.Register(
+            Component
+                .For<IEventHandler<EntityChangedEventData<SysObject>>, PayrollSensitiveCacheInvalidator>()
+                .ImplementedBy<PayrollSensitiveCacheInvalidator>()
+                .LifestyleTransient());
     }
 
     /// <summary>
