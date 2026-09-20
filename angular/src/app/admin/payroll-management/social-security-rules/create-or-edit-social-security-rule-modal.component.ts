@@ -20,6 +20,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditSocialSecurityRuleModal',
@@ -38,6 +39,21 @@ export class CreateOrEditSocialSecurityRuleModalComponent extends AppComponentBa
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly socialSecurityRule = signal<CreateOrEditSocialSecurityRuleDto>(new CreateOrEditSocialSecurityRuleDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'SocialSecurityRule',
+            record: this.socialSecurityRule,
+            isNew: this.isNew,
+            keys: () => ({ SocialSecurityId: this.socialSecurityRule().socialSecurityId, QualificationId: this.socialSecurityRule().qualificationId, Gender: this.socialSecurityRule().gender, MaritalStatusId: this.socialSecurityRule().maritalStatusId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly socialSecurities = signal<SocialSecurityDto[]>([]);
     readonly qualifications = signal<SimpleLookupDto[]>([]);
     readonly maritalStatuses = signal<SimpleLookupDto[]>([]);
@@ -48,6 +64,7 @@ export class CreateOrEditSocialSecurityRuleModalComponent extends AppComponentBa
     ];
 
     show(socialSecurityRuleId?: number): void {
+        this.isNew.set(!socialSecurityRuleId);
         this.active.set(true);
 
         this._socialSecuritiesService

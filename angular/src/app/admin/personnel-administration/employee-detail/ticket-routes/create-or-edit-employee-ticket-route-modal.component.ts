@@ -15,6 +15,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeTicketRouteModal',
@@ -32,9 +33,25 @@ export class CreateOrEditEmployeeTicketRouteModalComponent extends AppComponentB
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeTicketRouteDto>(new CreateOrEditEmployeeTicketRouteDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeTicketRoute',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeId: this.record().employeeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly ticketRoutes = signal<SimpleLookupDto[]>([]);
 
     show(employeeId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._ticketRoutesService

@@ -14,6 +14,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditKpiByOrgUnitModal',
@@ -30,9 +31,25 @@ export class CreateOrEditKpiByOrgUnitModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly kpiByOrgUnit = signal<CreateOrEditKpiByOrgUnitDto>(new CreateOrEditKpiByOrgUnitDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'KpiByOrgUnit',
+            record: this.kpiByOrgUnit,
+            isNew: this.isNew,
+            keys: () => ({ OrganizationUnitId: this.kpiByOrgUnit().organizationUnitId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
 
     show(id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));

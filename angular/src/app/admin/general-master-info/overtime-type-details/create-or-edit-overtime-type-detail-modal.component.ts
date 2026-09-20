@@ -15,6 +15,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditOvertimeTypeDetailModal',
@@ -37,9 +38,25 @@ export class CreateOrEditOvertimeTypeDetailModalComponent extends AppComponentBa
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly overtimeTypeDetail = signal<CreateOrEditOvertimeTypeDetailDto>(new CreateOrEditOvertimeTypeDetailDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'OvertimeTypeDetail',
+            record: this.overtimeTypeDetail,
+            isNew: this.isNew,
+            keys: () => ({ OvertimeTypeId: this.overtimeTypeDetail().overtimeTypeId, OvertimeRateType: this.overtimeTypeDetail().overtimeRateType }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly overtimeTypes = signal<OvertimeTypeDto[]>([]);
 
     show(overtimeTypeDetailId?: number): void {
+        this.isNew.set(!overtimeTypeDetailId);
         this.active.set(true);
 
         this._overtimeTypesService

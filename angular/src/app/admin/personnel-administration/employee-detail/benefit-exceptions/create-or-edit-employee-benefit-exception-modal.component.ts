@@ -9,6 +9,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeBenefitExceptionModal',
@@ -25,12 +26,28 @@ export class CreateOrEditEmployeeBenefitExceptionModalComponent extends AppCompo
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeBenefitExceptionDto>(new CreateOrEditEmployeeBenefitExceptionDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeBenefitException',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeId: this.record().employeeId, ExceptionBenefitType: this.record().exceptionBenefitType }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly exceptionBenefitTypes = [
         { value: ExceptionBenefitType.Ticket, name: 'Ticket' },
         { value: ExceptionBenefitType.HealthReimbursment, name: 'HealthReimbursment' },
     ];
 
     show(employeeId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         if (!id) {

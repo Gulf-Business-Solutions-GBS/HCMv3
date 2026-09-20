@@ -19,6 +19,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditPositionRelationshipModal',
@@ -37,6 +38,21 @@ export class CreateOrEditPositionRelationshipModalComponent extends AppComponent
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditPositionRelationshipDto>(new CreateOrEditPositionRelationshipDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'PositionRelationship',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ PositionId: this.record().positionId, RelationType: this.record().relationType }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly positions = signal<PositionDto[]>([]);
     readonly employees = signal<EmployeeDto[]>([]);
 
@@ -45,6 +61,7 @@ export class CreateOrEditPositionRelationshipModalComponent extends AppComponent
     ];
 
     show(id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._positionsService

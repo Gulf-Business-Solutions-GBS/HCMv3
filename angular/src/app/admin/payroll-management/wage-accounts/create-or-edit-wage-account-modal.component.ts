@@ -21,6 +21,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditWageAccountModal',
@@ -40,6 +41,21 @@ export class CreateOrEditWageAccountModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly wageAccount = signal<CreateOrEditWageAccountDto>(new CreateOrEditWageAccountDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'WageAccount',
+            record: this.wageAccount,
+            isNew: this.isNew,
+            keys: () => ({ WageTypeId: this.wageAccount().wageTypeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly wageTypes = signal<WageTypeDto[]>([]);
     readonly accountInfos = signal<AccountInfoDto[]>([]);
     readonly costElements = signal<CostElementDto[]>([]);
@@ -55,6 +71,7 @@ export class CreateOrEditWageAccountModalComponent extends AppComponentBase {
     ];
 
     show(wageAccountId?: number): void {
+        this.isNew.set(!wageAccountId);
         this.active.set(true);
 
         this.loadLookups();

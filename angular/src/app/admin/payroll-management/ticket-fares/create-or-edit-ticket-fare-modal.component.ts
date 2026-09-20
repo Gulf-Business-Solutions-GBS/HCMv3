@@ -19,6 +19,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditTicketFareModal',
@@ -38,11 +39,27 @@ export class CreateOrEditTicketFareModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly ticketFare = signal<CreateOrEditTicketFareDto>(new CreateOrEditTicketFareDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'TicketFare',
+            record: this.ticketFare,
+            isNew: this.isNew,
+            keys: () => ({ TicketRouteId: this.ticketFare().ticketRouteId, TicketPaxTypeId: this.ticketFare().ticketPaxTypeId, TicketClassId: this.ticketFare().ticketClassId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly ticketRoutes = signal<SimpleLookupDto[]>([]);
     readonly ticketPaxTypes = signal<TicketPaxTypeDto[]>([]);
     readonly ticketClasses = signal<SimpleLookupDto[]>([]);
 
     show(ticketFareId?: number): void {
+        this.isNew.set(!ticketFareId);
         this.active.set(true);
 
         this._ticketRoutesService

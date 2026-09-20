@@ -16,6 +16,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditAbsenceDedRuleDetailModal',
@@ -38,6 +39,21 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly absenceDedRuleDetail = signal<CreateOrEditAbsenceDedRuleDetailDto>(new CreateOrEditAbsenceDedRuleDetailDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'AbsenceDedRuleDetail',
+            record: this.absenceDedRuleDetail,
+            isNew: this.isNew,
+            keys: () => ({ AbsenceDeductionRuleId: this.absenceDedRuleDetail().absenceDeductionRuleId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly absenceDeductionRules = signal<AbsenceDeductionRuleDto[]>([]);
 
     readonly deductionUnits = [
@@ -49,6 +65,7 @@ export class CreateOrEditAbsenceDedRuleDetailModalComponent extends AppComponent
     readonly presetAbsenceDeductionRuleId = signal<number | undefined>(undefined);
 
     show(absenceDedRuleDetailId?: number, absenceDeductionRuleId?: number): void {
+        this.isNew.set(!absenceDedRuleDetailId);
         this.presetAbsenceDeductionRuleId.set(absenceDeductionRuleId);
         this.active.set(true);
 

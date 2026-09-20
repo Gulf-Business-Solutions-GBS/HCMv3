@@ -15,6 +15,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditKpiByJobTitleModal',
@@ -31,9 +32,25 @@ export class CreateOrEditKpiByJobTitleModalComponent extends AppComponentBase {
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly kpiByJobTitle = signal<CreateOrEditKpiByJobTitleDto>(new CreateOrEditKpiByJobTitleDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'KpiByJobTitle',
+            record: this.kpiByJobTitle,
+            isNew: this.isNew,
+            keys: () => ({ JobTitleId: this.kpiByJobTitle().jobTitleId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly jobTitles = signal<SimpleLookupDto[]>([]);
 
     show(id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._jobTitlesService

@@ -9,6 +9,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditSponsorBankModal',
@@ -26,9 +27,25 @@ export class CreateOrEditSponsorBankModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditSponsorBankDto>(new CreateOrEditSponsorBankDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'SponsorBank',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ SponsorId: this.record().sponsorId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly banks = signal<BankDto[]>([]);
 
     show(sponsorId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._banksService

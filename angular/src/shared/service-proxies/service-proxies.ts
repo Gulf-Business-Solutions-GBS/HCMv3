@@ -28431,6 +28431,74 @@ export class EducationsServiceProxy {
 }
 
 @Injectable()
+export class EffectiveDatedPrefillServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getPrefill(body?: EffectiveDatedPrefillInput | undefined): Observable<EffectiveDatedPrefillDto> {
+        let url_ = this.baseUrl + "/api/services/app/EffectiveDatedPrefill/GetPrefill";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPrefill(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPrefill(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EffectiveDatedPrefillDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EffectiveDatedPrefillDto>;
+        }));
+    }
+
+    protected processGetPrefill(response: HttpResponseBase): Observable<EffectiveDatedPrefillDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EffectiveDatedPrefillDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class EmailNotificationLogsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -198307,6 +198375,154 @@ export class EditionsSelectOutput implements IEditionsSelectOutput {
 export interface IEditionsSelectOutput {
     allFeatures: FlatFeatureSelectDto[] | undefined;
     editionsWithFeatures: EditionWithFeaturesDto[] | undefined;
+}
+
+export class EffectiveDatedKeyDto implements IEffectiveDatedKeyDto {
+    name!: string;
+    value!: number;
+
+    constructor(data?: IEffectiveDatedKeyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): EffectiveDatedKeyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EffectiveDatedKeyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data;
+    }
+}
+
+export interface IEffectiveDatedKeyDto {
+    name: string;
+    value: number;
+}
+
+export class EffectiveDatedPrefillDto implements IEffectiveDatedPrefillDto {
+    found!: boolean;
+    sourceDate!: DateTime | undefined;
+    values!: { [key: string]: any; } | undefined;
+
+    constructor(data?: IEffectiveDatedPrefillDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.found = _data["found"];
+            this.sourceDate = _data["sourceDate"] ? DateTime.fromISO(_data["sourceDate"].toString()) : undefined as any;
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): EffectiveDatedPrefillDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EffectiveDatedPrefillDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["found"] = this.found;
+        data["sourceDate"] = this.sourceDate ? this.sourceDate.toString() : undefined as any;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IEffectiveDatedPrefillDto {
+    found: boolean;
+    sourceDate: DateTime | undefined;
+    values: { [key: string]: any; } | undefined;
+}
+
+export class EffectiveDatedPrefillInput implements IEffectiveDatedPrefillInput {
+    recordType!: string;
+    keys!: EffectiveDatedKeyDto[] | undefined;
+    effectiveDate!: DateTime;
+
+    constructor(data?: IEffectiveDatedPrefillInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.recordType = _data["recordType"];
+            if (Array.isArray(_data["keys"])) {
+                this.keys = [] as any;
+                for (let item of _data["keys"])
+                    this.keys!.push(EffectiveDatedKeyDto.fromJS(item));
+            }
+            this.effectiveDate = _data["effectiveDate"] ? DateTime.fromISO(_data["effectiveDate"].toString()) : undefined as any;
+        }
+    }
+
+    static fromJS(data: any): EffectiveDatedPrefillInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new EffectiveDatedPrefillInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["recordType"] = this.recordType;
+        if (Array.isArray(this.keys)) {
+            data["keys"] = [];
+            for (let item of this.keys)
+                data["keys"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toString() : undefined as any;
+        return data;
+    }
+}
+
+export interface IEffectiveDatedPrefillInput {
+    recordType: string;
+    keys: EffectiveDatedKeyDto[] | undefined;
+    effectiveDate: DateTime;
 }
 
 export enum EligibleAmount {

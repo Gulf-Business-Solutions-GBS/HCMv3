@@ -18,6 +18,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditAbsenceViolationRuleExceptionModal',
@@ -43,10 +44,26 @@ export class CreateOrEditAbsenceViolationRuleExceptionModalComponent extends App
     readonly absenceViolationRuleException = signal<CreateOrEditAbsenceViolationRuleExceptionDto>(
         new CreateOrEditAbsenceViolationRuleExceptionDto()
     );
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'AbsenceViolationRuleException',
+            record: this.absenceViolationRuleException,
+            isNew: this.isNew,
+            keys: () => ({ AbsenceViolationRuleId: this.absenceViolationRuleException().absenceViolationRuleId, EmployeeId: this.absenceViolationRuleException().employeeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly absenceViolationRules = signal<SimpleLookupDto[]>([]);
     readonly employees = signal<EmployeeDto[]>([]);
 
     show(absenceViolationRuleExceptionId?: number): void {
+        this.isNew.set(!absenceViolationRuleExceptionId);
         this.active.set(true);
 
         this._absenceViolationRulesService

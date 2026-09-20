@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeSubGroupBenefitDetailModal',
@@ -30,9 +31,25 @@ export class CreateOrEditEmployeeSubGroupBenefitDetailModalComponent extends App
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeSubGroupBenefitDetailDto>(new CreateOrEditEmployeeSubGroupBenefitDetailDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeSubGroupBenefitDetail',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeSubGroupBenefitId: this.record().employeeSubGroupBenefitId, DependantTypeId: this.record().dependantTypeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly dependantTypes = signal<DependantTypeDto[]>([]);
 
     show(employeeSubGroupBenefitId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._dependantTypesService

@@ -16,6 +16,7 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeFundExemptionModal',
@@ -33,9 +34,25 @@ export class CreateOrEditEmployeeFundExemptionModalComponent extends AppComponen
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeFundExemptionDto>(new CreateOrEditEmployeeFundExemptionDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeFundExemption',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeFundId: this.record().employeeFundId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly employeeFunds = signal<EmployeeFundDto[]>([]);
 
     show(id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._employeeFundsService

@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeSubGroupTicketModal',
@@ -32,6 +33,21 @@ export class CreateOrEditEmployeeSubGroupTicketModalComponent extends AppCompone
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeSubGroupTicketDto>(new CreateOrEditEmployeeSubGroupTicketDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeSubGroupTicket',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeSubGroupId: this.record().employeeSubGroupId, TicketTypeId: this.record().ticketTypeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly ticketTypes = signal<TicketTypeDto[]>([]);
 
     readonly fareTypes = [
@@ -50,6 +66,7 @@ export class CreateOrEditEmployeeSubGroupTicketModalComponent extends AppCompone
     ];
 
     show(employeeSubGroupId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._ticketTypesService

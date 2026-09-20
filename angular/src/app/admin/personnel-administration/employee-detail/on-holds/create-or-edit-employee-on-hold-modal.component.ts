@@ -17,6 +17,7 @@ import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { LuxonFormatPipe } from '@shared/utils/luxon-format.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeOnHoldModal',
@@ -34,6 +35,21 @@ export class CreateOrEditEmployeeOnHoldModalComponent extends AppComponentBase {
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeOnHoldDto>(new CreateOrEditEmployeeOnHoldDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeOnHold',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeId: this.record().employeeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly employeeActions = signal<EmployeeActionDto[]>([]);
 
     readonly bankTransferOptions = [
@@ -43,6 +59,7 @@ export class CreateOrEditEmployeeOnHoldModalComponent extends AppComponentBase {
     ];
 
     show(employeeId: number, id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._employeeActionsService

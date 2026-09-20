@@ -387,6 +387,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.OrgUnitWageAccGroupsServiceProxy,
     ApiServiceProxies.PayrollAreasServiceProxy,
     ApiServiceProxies.PayrollCalendarsServiceProxy,
+    ApiServiceProxies.EffectiveDatedPrefillServiceProxy,
     ApiServiceProxies.PayrollControlRecordsServiceProxy,
     ApiServiceProxies.PayrollLogsServiceProxy,
     ApiServiceProxies.PayrollPeriodsServiceProxy,

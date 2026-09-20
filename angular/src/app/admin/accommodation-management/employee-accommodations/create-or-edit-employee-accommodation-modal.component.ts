@@ -36,6 +36,7 @@ import { ValidationMessagesComponent } from '@shared/utils/validation-messages.c
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeAccommodationModal',
@@ -59,6 +60,21 @@ export class CreateOrEditEmployeeAccommodationModalComponent extends AppComponen
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly record = signal<CreateOrEditEmployeeAccommodationDto>(new CreateOrEditEmployeeAccommodationDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeAccommodation',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeId: this.record().employeeId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
 
     readonly employees = signal<EmployeeDto[]>([]);
     readonly accommodationTypes = signal<AccommodationTypeDto[]>([]);
@@ -101,6 +117,7 @@ export class CreateOrEditEmployeeAccommodationModalComponent extends AppComponen
     });
 
     show(id?: number): void {
+        this.isNew.set(!id);
         this.active.set(true);
 
         this._employeesService

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonBusyDirective } from '@shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { EmployeeBasicPayFormComponent } from './employee-basic-pay-form.component';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditEmployeeBasicPayModal',
@@ -30,9 +31,25 @@ export class CreateOrEditEmployeeBasicPayModalComponent extends AppComponentBase
     readonly employeeId = signal<number | undefined>(undefined);
     readonly record = signal<CreateOrEditEmployeeBasicPayDto>(new CreateOrEditEmployeeBasicPayDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'EmployeeBasicPay',
+            record: this.record,
+            isNew: this.isNew,
+            keys: () => ({ EmployeeId: this.employeeId() }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     show(employeeId: number, id?: number): void {
         this.employeeId.set(employeeId);
         this.active.set(true);
+        this.isNew.set(!id);
 
         if (!id) {
             const record = new CreateOrEditEmployeeBasicPayDto();

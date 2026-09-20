@@ -17,6 +17,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditOrgUnitWageAccGroupModal',
@@ -35,10 +36,26 @@ export class CreateOrEditOrgUnitWageAccGroupModalComponent extends AppComponentB
     readonly saving = signal<boolean>(false);
     readonly orgUnitWageAccGroup = signal<CreateOrEditOrgUnitWageAccGroupDto>(new CreateOrEditOrgUnitWageAccGroupDto());
 
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'OrgUnitWageAccGroup',
+            record: this.orgUnitWageAccGroup,
+            isNew: this.isNew,
+            keys: () => ({ OrganizationUnitId: this.orgUnitWageAccGroup().organizationUnitId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
+
     readonly organizationUnits = signal<OrganizationUnitDto[]>([]);
     readonly wageAccGroups = signal<SimpleLookupDto[]>([]);
 
     show(orgUnitWageAccGroupId?: number): void {
+        this.isNew.set(!orgUnitWageAccGroupId);
         this.active.set(true);
 
         this._organizationUnitService.getOrganizationUnits().subscribe((result) => this.organizationUnits.set(result.items ?? []));

@@ -15,6 +15,7 @@ import { ValidationMessagesComponent } from '../../../../shared/utils/validation
 import { ButtonBusyDirective } from '../../../../shared/utils/button-busy.directive';
 import { LocalizePipe } from '@shared/common/pipes/localize.pipe';
 import { DateTime } from 'luxon';
+import { attachEffectiveDatedPrefill } from '@app/shared/common/effective-dated/attach-effective-dated-prefill';
 
 @Component({
     selector: 'createOrEditBudgetingGroupRateDetailModal',
@@ -37,9 +38,25 @@ export class CreateOrEditBudgetingGroupRateDetailModalComponent extends AppCompo
     readonly active = signal<boolean>(false);
     readonly saving = signal<boolean>(false);
     readonly budgetingGroupRateDetail = signal<CreateOrEditBudgetingGroupRateDetailDto>(new CreateOrEditBudgetingGroupRateDetailDto());
+
+    /** Adding, not editing: only a new record is filled in from the one in force on the date typed. */
+    readonly isNew = signal<boolean>(false);
+
+    constructor() {
+        super();
+
+        attachEffectiveDatedPrefill({
+            recordType: 'BudgetingGroupRateDetail',
+            record: this.budgetingGroupRateDetail,
+            isNew: this.isNew,
+            keys: () => ({ BudgetingGroupId: this.budgetingGroupRateDetail().budgetingGroupId }),
+            onPrefilled: (sourceDate) => this.notify.info(this.l('PrefilledFrom', sourceDate.toFormat('dd/MM/yyyy'))),
+        });
+    }
     readonly budgetingGroups = signal<SimpleLookupDto[]>([]);
 
     show(budgetingGroupRateDetailId?: number): void {
+        this.isNew.set(!budgetingGroupRateDetailId);
         this.active.set(true);
 
         this._budgetingGroupsService
