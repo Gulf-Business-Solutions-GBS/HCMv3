@@ -6569,5 +6569,19 @@
     <text name="RemoveFromRecentSearches">Remove from recent</text>
     <text name="AbsenceDedRuleDetailsSearchHint">Search by year, date (yyyy-mm-dd) or number</text>
     <text name="PayrollAreaLockedForEditing">Payroll Area : '{0}' is locked for payroll processing. Kindly unlock it to edit this record.</text>
+    <text name="CannotModifyBeforeEarliestRetroAccountingDate">Cannot modify record as Earliest Retro Accounting Date is set to {0}</text>
+    <text name="SetPayrollPeriodState">Change period state</text>
+    <text name="PeriodState">Period state</text>
+    <text name="ReleasedForPayroll">Released for payroll</text>
+    <text name="ReleasedForCorrection">Released for correction</text>
+    <text name="StateChangedBy">Changed by</text>
+    <text name="StateChangedTime">Changed on</text>
+    <text name="ReleaseForPayroll">Release for payroll</text>
+    <text name="ReleaseForCorrection">Release for correction</text>
+    <text name="ClosePayrollPeriod">Close period</text>
+    <text name="ReopenPayrollPeriod">Reopen period</text>
+    <text name="UnknownRecordType">This kind of record cannot be filled in from history.</text>
+    <text name="MissingPrefillKey">Cannot look up earlier values without {0}.</text>
+    <text name="PrefilledFrom">Filled in from the record effective {0}</text>
   </texts>
 </localizationDictionary>

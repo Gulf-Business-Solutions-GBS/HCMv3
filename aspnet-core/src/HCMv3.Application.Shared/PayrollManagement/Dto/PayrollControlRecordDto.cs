@@ -23,4 +23,12 @@ public class PayrollControlRecordDto : EntityDto<int>
     public bool PeriodLocked { get; set; }
 
     public bool PeriodClosed { get; set; }
+
+    /// <summary>Open, Released for payroll, Released for correction, or Closed.</summary>
+    public PayrollPeriodState PeriodState { get; set; }
+
+    public DateTime? StateChangedTime { get; set; }
+
+    /// <summary>Who last moved the state; null when nobody has.</summary>
+    public string StateChangedUserName { get; set; }
 }

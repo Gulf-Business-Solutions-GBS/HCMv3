@@ -107221,6 +107221,58 @@ export class PayrollControlRecordsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    setState(body?: SetPayrollPeriodStateInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PayrollControlRecords/SetState";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetState(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetState(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSetState(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -308225,6 +308277,9 @@ export class PayrollControlRecordDto implements IPayrollControlRecordDto {
     calendarMonthEnd!: DateTime;
     periodLocked!: boolean;
     periodClosed!: boolean;
+    periodState!: PayrollPeriodState;
+    stateChangedTime!: DateTime | undefined;
+    stateChangedUserName!: string | undefined;
 
     constructor(data?: IPayrollControlRecordDto) {
         if (data) {
@@ -308246,6 +308301,9 @@ export class PayrollControlRecordDto implements IPayrollControlRecordDto {
             this.calendarMonthEnd = _data["calendarMonthEnd"] ? DateTime.fromISO(_data["calendarMonthEnd"].toString()) : undefined as any;
             this.periodLocked = _data["periodLocked"];
             this.periodClosed = _data["periodClosed"];
+            this.periodState = _data["periodState"];
+            this.stateChangedTime = _data["stateChangedTime"] ? DateTime.fromISO(_data["stateChangedTime"].toString()) : undefined as any;
+            this.stateChangedUserName = _data["stateChangedUserName"];
         }
     }
 
@@ -308267,6 +308325,9 @@ export class PayrollControlRecordDto implements IPayrollControlRecordDto {
         data["calendarMonthEnd"] = this.calendarMonthEnd ? this.calendarMonthEnd.toString() : undefined as any;
         data["periodLocked"] = this.periodLocked;
         data["periodClosed"] = this.periodClosed;
+        data["periodState"] = this.periodState;
+        data["stateChangedTime"] = this.stateChangedTime ? this.stateChangedTime.toString() : undefined as any;
+        data["stateChangedUserName"] = this.stateChangedUserName;
         return data;
     }
 }
@@ -308281,6 +308342,9 @@ export interface IPayrollControlRecordDto {
     calendarMonthEnd: DateTime;
     periodLocked: boolean;
     periodClosed: boolean;
+    periodState: PayrollPeriodState;
+    stateChangedTime: DateTime | undefined;
+    stateChangedUserName: string | undefined;
 }
 
 export class PayrollDriverEditDto implements IPayrollDriverEditDto {
@@ -310766,6 +310830,13 @@ export interface IPayrollPeriod {
     code: string | undefined;
     nameEn: string;
     nameAr: string;
+}
+
+export enum PayrollPeriodState {
+    Open = 0,
+    ReleasedForPayroll = 1,
+    ReleasedForCorrection = 2,
+    Closed = 3,
 }
 
 export enum PayrollResultType {
@@ -324109,6 +324180,46 @@ export class SetNotificationAsReadOutput implements ISetNotificationAsReadOutput
 
 export interface ISetNotificationAsReadOutput {
     success: boolean;
+}
+
+export class SetPayrollPeriodStateInput implements ISetPayrollPeriodStateInput {
+    id!: number;
+    state!: PayrollPeriodState;
+
+    constructor(data?: ISetPayrollPeriodStateInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.state = _data["state"];
+        }
+    }
+
+    static fromJS(data: any): SetPayrollPeriodStateInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetPayrollPeriodStateInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["state"] = this.state;
+        return data;
+    }
+}
+
+export interface ISetPayrollPeriodStateInput {
+    id: number;
+    state: PayrollPeriodState;
 }
 
 export class SetReportScheduleActiveInput implements ISetReportScheduleActiveInput {

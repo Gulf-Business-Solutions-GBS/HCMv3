@@ -48,6 +48,7 @@ public class PayrollSensitiveObjectSeeder : ITransientDependency
                     Name = type.Name,
                     FullName = type.FullName,
                     IsPayrollSensitive = true,
+                    IsTimeSensitive = PayrollSensitiveDefaults.TimeSensitiveTypes.Contains(type),
                 });
                 added++;
             }

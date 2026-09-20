@@ -15342,6 +15342,15 @@ namespace HCMv3.Migrations
                     b.Property<bool>("PeriodLocked")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PeriodState")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StateChangedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("StateChangedUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 

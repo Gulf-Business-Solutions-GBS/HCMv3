@@ -1,48 +1,39 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
-using Abp.Runtime.Caching;
 using Abp.Threading;
 using Abp.Timing;
 using Abp.UI;
 using HCMv3.PayrollManagement.Services;
-using HCMv3.SystemSecurity;
 
 namespace HCMv3.PayrollManagement.PayrollLock;
 
 /// <inheritdoc cref="IPayrollLockGuard"/>
 public class PayrollLockGuard : HCMv3DomainServiceBase, IPayrollLockGuard
 {
-    /// <summary>The company's payroll-sensitive type names, cached per tenant. Cleared when System Objects change.</summary>
-    public const string SensitiveTypesCacheName = "PayrollSensitiveTypes";
-
     /// <summary>Units of work a system process has exempted. Weak, so a finished unit of work is not kept alive.</summary>
     private static readonly ConditionalWeakTable<IActiveUnitOfWork, object> ExemptUnitsOfWork = new();
 
     /// <summary>The <c>EmployeeId</c> property per entity type, looked up once. Null when the type has none.</summary>
     private static readonly ConcurrentDictionary<Type, PropertyInfo> EmployeeIdProperties = new();
 
-    private readonly IRepository<SysObject> _sysObjectRepository;
     private readonly IRepository<PayrollControlRecord> _payrollControlRecordRepository;
     private readonly IEmployeePayrollAreaResolver _payrollAreaResolver;
-    private readonly ICacheManager _cacheManager;
+    private readonly IPayrollSensitiveTypes _sensitiveTypes;
 
     public PayrollLockGuard(
-        IRepository<SysObject> sysObjectRepository,
         IRepository<PayrollControlRecord> payrollControlRecordRepository,
         IEmployeePayrollAreaResolver payrollAreaResolver,
-        ICacheManager cacheManager)
+        IPayrollSensitiveTypes sensitiveTypes)
     {
-        _sysObjectRepository = sysObjectRepository;
         _payrollControlRecordRepository = payrollControlRecordRepository;
         _payrollAreaResolver = payrollAreaResolver;
-        _cacheManager = cacheManager;
+        _sensitiveTypes = sensitiveTypes;
     }
 
     public void ExemptCurrentUnitOfWork()
@@ -68,8 +59,7 @@ public class PayrollLockGuard : HCMv3DomainServiceBase, IPayrollLockGuard
         }
 
         // Cheapest test first: this runs on every save in the system, and almost none are payroll-sensitive.
-        var type = entity.GetType();
-        if (!GetSensitiveTypeNames(tenantEntity.TenantId).Contains(type.FullName))
+        if (!_sensitiveTypes.IsPayrollSensitive(tenantEntity.TenantId, entity.GetType()))
         {
             return;
         }
@@ -105,23 +95,6 @@ public class PayrollLockGuard : HCMv3DomainServiceBase, IPayrollLockGuard
                 throw new UserFriendlyException(L("PayrollAreaLockedForEditing", payrollArea.Name));
             }
         }
-    }
-
-    private HashSet<string> GetSensitiveTypeNames(int tenantId)
-    {
-        return _cacheManager
-            .GetCache<int, HashSet<string>>(SensitiveTypesCacheName)
-            .Get(tenantId, () =>
-            {
-                using (UnitOfWorkManager.Current.SetTenantId(tenantId))
-                {
-                    return _sysObjectRepository.GetAll()
-                        .Where(r => r.IsPayrollSensitive && r.FullName != null)
-                        .Select(r => r.FullName)
-                        .ToList()
-                        .ToHashSet(StringComparer.Ordinal);
-                }
-            });
     }
 
     private static int? GetEmployeeId(object entity)

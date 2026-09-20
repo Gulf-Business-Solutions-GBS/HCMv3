@@ -14,4 +14,10 @@ public interface IPayrollControlRecordsAppService : IApplicationService
     Task CreateOrEdit(CreateOrEditPayrollControlRecordDto input);
 
     Task Delete(EntityDto input);
+
+    /// <summary>
+    /// Moves the period to another state: release it for a payroll run (which locks master data), release it so data
+    /// can be corrected, close it when payroll for the month is finished, or set it back to open.
+    /// </summary>
+    Task SetState(SetPayrollPeriodStateInput input);
 }

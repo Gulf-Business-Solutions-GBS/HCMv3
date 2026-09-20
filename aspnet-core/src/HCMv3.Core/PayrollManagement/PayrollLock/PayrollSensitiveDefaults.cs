@@ -54,4 +54,21 @@ public static class PayrollSensitiveDefaults
         typeof(Travel),
         typeof(TravelDetail),
     };
+
+    /// <summary>
+    /// Also time sensitive: changing one of these moves the employee's next time evaluation date back as well, so the
+    /// time engine redoes those days before payroll recalculates them. Legacy's <c>SysObject.IsTimeSensitive</c> rows.
+    /// </summary>
+    public static readonly IReadOnlyList<Type> TimeSensitiveTypes = new[]
+    {
+        typeof(EmployeeAbsence),
+        typeof(EmployeeAttendance),
+        typeof(EmployeeContract),
+        typeof(EmployeeFnFPayment),
+        typeof(EmployeeOrgAssignment),
+        typeof(EmployeeSeparation),
+        typeof(EmployeeDutyPeriod),
+        typeof(EmployeeSubstituteDuty),
+        typeof(EmployeeTimePolicy),
+    };
 }

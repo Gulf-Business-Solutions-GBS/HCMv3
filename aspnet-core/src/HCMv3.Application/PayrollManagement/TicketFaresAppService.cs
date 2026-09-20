@@ -7,6 +7,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Authorization;
 using HCMv3.PayrollManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -158,6 +159,12 @@ public class TicketFaresAppService : HCMv3AppServiceBase, ITicketFaresAppService
     /// TicketClass) scope (ordered by StartDate), EndDate = (next record's StartDate - 1 day), or
     /// infinite for the last one.
     /// </summary>
+    /// <summary>
+    /// Property-injected: this service is built by the container, and a chained row must be marked before it is
+    /// saved. See <see cref="IPayrollRetroTrigger.MarkEndDateAutoChange"/>.
+    /// </summary>
+    public IPayrollRetroTrigger RetroTrigger { get; set; }
+
     private async Task SetEndDatesAsync(int ticketRouteId, int ticketPaxTypeId, int ticketClassId)
     {
         var records = await _repository.GetAll()
@@ -174,6 +181,10 @@ public class TicketFaresAppService : HCMv3AppServiceBase, ITicketFaresAppService
             if (records[i].EndDate != newEndDate)
             {
                 records[i].EndDate = newEndDate;
+                
+                // Re-closed because a neighbour moved, not a change of its own: it must not move the employee's
+                // EarliestMasterDataChange. Legacy sets IsEndDateAutoChange on exactly these rows.
+                RetroTrigger?.MarkEndDateAutoChange(records[i]);
             }
         }
     }

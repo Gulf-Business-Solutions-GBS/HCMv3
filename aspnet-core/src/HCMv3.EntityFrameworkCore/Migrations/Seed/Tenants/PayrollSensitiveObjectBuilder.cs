@@ -45,6 +45,7 @@ public class PayrollSensitiveObjectBuilder
                 Name = type.Name,
                 FullName = type.FullName,
                 IsPayrollSensitive = true,
+                IsTimeSensitive = PayrollSensitiveDefaults.TimeSensitiveTypes.Contains(type),
             });
 
             added = true;

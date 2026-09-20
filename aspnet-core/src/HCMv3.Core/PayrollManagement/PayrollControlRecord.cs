@@ -52,4 +52,52 @@ public class PayrollControlRecord : FullAuditedEntity, IMustHaveTenant
 
     /// <summary>Simplified from the legacy PeriodClosed enum (No/Yes) — see class remarks.</summary>
     public virtual bool PeriodClosed { get; set; }
+
+    /// <summary>
+    /// Which of the three states the period is in. <see cref="PeriodLocked"/>/<see cref="PeriodClosed"/> stay the
+    /// stored truth the engine and the payroll lock read; this names the state and distinguishes a period merely not
+    /// started (<see cref="PayrollPeriodState.Open"/>) from one deliberately reopened to correct data
+    /// (<see cref="PayrollPeriodState.ReleasedForCorrection"/>). Always set through <see cref="ApplyState"/>.
+    /// </summary>
+    public virtual PayrollPeriodState PeriodState { get; set; }
+
+    /// <summary>When the state last changed, and by whom. Null until somebody moves it.</summary>
+    public virtual DateTime? StateChangedTime { get; set; }
+
+    public virtual long? StateChangedUserId { get; set; }
+
+    /// <summary>
+    /// Moves the period to <paramref name="state"/> and keeps the two legacy flags in step, so a state change and
+    /// what the engine sees can never disagree.
+    /// </summary>
+    public virtual void ApplyState(PayrollPeriodState state, long? userId, DateTime now)
+    {
+        PeriodState = state;
+        PeriodLocked = state == PayrollPeriodState.ReleasedForPayroll;
+        PeriodClosed = state == PayrollPeriodState.Closed;
+        StateChangedTime = now;
+        StateChangedUserId = userId;
+    }
+
+    /// <summary>
+    /// The state the stored flags describe. Used when reading rows written before states existed, and to keep a
+    /// direct change of the flags (the old screen, an import) from leaving the state behind.
+    /// </summary>
+    public virtual PayrollPeriodState StateFromFlags()
+    {
+        if (PeriodClosed)
+        {
+            return PayrollPeriodState.Closed;
+        }
+
+        if (PeriodLocked)
+        {
+            return PayrollPeriodState.ReleasedForPayroll;
+        }
+
+        // An unlocked, unclosed period is Open unless somebody deliberately released it for correction.
+        return PeriodState == PayrollPeriodState.ReleasedForCorrection
+            ? PayrollPeriodState.ReleasedForCorrection
+            : PayrollPeriodState.Open;
+    }
 }

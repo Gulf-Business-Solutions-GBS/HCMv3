@@ -1200,6 +1200,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         payrollControlRecords.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Create, L("CreateNewItem"));
         payrollControlRecords.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Edit, L("EditItem"));
         payrollControlRecords.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Delete, L("DeleteItem"));
+        payrollControlRecords.CreateChildPermission(AppPermissions.Pages_PayrollManagement_PayrollControlRecords_SetState, L("SetPayrollPeriodState"));
 
         var indemnityPayRules = payrollManagement.CreateChildPermission(AppPermissions.Pages_PayrollManagement_IndemnityPayRules, L("IndemnityPayRules"));
         indemnityPayRules.CreateChildPermission(AppPermissions.Pages_PayrollManagement_IndemnityPayRules_Create, L("CreateNewItem"));

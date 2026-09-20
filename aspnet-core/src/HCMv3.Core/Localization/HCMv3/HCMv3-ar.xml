@@ -6408,5 +6408,19 @@
     <text name="RemoveFromRecentSearches">إزالة من عمليات البحث الأخيرة</text>
     <text name="AbsenceDedRuleDetailsSearchHint">ابحث بالسنة أو التاريخ (yyyy-mm-dd) أو الرقم</text>
     <text name="PayrollAreaLockedForEditing">منطقة الرواتب '{0}' مقفلة لمعالجة الرواتب. يرجى إلغاء القفل لتعديل هذا السجل.</text>
+    <text name="CannotModifyBeforeEarliestRetroAccountingDate">لا يمكن تعديل السجل لأن أقدم تاريخ لإعادة احتساب الرواتب محدد بـ {0}</text>
+    <text name="SetPayrollPeriodState">تغيير حالة الفترة</text>
+    <text name="PeriodState">حالة الفترة</text>
+    <text name="ReleasedForPayroll">مفتوحة لتشغيل الرواتب</text>
+    <text name="ReleasedForCorrection">مفتوحة للتصحيح</text>
+    <text name="StateChangedBy">غيّرها</text>
+    <text name="StateChangedTime">تاريخ التغيير</text>
+    <text name="ReleaseForPayroll">فتح لتشغيل الرواتب</text>
+    <text name="ReleaseForCorrection">فتح للتصحيح</text>
+    <text name="ClosePayrollPeriod">إقفال الفترة</text>
+    <text name="ReopenPayrollPeriod">إعادة فتح الفترة</text>
+    <text name="UnknownRecordType">لا يمكن تعبئة هذا النوع من السجلات من السجل السابق.</text>
+    <text name="MissingPrefillKey">لا يمكن جلب القيم السابقة بدون {0}.</text>
+    <text name="PrefilledFrom">تمت التعبئة من السجل الساري بتاريخ {0}</text>
   </texts>
 </localizationDictionary>

@@ -1151,6 +1151,7 @@ public static class AppPermissions
     public const string Pages_PayrollManagement_PayrollControlRecords_Create = "Pages.PayrollManagement.PayrollControlRecords.Create";
     public const string Pages_PayrollManagement_PayrollControlRecords_Edit = "Pages.PayrollManagement.PayrollControlRecords.Edit";
     public const string Pages_PayrollManagement_PayrollControlRecords_Delete = "Pages.PayrollManagement.PayrollControlRecords.Delete";
+    public const string Pages_PayrollManagement_PayrollControlRecords_SetState = "Pages.PayrollManagement.PayrollControlRecords.SetState";
 
     public const string Pages_PayrollManagement_IndemnityPayRules = "Pages.PayrollManagement.IndemnityPayRules";
     public const string Pages_PayrollManagement_IndemnityPayRules_Create = "Pages.PayrollManagement.IndemnityPayRules.Create";

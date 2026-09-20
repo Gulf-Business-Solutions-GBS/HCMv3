@@ -1,8 +1,10 @@
 using System;
+using Abp.Domain.Repositories;
 using System.Threading.Tasks;
 using Abp.UI;
 using HCMv3.PayrollManagement;
 using HCMv3.PayrollManagement.Dto;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -15,7 +17,13 @@ public class PayrollControlRecordsAppService_Tests : PayrollManagementAppService
     {
         return CreateService(() => new PayrollControlRecordsAppService(
             FakeRepository.For<PayrollControlRecord>(Context),
-            FakeRepository.For<PayrollArea>(Context)));
+            FakeRepository.For<PayrollArea>(Context),
+            // These three are only touched by SetState and by listing rows whose state somebody changed; neither is
+            // what this class covers, so they are stubs.
+            Substitute.For<IRepository<HCMv3.Authorization.Users.User, long>>(),
+            Substitute.For<IRepository<SalaryRegister>>(),
+            Substitute.For<IRepository<HCMv3.PersonnelAdministration.EmployeeOrgAssignment>>(),
+            Substitute.For<HCMv3.SystemSettings.Services.ISysSettingsAccessor>()));
     }
 
     private int CreatePayrollArea(string payrollPeriodCode, string areaCode)

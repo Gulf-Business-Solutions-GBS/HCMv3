@@ -469,6 +469,30 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
         return output;
     }
 
+    /// <summary>
+    /// Puts every locked period of this company into "released for correction" before Go-Live changes data.
+    ///
+    /// <para>Go-Live loads salaries, org assignments and payments -- exactly the records the payroll lock freezes
+    /// while a period is locked. Rather than leaving the user to unlock by hand, or quietly bypassing the lock,
+    /// Go-Live records the release: the control record says the period was reopened to correct data, by whom and
+    /// when. SetUpPayrollMonth locks it again before the next run.</para>
+    /// </summary>
+    private async Task ReleaseForCorrectionAsync()
+    {
+        var locked = await _controlRecordRepository.GetAllListAsync(r => r.PeriodLocked);
+
+        foreach (var record in locked)
+        {
+            record.ApplyState(PayrollPeriodState.ReleasedForCorrection, AbpSession.UserId, Clock.Now);
+            await _controlRecordRepository.UpdateAsync(record);
+        }
+
+        if (locked.Count > 0)
+        {
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+    }
+
     [AbpAuthorize(AppPermissions.Pages_PayrollManagement_PayrollControlRecords_Create)]
     public async Task<GoLiveSetUpPayrollMonthOutput> SetUpPayrollMonth(GoLiveSetUpPayrollMonthInput input)
     {
@@ -514,6 +538,14 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
             output.ControlRecordCreated = true;
         }
 
+        // Locked for the run, whether the record was just created or released for correction earlier. A regular run
+        // is refused unless the period is locked, and while it is locked the payroll lock freezes master data.
+        if (record.PeriodState != PayrollPeriodState.ReleasedForPayroll)
+        {
+            record.ApplyState(PayrollPeriodState.ReleasedForPayroll, AbpSession.UserId, Clock.Now);
+            await _controlRecordRepository.UpdateAsync(record);
+        }
+
         output.MonthStart = record.CalendarMonthStart;
         output.MonthEnd = record.CalendarMonthEnd;
 
@@ -526,6 +558,8 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
     [AbpAuthorize(AppPermissions.Pages_PersonnelAdministration_Employees_Create)]
     public async Task<GoLiveLoadEmployeesOutput> LoadEmployees(GoLiveLoadEmployeesInput input)
     {
+        await ReleaseForCorrectionAsync();
+
         // The reference records every employee needs, checked before anything is created: refusing half-way
         // would leave an org unit and a grade behind with nobody in them.
         var contractType = await _contractTypeRepository.FirstOrDefaultAsync(c => c.NameEn == DefaultContractType)
@@ -707,6 +741,8 @@ public class GoLiveSetupAppService : HCMv3AppServiceBase, IGoLiveSetupAppService
         {
             throw new UserFriendlyException(L("GoLiveClearWhileRunning"));
         }
+
+        await ReleaseForCorrectionAsync();
 
         var cleared = await _companyClearer.ClearAsync(input);
 

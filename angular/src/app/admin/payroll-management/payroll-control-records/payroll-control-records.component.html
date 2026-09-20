@@ -56,8 +56,8 @@
                                     </th>
                                     <th style="min-width: 150px">{{ 'CalendarMonthStart' | localize }}</th>
                                     <th style="min-width: 150px">{{ 'CalendarMonthEnd' | localize }}</th>
-                                    <th style="min-width: 120px">{{ 'PeriodLocked' | localize }}</th>
-                                    <th style="min-width: 120px">{{ 'PeriodClosed' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'PeriodState' | localize }}</th>
+                                    <th style="min-width: 200px">{{ 'StateChangedBy' | localize }}</th>
                                 </tr>
                             </ng-template>
                             <ng-template #body let-record="$implicit">
@@ -85,11 +85,14 @@
                                     <td style="min-width: 100px">{{ record.payrollYear }}</td>
                                     <td style="min-width: 150px">{{ record.calendarMonthStart | luxonFormat:'yyyy-MM-dd' }}</td>
                                     <td style="min-width: 150px">{{ record.calendarMonthEnd | luxonFormat:'yyyy-MM-dd' }}</td>
-                                    <td style="min-width: 120px">
-                                        <i class="fa" [ngClass]="record.periodLocked ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    <td style="min-width: 200px">
+                                        <span class="badge" [ngClass]="stateBadgeClass(record)">{{ stateLabel(record) }}</span>
                                     </td>
-                                    <td style="min-width: 120px">
-                                        <i class="fa" [ngClass]="record.periodClosed ? 'fa-check text-success' : 'fa-times text-danger'"></i>
+                                    <td style="min-width: 200px">
+                                        @if (record.stateChangedUserName) {
+                                            {{ record.stateChangedUserName }}
+                                            <span class="text-muted">{{ record.stateChangedTime | luxonFormat: 'yyyy-MM-dd HH:mm' }}</span>
+                                        }
                                     </td>
                                 </tr>
                             </ng-template>

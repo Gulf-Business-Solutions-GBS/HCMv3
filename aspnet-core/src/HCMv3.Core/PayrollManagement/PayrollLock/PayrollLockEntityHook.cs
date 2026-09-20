@@ -22,15 +22,22 @@ namespace HCMv3.PayrollManagement.PayrollLock;
 public class PayrollLockEntityHook : IEventHandler<EntityChangingEventData<Entity<int>>>
 {
     private readonly IPayrollLockGuard _guard;
+    private readonly IPayrollRetroTrigger _retroTrigger;
 
-    public PayrollLockEntityHook(IPayrollLockGuard guard)
+    public PayrollLockEntityHook(IPayrollLockGuard guard, IPayrollRetroTrigger retroTrigger)
     {
         _guard = guard;
+        _retroTrigger = retroTrigger;
     }
 
+    /// <summary>
+    /// Refuse first, record second -- legacy does both in this order in <c>MyBaseObject.OnSaving</c>, and a change
+    /// that is not allowed must not move the employee's recalculation date.
+    /// </summary>
     public void HandleEvent(EntityChangingEventData<Entity<int>> eventData)
     {
         _guard.EnsureChangeAllowed(eventData.Entity);
+        _retroTrigger.RecordChange(eventData.Entity, deleted: eventData.Entity is ISoftDelete { IsDeleted: true });
     }
 }
 
@@ -50,7 +57,7 @@ public class PayrollSensitiveCacheInvalidator : IEventHandler<EntityChangedEvent
     public void HandleEvent(EntityChangedEventData<SysObject> eventData)
     {
         _cacheManager
-            .GetCache<int, System.Collections.Generic.HashSet<string>>(PayrollLockGuard.SensitiveTypesCacheName)
+            .GetCache<int, PayrollSensitiveTypes.SensitiveTypeNames>(PayrollSensitiveTypes.CacheName)
             .Remove(eventData.Entity.TenantId);
     }
 }

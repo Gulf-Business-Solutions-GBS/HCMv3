@@ -6,6 +6,8 @@ import {
     PayrollControlRecordDto,
     PayrollControlRecordsServiceProxy,
     GetAllPayrollControlRecordsInput,
+    PayrollPeriodState,
+    SetPayrollPeriodStateInput,
 } from '@shared/service-proxies/service-proxies';
 import { Table, TableModule } from 'primeng/table';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
@@ -94,8 +96,78 @@ export class PayrollControlRecordsComponent extends AppComponentBase implements 
         menu.toggle(event);
     }
 
+    /// The state in words, for the badge.
+    stateLabel(record: PayrollControlRecordDto): string {
+        switch (record.periodState) {
+            case PayrollPeriodState.ReleasedForPayroll:
+                return this.l('ReleasedForPayroll');
+            case PayrollPeriodState.ReleasedForCorrection:
+                return this.l('ReleasedForCorrection');
+            case PayrollPeriodState.Closed:
+                return this.l('Closed');
+            default:
+                return this.l('Open');
+        }
+    }
+
+    stateBadgeClass(record: PayrollControlRecordDto): string {
+        switch (record.periodState) {
+            case PayrollPeriodState.ReleasedForPayroll:
+                return 'badge-light-danger';
+            case PayrollPeriodState.ReleasedForCorrection:
+                return 'badge-light-warning';
+            case PayrollPeriodState.Closed:
+                return 'badge-light-dark';
+            default:
+                return 'badge-light-success';
+        }
+    }
+
+    setState(record: PayrollControlRecordDto, state: PayrollPeriodState): void {
+        this._payrollControlRecordsService
+            .setState(new SetPayrollPeriodStateInput({ id: record.id, state }))
+            .subscribe(() => {
+                this.reloadPage();
+                this.notify.success(this.l('SavedSuccessfully'));
+            });
+    }
+
     getMenuItems(record: PayrollControlRecordDto): MenuItem[] {
         const items: MenuItem[] = [];
+
+        if (this.permission.isGranted('Pages.PayrollManagement.PayrollControlRecords.SetState')) {
+            if (record.periodState !== PayrollPeriodState.ReleasedForPayroll) {
+                items.push({
+                    label: this.l('ReleaseForPayroll'),
+                    icon: 'pi pi-lock',
+                    command: () => this.setState(record, PayrollPeriodState.ReleasedForPayroll),
+                });
+            }
+
+            if (record.periodState !== PayrollPeriodState.ReleasedForCorrection) {
+                items.push({
+                    label: this.l('ReleaseForCorrection'),
+                    icon: 'pi pi-lock-open',
+                    command: () => this.setState(record, PayrollPeriodState.ReleasedForCorrection),
+                });
+            }
+
+            if (record.periodState !== PayrollPeriodState.Closed) {
+                items.push({
+                    label: this.l('ClosePayrollPeriod'),
+                    icon: 'pi pi-check-square',
+                    command: () => this.setState(record, PayrollPeriodState.Closed),
+                });
+            }
+
+            if (record.periodState !== PayrollPeriodState.Open) {
+                items.push({
+                    label: this.l('ReopenPayrollPeriod'),
+                    icon: 'pi pi-replay',
+                    command: () => this.setState(record, PayrollPeriodState.Open),
+                });
+            }
+        }
 
         if (this.permission.isGranted('Pages.PayrollManagement.PayrollControlRecords.Edit')) {
             items.push({

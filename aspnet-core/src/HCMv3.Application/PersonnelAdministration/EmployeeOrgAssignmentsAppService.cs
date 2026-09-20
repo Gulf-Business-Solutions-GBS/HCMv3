@@ -7,6 +7,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -112,6 +113,7 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
 
         await ValidateAsync(entity);
         await PrefillFromPreviousAsync(entity);
+        await MarkStopRetroEffectIfNothingPayRelevantChangedAsync(entity);
 
         await _repository.InsertAsync(entity);
         await CurrentUnitOfWork.SaveChangesAsync();
@@ -194,9 +196,40 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
     }
 
     /// <summary>
+    /// Legacy's <c>StopRetroEffect</c> block: a new assignment whose payroll area, employee group, sub group and
+    /// cost centre all match the one before it changes nothing payroll cares about -- a job title or a move between
+    /// units of the same cost centre -- so it must not send the payroll run back over past months.
+    ///
+    /// <para>New records only, as in legacy: an edit is always taken as a real change.</para>
+    /// </summary>
+    private async Task MarkStopRetroEffectIfNothingPayRelevantChangedAsync(EmployeeOrgAssignment entity)
+    {
+        var previous = await _repository.GetAll()
+            .Where(a => a.EmployeeId == entity.EmployeeId && a.StartDate < entity.StartDate)
+            .OrderByDescending(a => a.StartDate)
+            .Select(a => new { a.PayrollAreaId, a.EmployeeGroupId, a.EmployeeSubGroupId, a.CostCenterId })
+            .FirstOrDefaultAsync();
+
+        if (previous != null
+            && previous.PayrollAreaId == entity.PayrollAreaId
+            && previous.EmployeeGroupId == entity.EmployeeGroupId
+            && previous.EmployeeSubGroupId == entity.EmployeeSubGroupId
+            && previous.CostCenterId == entity.CostCenterId)
+        {
+            RetroTrigger?.MarkStopRetroEffect(entity);
+        }
+    }
+
+    /// <summary>
     /// Legacy <c>SetEndDate</c> parity: for each remaining record of the employee (ordered by
     /// StartDate), EndDate = (next record's StartDate - 1 day), or infinite for the last one.
     /// </summary>
+    /// <summary>
+    /// Property-injected: this service is built by the container, and a chained row must be marked before it is
+    /// saved. See <see cref="IPayrollRetroTrigger.MarkEndDateAutoChange"/>.
+    /// </summary>
+    public IPayrollRetroTrigger RetroTrigger { get; set; }
+
     private async Task SetEndDatesAsync(int employeeId)
     {
         var records = await _repository.GetAll()
@@ -211,6 +244,10 @@ public class EmployeeOrgAssignmentsAppService : HCMv3AppServiceBase, IEmployeeOr
             if (records[i].EndDate != newEndDate)
             {
                 records[i].EndDate = newEndDate;
+                
+                // Re-closed because a neighbour moved, not a change of its own: it must not move the employee's
+                // EarliestMasterDataChange. Legacy sets IsEndDateAutoChange on exactly these rows.
+                RetroTrigger?.MarkEndDateAutoChange(records[i]);
             }
         }
     }

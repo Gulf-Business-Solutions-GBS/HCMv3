@@ -7,6 +7,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
+using HCMv3.PayrollManagement.PayrollLock;
 using HCMv3.Authorization;
 using HCMv3.PerformanceManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -142,6 +143,12 @@ public class KpiByJobTitlesAppService : HCMv3AppServiceBase, IKpiByJobTitlesAppS
     }
 
     /// <summary>Legacy <c>SetEndDate</c> parity.</summary>
+    /// <summary>
+    /// Property-injected: this service is built by the container, and a chained row must be marked before it is
+    /// saved. See <see cref="IPayrollRetroTrigger.MarkEndDateAutoChange"/>.
+    /// </summary>
+    public IPayrollRetroTrigger RetroTrigger { get; set; }
+
     private async Task SetEndDatesAsync(int jobTitleId)
     {
         var records = await _repository.GetAll()
@@ -156,6 +163,10 @@ public class KpiByJobTitlesAppService : HCMv3AppServiceBase, IKpiByJobTitlesAppS
             if (records[i].EndDate != newEndDate)
             {
                 records[i].EndDate = newEndDate;
+                
+                // Re-closed because a neighbour moved, not a change of its own: it must not move the employee's
+                // EarliestMasterDataChange. Legacy sets IsEndDateAutoChange on exactly these rows.
+                RetroTrigger?.MarkEndDateAutoChange(records[i]);
             }
         }
 
