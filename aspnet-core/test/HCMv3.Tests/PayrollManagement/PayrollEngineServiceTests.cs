@@ -360,6 +360,70 @@ public class PayrollEngineServiceTests
 
     #endregion
 
+    #region << PickOffcyclePayment: which record the autorun is allowed to pick >>
+
+    /// <summary>
+    /// <b>The setting that did nothing until the autorun was ported.</b>
+    /// <c>ManagePayrollSettings.PickOffcyclePayment</c> has exactly ONE consumer in the whole legacy engine --
+    /// inside the time-engine autorun block (legacy <c>Program.cs</c> line 594) -- so while that block was
+    /// unported the setting was dead. It now decides how far forward the autorun may look for the leave /
+    /// full-and-final / encashment record that drives the off-cycle:
+    /// <code>
+    /// CurrentDate  (and today inside the window) =&gt; records dated up to TODAY
+    /// CurrentMonth (or today outside the window) =&gt; records dated up to the PAY-IN DATE
+    /// </code>
+    ///
+    /// <para>These two tests use the CURRENT month deliberately: the <c>CurrentDate</c> arm is guarded on
+    /// <c>teStartDate &lt;= today &lt;= teEndDate</c>, so it cannot fire for a historical period at all. A
+    /// harness pinned to 2024 would pass either way and prove nothing.</para>
+    ///
+    /// <para>The observable difference is the leave the run settles on, which sets the time-engine window end
+    /// AND the off-cycle payment date every later rule reads.</para>
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Ignore_A_Later_Leave_When_PickOffcyclePayment_Is_CurrentDate()
+    {
+        var harness = CurrentMonthAutorunHarness(PickOffcyclePayment.CurrentDate);
+
+        var call = harness.CaptureTimeEngineCall();
+        await harness.Build().RunAsync(harness.OffCycleAdvanceLeaveInputForCurrentMonth());
+
+        // Only the leave paid on or before TODAY is eligible, so the window ends at ITS end date.
+        call().EndDate.ShouldBe(harness.EarlyLeaveEndDate);
+    }
+
+    /// <summary>
+    /// With <c>CurrentMonth</c> the search runs to the pay-in date, so the LATER leave (dated after today but
+    /// inside the month) wins the <c>OrderByDescending(EndDate)</c> and pushes the window further out.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Pick_A_Later_Leave_When_PickOffcyclePayment_Is_CurrentMonth()
+    {
+        var harness = CurrentMonthAutorunHarness(PickOffcyclePayment.CurrentMonth);
+
+        var call = harness.CaptureTimeEngineCall();
+        await harness.Build().RunAsync(harness.OffCycleAdvanceLeaveInputForCurrentMonth());
+
+        call().EndDate.ShouldBe(harness.LateLeaveEndDate);
+    }
+
+    /// <summary>
+    /// A harness on the CURRENT month with autorun on and TWO advance-paid leaves: one paid a day before today,
+    /// one paid a day after. Which one the run picks is the whole behaviour of
+    /// <see cref="PickOffcyclePayment"/>.
+    /// </summary>
+    private static Harness CurrentMonthAutorunHarness(PickOffcyclePayment pickOffcyclePayment)
+    {
+        var today = Abp.Timing.Clock.Now.Date;
+        var monthEnd = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
+
+        var harness = new Harness(monthEnd) { PickOffcyclePayment = pickOffcyclePayment };
+        harness.EnableTimeEngineAutorun();
+        return harness;
+    }
+
+    #endregion
+
     #region << The 2005 / 2011 clearing blocks are wired in >>
 
     /// <summary>
@@ -972,8 +1036,129 @@ public class PayrollEngineServiceTests
         /// </summary>
         public string ActiveRunForKey { get; set; }
 
-        public Harness()
+        /// <summary>How far forward the autorun may look for its driving record. See the tests for what it does.</summary>
+        public PickOffcyclePayment PickOffcyclePayment { get; set; } = PickOffcyclePayment.CurrentMonth;
+
+        /// <summary>End date of the leave paid BEFORE today -- always eligible.</summary>
+        public DateTime EarlyLeaveEndDate { get; private set; }
+
+        /// <summary>End date of the leave paid AFTER today -- eligible only under <c>CurrentMonth</c>.</summary>
+        public DateTime LateLeaveEndDate { get; private set; }
+
+        /// <summary>
+        /// Records the last <see cref="HCMv3.TimeManagement.Services.TimeEngineRunInput"/> the engine handed the
+        /// Time Engine, and returns an accessor for it. Saves every autorun test repeating the same five lines.
+        /// </summary>
+        public Func<HCMv3.TimeManagement.Services.TimeEngineRunInput> CaptureTimeEngineCall()
         {
+            HCMv3.TimeManagement.Services.TimeEngineRunInput captured = null;
+
+            TimeEngineService
+                .CreateTimeRegisterAsync(Arg.Do<HCMv3.TimeManagement.Services.TimeEngineRunInput>(i => captured = i))
+                .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+
+            return () =>
+            {
+                captured.ShouldNotBeNull("the engine never called the Time Engine");
+                return captured;
+            };
+        }
+
+        /// <summary>
+        /// An Advance Leave off-cycle on the CURRENT month, with two advance-paid leaves straddling today so
+        /// <see cref="PickOffcyclePayment"/> has something to choose between. Mirrors
+        /// <see cref="OffCycleAdvanceLeaveInput"/> otherwise.
+        /// </summary>
+        public PayrollEngineRunInput OffCycleAdvanceLeaveInputForCurrentMonth()
+        {
+            var today = Abp.Timing.Clock.Now.Date;
+            var monthStart = new DateTime(RunPayInDate.Year, RunPayInDate.Month, 1);
+
+            // The control record must sit on the month BEFORE the run, and be closed.
+            var previousMonthEnd = monthStart.AddDays(-1);
+            ControlRecord.CalendarMonthEnd = previousMonthEnd;
+            ControlRecord.CalendarMonthStart = new DateTime(previousMonthEnd.Year, previousMonthEnd.Month, 1);
+            ControlRecord.PeriodLocked = false;
+            ControlRecord.PeriodClosed = true;
+
+            var absenceType = new AbsenceType
+            {
+                Id = 95, Code = "1", NameEn = "Annual Leave", IsPaid = true, IsActive = true
+            };
+
+            var employee = Employees.Single(e => e.Id == EmployeeId);
+
+            // Paid YESTERDAY -- inside both windows.
+            //
+            // Both leave END dates are past the month end on purpose. The autorun window only ever EXTENDS
+            // (legacy lines 689-690), so a leave ending BEFORE the month end leaves the window untouched and the
+            // two settings would look identical. Pushing both past it makes the choice observable.
+            var monthEnd = new DateTime(RunPayInDate.Year, RunPayInDate.Month, DateTime.DaysInMonth(RunPayInDate.Year, RunPayInDate.Month));
+            EarlyLeaveEndDate = monthEnd.AddDays(3);
+            Absences.Add(new EmployeeAbsence
+            {
+                Id = 95,
+                EmployeeId = EmployeeId,
+                AbsenceTypeId = absenceType.Id,
+                AbsenceType = absenceType,
+                Employee = employee,
+                StartDate = today.AddDays(-1),
+                EndDate = EarlyLeaveEndDate,
+                LeavePaymentType = LeavePaymentType.PayInAdvance,
+                PaymentDate = today.AddDays(-1)
+            });
+
+            // Paid TOMORROW -- only reachable when the search runs to the pay-in date. Its later EndDate means
+            // it wins OrderByDescending(EndDate) whenever it IS eligible.
+            LateLeaveEndDate = monthEnd.AddDays(10);
+            Absences.Add(new EmployeeAbsence
+            {
+                Id = 96,
+                EmployeeId = EmployeeId,
+                AbsenceTypeId = absenceType.Id,
+                AbsenceType = absenceType,
+                Employee = employee,
+                StartDate = today.AddDays(1),
+                EndDate = LateLeaveEndDate,
+                LeavePaymentType = LeavePaymentType.PayInAdvance,
+                PaymentDate = today.AddDays(1)
+            });
+
+            // Inside the autorun window AND at/after the off-cycle payment date -- see the fixture note on
+            // OffCycleAdvanceLeaveInput for why both bounds matter.
+            foreach (var status in PayrollStatuses)
+            {
+                status.NextTimeEvaluationFrom = monthStart;
+            }
+
+            return new PayrollEngineRunInput
+            {
+                PayrollRunType = PayrollRunType.OffCycle,
+                PayInDate = RunPayInDate,
+                PayrollAreaName = PayrollAreaName,
+                EmployeeCodes = "E1",
+                OffCyclePaymentDate = today.AddDays(-1),
+                OffCycleReason = PayrollOffCycleReasons.AdvanceLeave,
+                RegisterTarget = PayrollRegisterTarget.Live
+            };
+        }
+
+        /// <summary>
+        /// The period this harness runs. Defaults to the fixed <see cref="PayrollEngineServiceTests.PayInDate"/>
+        /// so every existing test is untouched; the <c>PickOffcyclePayment</c> tests pass the CURRENT month,
+        /// because that setting only does anything when today falls inside the run's window.
+        /// </summary>
+        public readonly DateTime RunPayInDate;
+
+        public Harness()
+            : this(PayInDate)
+        {
+        }
+
+        public Harness(DateTime payInDate)
+        {
+            RunPayInDate = payInDate;
+
             PayrollArea = new PayrollArea { Id = PayrollAreaId, Code = "PA", Name = PayrollAreaName, CutOffDay = 0 };
 
             ControlRecord = new PayrollControlRecord
@@ -981,8 +1166,8 @@ public class PayrollEngineServiceTests
                 Id = 1,
                 PayrollAreaId = PayrollAreaId,
                 PayrollArea = PayrollArea,
-                CalendarMonthEnd = PayInDate,
-                CalendarMonthStart = new DateTime(2024, 6, 1),
+                CalendarMonthEnd = RunPayInDate,
+                CalendarMonthStart = new DateTime(RunPayInDate.Year, RunPayInDate.Month, 1),
                 PeriodLocked = true,
                 PeriodClosed = false
             };
@@ -991,8 +1176,8 @@ public class PayrollEngineServiceTests
             {
                 Id = 1,
                 PayrollAreaId = PayrollAreaId,
-                PayrollMonth = PayInDate.Month,
-                PayrollYear = PayInDate.Year
+                PayrollMonth = RunPayInDate.Month,
+                PayrollYear = RunPayInDate.Year
             });
 
             AddEmployee(EmployeeId, "E1");
@@ -1038,7 +1223,7 @@ public class PayrollEngineServiceTests
             return new PayrollEngineRunInput
             {
                 PayrollRunType = PayrollRunType.Regular,
-                PayInDate = PayInDate,
+                PayInDate = RunPayInDate,
                 PayrollAreaName = PayrollAreaName,
                 RegisterTarget = PayrollRegisterTarget.Live
             };
@@ -1112,7 +1297,11 @@ public class PayrollEngineServiceTests
         public PayrollEngineService Build()
         {
             var settingsAccessor = Substitute.For<ISysSettingsAccessor>();
-            settingsAccessor.GetPayrollSettingsAsync().Returns(new ManagePayrollSettings { DecimalInSalaryRegister = 6 });
+            settingsAccessor.GetPayrollSettingsAsync().Returns(new ManagePayrollSettings
+            {
+                DecimalInSalaryRegister = 6,
+                PickOffcyclePayment = PickOffcyclePayment
+            });
             settingsAccessor.GetTimeSettingsAsync().Returns(
                 new ManageTimeSettings { EnableTimeEngineAutorun = AutorunEnabled });
             settingsAccessor.GetSecuritySettingsAsync().Returns(new ManageSecuritySettings());

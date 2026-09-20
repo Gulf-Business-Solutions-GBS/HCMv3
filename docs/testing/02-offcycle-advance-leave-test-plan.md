@@ -514,3 +514,38 @@ The formulas, straight from legacy:
 Note **calendar-minus-week-off and fixed-26 coincide in October 2026**, because its salary basis (31 − 5) is
 exactly 26. They are genuinely different formulas, asserted separately; they simply agree on this month. Pick a
 month whose basis is not 26 (e.g. March 2027, basis 27) to tell them apart.
+
+---
+
+## 9. `PickOffcyclePayment` — now live, and what it does
+
+Until the Time Engine autorun was ported this setting did **nothing**: its only consumer in the whole legacy
+engine is inside that block (legacy `Program.cs` line 594). It is now live, so it needs testing.
+
+It decides how far forward the autorun may look for the record that drives an off-cycle — the advance-paid
+leave, the full-and-final compensation, or the encashment adjustment:
+
+| Setting | Records eligible |
+|---|---|
+| **Current date** (and today inside the run's window) | dated up to **today** |
+| **Current month** (or today outside the window) | dated up to the **pay-in date** |
+
+That choice sets two things every later rule reads: the **time-engine window end** and the **off-cycle payment
+date**.
+
+**Worked example** — a run on the current month with two advance-paid leaves, one paid yesterday and one paid
+tomorrow, both ending after the month end:
+
+| Setting | Leave picked | Window ends |
+|---|---|---|
+| Current date | the one paid yesterday | month end + 3 |
+| Current month | the one paid tomorrow (later `EndDate` wins) | month end + 10 |
+
+Pinned by `RunAsync_Should_Ignore_A_Later_Leave_When_PickOffcyclePayment_Is_CurrentDate` and
+`..._Is_CurrentMonth`.
+
+**Two things to know when testing this yourself.** The `Current date` arm is guarded on
+`windowStart <= today <= windowEnd`, so it **cannot fire for a historical period at all** — testing it on a
+2024 payroll would pass either way and prove nothing. And the autorun window only ever *extends* (legacy lines
+689–690), so a leave ending before the month end leaves the window untouched and the two settings look
+identical.
