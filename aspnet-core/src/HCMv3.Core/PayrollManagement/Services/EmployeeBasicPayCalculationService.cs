@@ -618,10 +618,14 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
         }
         else if (wageType.BillingMethod == BillingMethod.FixedDaysPerMonth)
         {
-            // Legacy lines 577-614.
+            // Legacy lines 577-614. NOTE the 7th argument: legacy passes its own `payDate` as
+            // GetPresentDays' offCycleEndDate (legacy EmployeeBasicPayService.cs line 584), NOT the run's
+            // offCycleEndDate. That bound decides GetPresentDays' internal recovery-period fan-out and its
+            // "IsLeaveEnded" fixed-days/actual-days switch, so passing the run-level value instead makes a
+            // retro period see months it must not.
             var presentDays = await _dayCountService.GetPresentDaysAsync(
                 context.EmployeeId, startDate, endDate, context.Register.RegisterId,
-                context.PayrollRunType, context.OffCycleEndDate, context.OffCycleReason);
+                context.PayrollRunType, context.PayDate, context.OffCycleReason);
 
             workingDays = presentDays.PresentDays;
 
@@ -800,10 +804,18 @@ public class EmployeeBasicPayCalculationService : HCMv3DomainServiceBase, IEmplo
             }
             else if (wageType.BillingMethod == BillingMethod.FixedDaysPerMonth)
             {
-                // Legacy lines 905-959.
+                // Legacy lines 905-959. NOTE the 7th argument: legacy passes THIS MONTH'S clamped end date as
+                // GetPresentDays' offCycleEndDate (legacy EmployeeBasicPayService.cs line 921), NOT the run's
+                // offCycleEndDate -- so each recovery month asks about itself alone.
+                //
+                // This matters because GetPresentDays recomputes its OWN recovery periods from
+                // (payEndDate, offCycleEndDate) when the run is an Advance Leave off-cycle. Handing it the
+                // run-level end date makes the OCTOBER call fan out over October AND November and add both
+                // months' present days into October's basic pay. Passing monthEnddate keeps it to one month,
+                // as legacy does.
                 var presentDays = await _dayCountService.GetPresentDaysAsync(
                     context.EmployeeId, rec, monthEnddate, context.Register.RegisterId,
-                    context.PayrollRunType, context.OffCycleEndDate, context.OffCycleReason);
+                    context.PayrollRunType, monthEnddate, context.OffCycleReason);
 
                 workingDays = presentDays.PresentDays;
 

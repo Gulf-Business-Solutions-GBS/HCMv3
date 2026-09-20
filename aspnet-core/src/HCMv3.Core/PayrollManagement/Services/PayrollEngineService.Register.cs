@@ -191,9 +191,14 @@ public partial class PayrollEngineService
 
         #endregion
 
-        // NOT PORTED: Program.DeleteAdvancePaymentDed (legacy line 1201). Its predicate keys off
-        // EmployeePayment.OffCyclePaymentDate, which this port's EmployeePayment does not carry -- see the
-        // class remarks on PayrollEngineService for why this is skipped rather than approximated.
+        #region << Advance Payment Ded (WageCode : 2005) -- legacy line 1201 >>
+
+        // Legacy Program.DeleteAdvancePaymentDed. This MUST run before the period loop below: the loop is
+        // about to post fresh recovery rows, and AdvancePaymentDed ACCUMULATES onto an existing row rather
+        // than replacing it. Without this, re-running the same off-cycle recovers twice what it advanced.
+        await _advancePaymentService.DeleteAdvancePaymentDedAsync(employee.Id, input.OffCyclePaymentDate);
+
+        #endregion
 
         var periods = CollectPayrollPeriods(
             employee, payrollStatus, payInDate, settings,

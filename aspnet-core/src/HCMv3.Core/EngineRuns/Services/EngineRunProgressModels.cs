@@ -39,3 +39,19 @@ public class EngineRunEmployeeProgress
 
     public int ElapsedMilliseconds { get; set; }
 }
+
+/// <summary>
+/// The little that a caller needs to know about a run already in progress: enough to tell the operator who is
+/// running what, and since when, rather than a bare "try again later".
+/// </summary>
+public class ActiveEngineRun
+{
+    public long EngineRunId { get; set; }
+
+    /// <summary>The lock key -- for the payroll engine, the payroll area name.</summary>
+    public string RunKey { get; set; }
+
+    public string StartedByUserName { get; set; }
+
+    public System.DateTime StartedAt { get; set; }
+}

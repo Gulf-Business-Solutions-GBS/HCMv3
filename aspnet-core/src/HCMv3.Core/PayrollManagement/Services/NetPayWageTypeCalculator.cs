@@ -39,9 +39,11 @@ namespace HCMv3.PayrollManagement.Services;
 /// <c>InPeriod == ForPeriod</c> (i.e. not on a retro period), and when the current month produces no recovery
 /// an existing 2011 row is zeroed rather than deleted (legacy lines 1135-1145).</para>
 ///
-/// <para><b>PORT DEVIATION (auditing).</b> <c>SysCreator</c>/<c>SysModifier</c>/<c>IsSystemGenerated</c>
-/// stamping dropped -- ABP <c>FullAuditedEntity</c>; this port's <c>EmployeePayment</c> has no
-/// <c>IsSystemGenerated</c> column.</para>
+/// <para><b>PORT DEVIATION (auditing).</b> Legacy's <c>SysCreator</c>/<c>SysModifier</c> stamping is
+/// superseded by ABP <c>FullAuditedEntity</c>. <c>IsSystemGenerated</c> IS carried on
+/// <c>EmployeePayment</c> (wave P8 added it) and is what
+/// <see cref="IPayrollAdvancePaymentService.ZeroLastMonthRecoveryAsync"/> stamps when it clears the 2011 row
+/// this rule wrote; the earlier remark here, that the column did not exist, was stale.</para>
 /// </summary>
 public class NetPayWageTypeCalculator : HCMv3DomainServiceBase, IWageTypeCalculator, ITransientDependency
 {

@@ -59,4 +59,24 @@ public interface IEngineRunProgressWriter
 
     /// <summary>Closes the run. Safe to call more than once; safe to call with <c>engineRunId == 0</c>.</summary>
     Task CompleteRunAsync(long engineRunId, EngineRunStatus status, int? executionLogId, string failureMessage);
+
+    /// <summary>
+    /// The run still going for this engine and <paramref name="runKey"/> in the current tenant, or <c>null</c>
+    /// when nothing is running. Stale rows are aged out to <see cref="EngineRunStatus.Abandoned"/> first, so a
+    /// run whose process was killed does NOT block the next one for ever -- which is what usually makes a lock
+    /// like this worse than the problem it solves.
+    ///
+    /// <para><b>What it is for.</b> Two payroll runs for the SAME payroll area write the same
+    /// <c>SalaryRegister</c> rows for the same employees, and the advance-recovery upsert ACCUMULATES -- so a
+    /// concurrent pair can double a recovery. Legacy neither prevented this nor coped with it: its Run button
+    /// truncated the whole <c>PayrollLog</c> table and queued another thread, so a second run destroyed the
+    /// first one's progress log and the two runs' counters were added together. There is nothing to port; this
+    /// is the guard legacy lacked.</para>
+    ///
+    /// <para>Runs with DIFFERENT keys are unaffected -- different payroll areas may run at the same time.</para>
+    ///
+    /// <para>Returns <c>null</c> on any error, deliberately: a progress-store hiccup must not be able to block
+    /// payroll. The guard fails OPEN.</para>
+    /// </summary>
+    Task<ActiveEngineRun> GetActiveRunAsync(EngineType engineType, string runKey);
 }

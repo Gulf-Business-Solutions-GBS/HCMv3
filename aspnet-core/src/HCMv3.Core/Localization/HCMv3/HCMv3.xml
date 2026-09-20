@@ -4144,6 +4144,8 @@
     <text name="RunPayrollEngine">Run Payroll Engine</text>
     <text name="PayrollEnginePayInDateRequired">No Pay Date defined for Payroll Calculation. Please select a Pay Date.</text>
     <text name="PayrollEngineOffCycleReasonRequired">Offcycle reason can not be blank.</text>
+    <text name="PayrollEngineAlreadyRunningForPayrollArea">Payroll is already running for payroll area {0} (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.</text>
+    <text name="AnotherUser">another user</text>
     <text name="PayrollEnginePayrollAreaRequired">Payroll Area is required to run the Payroll Engine.</text>
     <text name="PayrollEngineRunQueued">Payroll Engine run has been queued. Progress appears in the run history below.</text>
     <text name="PayrollEngineRunHistory">Payroll Engine Run History</text>

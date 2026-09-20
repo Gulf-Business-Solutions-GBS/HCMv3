@@ -55,4 +55,10 @@ public sealed class NullEngineRunProgressWriter : IEngineRunProgressWriter
     {
         return Task.CompletedTask;
     }
+
+    /// <summary>Nothing is ever running, so the concurrency guard never fires -- the no-op's usual contract.</summary>
+    public Task<ActiveEngineRun> GetActiveRunAsync(EngineType engineType, string runKey)
+    {
+        return Task.FromResult<ActiveEngineRun>(null);
+    }
 }

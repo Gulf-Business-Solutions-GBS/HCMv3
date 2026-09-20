@@ -130,6 +130,111 @@ public class PayrollAdvancePaymentService : HCMv3DomainServiceBase, IPayrollAdva
     }
 
     /// <inheritdoc/>
+    public async Task<int> DeleteAdvancePaymentDedAsync(int employeeId, DateTime offCyclePaymentDate)
+    {
+        // Legacy's sentinel for "no off-cycle" is default(DateTime); the column stores NULL. A run without a
+        // payment date has nothing keyed to it, so there is nothing to delete.
+        if (offCyclePaymentDate.Date == default(DateTime))
+        {
+            return 0;
+        }
+
+        var rows = AdvanceRecoveryRows()
+            .Where(p => p.EmployeeId == employeeId && p.OffCyclePaymentDate == offCyclePaymentDate.Date)
+            .ToList();
+
+        foreach (var row in rows)
+        {
+            await _employeePaymentRepository.DeleteAsync(row);
+        }
+
+        return rows.Count;
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> ZeroFutureAdvanceRecoveryAsync(int employeeId, DateTime payDate, bool hasAdvancePaidLeaveOnPayDate)
+    {
+        // Legacy lines 1623-1630: the leave is still there, so its recovery must continue.
+        if (hasAdvancePaidLeaveOnPayDate)
+        {
+            return 0;
+        }
+
+        var payDateOnly = payDate.Date;
+
+        // Legacy lines 1632-1636. Note BOTH bounds: keyed to an off-cycle paid ON payDate, and only the
+        // months AFTER it -- the current month's advance was really paid and is still owed.
+        var rows = AdvanceRecoveryRows()
+            .Where(p => p.EmployeeId == employeeId
+                        && p.OffCyclePaymentDate == payDateOnly
+                        && p.PaymentDate > payDateOnly)
+            .ToList();
+
+        return await ZeroAsync(rows);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> ZeroAdvanceRecoveryInWindowAsync(int employeeId, DateTime payStartDate, DateTime offCycleEndDate)
+    {
+        var start = payStartDate.Date;
+        var end = offCycleEndDate.Date;
+
+        // Legacy lines 1800-1803: the window applies to PaymentDate and OffCyclePaymentDate alike.
+        var rows = AdvanceRecoveryRows()
+            .Where(p => p.EmployeeId == employeeId
+                        && p.PaymentDate >= start
+                        && p.PaymentDate <= end
+                        && p.OffCyclePaymentDate >= start
+                        && p.OffCyclePaymentDate <= end)
+            .ToList();
+
+        return await ZeroAsync(rows);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> ZeroLastMonthRecoveryAsync(int employeeId, DateTime payDate)
+    {
+        // Legacy lines 1833-1834.
+        var nextMonth = payDate.Date.AddMonths(1);
+        var nextMonthPayDay = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0);
+
+        var rows = (from payment in _employeePaymentRepository.GetAll()
+                    join wageType in _wageTypeRepository.GetAll() on payment.WageTypeId equals wageType.Id
+                    where payment.EmployeeId == employeeId
+                          && payment.PaymentDate == nextMonthPayDay
+                          && wageType.Code == PayrollEngineWageCodes.LastMonthRecoveryDeduction
+                    select payment).ToList();
+
+        return await ZeroAsync(rows);
+    }
+
+    /// <summary>The employee's wage-code-2005 rows, joined the same way <see cref="AdvancePaymentDedAsync"/> does.</summary>
+    private IQueryable<EmployeePayment> AdvanceRecoveryRows()
+    {
+        return from payment in _employeePaymentRepository.GetAll()
+               join wageType in _wageTypeRepository.GetAll() on payment.WageTypeId equals wageType.Id
+               where wageType.Code == PayrollEngineWageCodes.AdvancePaymentDeduction
+               select payment;
+    }
+
+    /// <summary>
+    /// Legacy's three clearing blocks all do the same two assignments (<c>Amount = 0</c>,
+    /// <c>IsSystemGenerated = true</c>) and save. They ZERO rather than delete on purpose: the row stays
+    /// visible on the employee's payments screen as evidence that a recovery was raised and then cancelled.
+    /// </summary>
+    private async Task<int> ZeroAsync(List<EmployeePayment> rows)
+    {
+        foreach (var row in rows)
+        {
+            row.Amount = 0;
+            row.IsSystemGenerated = true;
+            await _employeePaymentRepository.UpdateAsync(row);
+        }
+
+        return rows.Count;
+    }
+
+    /// <inheritdoc/>
     public List<DateTime> GetRecoveryPeriods(DateTime payStartDate, DateTime payEndDate)
     {
         var recoveryPeriods = new List<DateTime>();

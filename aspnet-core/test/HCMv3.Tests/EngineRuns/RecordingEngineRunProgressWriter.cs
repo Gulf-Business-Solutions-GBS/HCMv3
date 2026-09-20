@@ -87,4 +87,28 @@ public class RecordingEngineRunProgressWriter : IEngineRunProgressWriter
         CompletedFailureMessage = failureMessage;
         return Task.CompletedTask;
     }
+
+    /// <summary>
+    /// The run key this fake reports as already running. Null (the default) means nothing is running, so the
+    /// concurrency guard never fires -- which is what almost every test wants.
+    /// </summary>
+    public string ActiveRunKey { get; set; }
+
+    public string StartedByUserName { get; set; } = "someone.else";
+
+    public Task<ActiveEngineRun> GetActiveRunAsync(EngineType engineType, string runKey)
+    {
+        if (string.IsNullOrWhiteSpace(ActiveRunKey) || ActiveRunKey != runKey)
+        {
+            return Task.FromResult<ActiveEngineRun>(null);
+        }
+
+        return Task.FromResult(new ActiveEngineRun
+        {
+            EngineRunId = 4242,
+            RunKey = runKey,
+            StartedByUserName = StartedByUserName,
+            StartedAt = System.DateTime.Now.AddMinutes(-3)
+        });
+    }
 }

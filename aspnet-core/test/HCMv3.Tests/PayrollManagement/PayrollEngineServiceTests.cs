@@ -39,6 +39,12 @@ public class PayrollEngineServiceTests
     private const string PayrollAreaName = "PA";
     private static readonly DateTime PayInDate = new DateTime(2024, 6, 30);
 
+    /// <summary>
+    /// Mid-June, so <c>PayrollControlRecordGuard.ResolveOffCyclePayInDate</c> resolves the run onto
+    /// <see cref="PayInDate"/> (the month end of the payment date).
+    /// </summary>
+    private static readonly DateTime OffCyclePaymentDate = new DateTime(2024, 6, 15);
+
     #region << Ordering >>
 
     [Fact]
@@ -58,6 +64,375 @@ public class PayrollEngineServiceTests
 
         harness.DispatchedWageCodes.ShouldBe(new[] { "1006", "2000", "0023", "9000" });
         harness.DispatchedWageCodes.Last().ShouldBe("9000");
+    }
+
+    #endregion
+
+    #region << One run per payroll area >>
+
+    /// <summary>
+    /// <b>ONE PAYROLL RUN PER PAYROLL AREA.</b> Two runs for the same area write the same
+    /// <c>SalaryRegister</c> rows for the same employees, and the advance-recovery upsert ACCUMULATES — so a
+    /// concurrent pair can double a recovery.
+    ///
+    /// <para><b>Not a port.</b> Legacy had no guard: its Run button truncated the whole <c>PayrollLog</c> table
+    /// and queued another thread, so a second run destroyed the first one's progress log and the two runs'
+    /// counters were added together. There was nothing to match, so this is new — and it is a GUARD, not a
+    /// calculation, so it leaves every figure alone.</para>
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Refuse_A_Second_Run_For_The_Same_Payroll_Area()
+    {
+        var harness = new Harness();
+        harness.ActiveRunForKey = PayrollEngineService.BuildRunKey(PayrollAreaName);
+
+        var exception = await Should.ThrowAsync<Abp.UI.UserFriendlyException>(
+            () => harness.Build().RunAsync(harness.RegularInput()));
+
+        exception.Message.ShouldContain(PayrollAreaName);
+        exception.Message.ShouldContain("already running");
+
+        // Refused BEFORE any employee was touched -- no half-written register.
+        harness.SalaryRegisters.ShouldBeEmpty();
+    }
+
+    /// <summary>
+    /// A run in progress for a DIFFERENT payroll area must not block this one. Large tenants run their areas in
+    /// parallel, and the two touch different employees and different control records.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Allow_A_Run_While_Another_Payroll_Area_Is_Running()
+    {
+        var harness = new Harness();
+        harness.ActiveRunForKey = PayrollEngineService.BuildRunKey("A DIFFERENT AREA");
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        // Ran normally.
+        harness.PayrollLogs.ShouldNotBeEmpty();
+    }
+
+    /// <summary>
+    /// The key is normalised, so casing or stray spaces cannot smuggle a second run past the guard for the same
+    /// area — "PA", "pa" and " PA " are one area.
+    /// </summary>
+    [Fact]
+    public void BuildRunKey_Should_Normalise_Casing_And_Whitespace()
+    {
+        PayrollEngineService.BuildRunKey("PA").ShouldBe(PayrollEngineService.BuildRunKey(" pa "));
+        PayrollEngineService.BuildRunKey("Payroll Area 1").ShouldBe(PayrollEngineService.BuildRunKey("PAYROLL AREA 1"));
+        PayrollEngineService.BuildRunKey("A").ShouldNotBe(PayrollEngineService.BuildRunKey("B"));
+        PayrollEngineService.BuildRunKey(" ").ShouldBeNull();
+    }
+
+    /// <summary>
+    /// The guard <b>fails OPEN</b>: when the progress store cannot be read it returns null and the run proceeds.
+    /// A reporting hiccup must never be able to stop payroll — that is strictly worse than the race it guards.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Proceed_When_The_Concurrency_Check_Cannot_Be_Read()
+    {
+        var harness = new Harness();
+        harness.ActiveRunForKey = null;          // the writer reports nothing running
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        harness.PayrollLogs.ShouldNotBeEmpty();
+    }
+
+    /// <summary>
+    /// The legacy <c>PayrollLog.StopFlag</c> abort is now SCOPED to this run. Legacy achieved that by truncating
+    /// the table before every run; left unscoped, stopping one payroll area would abort a concurrent run of
+    /// another. A stop flag from BEFORE this run started must be ignored.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Ignore_A_StopFlag_From_An_Earlier_Run()
+    {
+        var harness = new Harness();
+
+        // An old row left behind by a previous run that someone stopped.
+        harness.PayrollLogs.Add(new PayrollLog
+        {
+            Id = 9001,
+            StopFlag = true,
+            RunTimeStamp = DateTime.Now.AddDays(-1),
+            Message = "Stopped by user, yesterday"
+        });
+
+        var result = await harness.Build().RunAsync(harness.RegularInput());
+
+        result.Aborted.ShouldBeFalse();
+        result.EmployeeResults.ShouldNotBeEmpty();
+    }
+
+    #endregion
+
+    #region << Time Engine autorun: no separate run needed >>
+
+    /// <summary>
+    /// <b>THE POINT OF THE AUTORUN: the operator does not run the Time Engine separately.</b> With
+    /// <c>EnableTimeEngineAutorun</c> on, the payroll run evaluates time for each employee itself (legacy
+    /// <c>Program.cs</c> 554-753), passing the employee's code, the window, the payroll area, and
+    /// <c>IsRanFromPayrollEngine</c> — legacy's six console arguments.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Run_The_Time_Engine_Per_Employee_When_Autorun_Is_On()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+        harness.AddSecondEmployee();
+
+        HCMv3.TimeManagement.Services.TimeEngineRunInput firstCall = null;
+        harness.TimeEngineService
+            .CreateTimeRegisterAsync(Arg.Do<HCMv3.TimeManagement.Services.TimeEngineRunInput>(i => firstCall ??= i))
+            .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        // Once per employee, not once per run.
+        await harness.TimeEngineService.Received(2)
+            .CreateTimeRegisterAsync(Arg.Any<HCMv3.TimeManagement.Services.TimeEngineRunInput>());
+
+        firstCall.ShouldNotBeNull();
+        firstCall.EmployeeCodes.ShouldBe("E1");
+        firstCall.PayrollAreaName.ShouldBe(PayrollAreaName);
+        firstCall.IsRanFromPayrollEngine.ShouldBeTrue();
+
+        // Legacy lines 566-567: the run month, first day to last.
+        firstCall.StartDate.ShouldBe(new DateTime(2024, 6, 1));
+        firstCall.EndDate.ShouldBe(new DateTime(2024, 6, 30));
+    }
+
+    /// <summary>
+    /// With autorun OFF the payroll run must not touch the Time Engine — the operator runs it themselves, and
+    /// the engine's existing "Time Engine not run for Employee" guard is what protects the figures.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Not_Run_The_Time_Engine_When_Autorun_Is_Off()
+    {
+        var harness = new Harness();
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        await harness.TimeEngineService.DidNotReceive()
+            .CreateTimeRegisterAsync(Arg.Any<HCMv3.TimeManagement.Services.TimeEngineRunInput>());
+    }
+
+    /// <summary>
+    /// Legacy lines 570-572: the window RESUMES from <c>PayrollStatus.NextTimeEvaluationFrom</c> rather than
+    /// re-evaluating the whole month, so a payroll re-run does not redo work already done.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Resume_The_Time_Window_From_NextTimeEvaluationFrom()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+        harness.PayrollStatuses.Single().NextTimeEvaluationFrom = new DateTime(2024, 6, 18);
+
+        HCMv3.TimeManagement.Services.TimeEngineRunInput call = null;
+        harness.TimeEngineService
+            .CreateTimeRegisterAsync(Arg.Do<HCMv3.TimeManagement.Services.TimeEngineRunInput>(i => call = i))
+            .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        call.StartDate.ShouldBe(new DateTime(2024, 6, 18));
+        call.EndDate.ShouldBe(new DateTime(2024, 6, 30));
+    }
+
+    /// <summary>
+    /// Legacy lines 575-585: on a REGULAR run a leave paid in full WITH this payroll extends the window past the
+    /// month end to the leave's end date, so the spilled months are evaluated before payroll reads them.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Extend_The_Time_Window_To_A_PayFullWithPayroll_Leave_End()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+
+        var absenceType = new AbsenceType { Id = 91, Code = "1", NameEn = "Annual Leave", IsPaid = true, IsActive = true };
+        harness.Absences.Add(new EmployeeAbsence
+        {
+            Id = 91,
+            EmployeeId = Harness.EmployeeId,
+            AbsenceTypeId = absenceType.Id,
+            AbsenceType = absenceType,
+            StartDate = new DateTime(2024, 6, 20),
+            EndDate = new DateTime(2024, 7, 25),
+            LeavePaymentType = LeavePaymentType.PayFullWithPayroll,
+            PaymentDate = PayInDate
+        });
+
+        HCMv3.TimeManagement.Services.TimeEngineRunInput call = null;
+        harness.TimeEngineService
+            .CreateTimeRegisterAsync(Arg.Do<HCMv3.TimeManagement.Services.TimeEngineRunInput>(i => call = i))
+            .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        call.EndDate.ShouldBe(new DateTime(2024, 7, 25));       // past the month end, to the leave's end
+    }
+
+    /// <summary>
+    /// Legacy lines 600-613: on an Advance Leave OFF-CYCLE the window extends to the advance leave's end date —
+    /// exactly the window the off-cycle's own recovery periods will later span.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Extend_The_Time_Window_To_The_Advance_Leave_End_On_OffCycle()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+        var input = harness.OffCycleAdvanceLeaveInput();
+
+        HCMv3.TimeManagement.Services.TimeEngineRunInput call = null;
+        harness.TimeEngineService
+            .CreateTimeRegisterAsync(Arg.Do<HCMv3.TimeManagement.Services.TimeEngineRunInput>(i => call = i))
+            .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+
+        await harness.Build().RunAsync(input);
+
+        call.ShouldNotBeNull();
+        call.EndDate.ShouldBe(new DateTime(2024, 7, 10));       // the absence's EndDate
+    }
+
+    /// <summary>
+    /// Legacy line 693: an employee already evaluated past the window end is skipped, not re-run — the guard that
+    /// keeps a payroll re-run cheap.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Skip_The_Time_Engine_When_The_Window_Is_Already_Covered()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+        harness.PayrollStatuses.Single().NextTimeEvaluationFrom = new DateTime(2024, 8, 1);   // past 30/06
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        await harness.TimeEngineService.DidNotReceive()
+            .CreateTimeRegisterAsync(Arg.Any<HCMv3.TimeManagement.Services.TimeEngineRunInput>());
+    }
+
+    /// <summary>
+    /// Legacy lines 717-720 plus its <c>catch { log; continue; }</c> at 725-751: a failed <c>TimeLog</c> row fails
+    /// THAT employee and leaves the rest of the run alone. The failure is reported as legacy words it.
+    ///
+    /// <para>Legacy scoped this check by truncating the whole <c>TimeLog</c> table first; this port filters on
+    /// <c>RunTimeStamp</c> instead — the one deliberate deviation, in mechanism only.</para>
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Fail_Only_That_Employee_When_The_Time_Engine_Logs_A_Failure()
+    {
+        var harness = new Harness();
+        harness.EnableTimeEngineAutorun();
+        harness.AddSecondEmployee();
+
+        // The first employee's evaluation writes a failed TimeLog row; the second's does not.
+        harness.TimeEngineService
+            .CreateTimeRegisterAsync(Arg.Any<HCMv3.TimeManagement.Services.TimeEngineRunInput>())
+            .Returns(call =>
+            {
+                var runInput = call.Arg<HCMv3.TimeManagement.Services.TimeEngineRunInput>();
+                if (runInput.EmployeeCodes == "E1")
+                {
+                    harness.TimeLogs.Add(new HCMv3.TimeManagement.TimeLog
+                    {
+                        Id = 1,
+                        EmployeeId = Harness.EmployeeId,
+                        Status = 1,
+                        Message = "Duty not found",
+                        DayDate = new DateTime(2024, 6, 5),
+                        RunTimeStamp = DateTime.Now.AddMinutes(1)
+                    });
+                }
+
+                return Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult());
+            });
+
+        var result = await harness.Build().RunAsync(harness.RegularInput());
+
+        var first = result.EmployeeResults.Single(r => r.EmployeeCode == "E1");
+        first.Succeeded.ShouldBeFalse();
+        first.Message.ShouldContain("TimeEngine : Duty not found");
+
+        // The run carries on, and the second employee is paid.
+        result.EmployeeResults.Single(r => r.EmployeeCode == "E2").Succeeded.ShouldBeTrue();
+    }
+
+    #endregion
+
+    #region << The 2005 / 2011 clearing blocks are wired in >>
+
+    /// <summary>
+    /// <b>Wiring, not arithmetic.</b> The four clearing operations are what make a payroll RE-RUN safe:
+    /// <c>AdvancePaymentDed</c> ACCUMULATES onto its row, so an off-cycle that does not clear first recovers
+    /// twice what it advanced. They are cheap to drop by accident in a refactor and produce no error when
+    /// missing -- only a double deduction weeks later -- so the engine's calls to them are pinned here.
+    ///
+    /// <para>Legacy call sites: <c>Program.cs</c> line 1201 (delete, once per employee before the period loop)
+    /// and lines 1796-1819 / 1832-1850 (zero, per register).</para>
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Clear_The_Previous_Advance_Recovery_Before_An_OffCycle_Run()
+    {
+        var harness = new Harness();
+        var input = harness.OffCycleAdvanceLeaveInput();
+
+        await harness.Build().RunAsync(input);
+
+        // Block A -- the hard delete, keyed on the exact off-cycle payment date.
+        await harness.AdvancePaymentService.Received(1)
+            .DeleteAdvancePaymentDedAsync(Harness.EmployeeId, OffCyclePaymentDate);
+
+        // Block C2 -- the window zero. payStartDate is the 1st of the run month; offCycleEndDate has been
+        // narrowed to the leave's end date (10/07/2024) by ResolveOffCycleEndDate.
+        await harness.AdvancePaymentService.Received(1).ZeroAdvanceRecoveryInWindowAsync(
+            Harness.EmployeeId, new DateTime(2024, 6, 1), new DateTime(2024, 7, 10));
+
+        // Block C4 -- the 2011 carry-forward NetPay may have written into the following month.
+        await harness.AdvancePaymentService.Received(1)
+            .ZeroLastMonthRecoveryAsync(Harness.EmployeeId, PayInDate);
+
+        // Block B belongs to the Regular arm only.
+        await harness.AdvancePaymentService.DidNotReceive()
+            .ZeroFutureAdvanceRecoveryAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<bool>());
+    }
+
+    /// <summary>
+    /// The Regular arm runs exactly one clear -- legacy's own asymmetry. Its counterpart at legacy line 1135 is
+    /// COMMENTED OUT in the legacy source, so a regular run must not delete anything.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Only_Zero_Future_Recovery_On_A_Regular_Run()
+    {
+        var harness = new Harness();
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        await harness.AdvancePaymentService.Received(1)
+            .ZeroFutureAdvanceRecoveryAsync(Harness.EmployeeId, PayInDate, Arg.Any<bool>());
+
+        await harness.AdvancePaymentService.DidNotReceive()
+            .DeleteAdvancePaymentDedAsync(Arg.Any<int>(), Arg.Any<DateTime>());
+        await harness.AdvancePaymentService.DidNotReceive()
+            .ZeroAdvanceRecoveryInWindowAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<DateTime>());
+        await harness.AdvancePaymentService.DidNotReceive()
+            .ZeroLastMonthRecoveryAsync(Arg.Any<int>(), Arg.Any<DateTime>());
+    }
+
+    /// <summary>
+    /// Legacy's "is the advance-paid leave still on file?" test (lines 1623-1629) decides whether the FUTURE
+    /// months' recovery is abandoned. The engine must pass the answer, not decide it inside the service: here
+    /// the employee has no such leave on the pay date, so the flag is false and the clear goes ahead.
+    /// </summary>
+    [Fact]
+    public async Task RunAsync_Should_Tell_The_Clear_Whether_The_AdvancePaid_Leave_Still_Exists()
+    {
+        var harness = new Harness();
+
+        await harness.Build().RunAsync(harness.RegularInput());
+
+        await harness.AdvancePaymentService.Received(1)
+            .ZeroFutureAdvanceRecoveryAsync(Harness.EmployeeId, PayInDate, false);
     }
 
     #endregion
@@ -230,12 +605,25 @@ public class PayrollEngineServiceTests
         log.ExecutionStatus.ShouldBe(ExecutionLogStatus.PARTIAL);
     }
 
-    /// <summary>Legacy lines 776-777: a <see cref="PayrollLog"/> row with StopFlag aborts the whole run.</summary>
+    /// <summary>
+    /// Legacy lines 776-777: a <see cref="PayrollLog"/> row with StopFlag aborts the run.
+    ///
+    /// <para><b>Now scoped to THIS run.</b> Legacy compared against every row in the table and got away with it
+    /// because its Run button truncated the table first. Unscoped, stopping one payroll area would abort a
+    /// concurrent run of another, so the check now also requires <c>RunTimeStamp</c> to fall inside this run —
+    /// hence the future stamp here. The companion
+    /// <see cref="RunAsync_Should_Ignore_A_StopFlag_From_An_Earlier_Run"/> pins the other half.</para>
+    /// </summary>
     [Fact]
     public async Task RunAsync_Should_Abort_When_A_StopFlag_PayrollLog_Row_Exists()
     {
         var harness = new Harness();
-        harness.PayrollLogs.Add(new PayrollLog { Id = 99, StopFlag = true });
+        harness.PayrollLogs.Add(new PayrollLog
+        {
+            Id = 99,
+            StopFlag = true,
+            RunTimeStamp = DateTime.Now.AddMinutes(1)
+        });
 
         var result = await harness.Build().RunAsync(harness.RegularInput());
 
@@ -548,6 +936,42 @@ public class PayrollEngineServiceTests
         public readonly IEmployeeAttendancePayCalculationService AttendancePayService = Substitute.For<IEmployeeAttendancePayCalculationService>();
         public readonly IEmployeePaymentCalculationService PaymentService = Substitute.For<IEmployeePaymentCalculationService>();
 
+        /// <summary>
+        /// The engine calls this for the four 2005/2011 clearing blocks that make a payroll re-run safe (legacy
+        /// <c>Program.cs</c> lines 1201, 1619-1653 and 1787-1851). Substituted so the tests below can assert
+        /// WHICH clears fire on which run type -- the arithmetic lives in
+        /// <see cref="OffCycleAdvanceLeaveScenario_Tests"/>.
+        /// </summary>
+        public readonly IPayrollAdvancePaymentService AdvancePaymentService = Substitute.For<IPayrollAdvancePaymentService>();
+
+        /// <summary>
+        /// The Time Engine, which the payroll run now calls per employee when
+        /// <c>ManageTimeSettings.EnableTimeEngineAutorun</c> is on (legacy <c>Program.cs</c> 554-753). Substituted
+        /// so these tests can assert the WINDOW it is handed -- the arithmetic of time evaluation is
+        /// <c>TimeEngineService</c>'s own concern.
+        /// </summary>
+        public readonly HCMv3.TimeManagement.Services.ITimeEngineService TimeEngineService =
+            Substitute.For<HCMv3.TimeManagement.Services.ITimeEngineService>();
+
+        public readonly List<HCMv3.TimeManagement.TimeLog> TimeLogs = new List<HCMv3.TimeManagement.TimeLog>();
+
+        /// <summary>Turns autorun on and makes the Time Engine return a successful, empty result.</summary>
+        public void EnableTimeEngineAutorun()
+        {
+            AutorunEnabled = true;
+            TimeEngineService.CreateTimeRegisterAsync(Arg.Any<HCMv3.TimeManagement.Services.TimeEngineRunInput>())
+                .Returns(_ => Task.FromResult(new HCMv3.TimeManagement.Services.TimeEngineRunResult()));
+        }
+
+        public bool AutorunEnabled { get; private set; }
+
+        /// <summary>
+        /// Set to a run key to make the concurrency guard see a run already in progress for it. Null (the
+        /// default) means nothing is running. Tests that install their own progress writer after
+        /// <see cref="Build"/> override this, which is deliberate.
+        /// </summary>
+        public string ActiveRunForKey { get; set; }
+
         public Harness()
         {
             PayrollArea = new PayrollArea { Id = PayrollAreaId, Code = "PA", Name = PayrollAreaName, CutOffDay = 0 };
@@ -620,11 +1044,77 @@ public class PayrollEngineServiceTests
             };
         }
 
+        /// <summary>
+        /// An Advance Leave off-cycle for the period AFTER the one the control record sits on, set up the way
+        /// <see cref="PayrollControlRecordGuard"/> insists: the control record CLOSED and one period behind, an
+        /// employee code (mandatory off-cycle), and a paid <c>PayInAdvance</c> absence on the payment date so
+        /// <c>ResolveOffCycleEndDate</c> can narrow the window to the leave's end.
+        /// </summary>
+        public PayrollEngineRunInput OffCycleAdvanceLeaveInput()
+        {
+            // Legacy requires CalendarMonthEnd < offCyclePaymentDate AND NextPeriodPayInDate == payInDate, so
+            // the record has to sit on the month BEFORE PayInDate.
+            ControlRecord.CalendarMonthEnd = new DateTime(2024, 5, 31);
+            ControlRecord.CalendarMonthStart = new DateTime(2024, 5, 1);
+            ControlRecord.PeriodLocked = false;
+            ControlRecord.PeriodClosed = true;
+
+            var absenceType = new AbsenceType
+            {
+                Id = 90,
+                Code = "1",
+                NameEn = "Annual Leave",
+                IsPaid = true,
+                IsActive = true
+            };
+
+            Absences.Add(new EmployeeAbsence
+            {
+                Id = 90,
+                EmployeeId = EmployeeId,
+                AbsenceTypeId = absenceType.Id,
+                AbsenceType = absenceType,
+                // Both navigations must be set: the autorun employee-selection branch filters on
+                // r.Employee.Status and r.AbsenceType.IsPaid. Against a real DbContext those translate to
+                // joins; against the in-memory fake they are dereferenced, so an unset one is a null ref.
+                Employee = Employees.Single(e => e.Id == EmployeeId),
+                StartDate = new DateTime(2024, 6, 20),
+                EndDate = new DateTime(2024, 7, 10),
+                LeavePaymentType = LeavePaymentType.PayInAdvance,
+                PaymentDate = OffCyclePaymentDate
+            });
+
+            // Legacy refuses an off-cycle the Time Engine has not caught up to (Program.cs lines 852-858):
+            // NextTimeEvaluationFrom must be >= the off-cycle payment date (15/06).
+            //
+            // But it must ALSO stay inside the autorun's window, because that window starts here (legacy lines
+            // 570-572) and legacy skips the time-engine call entirely when start > end (line 693). Pushing this
+            // far into the future would satisfy the first rule and silently defeat the second -- which is
+            // exactly what RunAsync_Should_Skip_The_Time_Engine_When_The_Window_Is_Already_Covered asserts on
+            // purpose. 20/06 satisfies both.
+            foreach (var status in PayrollStatuses)
+            {
+                status.NextTimeEvaluationFrom = new DateTime(2024, 6, 20);
+            }
+
+            return new PayrollEngineRunInput
+            {
+                PayrollRunType = PayrollRunType.OffCycle,
+                PayInDate = PayInDate,
+                PayrollAreaName = PayrollAreaName,
+                EmployeeCodes = "E1",
+                OffCyclePaymentDate = OffCyclePaymentDate,
+                OffCycleReason = PayrollOffCycleReasons.AdvanceLeave,
+                RegisterTarget = PayrollRegisterTarget.Live
+            };
+        }
+
         public PayrollEngineService Build()
         {
             var settingsAccessor = Substitute.For<ISysSettingsAccessor>();
             settingsAccessor.GetPayrollSettingsAsync().Returns(new ManagePayrollSettings { DecimalInSalaryRegister = 6 });
-            settingsAccessor.GetTimeSettingsAsync().Returns(new ManageTimeSettings());
+            settingsAccessor.GetTimeSettingsAsync().Returns(
+                new ManageTimeSettings { EnableTimeEngineAutorun = AutorunEnabled });
             settingsAccessor.GetSecuritySettingsAsync().Returns(new ManageSecuritySettings());
 
             var areaResolver = Substitute.For<IEmployeePayrollAreaResolver>();
@@ -665,7 +1155,7 @@ public class PayrollEngineServiceTests
                 return Task.FromResult(true);
             });
 
-            return new PayrollEngineService(
+            var engine = new PayrollEngineService(
                 Writable(Employees),
                 Writable(OrgAssignments),
                 Writable(Contracts),
@@ -696,6 +1186,9 @@ public class PayrollEngineServiceTests
                 BasicPayService,
                 LeavePayService,
                 new FakePayrollRegisterStore(),
+                AdvancePaymentService,
+                TimeEngineService,
+                Writable(TimeLogs),
                 // Wave: the time-type cumulation pre-pass is now a real collaborator. These engine tests
                 // assert orchestration (employee selection, register creation, wage-type dispatch), not day
                 // counts, so it is stubbed out. TimeTypeCumulationServiceTests covers the pre-pass itself.
@@ -708,6 +1201,15 @@ public class PayrollEngineServiceTests
                 PaymentService,
                 OvertimePayService,
                 AttendancePayService);
+
+            // Only needed by the concurrency-guard tests; harmless otherwise, since a null ActiveRunForKey
+            // reports nothing running. Tests that assign their own writer after Build() replace this.
+            engine.ProgressWriter = new HCMv3.Tests.EngineRuns.RecordingEngineRunProgressWriter
+            {
+                ActiveRunKey = ActiveRunForKey
+            };
+
+            return engine;
         }
     }
 

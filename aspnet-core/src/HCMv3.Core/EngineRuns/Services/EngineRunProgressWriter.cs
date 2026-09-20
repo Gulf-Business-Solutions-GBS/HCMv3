@@ -319,6 +319,50 @@ public class EngineRunProgressWriter : HCMv3DomainServiceBase, IEngineRunProgres
     /// heartbeat has aged past <c>EngineRunConsts.StaleHeartbeatSeconds</c> as
     /// <see cref="EngineRunStatus.Abandoned"/>. Must be called from INSIDE an already-open unit of work.
     /// </summary>
+    /// <inheritdoc/>
+    public async Task<ActiveEngineRun> GetActiveRunAsync(EngineType engineType, string runKey)
+    {
+        if (string.IsNullOrWhiteSpace(runKey))
+        {
+            return null;
+        }
+
+        try
+        {
+            // Its OWN transaction, like every other method here: the caller may be inside the engine's long
+            // unit of work, and this must read what other connections have already committed.
+            using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+            {
+                // Age out crashed runs FIRST, or a killed process blocks this payroll area for ever.
+                await AbandonStaleRunsInCurrentUowAsync(engineType, Clock.Now);
+
+                var active = _engineRunRepository.GetAll()
+                    .Where(r => r.EngineType == engineType
+                                && r.Status == EngineRunStatus.Running
+                                && r.RunKey == runKey)
+                    .OrderBy(r => r.StartedAt)
+                    .Select(r => new ActiveEngineRun
+                    {
+                        EngineRunId = r.Id,
+                        RunKey = r.RunKey,
+                        StartedByUserName = r.StartedByUserName,
+                        StartedAt = r.StartedAt
+                    })
+                    .FirstOrDefault();
+
+                await uow.CompleteAsync();
+                return active;
+            }
+        }
+        catch (Exception ex)
+        {
+            // FAIL OPEN, deliberately. A progress-store problem must never be able to stop payroll running;
+            // the worst case is that the concurrency guard does not fire, which is exactly where legacy was.
+            Logger.Warn("EngineRunProgressWriter.GetActiveRunAsync failed; the concurrency guard is skipped.", ex);
+            return null;
+        }
+    }
+
     private async Task AbandonStaleRunsInCurrentUowAsync(EngineType engineType, DateTime now)
     {
         var cutoff = now.AddSeconds(-EngineRunConsts.StaleHeartbeatSeconds);

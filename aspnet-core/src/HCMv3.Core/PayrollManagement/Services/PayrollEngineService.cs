@@ -38,22 +38,26 @@ namespace HCMv3.PayrollManagement.Services;
 /// columns. <c>IsSystemGenerated</c> IS ported: the column was added to <c>SalaryRegisterDetail</c> by
 /// migration <c>20260729111551</c> and <see cref="IPayrollRegisterStore.SaveLineAsync"/> stamps it on every
 /// engine write.</description></item>
-/// <item><description><b>The nested TIME ENGINE AUTORUN call is NOT made</b> (legacy 555-753 calls
-/// <c>HCM10.TimeEngine.Program.Main</c> per employee, truncating <c>TimeLog</c> first). Chaining one engine
-/// into another is an application/background-job orchestration concern in this port, not a domain-service
-/// one, and <c>TRUNCATE TABLE</c> has no place in a domain service.
-/// <see cref="PayrollEngineSettings.EnableTimeEngineAutorun"/> IS honoured everywhere it selects a
-/// GATE or a QUERY (control-record arm, employee selection). <b>Reported gap.</b></description></item>
+/// <item><description><b>The nested TIME ENGINE AUTORUN call IS made</b> (legacy 554-753) -- see
+/// <c>PayrollEngineService.TimeEngineAutorun.cs</c>. When
+/// <see cref="PayrollEngineSettings.EnableTimeEngineAutorun"/> is on, time is evaluated for each employee
+/// immediately before that employee's registers are built, so the operator never runs the Time Engine by hand
+/// first. An earlier wave deferred this as an orchestration concern; since
+/// <see cref="TimeManagement.Services.ITimeEngineService"/> lives in <c>HCMv3.Core</c> the call sits exactly
+/// where legacy has it. The ONE deviation is legacy's <c>TRUNCATE TABLE [dbo].[TimeLog]</c> (line 700), which
+/// existed only to scope its own error check and is replaced by a <c>TimeLog.RunTimeStamp</c> filter. The flag
+/// also still selects a GATE and a QUERY (control-record arm, employee selection), as
+/// before.</description></item>
 /// <item><description><b>The TIME-TYPE cumulation pre-pass IS ported</b> (legacy 1956-2518: 63
 /// <c>CalculateTimeType</c> calls for wage codes 4000-4031/5000-5031) -- see
 /// <see cref="ITimeTypeCumulationService"/> for the per-code reconciliation table and the eight
 /// commented-out-in-legacy blocks that are deliberately absent.</description></item>
-/// <item><description><b>The 2005/2011 advance-recovery CLEARING blocks are NOT ported</b> (legacy
-/// 1619-1653, 1787-1851). Their predicate keys off <c>EmployeePayment.OffCyclePaymentDate</c>, a field this
-/// port's <see cref="EmployeePayment"/> deliberately dropped (already documented at
-/// <c>EmployeeBasicPayCalculationService.cs</c> ~line 1195). Running the predicate without it would zero
-/// MORE payment rows than legacy. <b>Skipped rather than approximated</b> -- skipping only leaves a recovery
-/// in place, whereas guessing destroys money. <b>Reported gap.</b></description></item>
+/// <item><description><b>The 2005/2011 advance-recovery CLEARING blocks ARE ported</b> (legacy 1201,
+/// 1619-1653, 1796-1819, 1832-1850), as the four clearing operations on
+/// <see cref="IPayrollAdvancePaymentService"/>. They were skipped in an earlier wave because their predicate
+/// keys off <c>EmployeePayment.OffCyclePaymentDate</c>, which this port had dropped; wave P8 restored that
+/// column, so the reason lapsed. Without them a repeated off-cycle run RECOVERS TWICE what it advanced,
+/// because <c>AdvancePaymentDed</c> accumulates onto its row rather than replacing it.</description></item>
 /// <item><description><b>RetroReasonLog NOT ported</b> (legacy 1408-1411) -- no such entity exists in this
 /// solution; same decision as <c>TimeEngineService</c>. The <c>EarliestMasterDataChange</c> reset it
 /// accompanied IS ported.</description></item>
@@ -98,6 +102,9 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
     private readonly IEmployeeBasicPayCalculationService _basicPayService;
     private readonly IEmployeeLeavePayCalculationService _leavePayService;
     private readonly IPayrollRegisterStore _registerStore;
+    private readonly IPayrollAdvancePaymentService _advancePaymentService;
+    private readonly TimeManagement.Services.ITimeEngineService _timeEngineService;
+    private readonly IRepository<TimeManagement.TimeLog> _timeLogRepository;
     private readonly ITimeTypeCumulationService _timeTypeCumulationService;
 
     // ---------------------------------------------------------------------------------------------------
@@ -163,6 +170,9 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         IEmployeeBasicPayCalculationService basicPayService,
         IEmployeeLeavePayCalculationService leavePayService,
         IPayrollRegisterStore registerStore,
+        IPayrollAdvancePaymentService advancePaymentService,
+        TimeManagement.Services.ITimeEngineService timeEngineService,
+        IRepository<TimeManagement.TimeLog> timeLogRepository,
         ITimeTypeCumulationService timeTypeCumulationService,
         IPayrollArrearCalculationService arrearService,
         IEmployeePaymentCalculationService paymentService,
@@ -199,6 +209,9 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         _basicPayService = basicPayService;
         _leavePayService = leavePayService;
         _registerStore = registerStore;
+        _advancePaymentService = advancePaymentService;
+        _timeEngineService = timeEngineService;
+        _timeLogRepository = timeLogRepository;
         _timeTypeCumulationService = timeTypeCumulationService;
 
         ArrearService = arrearService ?? throw new ArgumentNullException(nameof(arrearService));
@@ -294,13 +307,42 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
         // Opened on its own committed transaction so the operator screen sees "Running" immediately. The
         // ExecutionLog row created on the next line cannot serve this purpose: it is written inside this
         // run's outer unit of work and stays invisible to every other connection until the run ends.
+        // ==================================================================================================
+        // ONE PAYROLL RUN PER PAYROLL AREA. Two runs for the SAME area write the same SalaryRegister rows for
+        // the same employees, and the advance-recovery upsert accumulates -- so a concurrent pair can double a
+        // recovery. Different areas are independent and may run together, which is why the key is the area.
+        //
+        // NOT a port: legacy had no such guard at all. Its Run button truncated the whole PayrollLog table and
+        // queued another thread, so a second run destroyed the first one's progress log and their counters were
+        // added together. There was nothing to match.
+        //
+        // The app service checks this too, so the operator gets told immediately; this one catches the race
+        // between two queued jobs. Stale runs are aged out first, so a killed process cannot block an area for
+        // ever, and the check fails OPEN -- a progress-store problem must never stop payroll.
+        // ==================================================================================================
+        var runKey = BuildRunKey(input.PayrollAreaName);
+
+        var alreadyRunning = await ProgressWriter.GetActiveRunAsync(EngineType.PayrollEngine, runKey);
+        if (alreadyRunning != null)
+        {
+            throw new UserFriendlyException(string.Format(
+                "Payroll is already running for payroll area '{0}' (started by {1} at {2}). Wait for it to finish, or stop it, before running this area again.",
+                input.PayrollAreaName,
+                string.IsNullOrWhiteSpace(alreadyRunning.StartedByUserName) ? "another user" : alreadyRunning.StartedByUserName,
+                alreadyRunning.StartedAt.ToString("dd/MM/yyyy HH:mm")));
+        }
+
         var engineRunId = await ProgressWriter.BeginRunAsync(new EngineRunStartInfo
         {
             EngineType = EngineType.PayrollEngine,
+            RunKey = runKey,
             Parameters = BuildExecutionLogParameters(input, payInDate)
         });
 
         var executionLogId = await AddExecutionLogAsync(input, payInDate);
+
+        // Stamped before the first employee, so the StopFlag check below sees only this run's rows.
+        var runStartedAt = Clock.Now;
 
         var result = new PayrollEngineRunResult { PayInDate = payInDate };
         string runFailureMessage = null;
@@ -321,8 +363,12 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
 
             foreach (var employee in employees)
             {
-                // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the whole run. Preserved.
-                if (_payrollLogRepository.GetAll().Any(x => x.StopFlag))
+                // Legacy lines 776-777: a PayrollLog row with StopFlag aborts the run -- but SCOPED to this
+                // run's own rows, which legacy achieved by truncating the whole table before every run. Left
+                // unscoped it reads every StopFlag ever set, so stopping one payroll area would abort a
+                // concurrent run of another. The real per-run Stop is ProgressWriter.IsStopRequestedAsync
+                // immediately below; this check is legacy's older mechanism, kept and now correctly scoped.
+                if (_payrollLogRepository.GetAll().Any(x => x.StopFlag && x.RunTimeStamp >= runStartedAt))
                 {
                     result.Aborted = true;
                     break;
@@ -352,7 +398,32 @@ public partial class PayrollEngineService : HCMv3DomainServiceBase, IPayrollEngi
                 try
                 {
                     SkipWithoutDecrement = false;
-                    var processed = await ProcessEmployeeAsync(input, employee, payInDate, settings, employeeResult);
+
+                    // ==============================================================================
+                    // TIME ENGINE AUTORUN -- legacy lines 554-753, and it belongs INSIDE this try.
+                    // Legacy wraps it in its own try/catch whose body is "write a failed PayrollLog row,
+                    // continue" (lines 725-751) -- which is precisely what the catch below already does. So a
+                    // time-engine failure fails THIS employee and leaves the rest of the run alone, exactly as
+                    // legacy, without a second error path to keep in step.
+                    //
+                    // The employee's input is cloned because legacy REASSIGNS its offCyclePaymentDate from the
+                    // leave / full-and-final / encashment record the autorun found, and every later rule reads
+                    // that value. Cloning keeps one employee's date out of the next one's run.
+                    // ==============================================================================
+                    var employeeInput = input;
+
+                    if (settings.EnableTimeEngineAutorun)
+                    {
+                        var resolvedOffCyclePaymentDate =
+                            await RunTimeEngineAutorunAsync(input, employee, payInDate, settings);
+
+                        if (resolvedOffCyclePaymentDate != input.OffCyclePaymentDate)
+                        {
+                            employeeInput = CloneForEmployee(input, resolvedOffCyclePaymentDate);
+                        }
+                    }
+
+                    var processed = await ProcessEmployeeAsync(employeeInput, employee, payInDate, settings, employeeResult);
 
                     stopwatch.Stop();
 

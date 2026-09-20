@@ -27,13 +27,16 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
 {
     private readonly IBackgroundJobManager _backgroundJobManager;
     private readonly EngineRunProgressReader _progressReader;
+    private readonly HCMv3.EngineRuns.Services.IEngineRunProgressWriter _progressWriter;
 
     public PayrollEngineAppService(
         IBackgroundJobManager backgroundJobManager,
-        EngineRunProgressReader progressReader)
+        EngineRunProgressReader progressReader,
+        HCMv3.EngineRuns.Services.IEngineRunProgressWriter progressWriter)
     {
         _backgroundJobManager = backgroundJobManager;
         _progressReader = progressReader;
+        _progressWriter = progressWriter;
     }
 
     /// <summary>
@@ -69,6 +72,25 @@ public class PayrollEngineAppService : HCMv3AppServiceBase, IPayrollEngineAppSer
         if (input.PayrollRunType == PayrollRunType.OffCycle && string.IsNullOrWhiteSpace(input.OffCycleReason))
         {
             throw new UserFriendlyException(L("PayrollEngineOffCycleReasonRequired"));
+        }
+
+        // ONE PAYROLL RUN PER PAYROLL AREA. Checked here so the operator is told straight away instead of
+        // finding out from a background job that failed minutes later; the engine re-checks it to catch the race
+        // between two jobs queued at once. Different payroll areas are independent and may run together.
+        //
+        // Not a port: legacy had no such guard -- its Run button truncated the whole PayrollLog table and queued
+        // another thread, so a second run wrecked the first one's progress log and their counters merged.
+        var activeRun = await _progressWriter.GetActiveRunAsync(
+            EngineType.PayrollEngine,
+            PayrollEngineService.BuildRunKey(input.PayrollAreaName));
+
+        if (activeRun != null)
+        {
+            throw new UserFriendlyException(L(
+                "PayrollEngineAlreadyRunningForPayrollArea",
+                input.PayrollAreaName,
+                string.IsNullOrWhiteSpace(activeRun.StartedByUserName) ? L("AnotherUser") : activeRun.StartedByUserName,
+                activeRun.StartedAt.ToString("dd/MM/yyyy HH:mm")));
         }
 
         await _backgroundJobManager.EnqueueAsync<PayrollEngineBackgroundJob, PayrollEngineJobArgs>(

@@ -166,6 +166,20 @@ public class LoanRecoveryDeductionWageTypeCalculator_Tests
 
         public List<DateTime> GetRecoveryPeriods(DateTime payStartDate, DateTime payEndDate)
             => new List<DateTime> { new DateTime(payStartDate.Year, payStartDate.Month, 1) };
+
+        // The four clearing operations are called by the ENGINE, never by a wage-type calculator, so this
+        // double no-ops them. PayrollAdvancePaymentService_Clearing_Tests covers the real behaviour.
+        public Task<int> DeleteAdvancePaymentDedAsync(int employeeId, DateTime offCyclePaymentDate)
+            => Task.FromResult(0);
+
+        public Task<int> ZeroFutureAdvanceRecoveryAsync(int employeeId, DateTime payDate, bool hasAdvancePaidLeaveOnPayDate)
+            => Task.FromResult(0);
+
+        public Task<int> ZeroAdvanceRecoveryInWindowAsync(int employeeId, DateTime payStartDate, DateTime offCycleEndDate)
+            => Task.FromResult(0);
+
+        public Task<int> ZeroLastMonthRecoveryAsync(int employeeId, DateTime payDate)
+            => Task.FromResult(0);
     }
 
     /// <summary>

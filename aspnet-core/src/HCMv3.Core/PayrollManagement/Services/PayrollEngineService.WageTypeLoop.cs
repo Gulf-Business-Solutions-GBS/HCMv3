@@ -65,8 +65,21 @@ public partial class PayrollEngineService
                     .Where(r => r.EmployeeId == employee.Id && r.DayDate >= payStartDate && r.DayDate <= payDate)
                     .ToList();
 
-                // NOT PORTED: the "Clear EmployeePayment Advance recovery" block (legacy lines 1619-1653) --
-                // its predicate keys off EmployeePayment.OffCyclePaymentDate, which this port does not carry.
+                #region << Clear EmployeePayment Advance recovery -- legacy lines 1619-1653 >>
+
+                // The advance-paid leave this recovery came from may have been cancelled, or its payment date
+                // moved, after the off-cycle ran. If it is gone, stop collecting the FUTURE months (legacy
+                // leaves the current month alone -- that advance really was paid out).
+                var hasAdvancePaidLeaveOnPayDate = _employeeAbsenceRepository.GetAll()
+                    .Any(r => r.EmployeeId == employee.Id
+                              && r.AbsenceType.IsPaid
+                              && r.LeavePaymentType == LeavePaymentType.PayInAdvance
+                              && r.PaymentDate == payDate);
+
+                await _advancePaymentService.ZeroFutureAdvanceRecoveryAsync(
+                    employee.Id, payDate, hasAdvancePaidLeaveOnPayDate);
+
+                #endregion
 
                 EnsureTimeRegisterApproved(settings, employee, payStartDate, payInDate);
             }
@@ -80,7 +93,30 @@ public partial class PayrollEngineService
 
                 EnsureTimeRegisterApproved(settings, employee, payStartDate, offCycleEndDate);
 
-                // NOT PORTED: the 2005/2011 clearing blocks (legacy lines 1787-1851) -- see above.
+                #region << Clear 2005 / 2011 before recalculating -- legacy lines 1787-1851 >>
+
+                // Four separate clears, in legacy's order. Together they make an off-cycle RE-RUN produce the
+                // same result as a first run instead of stacking onto it.
+
+                // Legacy lines 1787-1794: this register's own "Advance Salary Recovery Deduction" line.
+                // Zeroed, not deleted -- legacy keeps the row so the payslip still shows the wage type.
+                await ZeroRegisterLineAsync(register, PayrollEngineWageCodes.AdvancePaymentDeduction);
+
+                // Legacy lines 1796-1819: the 2005 EmployeePayment rows inside this run's window. Skipped for
+                // End-Of-Service, which never raises a recovery.
+                if (input.OffCycleReason != PayrollOffCycleReasons.EndOfService)
+                {
+                    await _advancePaymentService.ZeroAdvanceRecoveryInWindowAsync(
+                        employee.Id, payStartDate, offCycleEndDate);
+                }
+
+                // Legacy lines 1821-1830: this register's own 2011 "Last Month Recovery Deduction" line.
+                await ZeroRegisterLineAsync(register, PayrollEngineWageCodes.LastMonthRecoveryDeduction);
+
+                // Legacy lines 1832-1850: the 2011 carry-forward row NetPay wrote into the following month.
+                await _advancePaymentService.ZeroLastMonthRecoveryAsync(employee.Id, payDate);
+
+                #endregion
             }
 
             // Legacy lines 1875-1878.
@@ -404,6 +440,26 @@ public partial class PayrollEngineService
 
         return !lines.Any(l => exceptWageTypeIds.Contains(l.WageTypeId)
                                && (l.Rate != 0 || l.Number != 0 || l.Amount != 0));
+    }
+
+    /// <summary>
+    /// Legacy's two "Clear Salary Register if it has any data for ..." blocks (lines 1787-1794 for wage code
+    /// 2005, 1821-1830 for 2011): set the line's <c>Amount</c> to 0 if the line exists, and leave it in place.
+    ///
+    /// <para><c>deleteWhenAmountIsZero: false</c> is the whole point -- the default would DELETE the line,
+    /// which legacy does not do here. The rate and number are left as they were, exactly as legacy leaves
+    /// them.</para>
+    /// </summary>
+    private async Task ZeroRegisterLineAsync(PayrollRegisterRef register, string wageCode)
+    {
+        var line = await _registerStore.GetLineAsync(register, wageCode);
+        if (line == null)
+        {
+            return;
+        }
+
+        line.Amount = 0;
+        await _registerStore.SaveLineAsync(register, line, deleteWhenAmountIsZero: false);
     }
 
     /// <summary>

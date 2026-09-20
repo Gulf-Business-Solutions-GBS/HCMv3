@@ -311,6 +311,10 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
 
         var executionLogId = await AddExecutionLogAsync(input);
 
+        // Stamped BEFORE the first day is evaluated, so the run summary can be scoped to the rows this run
+        // wrote. See FinalizeExecutionLogAsync for why that matters.
+        var runStartedAt = Clock.Now;
+
         // Legacy: f_timeStartDate defaults to the 1st of the current month when no start date was passed.
         var runStartDate = input.StartDate == null || input.StartDate.Value == default(DateTime)
             ? new DateTime(Clock.Now.Year, Clock.Now.Month, 1, 0, 0, 0)
@@ -386,7 +390,7 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
             }
         }
 
-        var result = await FinalizeExecutionLogAsync(executionLogId, aborted);
+        var result = await FinalizeExecutionLogAsync(executionLogId, aborted, runStartedAt);
 
         await ProgressWriter.CompleteRunAsync(
             engineRunId,
@@ -607,14 +611,29 @@ public partial class TimeEngineService : HCMv3DomainServiceBase, ITimeEngineServ
     /// the database (not just this run's) -- a known legacy quirk that relies on the TimeLog table being
     /// truncated before each run. Preserved as-is rather than "improved".
     /// </summary>
-    private async Task<TimeEngineRunResult> FinalizeExecutionLogAsync(int executionLogId, bool aborted)
+    /// <summary>
+    /// <b>Scoped to THIS run, which legacy achieved a different way.</b> Legacy counted every
+    /// <c>TimeLog</c> row in the table (legacy <c>Program.cs</c> ~1570) and got away with it because it had
+    /// truncated the whole table at the start of the run -- so "every row" and "this run's rows" were the same
+    /// thing. This port cannot truncate: <c>TimeLog</c> is multi-tenant, audited and soft-deletable, and other
+    /// tenants' runs write to it concurrently.
+    ///
+    /// <para>Counting unscoped therefore inflated the totals -- every past run's rows were added to this run's
+    /// summary, so the Time Engine's run history showed failure counts that grew forever and a status that
+    /// drifted to PARTIAL once any historical row had failed. The <paramref name="runStartedAt"/> filter
+    /// restores legacy's INTENT ("this run only") without destroying anything.</para>
+    ///
+    /// <para>The <c>StopFlag</c> test is scoped the same way and for the same reason: legacy's truncation meant
+    /// it too only ever saw the current run.</para>
+    /// </summary>
+    private async Task<TimeEngineRunResult> FinalizeExecutionLogAsync(int executionLogId, bool aborted, DateTime runStartedAt)
     {
-        var allLogs = _timeLogRepository.GetAll();
-        var summaryAll = allLogs.Count();
-        var summarySuccess = allLogs.Count(r => r.Status == 0);
+        var thisRunLogs = _timeLogRepository.GetAll().Where(r => r.RunTimeStamp >= runStartedAt);
+        var summaryAll = thisRunLogs.Count();
+        var summarySuccess = thisRunLogs.Count(r => r.Status == 0);
         var summaryFailed = (summaryAll - summarySuccess) > 0 ? (summaryAll - summarySuccess) : 0;
 
-        var isAborted = aborted || _timeLogRepository.GetAll().Any(x => x.StopFlag);
+        var isAborted = aborted || thisRunLogs.Any(x => x.StopFlag);
 
         var status = isAborted ? ExecutionLogStatus.ABORTED
             : summaryAll == summarySuccess ? ExecutionLogStatus.SUCCESS
