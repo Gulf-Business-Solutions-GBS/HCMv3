@@ -250,7 +250,8 @@ public class ScreensAppService_Tests : AppTestBase
         await _appService.GetNavigationBootstrap();
 
         ScreenCount().ShouldBe(complete);
-        UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId && s.ScreenKey == removedKey))
+        // Live rows only: the removed row is still there, soft-deleted, and this reads outside a unit of work.
+        UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId && s.ScreenKey == removedKey && !s.IsDeleted))
             .ShouldBe(1);
     }
 
