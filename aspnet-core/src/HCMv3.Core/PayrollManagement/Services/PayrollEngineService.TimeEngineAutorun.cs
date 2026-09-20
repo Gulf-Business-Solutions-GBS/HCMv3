@@ -184,7 +184,7 @@ public partial class PayrollEngineService
                 if (adjustment == null)
                 {
                     throw new UserFriendlyException(string.Format(
-                        "Leaves not found for offcycle payment for Employee : {0}", employee.Code));
+                        "Leaves not found for offcycle payment for Employee : {0}", CodeWithFullNameEn(employee)));
                 }
 
                 offCycleEndDate = adjustment.EffectiveDate.Date;
@@ -234,7 +234,7 @@ public partial class PayrollEngineService
             if (adjustment == null)
             {
                 throw new UserFriendlyException(string.Format(
-                    "Leaves not found for offcycle payment for Employee : {0}", employee.Code));
+                    "Leaves not found for offcycle payment for Employee : {0}", CodeWithFullNameEn(employee)));
             }
 
             offCycleEndDate = adjustment.EffectiveDate.Date;
@@ -319,6 +319,23 @@ public partial class PayrollEngineService
 
     /// <summary>Legacy's <c>AbsenceType.Code == "1"</c> for annual leave.</summary>
     private const string AnnualLeaveAbsenceTypeCode = "1";
+
+    /// <summary>
+    /// Legacy's XPO computed <c>Employee.CodeWithFullNameEn</c>, which this port has no equivalent of -- a
+    /// documented solution-wide gap. It is <c>Concat(Code, ' ', FullNameEn)</c>, so it is reproduced literally
+    /// here rather than substituting <c>Code</c>: the two autorun "Leaves not found" messages are the operator's
+    /// only clue as to WHICH employee is missing a leave, and a bare code sends them to look it up.
+    ///
+    /// <para>Note legacy is inconsistent about this. The autorun block uses <c>CodeWithFullNameEn</c> (lines 632
+    /// and 683) while its End-Of-Service messages in the same block use plain <c>Code</c> (lines 652, 661).
+    /// Both are reproduced as they are.</para>
+    /// </summary>
+    private static string CodeWithFullNameEn(Employee employee)
+    {
+        return string.IsNullOrWhiteSpace(employee?.FullNameEn)
+            ? employee?.Code
+            : employee.Code + " " + employee.FullNameEn;
+    }
 
     /// <summary>
     /// A copy of the run input carrying the off-cycle payment date the autorun resolved for ONE employee.
