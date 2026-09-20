@@ -139,7 +139,7 @@ export class WageTypeDetailComponent extends AppComponentBase implements OnInit 
     }
 
     goBack(): void {
-        this._router.navigate(['/app/admin/wage-types']);
+        this._router.navigate(['/app/admin/wagetypes']);
     }
 
     startEditing(): void {

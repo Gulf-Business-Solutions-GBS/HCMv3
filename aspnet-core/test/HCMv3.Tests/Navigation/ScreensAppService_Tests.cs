@@ -278,8 +278,13 @@ public class ScreensAppService_Tests : AppTestBase
         ScreenCount().ShouldBe(before);
     }
 
+    /// <summary>
+    /// Live rows only. A removed screen is soft-deleted, and this reads outside a unit of work, where the filter
+    /// that normally hides deleted rows is not applied -- counting them would make a refilled catalogue look
+    /// bigger than it is.
+    /// </summary>
     private int ScreenCount()
     {
-        return UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId));
+        return UsingDbContext(context => context.Screens.Count(s => s.TenantId == AbpSession.TenantId && !s.IsDeleted));
     }
 }

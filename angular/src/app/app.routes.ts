@@ -1133,7 +1133,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.AbsenceTypeExceptions' },
                     },
                     {
-                        path: 'wage-type-exceptions',
+                        path: 'wagetype-exceptions',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-type-exceptions/wage-type-exceptions.component').then(
                                 (m) => m.WageTypeExceptionsComponent
@@ -1269,15 +1269,25 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.PayrollControlRecords' },
                     },
                     {
-                        path: 'wage-types',
+                        path: 'wagetypes',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-types/wage-types.component').then(
                                 (m) => m.WageTypesComponent
                             ),
                         data: { permission: 'Pages.PayrollManagement.WageTypes' },
                     },
+                    // "Wage Types" became one word, "Wagetypes", and the addresses followed. Anything already
+                    // saved -- a bookmark, a link in an old email, a quick link on somebody's home page -- still
+                    // lands in the right place.
+                    { path: 'wage-types', redirectTo: 'wagetypes', pathMatch: 'full' },
+                    { path: 'wage-types/:id', redirectTo: 'wagetypes/:id' },
+                    { path: 'wage-type-exceptions', redirectTo: 'wagetype-exceptions', pathMatch: 'full' },
+                    { path: 'wage-type-leaves', redirectTo: 'wagetype-leaves', pathMatch: 'full' },
+                    { path: 'wage-type-registers', redirectTo: 'wagetype-registers', pathMatch: 'full' },
+                    { path: 'wage-type-security-roles', redirectTo: 'wagetype-security-roles', pathMatch: 'full' },
+                    { path: 'project-wage-types', redirectTo: 'project-wagetypes', pathMatch: 'full' },
                     {
-                        path: 'wage-types/:id',
+                        path: 'wagetypes/:id',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-types/wage-type-detail/wage-type-detail.component').then(
                                 (m) => m.WageTypeDetailComponent
@@ -1301,7 +1311,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.WageAccounts' },
                     },
                     {
-                        path: 'wage-type-leaves',
+                        path: 'wagetype-leaves',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-type-leaves/wage-type-leaves.component').then(
                                 (m) => m.WageTypeLeavesComponent
@@ -1309,7 +1319,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.WageTypeLeaves' },
                     },
                     {
-                        path: 'wage-type-security-roles',
+                        path: 'wagetype-security-roles',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-type-security-roles/wage-type-security-roles.component').then(
                                 (m) => m.WageTypeSecurityRolesComponent
@@ -1317,7 +1327,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.PayrollManagement.WageTypeSecurityRoles' },
                     },
                     {
-                        path: 'wage-type-registers',
+                        path: 'wagetype-registers',
                         loadComponent: () =>
                             import('./admin/payroll-management/wage-type-registers/wage-type-registers.component').then(
                                 (m) => m.WageTypeRegistersComponent
@@ -3268,7 +3278,7 @@ export const appRoutes: Routes = [
                         data: { permission: 'Pages.ProjectManagement.Projects' },
                     },
                     {
-                        path: 'project-wage-types',
+                        path: 'project-wagetypes',
                         loadComponent: () =>
                             import('./admin/project-management/project-wage-types/project-wage-types.component').then(
                                 (m) => m.ProjectWageTypesComponent

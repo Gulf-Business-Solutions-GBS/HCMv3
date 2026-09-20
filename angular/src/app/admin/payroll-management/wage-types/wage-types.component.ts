@@ -83,12 +83,12 @@ export class WageTypesComponent extends AppComponentBase implements OnInit {
 
     /** Opens the record read-only. */
     viewDetails(record: WageTypeDto): void {
-        this._router.navigate(['/app/admin/wage-types', record.id]);
+        this._router.navigate(['/app/admin/wagetypes', record.id]);
     }
 
     /** Opens the same page with its fields already unlocked. */
     openWageType(record: WageTypeDto): void {
-        this._router.navigate(['/app/admin/wage-types', record.id], { queryParams: { edit: true } });
+        this._router.navigate(['/app/admin/wagetypes', record.id], { queryParams: { edit: true } });
     }
 
     showMenu(event: Event, record: WageTypeDto, menu: any): void {

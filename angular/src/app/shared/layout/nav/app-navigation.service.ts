@@ -1868,7 +1868,7 @@ export class AppNavigationService {
                         'WageTypes',
                         'Pages.PayrollManagement.WageTypes',
                         'flaticon-list-3',
-                        '/app/admin/wage-types'
+                        '/app/admin/wagetypes'
                     ),
                     new AppMenuItem(
                         'WageAccGroups',
@@ -1892,7 +1892,7 @@ export class AppNavigationService {
                         'WageTypeRegisters',
                         'Pages.PayrollManagement.WageTypeRegisters',
                         'flaticon-list-3',
-                        '/app/admin/wage-type-registers'
+                        '/app/admin/wagetype-registers'
                     ),
                     new AppMenuItem(
                         'IndemnityPayRules',
@@ -2459,7 +2459,7 @@ export class AppNavigationService {
                         'ProjectWageTypes',
                         'Pages.ProjectManagement.ProjectWageTypes',
                         'flaticon-list-3',
-                        '/app/admin/project-wage-types'
+                        '/app/admin/project-wagetypes'
                     ),
                     new AppMenuItem(
                         'EmployeeProjects',
