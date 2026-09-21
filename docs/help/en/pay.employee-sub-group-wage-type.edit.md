@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupWageTypes.Create]
 
 ## Overview
 
-_TODO_
+Wagetypes listed against an employee sub group. Not read at present: payroll does not use this list, and it is kept for reference only.
 
 ## WageType {#EmployeeSubGroupWageType.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupWageType_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** A wagetype listed for the sub group.
 
-**Example.** _TODO_
+**Example.** Site Allowance
+
+**Why it matters.** Each wagetype can be listed once per sub group.
 
 **Rules.** Optional. Chosen from a list.

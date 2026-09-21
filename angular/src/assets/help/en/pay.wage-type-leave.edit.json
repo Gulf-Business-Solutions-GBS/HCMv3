@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Wagetype Leaves — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeLeave",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Which wagetypes make up the pay for a type of leave. Leave pay, the value of accrued leave and the annual leave provision all add up the monthly amounts of the wagetypes listed here for that absence type.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "WageTypeLeave.WageTypeId",
     "dom:WageTypeLeave_WageTypeId": "WageTypeLeave.WageTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A wagetype included in the pay for this leave.</p><p><strong>Example.</strong> Housing Allowance</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeLeave.AbsenceTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "Required. Chosen from Absence Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The type of leave.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> Each wagetype can be listed only once for an absence type.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

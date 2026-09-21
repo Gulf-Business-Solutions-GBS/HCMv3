@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.WageTypeLeaves.Create]
 
 ## Overview
 
-_TODO_
+Which wagetypes make up the pay for a type of leave. Leave pay, the value of accrued leave and the annual leave provision all add up the monthly amounts of the wagetypes listed here for that absence type.
 
 ## WageTypeId {#WageTypeLeave.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:WageTypeLeave_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** A wagetype included in the pay for this leave.
 
-**Example.** _TODO_
+**Example.** Housing Allowance
 
 **Rules.** Required. Chosen from Wagetype master data.
 
 ## AbsenceTypeId {#WageTypeLeave.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:WageTypeLeave_AbsenceTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The type of leave.
 
-**Example.** _TODO_
+**Example.** Annual Leave
+
+**Why it matters.** Each wagetype can be listed only once for an absence type.
 
 **Rules.** Required. Chosen from Absence Type master data.

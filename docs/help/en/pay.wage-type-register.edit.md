@@ -11,31 +11,29 @@ permissions: [Pages.PayrollManagement.WageTypeRegisters.Create]
 
 ## Overview
 
-_TODO_
+A log row for a payroll period. Not read at present: payroll neither writes nor reads these rows, and they are kept for reference only.
 
 ## EmployeeId {#WageTypeRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:WageTypeRegister_EmployeeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The employee the row is about.
 
 **Rules.** Optional. Chosen from the employee list.
 
 ## ForPeriod {#WageTypeRegister.ForPeriod}
 <!-- alias: loc:ForPeriod, dom:WageTypeRegister_ForPeriod -->
 
-**What it is.** _TODO_
+**What it is.** The period the row is for.
 
-**Example.** _TODO_
+**Example.** `202604`
 
 **Rules.** Required. Whole number.
 
 ## InPeriod {#WageTypeRegister.InPeriod}
 <!-- alias: loc:InPeriod, dom:WageTypeRegister_InPeriod -->
 
-**What it is.** _TODO_
+**What it is.** The period the row was recorded in.
 
-**Example.** _TODO_
+**Example.** `202605`
 
 **Rules.** Required. Whole number.

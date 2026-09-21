@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.WageTypeLeaves.Create]
 
 ## Overview
 
-_TODO_
+أنواع الأجور التي تتكوّن منها دفعة نوع معيّن من الإجازات. فدفعة الإجازة وقيمة الإجازة المستحقة ومخصص الإجازة السنوية كلها تجمع المبالغ الشهرية لأنواع الأجور المدرجة هنا لنوع الغياب ذاك.
 
 ## WageTypeId {#WageTypeLeave.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:WageTypeLeave_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع أجر مُدرج في دفعة هذه الإجازة.
 
-**مثال.** _TODO_
+**مثال.** بدل السكن
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
 
 ## AbsenceTypeId {#WageTypeLeave.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypeId, dom:WageTypeLeave_AbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الإجازة.
 
-**مثال.** _TODO_
+**مثال.** الإجازة السنوية
+
+**لماذا يهم.** لا يُدرج نوع الأجر إلا مرة واحدة لنوع الغياب الواحد.
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.

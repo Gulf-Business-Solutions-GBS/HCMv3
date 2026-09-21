@@ -11,31 +11,29 @@ permissions: [Pages.PayrollManagement.WageTypeRegisters.Create]
 
 ## Overview
 
-_TODO_
+سطر سجل لفترة رواتب. لا يُقرأ حالياً: لا يكتب نظام الرواتب هذه الأسطر ولا يقرؤها، وهي محفوظة للرجوع إليها فقط.
 
 ## EmployeeId {#WageTypeRegister.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:WageTypeRegister_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف الذي يخصه السطر.
 
 **القواعد.** اختياري. يُختار من قائمة الموظفين.
 
 ## ForPeriod {#WageTypeRegister.ForPeriod}
 <!-- alias: loc:ForPeriod, dom:WageTypeRegister_ForPeriod -->
 
-**ما هو.** _TODO_
+**ما هو.** الفترة التي يخصها السطر.
 
-**مثال.** _TODO_
+**مثال.** `202604`
 
 **القواعد.** إلزامي. رقم صحيح.
 
 ## InPeriod {#WageTypeRegister.InPeriod}
 <!-- alias: loc:InPeriod, dom:WageTypeRegister_InPeriod -->
 
-**ما هو.** _TODO_
+**ما هو.** الفترة التي سُجِّل فيها السطر.
 
-**مثال.** _TODO_
+**مثال.** `202605`
 
 **القواعد.** إلزامي. رقم صحيح.

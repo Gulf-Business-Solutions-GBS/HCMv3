@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Wagetype Exceptions — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeException",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Pairs of wagetypes that should not both be paid. When payroll reaches the wagetype, it skips it if any of its excepted wagetypes already has an amount, number or rate on the employee's payslip.</p>",
   "aliasIndex": {
     "loc:WageTypes": "WageTypeException.WageTypeId",
     "dom:WageTypeException_WageTypeId": "WageTypeException.WageTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype that is skipped.</p><p><strong>Example.</strong> Transport Allowance</p><p><strong>Why it matters.</strong> Payroll leaves it out for an employee whose payslip already has the excepted wagetype.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeException.ExceptWageTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype whose presence stops it.</p><p><strong>Example.</strong> Company Car Benefit</p><p><strong>Why it matters.</strong> It must already be on the payslip when the first wagetype is reached, so give it a lower payroll order.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

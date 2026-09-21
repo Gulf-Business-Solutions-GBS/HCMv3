@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "إجازات أنواع الأجور — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.WageTypeLeave",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>أنواع الأجور التي تتكوّن منها دفعة نوع معيّن من الإجازات. فدفعة الإجازة وقيمة الإجازة المستحقة ومخصص الإجازة السنوية كلها تجمع المبالغ الشهرية لأنواع الأجور المدرجة هنا لنوع الغياب ذاك.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "WageTypeLeave.WageTypeId",
     "dom:WageTypeLeave_WageTypeId": "WageTypeLeave.WageTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع أجر مُدرج في دفعة هذه الإجازة.</p><p><strong>مثال.</strong> بدل السكن</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeLeave.AbsenceTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة.</p><p><strong>مثال.</strong> الإجازة السنوية</p><p><strong>لماذا يهم.</strong> لا يُدرج نوع الأجر إلا مرة واحدة لنوع الغياب الواحد.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

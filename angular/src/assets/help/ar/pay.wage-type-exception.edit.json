@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "استثناءات أنواع الأجور — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.WageTypeException",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>أزواج من أنواع الأجور لا ينبغي صرفهما معاً. فعندما يصل نظام الرواتب إلى نوع الأجر يتجاوزه إذا كان لأي من أنواع الأجور المستثناة منه مبلغ أو عدد أو أجر في كشف راتب الموظف.</p>",
   "aliasIndex": {
     "loc:WageTypes": "WageTypeException.WageTypeId",
     "dom:WageTypeException_WageTypeId": "WageTypeException.WageTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يُتجاوز.</p><p><strong>مثال.</strong> بدل المواصلات</p><p><strong>لماذا يهم.</strong> يستبعده نظام الرواتب للموظف الذي يحتوي كشف راتبه على نوع الأجر المستثنى.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeException.ExceptWageTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الأجور.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي يمنع وجودُه صرفَ الأول.</p><p><strong>مثال.</strong> ميزة سيارة الشركة</p><p><strong>لماذا يهم.</strong> يجب أن يكون موجوداً في كشف الراتب عند الوصول إلى نوع الأجر الأول، فاجعل ترتيبه في الرواتب أصغر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

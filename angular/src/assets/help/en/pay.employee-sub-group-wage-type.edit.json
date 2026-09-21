@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Employee Sub Group Wagetypes — Create / Edit",
   "entity": "HCMv3.PayrollManagement.EmployeeSubGroupWageType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Wagetypes listed against an employee sub group. Not read at present: payroll does not use this list, and it is kept for reference only.</p>",
   "aliasIndex": {
     "loc:WageType": "EmployeeSubGroupWageType.WageTypeId",
     "dom:EmployeeSubGroupWageType_WageTypeId": "EmployeeSubGroupWageType.WageTypeId"
@@ -19,9 +19,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A wagetype listed for the sub group.</p><p><strong>Example.</strong> Site Allowance</p><p><strong>Why it matters.</strong> Each wagetype can be listed once per sub group.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupWageTypes.Create]
 
 ## Overview
 
-_TODO_
+أنواع أجور مدرجة لمجموعة فرعية للموظفين. لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القائمة، وهي محفوظة للرجوع إليها فقط.
 
 ## WageType {#EmployeeSubGroupWageType.WageTypeId}
 <!-- alias: loc:WageType, dom:EmployeeSubGroupWageType_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع أجر مدرج للمجموعة الفرعية.
 
-**مثال.** _TODO_
+**مثال.** بدل موقع
+
+**لماذا يهم.** لا يُدرج نوع الأجر إلا مرة واحدة لكل مجموعة فرعية.
 
 **القواعد.** اختياري. يُختار من قائمة.

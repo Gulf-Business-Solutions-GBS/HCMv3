@@ -11,22 +11,26 @@ permissions: [Pages.PayrollManagement.WageTypeExceptions.Create]
 
 ## Overview
 
-_TODO_
+Pairs of wagetypes that should not both be paid. When payroll reaches the wagetype, it skips it if any of its excepted wagetypes already has an amount, number or rate on the employee's payslip.
 
 ## WageTypes {#WageTypeException.WageTypeId}
 <!-- alias: loc:WageTypes, dom:WageTypeException_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The wagetype that is skipped.
 
-**Example.** _TODO_
+**Example.** Transport Allowance
+
+**Why it matters.** Payroll leaves it out for an employee whose payslip already has the excepted wagetype.
 
 **Rules.** Required. Chosen from Wagetype master data.
 
 ## ExceptWageType {#WageTypeException.ExceptWageTypeId}
 <!-- alias: loc:ExceptWageType, dom:WageTypeException_ExceptWageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The wagetype whose presence stops it.
 
-**Example.** _TODO_
+**Example.** Company Car Benefit
+
+**Why it matters.** It must already be on the payslip when the first wagetype is reached, so give it a lower payroll order.
 
 **Rules.** Required. Chosen from Wagetype master data.

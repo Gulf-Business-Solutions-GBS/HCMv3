@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات أنواع الأجور — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.WageTypeRegister",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>سطر سجل لفترة رواتب. لا يُقرأ حالياً: لا يكتب نظام الرواتب هذه الأسطر ولا يقرؤها، وهي محفوظة للرجوع إليها فقط.</p>",
   "aliasIndex": {
     "loc:EmployeeId": "WageTypeRegister.EmployeeId",
     "dom:WageTypeRegister_EmployeeId": "WageTypeRegister.EmployeeId",
@@ -23,9 +23,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة الموظفين.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه السطر.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeRegister.ForPeriod",
@@ -37,9 +37,9 @@
       ],
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الفترة التي يخصها السطر.</p><p><strong>مثال.</strong> <code>202604</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeRegister.InPeriod",
@@ -51,9 +51,9 @@
       ],
       "rules": "إلزامي. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الفترة التي سُجِّل فيها السطر.</p><p><strong>مثال.</strong> <code>202605</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

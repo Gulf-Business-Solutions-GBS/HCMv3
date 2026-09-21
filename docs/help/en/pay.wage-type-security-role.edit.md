@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.WageTypeSecurityRoles.Create]
 
 ## Overview
 
-_TODO_
+The roles allowed to see a secured wagetype. Not enforced at present: nothing restricts access to a wagetype, whatever is listed here.
 
 ## WageTypeId {#WageTypeSecurityRole.WageTypeId}
 <!-- alias: loc:WageTypeId, dom:WageTypeSecurityRole_WageTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The secured wagetype.
 
-**Example.** _TODO_
+**Example.** Executive Bonus
 
 **Rules.** Required. Chosen from Wagetype master data.
 
 ## RoleId {#WageTypeSecurityRole.RoleId}
 <!-- alias: loc:RoleId, dom:WageTypeSecurityRole_RoleId -->
 
-**What it is.** _TODO_
+**What it is.** A role allowed to see it.
 
-**Example.** _TODO_
+**Example.** Payroll Manager
+
+**Why it matters.** Each role can be listed once per wagetype.
 
 **Rules.** Required. Chosen from Role master data.

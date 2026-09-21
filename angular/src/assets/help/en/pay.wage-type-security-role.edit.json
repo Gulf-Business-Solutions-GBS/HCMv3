@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Wagetype Security Roles — Create / Edit",
   "entity": "HCMv3.PayrollManagement.WageTypeSecurityRole",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>The roles allowed to see a secured wagetype. Not enforced at present: nothing restricts access to a wagetype, whatever is listed here.</p>",
   "aliasIndex": {
     "loc:WageTypeId": "WageTypeSecurityRole.WageTypeId",
     "dom:WageTypeSecurityRole_WageTypeId": "WageTypeSecurityRole.WageTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "Required. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The secured wagetype.</p><p><strong>Example.</strong> Executive Bonus</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "WageTypeSecurityRole.RoleId",
@@ -35,9 +35,9 @@
       ],
       "rules": "Required. Chosen from Role master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> A role allowed to see it.</p><p><strong>Example.</strong> Payroll Manager</p><p><strong>Why it matters.</strong> Each role can be listed once per wagetype.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

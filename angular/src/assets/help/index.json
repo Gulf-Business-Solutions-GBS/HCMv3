@@ -2139,6 +2139,9 @@
     "EmployeeGroup_IndemnityMaxAccruePercentage": [
       "pay.employee-group.edit"
     ],
+    "EmployeeSubGroupWageType_WageTypeId": [
+      "pay.employee-sub-group-wage-type.edit"
+    ],
     "EmployeeSubGroup_EmployeeGroupId": [
       "pay.employee-sub-group.edit"
     ],
@@ -2318,6 +2321,129 @@
     ],
     "WageAccount_costElement7Id": [
       "pay.wage-account.edit"
+    ],
+    "WageTypeException_WageTypeId": [
+      "pay.wage-type-exception.edit"
+    ],
+    "WageTypeException_ExceptWageTypeId": [
+      "pay.wage-type-exception.edit"
+    ],
+    "WageTypeLeave_WageTypeId": [
+      "pay.wage-type-leave.edit"
+    ],
+    "WageTypeLeave_AbsenceTypeId": [
+      "pay.wage-type-leave.edit"
+    ],
+    "WageTypeRegister_EmployeeId": [
+      "pay.wage-type-register.edit"
+    ],
+    "WageTypeRegister_ForPeriod": [
+      "pay.wage-type-register.edit"
+    ],
+    "WageTypeRegister_InPeriod": [
+      "pay.wage-type-register.edit"
+    ],
+    "WageTypeSecurityRole_WageTypeId": [
+      "pay.wage-type-security-role.edit"
+    ],
+    "WageTypeSecurityRole_RoleId": [
+      "pay.wage-type-security-role.edit"
+    ],
+    "WageType_Code": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_NameEn": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_NameAr": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_ShortNameEn": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_ShortNameAr": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_BillingType": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_BillingMethod": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_ProrateMethod": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_Category": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_FixedDays": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_Rate": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_PayrollOrder": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_ArrearSourceWageTypeId": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_Status": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInIndemnity": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInPaidLeave": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInBasicPay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInArrearPay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInCalculatedPay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInAdvancePay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInOvertimePay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInFIPosting": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInCutoff": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInDisciplinary": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInVariablePay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInSocialSecurity": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInPartialPay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInLateEarlyDed": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInServiceBonus": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_includeInFund": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_dontImpactNetPay": [
+      "pay.wage-type.edit"
+    ],
+    "WageType_isSecured": [
+      "pay.wage-type.edit"
     ]
   }
 }

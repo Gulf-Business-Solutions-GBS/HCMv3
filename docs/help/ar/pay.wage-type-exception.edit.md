@@ -11,22 +11,26 @@ permissions: [Pages.PayrollManagement.WageTypeExceptions.Create]
 
 ## Overview
 
-_TODO_
+أزواج من أنواع الأجور لا ينبغي صرفهما معاً. فعندما يصل نظام الرواتب إلى نوع الأجر يتجاوزه إذا كان لأي من أنواع الأجور المستثناة منه مبلغ أو عدد أو أجر في كشف راتب الموظف.
 
 ## WageTypes {#WageTypeException.WageTypeId}
 <!-- alias: loc:WageTypes, dom:WageTypeException_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر الذي يُتجاوز.
 
-**مثال.** _TODO_
+**مثال.** بدل المواصلات
+
+**لماذا يهم.** يستبعده نظام الرواتب للموظف الذي يحتوي كشف راتبه على نوع الأجر المستثنى.
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
 
 ## ExceptWageType {#WageTypeException.ExceptWageTypeId}
 <!-- alias: loc:ExceptWageType, dom:WageTypeException_ExceptWageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر الذي يمنع وجودُه صرفَ الأول.
 
-**مثال.** _TODO_
+**مثال.** ميزة سيارة الشركة
+
+**لماذا يهم.** يجب أن يكون موجوداً في كشف الراتب عند الوصول إلى نوع الأجر الأول، فاجعل ترتيبه في الرواتب أصغر.
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
