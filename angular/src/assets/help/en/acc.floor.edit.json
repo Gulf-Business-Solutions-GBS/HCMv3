@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.floor.edit",
+  "lang": "en",
+  "title": "Floors — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.Floor",
+  "overviewHtml": "<p>A floor of a building. Company housing is set up as a tree: location, building, floor, flat, room, bed. An employee's stay names one place at every level.</p>",
+  "aliasIndex": {
+    "loc:Code": "Floor.Code",
+    "dom:Floor_Code": "Floor.Code",
+    "loc:Building": "Floor.BuildingId",
+    "dom:Floor_BuildingId": "Floor.BuildingId",
+    "loc:NameEn": "Floor.NameEn",
+    "dom:Floor_NameEn": "Floor.NameEn",
+    "loc:NameAr": "Floor.NameAr",
+    "dom:Floor_NameAr": "Floor.NameAr",
+    "loc:Comments": "Floor.Comments",
+    "dom:Floor_Comments": "Floor.Comments"
+  },
+  "fields": [
+    {
+      "id": "Floor.Code",
+      "label": "Code",
+      "section": "Floors",
+      "aliases": [
+        "loc:Code",
+        "dom:Floor_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Floor.BuildingId",
+      "label": "Building",
+      "section": "Floors",
+      "aliases": [
+        "loc:Building",
+        "dom:Floor_BuildingId"
+      ],
+      "rules": "Required. Chosen from Building master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The building the floor is in.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Floor.NameEn",
+      "label": "NameEn",
+      "section": "Floors",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Floor_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Floor.NameAr",
+      "label": "NameAr",
+      "section": "Floors",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Floor_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Floor.Comments",
+      "label": "Comments",
+      "section": "Floors",
+      "aliases": [
+        "loc:Comments",
+        "dom:Floor_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

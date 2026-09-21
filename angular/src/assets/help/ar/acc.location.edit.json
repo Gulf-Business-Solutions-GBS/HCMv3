@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.location.edit",
+  "lang": "ar",
+  "title": "المواقع — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.Location",
+  "overviewHtml": "<p>مكان يوجد فيه سكن الشركة، مثل مدينة أو مخيم. يُعدّ سكن الشركة على شكل شجرة: الموقع، المبنى، الطابق، الشقة، الغرفة، السرير. وتحدد إقامة الموظف مكاناً واحداً في كل مستوى.</p>",
+  "aliasIndex": {
+    "loc:Code": "Location.Code",
+    "dom:Location_Code": "Location.Code",
+    "loc:NameEn": "Location.NameEn",
+    "dom:Location_NameEn": "Location.NameEn",
+    "loc:NameAr": "Location.NameAr",
+    "dom:Location_NameAr": "Location.NameAr",
+    "loc:Comments": "Location.Comments",
+    "dom:Location_Comments": "Location.Comments"
+  },
+  "fields": [
+    {
+      "id": "Location.Code",
+      "label": "Code",
+      "section": "Locations",
+      "aliases": [
+        "loc:Code",
+        "dom:Location_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.NameEn",
+      "label": "NameEn",
+      "section": "Locations",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Location_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.NameAr",
+      "label": "NameAr",
+      "section": "Locations",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Location_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.Comments",
+      "label": "Comments",
+      "section": "Locations",
+      "aliases": [
+        "loc:Comments",
+        "dom:Location_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

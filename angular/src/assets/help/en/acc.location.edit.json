@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.location.edit",
+  "lang": "en",
+  "title": "Locations — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.Location",
+  "overviewHtml": "<p>A place where company housing is, such as a city or camp. Company housing is set up as a tree: location, building, floor, flat, room, bed. An employee's stay names one place at every level.</p>",
+  "aliasIndex": {
+    "loc:Code": "Location.Code",
+    "dom:Location_Code": "Location.Code",
+    "loc:NameEn": "Location.NameEn",
+    "dom:Location_NameEn": "Location.NameEn",
+    "loc:NameAr": "Location.NameAr",
+    "dom:Location_NameAr": "Location.NameAr",
+    "loc:Comments": "Location.Comments",
+    "dom:Location_Comments": "Location.Comments"
+  },
+  "fields": [
+    {
+      "id": "Location.Code",
+      "label": "Code",
+      "section": "Locations",
+      "aliases": [
+        "loc:Code",
+        "dom:Location_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.NameEn",
+      "label": "NameEn",
+      "section": "Locations",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Location_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.NameAr",
+      "label": "NameAr",
+      "section": "Locations",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Location_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Location.Comments",
+      "label": "Comments",
+      "section": "Locations",
+      "aliases": [
+        "loc:Comments",
+        "dom:Location_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

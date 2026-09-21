@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.accommodation-service-type.edit",
+  "lang": "en",
+  "title": "Accommodation Service Types — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.AccommodationServiceType",
+  "overviewHtml": "<p>A service given to an employee during a stay, such as laundry or transport.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccommodationServiceType.Code",
+    "dom:AccommodationServiceType_Code": "AccommodationServiceType.Code",
+    "loc:NameEn": "AccommodationServiceType.NameEn",
+    "dom:AccommodationServiceType_NameEn": "AccommodationServiceType.NameEn",
+    "loc:NameAr": "AccommodationServiceType.NameAr",
+    "dom:AccommodationServiceType_NameAr": "AccommodationServiceType.NameAr",
+    "loc:Comments": "AccommodationServiceType.Comments",
+    "dom:AccommodationServiceType_Comments": "AccommodationServiceType.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationServiceType.Code",
+      "label": "Code",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AccommodationServiceType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.NameEn",
+      "label": "NameEn",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccommodationServiceType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.NameAr",
+      "label": "NameAr",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccommodationServiceType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServiceType.Comments",
+      "label": "Comments",
+      "section": "AccommodationServiceTypes",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationServiceType_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

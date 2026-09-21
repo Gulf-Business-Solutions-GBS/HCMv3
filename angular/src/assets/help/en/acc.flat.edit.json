@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.flat.edit",
+  "lang": "en",
+  "title": "Flats — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.Flat",
+  "overviewHtml": "<p>A flat on a floor. Company housing is set up as a tree: location, building, floor, flat, room, bed. An employee's stay names one place at every level.</p>",
+  "aliasIndex": {
+    "loc:Code": "Flat.Code",
+    "dom:Flat_Code": "Flat.Code",
+    "loc:Floor": "Flat.FloorId",
+    "dom:Flat_FloorId": "Flat.FloorId",
+    "loc:NameEn": "Flat.NameEn",
+    "dom:Flat_NameEn": "Flat.NameEn",
+    "loc:NameAr": "Flat.NameAr",
+    "dom:Flat_NameAr": "Flat.NameAr",
+    "loc:Comments": "Flat.Comments",
+    "dom:Flat_Comments": "Flat.Comments"
+  },
+  "fields": [
+    {
+      "id": "Flat.Code",
+      "label": "Code",
+      "section": "Flats",
+      "aliases": [
+        "loc:Code",
+        "dom:Flat_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Flat.FloorId",
+      "label": "Floor",
+      "section": "Flats",
+      "aliases": [
+        "loc:Floor",
+        "dom:Flat_FloorId"
+      ],
+      "rules": "Required. Chosen from Floor master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The floor the flat is on.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Flat.NameEn",
+      "label": "NameEn",
+      "section": "Flats",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Flat_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Flat.NameAr",
+      "label": "NameAr",
+      "section": "Flats",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Flat_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Flat.Comments",
+      "label": "Comments",
+      "section": "Flats",
+      "aliases": [
+        "loc:Comments",
+        "dom:Flat_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

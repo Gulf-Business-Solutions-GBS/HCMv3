@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.accommodation-services.edit",
+  "lang": "en",
+  "title": "Accommodation Services — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.AccommodationServices",
+  "overviewHtml": "<p>A service given to an employee during a stay, for a date range. The end date cannot be before the start date. Services appear on the Employee Accommodation, Employee Post Wise and Salary Benefits reports.</p>",
+  "aliasIndex": {
+    "loc:EmployeeAccommodation": "AccommodationServices.EmployeeAccommodationId",
+    "dom:AccommodationService_EmployeeAccommodationId": "AccommodationServices.EmployeeAccommodationId",
+    "loc:AccommodationServiceType": "AccommodationServices.AccommodationServiceTypeId",
+    "dom:AccommodationService_AccommodationServiceTypeId": "AccommodationServices.AccommodationServiceTypeId",
+    "loc:StartDate": "AccommodationServices.StartDate",
+    "dom:AccommodationService_StartDate": "AccommodationServices.StartDate",
+    "loc:EndDate": "AccommodationServices.EndDate",
+    "dom:AccommodationService_EndDate": "AccommodationServices.EndDate",
+    "loc:Comments": "AccommodationServices.Comments",
+    "dom:AccommodationService_Comments": "AccommodationServices.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationServices.EmployeeAccommodationId",
+      "label": "EmployeeAccommodation",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:EmployeeAccommodation",
+        "dom:AccommodationService_EmployeeAccommodationId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The stay the service belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.AccommodationServiceTypeId",
+      "label": "AccommodationServiceType",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:AccommodationServiceType",
+        "dom:AccommodationService_AccommodationServiceTypeId"
+      ],
+      "rules": "Required. Chosen from Accommodation Service Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The service.</p><p><strong>Example.</strong> Laundry</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.StartDate",
+      "label": "StartDate",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:StartDate",
+        "dom:AccommodationService_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.EndDate",
+      "label": "EndDate",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:EndDate",
+        "dom:AccommodationService_EndDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationServices.Comments",
+      "label": "Comments",
+      "section": "AccommodationServices",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationService_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

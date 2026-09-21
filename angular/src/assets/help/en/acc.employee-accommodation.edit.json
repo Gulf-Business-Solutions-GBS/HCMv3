@@ -1,0 +1,203 @@
+{
+  "helpId": "acc.employee-accommodation.edit",
+  "lang": "en",
+  "title": "Employee Accommodations — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.EmployeeAccommodation",
+  "overviewHtml": "<p>Where an employee is housed and for how long. Each list below the location shows only the places inside the one chosen above it. The end date cannot be before the start date, and an employee's stays cannot overlap. Nothing stops two employees being given the same bed. Stays appear on the Employee Accommodation report.</p>",
+  "aliasIndex": {
+    "loc:Employee": "EmployeeAccommodation.EmployeeId",
+    "dom:EmployeeAccommodation_EmployeeId": "EmployeeAccommodation.EmployeeId",
+    "loc:AccommodationType": "EmployeeAccommodation.AccommodationTypeId",
+    "dom:EmployeeAccommodation_AccommodationTypeId": "EmployeeAccommodation.AccommodationTypeId",
+    "loc:StartDate": "EmployeeAccommodation.StartDate",
+    "dom:EmployeeAccommodation_StartDate": "EmployeeAccommodation.StartDate",
+    "loc:EndDate": "EmployeeAccommodation.EndDate",
+    "dom:EmployeeAccommodation_EndDate": "EmployeeAccommodation.EndDate",
+    "loc:DeductionAmount": "EmployeeAccommodation.DeductionAmount",
+    "dom:EmployeeAccommodation_DeductionAmount": "EmployeeAccommodation.DeductionAmount",
+    "loc:Location": "EmployeeAccommodation.LocationId",
+    "dom:EmployeeAccommodation_LocationId": "EmployeeAccommodation.LocationId",
+    "loc:Building": "EmployeeAccommodation.BuildingId",
+    "dom:EmployeeAccommodation_BuildingId": "EmployeeAccommodation.BuildingId",
+    "loc:Floor": "EmployeeAccommodation.FloorId",
+    "dom:EmployeeAccommodation_FloorId": "EmployeeAccommodation.FloorId",
+    "loc:Flat": "EmployeeAccommodation.FlatId",
+    "dom:EmployeeAccommodation_FlatId": "EmployeeAccommodation.FlatId",
+    "loc:Room": "EmployeeAccommodation.RoomId",
+    "dom:EmployeeAccommodation_RoomId": "EmployeeAccommodation.RoomId",
+    "loc:Bed": "EmployeeAccommodation.BedId",
+    "dom:EmployeeAccommodation_BedId": "EmployeeAccommodation.BedId",
+    "loc:Comments": "EmployeeAccommodation.Comments",
+    "dom:EmployeeAccommodation_Comments": "EmployeeAccommodation.Comments"
+  },
+  "fields": [
+    {
+      "id": "EmployeeAccommodation.EmployeeId",
+      "label": "Employee",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Employee",
+        "dom:EmployeeAccommodation_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being housed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.AccommodationTypeId",
+      "label": "AccommodationType",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:AccommodationType",
+        "dom:EmployeeAccommodation_AccommodationTypeId"
+      ],
+      "rules": "Required. Chosen from Accommodation Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of housing.</p><p><strong>Example.</strong> Shared</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.StartDate",
+      "label": "StartDate",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeeAccommodation_StartDate"
+      ],
+      "rules": "Required. Date value. Its dates cannot overlap another record for the same employee.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.EndDate",
+      "label": "EndDate",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeeAccommodation_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.DeductionAmount",
+      "label": "DeductionAmount",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:DeductionAmount",
+        "dom:EmployeeAccommodation_DeductionAmount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An amount to deduct from the employee for the housing.</p><p><strong>Example.</strong> 25.000</p><p><strong>Why it matters.</strong> Not read at present: payroll does not deduct it. Use a deduction wagetype on the employee to recover the cost.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.LocationId",
+      "label": "Location",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Location",
+        "dom:EmployeeAccommodation_LocationId"
+      ],
+      "rules": "Required. Chosen from Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The location.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.BuildingId",
+      "label": "Building",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Building",
+        "dom:EmployeeAccommodation_BuildingId"
+      ],
+      "rules": "Required. Chosen from Building master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The building.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.FloorId",
+      "label": "Floor",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Floor",
+        "dom:EmployeeAccommodation_FloorId"
+      ],
+      "rules": "Required. Chosen from Floor master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The floor.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.FlatId",
+      "label": "Flat",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Flat",
+        "dom:EmployeeAccommodation_FlatId"
+      ],
+      "rules": "Required. Chosen from Flat master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The flat.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.RoomId",
+      "label": "Room",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Room",
+        "dom:EmployeeAccommodation_RoomId"
+      ],
+      "rules": "Required. Chosen from Room master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The room.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.BedId",
+      "label": "Bed",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Bed",
+        "dom:EmployeeAccommodation_BedId"
+      ],
+      "rules": "Required. Chosen from Bed master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeeAccommodation.Comments",
+      "label": "Comments",
+      "section": "EmployeeAccommodations",
+      "aliases": [
+        "loc:Comments",
+        "dom:EmployeeAccommodation_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -6119,6 +6119,180 @@
     ],
     "WorkflowRole_WorkflowRoleOrgId": [
       "wf.workflow-role.edit"
+    ],
+    "AccommodationServiceType_Code": [
+      "acc.accommodation-service-type.edit"
+    ],
+    "AccommodationServiceType_NameEn": [
+      "acc.accommodation-service-type.edit"
+    ],
+    "AccommodationServiceType_NameAr": [
+      "acc.accommodation-service-type.edit"
+    ],
+    "AccommodationServiceType_Comments": [
+      "acc.accommodation-service-type.edit"
+    ],
+    "AccommodationType_Code": [
+      "acc.accommodation-type.edit"
+    ],
+    "AccommodationType_NameEn": [
+      "acc.accommodation-type.edit"
+    ],
+    "AccommodationType_NameAr": [
+      "acc.accommodation-type.edit"
+    ],
+    "AccommodationType_Comments": [
+      "acc.accommodation-type.edit"
+    ],
+    "Bed_Code": [
+      "acc.bed.edit"
+    ],
+    "Bed_RoomId": [
+      "acc.bed.edit"
+    ],
+    "Bed_NameEn": [
+      "acc.bed.edit"
+    ],
+    "Bed_NameAr": [
+      "acc.bed.edit"
+    ],
+    "Bed_Comments": [
+      "acc.bed.edit"
+    ],
+    "BuildingContract_BuildingId": [
+      "acc.building-contract.edit"
+    ],
+    "BuildingContract_StartDate": [
+      "acc.building-contract.edit"
+    ],
+    "BuildingContract_EndDate": [
+      "acc.building-contract.edit"
+    ],
+    "BuildingContract_Comments": [
+      "acc.building-contract.edit"
+    ],
+    "Building_Code": [
+      "acc.building.edit"
+    ],
+    "Building_LocationId": [
+      "acc.building.edit"
+    ],
+    "Building_NameEn": [
+      "acc.building.edit"
+    ],
+    "Building_NameAr": [
+      "acc.building.edit"
+    ],
+    "Building_Comments": [
+      "acc.building.edit"
+    ],
+    "EmployeeAccommodation_EmployeeId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_AccommodationTypeId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_StartDate": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_EndDate": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_DeductionAmount": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_LocationId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_BuildingId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_FloorId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_FlatId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_RoomId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_BedId": [
+      "acc.employee-accommodation.edit"
+    ],
+    "EmployeeAccommodation_Comments": [
+      "acc.employee-accommodation.edit"
+    ],
+    "Flat_Code": [
+      "acc.flat.edit"
+    ],
+    "Flat_FloorId": [
+      "acc.flat.edit"
+    ],
+    "Flat_NameEn": [
+      "acc.flat.edit"
+    ],
+    "Flat_NameAr": [
+      "acc.flat.edit"
+    ],
+    "Flat_Comments": [
+      "acc.flat.edit"
+    ],
+    "Floor_Code": [
+      "acc.floor.edit"
+    ],
+    "Floor_BuildingId": [
+      "acc.floor.edit"
+    ],
+    "Floor_NameEn": [
+      "acc.floor.edit"
+    ],
+    "Floor_NameAr": [
+      "acc.floor.edit"
+    ],
+    "Floor_Comments": [
+      "acc.floor.edit"
+    ],
+    "Location_Code": [
+      "acc.location.edit"
+    ],
+    "Location_NameEn": [
+      "acc.location.edit"
+    ],
+    "Location_NameAr": [
+      "acc.location.edit"
+    ],
+    "Location_Comments": [
+      "acc.location.edit"
+    ],
+    "Room_Code": [
+      "acc.room.edit"
+    ],
+    "Room_FlatId": [
+      "acc.room.edit"
+    ],
+    "Room_NameEn": [
+      "acc.room.edit"
+    ],
+    "Room_NameAr": [
+      "acc.room.edit"
+    ],
+    "Room_Comments": [
+      "acc.room.edit"
+    ],
+    "AccommodationService_EmployeeAccommodationId": [
+      "acc.accommodation-services.edit"
+    ],
+    "AccommodationService_AccommodationServiceTypeId": [
+      "acc.accommodation-services.edit"
+    ],
+    "AccommodationService_StartDate": [
+      "acc.accommodation-services.edit"
+    ],
+    "AccommodationService_EndDate": [
+      "acc.accommodation-services.edit"
+    ],
+    "AccommodationService_Comments": [
+      "acc.accommodation-services.edit"
     ]
   }
 }

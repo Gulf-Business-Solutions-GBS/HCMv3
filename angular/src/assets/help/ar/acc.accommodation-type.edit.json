@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.accommodation-type.edit",
+  "lang": "ar",
+  "title": "أنواع السكن — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.AccommodationType",
+  "overviewHtml": "<p>نوع من السكن، مثل مشترك أو عائلي، يُختار في إقامة الموظف.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccommodationType.Code",
+    "dom:AccommodationType_Code": "AccommodationType.Code",
+    "loc:NameEn": "AccommodationType.NameEn",
+    "dom:AccommodationType_NameEn": "AccommodationType.NameEn",
+    "loc:NameAr": "AccommodationType.NameAr",
+    "dom:AccommodationType_NameAr": "AccommodationType.NameAr",
+    "loc:Comments": "AccommodationType.Comments",
+    "dom:AccommodationType_Comments": "AccommodationType.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationType.Code",
+      "label": "Code",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AccommodationType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.NameEn",
+      "label": "NameEn",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccommodationType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.NameAr",
+      "label": "NameAr",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccommodationType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.Comments",
+      "label": "Comments",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationType_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

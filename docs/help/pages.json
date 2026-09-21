@@ -5818,6 +5818,238 @@
         }
       },
       "defaultSection": "WorkflowRoles"
+    },
+    {
+      "helpId": "acc.accommodation-service-type.edit",
+      "title": "Accommodation Service Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.AccommodationServiceTypes.Create"
+      ],
+      "entity": {
+        "name": "AccommodationServiceType",
+        "fullName": "HCMv3.AccommodationManagement.AccommodationServiceType",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/AccommodationServiceType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/accommodation-service-types/create-or-edit-accommodation-service-type-modal.component.html"
+        }
+      },
+      "defaultSection": "AccommodationServiceTypes"
+    },
+    {
+      "helpId": "acc.accommodation-type.edit",
+      "title": "Accommodation Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.AccommodationTypes.Create"
+      ],
+      "entity": {
+        "name": "AccommodationType",
+        "fullName": "HCMv3.AccommodationManagement.AccommodationType",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/AccommodationType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/accommodation-types/create-or-edit-accommodation-type-modal.component.html"
+        }
+      },
+      "defaultSection": "AccommodationTypes"
+    },
+    {
+      "helpId": "acc.bed.edit",
+      "title": "Beds — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Beds.Create"
+      ],
+      "entity": {
+        "name": "Bed",
+        "fullName": "HCMv3.AccommodationManagement.Bed",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Bed.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/beds/create-or-edit-bed-modal.component.html"
+        }
+      },
+      "defaultSection": "Beds"
+    },
+    {
+      "helpId": "acc.building-contract.edit",
+      "title": "Building Contracts — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.BuildingContracts.Create"
+      ],
+      "entity": {
+        "name": "BuildingContract",
+        "fullName": "HCMv3.AccommodationManagement.BuildingContract",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/BuildingContract.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/building-contracts/create-or-edit-building-contract-modal.component.html"
+        }
+      },
+      "defaultSection": "BuildingContracts"
+    },
+    {
+      "helpId": "acc.building.edit",
+      "title": "Buildings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Buildings.Create"
+      ],
+      "entity": {
+        "name": "Building",
+        "fullName": "HCMv3.AccommodationManagement.Building",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Building.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/buildings/create-or-edit-building-modal.component.html"
+        }
+      },
+      "defaultSection": "Buildings"
+    },
+    {
+      "helpId": "acc.employee-accommodation.edit",
+      "title": "Employee Accommodations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.EmployeeAccommodations.Create"
+      ],
+      "entity": {
+        "name": "EmployeeAccommodation",
+        "fullName": "HCMv3.AccommodationManagement.EmployeeAccommodation",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/EmployeeAccommodation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/employee-accommodations/create-or-edit-employee-accommodation-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeeAccommodations"
+    },
+    {
+      "helpId": "acc.flat.edit",
+      "title": "Flats — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Flats.Create"
+      ],
+      "entity": {
+        "name": "Flat",
+        "fullName": "HCMv3.AccommodationManagement.Flat",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Flat.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/flats/create-or-edit-flat-modal.component.html"
+        }
+      },
+      "defaultSection": "Flats"
+    },
+    {
+      "helpId": "acc.floor.edit",
+      "title": "Floors — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Floors.Create"
+      ],
+      "entity": {
+        "name": "Floor",
+        "fullName": "HCMv3.AccommodationManagement.Floor",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Floor.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/floors/create-or-edit-floor-modal.component.html"
+        }
+      },
+      "defaultSection": "Floors"
+    },
+    {
+      "helpId": "acc.location.edit",
+      "title": "Locations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Locations.Create"
+      ],
+      "entity": {
+        "name": "Location",
+        "fullName": "HCMv3.AccommodationManagement.Location",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Location.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/locations/create-or-edit-location-modal.component.html"
+        }
+      },
+      "defaultSection": "Locations"
+    },
+    {
+      "helpId": "acc.room.edit",
+      "title": "Rooms — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.Rooms.Create"
+      ],
+      "entity": {
+        "name": "Room",
+        "fullName": "HCMv3.AccommodationManagement.Room",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/Room.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/rooms/create-or-edit-room-modal.component.html"
+        }
+      },
+      "defaultSection": "Rooms"
+    },
+    {
+      "helpId": "acc.accommodation-services.edit",
+      "title": "Accommodation Services — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.AccommodationManagement.AccommodationServices.Create"
+      ],
+      "entity": {
+        "name": "AccommodationServices",
+        "fullName": "HCMv3.AccommodationManagement.AccommodationServices",
+        "file": "aspnet-core/src/HCMv3.Core/AccommodationManagement/AccommodationServices.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/accommodation-management/accommodation-services/create-or-edit-accommodation-service-modal.component.html"
+        }
+      },
+      "defaultSection": "AccommodationServices",
+      "domPrefix": "AccommodationService"
     }
   ]
 }

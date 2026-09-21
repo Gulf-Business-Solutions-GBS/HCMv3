@@ -1,0 +1,75 @@
+{
+  "helpId": "acc.accommodation-type.edit",
+  "lang": "en",
+  "title": "Accommodation Types — Create / Edit",
+  "entity": "HCMv3.AccommodationManagement.AccommodationType",
+  "overviewHtml": "<p>A kind of housing, such as shared or family, chosen on an employee's stay.</p>",
+  "aliasIndex": {
+    "loc:Code": "AccommodationType.Code",
+    "dom:AccommodationType_Code": "AccommodationType.Code",
+    "loc:NameEn": "AccommodationType.NameEn",
+    "dom:AccommodationType_NameEn": "AccommodationType.NameEn",
+    "loc:NameAr": "AccommodationType.NameAr",
+    "dom:AccommodationType_NameAr": "AccommodationType.NameAr",
+    "loc:Comments": "AccommodationType.Comments",
+    "dom:AccommodationType_Comments": "AccommodationType.Comments"
+  },
+  "fields": [
+    {
+      "id": "AccommodationType.Code",
+      "label": "Code",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:AccommodationType_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.NameEn",
+      "label": "NameEn",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:AccommodationType_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.NameAr",
+      "label": "NameAr",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:AccommodationType_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "AccommodationType.Comments",
+      "label": "Comments",
+      "section": "AccommodationTypes",
+      "aliases": [
+        "loc:Comments",
+        "dom:AccommodationType_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

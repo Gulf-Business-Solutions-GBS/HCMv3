@@ -1,0 +1,91 @@
+{
+  "helpId": "acc.room.edit",
+  "lang": "ar",
+  "title": "الغرف — إنشاء / تحرير",
+  "entity": "HCMv3.AccommodationManagement.Room",
+  "overviewHtml": "<p>غرفة في شقة. يُعدّ سكن الشركة على شكل شجرة: الموقع، المبنى، الطابق، الشقة، الغرفة، السرير. وتحدد إقامة الموظف مكاناً واحداً في كل مستوى.</p>",
+  "aliasIndex": {
+    "loc:Code": "Room.Code",
+    "dom:Room_Code": "Room.Code",
+    "loc:Flat": "Room.FlatId",
+    "dom:Room_FlatId": "Room.FlatId",
+    "loc:NameEn": "Room.NameEn",
+    "dom:Room_NameEn": "Room.NameEn",
+    "loc:NameAr": "Room.NameAr",
+    "dom:Room_NameAr": "Room.NameAr",
+    "loc:Comments": "Room.Comments",
+    "dom:Room_Comments": "Room.Comments"
+  },
+  "fields": [
+    {
+      "id": "Room.Code",
+      "label": "Code",
+      "section": "Rooms",
+      "aliases": [
+        "loc:Code",
+        "dom:Room_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Room.FlatId",
+      "label": "Flat",
+      "section": "Rooms",
+      "aliases": [
+        "loc:Flat",
+        "dom:Room_FlatId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الشقق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشقة التي تقع فيها الغرفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Room.NameEn",
+      "label": "NameEn",
+      "section": "Rooms",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Room_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Room.NameAr",
+      "label": "NameAr",
+      "section": "Rooms",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Room_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Room.Comments",
+      "label": "Comments",
+      "section": "Rooms",
+      "aliases": [
+        "loc:Comments",
+        "dom:Room_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
