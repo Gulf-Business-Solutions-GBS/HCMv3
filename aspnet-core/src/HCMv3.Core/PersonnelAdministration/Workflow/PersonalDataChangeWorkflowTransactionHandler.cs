@@ -283,16 +283,9 @@ public class PersonalDataChangeWorkflowTransactionHandler : WorkflowTransactionH
         // FullNameEn/Ar are stored, not computed at read time, so a name change that did not refresh them
         // would leave the old name on every screen, letter and report that reads the stored value -- the
         // change would look accepted and show nothing. Legacy got this for free because its Employee
-        // recomputed both in OnSaving; here the recomputation lives in EmployeesAppService, which this path
-        // does not go through, so the same two lines are applied directly. Kept in step with
-        // `EmployeesAppService.ApplyComputedFields`.
-        employee.FullNameEn = JoinName(employee.FirstNameEn, employee.SecondNameEn, employee.ThirdNameEn, employee.LastNameEn);
-        employee.FullNameAr = JoinName(employee.FirstNameAr, employee.SecondNameAr, employee.ThirdNameAr, employee.LastNameAr);
-    }
-
-    private static string JoinName(params string[] parts)
-    {
-        return string.Join(" ", parts.Where(p => !p.IsNullOrWhiteSpace()));
+        // recomputed both in OnSaving; here that is Employee.ApplyFullNames, which EmployeesAppService calls on
+        // save -- this path does not go through that service, so it calls it directly.
+        employee.ApplyFullNames();
     }
 
     private async Task<Employee> GetEmployeeAsync(int employeeId)

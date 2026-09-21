@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration.Dto;
+using HCMv3.PersonnelAdministration.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,10 +26,14 @@ namespace HCMv3.PersonnelAdministration;
 public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 {
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
 
-    public EmployeesAppService(IRepository<Employee> employeeRepository)
+    public EmployeesAppService(
+        IRepository<Employee> employeeRepository,
+        IEmployeeCodeGenerator employeeCodeGenerator)
     {
         _employeeRepository = employeeRepository;
+        _employeeCodeGenerator = employeeCodeGenerator;
     }
 
     [HttpPost]
@@ -113,7 +118,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         // the DTO's Status field only applies on edit (e.g. later marking an employee Inactive).
         employee.Status = EmployeeStatus.Active;
 
-        await AssignCodeIfEmptyAsync(employee);
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
         await ValidateAsync(employee);
 
@@ -126,7 +131,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         var employee = await _employeeRepository.GetAsync(input.Id.Value);
         MapToEntity(input, employee);
 
-        await AssignCodeIfEmptyAsync(employee);
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
         await ValidateAsync(employee);
 
@@ -140,45 +145,12 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
     }
 
     /// <summary>
-    /// Legacy <c>GetMaxCode</c> parity (same pattern as <c>CitiesAppService.AssignCodeIfEmptyAsync</c>):
-    /// when Code is blank, assign (max existing numeric code) + 1. Simplified from the legacy
-    /// <c>NumberSeries.GetCode(EmploymentType, ...)</c> per-EmploymentType series.
-    /// </summary>
-    private async Task AssignCodeIfEmptyAsync(Employee employee)
-    {
-        if (!employee.Code.IsNullOrWhiteSpace())
-        {
-            return;
-        }
-
-        var numericCodes = await _employeeRepository.GetAll()
-            .Where(e => e.Code != null && e.Code != "")
-            .Select(e => e.Code)
-            .ToListAsync();
-
-        var maxCode = numericCodes
-            .Select(c => int.TryParse(c, out var n) ? n : 0)
-            .DefaultIfEmpty(0)
-            .Max();
-
-        employee.Code = (maxCode + 1).ToString();
-    }
-
-    /// <summary>
     /// Legacy <c>PerformValidation</c> parity: FullNameEn/Ar concatenation and ProbationEndDate are
     /// computed and stored on every save.
     /// </summary>
     private static void ApplyComputedFields(Employee employee)
     {
-        employee.FullNameEn = string.Join(" ", new[]
-        {
-            employee.FirstNameEn, employee.SecondNameEn, employee.ThirdNameEn, employee.LastNameEn
-        }.Where(n => !n.IsNullOrWhiteSpace()));
-
-        employee.FullNameAr = string.Join(" ", new[]
-        {
-            employee.FirstNameAr, employee.SecondNameAr, employee.ThirdNameAr, employee.LastNameAr
-        }.Where(n => !n.IsNullOrWhiteSpace()));
+        employee.ApplyFullNames();
 
         // Calendar-days probation calculation only (legacy "Working Days" branch depends on
         // DutyPeriod/HolidayCalendar/TimeRegister -- Wave B/TimeManagement, not available yet).

@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Recruitment.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,15 +29,18 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
     private readonly IRepository<ApplicationStatus> _applicationStatusRepository;
     private readonly IRepository<ApplicantCV> _applicantCVRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
 
     public ApplicationStatusesAppService(
         IRepository<ApplicationStatus> applicationStatusRepository,
         IRepository<ApplicantCV> applicantCVRepository,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        IEmployeeCodeGenerator employeeCodeGenerator)
     {
         _applicationStatusRepository = applicationStatusRepository;
         _applicantCVRepository = applicantCVRepository;
         _employeeRepository = employeeRepository;
+        _employeeCodeGenerator = employeeCodeGenerator;
     }
 
     [HttpPost]
@@ -170,8 +174,6 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             SecondNameAr = applicant.SecondNameAr,
             ThirdNameAr = applicant.ThirdNameAr,
             LastNameAr = applicant.LastNameAr,
-            FullNameEn = applicant.FirstNameEn,
-            FullNameAr = applicant.FirstNameAr,
             TitleId = applicant.TitleId,
             Status = EmployeeStatus.Active,
             BirthDate = applicant.BirthDate,
@@ -191,6 +193,12 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             CivilID = applicant.CivilID,
             Email = applicant.Email
         };
+
+        // Legacy set FullNameEn/Ar to the first name only here, but its emp.Save() then ran Employee.OnSaving,
+        // which rebuilt both full names and generated the code. Inserting directly skips EmployeesAppService,
+        // so both are applied here -- otherwise the employee has a first-name-only name and a blank code.
+        employee.ApplyFullNames();
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
 
         await _employeeRepository.InsertAsync(employee);
     }

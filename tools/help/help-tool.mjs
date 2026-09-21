@@ -167,7 +167,7 @@ function serviceBehaviour(entityName, serviceOverride) {
     }
     return {
         service: name,
-        autoCode: /AssignCodeIfEmptyAsync/.test(text),
+        autoCode: /AssignCodeIfEmpty/.test(text), // private helper or the shared IEmployeeCodeGenerator
         uniqueCode: /L\("DuplicateCodeFound"\)/.test(text),
         // The name check refuses a record whose English OR Arabic name matches another's, so
         // each of the two names must be unique on its own.

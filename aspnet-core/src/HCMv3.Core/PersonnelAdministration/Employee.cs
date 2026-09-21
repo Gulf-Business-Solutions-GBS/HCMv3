@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using HCMv3.GeneralMasterInfo;
@@ -23,7 +24,7 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
 
     /// <summary>
     /// Business code. Auto-generated (max numeric + 1) if left blank -- see
-    /// <c>EmployeesAppService.AssignCodeIfEmptyAsync</c> (same pattern as <c>CitiesAppService</c>).
+    /// <c>Services.EmployeeCodeGenerator</c> (same pattern as <c>CitiesAppService</c>).
     /// </summary>
     [StringLength(64)]
     public virtual string Code { get; set; }
@@ -247,4 +248,19 @@ public class Employee : FullAuditedEntity, IMustHaveTenant
     /// so only the calendar-days calculation is ported here.
     /// </summary>
     public virtual DateTime ProbationEndDate { get; set; }
+
+    /// <summary>
+    /// Rebuilds <see cref="FullNameEn"/>/<see cref="FullNameAr"/> from the four name parts, skipping blank
+    /// ones (legacy <c>PerformValidation</c> parity, minus its English title-casing). Legacy ran this in
+    /// <c>OnSaving</c> for every write; here each path that writes names calls it -- the employee service,
+    /// the recruitment Joined hand-off, the personal-data-change workflow and the go-live loader.
+    /// </summary>
+    public void ApplyFullNames()
+    {
+        FullNameEn = JoinNames(FirstNameEn, SecondNameEn, ThirdNameEn, LastNameEn);
+        FullNameAr = JoinNames(FirstNameAr, SecondNameAr, ThirdNameAr, LastNameAr);
+    }
+
+    private static string JoinNames(params string[] parts) =>
+        string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
 }
