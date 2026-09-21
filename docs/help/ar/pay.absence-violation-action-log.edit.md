@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.AbsenceViolationActionLogs.Create]
 
 ## Overview
 
-_TODO_
+خطوة واحدة اتُّخذت في سجل تصعيد: أي خطوة، وأي إجراء، ومتى.
+
+لا تُكتب حالياً: لا توجد عملية تنشئ هذه السجلات، فتبقى القائمة كما تُدخل يدوياً.
 
 ## AbsenceViolationActionRecords {#AbsenceViolationActionLog.AbsenceViolationActionRecordId}
 <!-- alias: loc:AbsenceViolationActionRecords, dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** سجل التصعيد الذي تتبعه هذه الخطوة.
 
 **القواعد.** إلزامي. يُختار من قائمة سجلات إجراءات مخالفات الغياب.
 
 ## Step {#AbsenceViolationActionLog.Step}
 <!-- alias: loc:Step, dom:AbsenceViolationActionLog_Step -->
 
-**ما هو.** _TODO_
+**ما هو.** خطوة القاعدة التي اتُّخذت.
 
-**مثال.** _TODO_
+**مثال.** `2`
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## Action {#AbsenceViolationActionLog.Action}
 <!-- alias: loc:Action, dom:AbsenceViolationActionLog_Action -->
 
-**ما هو.** _TODO_
+**ما هو.** الإجراء المتخذ.
 
-**مثال.** _TODO_
+**مثال.** إشعار
 
 **القواعد.** إلزامي. إحدى القيم: إشعار، المخالفة، الإجازة.
 
 ## ActionDate {#AbsenceViolationActionLog.ActionDate}
 <!-- alias: loc:ActionDate, dom:AbsenceViolationActionLog_ActionDate -->
 
-**ما هو.** _TODO_
+**ما هو.** تاريخ اتخاذ الإجراء.
 
-**مثال.** _TODO_
+**مثال.** `2026-04-14`
 
 **القواعد.** اختياري. تاريخ.
 
 ## ObjectOId {#AbsenceViolationActionLog.ObjectOId}
 <!-- alias: loc:ObjectOId, dom:AbsenceViolationActionLog_ObjectOId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الإشعار أو المخالفة أو الإجازة التي أنشأها الإجراء.
 
 **القواعد.** اختياري. رقم صحيح.

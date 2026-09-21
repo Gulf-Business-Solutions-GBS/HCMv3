@@ -2319,6 +2319,57 @@
     "AbsenceType_DontAllowToStartOnSaturday": [
       "pay.absence-type.edit"
     ],
+    "AbsenceViolationActionLog_AbsenceViolationActionRecordId": [
+      "pay.absence-violation-action-log.edit"
+    ],
+    "AbsenceViolationActionLog_Step": [
+      "pay.absence-violation-action-log.edit"
+    ],
+    "AbsenceViolationActionLog_Action": [
+      "pay.absence-violation-action-log.edit"
+    ],
+    "AbsenceViolationActionLog_ActionDate": [
+      "pay.absence-violation-action-log.edit"
+    ],
+    "AbsenceViolationActionLog_ObjectOId": [
+      "pay.absence-violation-action-log.edit"
+    ],
+    "AbsenceViolationActionRecord_ActionLogType": [
+      "pay.absence-violation-action-record.edit"
+    ],
+    "AbsenceViolationActionRecord_LogStatus": [
+      "pay.absence-violation-action-record.edit"
+    ],
+    "AbsenceViolationActionRecord_EntityObjectId": [
+      "pay.absence-violation-action-record.edit"
+    ],
+    "AbsenceViolationRuleDetail_AbsenceViolationRuleId": [
+      "pay.absence-violation-rule-detail.edit"
+    ],
+    "AbsenceViolationRuleDetail_Step": [
+      "pay.absence-violation-rule-detail.edit"
+    ],
+    "AbsenceViolationRuleDetail_DayInterval": [
+      "pay.absence-violation-rule-detail.edit"
+    ],
+    "AbsenceViolationRuleDetail_Action": [
+      "pay.absence-violation-rule-detail.edit"
+    ],
+    "AbsenceViolationRuleDetail_ActionTypeId": [
+      "pay.absence-violation-rule-detail.edit"
+    ],
+    "AbsenceViolationRuleException_AbsenceViolationRuleId": [
+      "pay.absence-violation-rule-exception.edit"
+    ],
+    "AbsenceViolationRuleException_EmployeeId": [
+      "pay.absence-violation-rule-exception.edit"
+    ],
+    "AbsenceViolationRuleException_StartDate": [
+      "pay.absence-violation-rule-exception.edit"
+    ],
+    "AbsenceViolationRuleException_EndDate": [
+      "pay.absence-violation-rule-exception.edit"
+    ],
     "AccountInfo_Code": [
       "pay.account-info.edit"
     ],

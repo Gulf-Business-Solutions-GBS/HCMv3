@@ -11,49 +11,47 @@ permissions: [Pages.PayrollManagement.AbsenceViolationActionLogs.Create]
 
 ## Overview
 
-_TODO_
+One step taken on an escalation record: which step, which action, and when.
+
+Not written at present: no process creates these records, so the list stays as it is entered by hand.
 
 ## AbsenceViolationActionRecords {#AbsenceViolationActionLog.AbsenceViolationActionRecordId}
 <!-- alias: loc:AbsenceViolationActionRecords, dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The escalation record this step belongs to.
 
 **Rules.** Required. Chosen from Absence Violation Action Record master data.
 
 ## Step {#AbsenceViolationActionLog.Step}
 <!-- alias: loc:Step, dom:AbsenceViolationActionLog_Step -->
 
-**What it is.** _TODO_
+**What it is.** The rule step that was taken.
 
-**Example.** _TODO_
+**Example.** `2`
 
 **Rules.** Optional. Whole number.
 
 ## Action {#AbsenceViolationActionLog.Action}
 <!-- alias: loc:Action, dom:AbsenceViolationActionLog_Action -->
 
-**What it is.** _TODO_
+**What it is.** The action taken.
 
-**Example.** _TODO_
+**Example.** Notification
 
 **Rules.** Required. One of: Notification, Violation, Leave.
 
 ## ActionDate {#AbsenceViolationActionLog.ActionDate}
 <!-- alias: loc:ActionDate, dom:AbsenceViolationActionLog_ActionDate -->
 
-**What it is.** _TODO_
+**What it is.** When the action was taken.
 
-**Example.** _TODO_
+**Example.** `2026-04-14`
 
 **Rules.** Optional. Date value.
 
 ## ObjectOId {#AbsenceViolationActionLog.ObjectOId}
 <!-- alias: loc:ObjectOId, dom:AbsenceViolationActionLog_ObjectOId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The notification, violation or leave the action created.
 
 **Rules.** Optional. Whole number.

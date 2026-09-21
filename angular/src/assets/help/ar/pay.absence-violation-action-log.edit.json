@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "سجلات تتبع إجراءات مخالفات الغياب — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationActionLog",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>خطوة واحدة اتُّخذت في سجل تصعيد: أي خطوة، وأي إجراء، ومتى.</p><p>لا تُكتب حالياً: لا توجد عملية تنشئ هذه السجلات، فتبقى القائمة كما تُدخل يدوياً.</p>",
   "aliasIndex": {
     "loc:AbsenceViolationActionRecords": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
     "dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
@@ -27,9 +27,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة سجلات إجراءات مخالفات الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> سجل التصعيد الذي تتبعه هذه الخطوة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.Step",
@@ -41,9 +41,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> خطوة القاعدة التي اتُّخذت.</p><p><strong>مثال.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.Action",
@@ -55,9 +55,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: إشعار، المخالفة، الإجازة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإجراء المتخذ.</p><p><strong>مثال.</strong> إشعار</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.ActionDate",
@@ -69,9 +69,9 @@
       ],
       "rules": "اختياري. تاريخ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تاريخ اتخاذ الإجراء.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.ObjectOId",
@@ -83,9 +83,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإشعار أو المخالفة أو الإجازة التي أنشأها الإجراء.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

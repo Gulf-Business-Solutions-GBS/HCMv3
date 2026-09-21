@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Violation Action Records — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationActionRecord",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A record of an absence or time-event violation being escalated, open until it is closed.</p><p>Not written at present: no process creates these records, so the list stays as it is entered by hand.</p>",
   "aliasIndex": {
     "loc:ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
     "dom:AbsenceViolationActionRecord_ActionLogType": "AbsenceViolationActionRecord.ActionLogType",
@@ -23,9 +23,9 @@
       ],
       "rules": "Required. One of: Leave, Time Event.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the violation came from leave or from a time event.</p><p><strong>Example.</strong> Leave</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionRecord.LogStatus",
@@ -37,9 +37,9 @@
       ],
       "rules": "Required. One of: Open, Closed.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the escalation is still open.</p><p><strong>Example.</strong> Open</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionRecord.EntityObjectId",
@@ -51,9 +51,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave or time event the record is about.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Violation Rule Details — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One step of an absence violation rule: after how many days, and what action — a notification, a disciplinary violation or a leave.</p><p>Not run at present: no process escalates absences using these rules. They are saved and kept for reference, and nothing happens when an employee is absent.</p>",
   "aliasIndex": {
     "loc:AbsenceViolationRules": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
     "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
@@ -27,9 +27,9 @@
       ],
       "rules": "Required. Chosen from Absence Violation Rule master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The rule this step belongs to.</p><p><strong>Example.</strong> Unauthorised Absence</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.Step",
@@ -41,9 +41,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The step's position in the escalation.</p><p><strong>Example.</strong> <code>2</code></p><p><strong>Why it matters.</strong> Must be greater than 0, and each step number can be used once per rule.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.DayInterval",
@@ -55,9 +55,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The days of absence after which this step would apply.</p><p><strong>Example.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.Action",
@@ -69,9 +69,9 @@
       ],
       "rules": "Required. One of: Notification, Violation, Leave.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> What the step would do: send a notification, record a disciplinary violation, or record a leave.</p><p><strong>Example.</strong> Violation</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.ActionTypeId",
@@ -83,9 +83,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave type or disciplinary type the action would use, depending on the action.</p><p><strong>Example.</strong> Unpaid Leave</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

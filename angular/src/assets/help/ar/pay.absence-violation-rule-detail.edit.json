@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل قواعد مخالفات الغياب — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>خطوة واحدة من قاعدة مخالفة الغياب: بعد كم يوماً، وما الإجراء — إشعار أو مخالفة تأديبية أو إجازة.</p><p>لا يُشغَّل حالياً: لا توجد عملية تصعّد حالات الغياب باستخدام هذه القواعد. فهي تُحفظ للرجوع إليها، ولا يحدث شيء عندما يتغيب الموظف.</p>",
   "aliasIndex": {
     "loc:AbsenceViolationRules": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
     "dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId": "AbsenceViolationRuleDetail.AbsenceViolationRuleId",
@@ -27,9 +27,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة قواعد مخالفات الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> القاعدة التي تتبعها هذه الخطوة.</p><p><strong>مثال.</strong> الغياب دون إذن</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.Step",
@@ -41,9 +41,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> موقع الخطوة في التصعيد.</p><p><strong>مثال.</strong> <code>2</code></p><p><strong>لماذا يهم.</strong> يجب أن يكون أكبر من صفر، ولا يُستخدم رقم الخطوة إلا مرة واحدة في القاعدة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.DayInterval",
@@ -55,9 +55,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الغياب التي تُطبَّق هذه الخطوة بعدها.</p><p><strong>مثال.</strong> <code>3</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.Action",
@@ -69,9 +69,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: إشعار، المخالفة، الإجازة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما تفعله الخطوة: إرسال إشعار، أو تسجيل مخالفة تأديبية، أو تسجيل إجازة.</p><p><strong>مثال.</strong> مخالفة</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleDetail.ActionTypeId",
@@ -83,9 +83,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الإجازة أو نوع المخالفة التأديبية الذي يستخدمه الإجراء، بحسب الإجراء.</p><p><strong>مثال.</strong> إجازة غير مدفوعة</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

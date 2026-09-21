@@ -11,49 +11,53 @@ permissions: [Pages.PayrollManagement.AbsenceViolationRuleDetails.Create]
 
 ## Overview
 
-_TODO_
+One step of an absence violation rule: after how many days, and what action -- a notification, a disciplinary violation or a leave.
+
+Not run at present: no process escalates absences using these rules. They are saved and kept for reference, and nothing happens when an employee is absent.
 
 ## AbsenceViolationRules {#AbsenceViolationRuleDetail.AbsenceViolationRuleId}
 <!-- alias: loc:AbsenceViolationRules, dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId -->
 
-**What it is.** _TODO_
+**What it is.** The rule this step belongs to.
 
-**Example.** _TODO_
+**Example.** Unauthorised Absence
 
 **Rules.** Required. Chosen from Absence Violation Rule master data.
 
 ## Step {#AbsenceViolationRuleDetail.Step}
 <!-- alias: loc:Step, dom:AbsenceViolationRuleDetail_Step -->
 
-**What it is.** _TODO_
+**What it is.** The step's position in the escalation.
 
-**Example.** _TODO_
+**Example.** `2`
+
+**Why it matters.** Must be greater than 0, and each step number can be used once per rule.
 
 **Rules.** Optional. Whole number.
 
 ## DayInterval {#AbsenceViolationRuleDetail.DayInterval}
 <!-- alias: loc:DayInterval, dom:AbsenceViolationRuleDetail_DayInterval -->
 
-**What it is.** _TODO_
+**What it is.** The days of absence after which this step would apply.
 
-**Example.** _TODO_
+**Example.** `3`
 
 **Rules.** Optional. Whole number.
 
 ## Action {#AbsenceViolationRuleDetail.Action}
 <!-- alias: loc:Action, dom:AbsenceViolationRuleDetail_Action -->
 
-**What it is.** _TODO_
+**What it is.** What the step would do: send a notification, record a disciplinary violation, or record a leave.
 
-**Example.** _TODO_
+**Example.** Violation
 
 **Rules.** Required. One of: Notification, Violation, Leave.
 
 ## ActionType {#AbsenceViolationRuleDetail.ActionTypeId}
 <!-- alias: loc:ActionType, dom:AbsenceViolationRuleDetail_ActionTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The leave type or disciplinary type the action would use, depending on the action.
 
-**Example.** _TODO_
+**Example.** Unpaid Leave
 
 **Rules.** Optional. Chosen from a list.

@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Violation Action Logs — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationActionLog",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>One step taken on an escalation record: which step, which action, and when.</p><p>Not written at present: no process creates these records, so the list stays as it is entered by hand.</p>",
   "aliasIndex": {
     "loc:AbsenceViolationActionRecords": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
     "dom:AbsenceViolationActionLog_AbsenceViolationActionRecordId": "AbsenceViolationActionLog.AbsenceViolationActionRecordId",
@@ -27,9 +27,9 @@
       ],
       "rules": "Required. Chosen from Absence Violation Action Record master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The escalation record this step belongs to.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.Step",
@@ -41,9 +41,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The rule step that was taken.</p><p><strong>Example.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.Action",
@@ -55,9 +55,9 @@
       ],
       "rules": "Required. One of: Notification, Violation, Leave.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The action taken.</p><p><strong>Example.</strong> Notification</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.ActionDate",
@@ -69,9 +69,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> When the action was taken.</p><p><strong>Example.</strong> <code>2026-04-14</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationActionLog.ObjectOId",
@@ -83,9 +83,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The notification, violation or leave the action created.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

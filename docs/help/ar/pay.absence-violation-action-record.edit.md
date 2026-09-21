@@ -11,31 +11,31 @@ permissions: [Pages.PayrollManagement.AbsenceViolationActionRecords.Create]
 
 ## Overview
 
-_TODO_
+سجل لتصعيد مخالفة غياب أو حدث وقت، يبقى مفتوحاً حتى يُغلق.
+
+لا تُكتب حالياً: لا توجد عملية تنشئ هذه السجلات، فتبقى القائمة كما تُدخل يدوياً.
 
 ## ActionLogType {#AbsenceViolationActionRecord.ActionLogType}
 <!-- alias: loc:ActionLogType, dom:AbsenceViolationActionRecord_ActionLogType -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت المخالفة ناشئة عن إجازة أو عن حدث وقت.
 
-**مثال.** _TODO_
+**مثال.** إجازة
 
 **القواعد.** إلزامي. إحدى القيم: الإجازة، حدث الوقت.
 
 ## LogStatus {#AbsenceViolationActionRecord.LogStatus}
 <!-- alias: loc:LogStatus, dom:AbsenceViolationActionRecord_LogStatus -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان التصعيد لا يزال مفتوحاً.
 
-**مثال.** _TODO_
+**مثال.** مفتوح
 
 **القواعد.** إلزامي. إحدى القيم: مفتوح، مغلق.
 
 ## EntityObjectId {#AbsenceViolationActionRecord.EntityObjectId}
 <!-- alias: loc:EntityObjectId, dom:AbsenceViolationActionRecord_EntityObjectId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الإجازة أو حدث الوقت الذي يخصه السجل.
 
 **القواعد.** اختياري. يُختار من قائمة.

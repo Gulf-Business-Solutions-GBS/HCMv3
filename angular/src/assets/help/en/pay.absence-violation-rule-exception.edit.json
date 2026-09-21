@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Violation Rule Exceptions — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceViolationRuleException",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>An employee excused from an absence violation rule for a period.</p><p>Not run at present: no process escalates absences using these rules. They are saved and kept for reference, and nothing happens when an employee is absent.</p>",
   "aliasIndex": {
     "loc:AbsenceViolationRules": "AbsenceViolationRuleException.AbsenceViolationRuleId",
     "dom:AbsenceViolationRuleException_AbsenceViolationRuleId": "AbsenceViolationRuleException.AbsenceViolationRuleId",
@@ -25,9 +25,9 @@
       ],
       "rules": "Required. Chosen from Absence Violation Rule master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The rule the employee is excused from.</p><p><strong>Example.</strong> Unauthorised Absence</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleException.EmployeeId",
@@ -39,9 +39,9 @@
       ],
       "rules": "Required. Chosen from the employee list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The employee excused.</p><p><strong>Why it matters.</strong> An employee's exception periods for the same rule cannot overlap.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceViolationRuleException.StartDate",

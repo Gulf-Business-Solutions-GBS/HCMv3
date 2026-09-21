@@ -11,49 +11,53 @@ permissions: [Pages.PayrollManagement.AbsenceViolationRuleDetails.Create]
 
 ## Overview
 
-_TODO_
+خطوة واحدة من قاعدة مخالفة الغياب: بعد كم يوماً، وما الإجراء -- إشعار أو مخالفة تأديبية أو إجازة.
+
+لا يُشغَّل حالياً: لا توجد عملية تصعّد حالات الغياب باستخدام هذه القواعد. فهي تُحفظ للرجوع إليها، ولا يحدث شيء عندما يتغيب الموظف.
 
 ## AbsenceViolationRules {#AbsenceViolationRuleDetail.AbsenceViolationRuleId}
 <!-- alias: loc:AbsenceViolationRules, dom:AbsenceViolationRuleDetail_AbsenceViolationRuleId -->
 
-**ما هو.** _TODO_
+**ما هو.** القاعدة التي تتبعها هذه الخطوة.
 
-**مثال.** _TODO_
+**مثال.** الغياب دون إذن
 
 **القواعد.** إلزامي. يُختار من قائمة قواعد مخالفات الغياب.
 
 ## Step {#AbsenceViolationRuleDetail.Step}
 <!-- alias: loc:Step, dom:AbsenceViolationRuleDetail_Step -->
 
-**ما هو.** _TODO_
+**ما هو.** موقع الخطوة في التصعيد.
 
-**مثال.** _TODO_
+**مثال.** `2`
+
+**لماذا يهم.** يجب أن يكون أكبر من صفر، ولا يُستخدم رقم الخطوة إلا مرة واحدة في القاعدة.
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## DayInterval {#AbsenceViolationRuleDetail.DayInterval}
 <!-- alias: loc:DayInterval, dom:AbsenceViolationRuleDetail_DayInterval -->
 
-**ما هو.** _TODO_
+**ما هو.** أيام الغياب التي تُطبَّق هذه الخطوة بعدها.
 
-**مثال.** _TODO_
+**مثال.** `3`
 
 **القواعد.** اختياري. رقم صحيح.
 
 ## Action {#AbsenceViolationRuleDetail.Action}
 <!-- alias: loc:Action, dom:AbsenceViolationRuleDetail_Action -->
 
-**ما هو.** _TODO_
+**ما هو.** ما تفعله الخطوة: إرسال إشعار، أو تسجيل مخالفة تأديبية، أو تسجيل إجازة.
 
-**مثال.** _TODO_
+**مثال.** مخالفة
 
 **القواعد.** إلزامي. إحدى القيم: إشعار، المخالفة، الإجازة.
 
 ## ActionType {#AbsenceViolationRuleDetail.ActionTypeId}
 <!-- alias: loc:ActionType, dom:AbsenceViolationRuleDetail_ActionTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الإجازة أو نوع المخالفة التأديبية الذي يستخدمه الإجراء، بحسب الإجراء.
 
-**مثال.** _TODO_
+**مثال.** إجازة غير مدفوعة
 
 **القواعد.** اختياري. يُختار من قائمة.
