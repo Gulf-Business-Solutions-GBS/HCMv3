@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Self service settings",
   "entity": "HCMv3.SystemSettings.ManageSelfServiceSettings",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Settings for employee self-service.</p><p>Only <strong>Email Notification</strong> is read at present; the other settings have no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
   "aliasIndex": {
     "loc:RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
     "dom:SelfServiceSettings_RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
@@ -57,9 +57,9 @@
       ],
       "rules": "Required. One of: Default, ListView, Dashboard.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Where the user goes after approving a workflow request.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.DefaultLoginPage",
@@ -71,9 +71,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The page shown after an employee signs in.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.CaptchaKey",
@@ -85,9 +85,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The key for the sign-in captcha.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EmailNotification",
@@ -99,9 +99,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the system sends emails.</p><p><strong>Why it matters.</strong> Unticked, emails sent through the system's email service — notification emails and punch emails — are not sent.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowEmployeeInfo",
@@ -113,9 +113,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employee information is shown on the self-service home page.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsAttachmentAllowed",
@@ -127,9 +127,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attachments can be added to self-service requests.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AllowPunchOutsideRange",
@@ -141,9 +141,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether mobile punches are allowed outside the work location range.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AutoLogoutAfterPunch",
@@ -155,9 +155,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the user is signed out after punching.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AllowGeolocationSelfie",
@@ -169,9 +169,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a selfie is taken with a mobile punch.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.HideGeolocationInfo",
@@ -183,9 +183,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether location details are hidden.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.HideGeolocationPunchInfo",
@@ -197,9 +197,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether location details of punches are hidden.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowLeaveInfo",
@@ -211,9 +211,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave information is shown.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowCurrentLeaveBalance",
@@ -225,9 +225,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the current leave balance is shown.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowUpdatedLeaveBalance",
@@ -239,9 +239,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave balance after the request is shown.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed",
@@ -253,9 +253,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether extra unpaid leave can be requested.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowPaymentDate",
@@ -267,9 +267,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave payment date is shown.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EnablePayWithPayroll",
@@ -281,9 +281,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees can choose to be paid with payroll.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EnablePayInAdvance",
@@ -295,9 +295,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees can choose to be paid in advance.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
@@ -309,9 +309,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a passport withdrawal is required with leave.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
@@ -323,9 +323,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The workflow step at which the passport withdrawal is submitted.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

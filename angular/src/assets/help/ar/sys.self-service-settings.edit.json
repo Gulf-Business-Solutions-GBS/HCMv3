@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "Self service settings",
   "entity": "HCMv3.SystemSettings.ManageSelfServiceSettings",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>إعدادات الخدمة الذاتية للموظفين.</p><p>لا يُقرأ حالياً إلا <strong>إشعار البريد الإلكتروني</strong>، أما الإعدادات الأخرى فلا أثر لها.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
   "aliasIndex": {
     "loc:RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
     "dom:SelfServiceSettings_RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
@@ -57,9 +57,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: افتراضي، ListView، لوحة القيادة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> المكان الذي ينتقل إليه المستخدم بعد اعتماد طلب سير العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.DefaultLoginPage",
@@ -71,9 +71,9 @@
       ],
       "rules": "اختياري.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الصفحة المعروضة بعد تسجيل دخول الموظف.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.CaptchaKey",
@@ -85,9 +85,9 @@
       ],
       "rules": "اختياري.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مفتاح رمز التحقق عند تسجيل الدخول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EmailNotification",
@@ -99,9 +99,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان النظام يرسل رسائل بريد إلكتروني.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تُرسل الرسائل المرسلة عبر خدمة البريد في النظام — رسائل الإشعارات ورسائل البصمات.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowEmployeeInfo",
@@ -113,9 +113,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت معلومات الموظف تُعرض في الصفحة الرئيسية للخدمة الذاتية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsAttachmentAllowed",
@@ -127,9 +127,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن إضافة مرفقات إلى طلبات الخدمة الذاتية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AllowPunchOutsideRange",
@@ -141,9 +141,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت بصمات الجوال مسموحة خارج نطاق موقع العمل.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AutoLogoutAfterPunch",
@@ -155,9 +155,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المستخدم يُسجَّل خروجه بعد البصمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.AllowGeolocationSelfie",
@@ -169,9 +169,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تُلتقط صورة ذاتية مع بصمة الجوال.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.HideGeolocationInfo",
@@ -183,9 +183,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تفاصيل الموقع مخفية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.HideGeolocationPunchInfo",
@@ -197,9 +197,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تفاصيل موقع البصمات مخفية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowLeaveInfo",
@@ -211,9 +211,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت معلومات الإجازات معروضة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowCurrentLeaveBalance",
@@ -225,9 +225,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان رصيد الإجازة الحالي معروضاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowUpdatedLeaveBalance",
@@ -239,9 +239,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان رصيد الإجازة بعد الطلب معروضاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed",
@@ -253,9 +253,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن طلب إجازة غير مدفوعة إضافية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.ShowPaymentDate",
@@ -267,9 +267,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تاريخ دفع الإجازة معروضاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EnablePayWithPayroll",
@@ -281,9 +281,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن للموظفين اختيار الصرف مع الرواتب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.EnablePayInAdvance",
@@ -295,9 +295,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن للموظفين اختيار الصرف مقدماً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
@@ -309,9 +309,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان سحب جواز السفر مطلوباً مع الإجازة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
@@ -323,9 +323,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> خطوة سير العمل التي يُقدَّم فيها سحب جواز السفر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

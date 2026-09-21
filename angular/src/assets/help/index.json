@@ -4725,6 +4725,195 @@
     "SecuritySettings_EnableAuditLogInPrintReport": [
       "sys.security-settings.edit"
     ],
+    "SelfServiceSettings_RedirectAfterWFApproval": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_DefaultLoginPage": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_CaptchaKey": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_EmailNotification": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_ShowEmployeeInfo": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_IsAttachmentAllowed": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_AllowPunchOutsideRange": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_AutoLogoutAfterPunch": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_AllowGeolocationSelfie": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_HideGeolocationInfo": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_HideGeolocationPunchInfo": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_ShowLeaveInfo": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_ShowCurrentLeaveBalance": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_ShowUpdatedLeaveBalance": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_ShowPaymentDate": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_EnablePayWithPayroll": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_EnablePayInAdvance": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_IsPassportWithdrawalRequired": [
+      "sys.self-service-settings.edit"
+    ],
+    "SelfServiceSettings_PassportWithdrawalSubmissionStep": [
+      "sys.self-service-settings.edit"
+    ],
+    "TimeSettings_EarliestEvaluationDate": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_FutureEvaluationInDays": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_RosterPlannerFrequency": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableRosterDuty": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableTimeEngineAutorun": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableMiddleTierTimeEvents": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableGeoFence": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableTimeAttendanceIntegration": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableAttendanceOnHoliday": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableAttendanceOnWeekOff": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableAttendanceOnRestDay": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_CountWeekoffOnPH": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_CountRestDayOnPH": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableTimeAttIntegrationAPI": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AllowDuplicateInTimeEvent": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_UseActualTransInPlannedTimePolicy": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableMySqlIntegration": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_TimeEventImportPath": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_TimeEventSyncBatchCount": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_TimeEventSyncFreq": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_MidTierSyncBatchCount": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_MidTierSyncFreq": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_ExcludePaidLeaveAccrualOnAbsent": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_HourlyLeavelogicEnable": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_HourlyLeaveShouldSignIn": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_HourlyLeaveShouldSignOut": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AllowPaidleaveBackdateEntry": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_SickLeaveAttachMandatory": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableAutoReturnInConsecutiveLeave": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AllowFutureDatedReturnFromLeave": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableAutoHalfDayLeave": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableSettleFractionalLeaveBalance": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableBookingQuotaInLeaveRequest": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_LeaveDeductionStartMonth": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_ForfeitRule": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AbsenceViolationRuleId": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AbsenceViolationEffectiveDate": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableOvertimeInTimeEngine": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableIsTravelling": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnablePayFullWithPayroll": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_EnableTimeRegisterApproval": [
+      "sys.time-settings.edit"
+    ],
+    "TimeSettings_AutoApproveTimeLog": [
+      "sys.time-settings.edit"
+    ],
     "WorkflowSettings_EnableWorkflowGroup": [
       "sys.workflow-settings.edit"
     ],

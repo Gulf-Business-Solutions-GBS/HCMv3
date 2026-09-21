@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Duty Periods — Create / Edit",
   "entity": "HCMv3.TimeManagement.DutyPeriod",
-  "overviewHtml": "<p>A working pattern made of duties, and the holiday calendar that goes with it. Employees get a duty period directly (employee duty periods) or through their roster group.</p><p>It works one of two ways. Without a start point on the employee's assignment, each weekday takes the duty set for it here — Sunday's duty every Sunday. With a start point, the pattern is the rotation of weeks set in the duty period's <strong>details</strong>, and the weekday duties here are not used.</p>",
+  "overviewHtml": "<p>A working pattern made of duties, and the holiday calendar that goes with it. Employees get a duty period directly (employee duty periods) or through their roster group.</p><p>It works one of two ways. Without a start point on the employee's assignment, each weekday takes the duty set for it here — Sunday's duty every Sunday. With a start point, the pattern is the rotation of weeks set in the duty period's <strong>details</strong>, and the weekday duties here are not used.</p><p>Rotations and roster groups apply only when the time setting <em>EnableRosterDuty</em> is on; otherwise every employee gets the weekday duties of their own duty period.</p>",
   "aliasIndex": {
     "loc:Code": "DutyPeriod.Code",
     "dom:DutyPeriod_Code": "DutyPeriod.Code",

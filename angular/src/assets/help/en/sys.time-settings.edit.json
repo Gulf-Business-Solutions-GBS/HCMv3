@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Time settings",
   "entity": "HCMv3.SystemSettings.ManageTimeSettings",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Company-wide time and attendance behaviour: where evaluation starts, rosters, the attendance integrations, how holidays combine with off days, hourly leave, overtime, forfeiting leave and approval of time registers.</p><p>Many of the leave-request rules in the lower half are not enforced at present and say so.</p><p>There is one settings record per company; it cannot be deleted.</p>",
   "aliasIndex": {
     "loc:EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
     "dom:TimeSettings_EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
@@ -103,9 +103,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The first date the time engine evaluates.</p><p><strong>Example.</strong> <code>2026-01-01</code></p><p><strong>Why it matters.</strong> The time engine never works out days before it, attendance imports start from it when nothing has been imported yet, and payroll treats master-data changes dated earlier as if made on it. Set it to the go-live date.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.FutureEvaluationInDays",
@@ -117,9 +117,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many days ahead the time engine evaluates.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.RosterPlannerFrequency",
@@ -131,9 +131,9 @@
       ],
       "rules": "Required. One of: Weekly, Monthly.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How often the roster planner runs.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableRosterDuty",
@@ -145,9 +145,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether duties come from rosters.</p><p><strong>Why it matters.</strong> Ticked, the time engine and payroll find each day's duty through the roster order — substitute duty, the employee's duty period with its rotation, then the roster group. Unticked, a substitute duty still wins, otherwise the weekday duties of the employee's own duty period are used; week rotations and roster groups are ignored.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableTimeEngineAutorun",
@@ -159,9 +159,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the time engine runs automatically.</p><p><strong>Why it matters.</strong> Ticked, a background job runs the time engine on its own, and payroll runs change how they pick employees and off-cycle dates (see Run Payroll). Unticked, the time engine runs only when started by hand.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableMiddleTierTimeEvents",
@@ -173,9 +173,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether punches are taken from the middle-tier attendance database.</p><p><strong>Why it matters.</strong> Ticked, the middle-tier punch sync runs; unticked, it does nothing.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableGeoFence",
@@ -187,9 +187,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether mobile punches must be within the work location's range.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableTimeAttendanceIntegration",
@@ -201,9 +201,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether punches are imported from attendance devices.</p><p><strong>Why it matters.</strong> Ticked, the device import and re-pull run; unticked, they do nothing.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableAttendanceOnHoliday",
@@ -215,9 +215,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the time engine records attendance automatically.</p><p><strong>Why it matters.</strong> Ticked, the time engine creates or updates employee attendance records itself as it processes each day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableAttendanceOnWeekOff",
@@ -229,9 +229,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance is recorded automatically on weekly offs.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableAttendanceOnRestDay",
@@ -243,9 +243,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance is recorded automatically on rest days.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.CountWeekoffOnPH",
@@ -257,9 +257,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a public holiday on a weekly off counts as the weekly off.</p><p><strong>Why it matters.</strong> A day cannot be both. Ticked, it counts as a weekly off; unticked, as a public holiday. This changes what payroll pays for the day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.CountRestDayOnPH",
@@ -271,9 +271,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a public holiday on a rest day counts as the rest day.</p><p><strong>Why it matters.</strong> Ticked, it counts as a rest day; unticked, as a public holiday.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
@@ -285,9 +285,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether punches are imported from the attendance system's API (BioTime).</p><p><strong>Why it matters.</strong> The same switch as <strong>Integration Center → BioTime</strong>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AllowDuplicateInTimeEvent",
@@ -299,9 +299,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether two identical punches may be kept.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
@@ -313,9 +313,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether planned-time employees still have their punches read.</p><p><strong>Why it matters.</strong> Unticked, employees on a <em>Planned Time</em> policy are taken to have worked the planned shift. Ticked, their clock-in and clock-out punches are read too.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableMySqlIntegration",
@@ -327,9 +327,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether punches are imported from a MySQL attendance database.</p><p><strong>Why it matters.</strong> Ticked, the MySQL import runs; unticked, it does nothing.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.TimeEventImportPath",
@@ -341,9 +341,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The folder punch files are imported from.</p><p><strong>Example.</strong> <code>D:\\Attendance\\Import</code></p><p><strong>Why it matters.</strong> The file import scans this folder for punch files.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.TimeEventSyncBatchCount",
@@ -355,9 +355,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many punches are synced at a time.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.TimeEventSyncFreq",
@@ -369,9 +369,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How often punches are synced.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.MidTierSyncBatchCount",
@@ -383,9 +383,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many middle-tier punches are synced at a time.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.MidTierSyncFreq",
@@ -397,9 +397,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How often middle-tier punches are synced.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
@@ -411,9 +411,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether absent days earn no annual leave.</p><p><strong>Why it matters.</strong> Ticked, the time engine accrues no annual leave for a day the employee was absent.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.HourlyLeavelogicEnable",
@@ -425,9 +425,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether hourly leave at the start or end of the shift moves the expected punch.</p><p><strong>Why it matters.</strong> Ticked, for actual-time employees the time engine takes hourly leave into account when reading the clock-in and clock-out, so leaving early or arriving late on leave is not counted as lateness.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.HourlyLeaveShouldSignIn",
@@ -439,9 +439,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee must punch in after hourly leave at the start of the shift.</p><p><strong>Why it matters.</strong> Used with hourly leave logic.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.HourlyLeaveShouldSignOut",
@@ -453,9 +453,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee must punch out before hourly leave at the end of the shift.</p><p><strong>Why it matters.</strong> Used with hourly leave logic.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
@@ -467,9 +467,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether unpaid leave is refused while annual leave remains.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
@@ -481,9 +481,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether paid leave may be entered back-dated.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.SickLeaveAttachMandatory",
@@ -495,9 +495,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether sick leave needs an attachment.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
@@ -509,9 +509,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether return is recorded automatically between consecutive leaves.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
@@ -523,9 +523,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a return from leave may be dated in the future.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableAutoHalfDayLeave",
@@ -537,9 +537,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether half-day leave is created automatically.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
@@ -551,9 +551,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether fractional leave balances are settled.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
@@ -565,9 +565,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a leave request books quota straight away.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.LeaveDeductionStartMonth",
@@ -579,9 +579,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave is deducted from the month it starts in.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.ForfeitRule",
@@ -593,9 +593,9 @@
       ],
       "rules": "Required. One of: None, Monthly, Yearly.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> When annual leave above the sub group's maximum is forfeited.</p><p><strong>Example.</strong> None</p><p><strong>Why it matters.</strong> <em>None</em> cuts the balance back to the maximum day by day as the time engine runs. <em>Monthly</em> and <em>Yearly</em> let it run over and post a forfeit at the end of each month or year. The leave provision and annual leave reports follow the same rule.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AbsenceViolationRuleId",
@@ -607,9 +607,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The absence violation rule applied to employees.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AbsenceViolationEffectiveDate",
@@ -621,9 +621,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The date from which absence violations are checked.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableOvertimeInTimeEngine",
@@ -635,9 +635,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the time engine works out overtime.</p><p><strong>Why it matters.</strong> Unticked, no overtime minutes or overtime records are produced, whatever the duties and policies say.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableIsTravelling",
@@ -649,9 +649,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees can be marked as travelling.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnablePayFullWithPayroll",
@@ -663,9 +663,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave can be paid in full with payroll.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.EnableTimeRegisterApproval",
@@ -677,9 +677,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether time registers must be approved before payroll.</p><p><strong>Why it matters.</strong> Ticked, payroll uses the approved figures and refuses to run for an employee with any unapproved day in the period.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManageTimeSettings.AutoApproveTimeLog",
@@ -691,9 +691,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether days with nothing to review are approved automatically.</p><p><strong>Why it matters.</strong> Used with time register approval: the time engine approves a day itself when there is nothing on it worth approving.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

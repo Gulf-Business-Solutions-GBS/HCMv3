@@ -15,6 +15,8 @@ A working pattern made of duties, and the holiday calendar that goes with it. Em
 
 It works one of two ways. Without a start point on the employee's assignment, each weekday takes the duty set for it here -- Sunday's duty every Sunday. With a start point, the pattern is the rotation of weeks set in the duty period's **details**, and the weekday duties here are not used.
 
+Rotations and roster groups apply only when the time setting *EnableRosterDuty* is on; otherwise every employee gets the weekday duties of their own duty period.
+
 ## HolidayCalendar {#DutyPeriod.HolidayCalendarId}
 <!-- alias: loc:HolidayCalendar, dom:DutyPeriod_HolidayCalendarId -->
 

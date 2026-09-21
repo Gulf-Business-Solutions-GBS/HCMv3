@@ -11,184 +11,188 @@ permissions: [Pages.SystemSettings.ManageSelfServiceSettings]
 
 ## Overview
 
-_TODO_
+إعدادات الخدمة الذاتية للموظفين.
+
+لا يُقرأ حالياً إلا **إشعار البريد الإلكتروني**، أما الإعدادات الأخرى فلا أثر لها.
+
+لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.
 
 ## RedirectAfterWFApproval {#ManageSelfServiceSettings.RedirectAfterWFApproval}
 <!-- alias: loc:RedirectAfterWFApproval, dom:SelfServiceSettings_RedirectAfterWFApproval -->
 
-**ما هو.** _TODO_
+**ما هو.** المكان الذي ينتقل إليه المستخدم بعد اعتماد طلب سير العمل.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** إلزامي. إحدى القيم: افتراضي، ListView، لوحة القيادة.
 
 ## DefaultLoginPage {#ManageSelfServiceSettings.DefaultLoginPage}
 <!-- alias: loc:DefaultLoginPage, dom:SelfServiceSettings_DefaultLoginPage -->
 
-**ما هو.** _TODO_
+**ما هو.** الصفحة المعروضة بعد تسجيل دخول الموظف.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** اختياري.
 
 ## CaptchaKey {#ManageSelfServiceSettings.CaptchaKey}
 <!-- alias: loc:CaptchaKey, dom:SelfServiceSettings_CaptchaKey -->
 
-**ما هو.** _TODO_
+**ما هو.** مفتاح رمز التحقق عند تسجيل الدخول.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** اختياري.
 
 ## EmailNotification {#ManageSelfServiceSettings.EmailNotification}
 <!-- alias: loc:EmailNotification, dom:SelfServiceSettings_EmailNotification -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان النظام يرسل رسائل بريد إلكتروني.
 
-**مثال.** _TODO_
+**لماذا يهم.** إذا لم يُؤشَّر عليه لا تُرسل الرسائل المرسلة عبر خدمة البريد في النظام -- رسائل الإشعارات ورسائل البصمات.
 
 **القواعد.** نعم أو لا.
 
 ## ShowEmployeeInfo {#ManageSelfServiceSettings.ShowEmployeeInfo}
 <!-- alias: loc:ShowEmployeeInfo, dom:SelfServiceSettings_ShowEmployeeInfo -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت معلومات الموظف تُعرض في الصفحة الرئيسية للخدمة الذاتية.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## IsAttachmentAllowed {#ManageSelfServiceSettings.IsAttachmentAllowed}
 <!-- alias: loc:IsAttachmentAllowed, dom:SelfServiceSettings_IsAttachmentAllowed -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان يمكن إضافة مرفقات إلى طلبات الخدمة الذاتية.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## AllowPunchOutsideRange {#ManageSelfServiceSettings.AllowPunchOutsideRange}
 <!-- alias: loc:AllowPunchOutsideRange, dom:SelfServiceSettings_AllowPunchOutsideRange -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت بصمات الجوال مسموحة خارج نطاق موقع العمل.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## AutoLogoutAfterPunch {#ManageSelfServiceSettings.AutoLogoutAfterPunch}
 <!-- alias: loc:AutoLogoutAfterPunch, dom:SelfServiceSettings_AutoLogoutAfterPunch -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان المستخدم يُسجَّل خروجه بعد البصمة.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## AllowGeolocationSelfie {#ManageSelfServiceSettings.AllowGeolocationSelfie}
 <!-- alias: loc:AllowGeolocationSelfie, dom:SelfServiceSettings_AllowGeolocationSelfie -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت تُلتقط صورة ذاتية مع بصمة الجوال.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## HideGeolocationInfo {#ManageSelfServiceSettings.HideGeolocationInfo}
 <!-- alias: loc:HideGeolocationInfo, dom:SelfServiceSettings_HideGeolocationInfo -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت تفاصيل الموقع مخفية.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## HideGeolocationPunchInfo {#ManageSelfServiceSettings.HideGeolocationPunchInfo}
 <!-- alias: loc:HideGeolocationPunchInfo, dom:SelfServiceSettings_HideGeolocationPunchInfo -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت تفاصيل موقع البصمات مخفية.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## ShowLeaveInfo {#ManageSelfServiceSettings.ShowLeaveInfo}
 <!-- alias: loc:ShowLeaveInfo, dom:SelfServiceSettings_ShowLeaveInfo -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كانت معلومات الإجازات معروضة.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## ShowCurrentLeaveBalance {#ManageSelfServiceSettings.ShowCurrentLeaveBalance}
 <!-- alias: loc:ShowCurrentLeaveBalance, dom:SelfServiceSettings_ShowCurrentLeaveBalance -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان رصيد الإجازة الحالي معروضاً.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## ShowUpdatedLeaveBalance {#ManageSelfServiceSettings.ShowUpdatedLeaveBalance}
 <!-- alias: loc:ShowUpdatedLeaveBalance, dom:SelfServiceSettings_ShowUpdatedLeaveBalance -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان رصيد الإجازة بعد الطلب معروضاً.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## IsAdditionalUnpaidLeaveAllowed {#ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed}
 <!-- alias: loc:IsAdditionalUnpaidLeaveAllowed, dom:SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان يمكن طلب إجازة غير مدفوعة إضافية.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## ShowPaymentDate {#ManageSelfServiceSettings.ShowPaymentDate}
 <!-- alias: loc:ShowPaymentDate, dom:SelfServiceSettings_ShowPaymentDate -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان تاريخ دفع الإجازة معروضاً.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## EnablePayWithPayroll {#ManageSelfServiceSettings.EnablePayWithPayroll}
 <!-- alias: loc:EnablePayWithPayroll, dom:SelfServiceSettings_EnablePayWithPayroll -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان يمكن للموظفين اختيار الصرف مع الرواتب.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## EnablePayInAdvance {#ManageSelfServiceSettings.EnablePayInAdvance}
 <!-- alias: loc:EnablePayInAdvance, dom:SelfServiceSettings_EnablePayInAdvance -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان يمكن للموظفين اختيار الصرف مقدماً.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## IsPassportWithdrawalRequired {#ManageSelfServiceSettings.IsPassportWithdrawalRequired}
 <!-- alias: loc:IsPassportWithdrawalRequired, dom:SelfServiceSettings_IsPassportWithdrawalRequired -->
 
-**ما هو.** _TODO_
+**ما هو.** ما إذا كان سحب جواز السفر مطلوباً مع الإجازة.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** نعم أو لا.
 
 ## PassportWithdrawalSubmissionStep {#ManageSelfServiceSettings.PassportWithdrawalSubmissionStep}
 <!-- alias: loc:PassportWithdrawalSubmissionStep, dom:SelfServiceSettings_PassportWithdrawalSubmissionStep -->
 
-**ما هو.** _TODO_
+**ما هو.** خطوة سير العمل التي يُقدَّم فيها سحب جواز السفر.
 
-**مثال.** _TODO_
+**لماذا يهم.** لا يُقرأ حالياً -- تغييره لا أثر له.
 
 **القواعد.** اختياري. رقم صحيح.

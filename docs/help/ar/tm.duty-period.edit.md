@@ -15,6 +15,8 @@ permissions: [Pages.TimeManagement.DutyPeriods.Create]
 
 ويعمل بإحدى طريقتين: فبدون نقطة بداية في تعيين الموظف يأخذ كل يوم من أيام الأسبوع الدوام المحدد له هنا -- دوام الأحد في كل أحد. ومع نقطة بداية يكون النمط دورة الأسابيع المحددة في **تفاصيل** فترة الدوام، ولا تُستخدم دوامات أيام الأسبوع هنا.
 
+ولا تنطبق الدورات ومجموعات المناوبة إلا إذا كان إعداد الوقت *EnableRosterDuty* مفعّلاً، وإلا فيحصل كل موظف على دوامات أيام الأسبوع في فترة دوامه.
+
 ## HolidayCalendar {#DutyPeriod.HolidayCalendarId}
 <!-- alias: loc:HolidayCalendar, dom:DutyPeriod_HolidayCalendarId -->
 
