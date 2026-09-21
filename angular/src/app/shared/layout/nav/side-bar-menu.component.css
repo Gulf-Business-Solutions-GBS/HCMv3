@@ -5,6 +5,16 @@
  * on all of them, matching the Metronic classes they sit beside.
  */
 
+/* ---------- menu icons ---------- */
+/* The dark-sidebar theme paints resting icons #464852 -- almost the sidebar's own background -- so only the
+   selected item's icon could be seen. Give them the menu text's grey instead. The element names (a, span) lift
+   this just above the theme's resting rule but keep it below its hover/open/active rules, which still turn
+   the icon white. */
+[data-kt-app-layout='dark-sidebar'] .app-sidebar .menu .menu-item a.menu-link span.menu-icon i,
+[data-kt-app-layout='dark-sidebar'] .app-sidebar .menu .menu-item a.menu-link span.menu-icon .svg-icon {
+    color: #9a9cae;
+}
+
 /* ---------- screen code ---------- */
 .menu-scode {
     margin-left: 6px;
