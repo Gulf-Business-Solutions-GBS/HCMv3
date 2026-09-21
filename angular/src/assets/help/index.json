@@ -7052,6 +7052,135 @@
     ],
     "JobDescription_LongDescriptionAr": [
       "jp.job-description.edit"
+    ],
+    "EmployeePoolCar_DriverEmployeeId": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_PoolCarId": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_StartDate": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_StartTime": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_EndDate": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_EndTime": [
+      "gp.employee-pool-car.edit"
+    ],
+    "EmployeePoolCar_IsReturned": [
+      "gp.employee-pool-car.edit"
+    ],
+    "GatePassMaterial_ItemCode": [
+      "gp.gate-pass-material.edit"
+    ],
+    "GatePassMaterial_ItemName": [
+      "gp.gate-pass-material.edit"
+    ],
+    "GatePassMaterial_Quantity": [
+      "gp.gate-pass-material.edit"
+    ],
+    "GatePassMaterial_ExpectedReturnDate": [
+      "gp.gate-pass-material.edit"
+    ],
+    "GatePassMaterial_ReturnedQuantity": [
+      "gp.gate-pass-material.edit"
+    ],
+    "GatePassPerson_PersonTypeId": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassPerson_EmployeeId": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassPerson_PersonFullName": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassPerson_GatePassVendorId": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassPerson_PersonCivildID": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassPerson_PersonPassportNumber": [
+      "gp.gate-pass-person.edit"
+    ],
+    "GatePassVehicle_VehicleTypeId": [
+      "gp.gate-pass-vehicle.edit"
+    ],
+    "GatePassVehicle_VehiclePlateNumber": [
+      "gp.gate-pass-vehicle.edit"
+    ],
+    "GatePassVehicle_VehicleBrandId": [
+      "gp.gate-pass-vehicle.edit"
+    ],
+    "GatePassVehicle_VehicleModelId": [
+      "gp.gate-pass-vehicle.edit"
+    ],
+    "GatePassVehicle_VehicleDocExpiryDate": [
+      "gp.gate-pass-vehicle.edit"
+    ],
+    "GatePassVendor_Code": [
+      "gp.gate-pass-vendor.edit"
+    ],
+    "GatePassVendor_NameEn": [
+      "gp.gate-pass-vendor.edit"
+    ],
+    "GatePassVendor_NameAr": [
+      "gp.gate-pass-vendor.edit"
+    ],
+    "GatePassVendor_VendorAddress": [
+      "gp.gate-pass-vendor.edit"
+    ],
+    "GatePass_GatePassNumber": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_GatePassTypeId": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_GatePassMovementId": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_LocationId": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_RequestedByEmployeeId": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_GatePassStatusId": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_IssueDate": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_ValidUpto": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_StartTime": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_EndTime": [
+      "gp.gate-pass.edit"
+    ],
+    "GatePass_Comments": [
+      "gp.gate-pass.edit"
+    ],
+    "PoolCar_VehicleTypeId": [
+      "gp.pool-car.edit"
+    ],
+    "PoolCar_VehiclePlateNumber": [
+      "gp.pool-car.edit"
+    ],
+    "PoolCar_VehicleBrandId": [
+      "gp.pool-car.edit"
+    ],
+    "PoolCar_VehicleModelId": [
+      "gp.pool-car.edit"
+    ],
+    "PoolCar_VehicleDocExpiryDate": [
+      "gp.pool-car.edit"
     ]
   }
 }

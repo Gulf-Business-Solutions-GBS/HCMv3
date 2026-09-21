@@ -1,0 +1,187 @@
+{
+  "helpId": "gp.gate-pass.edit",
+  "lang": "ar",
+  "title": "تصاريح الدخول والخروج — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.GatePass",
+  "overviewHtml": "<p>إذن بدخول أشخاص أو مركبات أو مواد إلى موقع أو خروجها منه. ويُدرج الأشخاص والمركبات والمواد كتفاصيل. ولا يجوز أن يكون تاريخ \"صالح حتى\" قبل تاريخ الإصدار.</p>",
+  "aliasIndex": {
+    "loc:GatePassNumber": "GatePass.GatePassNumber",
+    "dom:GatePass_GatePassNumber": "GatePass.GatePassNumber",
+    "loc:GatePassType": "GatePass.GatePassTypeId",
+    "dom:GatePass_GatePassTypeId": "GatePass.GatePassTypeId",
+    "loc:GatePassMovement": "GatePass.GatePassMovementId",
+    "dom:GatePass_GatePassMovementId": "GatePass.GatePassMovementId",
+    "loc:Location": "GatePass.LocationId",
+    "dom:GatePass_LocationId": "GatePass.LocationId",
+    "loc:RequestedByEmployee": "GatePass.RequestedByEmployeeId",
+    "dom:GatePass_RequestedByEmployeeId": "GatePass.RequestedByEmployeeId",
+    "loc:GatePassStatus": "GatePass.GatePassStatusId",
+    "dom:GatePass_GatePassStatusId": "GatePass.GatePassStatusId",
+    "loc:IssueDate": "GatePass.IssueDate",
+    "dom:GatePass_IssueDate": "GatePass.IssueDate",
+    "loc:ValidUpto": "GatePass.ValidUpto",
+    "dom:GatePass_ValidUpto": "GatePass.ValidUpto",
+    "loc:StartTime": "GatePass.StartTime",
+    "dom:GatePass_StartTime": "GatePass.StartTime",
+    "loc:EndTime": "GatePass.EndTime",
+    "dom:GatePass_EndTime": "GatePass.EndTime",
+    "loc:Comments": "GatePass.Comments",
+    "dom:GatePass_Comments": "GatePass.Comments"
+  },
+  "fields": [
+    {
+      "id": "GatePass.GatePassNumber",
+      "label": "GatePassNumber",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassNumber",
+        "dom:GatePass_GatePassNumber"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم التصريح. يُكتب يدوياً ولا يعطيه النظام.</p><p><strong>مثال.</strong> 1024</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassTypeId",
+      "label": "GatePassType",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassType",
+        "dom:GatePass_GatePassTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع تصاريح الدخول والخروج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التصريح.</p><p><strong>مثال.</strong> زائر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassMovementId",
+      "label": "GatePassMovement",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassMovement",
+        "dom:GatePass_GatePassMovementId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اتجاه الحركة عبر البوابة.</p><p><strong>مثال.</strong> خروج</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.LocationId",
+      "label": "Location",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:Location",
+        "dom:GatePass_LocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموقع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.RequestedByEmployeeId",
+      "label": "RequestedByEmployee",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:RequestedByEmployee",
+        "dom:GatePass_RequestedByEmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من طلب التصريح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassStatusId",
+      "label": "GatePassStatus",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassStatus",
+        "dom:GatePass_GatePassStatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة التصريح.</p><p><strong>مثال.</strong> صادر</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.IssueDate",
+      "label": "IssueDate",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:GatePass_IssueDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى صدر التصريح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.ValidUpto",
+      "label": "ValidUpto",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:ValidUpto",
+        "dom:GatePass_ValidUpto"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يمكن فيه استخدام التصريح.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يوجد ما ينبّه عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.StartTime",
+      "label": "StartTime",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:StartTime",
+        "dom:GatePass_StartTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء التصريح.</p><p><strong>مثال.</strong> 08:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.EndTime",
+      "label": "EndTime",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:EndTime",
+        "dom:GatePass_EndTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء التصريح.</p><p><strong>مثال.</strong> 17:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.Comments",
+      "label": "Comments",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:Comments",
+        "dom:GatePass_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

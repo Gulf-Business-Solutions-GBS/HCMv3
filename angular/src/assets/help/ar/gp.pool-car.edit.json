@@ -1,0 +1,91 @@
+{
+  "helpId": "gp.pool-car.edit",
+  "lang": "ar",
+  "title": "سيارات المجمع — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.PoolCar",
+  "overviewHtml": "<p>سيارة للشركة يمكن إعطاؤها للموظفين لفترة.</p>",
+  "aliasIndex": {
+    "loc:VehicleType": "PoolCar.VehicleTypeId",
+    "dom:PoolCar_VehicleTypeId": "PoolCar.VehicleTypeId",
+    "loc:VehiclePlateNumber": "PoolCar.VehiclePlateNumber",
+    "dom:PoolCar_VehiclePlateNumber": "PoolCar.VehiclePlateNumber",
+    "loc:VehicleBrand": "PoolCar.VehicleBrandId",
+    "dom:PoolCar_VehicleBrandId": "PoolCar.VehicleBrandId",
+    "loc:VehicleModel": "PoolCar.VehicleModelId",
+    "dom:PoolCar_VehicleModelId": "PoolCar.VehicleModelId",
+    "loc:VehicleDocExpiryDate": "PoolCar.VehicleDocExpiryDate",
+    "dom:PoolCar_VehicleDocExpiryDate": "PoolCar.VehicleDocExpiryDate"
+  },
+  "fields": [
+    {
+      "id": "PoolCar.VehicleTypeId",
+      "label": "VehicleType",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleType",
+        "dom:PoolCar_VehicleTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المركبة.</p><p><strong>مثال.</strong> بيك أب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehiclePlateNumber",
+      "label": "VehiclePlateNumber",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehiclePlateNumber",
+        "dom:PoolCar_VehiclePlateNumber"
+      ],
+      "rules": "إلزامي. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم اللوحة.</p><p><strong>مثال.</strong> 12/34567</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleBrandId",
+      "label": "VehicleBrand",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleBrand",
+        "dom:PoolCar_VehicleBrandId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة ماركات المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الصنع.</p><p><strong>مثال.</strong> تويوتا</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleModelId",
+      "label": "VehicleModel",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleModel",
+        "dom:PoolCar_VehicleModelId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طرازات المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطراز.</p><p><strong>مثال.</strong> هايلكس</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PoolCar.VehicleDocExpiryDate",
+      "label": "VehicleDocExpiryDate",
+      "section": "PoolCars",
+      "aliases": [
+        "loc:VehicleDocExpiryDate",
+        "dom:PoolCar_VehicleDocExpiryDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تنتهي رخصة المركبة.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يوجد ما ينبّه عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

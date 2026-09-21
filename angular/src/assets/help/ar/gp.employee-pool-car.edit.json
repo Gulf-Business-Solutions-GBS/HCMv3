@@ -1,0 +1,123 @@
+{
+  "helpId": "gp.employee-pool-car.edit",
+  "lang": "ar",
+  "title": "سيارات المجمع للموظفين — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.EmployeePoolCar",
+  "overviewHtml": "<p>سيارة من سيارات الشركة تُعطى لموظف يقودها، ومتى. ولا يجوز أن تكون النهاية قبل البداية. ولا يوجد ما يمنع إعطاء السيارة نفسها لسائقَين في الوقت نفسه.</p>",
+  "aliasIndex": {
+    "loc:DriverEmployee": "EmployeePoolCar.DriverEmployeeId",
+    "dom:EmployeePoolCar_DriverEmployeeId": "EmployeePoolCar.DriverEmployeeId",
+    "loc:PoolCar": "EmployeePoolCar.PoolCarId",
+    "dom:EmployeePoolCar_PoolCarId": "EmployeePoolCar.PoolCarId",
+    "loc:StartDate": "EmployeePoolCar.StartDate",
+    "dom:EmployeePoolCar_StartDate": "EmployeePoolCar.StartDate",
+    "loc:StartTime": "EmployeePoolCar.StartTime",
+    "dom:EmployeePoolCar_StartTime": "EmployeePoolCar.StartTime",
+    "loc:EndDate": "EmployeePoolCar.EndDate",
+    "dom:EmployeePoolCar_EndDate": "EmployeePoolCar.EndDate",
+    "loc:EndTime": "EmployeePoolCar.EndTime",
+    "dom:EmployeePoolCar_EndTime": "EmployeePoolCar.EndTime",
+    "loc:IsReturned": "EmployeePoolCar.IsReturned",
+    "dom:EmployeePoolCar_IsReturned": "EmployeePoolCar.IsReturned"
+  },
+  "fields": [
+    {
+      "id": "EmployeePoolCar.DriverEmployeeId",
+      "label": "DriverEmployee",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:DriverEmployee",
+        "dom:EmployeePoolCar_DriverEmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يقود.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.PoolCarId",
+      "label": "PoolCar",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:PoolCar",
+        "dom:EmployeePoolCar_PoolCarId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سيارات المجمع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السيارة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.StartDate",
+      "label": "StartDate",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:StartDate",
+        "dom:EmployeePoolCar_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.StartTime",
+      "label": "StartTime",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:StartTime",
+        "dom:EmployeePoolCar_StartTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أُخذت السيارة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.EndDate",
+      "label": "EndDate",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:EndDate",
+        "dom:EmployeePoolCar_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.EndTime",
+      "label": "EndTime",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:EndTime",
+        "dom:EmployeePoolCar_EndTime"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يجب إعادتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmployeePoolCar.IsReturned",
+      "label": "IsReturned",
+      "section": "EmployeePoolCars",
+      "aliases": [
+        "loc:IsReturned",
+        "dom:EmployeePoolCar_IsReturned"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا أُعيدت السيارة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

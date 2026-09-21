@@ -1,0 +1,187 @@
+{
+  "helpId": "gp.gate-pass.edit",
+  "lang": "en",
+  "title": "Gate Passes — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.GatePass",
+  "overviewHtml": "<p>Permission for people, vehicles or materials to enter or leave a site. The people, vehicles and materials are listed as details. Valid Upto cannot be before the issue date.</p>",
+  "aliasIndex": {
+    "loc:GatePassNumber": "GatePass.GatePassNumber",
+    "dom:GatePass_GatePassNumber": "GatePass.GatePassNumber",
+    "loc:GatePassType": "GatePass.GatePassTypeId",
+    "dom:GatePass_GatePassTypeId": "GatePass.GatePassTypeId",
+    "loc:GatePassMovement": "GatePass.GatePassMovementId",
+    "dom:GatePass_GatePassMovementId": "GatePass.GatePassMovementId",
+    "loc:Location": "GatePass.LocationId",
+    "dom:GatePass_LocationId": "GatePass.LocationId",
+    "loc:RequestedByEmployee": "GatePass.RequestedByEmployeeId",
+    "dom:GatePass_RequestedByEmployeeId": "GatePass.RequestedByEmployeeId",
+    "loc:GatePassStatus": "GatePass.GatePassStatusId",
+    "dom:GatePass_GatePassStatusId": "GatePass.GatePassStatusId",
+    "loc:IssueDate": "GatePass.IssueDate",
+    "dom:GatePass_IssueDate": "GatePass.IssueDate",
+    "loc:ValidUpto": "GatePass.ValidUpto",
+    "dom:GatePass_ValidUpto": "GatePass.ValidUpto",
+    "loc:StartTime": "GatePass.StartTime",
+    "dom:GatePass_StartTime": "GatePass.StartTime",
+    "loc:EndTime": "GatePass.EndTime",
+    "dom:GatePass_EndTime": "GatePass.EndTime",
+    "loc:Comments": "GatePass.Comments",
+    "dom:GatePass_Comments": "GatePass.Comments"
+  },
+  "fields": [
+    {
+      "id": "GatePass.GatePassNumber",
+      "label": "GatePassNumber",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassNumber",
+        "dom:GatePass_GatePassNumber"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The pass number. It is typed in, not given by the system.</p><p><strong>Example.</strong> 1024</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassTypeId",
+      "label": "GatePassType",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassType",
+        "dom:GatePass_GatePassTypeId"
+      ],
+      "rules": "Required. Chosen from Gate Pass Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of pass.</p><p><strong>Example.</strong> Visitor</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassMovementId",
+      "label": "GatePassMovement",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassMovement",
+        "dom:GatePass_GatePassMovementId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The direction of movement through the gate.</p><p><strong>Example.</strong> Out</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.LocationId",
+      "label": "Location",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:Location",
+        "dom:GatePass_LocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The site.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.RequestedByEmployeeId",
+      "label": "RequestedByEmployee",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:RequestedByEmployee",
+        "dom:GatePass_RequestedByEmployeeId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who asked for the pass.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.GatePassStatusId",
+      "label": "GatePassStatus",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:GatePassStatus",
+        "dom:GatePass_GatePassStatusId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the pass stands.</p><p><strong>Example.</strong> Issued</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.IssueDate",
+      "label": "IssueDate",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:IssueDate",
+        "dom:GatePass_IssueDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the pass was issued.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.ValidUpto",
+      "label": "ValidUpto",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:ValidUpto",
+        "dom:GatePass_ValidUpto"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day the pass can be used.</p><p><strong>Why it matters.</strong> A record only: nothing warns when it passes.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.StartTime",
+      "label": "StartTime",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:StartTime",
+        "dom:GatePass_StartTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the pass starts.</p><p><strong>Example.</strong> 08:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.EndTime",
+      "label": "EndTime",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:EndTime",
+        "dom:GatePass_EndTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time the pass ends.</p><p><strong>Example.</strong> 17:00</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePass.Comments",
+      "label": "Comments",
+      "section": "GatePasses",
+      "aliases": [
+        "loc:Comments",
+        "dom:GatePass_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

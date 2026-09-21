@@ -1,0 +1,91 @@
+{
+  "helpId": "gp.gate-pass-vehicle.edit",
+  "lang": "ar",
+  "title": "مركبات تصاريح الدخول والخروج — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.GatePassVehicle",
+  "overviewHtml": "<p>مركبة يشملها تصريح البوابة. ولا يُضاف رقم اللوحة إلا مرة واحدة لكل تصريح.</p>",
+  "aliasIndex": {
+    "loc:VehicleType": "GatePassVehicle.VehicleTypeId",
+    "dom:GatePassVehicle_VehicleTypeId": "GatePassVehicle.VehicleTypeId",
+    "loc:VehiclePlateNumber": "GatePassVehicle.VehiclePlateNumber",
+    "dom:GatePassVehicle_VehiclePlateNumber": "GatePassVehicle.VehiclePlateNumber",
+    "loc:VehicleBrand": "GatePassVehicle.VehicleBrandId",
+    "dom:GatePassVehicle_VehicleBrandId": "GatePassVehicle.VehicleBrandId",
+    "loc:VehicleModel": "GatePassVehicle.VehicleModelId",
+    "dom:GatePassVehicle_VehicleModelId": "GatePassVehicle.VehicleModelId",
+    "loc:VehicleDocExpiryDate": "GatePassVehicle.VehicleDocExpiryDate",
+    "dom:GatePassVehicle_VehicleDocExpiryDate": "GatePassVehicle.VehicleDocExpiryDate"
+  },
+  "fields": [
+    {
+      "id": "GatePassVehicle.VehicleTypeId",
+      "label": "VehicleType",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleType",
+        "dom:GatePassVehicle_VehicleTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع المركبة.</p><p><strong>مثال.</strong> بيك أب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehiclePlateNumber",
+      "label": "VehiclePlateNumber",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehiclePlateNumber",
+        "dom:GatePassVehicle_VehiclePlateNumber"
+      ],
+      "rules": "إلزامي. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم اللوحة.</p><p><strong>مثال.</strong> 12/34567</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleBrandId",
+      "label": "VehicleBrand",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleBrand",
+        "dom:GatePassVehicle_VehicleBrandId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة ماركات المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الصنع.</p><p><strong>مثال.</strong> تويوتا</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleModelId",
+      "label": "VehicleModel",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleModel",
+        "dom:GatePassVehicle_VehicleModelId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طرازات المركبات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الطراز.</p><p><strong>مثال.</strong> هايلكس</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleDocExpiryDate",
+      "label": "VehicleDocExpiryDate",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleDocExpiryDate",
+        "dom:GatePassVehicle_VehicleDocExpiryDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى تنتهي رخصة المركبة.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يوجد ما ينبّه عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

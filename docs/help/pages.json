@@ -7052,6 +7052,153 @@
         }
       },
       "defaultSection": "JobDescriptions"
+    },
+    {
+      "helpId": "gp.employee-pool-car.edit",
+      "title": "Employee Pool Cars — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.EmployeePoolCars.Create"
+      ],
+      "entity": {
+        "name": "EmployeePoolCar",
+        "fullName": "HCMv3.GatePassManagement.EmployeePoolCar",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/EmployeePoolCar.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/employee-pool-cars/create-or-edit-employee-pool-car-modal.component.html"
+        }
+      },
+      "defaultSection": "EmployeePoolCars"
+    },
+    {
+      "helpId": "gp.gate-pass-material.edit",
+      "title": "Gate Pass Materials — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.GatePassMaterials.Create"
+      ],
+      "entity": {
+        "name": "GatePassMaterial",
+        "fullName": "HCMv3.GatePassManagement.GatePassMaterial",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/GatePassMaterial.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/gate-pass-detail/materials/create-or-edit-gate-pass-material-modal.component.html"
+        }
+      },
+      "defaultSection": "GatePassMaterials"
+    },
+    {
+      "helpId": "gp.gate-pass-person.edit",
+      "title": "Gate Pass Persons — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.GatePassPersons.Create"
+      ],
+      "entity": {
+        "name": "GatePassPerson",
+        "fullName": "HCMv3.GatePassManagement.GatePassPerson",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/GatePassPerson.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/gate-pass-detail/persons/create-or-edit-gate-pass-person-modal.component.html"
+        }
+      },
+      "defaultSection": "GatePassPersons"
+    },
+    {
+      "helpId": "gp.gate-pass-vehicle.edit",
+      "title": "Gate Pass Vehicles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.GatePassVehicles.Create"
+      ],
+      "entity": {
+        "name": "GatePassVehicle",
+        "fullName": "HCMv3.GatePassManagement.GatePassVehicle",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/GatePassVehicle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/gate-pass-detail/vehicles/create-or-edit-gate-pass-vehicle-modal.component.html"
+        }
+      },
+      "defaultSection": "GatePassVehicles"
+    },
+    {
+      "helpId": "gp.gate-pass-vendor.edit",
+      "title": "Gate Pass Vendors — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.GatePassVendors.Create"
+      ],
+      "entity": {
+        "name": "GatePassVendor",
+        "fullName": "HCMv3.GatePassManagement.GatePassVendor",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/GatePassVendor.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/gate-pass-vendors/create-or-edit-gate-pass-vendor-modal.component.html"
+        }
+      },
+      "defaultSection": "GatePassVendors"
+    },
+    {
+      "helpId": "gp.gate-pass.edit",
+      "title": "Gate Passes — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.GatePasses.Create"
+      ],
+      "entity": {
+        "name": "GatePass",
+        "fullName": "HCMv3.GatePassManagement.GatePass",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/GatePass.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/gate-passes/create-or-edit-gate-pass-modal.component.html"
+        }
+      },
+      "defaultSection": "GatePasses"
+    },
+    {
+      "helpId": "gp.pool-car.edit",
+      "title": "Pool Cars — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.GatePassManagement.PoolCars.Create"
+      ],
+      "entity": {
+        "name": "PoolCar",
+        "fullName": "HCMv3.GatePassManagement.PoolCar",
+        "file": "aspnet-core/src/HCMv3.Core/GatePassManagement/PoolCar.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/gate-pass-management/pool-cars/create-or-edit-pool-car-modal.component.html"
+        }
+      },
+      "defaultSection": "PoolCars"
     }
   ]
 }

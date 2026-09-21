@@ -1,0 +1,91 @@
+{
+  "helpId": "gp.gate-pass-vehicle.edit",
+  "lang": "en",
+  "title": "Gate Pass Vehicles — Create / Edit",
+  "entity": "HCMv3.GatePassManagement.GatePassVehicle",
+  "overviewHtml": "<p>A vehicle covered by a gate pass. A plate number can be added once per pass.</p>",
+  "aliasIndex": {
+    "loc:VehicleType": "GatePassVehicle.VehicleTypeId",
+    "dom:GatePassVehicle_VehicleTypeId": "GatePassVehicle.VehicleTypeId",
+    "loc:VehiclePlateNumber": "GatePassVehicle.VehiclePlateNumber",
+    "dom:GatePassVehicle_VehiclePlateNumber": "GatePassVehicle.VehiclePlateNumber",
+    "loc:VehicleBrand": "GatePassVehicle.VehicleBrandId",
+    "dom:GatePassVehicle_VehicleBrandId": "GatePassVehicle.VehicleBrandId",
+    "loc:VehicleModel": "GatePassVehicle.VehicleModelId",
+    "dom:GatePassVehicle_VehicleModelId": "GatePassVehicle.VehicleModelId",
+    "loc:VehicleDocExpiryDate": "GatePassVehicle.VehicleDocExpiryDate",
+    "dom:GatePassVehicle_VehicleDocExpiryDate": "GatePassVehicle.VehicleDocExpiryDate"
+  },
+  "fields": [
+    {
+      "id": "GatePassVehicle.VehicleTypeId",
+      "label": "VehicleType",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleType",
+        "dom:GatePassVehicle_VehicleTypeId"
+      ],
+      "rules": "Required. Chosen from Vehicle Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of vehicle.</p><p><strong>Example.</strong> Pickup</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehiclePlateNumber",
+      "label": "VehiclePlateNumber",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehiclePlateNumber",
+        "dom:GatePassVehicle_VehiclePlateNumber"
+      ],
+      "rules": "Required. Maximum 64 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The plate number.</p><p><strong>Example.</strong> 12/34567</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleBrandId",
+      "label": "VehicleBrand",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleBrand",
+        "dom:GatePassVehicle_VehicleBrandId"
+      ],
+      "rules": "Required. Chosen from Vehicle Brand master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The make.</p><p><strong>Example.</strong> Toyota</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleModelId",
+      "label": "VehicleModel",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleModel",
+        "dom:GatePassVehicle_VehicleModelId"
+      ],
+      "rules": "Required. Chosen from Vehicle Model master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The model.</p><p><strong>Example.</strong> Hilux</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassVehicle.VehicleDocExpiryDate",
+      "label": "VehicleDocExpiryDate",
+      "section": "GatePassVehicles",
+      "aliases": [
+        "loc:VehicleDocExpiryDate",
+        "dom:GatePassVehicle_VehicleDocExpiryDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the vehicle's registration expires.</p><p><strong>Why it matters.</strong> A record only: nothing warns when it passes.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

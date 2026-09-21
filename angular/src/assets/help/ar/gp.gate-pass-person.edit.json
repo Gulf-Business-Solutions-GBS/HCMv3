@@ -1,0 +1,107 @@
+{
+  "helpId": "gp.gate-pass-person.edit",
+  "lang": "ar",
+  "title": "أشخاص تصاريح الدخول والخروج — إنشاء / تحرير",
+  "entity": "HCMv3.GatePassManagement.GatePassPerson",
+  "overviewHtml": "<p>شخص يشمله تصريح البوابة. وكما في النظام القديم، يلزم إدخال موظف ومورد واسم كامل معاً، حتى للزائر. ولا يُضاف كل نوع شخص إلا مرة واحدة لكل تصريح.</p>",
+  "aliasIndex": {
+    "loc:PersonType": "GatePassPerson.PersonTypeId",
+    "dom:GatePassPerson_PersonTypeId": "GatePassPerson.PersonTypeId",
+    "loc:Employee": "GatePassPerson.EmployeeId",
+    "dom:GatePassPerson_EmployeeId": "GatePassPerson.EmployeeId",
+    "loc:PersonFullName": "GatePassPerson.PersonFullName",
+    "dom:GatePassPerson_PersonFullName": "GatePassPerson.PersonFullName",
+    "loc:GatePassVendor": "GatePassPerson.GatePassVendorId",
+    "dom:GatePassPerson_GatePassVendorId": "GatePassPerson.GatePassVendorId",
+    "loc:PersonCivildID": "GatePassPerson.PersonCivildID",
+    "dom:GatePassPerson_PersonCivildID": "GatePassPerson.PersonCivildID",
+    "loc:PersonPassportNumber": "GatePassPerson.PersonPassportNumber",
+    "dom:GatePassPerson_PersonPassportNumber": "GatePassPerson.PersonPassportNumber"
+  },
+  "fields": [
+    {
+      "id": "GatePassPerson.PersonTypeId",
+      "label": "PersonType",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonType",
+        "dom:GatePassPerson_PersonTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الأشخاص.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الشخص.</p><p><strong>مثال.</strong> مقاول</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.EmployeeId",
+      "label": "Employee",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:Employee",
+        "dom:GatePassPerson_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المعني.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonFullName",
+      "label": "PersonFullName",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonFullName",
+        "dom:GatePassPerson_PersonFullName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الكامل للشخص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.GatePassVendorId",
+      "label": "GatePassVendor",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:GatePassVendor",
+        "dom:GatePassPerson_GatePassVendorId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المورد الذي ينتمي إليه الشخص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonCivildID",
+      "label": "PersonCivildID",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonCivildID",
+        "dom:GatePassPerson_PersonCivildID"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الرقم المدني للشخص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "GatePassPerson.PersonPassportNumber",
+      "label": "PersonPassportNumber",
+      "section": "GatePassPersons",
+      "aliases": [
+        "loc:PersonPassportNumber",
+        "dom:GatePassPerson_PersonPassportNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم جواز سفر الشخص.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
