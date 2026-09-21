@@ -11,22 +11,24 @@ permissions: [Pages.PayrollManagement.TicketPaxTypes.Create]
 
 ## Overview
 
-_TODO_
+نوع مسافر بحسب العمر -- بالغ أو طفل أو رضيع -- يُستخدم لاختيار أجرة المسافر. ويحدد عمر العائل في ذلك اليوم أي أجرة لنوع مسافر تُستخدم.
 
 ## AgeFrom {#TicketPaxType.AgeFrom}
 <!-- alias: loc:AgeFrom, dom:TicketPaxType_AgeFrom -->
 
-**ما هو.** _TODO_
+**ما هو.** أصغر عمر في نوع المسافر هذا.
 
-**مثال.** _TODO_
+**مثال.** `2`
 
 **القواعد.** اختياري. رقم.
 
 ## AgeTo {#TicketPaxType.AgeTo}
 <!-- alias: loc:AgeTo, dom:TicketPaxType_AgeTo -->
 
-**ما هو.** _TODO_
+**ما هو.** أكبر عمر في نوع المسافر هذا.
 
-**مثال.** _TODO_
+**مثال.** `11`
+
+**لماذا يهم.** اجعل نطاقات أعمار أنواع المسافرين غير متداخلة، وإلا طُبِّق أول تطابق.
 
 **القواعد.** اختياري. رقم.

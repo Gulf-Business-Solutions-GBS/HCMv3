@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "أنواع المزايا المؤقتة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.TempBenefitType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>ورقة مرجعية بما تستحقه كل درجة — التذاكر والبدلات والإجازات ونطاق الراتب — محفوظة نصاً حراً.</p><p>لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القيود، ولا شيء يحوّلها إلى أجر. وهي محفوظة للرجوع إليها فقط.</p>",
   "aliasIndex": {
     "loc:Grade": "TempBenefitType.Grade",
     "dom:TempBenefitType_Grade": "TempBenefitType.Grade",
@@ -67,9 +67,9 @@
       ],
       "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدرجة التي تخصها هذه الاستحقاقات.</p><p><strong>مثال.</strong> الدرجة 5</p><p><strong>لماذا يهم.</strong> لا تظهر الدرجة إلا مرة واحدة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Ticket",
@@ -81,9 +81,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق تذكرة الطيران لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SimCard",
@@ -95,9 +95,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق شريحة الاتصال لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Phone",
@@ -109,9 +109,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق الهاتف لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Incentive",
@@ -123,9 +123,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحافز لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.BonusSIP",
@@ -137,9 +137,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> مكافأة خطة الحوافز لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Uniform",
@@ -151,9 +151,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> استحقاق الزي الرسمي لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MedicalInsurance",
@@ -165,9 +165,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> تغطية التأمين الطبي لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.LeaveDays",
@@ -179,9 +179,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الإجازة السنوية لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MedicalLeave",
@@ -193,9 +193,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإجازة الطبية لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MaternityLeave",
@@ -207,9 +207,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> إجازة الوضع لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.StaffDiscount",
@@ -221,9 +221,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> خصم الموظفين لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SpecialAllowance",
@@ -235,9 +235,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> البدل الخاص لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.ManagerAllowance",
@@ -249,9 +249,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> البدل الإداري لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.CompanyAsset",
@@ -263,9 +263,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عهدة الشركة المقدمة لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SchoolAllowance",
@@ -277,9 +277,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بدل التعليم لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.NoticePeriod",
@@ -291,9 +291,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> فترة الإشعار لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Indemnity",
@@ -305,9 +305,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> شروط مكافأة نهاية الخدمة لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Retirement",
@@ -319,9 +319,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> شروط التقاعد لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MinSalary",
@@ -333,9 +333,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحد الأدنى للراتب لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MidSalary",
@@ -347,9 +347,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> متوسط الراتب لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MaxSalary",
@@ -361,9 +361,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الحد الأقصى للراتب لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.TransportationAllowance",
@@ -375,9 +375,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بدل المواصلات لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.HousingAllowance",
@@ -389,9 +389,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> بدل السكن لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.OtherAllowance",
@@ -403,9 +403,9 @@
       ],
       "rules": "اختياري. الحد الأقصى 256 حرفاً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> البدلات الأخرى لهذه الدرجة، نصاً حراً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

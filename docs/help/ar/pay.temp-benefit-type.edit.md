@@ -11,229 +11,185 @@ permissions: [Pages.PayrollManagement.TempBenefitTypes.Create]
 
 ## Overview
 
-_TODO_
+ورقة مرجعية بما تستحقه كل درجة -- التذاكر والبدلات والإجازات ونطاق الراتب -- محفوظة نصاً حراً.
+
+لا تُقرأ حالياً: لا يستخدم نظام الرواتب هذه القيود، ولا شيء يحوّلها إلى أجر. وهي محفوظة للرجوع إليها فقط.
 
 ## Grade {#TempBenefitType.Grade}
 <!-- alias: loc:Grade, dom:TempBenefitType_Grade -->
 
-**ما هو.** _TODO_
+**ما هو.** الدرجة التي تخصها هذه الاستحقاقات.
 
-**مثال.** _TODO_
+**مثال.** الدرجة 5
+
+**لماذا يهم.** لا تظهر الدرجة إلا مرة واحدة.
 
 **القواعد.** إلزامي. الحد الأقصى 256 حرفاً.
 
 ## Ticket {#TempBenefitType.Ticket}
 <!-- alias: loc:Ticket, dom:TempBenefitType_ticket -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** استحقاق تذكرة الطيران لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## SimCard {#TempBenefitType.SimCard}
 <!-- alias: loc:SimCard, dom:TempBenefitType_simCard -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** استحقاق شريحة الاتصال لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## Phone {#TempBenefitType.Phone}
 <!-- alias: loc:Phone, dom:TempBenefitType_phone -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** استحقاق الهاتف لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## Incentive {#TempBenefitType.Incentive}
 <!-- alias: loc:Incentive, dom:TempBenefitType_incentive -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الحافز لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## BonusSIP {#TempBenefitType.BonusSIP}
 <!-- alias: loc:BonusSIP, dom:TempBenefitType_bonusSIP -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** مكافأة خطة الحوافز لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## Uniform {#TempBenefitType.Uniform}
 <!-- alias: loc:Uniform, dom:TempBenefitType_uniform -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** استحقاق الزي الرسمي لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MedicalInsurance {#TempBenefitType.MedicalInsurance}
 <!-- alias: loc:MedicalInsurance, dom:TempBenefitType_medicalInsurance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** تغطية التأمين الطبي لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## LeaveDays {#TempBenefitType.LeaveDays}
 <!-- alias: loc:LeaveDays, dom:TempBenefitType_leaveDays -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** أيام الإجازة السنوية لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MedicalLeave {#TempBenefitType.MedicalLeave}
 <!-- alias: loc:MedicalLeave, dom:TempBenefitType_medicalLeave -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الإجازة الطبية لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MaternityLeave {#TempBenefitType.MaternityLeave}
 <!-- alias: loc:MaternityLeave, dom:TempBenefitType_maternityLeave -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** إجازة الوضع لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## StaffDiscount {#TempBenefitType.StaffDiscount}
 <!-- alias: loc:StaffDiscount, dom:TempBenefitType_staffDiscount -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** خصم الموظفين لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## SpecialAllowance {#TempBenefitType.SpecialAllowance}
 <!-- alias: loc:SpecialAllowance, dom:TempBenefitType_specialAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** البدل الخاص لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## ManagerAllowance {#TempBenefitType.ManagerAllowance}
 <!-- alias: loc:ManagerAllowance, dom:TempBenefitType_managerAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** البدل الإداري لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## CompanyAsset {#TempBenefitType.CompanyAsset}
 <!-- alias: loc:CompanyAsset, dom:TempBenefitType_companyAsset -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** عهدة الشركة المقدمة لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## SchoolAllowance {#TempBenefitType.SchoolAllowance}
 <!-- alias: loc:SchoolAllowance, dom:TempBenefitType_schoolAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** بدل التعليم لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## NoticePeriod {#TempBenefitType.NoticePeriod}
 <!-- alias: loc:NoticePeriod, dom:TempBenefitType_noticePeriod -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** فترة الإشعار لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## Indemnity {#TempBenefitType.Indemnity}
 <!-- alias: loc:Indemnity, dom:TempBenefitType_indemnity -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** شروط مكافأة نهاية الخدمة لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## Retirement {#TempBenefitType.Retirement}
 <!-- alias: loc:Retirement, dom:TempBenefitType_retirement -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** شروط التقاعد لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MinSalary {#TempBenefitType.MinSalary}
 <!-- alias: loc:MinSalary, dom:TempBenefitType_minSalary -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الحد الأدنى للراتب لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MidSalary {#TempBenefitType.MidSalary}
 <!-- alias: loc:MidSalary, dom:TempBenefitType_midSalary -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** متوسط الراتب لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## MaxSalary {#TempBenefitType.MaxSalary}
 <!-- alias: loc:MaxSalary, dom:TempBenefitType_maxSalary -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الحد الأقصى للراتب لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## TransportationAllowance {#TempBenefitType.TransportationAllowance}
 <!-- alias: loc:TransportationAllowance, dom:TempBenefitType_transportationAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** بدل المواصلات لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## HousingAllowance {#TempBenefitType.HousingAllowance}
 <!-- alias: loc:HousingAllowance, dom:TempBenefitType_housingAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** بدل السكن لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.
 
 ## OtherAllowance {#TempBenefitType.OtherAllowance}
 <!-- alias: loc:OtherAllowance, dom:TempBenefitType_otherAllowance -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** البدلات الأخرى لهذه الدرجة، نصاً حراً.
 
 **القواعد.** اختياري. الحد الأقصى 256 حرفاً.

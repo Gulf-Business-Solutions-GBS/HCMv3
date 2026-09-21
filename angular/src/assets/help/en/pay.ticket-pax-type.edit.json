@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Ticket Passenger Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TicketPaxType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A passenger type by age — adult, child, infant — used to pick the fare for a traveller. A dependant's age on the day decides which passenger type's fare is used.</p>",
   "aliasIndex": {
     "loc:Code": "TicketPaxType.Code",
     "dom:TicketPaxType_Code": "TicketPaxType.Code",
@@ -69,9 +69,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The youngest age in this passenger type.</p><p><strong>Example.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketPaxType.AgeTo",
@@ -83,9 +83,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The oldest age in this passenger type.</p><p><strong>Example.</strong> <code>11</code></p><p><strong>Why it matters.</strong> Keep the age ranges of the passenger types from overlapping, or the first match wins.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

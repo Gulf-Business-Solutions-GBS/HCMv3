@@ -11,22 +11,22 @@ permissions: [Pages.PayrollManagement.TempEmployeeBenefits.Create]
 
 ## Overview
 
-_TODO_
+Which benefit grade an employee is on. Each employee can be on one grade only.
+
+Not read at present: it links the employee to the grade's reference sheet, and payroll does not use it.
 
 ## EmployeeId {#TempEmployeeBenefit.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:TempEmployeeBenefit_EmployeeId -->
 
-**What it is.** _TODO_
-
-**Example.** _TODO_
+**What it is.** The employee.
 
 **Rules.** Required. Chosen from the employee list.
 
 ## TempBenefitTypeId {#TempEmployeeBenefit.TempBenefitTypeId}
 <!-- alias: loc:TempBenefitTypeId, dom:TempEmployeeBenefit_TempBenefitTypeId -->
 
-**What it is.** _TODO_
+**What it is.** The benefit grade.
 
-**Example.** _TODO_
+**Example.** Grade 5
 
 **Rules.** Required. Chosen from Temp Benefit Type master data.

@@ -11,22 +11,22 @@ permissions: [Pages.PayrollManagement.TempEmployeeBenefits.Create]
 
 ## Overview
 
-_TODO_
+الدرجة التي يتبعها الموظف في المزايا. ولا يكون للموظف إلا درجة واحدة.
+
+لا يُقرأ حالياً: فهو يربط الموظف بورقة الدرجة المرجعية، ولا يستخدمه نظام الرواتب.
 
 ## EmployeeId {#TempEmployeeBenefit.EmployeeId}
 <!-- alias: loc:EmployeeId, dom:TempEmployeeBenefit_EmployeeId -->
 
-**ما هو.** _TODO_
-
-**مثال.** _TODO_
+**ما هو.** الموظف.
 
 **القواعد.** إلزامي. يُختار من قائمة الموظفين.
 
 ## TempBenefitTypeId {#TempEmployeeBenefit.TempBenefitTypeId}
 <!-- alias: loc:TempBenefitTypeId, dom:TempEmployeeBenefit_TempBenefitTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** درجة المزايا.
 
-**مثال.** _TODO_
+**مثال.** الدرجة 5
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع المزايا المؤقتة.

@@ -2829,6 +2829,156 @@
     "SocialSecurityRule_Disability": [
       "pay.social-security-rule.edit"
     ],
+    "TempBenefitType_Grade": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_ticket": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_simCard": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_phone": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_incentive": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_bonusSIP": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_uniform": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_medicalInsurance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_leaveDays": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_medicalLeave": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_maternityLeave": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_staffDiscount": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_specialAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_managerAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_companyAsset": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_schoolAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_noticePeriod": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_indemnity": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_retirement": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_minSalary": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_midSalary": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_maxSalary": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_transportationAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_housingAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempBenefitType_otherAllowance": [
+      "pay.temp-benefit-type.edit"
+    ],
+    "TempEmployeeBenefit_EmployeeId": [
+      "pay.temp-employee-benefit.edit"
+    ],
+    "TempEmployeeBenefit_TempBenefitTypeId": [
+      "pay.temp-employee-benefit.edit"
+    ],
+    "TicketFare_TicketRouteId": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketFare_TicketPaxTypeId": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketFare_TicketClassId": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketFare_StartDate": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketFare_OneWayTicketFare": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketFare_ReturnTicketFare": [
+      "pay.ticket-fare.edit"
+    ],
+    "TicketPaxType_Code": [
+      "pay.ticket-pax-type.edit"
+    ],
+    "TicketPaxType_NameEn": [
+      "pay.ticket-pax-type.edit"
+    ],
+    "TicketPaxType_NameAr": [
+      "pay.ticket-pax-type.edit"
+    ],
+    "TicketPaxType_AgeFrom": [
+      "pay.ticket-pax-type.edit"
+    ],
+    "TicketPaxType_AgeTo": [
+      "pay.ticket-pax-type.edit"
+    ],
+    "TicketType_Code": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_NameEn": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_NameAr": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_TicketBasisPeriod": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_TicketBasisFixedDays": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_Lapse": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_LapseAfter": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_StopDependantAccrualAfter": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_MinCompensation": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_DeductionPeriod": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_QuotaEntitlement": [
+      "pay.ticket-type.edit"
+    ],
+    "TicketType_WageTypeId": [
+      "pay.ticket-type.edit"
+    ],
     "WageAccGroupDetail_WageAccGroupId": [
       "pay.wage-acc-group-detail.edit"
     ],

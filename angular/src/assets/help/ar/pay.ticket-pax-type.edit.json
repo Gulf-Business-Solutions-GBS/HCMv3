@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "أنواع ركاب التذاكر — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.TicketPaxType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>نوع مسافر بحسب العمر — بالغ أو طفل أو رضيع — يُستخدم لاختيار أجرة المسافر. ويحدد عمر العائل في ذلك اليوم أي أجرة لنوع مسافر تُستخدم.</p>",
   "aliasIndex": {
     "loc:Code": "TicketPaxType.Code",
     "dom:TicketPaxType_Code": "TicketPaxType.Code",
@@ -69,9 +69,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أصغر عمر في نوع المسافر هذا.</p><p><strong>مثال.</strong> <code>2</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketPaxType.AgeTo",
@@ -83,9 +83,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أكبر عمر في نوع المسافر هذا.</p><p><strong>مثال.</strong> <code>11</code></p><p><strong>لماذا يهم.</strong> اجعل نطاقات أعمار أنواع المسافرين غير متداخلة، وإلا طُبِّق أول تطابق.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

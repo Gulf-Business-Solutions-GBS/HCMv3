@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Temp Benefit Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TempBenefitType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A reference sheet of what each grade is entitled to — tickets, allowances, leave, salary range — held as free text.</p><p>Not read at present: payroll does not use these entries, and nothing turns them into pay. They are kept for reference only.</p>",
   "aliasIndex": {
     "loc:Grade": "TempBenefitType.Grade",
     "dom:TempBenefitType_Grade": "TempBenefitType.Grade",
@@ -67,9 +67,9 @@
       ],
       "rules": "Required. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The grade these entitlements are for.</p><p><strong>Example.</strong> Grade 5</p><p><strong>Why it matters.</strong> Each grade can appear only once.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Ticket",
@@ -81,9 +81,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The air ticket entitlement for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SimCard",
@@ -95,9 +95,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The SIM card entitlement for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Phone",
@@ -109,9 +109,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The phone entitlement for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Incentive",
@@ -123,9 +123,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The incentive for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.BonusSIP",
@@ -137,9 +137,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The bonus under the incentive plan for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Uniform",
@@ -151,9 +151,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The uniform entitlement for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MedicalInsurance",
@@ -165,9 +165,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The medical insurance cover for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.LeaveDays",
@@ -179,9 +179,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The annual leave days for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MedicalLeave",
@@ -193,9 +193,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The medical leave for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MaternityLeave",
@@ -207,9 +207,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The maternity leave for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.StaffDiscount",
@@ -221,9 +221,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The staff discount for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SpecialAllowance",
@@ -235,9 +235,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The special allowance for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.ManagerAllowance",
@@ -249,9 +249,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The manager allowance for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.CompanyAsset",
@@ -263,9 +263,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The company assets provided for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.SchoolAllowance",
@@ -277,9 +277,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The school allowance for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.NoticePeriod",
@@ -291,9 +291,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The notice period for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Indemnity",
@@ -305,9 +305,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The end-of-service indemnity terms for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.Retirement",
@@ -319,9 +319,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The retirement terms for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MinSalary",
@@ -333,9 +333,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The minimum salary for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MidSalary",
@@ -347,9 +347,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The mid-point salary for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.MaxSalary",
@@ -361,9 +361,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The maximum salary for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.TransportationAllowance",
@@ -375,9 +375,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The transportation allowance for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.HousingAllowance",
@@ -389,9 +389,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The housing allowance for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TempBenefitType.OtherAllowance",
@@ -403,9 +403,9 @@
       ],
       "rules": "Optional. Maximum 256 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The other allowances for this grade, as free text.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

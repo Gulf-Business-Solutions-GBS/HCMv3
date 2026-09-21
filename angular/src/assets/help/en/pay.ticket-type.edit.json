@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Ticket Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.TicketType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A kind of air ticket — the employee's own, or one for a kind of dependant — and how its entitlement builds up and lapses. Ticket type <code>1</code> is the employee's own ticket; the others are dependant tickets. How many tickets and their value are set per sub group.</p>",
   "aliasIndex": {
     "loc:Code": "TicketType.Code",
     "dom:TicketType_Code": "TicketType.Code",
@@ -83,9 +83,9 @@
       ],
       "rules": "Required. One of: Calendar Days, Fixed Days.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a ticket's value is based on calendar days or a fixed number of days.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.TicketBasisFixedDays",
@@ -97,9 +97,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The fixed number of days, for the fixed-days basis.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.Lapse",
@@ -111,9 +111,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether unused ticket entitlement lapses.</p><p><strong>Why it matters.</strong> Ticked, the ticket entitlement runs in cycles of <strong>Lapse After</strong> years from the start of its accrual period, and starts again each cycle. Unticked, the first cycle never ends.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.LapseAfter",
@@ -125,9 +125,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
-      "adminHtml": "",
-      "stub": true
+      "html": "<p><strong>What it is.</strong> How many years each ticket cycle lasts before unused entitlement lapses.</p><p><strong>Example.</strong> <code>2</code></p>",
+      "adminHtml": "<p>With <strong>Lapse</strong> ticked, set this to at least 1. The form accepts 0, but 0 makes the ticket calculation never finish, which stops the time engine for employees with this ticket type.</p>",
+      "stub": false
     },
     {
       "id": "TicketType.StopDependantAccrualAfter",
@@ -139,9 +139,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> When dependant ticket accrual stops.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.MinCompensation",
@@ -153,9 +153,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The least paid when a ticket is compensated in cash.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.DeductionPeriod",
@@ -167,9 +167,9 @@
       ],
       "rules": "Required. One of: After Entitlement, Same As Entitlement.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a used ticket is taken from the current or the next entitlement.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.QuotaEntitlement",
@@ -181,9 +181,9 @@
       ],
       "rules": "Required. One of: Period, Immediate.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether tickets build up over the period or are available straight away.</p><p><strong>Example.</strong> Period</p><p><strong>Why it matters.</strong> <em>Period</em> makes the time engine accrue the entitlement a little each day. <em>Immediate</em> accrues nothing day by day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "TicketType.WageTypeId",
@@ -195,9 +195,9 @@
       ],
       "rules": "Optional. Chosen from Wagetype master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype for this ticket type.</p><p><strong>Example.</strong> Air Ticket</p><p><strong>Why it matters.</strong> It must be filled in to save, but nothing reads it at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }
