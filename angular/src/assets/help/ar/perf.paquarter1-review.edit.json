@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paquarter1-review.edit",
+  "lang": "ar",
+  "title": "مراجعات الربع الأول — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAQuarter1Review",
+  "overviewHtml": "<p>سطر مؤشر أداء واحد من مراجعة الربع الأول في نموذج تقييم الأداء: المؤشر ووزنه والمستهدف منه، وتقديرا الموظف المُقيَّم والمُقيِّم، وتعليقاتهما. جزء من نموذج التقييم القديم القائم على الفترات (نموذج تقييم الأداء).</p><p>يُحفظ ضمن سجل التقييم، ولا تُحتسب حالياً أي درجة من هذه الأسطر. ولا يظهر المؤشر إلا مرة واحدة في النموذج.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAQuarter1Review.KpiInfoId",
+    "dom:PAQuarter1Review_KpiInfoId": "PAQuarter1Review.KpiInfoId",
+    "loc:Weight": "PAQuarter1Review.Weight",
+    "dom:PAQuarter1Review_Weight": "PAQuarter1Review.Weight",
+    "loc:Target": "PAQuarter1Review.Target",
+    "dom:PAQuarter1Review_Target": "PAQuarter1Review.Target",
+    "loc:AppraiseeRating": "PAQuarter1Review.AppraiseeRatingId",
+    "dom:PAQuarter1Review_AppraiseeRatingId": "PAQuarter1Review.AppraiseeRatingId",
+    "loc:Rating": "PAQuarter1Review.RatingId",
+    "dom:PAQuarter1Review_RatingId": "PAQuarter1Review.RatingId",
+    "loc:AppraiseeComments": "PAQuarter1Review.AppraiseeComments",
+    "dom:PAQuarter1Review_AppraiseeComments": "PAQuarter1Review.AppraiseeComments",
+    "loc:AppraiserComments": "PAQuarter1Review.AppraiserComments",
+    "dom:PAQuarter1Review_AppraiserComments": "PAQuarter1Review.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAQuarter1Review.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAQuarter1Review_KpiInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p><p><strong>مثال.</strong> رضا العملاء</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.Weight",
+      "label": "Weight",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAQuarter1Review_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة المؤشر من التقييم، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.Target",
+      "label": "Target",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:Target",
+        "dom:PAQuarter1Review_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف المحدد للمؤشر.</p><p><strong>مثال.</strong> <code>90% تسليم في الموعد</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAQuarter1Review_AppraiseeRatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير الموظف لنفسه.</p><p><strong>مثال.</strong> يلبي التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.RatingId",
+      "label": "Rating",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAQuarter1Review_RatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير المُقيِّم.</p><p><strong>مثال.</strong> يتجاوز التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAQuarter1Review_AppraiseeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter1Review.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAQuarter1Reviews",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAQuarter1Review_AppraiserComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات المُقيِّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

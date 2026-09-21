@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.paperiod.edit",
+  "lang": "en",
+  "title": "PA Periods — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAPeriod",
+  "overviewHtml": "<p>An appraisal period for the older PA Form — for example \"FY 2026\". Each employee can have one PA Form per period. The performance appraisal and PA summary reports can be filtered by it.</p>",
+  "aliasIndex": {
+    "loc:Name": "PAPeriod.Name",
+    "dom:PAPeriod_Name": "PAPeriod.Name",
+    "loc:Closed": "PAPeriod.Closed",
+    "dom:PAPeriod_Closed": "PAPeriod.Closed"
+  },
+  "fields": [
+    {
+      "id": "PAPeriod.Name",
+      "label": "Name",
+      "section": "PAPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:PAPeriod_Name"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period's name. It must be unique.</p><p><strong>Example.</strong> FY 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeriod.Closed",
+      "label": "Closed",
+      "section": "PAPeriods",
+      "aliases": [
+        "loc:Closed",
+        "dom:PAPeriod_Closed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the period is closed.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

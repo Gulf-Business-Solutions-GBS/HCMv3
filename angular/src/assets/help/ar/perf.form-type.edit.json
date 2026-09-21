@@ -1,0 +1,91 @@
+{
+  "helpId": "perf.form-type.edit",
+  "lang": "ar",
+  "title": "أنواع النماذج — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.FormType",
+  "overviewHtml": "<p>نوع من نماذج التقييم، مع حدود لعدد المراجعين المسموح بهم لتقييم من هذا النوع. ويحدد كل تقييم نوع نموذجه.</p>",
+  "aliasIndex": {
+    "loc:Code": "FormType.Code",
+    "dom:FormType_Code": "FormType.Code",
+    "loc:NameEn": "FormType.NameEn",
+    "dom:FormType_NameEn": "FormType.NameEn",
+    "loc:NameAr": "FormType.NameAr",
+    "dom:FormType_NameAr": "FormType.NameAr",
+    "loc:MinReviewerLimit": "FormType.MinReviewerLimit",
+    "dom:FormType_MinReviewerLimit": "FormType.MinReviewerLimit",
+    "loc:MaxReviewerLimit": "FormType.MaxReviewerLimit",
+    "dom:FormType_MaxReviewerLimit": "FormType.MaxReviewerLimit"
+  },
+  "fields": [
+    {
+      "id": "FormType.Code",
+      "label": "Code",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:FormType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.NameEn",
+      "label": "NameEn",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:FormType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.NameAr",
+      "label": "NameAr",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:FormType_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.MinReviewerLimit",
+      "label": "MinReviewerLimit",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:MinReviewerLimit",
+        "dom:FormType_MinReviewerLimit"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقل عدد من المراجعين ينبغي أن يكون للتقييم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FormType.MaxReviewerLimit",
+      "label": "MaxReviewerLimit",
+      "section": "FormTypes",
+      "aliases": [
+        "loc:MaxReviewerLimit",
+        "dom:FormType_MaxReviewerLimit"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من المراجعين يجوز أن يكون لتقييم من هذا النوع.</p><p><strong>مثال.</strong> <code>5</code></p><p><strong>لماذا يهم.</strong> يُرفض إضافة مراجع يتجاوزه. والقيمة 0 تعني بلا حد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

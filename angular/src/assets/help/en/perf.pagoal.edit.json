@@ -1,0 +1,27 @@
+{
+  "helpId": "perf.pagoal.edit",
+  "lang": "en",
+  "title": "PA Goals — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAGoal",
+  "overviewHtml": "<p>A goal written on a PA Form. Part of the older period-based appraisal form (PA Form). Stored with the form; no report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Goal": "PAGoal.Goal",
+    "dom:PAGoal_Goal": "PAGoal.Goal"
+  },
+  "fields": [
+    {
+      "id": "PAGoal.Goal",
+      "label": "Goal",
+      "section": "PAGoals",
+      "aliases": [
+        "loc:Goal",
+        "dom:PAGoal_Goal"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The goal, in words.</p><p><strong>Example.</strong> Cut month-end close to five days</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

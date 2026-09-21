@@ -1,0 +1,107 @@
+{
+  "helpId": "perf.paemployee.edit",
+  "lang": "en",
+  "title": "PA Employees — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAEmployee",
+  "overviewHtml": "<p>A 360-style appraisal of one employee: the cycle, the form type, and the outcome — proposed increment, proposed job title and areas to improve. Its KPIs, reviewers and ratings are held on its details.</p><p>An appraisal is raised about the employee, not by them, and goes through workflow for approval. The employee appraisal report shows its outcome fields.</p>",
+  "aliasIndex": {
+    "loc:Employee": "PAEmployee.EmployeeId",
+    "dom:PAEmployee_EmployeeId": "PAEmployee.EmployeeId",
+    "loc:PACycle": "PAEmployee.PACycleId",
+    "dom:PAEmployee_PACycleId": "PAEmployee.PACycleId",
+    "loc:FormType": "PAEmployee.FormTypeId",
+    "dom:PAEmployee_FormTypeId": "PAEmployee.FormTypeId",
+    "loc:ProposedIncrement": "PAEmployee.ProposedIncrement",
+    "dom:PAEmployee_ProposedIncrement": "PAEmployee.ProposedIncrement",
+    "loc:ProposedJobTitle": "PAEmployee.ProposedJobTitle",
+    "dom:PAEmployee_ProposedJobTitle": "PAEmployee.ProposedJobTitle",
+    "loc:AreaOfImprovement": "PAEmployee.AreaOfImprovement",
+    "dom:PAEmployee_AreaOfImprovement": "PAEmployee.AreaOfImprovement"
+  },
+  "fields": [
+    {
+      "id": "PAEmployee.EmployeeId",
+      "label": "Employee",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAEmployee_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee being appraised.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.PACycleId",
+      "label": "PACycle",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:PACycle",
+        "dom:PAEmployee_PACycleId"
+      ],
+      "rules": "Required. Chosen from PA Cycle master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraisal cycle. Required to submit the appraisal.</p><p><strong>Example.</strong> 2026 Annual</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.FormTypeId",
+      "label": "FormType",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:FormType",
+        "dom:PAEmployee_FormTypeId"
+      ],
+      "rules": "Required. Chosen from Form Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The form type.</p><p><strong>Why it matters.</strong> Its maximum reviewers limits how many reviewers can be added. Required to submit the appraisal.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.ProposedIncrement",
+      "label": "ProposedIncrement",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:ProposedIncrement",
+        "dom:PAEmployee_ProposedIncrement"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The salary increase proposed.</p><p><strong>Example.</strong> <code>5%</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.ProposedJobTitle",
+      "label": "ProposedJobTitle",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:ProposedJobTitle",
+        "dom:PAEmployee_ProposedJobTitle"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title proposed.</p><p><strong>Example.</strong> Senior Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployee.AreaOfImprovement",
+      "label": "AreaOfImprovement",
+      "section": "PAEmployees",
+      "aliases": [
+        "loc:AreaOfImprovement",
+        "dom:PAEmployee_AreaOfImprovement"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the employee should improve.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

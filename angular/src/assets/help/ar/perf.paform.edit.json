@@ -1,0 +1,347 @@
+{
+  "helpId": "perf.paform.edit",
+  "lang": "ar",
+  "title": "نماذج تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAForm",
+  "overviewHtml": "<p>نموذج تقييم الموظف لفترة، في النموذج القديم: الخطة والمراجعات الربعية ومراجعتا منتصف السنة ونهايتها، مع الاعتماد النهائي والتعليقات الختامية. وتُحفظ أسطر مؤشراته في قوائم الخطة والمراجعات. ولكل موظف نموذج واحد لكل فترة.</p><p>وتسجّل خانات التقديم مدى التقدم ولا تقفل النموذج. وتعدّ لوحة المعلومات تقديمات الخطة ومنتصف السنة ونهايتها، ويعرض تقرير ملخص التقييم الدرجة بعد التعديل والتعليقات.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PAForm.PAPeriodId",
+    "dom:PAForm_PAPeriodId": "PAForm.PAPeriodId",
+    "loc:Employee": "PAForm.EmployeeId",
+    "dom:PAForm_EmployeeId": "PAForm.EmployeeId",
+    "loc:ModeratedScore": "PAForm.ModeratedScore",
+    "dom:PAForm_ModeratedScore": "PAForm.ModeratedScore",
+    "loc:PlanSubmitByAppraiser": "PAForm.PlanSubmitByAppraiser",
+    "dom:PAForm_PlanSubmitByAppraiser": "PAForm.PlanSubmitByAppraiser",
+    "loc:PlanSubmitByAppraisee": "PAForm.PlanSubmitByAppraisee",
+    "dom:PAForm_PlanSubmitByAppraisee": "PAForm.PlanSubmitByAppraisee",
+    "loc:Quarter1SubmitByAppraiser": "PAForm.Quarter1SubmitByAppraiser",
+    "dom:PAForm_Quarter1SubmitByAppraiser": "PAForm.Quarter1SubmitByAppraiser",
+    "loc:Quarter1SubmitByAppraisee": "PAForm.Quarter1SubmitByAppraisee",
+    "dom:PAForm_Quarter1SubmitByAppraisee": "PAForm.Quarter1SubmitByAppraisee",
+    "loc:MRSubmitByAppraiser": "PAForm.MRSubmitByAppraiser",
+    "dom:PAForm_MRSubmitByAppraiser": "PAForm.MRSubmitByAppraiser",
+    "loc:MRSubmitByAppraisee": "PAForm.MRSubmitByAppraisee",
+    "dom:PAForm_MRSubmitByAppraisee": "PAForm.MRSubmitByAppraisee",
+    "loc:Quarter3SubmitByAppraiser": "PAForm.Quarter3SubmitByAppraiser",
+    "dom:PAForm_Quarter3SubmitByAppraiser": "PAForm.Quarter3SubmitByAppraiser",
+    "loc:Quarter3SubmitByAppraisee": "PAForm.Quarter3SubmitByAppraisee",
+    "dom:PAForm_Quarter3SubmitByAppraisee": "PAForm.Quarter3SubmitByAppraisee",
+    "loc:ERSubmitByAppraiser": "PAForm.ERSubmitByAppraiser",
+    "dom:PAForm_ERSubmitByAppraiser": "PAForm.ERSubmitByAppraiser",
+    "loc:ERSubmitByAppraisee": "PAForm.ERSubmitByAppraisee",
+    "dom:PAForm_ERSubmitByAppraisee": "PAForm.ERSubmitByAppraisee",
+    "loc:AppraiserSignedOff": "PAForm.AppraiserSignedOff",
+    "dom:PAForm_AppraiserSignedOff": "PAForm.AppraiserSignedOff",
+    "loc:AppraiseeSignedOff": "PAForm.AppraiseeSignedOff",
+    "dom:PAForm_AppraiseeSignedOff": "PAForm.AppraiseeSignedOff",
+    "loc:AppraiseeStrength": "PAForm.AppraiseeStrength",
+    "dom:PAForm_AppraiseeStrength": "PAForm.AppraiseeStrength",
+    "loc:AreasOfImprovement": "PAForm.AreasOfImprovement",
+    "dom:PAForm_AreasOfImprovement": "PAForm.AreasOfImprovement",
+    "loc:ReviewofPreviousGoals": "PAForm.ReviewofPreviousGoals",
+    "dom:PAForm_ReviewofPreviousGoals": "PAForm.ReviewofPreviousGoals",
+    "loc:NewlySetGoals": "PAForm.NewlySetGoals",
+    "dom:PAForm_NewlySetGoals": "PAForm.NewlySetGoals",
+    "loc:OverallComments": "PAForm.OverallComments",
+    "dom:PAForm_OverallComments": "PAForm.OverallComments",
+    "loc:Comments": "PAForm.Comments",
+    "dom:PAForm_Comments": "PAForm.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAForm.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PAForm_PAPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التقييم.</p><p><strong>مثال.</strong> السنة المالية 2026</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.EmployeeId",
+      "label": "Employee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAForm_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المُقيَّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ModeratedScore",
+      "label": "ModeratedScore",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ModeratedScore",
+        "dom:PAForm_ModeratedScore"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة النهائية بعد التعديل، وتظهر في تقريري ملخص التقييم وتقييم الأداء.</p><p><strong>مثال.</strong> <code>78</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.PlanSubmitByAppraiser",
+      "label": "PlanSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PlanSubmitByAppraiser",
+        "dom:PAForm_PlanSubmitByAppraiser"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد قدّم الخطة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.PlanSubmitByAppraisee",
+      "label": "PlanSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:PlanSubmitByAppraisee",
+        "dom:PAForm_PlanSubmitByAppraisee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد قدّم الخطة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter1SubmitByAppraiser",
+      "label": "Quarter1SubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter1SubmitByAppraiser",
+        "dom:PAForm_Quarter1SubmitByAppraiser"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد قدّم مراجعة الربع الأول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter1SubmitByAppraisee",
+      "label": "Quarter1SubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter1SubmitByAppraisee",
+        "dom:PAForm_Quarter1SubmitByAppraisee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد قدّم مراجعة الربع الأول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.MRSubmitByAppraiser",
+      "label": "MRSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:MRSubmitByAppraiser",
+        "dom:PAForm_MRSubmitByAppraiser"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد قدّم مراجعة منتصف السنة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.MRSubmitByAppraisee",
+      "label": "MRSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:MRSubmitByAppraisee",
+        "dom:PAForm_MRSubmitByAppraisee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد قدّم مراجعة منتصف السنة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter3SubmitByAppraiser",
+      "label": "Quarter3SubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter3SubmitByAppraiser",
+        "dom:PAForm_Quarter3SubmitByAppraiser"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد قدّم مراجعة الربع الثالث.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Quarter3SubmitByAppraisee",
+      "label": "Quarter3SubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Quarter3SubmitByAppraisee",
+        "dom:PAForm_Quarter3SubmitByAppraisee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد قدّم مراجعة الربع الثالث.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ERSubmitByAppraiser",
+      "label": "ERSubmitByAppraiser",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ERSubmitByAppraiser",
+        "dom:PAForm_ERSubmitByAppraiser"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد قدّم مراجعة نهاية السنة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ERSubmitByAppraisee",
+      "label": "ERSubmitByAppraisee",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ERSubmitByAppraisee",
+        "dom:PAForm_ERSubmitByAppraisee"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد قدّم مراجعة نهاية السنة.</p><p><strong>لماذا يهم.</strong> يُعدّ في لوحة معلومات تقييم الأداء.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiserSignedOff",
+      "label": "AppraiserSignedOff",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiserSignedOff",
+        "dom:PAForm_AppraiserSignedOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المُقيِّم قد اعتمد النموذج نهائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiseeSignedOff",
+      "label": "AppraiseeSignedOff",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiseeSignedOff",
+        "dom:PAForm_AppraiseeSignedOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف المُقيَّم قد اعتمد النموذج نهائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AppraiseeStrength",
+      "label": "AppraiseeStrength",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AppraiseeStrength",
+        "dom:PAForm_AppraiseeStrength"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نقاط قوة الموظف المُقيَّم. تظهر في تقرير ملخص التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.AreasOfImprovement",
+      "label": "AreasOfImprovement",
+      "section": "PAForms",
+      "aliases": [
+        "loc:AreasOfImprovement",
+        "dom:PAForm_AreasOfImprovement"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجالات التحسين. تظهر في تقرير ملخص التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.ReviewofPreviousGoals",
+      "label": "ReviewofPreviousGoals",
+      "section": "PAForms",
+      "aliases": [
+        "loc:ReviewofPreviousGoals",
+        "dom:PAForm_ReviewofPreviousGoals"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مراجعة أهداف الفترة السابقة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.NewlySetGoals",
+      "label": "NewlySetGoals",
+      "section": "PAForms",
+      "aliases": [
+        "loc:NewlySetGoals",
+        "dom:PAForm_NewlySetGoals"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأهداف المحددة للفترة التالية. تظهر في تقرير ملخص التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.OverallComments",
+      "label": "OverallComments",
+      "section": "PAForms",
+      "aliases": [
+        "loc:OverallComments",
+        "dom:PAForm_OverallComments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات عامة. تظهر في تقرير ملخص التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAForm.Comments",
+      "label": "Comments",
+      "section": "PAForms",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAForm_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.papeer-review.edit",
+  "lang": "en",
+  "title": "PA Peer Reviews — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAPeerReview",
+  "overviewHtml": "<p>A peer's rating of one KPI on a PA Form. Part of the older period-based appraisal form (PA Form). Stored with the form; no report reads it at present.</p>",
+  "aliasIndex": {
+    "loc:Peer": "PAPeerReview.PeerId",
+    "dom:PAPeerReview_PeerId": "PAPeerReview.PeerId",
+    "loc:KpiInfo": "PAPeerReview.KpiInfoId",
+    "dom:PAPeerReview_KpiInfoId": "PAPeerReview.KpiInfoId",
+    "loc:Rating": "PAPeerReview.RatingId",
+    "dom:PAPeerReview_RatingId": "PAPeerReview.RatingId",
+    "loc:Comments": "PAPeerReview.Comments",
+    "dom:PAPeerReview_Comments": "PAPeerReview.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAPeerReview.PeerId",
+      "label": "Peer",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Peer",
+        "dom:PAPeerReview_PeerId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The peer giving the rating.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAPeerReview_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI rated.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.RatingId",
+      "label": "Rating",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAPeerReview_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rating given.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerReview.Comments",
+      "label": "Comments",
+      "section": "PAPeerReviews",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAPeerReview_Comments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paannual-year-review.edit",
+  "lang": "ar",
+  "title": "المراجعات السنوية — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAAnnualYearReview",
+  "overviewHtml": "<p>سطر مؤشر أداء واحد من مراجعة نهاية السنة في نموذج تقييم الأداء: المؤشر ووزنه والمستهدف منه، وتقديرا الموظف المُقيَّم والمُقيِّم، وتعليقاتهما. جزء من نموذج التقييم القديم القائم على الفترات (نموذج تقييم الأداء).</p><p>يُحفظ ضمن سجل التقييم، ولا تُحتسب حالياً أي درجة من هذه الأسطر. ولا يظهر المؤشر إلا مرة واحدة في النموذج.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAAnnualYearReview.KpiInfoId",
+    "dom:PAAnnualYearReview_KpiInfoId": "PAAnnualYearReview.KpiInfoId",
+    "loc:Weight": "PAAnnualYearReview.Weight",
+    "dom:PAAnnualYearReview_Weight": "PAAnnualYearReview.Weight",
+    "loc:Target": "PAAnnualYearReview.Target",
+    "dom:PAAnnualYearReview_Target": "PAAnnualYearReview.Target",
+    "loc:AppraiseeRating": "PAAnnualYearReview.AppraiseeRatingId",
+    "dom:PAAnnualYearReview_AppraiseeRatingId": "PAAnnualYearReview.AppraiseeRatingId",
+    "loc:Rating": "PAAnnualYearReview.RatingId",
+    "dom:PAAnnualYearReview_RatingId": "PAAnnualYearReview.RatingId",
+    "loc:AppraiseeComments": "PAAnnualYearReview.AppraiseeComments",
+    "dom:PAAnnualYearReview_AppraiseeComments": "PAAnnualYearReview.AppraiseeComments",
+    "loc:AppraiserComments": "PAAnnualYearReview.AppraiserComments",
+    "dom:PAAnnualYearReview_AppraiserComments": "PAAnnualYearReview.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAAnnualYearReview.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAAnnualYearReview_KpiInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p><p><strong>مثال.</strong> رضا العملاء</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.Weight",
+      "label": "Weight",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAAnnualYearReview_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة المؤشر من التقييم، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.Target",
+      "label": "Target",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:PAAnnualYearReview_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف المحدد للمؤشر.</p><p><strong>مثال.</strong> <code>90% تسليم في الموعد</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAAnnualYearReview_AppraiseeRatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير الموظف لنفسه.</p><p><strong>مثال.</strong> يلبي التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.RatingId",
+      "label": "Rating",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAAnnualYearReview_RatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير المُقيِّم.</p><p><strong>مثال.</strong> يتجاوز التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAAnnualYearReview_AppraiseeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAAnnualYearReview_AppraiserComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات المُقيِّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

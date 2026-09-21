@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.kpi-category.edit",
+  "lang": "en",
+  "title": "KPI Categories — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.KpiCategory",
+  "overviewHtml": "<p>A group of KPIs — financial, customer, people. The scorecard report scores each category separately.</p>",
+  "aliasIndex": {
+    "loc:Code": "KpiCategory.Code",
+    "dom:KpiCategory_Code": "KpiCategory.Code",
+    "loc:NameEn": "KpiCategory.NameEn",
+    "dom:KpiCategory_NameEn": "KpiCategory.NameEn",
+    "loc:NameAr": "KpiCategory.NameAr",
+    "dom:KpiCategory_NameAr": "KpiCategory.NameAr",
+    "loc:HexColor": "KpiCategory.HexColor",
+    "dom:KpiCategory_HexColor": "KpiCategory.HexColor"
+  },
+  "fields": [
+    {
+      "id": "KpiCategory.Code",
+      "label": "Code",
+      "section": "KpiCategories",
+      "aliases": [
+        "loc:Code",
+        "dom:KpiCategory_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiCategory.NameEn",
+      "label": "NameEn",
+      "section": "KpiCategories",
+      "aliases": [
+        "loc:NameEn",
+        "dom:KpiCategory_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiCategory.NameAr",
+      "label": "NameAr",
+      "section": "KpiCategories",
+      "aliases": [
+        "loc:NameAr",
+        "dom:KpiCategory_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiCategory.HexColor",
+      "label": "HexColor",
+      "section": "KpiCategories",
+      "aliases": [
+        "loc:HexColor",
+        "dom:KpiCategory_HexColor"
+      ],
+      "rules": "Optional. Maximum 32 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A colour for the category.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

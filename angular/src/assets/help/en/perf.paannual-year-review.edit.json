@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paannual-year-review.edit",
+  "lang": "en",
+  "title": "PA Annual Year Reviews — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAAnnualYearReview",
+  "overviewHtml": "<p>One KPI line of the year-end review on a PA Form: the KPI, its weight and target, the ratings from the appraisee and the appraiser, and their comments. Part of the older period-based appraisal form (PA Form).</p><p>Stored for the appraisal record; no score is worked out from these lines at present. Each KPI can appear once per form.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAAnnualYearReview.KpiInfoId",
+    "dom:PAAnnualYearReview_KpiInfoId": "PAAnnualYearReview.KpiInfoId",
+    "loc:Weight": "PAAnnualYearReview.Weight",
+    "dom:PAAnnualYearReview_Weight": "PAAnnualYearReview.Weight",
+    "loc:Target": "PAAnnualYearReview.Target",
+    "dom:PAAnnualYearReview_Target": "PAAnnualYearReview.Target",
+    "loc:AppraiseeRating": "PAAnnualYearReview.AppraiseeRatingId",
+    "dom:PAAnnualYearReview_AppraiseeRatingId": "PAAnnualYearReview.AppraiseeRatingId",
+    "loc:Rating": "PAAnnualYearReview.RatingId",
+    "dom:PAAnnualYearReview_RatingId": "PAAnnualYearReview.RatingId",
+    "loc:AppraiseeComments": "PAAnnualYearReview.AppraiseeComments",
+    "dom:PAAnnualYearReview_AppraiseeComments": "PAAnnualYearReview.AppraiseeComments",
+    "loc:AppraiserComments": "PAAnnualYearReview.AppraiserComments",
+    "dom:PAAnnualYearReview_AppraiserComments": "PAAnnualYearReview.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAAnnualYearReview.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAAnnualYearReview_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p><p><strong>Example.</strong> Customer satisfaction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.Weight",
+      "label": "Weight",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAAnnualYearReview_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's share of the appraisal, as a percentage.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.Target",
+      "label": "Target",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:PAAnnualYearReview_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target set for the KPI.</p><p><strong>Example.</strong> <code>90% on-time delivery</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAAnnualYearReview_AppraiseeRatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own rating.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.RatingId",
+      "label": "Rating",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAAnnualYearReview_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's rating.</p><p><strong>Example.</strong> Exceeds expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAAnnualYearReview_AppraiseeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAAnnualYearReview.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAAnnualYearReviews",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAAnnualYearReview_AppraiserComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

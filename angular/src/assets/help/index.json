@@ -4937,6 +4937,414 @@
     ],
     "WorkflowSettings_OvertimeRequestModificationStep": [
       "sys.workflow-settings.edit"
+    ],
+    "FormType_Code": [
+      "perf.form-type.edit"
+    ],
+    "FormType_NameEn": [
+      "perf.form-type.edit"
+    ],
+    "FormType_NameAr": [
+      "perf.form-type.edit"
+    ],
+    "FormType_MinReviewerLimit": [
+      "perf.form-type.edit"
+    ],
+    "FormType_MaxReviewerLimit": [
+      "perf.form-type.edit"
+    ],
+    "KpiByJobTitleDetail_KpiByJobTitleId": [
+      "perf.kpi-by-job-title-detail.edit"
+    ],
+    "KpiByJobTitleDetail_KpiInfoId": [
+      "perf.kpi-by-job-title-detail.edit"
+    ],
+    "KpiByJobTitleDetail_Weight": [
+      "perf.kpi-by-job-title-detail.edit"
+    ],
+    "KpiByJobTitleDetail_Target": [
+      "perf.kpi-by-job-title-detail.edit"
+    ],
+    "KpiByJobTitle_JobTitleId": [
+      "perf.kpi-by-job-title.edit"
+    ],
+    "KpiByJobTitle_StartDate": [
+      "perf.kpi-by-job-title.edit"
+    ],
+    "KpiByOrgUnitDetail_KpiByOrgUnitId": [
+      "perf.kpi-by-org-unit-detail.edit"
+    ],
+    "KpiByOrgUnitDetail_KpiInfoId": [
+      "perf.kpi-by-org-unit-detail.edit"
+    ],
+    "KpiByOrgUnitDetail_Weight": [
+      "perf.kpi-by-org-unit-detail.edit"
+    ],
+    "KpiByOrgUnitDetail_Target": [
+      "perf.kpi-by-org-unit-detail.edit"
+    ],
+    "KpiByOrgUnit_OrganizationUnitId": [
+      "perf.kpi-by-org-unit.edit"
+    ],
+    "KpiByOrgUnit_StartDate": [
+      "perf.kpi-by-org-unit.edit"
+    ],
+    "KpiCategory_Code": [
+      "perf.kpi-category.edit"
+    ],
+    "KpiCategory_NameEn": [
+      "perf.kpi-category.edit"
+    ],
+    "KpiCategory_NameAr": [
+      "perf.kpi-category.edit"
+    ],
+    "KpiCategory_HexColor": [
+      "perf.kpi-category.edit"
+    ],
+    "KpiInfo_Code": [
+      "perf.kpi-info.edit"
+    ],
+    "KpiInfo_NameEn": [
+      "perf.kpi-info.edit"
+    ],
+    "KpiInfo_NameAr": [
+      "perf.kpi-info.edit"
+    ],
+    "KpiInfo_KpiCategoryId": [
+      "perf.kpi-info.edit"
+    ],
+    "KpiInfo_Active": [
+      "perf.kpi-info.edit"
+    ],
+    "KpiInfo_Comments": [
+      "perf.kpi-info.edit"
+    ],
+    "PACycle_Code": [
+      "perf.pacycle.edit"
+    ],
+    "PACycle_NameEn": [
+      "perf.pacycle.edit"
+    ],
+    "PACycle_NameAr": [
+      "perf.pacycle.edit"
+    ],
+    "PACycle_IsDefault": [
+      "perf.pacycle.edit"
+    ],
+    "PAEmployeeDetail_KpiInfoId": [
+      "perf.paemployee-detail.edit"
+    ],
+    "PAEmployeeDetail_Weight": [
+      "perf.paemployee-detail.edit"
+    ],
+    "PAEmployeeDetail_Target": [
+      "perf.paemployee-detail.edit"
+    ],
+    "PAEmployeeRating_PAEmployeeReviewerId": [
+      "perf.paemployee-rating.edit"
+    ],
+    "PAEmployeeRating_PAEmployeeDetailId": [
+      "perf.paemployee-rating.edit"
+    ],
+    "PAEmployeeRating_Marks": [
+      "perf.paemployee-rating.edit"
+    ],
+    "PAEmployeeRating_RatingId": [
+      "perf.paemployee-rating.edit"
+    ],
+    "PAEmployeeRating_Comments": [
+      "perf.paemployee-rating.edit"
+    ],
+    "PAEmployeeReviewer_EmployeeId": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployeeReviewer_PeerAddedById": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployeeReviewer_IsPeer": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployeeReviewer_CustomTextField1": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployeeReviewer_CustomTextField2": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployeeReviewer_CustomTextField3": [
+      "perf.paemployee-reviewer.edit"
+    ],
+    "PAEmployee_EmployeeId": [
+      "perf.paemployee.edit"
+    ],
+    "PAEmployee_PACycleId": [
+      "perf.paemployee.edit"
+    ],
+    "PAEmployee_FormTypeId": [
+      "perf.paemployee.edit"
+    ],
+    "PAEmployee_ProposedIncrement": [
+      "perf.paemployee.edit"
+    ],
+    "PAEmployee_ProposedJobTitle": [
+      "perf.paemployee.edit"
+    ],
+    "PAEmployee_AreaOfImprovement": [
+      "perf.paemployee.edit"
+    ],
+    "PAAnnualYearReview_KpiInfoId": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_Weight": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_Target": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_AppraiseeRatingId": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_RatingId": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_AppraiseeComments": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAAnnualYearReview_AppraiserComments": [
+      "perf.paannual-year-review.edit"
+    ],
+    "PAGoal_Goal": [
+      "perf.pagoal.edit"
+    ],
+    "PAMidYearReview_KpiInfoId": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_Weight": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_Target": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_AppraiseeRatingId": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_RatingId": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_AppraiseeComments": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAMidYearReview_AppraiserComments": [
+      "perf.pamid-year-review.edit"
+    ],
+    "PAPeerReview_PeerId": [
+      "perf.papeer-review.edit"
+    ],
+    "PAPeerReview_KpiInfoId": [
+      "perf.papeer-review.edit"
+    ],
+    "PAPeerReview_RatingId": [
+      "perf.papeer-review.edit"
+    ],
+    "PAPeerReview_Comments": [
+      "perf.papeer-review.edit"
+    ],
+    "PAPlan_KpiInfoId": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_Weight": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_Target": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_AppraiseeRatingId": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_RatingId": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_AppraiseeComments": [
+      "perf.paplan.edit"
+    ],
+    "PAPlan_AppraiserComments": [
+      "perf.paplan.edit"
+    ],
+    "PAQuarter1Review_KpiInfoId": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_Weight": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_Target": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_AppraiseeRatingId": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_RatingId": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_AppraiseeComments": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter1Review_AppraiserComments": [
+      "perf.paquarter1-review.edit"
+    ],
+    "PAQuarter3Review_KpiInfoId": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_Weight": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_Target": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_AppraiseeRatingId": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_RatingId": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_AppraiseeComments": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAQuarter3Review_AppraiserComments": [
+      "perf.paquarter3-review.edit"
+    ],
+    "PAForm_PAPeriodId": [
+      "perf.paform.edit"
+    ],
+    "PAForm_EmployeeId": [
+      "perf.paform.edit"
+    ],
+    "PAForm_ModeratedScore": [
+      "perf.paform.edit"
+    ],
+    "PAForm_PlanSubmitByAppraiser": [
+      "perf.paform.edit"
+    ],
+    "PAForm_PlanSubmitByAppraisee": [
+      "perf.paform.edit"
+    ],
+    "PAForm_Quarter1SubmitByAppraiser": [
+      "perf.paform.edit"
+    ],
+    "PAForm_Quarter1SubmitByAppraisee": [
+      "perf.paform.edit"
+    ],
+    "PAForm_MRSubmitByAppraiser": [
+      "perf.paform.edit"
+    ],
+    "PAForm_MRSubmitByAppraisee": [
+      "perf.paform.edit"
+    ],
+    "PAForm_Quarter3SubmitByAppraiser": [
+      "perf.paform.edit"
+    ],
+    "PAForm_Quarter3SubmitByAppraisee": [
+      "perf.paform.edit"
+    ],
+    "PAForm_ERSubmitByAppraiser": [
+      "perf.paform.edit"
+    ],
+    "PAForm_ERSubmitByAppraisee": [
+      "perf.paform.edit"
+    ],
+    "PAForm_AppraiserSignedOff": [
+      "perf.paform.edit"
+    ],
+    "PAForm_AppraiseeSignedOff": [
+      "perf.paform.edit"
+    ],
+    "PAForm_AppraiseeStrength": [
+      "perf.paform.edit"
+    ],
+    "PAForm_AreasOfImprovement": [
+      "perf.paform.edit"
+    ],
+    "PAForm_ReviewofPreviousGoals": [
+      "perf.paform.edit"
+    ],
+    "PAForm_NewlySetGoals": [
+      "perf.paform.edit"
+    ],
+    "PAForm_OverallComments": [
+      "perf.paform.edit"
+    ],
+    "PAForm_Comments": [
+      "perf.paform.edit"
+    ],
+    "PAPeerNominee_PAPeriodId": [
+      "perf.papeer-nominee.edit"
+    ],
+    "PAPeerNominee_EmployeeId": [
+      "perf.papeer-nominee.edit"
+    ],
+    "PAPeerNominee_PeerId": [
+      "perf.papeer-nominee.edit"
+    ],
+    "PAPeerNominee_Submitted": [
+      "perf.papeer-nominee.edit"
+    ],
+    "PAPeriod_Name": [
+      "perf.paperiod.edit"
+    ],
+    "PAPeriod_Closed": [
+      "perf.paperiod.edit"
+    ],
+    "PARating_Code": [
+      "perf.parating.edit"
+    ],
+    "PARating_NameEn": [
+      "perf.parating.edit"
+    ],
+    "PARating_NameAr": [
+      "perf.parating.edit"
+    ],
+    "PARating_FromRange": [
+      "perf.parating.edit"
+    ],
+    "PARating_ToRange": [
+      "perf.parating.edit"
+    ],
+    "PARating_MaxLimit": [
+      "perf.parating.edit"
+    ],
+    "PARating_DescriptionEn": [
+      "perf.parating.edit"
+    ],
+    "PARating_DescriptionAr": [
+      "perf.parating.edit"
+    ],
+    "PARating_IsCommentRequired": [
+      "perf.parating.edit"
+    ],
+    "PARating_Status": [
+      "perf.parating.edit"
+    ],
+    "PATimelineException_PAPeriodId": [
+      "perf.patimeline-exception.edit"
+    ],
+    "PATimelineException_EmployeeId": [
+      "perf.patimeline-exception.edit"
+    ],
+    "PATimelineException_ActivityType": [
+      "perf.patimeline-exception.edit"
+    ],
+    "PATimelineException_ExtensionDate": [
+      "perf.patimeline-exception.edit"
+    ],
+    "PATimeline_PAPeriodId": [
+      "perf.patimeline.edit"
+    ],
+    "PATimeline_ActivityType": [
+      "perf.patimeline.edit"
+    ],
+    "PATimeline_StartDate": [
+      "perf.patimeline.edit"
+    ],
+    "PATimeline_EndDate": [
+      "perf.patimeline.edit"
     ]
   }
 }

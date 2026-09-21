@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.papeer-nominee.edit",
+  "lang": "ar",
+  "title": "المرشحون من الزملاء للتقييم — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAPeerNominee",
+  "overviewHtml": "<p>زميل رشّحه الموظف لمراجعته في فترة. ولا يُرشَّح الزميل إلا مرة واحدة لكل موظف وفترة. وتظهر مراجعة الزميل مقدَّمة عندما يُؤشَّر على ترشيحه بأنه مقدَّم.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PAPeerNominee.PAPeriodId",
+    "dom:PAPeerNominee_PAPeriodId": "PAPeerNominee.PAPeriodId",
+    "loc:Employee": "PAPeerNominee.EmployeeId",
+    "dom:PAPeerNominee_EmployeeId": "PAPeerNominee.EmployeeId",
+    "loc:Peer": "PAPeerNominee.PeerId",
+    "dom:PAPeerNominee_PeerId": "PAPeerNominee.PeerId",
+    "loc:Submitted": "PAPeerNominee.Submitted",
+    "dom:PAPeerNominee_Submitted": "PAPeerNominee.Submitted"
+  },
+  "fields": [
+    {
+      "id": "PAPeerNominee.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PAPeerNominee_PAPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.EmployeeId",
+      "label": "Employee",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Employee",
+        "dom:PAPeerNominee_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الجاري مراجعته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.PeerId",
+      "label": "Peer",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Peer",
+        "dom:PAPeerNominee_PeerId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الزميل المرشَّح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPeerNominee.Submitted",
+      "label": "Submitted",
+      "section": "PAPeerNominees",
+      "aliases": [
+        "loc:Submitted",
+        "dom:PAPeerNominee_Submitted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الزميل قد قدّم المراجعة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

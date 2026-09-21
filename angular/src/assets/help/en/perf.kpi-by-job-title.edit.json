@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.kpi-by-job-title.edit",
+  "lang": "en",
+  "title": "KPI By Job Title — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.KpiByJobTitle",
+  "overviewHtml": "<p>A set of KPIs for a job title, from a given date — the KPIs and weights that apply to that role. Each job title can have one set per start date.</p><p>Stored as a template: appraisals do not take their KPIs from it automatically at present.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "KpiByJobTitle.JobTitleId",
+    "dom:KpiByJobTitle_JobTitleId": "KpiByJobTitle.JobTitleId",
+    "loc:StartDate": "KpiByJobTitle.StartDate",
+    "dom:KpiByJobTitle_StartDate": "KpiByJobTitle.StartDate"
+  },
+  "fields": [
+    {
+      "id": "KpiByJobTitle.JobTitleId",
+      "label": "JobTitle",
+      "section": "KpiByJobTitles",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:KpiByJobTitle_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByJobTitle.StartDate",
+      "label": "StartDate",
+      "section": "KpiByJobTitles",
+      "aliases": [
+        "loc:StartDate",
+        "dom:KpiByJobTitle_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same job title can start on the same date. Saving closes the previous record for the same job title on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

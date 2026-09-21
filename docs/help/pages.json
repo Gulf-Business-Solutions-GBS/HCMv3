@@ -4438,6 +4438,507 @@
       },
       "service": "ManageWorkflowSettingsAppService",
       "domPrefix": "WorkflowSettings"
+    },
+    {
+      "helpId": "perf.form-type.edit",
+      "title": "Form Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.FormTypes.Create"
+      ],
+      "entity": {
+        "name": "FormType",
+        "fullName": "HCMv3.PerformanceManagement.FormType",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/FormType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/form-types/create-or-edit-form-type-modal.component.html"
+        }
+      },
+      "defaultSection": "FormTypes"
+    },
+    {
+      "helpId": "perf.kpi-by-job-title-detail.edit",
+      "title": "KPI By Job Title Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "KpiByJobTitleDetail",
+        "fullName": "HCMv3.PerformanceManagement.KpiByJobTitleDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiByJobTitleDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-by-job-title-details/create-or-edit-kpi-by-job-title-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiByJobTitleDetails"
+    },
+    {
+      "helpId": "perf.kpi-by-job-title.edit",
+      "title": "KPI By Job Title — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.KpiByJobTitles.Create"
+      ],
+      "entity": {
+        "name": "KpiByJobTitle",
+        "fullName": "HCMv3.PerformanceManagement.KpiByJobTitle",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiByJobTitle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-by-job-titles/create-or-edit-kpi-by-job-title-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiByJobTitles"
+    },
+    {
+      "helpId": "perf.kpi-by-org-unit-detail.edit",
+      "title": "KPI By Org Unit Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "KpiByOrgUnitDetail",
+        "fullName": "HCMv3.PerformanceManagement.KpiByOrgUnitDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiByOrgUnitDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-by-org-unit-details/create-or-edit-kpi-by-org-unit-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiByOrgUnitDetails"
+    },
+    {
+      "helpId": "perf.kpi-by-org-unit.edit",
+      "title": "KPI By Org Unit — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.KpiByOrgUnits.Create"
+      ],
+      "entity": {
+        "name": "KpiByOrgUnit",
+        "fullName": "HCMv3.PerformanceManagement.KpiByOrgUnit",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiByOrgUnit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-by-org-units/create-or-edit-kpi-by-org-unit-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiByOrgUnits"
+    },
+    {
+      "helpId": "perf.kpi-category.edit",
+      "title": "KPI Categories — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.KpiCategories.Create"
+      ],
+      "entity": {
+        "name": "KpiCategory",
+        "fullName": "HCMv3.PerformanceManagement.KpiCategory",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiCategory.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-categories/create-or-edit-kpi-category-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiCategories"
+    },
+    {
+      "helpId": "perf.kpi-info.edit",
+      "title": "KPIs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.KpiInfos.Create"
+      ],
+      "entity": {
+        "name": "KpiInfo",
+        "fullName": "HCMv3.PerformanceManagement.KpiInfo",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/KpiInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/kpi-infos/create-or-edit-kpi-info-modal.component.html"
+        }
+      },
+      "defaultSection": "KpiInfos"
+    },
+    {
+      "helpId": "perf.pacycle.edit",
+      "title": "PA Cycles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PACycles.Create"
+      ],
+      "entity": {
+        "name": "PACycle",
+        "fullName": "HCMv3.PerformanceManagement.PACycle",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PACycle.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-cycles/create-or-edit-pa-cycle-modal.component.html"
+        }
+      },
+      "defaultSection": "PACycles"
+    },
+    {
+      "helpId": "perf.paemployee-detail.edit",
+      "title": "PA Employee Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAEmployeeDetail",
+        "fullName": "HCMv3.PerformanceManagement.PAEmployeeDetail",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAEmployeeDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-employee-detail/pa-employee-details/create-or-edit-pa-employee-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "PAEmployeeDetails"
+    },
+    {
+      "helpId": "perf.paemployee-rating.edit",
+      "title": "PA Employee Ratings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAEmployeeRating",
+        "fullName": "HCMv3.PerformanceManagement.PAEmployeeRating",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAEmployeeRating.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-employee-detail/pa-employee-ratings/create-or-edit-pa-employee-rating-modal.component.html"
+        }
+      },
+      "defaultSection": "PAEmployeeRatings"
+    },
+    {
+      "helpId": "perf.paemployee-reviewer.edit",
+      "title": "PA Employee Reviewers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAEmployeeReviewer",
+        "fullName": "HCMv3.PerformanceManagement.PAEmployeeReviewer",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAEmployeeReviewer.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-employee-detail/pa-employee-reviewers/create-or-edit-pa-employee-reviewer-modal.component.html"
+        }
+      },
+      "defaultSection": "PAEmployeeReviewers"
+    },
+    {
+      "helpId": "perf.paemployee.edit",
+      "title": "PA Employees — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PAEmployees.Create"
+      ],
+      "entity": {
+        "name": "PAEmployee",
+        "fullName": "HCMv3.PerformanceManagement.PAEmployee",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAEmployee.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-employees/create-or-edit-pa-employee-modal.component.html"
+        }
+      },
+      "defaultSection": "PAEmployees"
+    },
+    {
+      "helpId": "perf.paannual-year-review.edit",
+      "title": "PA Annual Year Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAAnnualYearReview",
+        "fullName": "HCMv3.PerformanceManagement.PAAnnualYearReview",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAAnnualYearReview.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-annual-year-reviews/create-or-edit-pa-annual-year-review-modal.component.html"
+        }
+      },
+      "defaultSection": "PAAnnualYearReviews"
+    },
+    {
+      "helpId": "perf.pagoal.edit",
+      "title": "PA Goals — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAGoal",
+        "fullName": "HCMv3.PerformanceManagement.PAGoal",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAGoal.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-goals/create-or-edit-pa-goal-modal.component.html"
+        }
+      },
+      "defaultSection": "PAGoals"
+    },
+    {
+      "helpId": "perf.pamid-year-review.edit",
+      "title": "PA Mid Year Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAMidYearReview",
+        "fullName": "HCMv3.PerformanceManagement.PAMidYearReview",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAMidYearReview.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-mid-year-reviews/create-or-edit-pa-mid-year-review-modal.component.html"
+        }
+      },
+      "defaultSection": "PAMidYearReviews"
+    },
+    {
+      "helpId": "perf.papeer-review.edit",
+      "title": "PA Peer Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAPeerReview",
+        "fullName": "HCMv3.PerformanceManagement.PAPeerReview",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAPeerReview.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-peer-reviews/create-or-edit-pa-peer-review-modal.component.html"
+        }
+      },
+      "defaultSection": "PAPeerReviews"
+    },
+    {
+      "helpId": "perf.paplan.edit",
+      "title": "PA Plans — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAPlan",
+        "fullName": "HCMv3.PerformanceManagement.PAPlan",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAPlan.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-plans/create-or-edit-pa-plan-modal.component.html"
+        }
+      },
+      "defaultSection": "PAPlans"
+    },
+    {
+      "helpId": "perf.paquarter1-review.edit",
+      "title": "PA Quarter 1 Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAQuarter1Review",
+        "fullName": "HCMv3.PerformanceManagement.PAQuarter1Review",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAQuarter1Review.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-quarter1-reviews/create-or-edit-pa-quarter1-review-modal.component.html"
+        }
+      },
+      "defaultSection": "PAQuarter1Reviews"
+    },
+    {
+      "helpId": "perf.paquarter3-review.edit",
+      "title": "PA Quarter 3 Reviews — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "PAQuarter3Review",
+        "fullName": "HCMv3.PerformanceManagement.PAQuarter3Review",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAQuarter3Review.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-form-detail/pa-quarter3-reviews/create-or-edit-pa-quarter3-review-modal.component.html"
+        }
+      },
+      "defaultSection": "PAQuarter3Reviews"
+    },
+    {
+      "helpId": "perf.paform.edit",
+      "title": "PA Forms — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PAForms.Create"
+      ],
+      "entity": {
+        "name": "PAForm",
+        "fullName": "HCMv3.PerformanceManagement.PAForm",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAForm.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-forms/create-or-edit-pa-form-modal.component.html"
+        }
+      },
+      "defaultSection": "PAForms"
+    },
+    {
+      "helpId": "perf.papeer-nominee.edit",
+      "title": "PA Peer Nominees — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PAPeerNominees.Create"
+      ],
+      "entity": {
+        "name": "PAPeerNominee",
+        "fullName": "HCMv3.PerformanceManagement.PAPeerNominee",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAPeerNominee.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-peer-nominees/create-or-edit-pa-peer-nominee-modal.component.html"
+        }
+      },
+      "defaultSection": "PAPeerNominees"
+    },
+    {
+      "helpId": "perf.paperiod.edit",
+      "title": "PA Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PAPeriods.Create"
+      ],
+      "entity": {
+        "name": "PAPeriod",
+        "fullName": "HCMv3.PerformanceManagement.PAPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PAPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-periods/create-or-edit-pa-period-modal.component.html"
+        }
+      },
+      "defaultSection": "PAPeriods"
+    },
+    {
+      "helpId": "perf.parating.edit",
+      "title": "PA Ratings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PARatings.Create"
+      ],
+      "entity": {
+        "name": "PARating",
+        "fullName": "HCMv3.PerformanceManagement.PARating",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PARating.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-ratings/create-or-edit-pa-rating-modal.component.html"
+        }
+      },
+      "defaultSection": "PARatings"
+    },
+    {
+      "helpId": "perf.patimeline-exception.edit",
+      "title": "PA Timeline Exceptions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PATimelineExceptions.Create"
+      ],
+      "entity": {
+        "name": "PATimelineException",
+        "fullName": "HCMv3.PerformanceManagement.PATimelineException",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PATimelineException.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-timeline-exceptions/create-or-edit-pa-timeline-exception-modal.component.html"
+        }
+      },
+      "defaultSection": "PATimelineExceptions"
+    },
+    {
+      "helpId": "perf.patimeline.edit",
+      "title": "PA Timelines — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.PerformanceManagement.PATimelines.Create"
+      ],
+      "entity": {
+        "name": "PATimeline",
+        "fullName": "HCMv3.PerformanceManagement.PATimeline",
+        "file": "aspnet-core/src/HCMv3.Core/PerformanceManagement/PATimeline.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/performance-management/pa-timelines/create-or-edit-pa-timeline-modal.component.html"
+        }
+      },
+      "defaultSection": "PATimelines"
     }
   ]
 }

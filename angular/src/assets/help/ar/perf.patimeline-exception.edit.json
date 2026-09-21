@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.patimeline-exception.edit",
+  "lang": "ar",
+  "title": "استثناءات الجدول الزمني لتقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PATimelineException",
+  "overviewHtml": "<p>تمديد موعد مرحلة واحدة لموظف واحد.</p><p>لا يُقرأ حالياً: لا تمنع الجداول الزمنية التقديم المتأخر، فلا يغيّر التمديد شيئاً.</p>",
+  "aliasIndex": {
+    "loc:PAPeriod": "PATimelineException.PAPeriodId",
+    "dom:PATimelineException_PAPeriodId": "PATimelineException.PAPeriodId",
+    "loc:Employee": "PATimelineException.EmployeeId",
+    "dom:PATimelineException_EmployeeId": "PATimelineException.EmployeeId",
+    "loc:ActivityType": "PATimelineException.ActivityType",
+    "dom:PATimelineException_ActivityType": "PATimelineException.ActivityType",
+    "loc:ExtensionDate": "PATimelineException.ExtensionDate",
+    "dom:PATimelineException_ExtensionDate": "PATimelineException.ExtensionDate"
+  },
+  "fields": [
+    {
+      "id": "PATimelineException.PAPeriodId",
+      "label": "PAPeriod",
+      "section": "PATimelineExceptions",
+      "aliases": [
+        "loc:PAPeriod",
+        "dom:PATimelineException_PAPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التقييم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimelineException.EmployeeId",
+      "label": "Employee",
+      "section": "PATimelineExceptions",
+      "aliases": [
+        "loc:Employee",
+        "dom:PATimelineException_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الممنوح التمديد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimelineException.ActivityType",
+      "label": "ActivityType",
+      "section": "PATimelineExceptions",
+      "aliases": [
+        "loc:ActivityType",
+        "dom:PATimelineException_ActivityType"
+      ],
+      "rules": "إلزامي. إحدى القيم: Plan، MidYearReview، AnnualReview، Quarter1Review، Quarter3Review.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المرحلة الممدَّدة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PATimelineException.ExtensionDate",
+      "label": "ExtensionDate",
+      "section": "PATimelineExceptions",
+      "aliases": [
+        "loc:ExtensionDate",
+        "dom:PATimelineException_ExtensionDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموعد الجديد.</p><p><strong>مثال.</strong> <code>2026-07-15</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

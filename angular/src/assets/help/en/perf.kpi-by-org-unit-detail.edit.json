@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.kpi-by-org-unit-detail.edit",
+  "lang": "en",
+  "title": "KPI By Org Unit Details — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.KpiByOrgUnitDetail",
+  "overviewHtml": "<p>One KPI in an organisation unit's set. Each KPI can appear once, and the weights in a set must not add up to more than 100.</p>",
+  "aliasIndex": {
+    "loc:KpiByOrgUnit": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+    "dom:KpiByOrgUnitDetail_KpiByOrgUnitId": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+    "loc:KpiInfo": "KpiByOrgUnitDetail.KpiInfoId",
+    "dom:KpiByOrgUnitDetail_KpiInfoId": "KpiByOrgUnitDetail.KpiInfoId",
+    "loc:Weight": "KpiByOrgUnitDetail.Weight",
+    "dom:KpiByOrgUnitDetail_Weight": "KpiByOrgUnitDetail.Weight",
+    "loc:Target": "KpiByOrgUnitDetail.Target",
+    "dom:KpiByOrgUnitDetail_Target": "KpiByOrgUnitDetail.Target"
+  },
+  "fields": [
+    {
+      "id": "KpiByOrgUnitDetail.KpiByOrgUnitId",
+      "label": "KpiByOrgUnit",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:KpiByOrgUnit",
+        "dom:KpiByOrgUnitDetail_KpiByOrgUnitId"
+      ],
+      "rules": "Required. Chosen from KPI By Org Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The unit's KPI set.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:KpiByOrgUnitDetail_KpiInfoId"
+      ],
+      "rules": "Required. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.Weight",
+      "label": "Weight",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:Weight",
+        "dom:KpiByOrgUnitDetail_Weight"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's weight, as a percentage.</p><p><strong>Example.</strong> <code>20</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnitDetail.Target",
+      "label": "Target",
+      "section": "KpiByOrgUnitDetails",
+      "aliases": [
+        "loc:Target",
+        "dom:KpiByOrgUnitDetail_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target for the KPI.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

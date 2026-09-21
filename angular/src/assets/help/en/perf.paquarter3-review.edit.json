@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paquarter3-review.edit",
+  "lang": "en",
+  "title": "PA Quarter 3 Reviews — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAQuarter3Review",
+  "overviewHtml": "<p>One KPI line of the third-quarter review on a PA Form: the KPI, its weight and target, the ratings from the appraisee and the appraiser, and their comments. Part of the older period-based appraisal form (PA Form).</p><p>Stored for the appraisal record; no score is worked out from these lines at present. Each KPI can appear once per form.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAQuarter3Review.KpiInfoId",
+    "dom:PAQuarter3Review_KpiInfoId": "PAQuarter3Review.KpiInfoId",
+    "loc:Weight": "PAQuarter3Review.Weight",
+    "dom:PAQuarter3Review_Weight": "PAQuarter3Review.Weight",
+    "loc:Target": "PAQuarter3Review.Target",
+    "dom:PAQuarter3Review_Target": "PAQuarter3Review.Target",
+    "loc:AppraiseeRating": "PAQuarter3Review.AppraiseeRatingId",
+    "dom:PAQuarter3Review_AppraiseeRatingId": "PAQuarter3Review.AppraiseeRatingId",
+    "loc:Rating": "PAQuarter3Review.RatingId",
+    "dom:PAQuarter3Review_RatingId": "PAQuarter3Review.RatingId",
+    "loc:AppraiseeComments": "PAQuarter3Review.AppraiseeComments",
+    "dom:PAQuarter3Review_AppraiseeComments": "PAQuarter3Review.AppraiseeComments",
+    "loc:AppraiserComments": "PAQuarter3Review.AppraiserComments",
+    "dom:PAQuarter3Review_AppraiserComments": "PAQuarter3Review.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAQuarter3Review.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAQuarter3Review_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p><p><strong>Example.</strong> Customer satisfaction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.Weight",
+      "label": "Weight",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAQuarter3Review_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's share of the appraisal, as a percentage.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.Target",
+      "label": "Target",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:Target",
+        "dom:PAQuarter3Review_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target set for the KPI.</p><p><strong>Example.</strong> <code>90% on-time delivery</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAQuarter3Review_AppraiseeRatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own rating.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.RatingId",
+      "label": "Rating",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAQuarter3Review_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's rating.</p><p><strong>Example.</strong> Exceeds expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAQuarter3Review_AppraiseeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAQuarter3Review.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAQuarter3Reviews",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAQuarter3Review_AppraiserComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

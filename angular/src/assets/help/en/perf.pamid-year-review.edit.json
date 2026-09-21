@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.pamid-year-review.edit",
+  "lang": "en",
+  "title": "PA Mid Year Reviews — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAMidYearReview",
+  "overviewHtml": "<p>One KPI line of the mid-year review on a PA Form: the KPI, its weight and target, the ratings from the appraisee and the appraiser, and their comments. Part of the older period-based appraisal form (PA Form).</p><p>Stored for the appraisal record; no score is worked out from these lines at present. Each KPI can appear once per form.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAMidYearReview.KpiInfoId",
+    "dom:PAMidYearReview_KpiInfoId": "PAMidYearReview.KpiInfoId",
+    "loc:Weight": "PAMidYearReview.Weight",
+    "dom:PAMidYearReview_Weight": "PAMidYearReview.Weight",
+    "loc:Target": "PAMidYearReview.Target",
+    "dom:PAMidYearReview_Target": "PAMidYearReview.Target",
+    "loc:AppraiseeRating": "PAMidYearReview.AppraiseeRatingId",
+    "dom:PAMidYearReview_AppraiseeRatingId": "PAMidYearReview.AppraiseeRatingId",
+    "loc:Rating": "PAMidYearReview.RatingId",
+    "dom:PAMidYearReview_RatingId": "PAMidYearReview.RatingId",
+    "loc:AppraiseeComments": "PAMidYearReview.AppraiseeComments",
+    "dom:PAMidYearReview_AppraiseeComments": "PAMidYearReview.AppraiseeComments",
+    "loc:AppraiserComments": "PAMidYearReview.AppraiserComments",
+    "dom:PAMidYearReview_AppraiserComments": "PAMidYearReview.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAMidYearReview.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAMidYearReview_KpiInfoId"
+      ],
+      "rules": "Optional. Chosen from KPI master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI.</p><p><strong>Example.</strong> Customer satisfaction</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.Weight",
+      "label": "Weight",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAMidYearReview_Weight"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI's share of the appraisal, as a percentage.</p><p><strong>Example.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.Target",
+      "label": "Target",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:Target",
+        "dom:PAMidYearReview_Target"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The target set for the KPI.</p><p><strong>Example.</strong> <code>90% on-time delivery</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAMidYearReview_AppraiseeRatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's own rating.</p><p><strong>Example.</strong> Meets expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.RatingId",
+      "label": "Rating",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAMidYearReview_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's rating.</p><p><strong>Example.</strong> Exceeds expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAMidYearReview_AppraiseeComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAMidYearReview.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAMidYearReviews",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAMidYearReview_AppraiserComments"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The appraiser's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

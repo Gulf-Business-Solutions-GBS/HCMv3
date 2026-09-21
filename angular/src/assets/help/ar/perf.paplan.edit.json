@@ -1,0 +1,123 @@
+{
+  "helpId": "perf.paplan.edit",
+  "lang": "ar",
+  "title": "خطط تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PAPlan",
+  "overviewHtml": "<p>سطر مؤشر أداء واحد من الخطة في نموذج تقييم الأداء: المؤشر ووزنه والمستهدف منه، وتقديرا الموظف المُقيَّم والمُقيِّم، وتعليقاتهما. جزء من نموذج التقييم القديم القائم على الفترات (نموذج تقييم الأداء).</p><p>يُحفظ ضمن سجل التقييم، ولا تُحتسب حالياً أي درجة من هذه الأسطر. ولا يظهر المؤشر إلا مرة واحدة في النموذج.</p>",
+  "aliasIndex": {
+    "loc:KpiInfo": "PAPlan.KpiInfoId",
+    "dom:PAPlan_KpiInfoId": "PAPlan.KpiInfoId",
+    "loc:Weight": "PAPlan.Weight",
+    "dom:PAPlan_Weight": "PAPlan.Weight",
+    "loc:Target": "PAPlan.Target",
+    "dom:PAPlan_Target": "PAPlan.Target",
+    "loc:AppraiseeRating": "PAPlan.AppraiseeRatingId",
+    "dom:PAPlan_AppraiseeRatingId": "PAPlan.AppraiseeRatingId",
+    "loc:Rating": "PAPlan.RatingId",
+    "dom:PAPlan_RatingId": "PAPlan.RatingId",
+    "loc:AppraiseeComments": "PAPlan.AppraiseeComments",
+    "dom:PAPlan_AppraiseeComments": "PAPlan.AppraiseeComments",
+    "loc:AppraiserComments": "PAPlan.AppraiserComments",
+    "dom:PAPlan_AppraiserComments": "PAPlan.AppraiserComments"
+  },
+  "fields": [
+    {
+      "id": "PAPlan.KpiInfoId",
+      "label": "KpiInfo",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:KpiInfo",
+        "dom:PAPlan_KpiInfoId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مؤشرات الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مؤشر الأداء.</p><p><strong>مثال.</strong> رضا العملاء</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.Weight",
+      "label": "Weight",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Weight",
+        "dom:PAPlan_Weight"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حصة المؤشر من التقييم، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>25</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.Target",
+      "label": "Target",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Target",
+        "dom:PAPlan_Target"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستهدف المحدد للمؤشر.</p><p><strong>مثال.</strong> <code>90% تسليم في الموعد</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiseeRatingId",
+      "label": "AppraiseeRating",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiseeRating",
+        "dom:PAPlan_AppraiseeRatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير الموظف لنفسه.</p><p><strong>مثال.</strong> يلبي التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.RatingId",
+      "label": "Rating",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAPlan_RatingId"
+      ],
+      "rules": "اختياري. يُختار من قائمة تقديرات تقييم الأداء.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تقدير المُقيِّم.</p><p><strong>مثال.</strong> يتجاوز التوقعات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiseeComments",
+      "label": "AppraiseeComments",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiseeComments",
+        "dom:PAPlan_AppraiseeComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAPlan.AppraiserComments",
+      "label": "AppraiserComments",
+      "section": "PAPlans",
+      "aliases": [
+        "loc:AppraiserComments",
+        "dom:PAPlan_AppraiserComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تعليقات المُقيِّم.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

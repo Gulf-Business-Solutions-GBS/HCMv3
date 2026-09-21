@@ -1,0 +1,75 @@
+{
+  "helpId": "perf.pacycle.edit",
+  "lang": "ar",
+  "title": "دورات تقييم الأداء — إنشاء / تحرير",
+  "entity": "HCMv3.PerformanceManagement.PACycle",
+  "overviewHtml": "<p>دورة تقييم للتقييم الشامل (360) — مثل \"التقييم السنوي 2026\". ويحدد كل تقييم دورته، ولا يمكن تقديم التقييم إلى سير العمل بدونها.</p>",
+  "aliasIndex": {
+    "loc:Code": "PACycle.Code",
+    "dom:PACycle_Code": "PACycle.Code",
+    "loc:NameEn": "PACycle.NameEn",
+    "dom:PACycle_NameEn": "PACycle.NameEn",
+    "loc:NameAr": "PACycle.NameAr",
+    "dom:PACycle_NameAr": "PACycle.NameAr",
+    "loc:IsDefault": "PACycle.IsDefault",
+    "dom:PACycle_IsDefault": "PACycle.IsDefault"
+  },
+  "fields": [
+    {
+      "id": "PACycle.Code",
+      "label": "Code",
+      "section": "PACycles",
+      "aliases": [
+        "loc:Code",
+        "dom:PACycle_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PACycle.NameEn",
+      "label": "NameEn",
+      "section": "PACycles",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PACycle_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PACycle.NameAr",
+      "label": "NameAr",
+      "section": "PACycles",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PACycle_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PACycle.IsDefault",
+      "label": "IsDefault",
+      "section": "PACycles",
+      "aliases": [
+        "loc:IsDefault",
+        "dom:PACycle_IsDefault"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه الدورة هي المعروضة افتراضياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

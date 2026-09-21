@@ -1,0 +1,91 @@
+{
+  "helpId": "perf.paemployee-rating.edit",
+  "lang": "en",
+  "title": "PA Employee Ratings — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.PAEmployeeRating",
+  "overviewHtml": "<p>One reviewer's rating of one KPI on an appraisal. The scorecard and manager evaluation reports work from these ratings — the scorecard uses only the managers' ratings when any exist in the report, otherwise all reviewers'.</p>",
+  "aliasIndex": {
+    "loc:PAEmployeeReviewer": "PAEmployeeRating.PAEmployeeReviewerId",
+    "dom:PAEmployeeRating_PAEmployeeReviewerId": "PAEmployeeRating.PAEmployeeReviewerId",
+    "loc:PAEmployeeDetail": "PAEmployeeRating.PAEmployeeDetailId",
+    "dom:PAEmployeeRating_PAEmployeeDetailId": "PAEmployeeRating.PAEmployeeDetailId",
+    "loc:Marks": "PAEmployeeRating.Marks",
+    "dom:PAEmployeeRating_Marks": "PAEmployeeRating.Marks",
+    "loc:Rating": "PAEmployeeRating.RatingId",
+    "dom:PAEmployeeRating_RatingId": "PAEmployeeRating.RatingId",
+    "loc:Comments": "PAEmployeeRating.Comments",
+    "dom:PAEmployeeRating_Comments": "PAEmployeeRating.Comments"
+  },
+  "fields": [
+    {
+      "id": "PAEmployeeRating.PAEmployeeReviewerId",
+      "label": "PAEmployeeReviewer",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:PAEmployeeReviewer",
+        "dom:PAEmployeeRating_PAEmployeeReviewerId"
+      ],
+      "rules": "Optional. Chosen from PA Employee Reviewer master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The reviewer giving the rating.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.PAEmployeeDetailId",
+      "label": "PAEmployeeDetail",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:PAEmployeeDetail",
+        "dom:PAEmployeeRating_PAEmployeeDetailId"
+      ],
+      "rules": "Optional. Chosen from PA Employee Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The KPI being rated.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.Marks",
+      "label": "Marks",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Marks",
+        "dom:PAEmployeeRating_Marks"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Marks given, shown on the manager evaluation report.</p><p><strong>Example.</strong> <code>4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.RatingId",
+      "label": "Rating",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Rating",
+        "dom:PAEmployeeRating_RatingId"
+      ],
+      "rules": "Optional. Chosen from PA Rating master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The rating given.</p><p><strong>Example.</strong> Exceeds expectations</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PAEmployeeRating.Comments",
+      "label": "Comments",
+      "section": "PAEmployeeRatings",
+      "aliases": [
+        "loc:Comments",
+        "dom:PAEmployeeRating_Comments"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

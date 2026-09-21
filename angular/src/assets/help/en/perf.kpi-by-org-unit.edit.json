@@ -1,0 +1,43 @@
+{
+  "helpId": "perf.kpi-by-org-unit.edit",
+  "lang": "en",
+  "title": "KPI By Org Unit — Create / Edit",
+  "entity": "HCMv3.PerformanceManagement.KpiByOrgUnit",
+  "overviewHtml": "<p>A set of KPIs for an organisation unit, from a given date. Each unit can have one set per start date.</p><p>Stored as a template: appraisals do not take their KPIs from it automatically at present.</p>",
+  "aliasIndex": {
+    "loc:OrganizationUnit": "KpiByOrgUnit.OrganizationUnitId",
+    "dom:KpiByOrgUnit_OrganizationUnitId": "KpiByOrgUnit.OrganizationUnitId",
+    "loc:StartDate": "KpiByOrgUnit.StartDate",
+    "dom:KpiByOrgUnit_StartDate": "KpiByOrgUnit.StartDate"
+  },
+  "fields": [
+    {
+      "id": "KpiByOrgUnit.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "KpiByOrgUnits",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:KpiByOrgUnit_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The organisation unit.</p><p><strong>Example.</strong> Finance Department</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "KpiByOrgUnit.StartDate",
+      "label": "StartDate",
+      "section": "KpiByOrgUnits",
+      "aliases": [
+        "loc:StartDate",
+        "dom:KpiByOrgUnit_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same organization unit can start on the same date. Saving closes the previous record for the same organization unit on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
