@@ -11,13 +11,13 @@ permissions: [Pages.PayrollManagement.AbsenceDeductionRules.Create]
 
 ## Overview
 
-_TODO_
+A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a sub group's sick leave entitlement.
 
 ## RuleName {#AbsenceDeductionRule.RuleName}
 <!-- alias: loc:RuleName, dom:AbsenceDeductionRule_RuleName -->
 
-**What it is.** _TODO_
+**What it is.** The name of the scale. It has one name only.
 
-**Example.** _TODO_
+**Example.** Kuwait Sick Leave Scale
 
 **Rules.** Required.

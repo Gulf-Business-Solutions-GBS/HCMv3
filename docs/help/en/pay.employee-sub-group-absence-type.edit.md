@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Create]
 
 ## Overview
 
-_TODO_
+Absence types listed against an employee sub group. Not read at present: entitlements come from the sub group's leave rules, and nothing reads this list.
 
 ## AbsenceType {#EmployeeSubGroupAbsenceType.AbsenceTypeId}
 <!-- alias: loc:AbsenceType, dom:EmployeeSubGroupAbsenceType_AbsenceTypeId -->
 
-**What it is.** _TODO_
+**What it is.** An absence type listed for the sub group.
 
-**Example.** _TODO_
+**Example.** Hajj Leave
+
+**Why it matters.** Each type can be listed once per sub group.
 
 **Rules.** Optional. Chosen from Absence Type master data.

@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "أنواع المواظبة — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AttendanceType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>نوع من المواظبة خارج الروتين المعتاد — مهمة عمل أو تدريب أو عمل في الموقع — يُسجَّل مواظبةً للموظف. ويحدد ما إذا كانت تلك الأيام تُحتسب وقتاً مدفوعاً، وما إذا كانت تشمل عطلات نهاية الأسبوع والعطلات، وما إذا كانت تُكسب إجازة.</p>",
   "aliasIndex": {
     "loc:Code": "AttendanceType.Code",
     "dom:AttendanceType_Code": "AttendanceType.Code",
@@ -85,9 +85,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي تُصرف تحته المواظبة من هذا النوع.</p><p><strong>مثال.</strong> بدل مهمة عمل</p><p><strong>لماذا يهم.</strong> الموظف الذي لديه مواظبة من هذا النوع في فترة الدفع يُحتسب له نوع الأجر هذا أجراً للحضور.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.AccrualPeriod",
@@ -99,9 +99,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> فترة استحقاق لنوع المواظبة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.LinkLeaveQuotaId",
@@ -113,9 +113,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة أنواع الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الإجازة التي تُضاف إليها أيام هذه المواظبة.</p><p><strong>مثال.</strong> الإجازة التعويضية</p><p><strong>لماذا يهم.</strong> يكون رصيد نوع الإجازة ذاك هو أيام المواظبة المسجلة على الأنواع المرتبطة به، ناقص ما أُخذ منه.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IsPaid",
@@ -127,9 +127,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة من هذا النوع تُحتسب وقت عمل مدفوعاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يحتسبها سجل الوقت وقتَ حضور فعلياً — اليوم المخطط كاملاً أو ساعات المواظبة نفسها، بحسب <strong>يوم كامل</strong>. وإلا فلا تضيف وقتاً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.HaveQuotaAccrual",
@@ -141,9 +141,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه المواظبة تُكسب إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجب ملء <strong>ربط حصة الإجازة</strong>. وتُكتسب الإجازة عبر الربط نفسه: فكل نوع مواظبة له إجازة مرتبطة يضيف إليها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludeWeekend",
@@ -155,9 +155,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في يوم الراحة الأسبوعية تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تضيف المواظبة من هذا النوع في يوم الراحة الأسبوعية أي وقت.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludeRestDay",
@@ -169,9 +169,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في يوم الراحة تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه لا تضيف المواظبة من هذا النوع في يوم الراحة أي وقت.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludePublicHoliday",
@@ -183,9 +183,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة في العطلة الرسمية تُحتسب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب اليوم مواظبةً ولا يعود يُعامل عطلةً في سجل الوقت. وإلا فلا تضيف المواظبة من هذا النوع في العطلة الرسمية أي وقت.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.CalcOnCalendarDays",
@@ -197,9 +197,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام المواظبة تُعدّ على أيام التقويم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IsFullDay",
@@ -211,9 +211,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المواظبة من هذا النوع تُحتسب يوم عمل كاملاً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُحتسب دقائق الموظف المخططة لذلك اليوم كاملة. وإلا تُحتسب الساعات بين وقتي بداية المواظبة ونهايتها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

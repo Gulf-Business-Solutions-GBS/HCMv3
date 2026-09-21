@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "تفاصيل قواعد الخصم على الغياب — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceDedRuleDetail",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>خطوة واحدة من سلّم الخصم على الإجازة المرضية. يعدّ نظام الرواتب أيام الموظف المرضية خلال الدورة، ويأخذ كل يوم أول خطوة يبلغ <strong>عدد الأيام</strong> فيها رقم ذلك اليوم، ويُصرف بنسبة 100% ناقص خصم تلك الخطوة. والأيام المرضية التي تتجاوز آخر خطوة لا تُصرف إطلاقاً، فاجعل آخر خطوة تمتد إلى أقصى ما يمكن أن تبلغه الإجازة المرضية.</p>",
   "aliasIndex": {
     "loc:AbsenceDeductionRules": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
     "dom:AbsenceDedRuleDetail_AbsenceDeductionRuleId": "AbsenceDedRuleDetail.AbsenceDeductionRuleId",
@@ -29,9 +29,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة قواعد الخصم على الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> السلّم الذي تتبعه هذه الخطوة.</p><p><strong>مثال.</strong> سلّم الإجازة المرضية الكويتي</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceDedRuleDetail.StartDate",
@@ -71,9 +71,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> اليوم المرضي، معدوداً خلال الدورة، الذي تسري هذه الخطوة حتى بلوغه.</p><p><strong>مثال.</strong> <code>25</code> — الأيام من 16 إلى 25، بعد خطوة أولى بـ<code>15</code>.</p><p><strong>لماذا يهم.</strong> تُقرأ الخطوات بترتيب هذا الرقم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceDedRuleDetail.DeductionUnit",
@@ -85,9 +85,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: ثابت، النسبة المئوية.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الخصم نسبة مئوية أو مبلغاً ثابتاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: تُعامل قيمة الخصم دائماً على أنها نسبة مئوية.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceDedRuleDetail.DeductionNumber",
@@ -99,9 +99,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> النسبة المئوية التي تُخصم من أجر اليوم عن الأيام المرضية في هذه الخطوة.</p><p><strong>مثال.</strong> <code>25</code> — يُصرف كل يوم بنسبة 75%.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

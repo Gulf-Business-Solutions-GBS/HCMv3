@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Deduction Rules — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceDeductionRule",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A named scale for reducing sick leave pay as sick days add up within a cycle. The steps are its details; the scale is attached to a sub group's sick leave entitlement.</p>",
   "aliasIndex": {
     "loc:Code": "AbsenceDeductionRule.Code",
     "dom:AbsenceDeductionRule_Code": "AbsenceDeductionRule.Code",
@@ -35,9 +35,9 @@
       ],
       "rules": "Required.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The name of the scale. It has one name only.</p><p><strong>Example.</strong> Kuwait Sick Leave Scale</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

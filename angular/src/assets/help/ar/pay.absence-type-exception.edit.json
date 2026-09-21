@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "استثناءات أنواع الغياب — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceTypeException",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>أزواج من أنواع الغياب لا ينبغي الجمع بينها. لا يُتحقق منها حالياً: تُحفظ الأزواج، لكن لا شيء يمنع أخذ النوعين معاً.</p>",
   "aliasIndex": {
     "loc:AbsenceTypes": "AbsenceTypeException.AbsenceTypeId",
     "dom:AbsenceTypeException_AbsenceTypeId": "AbsenceTypeException.AbsenceTypeId",
@@ -21,9 +21,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الغياب.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceTypeException.ExceptAbsenceTypeId",
@@ -35,9 +35,9 @@
       ],
       "rules": "إلزامي. يُختار من قائمة أنواع الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الغياب الذي لا ينبغي الجمع بينه وبينه. ولا يجوز أن يستثني النوع نفسه.</p><p><strong>مثال.</strong> الإجازة المرضية</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

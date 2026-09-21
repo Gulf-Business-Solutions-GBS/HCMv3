@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Attendance Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AttendanceType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A kind of attendance away from the normal routine — business trip, training, on-site duty — recorded as employee attendance. It decides whether those days count as paid time, whether they fall on weekends and holidays, and whether they earn leave.</p>",
   "aliasIndex": {
     "loc:Code": "AttendanceType.Code",
     "dom:AttendanceType_Code": "AttendanceType.Code",
@@ -85,9 +85,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype attendance of this type is paid under.</p><p><strong>Example.</strong> Business Trip Allowance</p><p><strong>Why it matters.</strong> An employee with attendance of this type in the pay period has this wagetype calculated as attendance pay.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.AccrualPeriod",
@@ -99,9 +99,9 @@
       ],
       "rules": "Required. One of: No Accrual, Calendar Year, Fiscal Year, Work Year, Bi-Annual, Per Employment, Custom.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> An accrual period for the attendance type.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.LinkLeaveQuotaId",
@@ -113,9 +113,9 @@
       ],
       "rules": "Optional. Chosen from Absence Type master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave that days of this attendance add to.</p><p><strong>Example.</strong> Compensatory Leave</p><p><strong>Why it matters.</strong> For that leave type, the balance is the attendance days recorded on types linked to it, less what has been taken.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IsPaid",
@@ -127,9 +127,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance of this type counts as paid working time.</p><p><strong>Why it matters.</strong> Ticked, the time register counts it as actual attendance time — the full planned day or the attendance's own hours, per <strong>Is Full Day</strong>. Unticked, it adds no time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.HaveQuotaAccrual",
@@ -141,9 +141,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether this attendance earns leave.</p><p><strong>Why it matters.</strong> Ticked, <strong>Link Leave Quota</strong> must be filled in. The leave is earned through the link itself: any attendance type with a linked leave adds to it.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludeWeekend",
@@ -155,9 +155,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance on a weekly off counts.</p><p><strong>Why it matters.</strong> Unticked, attendance of this type on a weekly off adds no time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludeRestDay",
@@ -169,9 +169,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance on a rest day counts.</p><p><strong>Why it matters.</strong> Unticked, attendance of this type on a rest day adds no time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IncludePublicHoliday",
@@ -183,9 +183,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance on a public holiday counts.</p><p><strong>Why it matters.</strong> Ticked, the day counts as attendance and is no longer treated as a holiday in the time register. Unticked, attendance of this type on a public holiday adds no time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.CalcOnCalendarDays",
@@ -197,9 +197,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance days are counted on calendar days.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AttendanceType.IsFullDay",
@@ -211,9 +211,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether attendance of this type counts as a full working day.</p><p><strong>Why it matters.</strong> Ticked, it counts the employee's full planned minutes for the day. Unticked, it counts the hours between the attendance's start and end time.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

@@ -11,13 +11,15 @@ permissions: [Pages.PayrollManagement.EmployeeSubGroupAbsenceTypes.Create]
 
 ## Overview
 
-_TODO_
+أنواع غياب مدرجة لمجموعة فرعية للموظفين. لا تُقرأ حالياً: تأتي الاستحقاقات من قواعد الإجازات للمجموعة الفرعية، ولا شيء يقرأ هذه القائمة.
 
 ## AbsenceType {#EmployeeSubGroupAbsenceType.AbsenceTypeId}
 <!-- alias: loc:AbsenceType, dom:EmployeeSubGroupAbsenceType_AbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع غياب مدرج للمجموعة الفرعية.
 
-**مثال.** _TODO_
+**مثال.** إجازة الحج
+
+**لماذا يهم.** لا يُدرج النوع إلا مرة واحدة لكل مجموعة فرعية.
 
 **القواعد.** اختياري. يُختار من قائمة أنواع الغياب.

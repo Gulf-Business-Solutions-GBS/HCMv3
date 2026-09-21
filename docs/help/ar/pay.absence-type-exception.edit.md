@@ -11,22 +11,22 @@ permissions: [Pages.PayrollManagement.AbsenceTypeExceptions.Create]
 
 ## Overview
 
-_TODO_
+أزواج من أنواع الغياب لا ينبغي الجمع بينها. لا يُتحقق منها حالياً: تُحفظ الأزواج، لكن لا شيء يمنع أخذ النوعين معاً.
 
 ## AbsenceTypes {#AbsenceTypeException.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypes, dom:AbsenceTypeException_AbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الغياب.
 
-**مثال.** _TODO_
+**مثال.** الإجازة السنوية
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
 
 ## ExceptAbsenceType {#AbsenceTypeException.ExceptAbsenceTypeId}
 <!-- alias: loc:ExceptAbsenceType, dom:AbsenceTypeException_ExceptAbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الغياب الذي لا ينبغي الجمع بينه وبينه. ولا يجوز أن يستثني النوع نفسه.
 
-**مثال.** _TODO_
+**مثال.** الإجازة المرضية
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.

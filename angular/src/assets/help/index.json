@@ -2109,6 +2109,42 @@
     "VisaInfo_EndDate": [
       "pa.employee-visa-info.edit"
     ],
+    "AbsenceDedRuleDetail_AbsenceDeductionRuleId": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDedRuleDetail_StartDate": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDedRuleDetail_EndDate": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDedRuleDetail_DaysCount": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDedRuleDetail_DeductionUnit": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDedRuleDetail_DeductionNumber": [
+      "pay.absence-ded-rule-detail.edit"
+    ],
+    "AbsenceDeductionRule_Code": [
+      "pay.absence-deduction-rule.edit"
+    ],
+    "AbsenceDeductionRule_RuleName": [
+      "pay.absence-deduction-rule.edit"
+    ],
+    "AbsencePayment_AbsenceTypeId": [
+      "pay.absence-payment.edit"
+    ],
+    "AbsencePayment_WageTypeId": [
+      "pay.absence-payment.edit"
+    ],
+    "AbsenceTypeException_AbsenceTypeId": [
+      "pay.absence-type-exception.edit"
+    ],
+    "AbsenceTypeException_ExceptAbsenceTypeId": [
+      "pay.absence-type-exception.edit"
+    ],
     "AbsenceType_Code": [
       "pay.absence-type.edit"
     ],
@@ -2295,6 +2331,45 @@
     "AccountInfo_AccountTypeId": [
       "pay.account-info.edit"
     ],
+    "AttendanceType_Code": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_NameEn": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_NameAr": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_WageTypeId": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_AccrualPeriod": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_LinkLeaveQuotaId": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_IsPaid": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_HaveQuotaAccrual": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_IncludeWeekend": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_IncludeRestDay": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_IncludePublicHoliday": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_CalcOnCalendarDays": [
+      "pay.attendance-type.edit"
+    ],
+    "AttendanceType_IsFullDay": [
+      "pay.attendance-type.edit"
+    ],
     "EmployeeGroup_Code": [
       "pay.employee-group.edit"
     ],
@@ -2312,6 +2387,33 @@
     ],
     "EmployeeGroup_IndemnityMaxAccruePercentage": [
       "pay.employee-group.edit"
+    ],
+    "EmployeeSubGroupAbsenceType_AbsenceTypeId": [
+      "pay.employee-sub-group-absence-type.edit"
+    ],
+    "EmployeeSubGroupAbsence_AbsenceTypeId": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_AbsenceDeductionRuleId": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_StartDate": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_EndDate": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_ChangeYear": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_TotalDays": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_MaxLimit": [
+      "pay.employee-sub-group-absence.edit"
+    ],
+    "EmployeeSubGroupAbsence_MaxLimitReachNotificationInDays": [
+      "pay.employee-sub-group-absence.edit"
     ],
     "EmployeeSubGroupWageType_WageTypeId": [
       "pay.employee-sub-group-wage-type.edit"

@@ -11,13 +11,13 @@ permissions: [Pages.PayrollManagement.AbsenceDeductionRules.Create]
 
 ## Overview
 
-_TODO_
+سلّم مسمّى لتخفيض أجر الإجازة المرضية كلما تراكمت الأيام المرضية خلال الدورة. وخطواته هي تفاصيله، ويُربط السلّم باستحقاق الإجازة المرضية للمجموعة الفرعية.
 
 ## RuleName {#AbsenceDeductionRule.RuleName}
 <!-- alias: loc:RuleName, dom:AbsenceDeductionRule_RuleName -->
 
-**ما هو.** _TODO_
+**ما هو.** اسم السلّم. له اسم واحد فقط.
 
-**مثال.** _TODO_
+**مثال.** سلّم الإجازة المرضية الكويتي
 
 **القواعد.** إلزامي.

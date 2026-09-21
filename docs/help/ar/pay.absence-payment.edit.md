@@ -11,22 +11,22 @@ permissions: [Pages.PayrollManagement.AbsencePayments.Create]
 
 ## Overview
 
-_TODO_
+نوع الأجر الذي يُصرف به نوع من أنواع الغياب. لا تُقرأ حالياً: تُصرف الإجازة تحت نوع الأجر المحدد في نوع الغياب نفسه، ولا شيء يقرأ هذه القائمة.
 
 ## AbsenceTypes {#AbsencePayment.AbsenceTypeId}
 <!-- alias: loc:AbsenceTypes, dom:AbsencePayment_AbsenceTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الغياب.
 
-**مثال.** _TODO_
+**مثال.** الإجازة السنوية
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الغياب.
 
 ## WageTypes {#AbsencePayment.WageTypeId}
 <!-- alias: loc:WageTypes, dom:AbsencePayment_WageTypeId -->
 
-**ما هو.** _TODO_
+**ما هو.** نوع الأجر الذي يُصرف تحته.
 
-**مثال.** _TODO_
+**مثال.** أجر الإجازة السنوية
 
 **القواعد.** إلزامي. يُختار من قائمة أنواع الأجور.
