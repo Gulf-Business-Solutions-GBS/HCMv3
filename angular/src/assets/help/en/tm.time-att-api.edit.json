@@ -95,10 +95,10 @@
         "loc:Password",
         "dom:TimeAttAPI_Password"
       ],
-      "rules": "Required. Maximum 256 characters.",
+      "rules": "Optional. Maximum 256 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The password for that account.</p>",
-      "adminHtml": "<p>Saved from this form the password is stored as typed; saved from Integration Center it is stored encrypted.</p>",
+      "adminHtml": "<p>The password is stored encrypted, whether it is saved from this form or from Integration Center. A password saved before encryption was introduced still works and is encrypted the next time the record is saved.</p>",
       "stub": false
     },
     {

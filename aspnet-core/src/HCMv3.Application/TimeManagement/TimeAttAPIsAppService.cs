@@ -8,6 +8,7 @@ using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
+using HCMv3.Integrations.Services;
 using HCMv3.TimeManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,8 @@ namespace HCMv3.TimeManagement;
 
 /// <summary>
 /// Application service for <see cref="TimeAttAPI"/> (ported from legacy XAF TimeAttAPI business object,
-/// Wave 4). Ports the legacy <c>PerformValidation</c> required-field checks. See the entity class remarks
-/// for the known plain-text-password concern (not fixed in this port).
+/// Wave 4). Ports the legacy <c>PerformValidation</c> required-field checks. The password is stored
+/// encrypted, the same way Integration Center stores it, and is never returned to the client.
 /// </summary>
 [AbpAuthorize(AppPermissions.Pages_TimeManagement_TimeAttAPIs)]
 public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
@@ -52,7 +53,8 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
 
         return new GetTimeAttAPIForEditOutput
         {
-            TimeAttAPI = ToCreateOrEditDto(entity)
+            TimeAttAPI = ToCreateOrEditDto(entity),
+            IsPasswordSet = !entity.Password.IsNullOrWhiteSpace()
         };
     }
 
@@ -73,6 +75,7 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
     {
         var entity = MapToEntity(input, new TimeAttAPI());
         entity.TenantId = AbpSession.TenantId ?? 0;
+        ApplyPassword(entity, input.Password);
 
         ValidateAsync(entity);
 
@@ -84,6 +87,7 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
     {
         var entity = await _repository.GetAsync(input.Id.Value);
         entity = MapToEntity(input, entity);
+        ApplyPassword(entity, input.Password);
 
         ValidateAsync(entity);
 
@@ -100,7 +104,6 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
     {
         entity.TokenUrl = input.TokenUrl;
         entity.Username = input.Username;
-        entity.Password = input.Password;
         entity.TransactionsUrl = input.TransactionsUrl;
         entity.NoOfRecords = input.NoOfRecords;
         entity.DevicesUrl = input.DevicesUrl;
@@ -112,6 +115,19 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
         entity.Company = input.Company;
 
         return entity;
+    }
+
+    /// <summary>
+    /// Encrypts a newly typed password. Blank means "keep the saved one": the form never receives the stored
+    /// value, so an edit that leaves the field empty must not wipe it. On create there is nothing to keep, so
+    /// the required check in <see cref="ValidateAsync"/> still rejects a blank password.
+    /// </summary>
+    private static void ApplyPassword(TimeAttAPI entity, string typedPassword)
+    {
+        if (!typedPassword.IsNullOrWhiteSpace())
+        {
+            entity.Password = IntegrationSecret.Protect(typedPassword);
+        }
     }
 
     /// <summary>
@@ -177,7 +193,8 @@ public class TimeAttAPIsAppService : HCMv3AppServiceBase, ITimeAttAPIsAppService
             Id = entity.Id,
             TokenUrl = entity.TokenUrl,
             Username = entity.Username,
-            Password = entity.Password,
+            // Deliberately not returned -- see IsPasswordSet on the output.
+            Password = null,
             TransactionsUrl = entity.TransactionsUrl,
             NoOfRecords = entity.NoOfRecords,
             DevicesUrl = entity.DevicesUrl,

@@ -9,10 +9,9 @@ namespace HCMv3.TimeManagement;
 /// <c>HCM10.Module.BusinessObjects.TimeManagement.TimeAttAPI</c>, Wave 4). Typically a single/few rows per
 /// tenant.
 ///
-/// KNOWN CONCERN (not fixed in this port): <see cref="Password"/> is stored as plain text, same as the
-/// legacy XPO object (only marked <c>[PasswordPropertyText]</c> for UI masking, no actual encryption/secret
-/// vault). A production-grade implementation should move this to a secrets vault / data-protection API --
-/// out of scope for this port, flagged here only.
+/// <see cref="Password"/> is stored encrypted via <c>IntegrationSecret.Protect</c> (legacy stored it as plain
+/// text). Rows saved before encryption was introduced may still hold plain text; every reader goes through
+/// the tolerant <c>IntegrationSecret.Reveal</c>, and the value is re-encrypted on its next save.
 ///
 /// The legacy <c>IExcelImport</c> marker is an XAF UI concept and is not ported.
 /// </summary>
@@ -27,7 +26,8 @@ public class TimeAttAPI : FullAuditedEntity, IMustHaveTenant
     public virtual string Username { get; set; }
 
     /// <summary>
-    /// KNOWN CONCERN: stored as plain text -- see class remarks.
+    /// Ciphertext (see class remarks). Never send it to the client. The column allows 256 characters, so
+    /// the plain-text password is capped lower on input to leave room for the encryption overhead.
     /// </summary>
     [StringLength(256)]
     public virtual string Password { get; set; }

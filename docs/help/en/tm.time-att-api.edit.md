@@ -52,10 +52,10 @@ The connection to the time-attendance system (BioTime) that punches are imported
 
 **What it is.** The password for that account.
 
-**Rules.** Required. Maximum 256 characters.
+**Rules.** Required when you create the record. Maximum 128 characters. When you edit, the field is empty because the saved password is never shown; leave it blank to keep it, or type a new one to replace it.
 
 :::admin
-Saved from this form the password is stored as typed; saved from Integration Center it is stored encrypted.
+The password is stored encrypted, whether it is saved from this form or from Integration Center. A password saved before encryption was introduced still works and is encrypted the next time the record is saved.
 :::
 
 ## NoOfRecords {#TimeAttAPI.NoOfRecords}

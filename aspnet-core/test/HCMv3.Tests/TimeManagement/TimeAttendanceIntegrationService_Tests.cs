@@ -9,11 +9,13 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using ClosedXML.Excel;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.Integrations.Services;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
 using HCMv3.TimeManagement;
 using HCMv3.TimeManagement.Services;
+using Newtonsoft.Json.Linq;
 using Shouldly;
 using Xunit;
 
@@ -140,7 +142,7 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
         return transType.Id;
     }
 
-    private void CreateTimeAttApi(string punchInCode = "I", string punchOutCode = "O")
+    private void CreateTimeAttApi(string punchInCode = "I", string punchOutCode = "O", string password = "pwd")
     {
         UsingDbContext(context =>
         {
@@ -157,7 +159,7 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
                 BreakOutCode = "",
                 Username = "user",
                 Email = "user@example.com",
-                Password = "pwd",
+                Password = password,
                 Company = "co"
             });
         });
@@ -233,6 +235,64 @@ public class TimeAttendanceIntegrationService_Tests : AppTestBase
         var token = await service.GetTokenAsync(timeAttApi);
 
         token.ShouldBeNull();
+    }
+
+    /// <summary>
+    /// Records the password in the token request, then fails it so the sync stops right after sign-in.
+    /// </summary>
+    private static RoutingHttpMessageHandler CapturePasswordHandler(Action<string> onPassword)
+    {
+        return new RoutingHttpMessageHandler(request =>
+        {
+            if (request.RequestUri!.ToString().Contains("/token/"))
+            {
+                var body = request.Content!.ReadAsStringAsync().Result;
+                onPassword(JObject.Parse(body).Value<string>("password"));
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+        });
+    }
+
+    [Fact]
+    public async Task GetTokenAsync_Should_Send_Plain_Password_When_Stored_Encrypted()
+    {
+        string sent = null;
+        var service = CreateService(CapturePasswordHandler(p => sent = p));
+
+        await service.GetTokenAsync(new TimeAttAPI
+        {
+            TokenUrl = "http://fake-vendor/api/token/",
+            Password = IntegrationSecret.Protect("pwd")
+        });
+
+        sent.ShouldBe("pwd");
+    }
+
+    [Fact]
+    public async Task InsertTransactionFromApiAsync_Should_Send_Plain_Password_When_Stored_Encrypted()
+    {
+        CreateTimeAttApi(password: IntegrationSecret.Protect("pwd"));
+        string sent = null;
+        var service = CreateService(CapturePasswordHandler(p => sent = p));
+
+        await RunInUnitOfWorkAsync(() => service.InsertTransactionFromApiAsync(
+            new DateTime(2026, 1, 1), new DateTime(2026, 1, 2), "", ""));
+
+        sent.ShouldBe("pwd");
+    }
+
+    [Fact]
+    public async Task InsertTransactionFromApiAsync_Should_Send_Legacy_Plain_Text_Password_Unchanged()
+    {
+        CreateTimeAttApi(password: "pwd");
+        string sent = null;
+        var service = CreateService(CapturePasswordHandler(p => sent = p));
+
+        await RunInUnitOfWorkAsync(() => service.InsertTransactionFromApiAsync(
+            new DateTime(2026, 1, 1), new DateTime(2026, 1, 2), "", ""));
+
+        sent.ShouldBe("pwd");
     }
 
     [Fact]

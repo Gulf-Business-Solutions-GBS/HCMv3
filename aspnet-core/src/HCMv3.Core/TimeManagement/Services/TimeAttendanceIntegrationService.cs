@@ -14,6 +14,7 @@ using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using ClosedXML.Excel;
 using HCMv3.GeneralMasterInfo;
+using HCMv3.Integrations.Services;
 using HCMv3.PersonnelAdministration;
 using HCMv3.SystemSettings;
 using HCMv3.SystemSettings.Services;
@@ -404,7 +405,9 @@ public class TimeAttendanceIntegrationService : HCMv3DomainServiceBase, ITimeAtt
             {
                 username = timeAttAPI.Username,
                 email = timeAttAPI.Email,
-                password = timeAttAPI.Password,
+                // Stored encrypted by Integration Center and the Time Attendance API screen; rows saved
+                // before that still hold plain text, which Reveal passes through unchanged.
+                password = IntegrationSecret.Reveal(timeAttAPI.Password),
                 company = timeAttAPI.Company
             });
             request.Content = new StringContent(payload, Encoding.UTF8, "application/json");

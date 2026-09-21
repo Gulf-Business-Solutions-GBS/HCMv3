@@ -4,8 +4,8 @@ namespace HCMv3.TimeManagement.Dto;
 
 /// <summary>
 /// Create/Update input DTO for <see cref="TimeAttAPI"/>. <c>Id == null</c> means create; otherwise update.
-/// KNOWN CONCERN: <see cref="Password"/> travels in plain text over this DTO, same as the legacy object --
-/// see <see cref="TimeAttAPI"/> remarks.
+/// <see cref="Password"/> is write-only: the server never fills it in on the way out. Blank on an edit
+/// means "keep the saved password"; it is required only when nothing is saved yet (checked in the service).
 /// </summary>
 public class CreateOrEditTimeAttAPIDto
 {
@@ -19,8 +19,10 @@ public class CreateOrEditTimeAttAPIDto
     [StringLength(256)]
     public string Username { get; set; }
 
-    [Required]
-    [StringLength(256)]
+    /// <summary>
+    /// Capped at 128 so the encrypted value still fits the 256-character column.
+    /// </summary>
+    [StringLength(128)]
     public string Password { get; set; }
 
     [Required]
