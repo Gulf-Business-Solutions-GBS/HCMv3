@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.onb-video-link.edit",
+  "lang": "ar",
+  "title": "روابط فيديو التهيئة الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.OnbVideoLink",
+  "overviewHtml": "<p>رابط لفيديو تهيئة.</p>",
+  "aliasIndex": {
+    "loc:NameEn": "OnbVideoLink.NameEn",
+    "dom:OnbVideoLink_NameEn": "OnbVideoLink.NameEn",
+    "loc:NameAr": "OnbVideoLink.NameAr",
+    "dom:OnbVideoLink_NameAr": "OnbVideoLink.NameAr",
+    "loc:Link": "OnbVideoLink.Link",
+    "dom:OnbVideoLink_Link": "OnbVideoLink.Link",
+    "loc:IsActive": "OnbVideoLink.IsActive",
+    "dom:OnbVideoLink_IsActive": "OnbVideoLink.IsActive"
+  },
+  "fields": [
+    {
+      "id": "OnbVideoLink.NameEn",
+      "label": "NameEn",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OnbVideoLink_NameEn"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.NameAr",
+      "label": "NameAr",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OnbVideoLink_NameAr"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.Link",
+      "label": "Link",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:Link",
+        "dom:OnbVideoLink_Link"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الفيديو.</p><p><strong>مثال.</strong> <code>https://…/welcome.mp4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.IsActive",
+      "label": "IsActive",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:IsActive",
+        "dom:OnbVideoLink_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الرابط مستخدماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

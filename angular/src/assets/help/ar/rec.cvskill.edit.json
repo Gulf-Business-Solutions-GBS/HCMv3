@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.cvskill.edit",
+  "lang": "ar",
+  "title": "المهارات في السيرة الذاتية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.CVSkill",
+  "overviewHtml": "<p>مهارة في السيرة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:Skill": "CVSkill.Skill",
+    "dom:CVSkill_Skill": "CVSkill.Skill",
+    "loc:Proficiency": "CVSkill.Proficiency",
+    "dom:CVSkill_Proficiency": "CVSkill.Proficiency"
+  },
+  "fields": [
+    {
+      "id": "CVSkill.Skill",
+      "label": "Skill",
+      "section": "CVSkills",
+      "aliases": [
+        "loc:Skill",
+        "dom:CVSkill_Skill"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهارة.</p><p><strong>مثال.</strong> إعداد التقارير المالية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVSkill.Proficiency",
+      "label": "Proficiency",
+      "section": "CVSkills",
+      "aliases": [
+        "loc:Proficiency",
+        "dom:CVSkill_Proficiency"
+      ],
+      "rules": "إلزامي. إحدى القيم: Novice، Intermediate، Advanced.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى إجادة المرشح لها.</p><p><strong>مثال.</strong> متقدم</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

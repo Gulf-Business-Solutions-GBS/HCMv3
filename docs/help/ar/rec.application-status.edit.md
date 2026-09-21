@@ -1,0 +1,50 @@
+---
+helpId: rec.application-status.edit
+lang: ar
+title: حالات الطلبات — إنشاء / تحرير
+entity: HCMv3.Recruitment.ApplicationStatus
+surfaces:
+  - angular/src/app/admin/recruitment/application-statuses/create-or-edit-application-status-modal.component.html
+audience: [admin]
+permissions: [Pages.Recruitment.ApplicationStatuses.Create]
+---
+
+## Overview
+
+طلب مرشح لشاغر بإحدى سيره الذاتية، والمرحلة التي بلغها -- تم التقديم أو القائمة المختصرة أو المقابلة أو العرض أو التعيين أو الرفض أو الالتحاق.
+
+وضبطه على *التحق* ينشئ سجل الموظف من المتقدم (انظر صفحة المتقدم)، ويجب ملء تاريخي الالتحاق ونهاية التجربة للمتقدم أولاً. وبعد أن يتجاوز الطلب مرحلة *تم التقديم* لا يعود المرشح قادراً على تعديل تلك السيرة أو حذفها في موقع الوظائف.
+
+## Vacancy {#ApplicationStatus.VacancyId}
+<!-- alias: loc:Vacancy, dom:ApplicationStatus_VacancyId -->
+
+**ما هو.** الشاغر المُتقدَّم إليه.
+
+**مثال.** محاسب أول
+
+**القواعد.** اختياري. يُختار من قائمة الوظائف الشاغرة.
+
+## ApplicantCVs {#ApplicationStatus.ApplicantCVId}
+<!-- alias: loc:ApplicantCVs, dom:ApplicationStatus_ApplicantCVId -->
+
+**ما هو.** السيرة الذاتية التي تقدّم بها المرشح.
+
+**القواعد.** اختياري. يُختار من قائمة السير الذاتية للمتقدمين.
+
+## AppStatus {#ApplicationStatus.AppStatus}
+<!-- alias: loc:AppStatus, dom:ApplicationStatus_AppStatus -->
+
+**ما هو.** المرحلة التي بلغها الطلب.
+
+**مثال.** القائمة المختصرة
+
+**لماذا يهم.** تنشئ مرحلة *التحق* الموظف. ويمكن لتقرير حالة الشواغر التصفية بها.
+
+**القواعد.** إلزامي. إحدى القيم: Applied، Shortlisted، Interviewed، JobOffer، Hired، مرفوض، Joined.
+
+## CoverLetter {#ApplicationStatus.CoverLetter}
+<!-- alias: loc:CoverLetter, dom:ApplicationStatus_CoverLetter -->
+
+**ما هو.** خطاب التقديم من المرشح.
+
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.

@@ -1,0 +1,107 @@
+{
+  "helpId": "rec.onb-applicant-task.edit",
+  "lang": "en",
+  "title": "Onb Applicant Task",
+  "entity": "HCMv3.Recruitment.OnbApplicantTasks",
+  "overviewHtml": "<p>An onboarding task given to one applicant, and whether it is done.</p>",
+  "aliasIndex": {
+    "loc:Applicant": "OnbApplicantTasks.ApplicantId",
+    "dom:OnbApplicantTask_ApplicantId": "OnbApplicantTasks.ApplicantId",
+    "loc:OnbTasks": "OnbApplicantTasks.OnbTaskId",
+    "dom:OnbApplicantTask_OnbTaskId": "OnbApplicantTasks.OnbTaskId",
+    "loc:DueDays": "OnbApplicantTasks.DueDays",
+    "dom:OnbApplicantTask_DueDays": "OnbApplicantTasks.DueDays",
+    "loc:IsCompleted": "OnbApplicantTasks.IsCompleted",
+    "dom:OnbApplicantTask_IsCompleted": "OnbApplicantTasks.IsCompleted",
+    "loc:CompletedOn": "OnbApplicantTasks.CompletedOn",
+    "dom:OnbApplicantTask_CompletedOn": "OnbApplicantTasks.CompletedOn",
+    "loc:TemplateUserData": "OnbApplicantTasks.TemplateUserData",
+    "dom:OnbApplicantTask_TemplateUserData": "OnbApplicantTasks.TemplateUserData"
+  },
+  "fields": [
+    {
+      "id": "OnbApplicantTasks.ApplicantId",
+      "label": "Applicant",
+      "section": null,
+      "aliases": [
+        "loc:Applicant",
+        "dom:OnbApplicantTask_ApplicantId"
+      ],
+      "rules": "Required. Chosen from Applicant master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The applicant.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.OnbTaskId",
+      "label": "OnbTasks",
+      "section": null,
+      "aliases": [
+        "loc:OnbTasks",
+        "dom:OnbApplicantTask_OnbTaskId"
+      ],
+      "rules": "Optional. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The task.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.DueDays",
+      "label": "DueDays",
+      "section": null,
+      "aliases": [
+        "loc:DueDays",
+        "dom:OnbApplicantTask_DueDays"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The days allowed to complete it.</p><p><strong>Example.</strong> <code>7</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.IsCompleted",
+      "label": "IsCompleted",
+      "section": null,
+      "aliases": [
+        "loc:IsCompleted",
+        "dom:OnbApplicantTask_IsCompleted"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether it is done.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.CompletedOn",
+      "label": "CompletedOn",
+      "section": null,
+      "aliases": [
+        "loc:CompletedOn",
+        "dom:OnbApplicantTask_CompletedOn"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it was done.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.TemplateUserData",
+      "label": "TemplateUserData",
+      "section": null,
+      "aliases": [
+        "loc:TemplateUserData",
+        "dom:OnbApplicantTask_TemplateUserData"
+      ],
+      "rules": "Optional. Maximum 4000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the applicant filled in on the task's template.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

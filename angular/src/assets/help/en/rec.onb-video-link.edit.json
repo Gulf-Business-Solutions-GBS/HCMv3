@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.onb-video-link.edit",
+  "lang": "en",
+  "title": "Onboarding Video Links — Create / Edit",
+  "entity": "HCMv3.Recruitment.OnbVideoLink",
+  "overviewHtml": "<p>A link to an onboarding video.</p>",
+  "aliasIndex": {
+    "loc:NameEn": "OnbVideoLink.NameEn",
+    "dom:OnbVideoLink_NameEn": "OnbVideoLink.NameEn",
+    "loc:NameAr": "OnbVideoLink.NameAr",
+    "dom:OnbVideoLink_NameAr": "OnbVideoLink.NameAr",
+    "loc:Link": "OnbVideoLink.Link",
+    "dom:OnbVideoLink_Link": "OnbVideoLink.Link",
+    "loc:IsActive": "OnbVideoLink.IsActive",
+    "dom:OnbVideoLink_IsActive": "OnbVideoLink.IsActive"
+  },
+  "fields": [
+    {
+      "id": "OnbVideoLink.NameEn",
+      "label": "NameEn",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OnbVideoLink_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.NameAr",
+      "label": "NameAr",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OnbVideoLink_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.Link",
+      "label": "Link",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:Link",
+        "dom:OnbVideoLink_Link"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The video's address.</p><p><strong>Example.</strong> <code>https://…/welcome.mp4</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbVideoLink.IsActive",
+      "label": "IsActive",
+      "section": "OnbVideoLinks",
+      "aliases": [
+        "loc:IsActive",
+        "dom:OnbVideoLink_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the link is in use.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

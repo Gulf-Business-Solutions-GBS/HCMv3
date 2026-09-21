@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.cvqualification.edit",
+  "lang": "ar",
+  "title": "مؤهلات السيرة الذاتية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.CVQualification",
+  "overviewHtml": "<p>مؤهل في السيرة الذاتية.</p>",
+  "aliasIndex": {
+    "loc:Qualification": "CVQualification.QualificationId",
+    "dom:CVQualification_QualificationId": "CVQualification.QualificationId",
+    "loc:University": "CVQualification.University",
+    "dom:CVQualification_University": "CVQualification.University",
+    "loc:Percentage": "CVQualification.Percentage",
+    "dom:CVQualification_Percentage": "CVQualification.Percentage",
+    "loc:PassedYear": "CVQualification.PassedYear",
+    "dom:CVQualification_PassedYear": "CVQualification.PassedYear"
+  },
+  "fields": [
+    {
+      "id": "CVQualification.QualificationId",
+      "label": "Qualification",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:Qualification",
+        "dom:CVQualification_QualificationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المؤهلات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المؤهل.</p><p><strong>مثال.</strong> بكالوريوس</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.University",
+      "label": "University",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:University",
+        "dom:CVQualification_University"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الجهة التي مُنح منها.</p><p><strong>مثال.</strong> جامعة الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.Percentage",
+      "label": "Percentage",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:Percentage",
+        "dom:CVQualification_Percentage"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدرجة، نسبةً مئوية.</p><p><strong>مثال.</strong> <code>82</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.PassedYear",
+      "label": "PassedYear",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:PassedYear",
+        "dom:CVQualification_PassedYear"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سنة الحصول عليه.</p><p><strong>مثال.</strong> <code>2018</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -4939,6 +4939,362 @@
         }
       },
       "defaultSection": "PATimelines"
+    },
+    {
+      "helpId": "rec.applicant-cv.edit",
+      "title": "Applicant CVs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "ApplicantCV",
+        "fullName": "HCMv3.Recruitment.ApplicantCV",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/ApplicantCV.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicant-detail/cv/applicant-cv.component.html"
+        }
+      },
+      "defaultSection": "ApplicantCVs"
+    },
+    {
+      "helpId": "rec.cvlanguage.edit",
+      "title": "CV Languages — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.CVLanguages.Create"
+      ],
+      "entity": {
+        "name": "CVLanguage",
+        "fullName": "HCMv3.Recruitment.CVLanguage",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/CVLanguage.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicant-detail/cv/languages/create-or-edit-cv-language-modal.component.html"
+        }
+      },
+      "defaultSection": "CVLanguages"
+    },
+    {
+      "helpId": "rec.cvqualification.edit",
+      "title": "CV Qualifications — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.CVQualifications.Create"
+      ],
+      "entity": {
+        "name": "CVQualification",
+        "fullName": "HCMv3.Recruitment.CVQualification",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/CVQualification.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicant-detail/cv/qualifications/create-or-edit-cv-qualification-modal.component.html"
+        }
+      },
+      "defaultSection": "CVQualifications"
+    },
+    {
+      "helpId": "rec.cvskill.edit",
+      "title": "CV Skills — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.CVSkills.Create"
+      ],
+      "entity": {
+        "name": "CVSkill",
+        "fullName": "HCMv3.Recruitment.CVSkill",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/CVSkill.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicant-detail/cv/skills/create-or-edit-cv-skill-modal.component.html"
+        }
+      },
+      "defaultSection": "CVSkills"
+    },
+    {
+      "helpId": "rec.cvwork-exp.edit",
+      "title": "CV Work Experience — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.CVWorkExps.Create"
+      ],
+      "entity": {
+        "name": "CVWorkExp",
+        "fullName": "HCMv3.Recruitment.CVWorkExp",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/CVWorkExp.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicant-detail/cv/work-exps/create-or-edit-cv-work-exp-modal.component.html"
+        }
+      },
+      "defaultSection": "CVWorkExps"
+    },
+    {
+      "helpId": "rec.applicant.edit",
+      "title": "Applicants — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.Applicants.Create"
+      ],
+      "entity": {
+        "name": "Applicant",
+        "fullName": "HCMv3.Recruitment.Applicant",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/Applicant.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/applicants/create-or-edit-applicant-modal.component.html"
+        }
+      },
+      "defaultSection": "Applicants"
+    },
+    {
+      "helpId": "rec.application-status.edit",
+      "title": "Application Statuses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.ApplicationStatuses.Create"
+      ],
+      "entity": {
+        "name": "ApplicationStatus",
+        "fullName": "HCMv3.Recruitment.ApplicationStatus",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/ApplicationStatus.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/application-statuses/create-or-edit-application-status-modal.component.html"
+        }
+      },
+      "defaultSection": "ApplicationStatuses"
+    },
+    {
+      "helpId": "rec.interview-details.edit",
+      "title": "Interview Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "InterviewDetails",
+        "fullName": "HCMv3.Recruitment.InterviewDetails",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/InterviewDetails.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/interview-details/create-or-edit-interview-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "InterviewDetails"
+    },
+    {
+      "helpId": "rec.onb-group-detail.edit",
+      "title": "Onboarding Group Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbGroupDetails.Create"
+      ],
+      "entity": {
+        "name": "OnbGroupDetail",
+        "fullName": "HCMv3.Recruitment.OnbGroupDetail",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbGroupDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-group-details/create-or-edit-onb-group-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "OnbGroupDetails"
+    },
+    {
+      "helpId": "rec.onb-group.edit",
+      "title": "Onboarding Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbGroups.Create"
+      ],
+      "entity": {
+        "name": "OnbGroup",
+        "fullName": "HCMv3.Recruitment.OnbGroup",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-groups/create-or-edit-onb-group-modal.component.html"
+        }
+      },
+      "defaultSection": "OnbGroups"
+    },
+    {
+      "helpId": "rec.onb-task.edit",
+      "title": "Onboarding Tasks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbTasks.Create"
+      ],
+      "entity": {
+        "name": "OnbTask",
+        "fullName": "HCMv3.Recruitment.OnbTask",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbTask.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-tasks/create-or-edit-onb-task-modal.component.html"
+        }
+      },
+      "defaultSection": "OnbTasks"
+    },
+    {
+      "helpId": "rec.onb-template.edit",
+      "title": "Onboarding Templates — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbTemplates.Create"
+      ],
+      "entity": {
+        "name": "OnbTemplate",
+        "fullName": "HCMv3.Recruitment.OnbTemplate",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbTemplate.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-templates/create-or-edit-onb-template-modal.component.html"
+        }
+      },
+      "defaultSection": "OnbTemplates"
+    },
+    {
+      "helpId": "rec.onb-video-link.edit",
+      "title": "Onboarding Video Links — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbVideoLinks.Create"
+      ],
+      "entity": {
+        "name": "OnbVideoLink",
+        "fullName": "HCMv3.Recruitment.OnbVideoLink",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbVideoLink.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-video-links/create-or-edit-onb-video-link-modal.component.html"
+        }
+      },
+      "defaultSection": "OnbVideoLinks"
+    },
+    {
+      "helpId": "rec.vacancy.edit",
+      "title": "Vacancies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.Vacancies.Create"
+      ],
+      "entity": {
+        "name": "Vacancy",
+        "fullName": "HCMv3.Recruitment.Vacancy",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/Vacancy.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/vacancies/create-or-edit-vacancy-modal.component.html"
+        }
+      },
+      "defaultSection": "Vacancies"
+    },
+    {
+      "helpId": "rec.onb-app-task-comment.edit",
+      "title": "Onb App Task Comment",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbTasks.Create"
+      ],
+      "entity": {
+        "name": "OnbAppTaskComments",
+        "fullName": "HCMv3.Recruitment.OnbAppTaskComments",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbAppTaskComments.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-app-task-comments/create-or-edit-onb-app-task-comment-modal.component.html"
+        }
+      },
+      "service": "OnbAppTaskCommentsAppService",
+      "domPrefix": "OnbAppTaskComment"
+    },
+    {
+      "helpId": "rec.onb-applicant-task.edit",
+      "title": "Onb Applicant Task",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbTasks.Create"
+      ],
+      "entity": {
+        "name": "OnbApplicantTasks",
+        "fullName": "HCMv3.Recruitment.OnbApplicantTasks",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbApplicantTasks.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-applicant-tasks/create-or-edit-onb-applicant-task-modal.component.html"
+        }
+      },
+      "service": "OnbApplicantTasksAppService",
+      "domPrefix": "OnbApplicantTask"
+    },
+    {
+      "helpId": "rec.onb-template-detail.edit",
+      "title": "Onb Template Detail",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Recruitment.OnbTasks.Create"
+      ],
+      "entity": {
+        "name": "OnbTemplateDetails",
+        "fullName": "HCMv3.Recruitment.OnbTemplateDetails",
+        "file": "aspnet-core/src/HCMv3.Core/Recruitment/OnbTemplateDetails.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/recruitment/onb-template-details/create-or-edit-onb-template-detail-modal.component.html"
+        }
+      },
+      "service": "OnbTemplateDetailsAppService",
+      "domPrefix": "OnbTemplateDetail"
     }
   ]
 }

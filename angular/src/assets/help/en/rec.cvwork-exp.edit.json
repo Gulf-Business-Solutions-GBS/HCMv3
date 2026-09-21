@@ -1,0 +1,91 @@
+{
+  "helpId": "rec.cvwork-exp.edit",
+  "lang": "en",
+  "title": "CV Work Experience — Create / Edit",
+  "entity": "HCMv3.Recruitment.CVWorkExp",
+  "overviewHtml": "<p>A past job on a CV.</p>",
+  "aliasIndex": {
+    "loc:Company": "CVWorkExp.Company",
+    "dom:CVWorkExp_Company": "CVWorkExp.Company",
+    "loc:Position": "CVWorkExp.Position",
+    "dom:CVWorkExp_Position": "CVWorkExp.Position",
+    "loc:StartDate": "CVWorkExp.StartDate",
+    "dom:CVWorkExp_StartDate": "CVWorkExp.StartDate",
+    "loc:EndDate": "CVWorkExp.EndDate",
+    "dom:CVWorkExp_EndDate": "CVWorkExp.EndDate",
+    "loc:Responsibilities": "CVWorkExp.Responsibilities",
+    "dom:CVWorkExp_Responsibilities": "CVWorkExp.Responsibilities"
+  },
+  "fields": [
+    {
+      "id": "CVWorkExp.Company",
+      "label": "Company",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Company",
+        "dom:CVWorkExp_Company"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employer.</p><p><strong>Example.</strong> Gulf Trading Co.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.Position",
+      "label": "Position",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Position",
+        "dom:CVWorkExp_Position"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job held.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.StartDate",
+      "label": "StartDate",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:StartDate",
+        "dom:CVWorkExp_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.EndDate",
+      "label": "EndDate",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:EndDate",
+        "dom:CVWorkExp_EndDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVWorkExp.Responsibilities",
+      "label": "Responsibilities",
+      "section": "CVWorkExps",
+      "aliases": [
+        "loc:Responsibilities",
+        "dom:CVWorkExp_Responsibilities"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What the job involved.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "helpId": "rec.interview-details.edit",
+  "lang": "en",
+  "title": "Interview Details — Create / Edit",
+  "entity": "HCMv3.Recruitment.InterviewDetails",
+  "overviewHtml": "<p>An interview for an application: when, where, who interviewed and what they said. Stored with the application; nothing reads it at present.</p>",
+  "aliasIndex": {
+    "loc:ApplicationStatuses": "InterviewDetails.ApplicationStatusId",
+    "dom:InterviewDetails_ApplicationStatusId": "InterviewDetails.ApplicationStatusId",
+    "loc:InterviewDate": "InterviewDetails.InterviewDate",
+    "dom:InterviewDetails_InterviewDate": "InterviewDetails.InterviewDate",
+    "loc:InterviewTime": "InterviewDetails.InterviewTime",
+    "dom:InterviewDetails_InterviewTime": "InterviewDetails.InterviewTime",
+    "loc:Place": "InterviewDetails.Place",
+    "dom:InterviewDetails_Place": "InterviewDetails.Place",
+    "loc:Interviewer1": "InterviewDetails.Interviewer1Id",
+    "dom:InterviewDetails_Interviewer1Id": "InterviewDetails.Interviewer1Id",
+    "loc:Interviewer2": "InterviewDetails.Interviewer2Id",
+    "dom:InterviewDetails_Interviewer2Id": "InterviewDetails.Interviewer2Id",
+    "loc:Interviewer3": "InterviewDetails.Interviewer3Id",
+    "dom:InterviewDetails_Interviewer3Id": "InterviewDetails.Interviewer3Id",
+    "loc:Comments1": "InterviewDetails.Comments1",
+    "dom:InterviewDetails_Comments1": "InterviewDetails.Comments1",
+    "loc:Comments2": "InterviewDetails.Comments2",
+    "dom:InterviewDetails_Comments2": "InterviewDetails.Comments2",
+    "loc:Comments3": "InterviewDetails.Comments3",
+    "dom:InterviewDetails_Comments3": "InterviewDetails.Comments3"
+  },
+  "fields": [
+    {
+      "id": "InterviewDetails.ApplicationStatusId",
+      "label": "ApplicationStatuses",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:ApplicationStatuses",
+        "dom:InterviewDetails_ApplicationStatusId"
+      ],
+      "rules": "Required. Chosen from Application Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The application.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.InterviewDate",
+      "label": "InterviewDate",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:InterviewDate",
+        "dom:InterviewDetails_InterviewDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The date.</p><p><strong>Example.</strong> <code>2026-04-20</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.InterviewTime",
+      "label": "InterviewTime",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:InterviewTime",
+        "dom:InterviewDetails_InterviewTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time.</p><p><strong>Example.</strong> <code>10:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Place",
+      "label": "Place",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Place",
+        "dom:InterviewDetails_Place"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where it is held.</p><p><strong>Example.</strong> Head Office, 3rd floor</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Interviewer1Id",
+      "label": "Interviewer1",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Interviewer1",
+        "dom:InterviewDetails_Interviewer1Id"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first interviewer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Interviewer2Id",
+      "label": "Interviewer2",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Interviewer2",
+        "dom:InterviewDetails_Interviewer2Id"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second interviewer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Interviewer3Id",
+      "label": "Interviewer3",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Interviewer3",
+        "dom:InterviewDetails_Interviewer3Id"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third interviewer.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Comments1",
+      "label": "Comments1",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Comments1",
+        "dom:InterviewDetails_Comments1"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first interviewer's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Comments2",
+      "label": "Comments2",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Comments2",
+        "dom:InterviewDetails_Comments2"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The second interviewer's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "InterviewDetails.Comments3",
+      "label": "Comments3",
+      "section": "InterviewDetails",
+      "aliases": [
+        "loc:Comments3",
+        "dom:InterviewDetails_Comments3"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The third interviewer's comments.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

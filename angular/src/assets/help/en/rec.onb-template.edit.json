@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.onb-template.edit",
+  "lang": "en",
+  "title": "Onboarding Templates — Create / Edit",
+  "entity": "HCMv3.Recruitment.OnbTemplate",
+  "overviewHtml": "<p>A template for onboarding documents or forms.</p>",
+  "aliasIndex": {
+    "loc:TemplateTitle": "OnbTemplate.TemplateTitle",
+    "dom:OnbTemplate_TemplateTitle": "OnbTemplate.TemplateTitle",
+    "loc:TemplateId": "OnbTemplate.TemplateId",
+    "dom:OnbTemplate_TemplateId": "OnbTemplate.TemplateId"
+  },
+  "fields": [
+    {
+      "id": "OnbTemplate.TemplateTitle",
+      "label": "TemplateTitle",
+      "section": "OnbTemplates",
+      "aliases": [
+        "loc:TemplateTitle",
+        "dom:OnbTemplate_TemplateTitle"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template's title.</p><p><strong>Example.</strong> New joiner pack</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplate.TemplateId",
+      "label": "TemplateId",
+      "section": "OnbTemplates",
+      "aliases": [
+        "loc:TemplateId",
+        "dom:OnbTemplate_TemplateId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template's own identifier.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

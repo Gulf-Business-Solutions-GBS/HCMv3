@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-group-detail.edit",
+  "lang": "en",
+  "title": "Onboarding Group Details — Create / Edit",
+  "entity": "HCMv3.Recruitment.OnbGroupDetail",
+  "overviewHtml": "<p>One task in an onboarding group, optionally for a particular job title.</p>",
+  "aliasIndex": {
+    "loc:OnbGroups": "OnbGroupDetail.OnbGroupId",
+    "dom:OnbGroupDetail_OnbGroupId": "OnbGroupDetail.OnbGroupId",
+    "loc:OnbTasks": "OnbGroupDetail.OnbTaskId",
+    "dom:OnbGroupDetail_OnbTaskId": "OnbGroupDetail.OnbTaskId",
+    "loc:JobTitle": "OnbGroupDetail.JobTitleId",
+    "dom:OnbGroupDetail_JobTitleId": "OnbGroupDetail.JobTitleId"
+  },
+  "fields": [
+    {
+      "id": "OnbGroupDetail.OnbGroupId",
+      "label": "OnbGroups",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:OnbGroups",
+        "dom:OnbGroupDetail_OnbGroupId"
+      ],
+      "rules": "Required. Chosen from Onboarding Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The group.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbGroupDetail.OnbTaskId",
+      "label": "OnbTasks",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:OnbTasks",
+        "dom:OnbGroupDetail_OnbTaskId"
+      ],
+      "rules": "Optional. Chosen from Onboarding Task master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The task.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbGroupDetail.JobTitleId",
+      "label": "JobTitle",
+      "section": "OnbGroupDetails",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:OnbGroupDetail_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title the task is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

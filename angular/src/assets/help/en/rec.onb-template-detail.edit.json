@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-template-detail.edit",
+  "lang": "en",
+  "title": "Onb Template Detail",
+  "entity": "HCMv3.Recruitment.OnbTemplateDetails",
+  "overviewHtml": "<p>The content of an onboarding template.</p>",
+  "aliasIndex": {
+    "loc:OnbTemplates": "OnbTemplateDetails.OnbTemplateId",
+    "dom:OnbTemplateDetail_OnbTemplateId": "OnbTemplateDetails.OnbTemplateId",
+    "loc:TemplateId": "OnbTemplateDetails.TemplateId",
+    "dom:OnbTemplateDetail_TemplateId": "OnbTemplateDetails.TemplateId",
+    "loc:TemplateData": "OnbTemplateDetails.TemplateData",
+    "dom:OnbTemplateDetail_TemplateData": "OnbTemplateDetails.TemplateData"
+  },
+  "fields": [
+    {
+      "id": "OnbTemplateDetails.OnbTemplateId",
+      "label": "OnbTemplates",
+      "section": null,
+      "aliases": [
+        "loc:OnbTemplates",
+        "dom:OnbTemplateDetail_OnbTemplateId"
+      ],
+      "rules": "Required. Chosen from Onboarding Template master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplateDetails.TemplateId",
+      "label": "TemplateId",
+      "section": null,
+      "aliases": [
+        "loc:TemplateId",
+        "dom:OnbTemplateDetail_TemplateId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template identifier.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplateDetails.TemplateData",
+      "label": "TemplateData",
+      "section": null,
+      "aliases": [
+        "loc:TemplateData",
+        "dom:OnbTemplateDetail_TemplateData"
+      ],
+      "rules": "Optional. Maximum 5000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template's content.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

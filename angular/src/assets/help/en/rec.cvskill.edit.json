@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.cvskill.edit",
+  "lang": "en",
+  "title": "CV Skills — Create / Edit",
+  "entity": "HCMv3.Recruitment.CVSkill",
+  "overviewHtml": "<p>A skill on a CV.</p>",
+  "aliasIndex": {
+    "loc:Skill": "CVSkill.Skill",
+    "dom:CVSkill_Skill": "CVSkill.Skill",
+    "loc:Proficiency": "CVSkill.Proficiency",
+    "dom:CVSkill_Proficiency": "CVSkill.Proficiency"
+  },
+  "fields": [
+    {
+      "id": "CVSkill.Skill",
+      "label": "Skill",
+      "section": "CVSkills",
+      "aliases": [
+        "loc:Skill",
+        "dom:CVSkill_Skill"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The skill.</p><p><strong>Example.</strong> Financial reporting</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVSkill.Proficiency",
+      "label": "Proficiency",
+      "section": "CVSkills",
+      "aliases": [
+        "loc:Proficiency",
+        "dom:CVSkill_Proficiency"
+      ],
+      "rules": "Required. One of: Novice, Intermediate, Advanced.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How good the candidate is at it.</p><p><strong>Example.</strong> Advanced</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

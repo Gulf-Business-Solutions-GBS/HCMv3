@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.cvqualification.edit",
+  "lang": "en",
+  "title": "CV Qualifications — Create / Edit",
+  "entity": "HCMv3.Recruitment.CVQualification",
+  "overviewHtml": "<p>A qualification on a CV.</p>",
+  "aliasIndex": {
+    "loc:Qualification": "CVQualification.QualificationId",
+    "dom:CVQualification_QualificationId": "CVQualification.QualificationId",
+    "loc:University": "CVQualification.University",
+    "dom:CVQualification_University": "CVQualification.University",
+    "loc:Percentage": "CVQualification.Percentage",
+    "dom:CVQualification_Percentage": "CVQualification.Percentage",
+    "loc:PassedYear": "CVQualification.PassedYear",
+    "dom:CVQualification_PassedYear": "CVQualification.PassedYear"
+  },
+  "fields": [
+    {
+      "id": "CVQualification.QualificationId",
+      "label": "Qualification",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:Qualification",
+        "dom:CVQualification_QualificationId"
+      ],
+      "rules": "Optional. Chosen from Qualification master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The qualification.</p><p><strong>Example.</strong> Bachelor's Degree</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.University",
+      "label": "University",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:University",
+        "dom:CVQualification_University"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where it was gained.</p><p><strong>Example.</strong> Kuwait University</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.Percentage",
+      "label": "Percentage",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:Percentage",
+        "dom:CVQualification_Percentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The grade, as a percentage.</p><p><strong>Example.</strong> <code>82</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CVQualification.PassedYear",
+      "label": "PassedYear",
+      "section": "CVQualifications",
+      "aliases": [
+        "loc:PassedYear",
+        "dom:CVQualification_PassedYear"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The year it was gained.</p><p><strong>Example.</strong> <code>2018</code></p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

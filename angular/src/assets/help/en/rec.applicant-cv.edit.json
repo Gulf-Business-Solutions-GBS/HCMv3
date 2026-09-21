@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.applicant-cv.edit",
+  "lang": "en",
+  "title": "Applicant CVs — Create / Edit",
+  "entity": "HCMv3.Recruitment.ApplicantCV",
+  "overviewHtml": "<p>One of an applicant's CVs. A candidate can keep several CVs on the careers site and chooses one when applying. Its languages, qualifications, skills and work experience are held on its details. Each applicant's CV names must be different, and a CV with an application past <em>Applied</em> can no longer be changed by the candidate.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "ApplicantCV.JobTitleId",
+    "dom:ApplicantCV_JobTitleId": "ApplicantCV.JobTitleId",
+    "loc:CvName": "ApplicantCV.CVName",
+    "dom:ApplicantCV_CvName": "ApplicantCV.CVName",
+    "loc:UploadDate": "ApplicantCV.UploadDate",
+    "dom:ApplicantCV_UploadDate": "ApplicantCV.UploadDate"
+  },
+  "fields": [
+    {
+      "id": "ApplicantCV.JobTitleId",
+      "label": "JobTitle",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:ApplicantCV_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title the CV is aimed at.</p><p><strong>Example.</strong> Accountant</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicantCV.CVName",
+      "label": "CvName",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:CvName",
+        "dom:ApplicantCV_CvName"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A name for the CV, to tell it apart from the applicant's others.</p><p><strong>Example.</strong> Finance roles</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicantCV.UploadDate",
+      "label": "UploadDate",
+      "section": "ApplicantCVs",
+      "aliases": [
+        "loc:UploadDate",
+        "dom:ApplicantCV_UploadDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the CV was added. The careers site lists the newest first.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

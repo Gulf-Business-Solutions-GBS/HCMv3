@@ -1,0 +1,107 @@
+{
+  "helpId": "rec.onb-applicant-task.edit",
+  "lang": "ar",
+  "title": "Onb Applicant Task",
+  "entity": "HCMv3.Recruitment.OnbApplicantTasks",
+  "overviewHtml": "<p>مهمة تهيئة مُسندة إلى متقدم واحد، وما إذا أُنجزت.</p>",
+  "aliasIndex": {
+    "loc:Applicant": "OnbApplicantTasks.ApplicantId",
+    "dom:OnbApplicantTask_ApplicantId": "OnbApplicantTasks.ApplicantId",
+    "loc:OnbTasks": "OnbApplicantTasks.OnbTaskId",
+    "dom:OnbApplicantTask_OnbTaskId": "OnbApplicantTasks.OnbTaskId",
+    "loc:DueDays": "OnbApplicantTasks.DueDays",
+    "dom:OnbApplicantTask_DueDays": "OnbApplicantTasks.DueDays",
+    "loc:IsCompleted": "OnbApplicantTasks.IsCompleted",
+    "dom:OnbApplicantTask_IsCompleted": "OnbApplicantTasks.IsCompleted",
+    "loc:CompletedOn": "OnbApplicantTasks.CompletedOn",
+    "dom:OnbApplicantTask_CompletedOn": "OnbApplicantTasks.CompletedOn",
+    "loc:TemplateUserData": "OnbApplicantTasks.TemplateUserData",
+    "dom:OnbApplicantTask_TemplateUserData": "OnbApplicantTasks.TemplateUserData"
+  },
+  "fields": [
+    {
+      "id": "OnbApplicantTasks.ApplicantId",
+      "label": "Applicant",
+      "section": null,
+      "aliases": [
+        "loc:Applicant",
+        "dom:OnbApplicantTask_ApplicantId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة المتقدمون.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المتقدم.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.OnbTaskId",
+      "label": "OnbTasks",
+      "section": null,
+      "aliases": [
+        "loc:OnbTasks",
+        "dom:OnbApplicantTask_OnbTaskId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.DueDays",
+      "label": "DueDays",
+      "section": null,
+      "aliases": [
+        "loc:DueDays",
+        "dom:OnbApplicantTask_DueDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام المسموح بها لإنجازها.</p><p><strong>مثال.</strong> <code>7</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.IsCompleted",
+      "label": "IsCompleted",
+      "section": null,
+      "aliases": [
+        "loc:IsCompleted",
+        "dom:OnbApplicantTask_IsCompleted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا أُنجزت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.CompletedOn",
+      "label": "CompletedOn",
+      "section": null,
+      "aliases": [
+        "loc:CompletedOn",
+        "dom:OnbApplicantTask_CompletedOn"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تاريخ إنجازها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbApplicantTasks.TemplateUserData",
+      "label": "TemplateUserData",
+      "section": null,
+      "aliases": [
+        "loc:TemplateUserData",
+        "dom:OnbApplicantTask_TemplateUserData"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما عبّأه المتقدم في نموذج المهمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "helpId": "rec.onb-template.edit",
+  "lang": "ar",
+  "title": "قوالب التهيئة الوظيفية — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.OnbTemplate",
+  "overviewHtml": "<p>نموذج لمستندات التهيئة أو نماذجها.</p>",
+  "aliasIndex": {
+    "loc:TemplateTitle": "OnbTemplate.TemplateTitle",
+    "dom:OnbTemplate_TemplateTitle": "OnbTemplate.TemplateTitle",
+    "loc:TemplateId": "OnbTemplate.TemplateId",
+    "dom:OnbTemplate_TemplateId": "OnbTemplate.TemplateId"
+  },
+  "fields": [
+    {
+      "id": "OnbTemplate.TemplateTitle",
+      "label": "TemplateTitle",
+      "section": "OnbTemplates",
+      "aliases": [
+        "loc:TemplateTitle",
+        "dom:OnbTemplate_TemplateTitle"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان النموذج.</p><p><strong>مثال.</strong> حزمة الموظف الجديد</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplate.TemplateId",
+      "label": "TemplateId",
+      "section": "OnbTemplates",
+      "aliases": [
+        "loc:TemplateId",
+        "dom:OnbTemplate_TemplateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعرّف الخاص بالنموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

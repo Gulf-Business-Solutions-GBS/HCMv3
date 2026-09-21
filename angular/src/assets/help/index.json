@@ -5345,6 +5345,339 @@
     ],
     "PATimeline_EndDate": [
       "perf.patimeline.edit"
+    ],
+    "ApplicantCV_JobTitleId": [
+      "rec.applicant-cv.edit"
+    ],
+    "ApplicantCV_CvName": [
+      "rec.applicant-cv.edit"
+    ],
+    "ApplicantCV_UploadDate": [
+      "rec.applicant-cv.edit"
+    ],
+    "CVLanguage_LanguageInfoId": [
+      "rec.cvlanguage.edit"
+    ],
+    "CVLanguage_Proficiency": [
+      "rec.cvlanguage.edit"
+    ],
+    "CVQualification_QualificationId": [
+      "rec.cvqualification.edit"
+    ],
+    "CVQualification_University": [
+      "rec.cvqualification.edit"
+    ],
+    "CVQualification_Percentage": [
+      "rec.cvqualification.edit"
+    ],
+    "CVQualification_PassedYear": [
+      "rec.cvqualification.edit"
+    ],
+    "CVSkill_Skill": [
+      "rec.cvskill.edit"
+    ],
+    "CVSkill_Proficiency": [
+      "rec.cvskill.edit"
+    ],
+    "CVWorkExp_Company": [
+      "rec.cvwork-exp.edit"
+    ],
+    "CVWorkExp_Position": [
+      "rec.cvwork-exp.edit"
+    ],
+    "CVWorkExp_StartDate": [
+      "rec.cvwork-exp.edit"
+    ],
+    "CVWorkExp_EndDate": [
+      "rec.cvwork-exp.edit"
+    ],
+    "CVWorkExp_Responsibilities": [
+      "rec.cvwork-exp.edit"
+    ],
+    "Applicant_Code": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_TitleId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_FirstNameEn": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_SecondNameEn": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_ThirdNameEn": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_LastNameEn": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_FirstNameAr": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_SecondNameAr": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_ThirdNameAr": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_LastNameAr": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_BirthDate": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Gender": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_MaritalStatusId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_NationalityId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_ReligionId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_QualificationId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_JobTitleId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_BloodGroup": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_CivilID": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_CountryId": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_PassportNum": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_PlaceOfBirth": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_DrivingLicense": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Photo": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_CurrentAddress": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_PermanentAddress": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Address1": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Address2": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Telephone": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Mobile": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Email": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_JoiningDate": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_ProbationEndDate": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_IsAgency": [
+      "rec.applicant.edit"
+    ],
+    "Applicant_Comments": [
+      "rec.applicant.edit"
+    ],
+    "ApplicationStatus_VacancyId": [
+      "rec.application-status.edit"
+    ],
+    "ApplicationStatus_ApplicantCVId": [
+      "rec.application-status.edit"
+    ],
+    "ApplicationStatus_AppStatus": [
+      "rec.application-status.edit"
+    ],
+    "ApplicationStatus_CoverLetter": [
+      "rec.application-status.edit"
+    ],
+    "InterviewDetails_ApplicationStatusId": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_InterviewDate": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_InterviewTime": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Place": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Interviewer1Id": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Interviewer2Id": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Interviewer3Id": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Comments1": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Comments2": [
+      "rec.interview-details.edit"
+    ],
+    "InterviewDetails_Comments3": [
+      "rec.interview-details.edit"
+    ],
+    "OnbGroupDetail_OnbGroupId": [
+      "rec.onb-group-detail.edit"
+    ],
+    "OnbGroupDetail_OnbTaskId": [
+      "rec.onb-group-detail.edit"
+    ],
+    "OnbGroupDetail_JobTitleId": [
+      "rec.onb-group-detail.edit"
+    ],
+    "OnbGroup_NameEn": [
+      "rec.onb-group.edit"
+    ],
+    "OnbGroup_NameAr": [
+      "rec.onb-group.edit"
+    ],
+    "OnbTask_TaskNameEn": [
+      "rec.onb-task.edit"
+    ],
+    "OnbTask_TaskNameAr": [
+      "rec.onb-task.edit"
+    ],
+    "OnbTask_OnbTemplateId": [
+      "rec.onb-task.edit"
+    ],
+    "OnbTask_DueDays": [
+      "rec.onb-task.edit"
+    ],
+    "OnbTask_Guideline": [
+      "rec.onb-task.edit"
+    ],
+    "OnbTemplate_TemplateTitle": [
+      "rec.onb-template.edit"
+    ],
+    "OnbTemplate_TemplateId": [
+      "rec.onb-template.edit"
+    ],
+    "OnbVideoLink_NameEn": [
+      "rec.onb-video-link.edit"
+    ],
+    "OnbVideoLink_NameAr": [
+      "rec.onb-video-link.edit"
+    ],
+    "OnbVideoLink_Link": [
+      "rec.onb-video-link.edit"
+    ],
+    "OnbVideoLink_IsActive": [
+      "rec.onb-video-link.edit"
+    ],
+    "Vacancy_Code": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_VacancyTitle": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_JobTitleId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_OrganizationUnitId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_RequestionDate": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_PublishOn": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_ClosingDate": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_VacancyStatus": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_EmploymentType": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_SlaDaysToFill": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_TotalVacancy": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_YearsOfExperience": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_MonthlySalaryRange": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_QualificationId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_IsBudgeted": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_TemplateOnbGroupId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_OnbGroupId": [
+      "rec.vacancy.edit"
+    ],
+    "Vacancy_JobDescription": [
+      "rec.vacancy.edit"
+    ],
+    "OnbAppTaskComment_OnbApplicantTasksId": [
+      "rec.onb-app-task-comment.edit"
+    ],
+    "OnbAppTaskComment_Comments": [
+      "rec.onb-app-task-comment.edit"
+    ],
+    "OnbAppTaskComment_IsByAdmin": [
+      "rec.onb-app-task-comment.edit"
+    ],
+    "OnbApplicantTask_ApplicantId": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbApplicantTask_OnbTaskId": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbApplicantTask_DueDays": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbApplicantTask_IsCompleted": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbApplicantTask_CompletedOn": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbApplicantTask_TemplateUserData": [
+      "rec.onb-applicant-task.edit"
+    ],
+    "OnbTemplateDetail_OnbTemplateId": [
+      "rec.onb-template-detail.edit"
+    ],
+    "OnbTemplateDetail_TemplateId": [
+      "rec.onb-template-detail.edit"
+    ],
+    "OnbTemplateDetail_TemplateData": [
+      "rec.onb-template-detail.edit"
     ]
   }
 }

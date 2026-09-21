@@ -1,0 +1,75 @@
+{
+  "helpId": "rec.application-status.edit",
+  "lang": "ar",
+  "title": "حالات الطلبات — إنشاء / تحرير",
+  "entity": "HCMv3.Recruitment.ApplicationStatus",
+  "overviewHtml": "<p>طلب مرشح لشاغر بإحدى سيره الذاتية، والمرحلة التي بلغها — تم التقديم أو القائمة المختصرة أو المقابلة أو العرض أو التعيين أو الرفض أو الالتحاق.</p><p>وضبطه على <em>التحق</em> ينشئ سجل الموظف من المتقدم (انظر صفحة المتقدم)، ويجب ملء تاريخي الالتحاق ونهاية التجربة للمتقدم أولاً. وبعد أن يتجاوز الطلب مرحلة <em>تم التقديم</em> لا يعود المرشح قادراً على تعديل تلك السيرة أو حذفها في موقع الوظائف.</p>",
+  "aliasIndex": {
+    "loc:Vacancy": "ApplicationStatus.VacancyId",
+    "dom:ApplicationStatus_VacancyId": "ApplicationStatus.VacancyId",
+    "loc:ApplicantCVs": "ApplicationStatus.ApplicantCVId",
+    "dom:ApplicationStatus_ApplicantCVId": "ApplicationStatus.ApplicantCVId",
+    "loc:AppStatus": "ApplicationStatus.AppStatus",
+    "dom:ApplicationStatus_AppStatus": "ApplicationStatus.AppStatus",
+    "loc:CoverLetter": "ApplicationStatus.CoverLetter",
+    "dom:ApplicationStatus_CoverLetter": "ApplicationStatus.CoverLetter"
+  },
+  "fields": [
+    {
+      "id": "ApplicationStatus.VacancyId",
+      "label": "Vacancy",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:Vacancy",
+        "dom:ApplicationStatus_VacancyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوظائف الشاغرة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشاغر المُتقدَّم إليه.</p><p><strong>مثال.</strong> محاسب أول</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.ApplicantCVId",
+      "label": "ApplicantCVs",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:ApplicantCVs",
+        "dom:ApplicationStatus_ApplicantCVId"
+      ],
+      "rules": "اختياري. يُختار من قائمة السير الذاتية للمتقدمين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السيرة الذاتية التي تقدّم بها المرشح.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.AppStatus",
+      "label": "AppStatus",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:AppStatus",
+        "dom:ApplicationStatus_AppStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: Applied، Shortlisted، Interviewed، JobOffer، Hired، مرفوض، Joined.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المرحلة التي بلغها الطلب.</p><p><strong>مثال.</strong> القائمة المختصرة</p><p><strong>لماذا يهم.</strong> تنشئ مرحلة <em>التحق</em> الموظف. ويمكن لتقرير حالة الشواغر التصفية بها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ApplicationStatus.CoverLetter",
+      "label": "CoverLetter",
+      "section": "ApplicationStatuses",
+      "aliases": [
+        "loc:CoverLetter",
+        "dom:ApplicationStatus_CoverLetter"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> خطاب التقديم من المرشح.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

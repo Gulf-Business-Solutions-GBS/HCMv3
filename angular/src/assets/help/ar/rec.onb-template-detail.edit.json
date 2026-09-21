@@ -1,0 +1,59 @@
+{
+  "helpId": "rec.onb-template-detail.edit",
+  "lang": "ar",
+  "title": "Onb Template Detail",
+  "entity": "HCMv3.Recruitment.OnbTemplateDetails",
+  "overviewHtml": "<p>محتوى نموذج التهيئة.</p>",
+  "aliasIndex": {
+    "loc:OnbTemplates": "OnbTemplateDetails.OnbTemplateId",
+    "dom:OnbTemplateDetail_OnbTemplateId": "OnbTemplateDetails.OnbTemplateId",
+    "loc:TemplateId": "OnbTemplateDetails.TemplateId",
+    "dom:OnbTemplateDetail_TemplateId": "OnbTemplateDetails.TemplateId",
+    "loc:TemplateData": "OnbTemplateDetails.TemplateData",
+    "dom:OnbTemplateDetail_TemplateData": "OnbTemplateDetails.TemplateData"
+  },
+  "fields": [
+    {
+      "id": "OnbTemplateDetails.OnbTemplateId",
+      "label": "OnbTemplates",
+      "section": null,
+      "aliases": [
+        "loc:OnbTemplates",
+        "dom:OnbTemplateDetail_OnbTemplateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قوالب التهيئة الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplateDetails.TemplateId",
+      "label": "TemplateId",
+      "section": null,
+      "aliases": [
+        "loc:TemplateId",
+        "dom:OnbTemplateDetail_TemplateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> معرّف النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OnbTemplateDetails.TemplateData",
+      "label": "TemplateData",
+      "section": null,
+      "aliases": [
+        "loc:TemplateData",
+        "dom:OnbTemplateDetail_TemplateData"
+      ],
+      "rules": "اختياري. الحد الأقصى 5000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> محتوى النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
