@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.UI;
 using HCMv3.PersonnelAdministration;
 using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Recruitment;
@@ -21,7 +22,8 @@ public class ApplicationStatusesAppService_Tests : RecruitmentAppServiceTestBase
             FakeRepository.For<ApplicationStatus>(Context),
             FakeRepository.For<ApplicantCV>(Context),
             employeeRepository,
-            new EmployeeCodeGenerator(employeeRepository)));
+            new EmployeeCodeGenerator(employeeRepository),
+            new EmployeeValidator(employeeRepository)));
     }
 
     /// <summary>An applicant with all four name parts in both languages and the dates Joined requires.</summary>
@@ -137,5 +139,64 @@ public class ApplicationStatusesAppService_Tests : RecruitmentAppServiceTestBase
         });
 
         Context.Employees.Count(e => e.FirstNameEn == "John").ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Should_Reject_Joined_When_An_Active_Employee_Has_The_Same_Civil_Id()
+    {
+        var existingEmployeeId = CreateEmployee();
+        var existing = Context.Employees.Single(e => e.Id == existingEmployeeId);
+        existing.CivilID = 123456789012; // same as CreateApplicant's
+        existing.Status = EmployeeStatus.Active;
+        Context.SaveChanges();
+
+        var applicantCVId = CreateJoinableApplicantCV();
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(new CreateOrEditApplicationStatusDto
+        {
+            ApplicantCVId = applicantCVId,
+            AppStatus = AppStatus.Joined
+        }));
+
+        Context.Employees.Any(e => e.FirstNameEn == "John").ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Reject_Joined_When_Joining_Date_Is_Not_After_Birth_Date()
+    {
+        var applicantCVId = CreateJoinableApplicantCV();
+        var applicant = Context.ApplicantCVs.Where(c => c.Id == applicantCVId).Select(c => c.Applicant).Single();
+        applicant.JoiningDate = applicant.BirthDate;
+        Context.SaveChanges();
+
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(new CreateOrEditApplicationStatusDto
+        {
+            ApplicantCVId = applicantCVId,
+            AppStatus = AppStatus.Joined
+        }));
+
+        Context.Employees.Any(e => e.FirstNameEn == "John").ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task Should_Reject_Joined_When_Applicant_Has_No_Nationality()
+    {
+        var applicantCVId = CreateJoinableApplicantCV();
+        var applicant = Context.ApplicantCVs.Where(c => c.Id == applicantCVId).Select(c => c.Applicant).Single();
+        applicant.NationalityId = null;
+        Context.SaveChanges();
+
+        var service = CreateAppService();
+
+        await Should.ThrowAsync<UserFriendlyException>(() => service.CreateOrEdit(new CreateOrEditApplicationStatusDto
+        {
+            ApplicantCVId = applicantCVId,
+            AppStatus = AppStatus.Joined
+        }));
+
+        Context.Employees.Any(e => e.FirstNameEn == "John").ShouldBeFalse();
     }
 }

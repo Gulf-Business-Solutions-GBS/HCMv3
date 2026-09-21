@@ -27,13 +27,16 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 {
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
+    private readonly IEmployeeValidator _employeeValidator;
 
     public EmployeesAppService(
         IRepository<Employee> employeeRepository,
-        IEmployeeCodeGenerator employeeCodeGenerator)
+        IEmployeeCodeGenerator employeeCodeGenerator,
+        IEmployeeValidator employeeValidator)
     {
         _employeeRepository = employeeRepository;
         _employeeCodeGenerator = employeeCodeGenerator;
+        _employeeValidator = employeeValidator;
     }
 
     [HttpPost]
@@ -120,7 +123,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 
         _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
-        await ValidateAsync(employee);
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.InsertAsync(employee);
     }
@@ -133,7 +136,7 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
 
         _employeeCodeGenerator.AssignCodeIfEmpty(employee);
         ApplyComputedFields(employee);
-        await ValidateAsync(employee);
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.UpdateAsync(employee);
     }
@@ -155,80 +158,6 @@ public class EmployeesAppService : HCMv3AppServiceBase, IEmployeesAppService
         // Calendar-days probation calculation only (legacy "Working Days" branch depends on
         // DutyPeriod/HolidayCalendar/TimeRegister -- Wave B/TimeManagement, not available yet).
         employee.ProbationEndDate = employee.JoiningDate.AddDays(employee.ProbationDays);
-    }
-
-    /// <summary>
-    /// Legacy <c>PerformValidation</c> parity: BirthDate/JoiningDate/ProbationDays sanity checks and
-    /// duplicate CivilID/AccessID checks (scoped to active employees, matching legacy).
-    /// </summary>
-    private async Task ValidateAsync(Employee employee)
-    {
-        var duplicateCode = await _employeeRepository.GetAll()
-            .AnyAsync(e => e.Id != employee.Id && e.Code == employee.Code);
-        if (duplicateCode)
-        {
-            throw new UserFriendlyException(L("DuplicateCodeFound"));
-        }
-
-        if (employee.BirthDate.Date >= DateTime.Now.Date)
-        {
-            throw new UserFriendlyException(L("BirthDateCannotBeFutureOrCurrent"));
-        }
-
-        if (employee.JoiningDate.Date <= employee.BirthDate.Date)
-        {
-            throw new UserFriendlyException(L("JoiningDateCannotBeEarlierThanBirthDate"));
-        }
-
-        if (employee.ProbationDays < 0)
-        {
-            throw new UserFriendlyException(L("ProbationDaysCannotBeNegative"));
-        }
-
-        var duplicateCivilId = await _employeeRepository.GetAll()
-            .Where(e => e.Id != employee.Id
-                        && e.CivilID == employee.CivilID
-                        && e.Status == EmployeeStatus.Active)
-            .Select(e => e.Code)
-            .FirstOrDefaultAsync();
-        if (duplicateCivilId != null)
-        {
-            throw new UserFriendlyException(L("DuplicateCivilIdFound", duplicateCivilId));
-        }
-
-        if (!employee.AccessID.IsNullOrWhiteSpace())
-        {
-            var duplicateAccessId = await _employeeRepository.GetAll()
-                .Where(e => e.Id != employee.Id
-                            && e.AccessID == employee.AccessID
-                            && e.Status == EmployeeStatus.Active)
-                .Select(e => e.Code)
-                .FirstOrDefaultAsync();
-            if (duplicateAccessId != null)
-            {
-                throw new UserFriendlyException(L("DuplicateAccessIdFound", duplicateAccessId));
-            }
-        }
-
-        // LoginID identifies WHO IS SIGNED IN, so it must name exactly one employee.
-        //
-        // Deliberately NOT scoped to Status == Active, unlike the CivilID/AccessID checks above. Those
-        // answer "is this identifier in use right now"; this one answers "can this login ever resolve to
-        // two people". A resigned employee's row keeps its LoginID, and the fallback lookup in
-        // EmployeeSessionService does not filter by status either -- so allowing a leaver's LoginID to be
-        // reused would reintroduce exactly the ambiguity Employee.UserId exists to remove. To free a login
-        // for reuse, clear it on the employee who left; the error message says so.
-        if (!employee.LoginID.IsNullOrWhiteSpace())
-        {
-            var duplicateLoginId = await _employeeRepository.GetAll()
-                .Where(e => e.Id != employee.Id && e.LoginID == employee.LoginID)
-                .Select(e => e.Code)
-                .FirstOrDefaultAsync();
-            if (duplicateLoginId != null)
-            {
-                throw new UserFriendlyException(L("DuplicateLoginIdFound", employee.LoginID, duplicateLoginId));
-            }
-        }
     }
 
     private static Employee MapToEntity(CreateOrEditEmployeeDto input, Employee employee)

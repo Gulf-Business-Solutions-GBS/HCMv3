@@ -30,17 +30,20 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
     private readonly IRepository<ApplicantCV> _applicantCVRepository;
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
+    private readonly IEmployeeValidator _employeeValidator;
 
     public ApplicationStatusesAppService(
         IRepository<ApplicationStatus> applicationStatusRepository,
         IRepository<ApplicantCV> applicantCVRepository,
         IRepository<Employee> employeeRepository,
-        IEmployeeCodeGenerator employeeCodeGenerator)
+        IEmployeeCodeGenerator employeeCodeGenerator,
+        IEmployeeValidator employeeValidator)
     {
         _applicationStatusRepository = applicationStatusRepository;
         _applicantCVRepository = applicantCVRepository;
         _employeeRepository = employeeRepository;
         _employeeCodeGenerator = employeeCodeGenerator;
+        _employeeValidator = employeeValidator;
     }
 
     [HttpPost]
@@ -163,6 +166,13 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             return;
         }
 
+        // Nationality is optional on the applicant but required on the employee (the employee screen's DTO
+        // rejects a blank one), so a Joined applicant without one cannot become an employee.
+        if (!applicant.NationalityId.HasValue)
+        {
+            throw new UserFriendlyException(L("NationalityRequired"));
+        }
+
         var employee = new Employee
         {
             TenantId = entity.TenantId,
@@ -179,7 +189,7 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             BirthDate = applicant.BirthDate,
             JoiningDate = applicant.JoiningDate,
             ProbationEndDate = applicant.ProbationEndDate,
-            NationalityId = applicant.NationalityId ?? 0,
+            NationalityId = applicant.NationalityId.Value,
             ReligionId = applicant.ReligionId,
             Gender = applicant.Gender,
             MaritalStatusId = applicant.MaritalStatusId,
@@ -199,6 +209,11 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
         // so both are applied here -- otherwise the employee has a first-name-only name and a blank code.
         employee.ApplyFullNames();
         _employeeCodeGenerator.AssignCodeIfEmpty(employee);
+
+        // Same save-time rules as the employee screen (legacy ran PerformValidation from Employee.OnSaving):
+        // a clash on civil ID, access ID or login ID, or impossible dates, stops the status change instead of
+        // creating an employee the employee screen would refuse to save.
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.InsertAsync(employee);
     }
