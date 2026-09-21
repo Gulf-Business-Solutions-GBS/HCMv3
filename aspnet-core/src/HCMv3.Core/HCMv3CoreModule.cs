@@ -32,6 +32,7 @@ using Abp.Zero;
 using Abp.Zero.Configuration;
 using Abp.Zero.Ldap;
 using Abp.Zero.Ldap.Configuration;
+using HCMv3.Integrations.Services;
 using Castle.MicroKernel.Registration;
 using MailKit.Security;
 using HCMv3.Authentication.TwoFactor;
@@ -133,6 +134,13 @@ public class HCMv3CoreModule : AbpModule
             //Disabling email sending in debug mode
             Configuration.ReplaceService<IEmailSender, NullEmailSender>(DependencyLifeStyle.Transient);
         }
+        else
+        {
+            // Honour the Integration Center's SMTP switch. Registered only outside debug so that the
+            // blanket debug suppression above still wins -- a developer who turned the switch on should
+            // not start sending real mail from a local build.
+            Configuration.ReplaceService<IEmailSender, HCMv3GatedEmailSender>(DependencyLifeStyle.Transient);
+        }
 
         Configuration.ReplaceService(typeof(IEmailSenderConfiguration), () =>
         {
@@ -158,6 +166,31 @@ public class HCMv3CoreModule : AbpModule
 
         RegisterBusinessRuleEntityHooks();
         RegisterPayrollLockHooks();
+        RegisterIntegrationConnectors();
+    }
+
+    /// <summary>
+    /// Exposes every Integration Center connector under <see cref="IIntegrationConnector"/>.
+    ///
+    /// THIS IS NOT REDUNDANT with the convention registration above, and leaving it out is a silent
+    /// failure rather than a loud one. ABP's conventional registrar registers a class under itself and
+    /// under its DEFAULT interface -- the one whose name matches, so <c>BioTimeConnector</c> would be
+    /// registered as <c>IBioTimeConnector</c>, which does not exist. Nothing is registered as
+    /// <see cref="IIntegrationConnector"/>, <c>ResolveAll</c> returns an empty array, and the Integration
+    /// Center renders a page with no cards on it and no error anywhere.
+    ///
+    /// Scanned rather than listed so that the design promise holds: a new integration is one new class,
+    /// with no registration list to remember to update. The explicit name keeps this registration from
+    /// colliding with the conventional one for the same implementation.
+    /// </summary>
+    private void RegisterIntegrationConnectors()
+    {
+        IocManager.IocContainer.Register(
+            Classes.FromAssembly(typeof(HCMv3CoreModule).GetAssembly())
+                .BasedOn<IIntegrationConnector>()
+                .WithService.Base()
+                .Configure(c => c.Named(c.Implementation.FullName + ":IIntegrationConnector"))
+                .LifestyleTransient());
     }
 
     /// <summary>

@@ -805,6 +805,11 @@ public class AppAuthorizationProvider : AuthorizationProvider
         organizationUnits.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits_ManageRoles, L("ManagingRoles"));
 
         administration.CreateChildPermission(AppPermissions.Pages_Administration_UiCustomization, L("VisualSettings"));
+
+        // Tenant-side only: every connector reads the current tenant's settings, so a host administrator
+        // opening the page would hit a missing tenant rather than a useful screen.
+        var integrationCenter = administration.CreateChildPermission(AppPermissions.Pages_Administration_IntegrationCenter, L("IntegrationCenter"), multiTenancySides: MultiTenancySides.Tenant);
+        integrationCenter.CreateChildPermission(AppPermissions.Pages_Administration_IntegrationCenter_ManageSecrets, L("ManageIntegrationSecrets"), multiTenancySides: MultiTenancySides.Tenant);
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Navigation_ManageScreenCodes, L("ManageScreenCodes"));
         administration.CreateChildPermission(AppPermissions.Pages_Administration_Navigation_ManageQuickLinks, L("ManageQuickLinks"));
         administration.CreateChildPermission(AppPermissions.Pages_Administration_ApiDictionary, L("ApiDictionary"));

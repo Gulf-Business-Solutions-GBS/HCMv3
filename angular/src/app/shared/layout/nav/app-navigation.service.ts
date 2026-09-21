@@ -3512,6 +3512,12 @@ export class AppNavigationService {
                         '/app/admin/quick-links'
                     ),
                     new AppMenuItem(
+                        'IntegrationCenter',
+                        'Pages.Administration.IntegrationCenter',
+                        'flaticon-network',
+                        '/app/admin/integrations'
+                    ),
+                    new AppMenuItem(
                         'ApiDictionary',
                         'Pages.Administration.ApiDictionary',
                         'flaticon-book',

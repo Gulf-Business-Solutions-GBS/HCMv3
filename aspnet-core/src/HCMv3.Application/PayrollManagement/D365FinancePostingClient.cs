@@ -12,37 +12,28 @@ using Abp.Domain.Repositories;
 using Abp.UI;
 using HCMv3.OrganizationManagement;
 using HCMv3.PayrollManagement.Costing;
-using HCMv3.SystemSettings.Services;
+using HCMv3.Integrations;
+using HCMv3.Integrations.Services;
 
 namespace HCMv3.PayrollManagement;
 
 /// <inheritdoc cref="IFinancePostingClient"/>
 public class D365FinancePostingClient : HCMv3AppServiceBase, IFinancePostingClient, ITransientDependency
 {
-    // Legacy SysTenantConfig keys, read verbatim at uscCostingFile.ascx.cs lines 1102-1111.
-    public const string KeyRequestUrl = "REQUEST_URL";
-    public const string KeyClientId = "CLIENT_ID";
-    public const string KeyGrantType = "GRANT_TYPE";
-    public const string KeyResource = "RESOURCE";
-    public const string KeyClientSecret = "CLIENT_SECRET";
-    public const string KeyChangesetLimit = "CHANGESET_LIMIT";
-    public const string KeyRequestUrlJournalHeader = "REQUEST_URL_JOURNAL_HEADER";
-    public const string KeyRequestUrlJournalLine = "REQUEST_URL_JOURNAL_LINE";
-    public const string KeyJournalHeaderODataETag = "JOURNAL_HEADER_ODATA_ETAG";
 
     /// <summary>Legacy hardcoded journal name (line 1159).</summary>
     public const string JournalName = "General";
 
-    private readonly ISysSettingsAccessor _sysSettingsAccessor;
+    private readonly ID365FinanceConfigReader _configReader;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IRepository<CostElement> _costElementRepository;
 
     public D365FinancePostingClient(
-        ISysSettingsAccessor sysSettingsAccessor,
+        ID365FinanceConfigReader configReader,
         IHttpClientFactory httpClientFactory,
         IRepository<CostElement> costElementRepository)
     {
-        _sysSettingsAccessor = sysSettingsAccessor;
+        _configReader = configReader;
         _httpClientFactory = httpClientFactory;
         _costElementRepository = costElementRepository;
     }
@@ -50,20 +41,20 @@ public class D365FinancePostingClient : HCMv3AppServiceBase, IFinancePostingClie
     public async Task<string> PostJournalAsync(PayrollArea payrollArea, List<JournalVoucherLine> lines,
                                                string journalHeaderName)
     {
-        var requestUrl = await RequireConfigAsync(KeyRequestUrl);
-        var clientId = await RequireConfigAsync(KeyClientId);
-        var grantType = await RequireConfigAsync(KeyGrantType);
-        var resource = await RequireConfigAsync(KeyResource);
-        var clientSecret = await RequireConfigAsync(KeyClientSecret);
-        var journalHeaderUrl = await RequireConfigAsync(KeyRequestUrlJournalHeader);
-        var journalLineUrl = await RequireConfigAsync(KeyRequestUrlJournalLine);
-        var odataETag = await RequireConfigAsync(KeyJournalHeaderODataETag);
+        var requestUrl = await RequireConfigAsync(D365FinanceSettingKeys.RequestUrl);
+        var clientId = await RequireConfigAsync(D365FinanceSettingKeys.ClientId);
+        var grantType = await RequireConfigAsync(D365FinanceSettingKeys.GrantType);
+        var resource = await RequireConfigAsync(D365FinanceSettingKeys.Resource);
+        var clientSecret = await RequireConfigAsync(D365FinanceSettingKeys.ClientSecret);
+        var journalHeaderUrl = await RequireConfigAsync(D365FinanceSettingKeys.RequestUrlJournalHeader);
+        var journalLineUrl = await RequireConfigAsync(D365FinanceSettingKeys.RequestUrlJournalLine);
+        var odataETag = await RequireConfigAsync(D365FinanceSettingKeys.JournalHeaderODataETag);
 
-        var changesetLimitRaw = await RequireConfigAsync(KeyChangesetLimit);
+        var changesetLimitRaw = await RequireConfigAsync(D365FinanceSettingKeys.ChangesetLimit);
         if (!int.TryParse(changesetLimitRaw, NumberStyles.Integer, CultureInfo.InvariantCulture,
                           out var changesetLimit) || changesetLimit <= 0)
         {
-            throw new UserFriendlyException(L("FiPostingIntegrationNotConfigured", KeyChangesetLimit));
+            throw new UserFriendlyException(L("FiPostingIntegrationNotConfigured", D365FinanceSettingKeys.ChangesetLimit));
         }
 
         var companyName = payrollArea.FICompanyId == null
@@ -282,9 +273,15 @@ public class D365FinancePostingClient : HCMv3AppServiceBase, IFinancePostingClie
         });
     }
 
+    /// <summary>
+    /// Reads through <see cref="ID365FinanceConfigReader"/> rather than straight from
+    /// <c>SysTenantConfig</c>, so that settings entered in the Integration Center are the ones actually
+    /// used to post. Without this, the Integration Center's Dynamics card would save credentials that
+    /// posting silently ignored.
+    /// </summary>
     private async Task<string> RequireConfigAsync(string key)
     {
-        var value = await _sysSettingsAccessor.GetSysTenantConfigAsync(key);
+        var value = await _configReader.GetAsync(key);
         if (string.IsNullOrWhiteSpace(value))
         {
             throw new UserFriendlyException(L("FiPostingIntegrationNotConfigured", key));

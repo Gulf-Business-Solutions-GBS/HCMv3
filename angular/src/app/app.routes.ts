@@ -3938,6 +3938,14 @@ export const appRoutes: Routes = [
                         data: {},
                     },
                     {
+                        path: 'integrations',
+                        loadComponent: () =>
+                            import('./admin/integrations/integration-center.component').then(
+                                (m) => m.IntegrationCenterComponent
+                            ),
+                        data: {},
+                    },
+                    {
                         path: 'webhook-subscriptions',
                         loadComponent: () =>
                             import('./admin/webhook-subscription/webhook-subscription.component').then(

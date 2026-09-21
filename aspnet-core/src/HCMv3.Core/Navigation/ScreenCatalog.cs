@@ -49,6 +49,7 @@ public static class ScreenCatalog
         new("app.admin.bulk-password-reset", "SAD003", "Administration", "BulkPasswordReset", "/app/admin/bulk-password-reset", "Pages.Administration.Tools.BulkPasswordReset"),
         new("app.admin.copy-workflow-setup", "SAD004", "Administration", "CopyWorkflowSetup", "/app/admin/copy-workflow-setup", "Pages.Administration.Tools.CopyWorkflowSetup"),
         new("app.admin.dynamic-property", "SAD005", "Administration", "DynamicProperties", "/app/admin/dynamic-property", "Pages.Administration.DynamicProperties"),
+        new("app.admin.integrations", "SAD026", "Administration", "IntegrationCenter", "/app/admin/integrations", "Pages.Administration.IntegrationCenter"),
         new("app.admin.health-check-ui", "SAD006", "Administration", "HealthCheck", "/app/admin/health-check-ui", "Pages.Administration.Host.HealthCheck"),
         new("app.admin.hostdashboard", "SAD007", "Administration", "Dashboard", "/app/admin/hostDashboard", "Pages.Administration.Host.Dashboard"),
         new("app.admin.hostsettings", "SAD008", "Administration", "Settings", "/app/admin/hostSettings", "Pages.Administration.Host.Settings"),

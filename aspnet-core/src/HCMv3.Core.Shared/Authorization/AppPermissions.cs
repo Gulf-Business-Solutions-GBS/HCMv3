@@ -727,6 +727,18 @@ public static class AppPermissions
     public const string Pages_Administration_UiCustomization = "Pages.Administration.UiCustomization";
 
     /// <summary>
+    /// The Integration Center: see and configure every third-party connection in one place.
+    /// </summary>
+    public const string Pages_Administration_IntegrationCenter = "Pages.Administration.IntegrationCenter";
+
+    /// <summary>
+    /// Set the credentials an integration signs in with. Held apart from
+    /// <see cref="Pages_Administration_IntegrationCenter"/> so that someone may review what is connected,
+    /// and test it, without being handed the finance system's client secret.
+    /// </summary>
+    public const string Pages_Administration_IntegrationCenter_ManageSecrets = "Pages.Administration.IntegrationCenter.ManageSecrets";
+
+    /// <summary>
     /// Re-map a Screen Code. Codes are how people refer to screens to each other, so changing one
     /// changes shared vocabulary -- an administrator's decision, not a personal preference.
     /// </summary>
