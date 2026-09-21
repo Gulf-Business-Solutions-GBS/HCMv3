@@ -4512,6 +4512,144 @@
     "OrgSettings_EnableOrgChart3Levels": [
       "sys.org-settings.edit"
     ],
+    "PayrollSettings_ClientId": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_DefaultWorkingHours": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_DecimalInSalaryRegister": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_Decimal6RoundingFrom": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_PayslipSignature": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_RoundNetPay": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnablePayrollEngineAutorun": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_AllowSimulationRun": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_DisableRetroCalculation": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_LockSalaryRegisterOnPayrollExit": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_DefaultLeavePaymentType": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_LeaveAdvPaymentdateBefore15": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_LeaveAdvPaymentdateAfter15": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_LeaveProvisionAsPerCurrentSalary": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnableNotReturnFromLeaveLogic": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_GenerateRegisterOnNotReturnFromLeave": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_ApplyAnnualleaveNoImpactLogic": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FullMonthLeaveAdjForFixedDays": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_PayLeaveAsPerCutoff": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_RegularLeaveEncashOnBasicPayOnly": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FnFLeaveEncashOnBasicPayOnly": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnableBasicpayMoreThenFixedDays": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnableUnpaidDedSlabWise": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnableFixedDaysLogicChange": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FixedToActualWhenUpaidLeaveFound": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_FixedToActualWhenAbsentDayFound": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_OvertimeHoursBasis": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_SocialSecurityRateRule": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_CarryAllowanceOnSalaryImport": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_AllowHealthReimburseBalCarryFwd": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_OffcycleBankFileCutoff": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_BankFileMinAmount": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_PickOffcyclePayment": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_RunOffCycleForFutureDate": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_AutoUpdateLoanRecoveryEndDate": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EnableEffectiveDateInRecPayment": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_AllowDeleteBackdatedSalaryRegister": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_AutoFillFnFCompensation": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_EditableAutoFillFnFCompensation": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_ShowBillingTypeInPaymentScreen": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_IncludeSalaryIncProvDiffInSalReg": [
+      "sys.payroll-settings.edit"
+    ],
+    "PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt": [
+      "sys.payroll-settings.edit"
+    ],
     "PersonnelSettings_ProbationDaysCalculation": [
       "sys.personnel-settings.edit"
     ],

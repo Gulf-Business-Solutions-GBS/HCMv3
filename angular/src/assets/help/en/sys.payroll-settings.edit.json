@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Payroll settings",
   "entity": "HCMv3.SystemSettings.ManagePayrollSettings",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>Company-wide payroll behaviour: rounding, working hours, how fixed-days pay is prorated, leave pay and provision rules, not-returned-from-leave handling, off-cycle runs and bank files.</p><p>Most of these match switches in the legacy payroll and are applied exactly as it did. Several are not read at present and say so below.</p><p>There is one settings record per company; it cannot be deleted.</p>",
   "aliasIndex": {
     "loc:ClientId": "ManagePayrollSettings.ClientId",
     "dom:PayrollSettings_ClientId": "ManagePayrollSettings.ClientId",
@@ -109,9 +109,9 @@
       ],
       "rules": "Optional.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The legacy customer code that selected customer-specific report variants.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.DefaultWorkingHours",
@@ -123,9 +123,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The working hours in a normal day.</p><p><strong>Example.</strong> <code>8</code></p><p><strong>Why it matters.</strong> Used to turn hours into days: the overtime hourly rate when <strong>Overtime Hours Basis</strong> is <em>Fixed Hours</em>, payments entered in hours, late and early deductions after monthly tolerance, and hourly leave on a duty with no set times.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.DecimalInSalaryRegister",
@@ -137,9 +137,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The decimal places payslip amounts are rounded to.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> 0 means 3.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.Decimal6RoundingFrom",
@@ -151,9 +151,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month from which the current rounding applies.</p><p><strong>Example.</strong> <code>2024-01-01</code></p><p><strong>Why it matters.</strong> Payslips for months before this date are rounded the old way, to the currency's decimal places. Left blank, the current rounding applies to every month.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.PayslipSignature",
@@ -165,9 +165,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the payslip shows a signature panel.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.RoundNetPay",
@@ -179,9 +179,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether net pay is rounded to 2 decimal places.</p><p><strong>Why it matters.</strong> Ticked, net pay is rounded to 2 decimals. Unticked, it is rounded to the currency's decimals (3 for the Kuwaiti dinar).</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnablePayrollEngineAutorun",
@@ -193,9 +193,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the payroll engine runs automatically on a schedule.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.AllowSimulationRun",
@@ -207,9 +207,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether simulation payroll runs are allowed.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.DisableRetroCalculation",
@@ -221,9 +221,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether changes dated in a processed payroll period are refused.</p><p><strong>Why it matters.</strong> Ticked, adding, changing or deleting payroll-related records dated before the current period is refused — before the period start while it is open or released, up to its end once it is closed. Unticked, such changes are allowed and payroll works out the difference retroactively.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
@@ -235,9 +235,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether payslips are locked when a period moves on.</p><p><strong>Why it matters.</strong> Ticked, closing a period locks that month's regular payslips and releasing it for payroll locks its off-cycle ones, so they can no longer be changed or deleted.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.DefaultLeavePaymentType",
@@ -249,9 +249,9 @@
       ],
       "rules": "Required. One of: None, Pay With Payroll, Pay In Advance, Pay Full With Payroll.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The leave payment type offered by default on new leave.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
@@ -263,9 +263,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The advance payment date for leave starting before the 15th.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
@@ -277,9 +277,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The advance payment date for leave starting after the 15th.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
@@ -291,9 +291,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the annual leave provision values the whole balance at the current salary.</p><p><strong>Why it matters.</strong> Despite its name: ticked, the provision is worked out period by period over the employee's past basic pay records. Unticked, the whole leave balance is valued at the current month's pay.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
@@ -305,9 +305,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether employees who have not returned from leave are treated specially.</p><p><strong>Why it matters.</strong> Ticked, an employee whose return-date-required leave has ended with no return recorded gets no basic pay for the run, and the time engine counts their rest days as absent.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
@@ -319,9 +319,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a payslip is still produced for an employee who has not returned from leave.</p><p><strong>Why it matters.</strong> Unticked, a regular run stops for such an employee with a message and produces no payslip. Off-cycle runs ignore this setting.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
@@ -333,9 +333,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a special \"no impact\" annual leave is recognised in fixed-days pay.</p><p><strong>Why it matters.</strong> Ticked, when a month is counted on actual days, leave of a type named exactly \"Annual Leave (No impact indemnity)\" is handled differently from other leave. The type is recognised by its English name.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
@@ -347,9 +347,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a whole calendar month on annual leave counts as 26 leave days.</p><p><strong>Why it matters.</strong> Ticked, in an annual leave longer than 27 days, each full calendar month it covers counts as 26 leave days (less public holidays and rest days) rather than being counted day by day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.PayLeaveAsPerCutoff",
@@ -361,9 +361,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a leave not yet returned from is paid according to the payroll area's cut-off day.</p><p><strong>Why it matters.</strong> Ticked, in a regular run only such leave that started on or before the area's cut-off day is dealt with in that month.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
@@ -375,9 +375,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave encashment in regular and advance runs is valued on basic pay only.</p><p><strong>Why it matters.</strong> Ticked, encashment uses wagetype <code>1000</code> alone instead of all the wagetypes that make up leave pay.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
@@ -389,9 +389,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave encashment at end of service is valued on basic pay only.</p><p><strong>Why it matters.</strong> Ticked, in the end-of-service run encashment uses wagetype <code>1000</code> alone.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
@@ -403,9 +403,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether basic pay is still paid in a month with 26 or more leave days.</p><p><strong>Why it matters.</strong> Unticked, a month with 26 or more leave days pays no basic pay working days — the leave covers the month. Ticked, working days are still counted.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
@@ -417,9 +417,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether unpaid days are taken off indemnity slab by slab.</p><p><strong>Why it matters.</strong> Ticked, unpaid leave and absent days are deducted from the service in each indemnity slab they fall in. Unticked, they are deducted from the total service before it is split into slabs.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnableFixedDaysLogicChange",
@@ -431,9 +431,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a changed fixed-days logic is used.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
@@ -445,9 +445,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether an employee who joins early in the month stays on fixed-days pay.</p><p><strong>Why it matters.</strong> Ticked, with a <strong>Partial Period Cutoff Day</strong> set, an employee joining before that day is paid on fixed days less the working days before joining, instead of on actual days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
@@ -459,9 +459,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a month is paid on actual working days when a leave runs across the start of the month.</p><p><strong>Why it matters.</strong> For basic pay on <em>Fixed Days Per Month</em>, a month is normally paid as the fixed days less absences. Ticked, a month in which a leave runs across the start of the month is counted on actual working days instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
@@ -473,9 +473,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a month is paid on actual working days when a leave runs past the end of the month.</p><p><strong>Why it matters.</strong> For basic pay on <em>Fixed Days Per Month</em>, a month is normally paid as the fixed days less absences. Ticked, a month in which a leave runs past the end of the month is counted on actual working days instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
@@ -487,9 +487,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a month is paid on actual working days when the employee has unpaid leave.</p><p><strong>Why it matters.</strong> For basic pay on <em>Fixed Days Per Month</em>, a month is normally paid as the fixed days less absences. Ticked, a month in which the employee has unpaid leave is counted on actual working days instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
@@ -501,9 +501,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a month is paid on actual working days when the employee has absent days.</p><p><strong>Why it matters.</strong> For basic pay on <em>Fixed Days Per Month</em>, a month is normally paid as the fixed days less absences. Ticked, a month in which the employee has absent days is counted on actual working days instead.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
@@ -515,9 +515,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The day of the month before which a joiner stays on fixed-days pay.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Used with <strong>Change Partial Period Factoring</strong>. A day beyond the month's length means its last day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.OvertimeHoursBasis",
@@ -529,9 +529,9 @@
       ],
       "rules": "Required. One of: Fixed Hours, Duty Hours.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The hours an hour of overtime is valued against.</p><p><strong>Example.</strong> Fixed Hours</p><p><strong>Why it matters.</strong> <em>Fixed Hours</em> divides the day's pay by <strong>Default Working Hours</strong>; <em>Duty Hours</em> uses the hours of the employee's duty that day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.SocialSecurityRateRule",
@@ -543,9 +543,9 @@
       ],
       "rules": "Required. One of: Wage Salary, Contract Salary.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The pay social security is worked out on.</p><p><strong>Example.</strong> Wage Salary</p><p><strong>Why it matters.</strong> <em>Wage Salary</em> uses the wagetypes marked <em>Include In Social Security</em>; <em>Contract Salary</em> uses the contract salary on the employee's sponsor record.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
@@ -557,9 +557,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether allowances are carried forward when salaries are imported.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
@@ -571,9 +571,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether unused health reimbursement carries into the next insurance year.</p><p><strong>Why it matters.</strong> Ticked, the unused balance is added to the next year's quota, still capped by the sub group's maximum.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.OffcycleBankFileCutoff",
@@ -585,9 +585,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The day of the month used as the cut-off date for off-cycle bank files.</p><p><strong>Example.</strong> <code>20</code></p><p><strong>Why it matters.</strong> 0 means the 1st; a day beyond the month's length means its last day.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.BankFileMinAmount",
@@ -599,9 +599,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The smallest net pay included in a bank file.</p><p><strong>Example.</strong> <code>1</code></p><p><strong>Why it matters.</strong> Payslips with a net pay below this are left out of the file. 0 includes everything.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.PickOffcyclePayment",
@@ -613,9 +613,9 @@
       ],
       "rules": "Required. One of: Current Date, Current Month.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How far ahead an automatic off-cycle run looks for advance payments.</p><p><strong>Example.</strong> Current Date</p><p><strong>Why it matters.</strong> With time engine autorun, <em>Current Date</em> picks up advance leave and payments dated up to today; <em>Current Month</em> picks up everything up to the pay date.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.RunOffCycleForFutureDate",
@@ -627,9 +627,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether an off-cycle run can pick up items dated after today.</p><p><strong>Why it matters.</strong> Unticked, an advance-leave off-cycle run only looks up to today even when the pay date is later.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
@@ -641,9 +641,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a loan's recovery end date moves when recovery is paused.</p><p><strong>Why it matters.</strong> Ticked, adding or changing a loan exemption recalculates the loan's recovery end date.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
@@ -655,9 +655,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether recurring payments use an effective date.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
@@ -669,9 +669,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether back-dated payslips may be deleted.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.AutoFillFnFCompensation",
@@ -683,9 +683,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the Full and Final settlement fills in the days to compensate.</p><p><strong>Why it matters.</strong> Ticked, the leave days to compensate are filled with the remaining leave balance, and the indemnity days with the suggested indemnity days.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
@@ -697,9 +697,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the filled-in compensation days can be edited.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
@@ -711,9 +711,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the payment screen shows the billing type.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
@@ -725,9 +725,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the provision difference from a salary increase is written to the payslip.</p><p><strong>Why it matters.</strong> Ticked, from the date below, the annual leave and indemnity provisions record the day-by-day difference caused by a salary change.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt",
@@ -739,9 +739,9 @@
       ],
       "rules": "Optional. Date value.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The date from which the salary-increase provision difference is recorded.</p><p><strong>Example.</strong> <code>2025-01-01</code></p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }
