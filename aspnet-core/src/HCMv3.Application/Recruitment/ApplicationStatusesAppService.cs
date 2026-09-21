@@ -8,6 +8,7 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using HCMv3.Authorization;
 using HCMv3.PersonnelAdministration;
+using HCMv3.PersonnelAdministration.Services;
 using HCMv3.Recruitment.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,15 +29,21 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
     private readonly IRepository<ApplicationStatus> _applicationStatusRepository;
     private readonly IRepository<ApplicantCV> _applicantCVRepository;
     private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeCodeGenerator _employeeCodeGenerator;
+    private readonly IEmployeeValidator _employeeValidator;
 
     public ApplicationStatusesAppService(
         IRepository<ApplicationStatus> applicationStatusRepository,
         IRepository<ApplicantCV> applicantCVRepository,
-        IRepository<Employee> employeeRepository)
+        IRepository<Employee> employeeRepository,
+        IEmployeeCodeGenerator employeeCodeGenerator,
+        IEmployeeValidator employeeValidator)
     {
         _applicationStatusRepository = applicationStatusRepository;
         _applicantCVRepository = applicantCVRepository;
         _employeeRepository = employeeRepository;
+        _employeeCodeGenerator = employeeCodeGenerator;
+        _employeeValidator = employeeValidator;
     }
 
     [HttpPost]
@@ -159,6 +166,13 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             return;
         }
 
+        // Nationality is optional on the applicant but required on the employee (the employee screen's DTO
+        // rejects a blank one), so a Joined applicant without one cannot become an employee.
+        if (!applicant.NationalityId.HasValue)
+        {
+            throw new UserFriendlyException(L("NationalityRequired"));
+        }
+
         var employee = new Employee
         {
             TenantId = entity.TenantId,
@@ -170,14 +184,12 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             SecondNameAr = applicant.SecondNameAr,
             ThirdNameAr = applicant.ThirdNameAr,
             LastNameAr = applicant.LastNameAr,
-            FullNameEn = applicant.FirstNameEn,
-            FullNameAr = applicant.FirstNameAr,
             TitleId = applicant.TitleId,
             Status = EmployeeStatus.Active,
             BirthDate = applicant.BirthDate,
             JoiningDate = applicant.JoiningDate,
             ProbationEndDate = applicant.ProbationEndDate,
-            NationalityId = applicant.NationalityId ?? 0,
+            NationalityId = applicant.NationalityId.Value,
             ReligionId = applicant.ReligionId,
             Gender = applicant.Gender,
             MaritalStatusId = applicant.MaritalStatusId,
@@ -191,6 +203,17 @@ public class ApplicationStatusesAppService : HCMv3AppServiceBase, IApplicationSt
             CivilID = applicant.CivilID,
             Email = applicant.Email
         };
+
+        // Legacy set FullNameEn/Ar to the first name only here, but its emp.Save() then ran Employee.OnSaving,
+        // which rebuilt both full names and generated the code. Inserting directly skips EmployeesAppService,
+        // so both are applied here -- otherwise the employee has a first-name-only name and a blank code.
+        employee.ApplyFullNames();
+        _employeeCodeGenerator.AssignCodeIfEmpty(employee);
+
+        // Same save-time rules as the employee screen (legacy ran PerformValidation from Employee.OnSaving):
+        // a clash on civil ID, access ID or login ID, or impossible dates, stops the status change instead of
+        // creating an employee the employee screen would refuse to save.
+        _employeeValidator.Validate(employee);
 
         await _employeeRepository.InsertAsync(employee);
     }

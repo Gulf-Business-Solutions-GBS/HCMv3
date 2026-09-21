@@ -384,8 +384,7 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
 
         // The full name and the probation end date are stored, not worked out when read: the employee service
         // recomputes them on every save (EmployeesAppService.ApplyComputedFields) and so must this.
-        employee.FullNameEn = JoinNames(employee.FirstNameEn, employee.SecondNameEn, employee.ThirdNameEn, employee.LastNameEn);
-        employee.FullNameAr = JoinNames(employee.FirstNameAr, employee.SecondNameAr, employee.ThirdNameAr, employee.LastNameAr);
+        employee.ApplyFullNames();
         employee.ProbationEndDate = employee.JoiningDate.AddDays(employee.ProbationDays);
         await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -701,9 +700,6 @@ public class GoLiveEmployeeLoader : AbpServiceBase, ITransientDependency
         await CurrentUnitOfWork.SaveChangesAsync();
         return true;
     }
-
-    private static string JoinNames(params string[] parts) =>
-        string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
 
     /// <summary>First word to the first name, the rest to the last -- which joins back to the same full name.</summary>
     private static (string First, string Last) SplitName(string fullName)

@@ -43,7 +43,7 @@ Setting it to *Joined* creates the employee record from the applicant (see the a
 **Rules.** Required. One of: Applied, Shortlisted, Interviewed, JobOffer, Hired, Rejected, Joined.
 
 :::admin
-The employee created on *Joined* has no employee code, and its full names are set to the first names only. Open the new employee and save it once: saving gives it the next code and builds the full names from all the name parts.
+The employee created on *Joined* gets the next employee code, and its full names are built from all the name parts, the same as saving on the employee screen. No employee is created if one already has the same English names and birth date. The status change is refused, and no employee is created, if the applicant has no nationality, if the joining date is not after the birth date, or if an active employee already has the same civil ID. Fix the applicant and set *Joined* again.
 :::
 
 ## CoverLetter {#ApplicationStatus.CoverLetter}
