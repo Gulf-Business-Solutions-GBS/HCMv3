@@ -1,0 +1,91 @@
+{
+  "helpId": "org.organization-unit-type.edit",
+  "lang": "en",
+  "title": "Organization Unit Types — Create / Edit",
+  "entity": "HCMv3.OrganizationManagement.OrganizationUnitType",
+  "overviewHtml": "<p>A level of the organisation tree, such as company, division or department. The code must be one of the fixed levels Level0 to Level9, where Level0 is the top.</p>",
+  "aliasIndex": {
+    "loc:Code": "OrganizationUnitType.Code",
+    "dom:OrganizationUnitType_Code": "OrganizationUnitType.Code",
+    "loc:NameEn": "OrganizationUnitType.NameEn",
+    "dom:OrganizationUnitType_NameEn": "OrganizationUnitType.NameEn",
+    "loc:NameAr": "OrganizationUnitType.NameAr",
+    "dom:OrganizationUnitType_NameAr": "OrganizationUnitType.NameAr",
+    "loc:AllowLeaveConflict": "OrganizationUnitType.AllowLeaveConflict",
+    "dom:OrganizationUnitType_AllowLeaveConflict": "OrganizationUnitType.AllowLeaveConflict",
+    "loc:AssignPayrollArea": "OrganizationUnitType.AssignPayrollArea",
+    "dom:OrganizationUnitType_AssignPayrollArea": "OrganizationUnitType.AssignPayrollArea"
+  },
+  "fields": [
+    {
+      "id": "OrganizationUnitType.Code",
+      "label": "Code",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:OrganizationUnitType_Code"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.NameEn",
+      "label": "NameEn",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OrganizationUnitType_NameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.NameAr",
+      "label": "NameAr",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OrganizationUnitType_NameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.AllowLeaveConflict",
+      "label": "AllowLeaveConflict",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:AllowLeaveConflict",
+        "dom:OrganizationUnitType_AllowLeaveConflict"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave may overlap within units of this level.</p><p><strong>Why it matters.</strong> Only one level can have it ticked. Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.AssignPayrollArea",
+      "label": "AssignPayrollArea",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:AssignPayrollArea",
+        "dom:OrganizationUnitType_AssignPayrollArea"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether units of this level carry a payroll area.</p><p><strong>Why it matters.</strong> Only one level other than Level0 can have it ticked. Go-Live Setup reads it when it creates the company unit, giving the unit a payroll area only when the level has this ticked.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

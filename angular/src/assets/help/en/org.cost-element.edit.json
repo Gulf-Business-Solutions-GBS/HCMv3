@@ -1,0 +1,75 @@
+{
+  "helpId": "org.cost-element.edit",
+  "lang": "en",
+  "title": "Cost Elements — Create / Edit",
+  "entity": "HCMv3.OrganizationManagement.CostElement",
+  "overviewHtml": "<p>An extra accounting dimension, such as a department code or activity, set on wage accounts and employee account assignments. Its code is written onto payroll journal lines alongside the account. The type cannot be blank.</p>",
+  "aliasIndex": {
+    "loc:Code": "CostElement.Code",
+    "dom:CostElement_Code": "CostElement.Code",
+    "loc:NameEn": "CostElement.NameEn",
+    "dom:CostElement_NameEn": "CostElement.NameEn",
+    "loc:NameAr": "CostElement.NameAr",
+    "dom:CostElement_NameAr": "CostElement.NameAr",
+    "loc:CostElementType": "CostElement.CostElementTypeId",
+    "dom:CostElement_CostElementTypeId": "CostElement.CostElementTypeId"
+  },
+  "fields": [
+    {
+      "id": "CostElement.Code",
+      "label": "Code",
+      "section": "CostElements",
+      "aliases": [
+        "loc:Code",
+        "dom:CostElement_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.NameEn",
+      "label": "NameEn",
+      "section": "CostElements",
+      "aliases": [
+        "loc:NameEn",
+        "dom:CostElement_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.NameAr",
+      "label": "NameAr",
+      "section": "CostElements",
+      "aliases": [
+        "loc:NameAr",
+        "dom:CostElement_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "CostElement.CostElementTypeId",
+      "label": "CostElementType",
+      "section": "CostElements",
+      "aliases": [
+        "loc:CostElementType",
+        "dom:CostElement_CostElementTypeId"
+      ],
+      "rules": "Optional. Chosen from Cost Element Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of dimension.</p><p><strong>Example.</strong> Department</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "helpId": "org.work-location.edit",
+  "lang": "en",
+  "title": "Work Locations — Create / Edit",
+  "entity": "HCMv3.OrganizationManagement.WorkLocation",
+  "overviewHtml": "<p>A place employees work, such as an office or site. Employees are placed in one on their organisation assignment. With a position and range set, it is where the self-service geo punch checks the employee is standing.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkLocation.Code",
+    "dom:WorkLocation_Code": "WorkLocation.Code",
+    "loc:NameEn": "WorkLocation.NameEn",
+    "dom:WorkLocation_NameEn": "WorkLocation.NameEn",
+    "loc:NameAr": "WorkLocation.NameAr",
+    "dom:WorkLocation_NameAr": "WorkLocation.NameAr",
+    "loc:Latitude": "WorkLocation.Latitude",
+    "dom:WorkLocation_Latitude": "WorkLocation.Latitude",
+    "loc:Longitude": "WorkLocation.Longitude",
+    "dom:WorkLocation_Longitude": "WorkLocation.Longitude",
+    "loc:GeoRange": "WorkLocation.GeoRange",
+    "dom:WorkLocation_GeoRange": "WorkLocation.GeoRange",
+    "loc:Address": "WorkLocation.Address",
+    "dom:WorkLocation_Address": "WorkLocation.Address",
+    "loc:GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "dom:WorkLocation_GeoFenceCoordinates": "WorkLocation.GeoFenceCoordinates",
+    "loc:IsActive": "WorkLocation.IsActive",
+    "dom:WorkLocation_IsActive": "WorkLocation.IsActive"
+  },
+  "fields": [
+    {
+      "id": "WorkLocation.Code",
+      "label": "Code",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkLocation_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.NameEn",
+      "label": "NameEn",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkLocation_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.NameAr",
+      "label": "NameAr",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkLocation_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Latitude",
+      "label": "Latitude",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Latitude",
+        "dom:WorkLocation_Latitude"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The location's latitude.</p><p><strong>Example.</strong> 29.3759</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Longitude",
+      "label": "Longitude",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Longitude",
+        "dom:WorkLocation_Longitude"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The location's longitude.</p><p><strong>Example.</strong> 47.9774</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.GeoRange",
+      "label": "GeoRange",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:GeoRange",
+        "dom:WorkLocation_GeoRange"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far from the point, in metres, a geo punch still counts as on site.</p><p><strong>Example.</strong> 200</p><p><strong>Why it matters.</strong> The server measures the distance from the employee's phone to the point. Within the range the punch is accepted; beyond it the punch goes through only when the self-service setting AllowPunchOutsideRange is on.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.Address",
+      "label": "Address",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:Address",
+        "dom:WorkLocation_Address"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The street address.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.GeoFenceCoordinates",
+      "label": "GeoFenceCoordinates",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:GeoFenceCoordinates",
+        "dom:WorkLocation_GeoFenceCoordinates"
+      ],
+      "rules": "Optional. Maximum 2000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A boundary drawn around the location.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocation.IsActive",
+      "label": "IsActive",
+      "section": "WorkLocations",
+      "aliases": [
+        "loc:IsActive",
+        "dom:WorkLocation_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the location is in use.</p><p><strong>Why it matters.</strong> Not read at present: inactive locations can still be chosen and punched at.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

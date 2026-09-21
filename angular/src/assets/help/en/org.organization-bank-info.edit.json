@@ -1,0 +1,75 @@
+{
+  "helpId": "org.organization-bank-info.edit",
+  "lang": "en",
+  "title": "Organization Bank Info — Create / Edit",
+  "entity": "HCMv3.OrganizationManagement.OrganizationBankInfo",
+  "overviewHtml": "<p>A bank account held by part of the organisation. Bank files that carry the company's account take it from here: the account of the top-level unit is used, or failing that any account that is filled in. The organisation unit, bank and account number cannot be blank.</p>",
+  "aliasIndex": {
+    "loc:OrgUnit": "OrganizationBankInfo.OrganizationUnitId",
+    "dom:OrganizationBankInfo_OrganizationUnitId": "OrganizationBankInfo.OrganizationUnitId",
+    "loc:Bank": "OrganizationBankInfo.BankId",
+    "dom:OrganizationBankInfo_BankId": "OrganizationBankInfo.BankId",
+    "loc:AccountNo": "OrganizationBankInfo.AccountNo",
+    "dom:OrganizationBankInfo_AccountNo": "OrganizationBankInfo.AccountNo",
+    "loc:SC_Code": "OrganizationBankInfo.SC_Code",
+    "dom:OrganizationBankInfo_SC_Code": "OrganizationBankInfo.SC_Code"
+  },
+  "fields": [
+    {
+      "id": "OrganizationBankInfo.OrganizationUnitId",
+      "label": "OrgUnit",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:OrgUnit",
+        "dom:OrganizationBankInfo_OrganizationUnitId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The part of the organisation that holds the account.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.BankId",
+      "label": "Bank",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:Bank",
+        "dom:OrganizationBankInfo_BankId"
+      ],
+      "rules": "Optional. Chosen from Bank master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The bank.</p><p><strong>Example.</strong> NBK</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.AccountNo",
+      "label": "AccountNo",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:AccountNo",
+        "dom:OrganizationBankInfo_AccountNo"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The account number.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationBankInfo.SC_Code",
+      "label": "SC_Code",
+      "section": "OrganizationBankInfos",
+      "aliases": [
+        "loc:SC_Code",
+        "dom:OrganizationBankInfo_SC_Code"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A sort or branch code for the account.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

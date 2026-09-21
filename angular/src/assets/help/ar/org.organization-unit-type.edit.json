@@ -1,0 +1,91 @@
+{
+  "helpId": "org.organization-unit-type.edit",
+  "lang": "ar",
+  "title": "أنواع وحدات الشركة — إنشاء / تحرير",
+  "entity": "HCMv3.OrganizationManagement.OrganizationUnitType",
+  "overviewHtml": "<p>مستوى في شجرة المنظمة، مثل الشركة أو القطاع أو القسم. ويجب أن يكون الرمز أحد المستويات الثابتة من Level0 إلى Level9، حيث Level0 هو الأعلى.</p>",
+  "aliasIndex": {
+    "loc:Code": "OrganizationUnitType.Code",
+    "dom:OrganizationUnitType_Code": "OrganizationUnitType.Code",
+    "loc:NameEn": "OrganizationUnitType.NameEn",
+    "dom:OrganizationUnitType_NameEn": "OrganizationUnitType.NameEn",
+    "loc:NameAr": "OrganizationUnitType.NameAr",
+    "dom:OrganizationUnitType_NameAr": "OrganizationUnitType.NameAr",
+    "loc:AllowLeaveConflict": "OrganizationUnitType.AllowLeaveConflict",
+    "dom:OrganizationUnitType_AllowLeaveConflict": "OrganizationUnitType.AllowLeaveConflict",
+    "loc:AssignPayrollArea": "OrganizationUnitType.AssignPayrollArea",
+    "dom:OrganizationUnitType_AssignPayrollArea": "OrganizationUnitType.AssignPayrollArea"
+  },
+  "fields": [
+    {
+      "id": "OrganizationUnitType.Code",
+      "label": "Code",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:OrganizationUnitType_Code"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.NameEn",
+      "label": "NameEn",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:OrganizationUnitType_NameEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.NameAr",
+      "label": "NameAr",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:NameAr",
+        "dom:OrganizationUnitType_NameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.AllowLeaveConflict",
+      "label": "AllowLeaveConflict",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:AllowLeaveConflict",
+        "dom:OrganizationUnitType_AllowLeaveConflict"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز تداخل الإجازات داخل وحدات هذا المستوى.</p><p><strong>لماذا يهم.</strong> لا يمكن تحديده إلا لمستوى واحد. لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "OrganizationUnitType.AssignPayrollArea",
+      "label": "AssignPayrollArea",
+      "section": "OrganizationUnitTypes",
+      "aliases": [
+        "loc:AssignPayrollArea",
+        "dom:OrganizationUnitType_AssignPayrollArea"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت وحدات هذا المستوى تحمل منطقة رواتب.</p><p><strong>لماذا يهم.</strong> لا يمكن تحديده إلا لمستوى واحد غير Level0. ويقرؤه إعداد الانطلاق عند إنشاء وحدة الشركة، فلا يعطي الوحدة منطقة رواتب إلا إذا كان محدداً لمستواها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

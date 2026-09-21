@@ -7346,6 +7346,111 @@
         }
       },
       "defaultSection": "Projects"
+    },
+    {
+      "helpId": "org.cost-center.edit",
+      "title": "Cost Centers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.CostCenters.Create"
+      ],
+      "entity": {
+        "name": "CostCenter",
+        "fullName": "HCMv3.OrganizationManagement.CostCenter",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/CostCenter.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/cost-centers/create-or-edit-cost-center-modal.component.html"
+        }
+      },
+      "defaultSection": "CostCenters"
+    },
+    {
+      "helpId": "org.cost-element.edit",
+      "title": "Cost Elements — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.CostElements.Create"
+      ],
+      "entity": {
+        "name": "CostElement",
+        "fullName": "HCMv3.OrganizationManagement.CostElement",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/CostElement.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/cost-elements/create-or-edit-cost-element-modal.component.html"
+        }
+      },
+      "defaultSection": "CostElements"
+    },
+    {
+      "helpId": "org.organization-bank-info.edit",
+      "title": "Organization Bank Info — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.OrganizationBankInfos.Create"
+      ],
+      "entity": {
+        "name": "OrganizationBankInfo",
+        "fullName": "HCMv3.OrganizationManagement.OrganizationBankInfo",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/OrganizationBankInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/organization-bank-infos/create-or-edit-organization-bank-info-modal.component.html"
+        }
+      },
+      "defaultSection": "OrganizationBankInfos"
+    },
+    {
+      "helpId": "org.organization-unit-type.edit",
+      "title": "Organization Unit Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.OrganizationUnitTypes.Create"
+      ],
+      "entity": {
+        "name": "OrganizationUnitType",
+        "fullName": "HCMv3.OrganizationManagement.OrganizationUnitType",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/OrganizationUnitType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/organization-unit-types/create-or-edit-organization-unit-type-modal.component.html"
+        }
+      },
+      "defaultSection": "OrganizationUnitTypes"
+    },
+    {
+      "helpId": "org.work-location.edit",
+      "title": "Work Locations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.OrganizationManagement.WorkLocations.Create"
+      ],
+      "entity": {
+        "name": "WorkLocation",
+        "fullName": "HCMv3.OrganizationManagement.WorkLocation",
+        "file": "aspnet-core/src/HCMv3.Core/OrganizationManagement/WorkLocation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/organization-management/work-locations/create-or-edit-work-location-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkLocations"
     }
   ]
 }

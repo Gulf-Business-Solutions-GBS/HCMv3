@@ -7277,6 +7277,84 @@
     ],
     "Project_Comments": [
       "prj.project.edit"
+    ],
+    "CostCenter_Code": [
+      "org.cost-center.edit"
+    ],
+    "CostCenter_NameEn": [
+      "org.cost-center.edit"
+    ],
+    "CostCenter_NameAr": [
+      "org.cost-center.edit"
+    ],
+    "CostCenter_CostCenterGroupId": [
+      "org.cost-center.edit"
+    ],
+    "CostElement_Code": [
+      "org.cost-element.edit"
+    ],
+    "CostElement_NameEn": [
+      "org.cost-element.edit"
+    ],
+    "CostElement_NameAr": [
+      "org.cost-element.edit"
+    ],
+    "CostElement_CostElementTypeId": [
+      "org.cost-element.edit"
+    ],
+    "OrganizationBankInfo_OrganizationUnitId": [
+      "org.organization-bank-info.edit"
+    ],
+    "OrganizationBankInfo_BankId": [
+      "org.organization-bank-info.edit"
+    ],
+    "OrganizationBankInfo_AccountNo": [
+      "org.organization-bank-info.edit"
+    ],
+    "OrganizationBankInfo_SC_Code": [
+      "org.organization-bank-info.edit"
+    ],
+    "OrganizationUnitType_Code": [
+      "org.organization-unit-type.edit"
+    ],
+    "OrganizationUnitType_NameEn": [
+      "org.organization-unit-type.edit"
+    ],
+    "OrganizationUnitType_NameAr": [
+      "org.organization-unit-type.edit"
+    ],
+    "OrganizationUnitType_AllowLeaveConflict": [
+      "org.organization-unit-type.edit"
+    ],
+    "OrganizationUnitType_AssignPayrollArea": [
+      "org.organization-unit-type.edit"
+    ],
+    "WorkLocation_Code": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_NameEn": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_NameAr": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_Latitude": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_Longitude": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_GeoRange": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_Address": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_GeoFenceCoordinates": [
+      "org.work-location.edit"
+    ],
+    "WorkLocation_IsActive": [
+      "org.work-location.edit"
     ]
   }
 }
