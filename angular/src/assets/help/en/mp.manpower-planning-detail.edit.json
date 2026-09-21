@@ -1,0 +1,235 @@
+{
+  "helpId": "mp.manpower-planning-detail.edit",
+  "lang": "en",
+  "title": "Manpower Planning Details — Create / Edit",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningDetail",
+  "overviewHtml": "<p>One job title in a manpower plan, with its budget for each month. Once the line has a position, each month's amount (other than 0) must lie between that position's minimum and maximum salary.</p>",
+  "aliasIndex": {
+    "loc:JobTitle": "ManpowerPlanningDetail.JobTitleId",
+    "dom:ManpowerPlanningDetail_JobTitleId": "ManpowerPlanningDetail.JobTitleId",
+    "loc:Holder": "ManpowerPlanningDetail.HolderId",
+    "dom:ManpowerPlanningDetail_HolderId": "ManpowerPlanningDetail.HolderId",
+    "loc:January": "ManpowerPlanningDetail.January",
+    "dom:ManpowerPlanningDetail_January": "ManpowerPlanningDetail.January",
+    "loc:February": "ManpowerPlanningDetail.February",
+    "dom:ManpowerPlanningDetail_February": "ManpowerPlanningDetail.February",
+    "loc:March": "ManpowerPlanningDetail.March",
+    "dom:ManpowerPlanningDetail_March": "ManpowerPlanningDetail.March",
+    "loc:April": "ManpowerPlanningDetail.April",
+    "dom:ManpowerPlanningDetail_April": "ManpowerPlanningDetail.April",
+    "loc:May": "ManpowerPlanningDetail.May",
+    "dom:ManpowerPlanningDetail_May": "ManpowerPlanningDetail.May",
+    "loc:June": "ManpowerPlanningDetail.June",
+    "dom:ManpowerPlanningDetail_June": "ManpowerPlanningDetail.June",
+    "loc:July": "ManpowerPlanningDetail.July",
+    "dom:ManpowerPlanningDetail_July": "ManpowerPlanningDetail.July",
+    "loc:August": "ManpowerPlanningDetail.August",
+    "dom:ManpowerPlanningDetail_August": "ManpowerPlanningDetail.August",
+    "loc:September": "ManpowerPlanningDetail.September",
+    "dom:ManpowerPlanningDetail_September": "ManpowerPlanningDetail.September",
+    "loc:October": "ManpowerPlanningDetail.October",
+    "dom:ManpowerPlanningDetail_October": "ManpowerPlanningDetail.October",
+    "loc:November": "ManpowerPlanningDetail.November",
+    "dom:ManpowerPlanningDetail_November": "ManpowerPlanningDetail.November",
+    "loc:December": "ManpowerPlanningDetail.December",
+    "dom:ManpowerPlanningDetail_December": "ManpowerPlanningDetail.December"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanningDetail.JobTitleId",
+      "label": "JobTitle",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:ManpowerPlanningDetail_JobTitleId"
+      ],
+      "rules": "Required. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title requested.</p><p><strong>Example.</strong> Accountant</p><p><strong>Why it matters.</strong> On approval it names the new position and becomes its job title.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.HolderId",
+      "label": "Holder",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:Holder",
+        "dom:ManpowerPlanningDetail_HolderId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee expected to fill the position.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.January",
+      "label": "January",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:January",
+        "dom:ManpowerPlanningDetail_January"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for January.</p><p><strong>Example.</strong> 850.000</p><p><strong>Why it matters.</strong> When the plan is approved, the new position's minimum, mid and maximum salary are all set to this amount.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.February",
+      "label": "February",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:February",
+        "dom:ManpowerPlanningDetail_February"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for February.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.March",
+      "label": "March",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:March",
+        "dom:ManpowerPlanningDetail_March"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for March.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.April",
+      "label": "April",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:April",
+        "dom:ManpowerPlanningDetail_April"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for April.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.May",
+      "label": "May",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:May",
+        "dom:ManpowerPlanningDetail_May"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for May.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.June",
+      "label": "June",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:June",
+        "dom:ManpowerPlanningDetail_June"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for June.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.July",
+      "label": "July",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:July",
+        "dom:ManpowerPlanningDetail_July"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for July.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.August",
+      "label": "August",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:August",
+        "dom:ManpowerPlanningDetail_August"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for August.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.September",
+      "label": "September",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:September",
+        "dom:ManpowerPlanningDetail_September"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for September.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.October",
+      "label": "October",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:October",
+        "dom:ManpowerPlanningDetail_October"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for October.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.November",
+      "label": "November",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:November",
+        "dom:ManpowerPlanningDetail_November"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for November.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningDetail.December",
+      "label": "December",
+      "section": "ManpowerPlanningDetails",
+      "aliases": [
+        "loc:December",
+        "dom:ManpowerPlanningDetail_December"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The budgeted monthly amount for December.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

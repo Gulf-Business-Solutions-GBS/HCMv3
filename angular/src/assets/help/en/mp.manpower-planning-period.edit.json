@@ -1,0 +1,75 @@
+{
+  "helpId": "mp.manpower-planning-period.edit",
+  "lang": "en",
+  "title": "Manpower Planning Periods — Create / Edit",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningPeriod",
+  "overviewHtml": "<p>A planning period, usually a budget year. The end date cannot be before the start date. Positions created from an approved plan start on the period's start date.</p>",
+  "aliasIndex": {
+    "loc:Name": "ManpowerPlanningPeriod.Name",
+    "dom:ManpowerPlanningPeriod_Name": "ManpowerPlanningPeriod.Name",
+    "loc:StartDate": "ManpowerPlanningPeriod.StartDate",
+    "dom:ManpowerPlanningPeriod_StartDate": "ManpowerPlanningPeriod.StartDate",
+    "loc:EndDate": "ManpowerPlanningPeriod.EndDate",
+    "dom:ManpowerPlanningPeriod_EndDate": "ManpowerPlanningPeriod.EndDate",
+    "loc:Active": "ManpowerPlanningPeriod.Active",
+    "dom:ManpowerPlanningPeriod_Active": "ManpowerPlanningPeriod.Active"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanningPeriod.Name",
+      "label": "Name",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:ManpowerPlanningPeriod_Name"
+      ],
+      "rules": "Required. Maximum 200 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The period's name. It is shown to the approver.</p><p><strong>Example.</strong> Budget 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.StartDate",
+      "label": "StartDate",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:ManpowerPlanningPeriod_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.EndDate",
+      "label": "EndDate",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:EndDate",
+        "dom:ManpowerPlanningPeriod_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.Active",
+      "label": "Active",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:Active",
+        "dom:ManpowerPlanningPeriod_Active"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the period is open for planning.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

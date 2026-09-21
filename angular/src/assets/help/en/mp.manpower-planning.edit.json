@@ -1,0 +1,75 @@
+{
+  "helpId": "mp.manpower-planning.edit",
+  "lang": "en",
+  "title": "Manpower Plannings — Create / Edit",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanning",
+  "overviewHtml": "<p>The headcount a department is asking for over a planning period: one line per job title with a monthly budget. A department can have one plan per period. The plan goes to approval, which needs a period and at least one line; the approver sees the department, period and amount. When it is approved, a vacant, budgeted position is created for every line that does not already have one.</p>",
+  "aliasIndex": {
+    "loc:Employee": "ManpowerPlanning.EmployeeId",
+    "dom:ManpowerPlanning_EmployeeId": "ManpowerPlanning.EmployeeId",
+    "loc:OrganizationUnit": "ManpowerPlanning.OrganizationUnitId",
+    "dom:ManpowerPlanning_OrganizationUnitId": "ManpowerPlanning.OrganizationUnitId",
+    "loc:Period": "ManpowerPlanning.PeriodId",
+    "dom:ManpowerPlanning_PeriodId": "ManpowerPlanning.PeriodId",
+    "loc:RequestComments": "ManpowerPlanning.RequestComments",
+    "dom:ManpowerPlanning_RequestComments": "ManpowerPlanning.RequestComments"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanning.EmployeeId",
+      "label": "Employee",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:Employee",
+        "dom:ManpowerPlanning_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee raising the plan.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:ManpowerPlanning_OrganizationUnitId"
+      ],
+      "rules": "Required. Chosen from Organization unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The department the plan is for.</p><p><strong>Example.</strong> Finance</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.PeriodId",
+      "label": "Period",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:Period",
+        "dom:ManpowerPlanning_PeriodId"
+      ],
+      "rules": "Required. Chosen from Manpower Planning Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The planning period.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.RequestComments",
+      "label": "RequestComments",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:RequestComments",
+        "dom:ManpowerPlanning_RequestComments"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Notes for the approver.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

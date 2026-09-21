@@ -7581,6 +7581,111 @@
         }
       },
       "defaultSection": "Travels"
+    },
+    {
+      "helpId": "mp.manpower-planning-detail.edit",
+      "title": "Manpower Planning Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ManpowerPlanningManagement.ManpowerPlanningDetails.Create"
+      ],
+      "entity": {
+        "name": "ManpowerPlanningDetail",
+        "fullName": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ManpowerPlanningManagement/ManpowerPlanningDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/manpower-planning-management/manpower-planning-detail/create-or-edit-manpower-planning-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ManpowerPlanningDetails"
+    },
+    {
+      "helpId": "mp.manpower-planning-period.edit",
+      "title": "Manpower Planning Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ManpowerPlanningManagement.ManpowerPlanningPeriods.Create"
+      ],
+      "entity": {
+        "name": "ManpowerPlanningPeriod",
+        "fullName": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/ManpowerPlanningManagement/ManpowerPlanningPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/manpower-planning-management/manpower-planning-periods/create-or-edit-manpower-planning-period-modal.component.html"
+        }
+      },
+      "defaultSection": "ManpowerPlanningPeriods"
+    },
+    {
+      "helpId": "mp.manpower-planning.edit",
+      "title": "Manpower Plannings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ManpowerPlanningManagement.ManpowerPlannings.Create"
+      ],
+      "entity": {
+        "name": "ManpowerPlanning",
+        "fullName": "HCMv3.ManpowerPlanningManagement.ManpowerPlanning",
+        "file": "aspnet-core/src/HCMv3.Core/ManpowerPlanningManagement/ManpowerPlanning.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/manpower-planning-management/manpower-plannings/create-or-edit-manpower-planning-modal.component.html"
+        }
+      },
+      "defaultSection": "ManpowerPlannings"
+    },
+    {
+      "helpId": "mp.position-relationship.edit",
+      "title": "Position Relationships — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ManpowerPlanningManagement.PositionRelationships.Create"
+      ],
+      "entity": {
+        "name": "PositionRelationship",
+        "fullName": "HCMv3.ManpowerPlanningManagement.PositionRelationship",
+        "file": "aspnet-core/src/HCMv3.Core/ManpowerPlanningManagement/PositionRelationship.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/manpower-planning-management/position-relationships/create-or-edit-position-relationship-modal.component.html"
+        }
+      },
+      "defaultSection": "PositionRelationships"
+    },
+    {
+      "helpId": "mp.position.edit",
+      "title": "Positions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ManpowerPlanningManagement.Positions.Create"
+      ],
+      "entity": {
+        "name": "Position",
+        "fullName": "HCMv3.ManpowerPlanningManagement.Position",
+        "file": "aspnet-core/src/HCMv3.Core/ManpowerPlanningManagement/Position.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/manpower-planning-management/positions/create-or-edit-position-modal.component.html"
+        }
+      },
+      "defaultSection": "Positions"
     }
   ]
 }

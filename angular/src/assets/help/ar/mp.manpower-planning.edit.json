@@ -1,0 +1,75 @@
+{
+  "helpId": "mp.manpower-planning.edit",
+  "lang": "ar",
+  "title": "خطط القوى العاملة — إنشاء / تحرير",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanning",
+  "overviewHtml": "<p>عدد الموظفين الذي يطلبه قسم خلال فترة تخطيط: سطر لكل مسمى وظيفي مع ميزانية شهرية. ولكل قسم خطة واحدة لكل فترة. تذهب الخطة إلى الموافقة، التي تتطلب فترة وسطراً واحداً على الأقل، ويرى المعتمد القسم والفترة والمبلغ. وعند الموافقة عليها، تُنشأ وظيفة شاغرة ومعتمدة في الميزانية لكل سطر ليست له وظيفة بعد.</p>",
+  "aliasIndex": {
+    "loc:Employee": "ManpowerPlanning.EmployeeId",
+    "dom:ManpowerPlanning_EmployeeId": "ManpowerPlanning.EmployeeId",
+    "loc:OrganizationUnit": "ManpowerPlanning.OrganizationUnitId",
+    "dom:ManpowerPlanning_OrganizationUnitId": "ManpowerPlanning.OrganizationUnitId",
+    "loc:Period": "ManpowerPlanning.PeriodId",
+    "dom:ManpowerPlanning_PeriodId": "ManpowerPlanning.PeriodId",
+    "loc:RequestComments": "ManpowerPlanning.RequestComments",
+    "dom:ManpowerPlanning_RequestComments": "ManpowerPlanning.RequestComments"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanning.EmployeeId",
+      "label": "Employee",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:Employee",
+        "dom:ManpowerPlanning_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يقدم الخطة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:ManpowerPlanning_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة Abp.Organizations.OrganizationUnit.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسم الذي تخصه الخطة.</p><p><strong>مثال.</strong> المالية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.PeriodId",
+      "label": "Period",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:Period",
+        "dom:ManpowerPlanning_PeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات تخطيط القوى العاملة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة التخطيط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanning.RequestComments",
+      "label": "RequestComments",
+      "section": "ManpowerPlannings",
+      "aliases": [
+        "loc:RequestComments",
+        "dom:ManpowerPlanning_RequestComments"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات للمعتمد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

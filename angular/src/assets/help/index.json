@@ -7460,6 +7460,147 @@
     ],
     "Travel_Comments": [
       "trv.travel.edit"
+    ],
+    "ManpowerPlanningDetail_JobTitleId": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_HolderId": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_January": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_February": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_March": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_April": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_May": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_June": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_July": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_August": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_September": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_October": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_November": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningDetail_December": [
+      "mp.manpower-planning-detail.edit"
+    ],
+    "ManpowerPlanningPeriod_Name": [
+      "mp.manpower-planning-period.edit"
+    ],
+    "ManpowerPlanningPeriod_StartDate": [
+      "mp.manpower-planning-period.edit"
+    ],
+    "ManpowerPlanningPeriod_EndDate": [
+      "mp.manpower-planning-period.edit"
+    ],
+    "ManpowerPlanningPeriod_Active": [
+      "mp.manpower-planning-period.edit"
+    ],
+    "ManpowerPlanning_EmployeeId": [
+      "mp.manpower-planning.edit"
+    ],
+    "ManpowerPlanning_OrganizationUnitId": [
+      "mp.manpower-planning.edit"
+    ],
+    "ManpowerPlanning_PeriodId": [
+      "mp.manpower-planning.edit"
+    ],
+    "ManpowerPlanning_RequestComments": [
+      "mp.manpower-planning.edit"
+    ],
+    "PositionRelationship_PositionId": [
+      "mp.position-relationship.edit"
+    ],
+    "PositionRelationship_RelationType": [
+      "mp.position-relationship.edit"
+    ],
+    "PositionRelationship_EmployeeId": [
+      "mp.position-relationship.edit"
+    ],
+    "PositionRelationship_StartDate": [
+      "mp.position-relationship.edit"
+    ],
+    "PositionRelationship_EndDate": [
+      "mp.position-relationship.edit"
+    ],
+    "Position_Code": [
+      "mp.position.edit"
+    ],
+    "Position_NameEn": [
+      "mp.position.edit"
+    ],
+    "Position_NameAr": [
+      "mp.position.edit"
+    ],
+    "Position_StartDate": [
+      "mp.position.edit"
+    ],
+    "Position_EndDate": [
+      "mp.position.edit"
+    ],
+    "Position_JobTitleId": [
+      "mp.position.edit"
+    ],
+    "Position_OrganizationUnitId": [
+      "mp.position.edit"
+    ],
+    "Position_ParentPositionId": [
+      "mp.position.edit"
+    ],
+    "Position_CostCenterId": [
+      "mp.position.edit"
+    ],
+    "Position_EmployeeGroupId": [
+      "mp.position.edit"
+    ],
+    "Position_EmployeeSubGroupId": [
+      "mp.position.edit"
+    ],
+    "Position_PayrollAreaId": [
+      "mp.position.edit"
+    ],
+    "Position_WorkLocationId": [
+      "mp.position.edit"
+    ],
+    "Position_FTELimit": [
+      "mp.position.edit"
+    ],
+    "Position_MinSalary": [
+      "mp.position.edit"
+    ],
+    "Position_MidSalary": [
+      "mp.position.edit"
+    ],
+    "Position_MaxSalary": [
+      "mp.position.edit"
+    ],
+    "Position_Vacant": [
+      "mp.position.edit"
+    ],
+    "Position_Active": [
+      "mp.position.edit"
+    ],
+    "Position_IsBudgeted": [
+      "mp.position.edit"
     ]
   }
 }

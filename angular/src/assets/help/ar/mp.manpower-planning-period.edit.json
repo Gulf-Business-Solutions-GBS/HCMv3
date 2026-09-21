@@ -1,0 +1,75 @@
+{
+  "helpId": "mp.manpower-planning-period.edit",
+  "lang": "ar",
+  "title": "فترات تخطيط القوى العاملة — إنشاء / تحرير",
+  "entity": "HCMv3.ManpowerPlanningManagement.ManpowerPlanningPeriod",
+  "overviewHtml": "<p>فترة تخطيط، عادةً سنة الميزانية. لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء. وتبدأ الوظائف المنشأة من خطة موافق عليها في تاريخ بدء الفترة.</p>",
+  "aliasIndex": {
+    "loc:Name": "ManpowerPlanningPeriod.Name",
+    "dom:ManpowerPlanningPeriod_Name": "ManpowerPlanningPeriod.Name",
+    "loc:StartDate": "ManpowerPlanningPeriod.StartDate",
+    "dom:ManpowerPlanningPeriod_StartDate": "ManpowerPlanningPeriod.StartDate",
+    "loc:EndDate": "ManpowerPlanningPeriod.EndDate",
+    "dom:ManpowerPlanningPeriod_EndDate": "ManpowerPlanningPeriod.EndDate",
+    "loc:Active": "ManpowerPlanningPeriod.Active",
+    "dom:ManpowerPlanningPeriod_Active": "ManpowerPlanningPeriod.Active"
+  },
+  "fields": [
+    {
+      "id": "ManpowerPlanningPeriod.Name",
+      "label": "Name",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:Name",
+        "dom:ManpowerPlanningPeriod_Name"
+      ],
+      "rules": "إلزامي. الحد الأقصى 200 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم الفترة، ويظهر للمعتمد.</p><p><strong>مثال.</strong> ميزانية 2027</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.StartDate",
+      "label": "StartDate",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:ManpowerPlanningPeriod_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.EndDate",
+      "label": "EndDate",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:EndDate",
+        "dom:ManpowerPlanningPeriod_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManpowerPlanningPeriod.Active",
+      "label": "Active",
+      "section": "ManpowerPlanningPeriods",
+      "aliases": [
+        "loc:Active",
+        "dom:ManpowerPlanningPeriod_Active"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الفترة مفتوحة للتخطيط.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

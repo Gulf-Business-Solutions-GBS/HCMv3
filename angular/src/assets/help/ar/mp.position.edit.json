@@ -1,0 +1,331 @@
+{
+  "helpId": "mp.position.edit",
+  "lang": "ar",
+  "title": "الوظائف — إنشاء / تحرير",
+  "entity": "HCMv3.ManpowerPlanningManagement.Position",
+  "overviewHtml": "<p>وظيفة في الهيكل: مقعد واحد أو عدة مقاعد لمسمى وظيفي. تُنشأ الوظائف يدوياً أو من خطة قوى عاملة موافق عليها، ويرسمها مخطط الوظائف من حقل \"ترفع تقاريرها إلى وظيفة\" لكل وظيفة. اترك الرمز فارغاً ليُعطى الرقم التالي. ولا يجوز أن تتبع الوظيفة نفسها.</p>",
+  "aliasIndex": {
+    "loc:Code": "Position.Code",
+    "dom:Position_Code": "Position.Code",
+    "loc:NameEn": "Position.NameEn",
+    "dom:Position_NameEn": "Position.NameEn",
+    "loc:NameAr": "Position.NameAr",
+    "dom:Position_NameAr": "Position.NameAr",
+    "loc:StartDate": "Position.StartDate",
+    "dom:Position_StartDate": "Position.StartDate",
+    "loc:EndDate": "Position.EndDate",
+    "dom:Position_EndDate": "Position.EndDate",
+    "loc:JobTitle": "Position.JobTitleId",
+    "dom:Position_JobTitleId": "Position.JobTitleId",
+    "loc:OrganizationUnit": "Position.OrganizationUnitId",
+    "dom:Position_OrganizationUnitId": "Position.OrganizationUnitId",
+    "loc:ParentPosition": "Position.ParentPositionId",
+    "dom:Position_ParentPositionId": "Position.ParentPositionId",
+    "loc:CostCenter": "Position.CostCenterId",
+    "dom:Position_CostCenterId": "Position.CostCenterId",
+    "loc:EmployeeGroup": "Position.EmployeeGroupId",
+    "dom:Position_EmployeeGroupId": "Position.EmployeeGroupId",
+    "loc:EmployeeSubGroup": "Position.EmployeeSubGroupId",
+    "dom:Position_EmployeeSubGroupId": "Position.EmployeeSubGroupId",
+    "loc:PayrollAreaId": "Position.PayrollAreaId",
+    "dom:Position_PayrollAreaId": "Position.PayrollAreaId",
+    "loc:WorkLocationId": "Position.WorkLocationId",
+    "dom:Position_WorkLocationId": "Position.WorkLocationId",
+    "loc:FTELimit": "Position.FTELimit",
+    "dom:Position_FTELimit": "Position.FTELimit",
+    "loc:MinSalary": "Position.MinSalary",
+    "dom:Position_MinSalary": "Position.MinSalary",
+    "loc:MidSalary": "Position.MidSalary",
+    "dom:Position_MidSalary": "Position.MidSalary",
+    "loc:MaxSalary": "Position.MaxSalary",
+    "dom:Position_MaxSalary": "Position.MaxSalary",
+    "loc:Vacant": "Position.Vacant",
+    "dom:Position_Vacant": "Position.Vacant",
+    "loc:Active": "Position.Active",
+    "dom:Position_Active": "Position.Active",
+    "loc:IsBudgeted": "Position.IsBudgeted",
+    "dom:Position_IsBudgeted": "Position.IsBudgeted"
+  },
+  "fields": [
+    {
+      "id": "Position.Code",
+      "label": "Code",
+      "section": "Positions",
+      "aliases": [
+        "loc:Code",
+        "dom:Position_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.NameEn",
+      "label": "NameEn",
+      "section": "Positions",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Position_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.NameAr",
+      "label": "NameAr",
+      "section": "Positions",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Position_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.StartDate",
+      "label": "StartDate",
+      "section": "Positions",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Position_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EndDate",
+      "label": "EndDate",
+      "section": "Positions",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Position_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.JobTitleId",
+      "label": "JobTitle",
+      "section": "Positions",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:Position_JobTitleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة المسميات الوظيفية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المسمى الوظيفي للوظيفة.</p><p><strong>مثال.</strong> محاسب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.OrganizationUnitId",
+      "label": "OrganizationUnit",
+      "section": "Positions",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:Position_OrganizationUnitId"
+      ],
+      "rules": "اختياري. يُختار من قائمة Abp.Organizations.OrganizationUnit.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القسم الذي تقع فيه الوظيفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.ParentPositionId",
+      "label": "ParentPosition",
+      "section": "Positions",
+      "aliases": [
+        "loc:ParentPosition",
+        "dom:Position_ParentPositionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الوظائف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوظيفة التي تتبعها هذه الوظيفة.</p><p><strong>مثال.</strong> مدير المالية</p><p><strong>لماذا يهم.</strong> يبني مخطط الوظائف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.CostCenterId",
+      "label": "CostCenter",
+      "section": "Positions",
+      "aliases": [
+        "loc:CostCenter",
+        "dom:Position_CostCenterId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مراكز التكلفة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مركز تكلفة الوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EmployeeGroupId",
+      "label": "EmployeeGroup",
+      "section": "Positions",
+      "aliases": [
+        "loc:EmployeeGroup",
+        "dom:Position_EmployeeGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة الموظفين للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.EmployeeSubGroupId",
+      "label": "EmployeeSubGroup",
+      "section": "Positions",
+      "aliases": [
+        "loc:EmployeeSubGroup",
+        "dom:Position_EmployeeSubGroupId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجموعة الفرعية للموظفين للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.PayrollAreaId",
+      "label": "PayrollAreaId",
+      "section": "Positions",
+      "aliases": [
+        "loc:PayrollAreaId",
+        "dom:Position_PayrollAreaId"
+      ],
+      "rules": "اختياري. يُختار من قائمة مناطق الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> منطقة الرواتب للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.WorkLocationId",
+      "label": "WorkLocationId",
+      "section": "Positions",
+      "aliases": [
+        "loc:WorkLocationId",
+        "dom:Position_WorkLocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل للوظيفة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.FTELimit",
+      "label": "FTELimit",
+      "section": "Positions",
+      "aliases": [
+        "loc:FTELimit",
+        "dom:Position_FTELimit"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عدد الأشخاص الذين يمكنهم شغل الوظيفة في الوقت نفسه.</p><p><strong>مثال.</strong> 1</p><p><strong>لماذا يهم.</strong> يجب أن يكون أكبر من 0. ويُرفض إضافة شاغل تجعل تواريخه الوظيفة تتجاوز هذا العدد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MinSalary",
+      "label": "MinSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MinSalary",
+        "dom:Position_MinSalary"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أدنى راتب للوظيفة.</p><p><strong>مثال.</strong> 700.000</p><p><strong>لماذا يهم.</strong> يجب أن تبقى أسطر خطة القوى العاملة لهذه الوظيفة ضمن الحد الأدنى والأقصى.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MidSalary",
+      "label": "MidSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MidSalary",
+        "dom:Position_MidSalary"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الراتب المتوسط للوظيفة.</p><p><strong>مثال.</strong> 800.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.MaxSalary",
+      "label": "MaxSalary",
+      "section": "Positions",
+      "aliases": [
+        "loc:MaxSalary",
+        "dom:Position_MaxSalary"
+      ],
+      "rules": "إلزامي. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أعلى راتب للوظيفة.</p><p><strong>مثال.</strong> 1,000.000</p><p><strong>لماذا يهم.</strong> انظر الحد الأدنى للراتب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.Vacant",
+      "label": "Vacant",
+      "section": "Positions",
+      "aliases": [
+        "loc:Vacant",
+        "dom:Position_Vacant"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الوظيفة غير مشغولة اليوم.</p><p><strong>لماذا يهم.</strong> يضبطه النظام كلما أُضيف شاغل أو عُدّل أو أُزيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.Active",
+      "label": "Active",
+      "section": "Positions",
+      "aliases": [
+        "loc:Active",
+        "dom:Position_Active"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الوظيفة مستخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Position.IsBudgeted",
+      "label": "IsBudgeted",
+      "section": "Positions",
+      "aliases": [
+        "loc:IsBudgeted",
+        "dom:Position_IsBudgeted"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الوظيفة ضمن الميزانية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
