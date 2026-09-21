@@ -1,0 +1,107 @@
+{
+  "helpId": "sec.sys-object.edit",
+  "lang": "ar",
+  "title": "كائنات النظام — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.SysObject",
+  "overviewHtml": "<p>قائمة النظام بأنواع السجلات، ومدى حساسية كل منها للرواتب والوقت. وتأشير نوع بأنه <em>حساس للرواتب</em> هو ما يُدخله تحت إقفال الرواتب وتتبع الأثر الرجعي: فأثناء إقفال منطقة الرواتب لا يمكن تعديل سجلات موظفيها من هذا النوع، والتعديل بتاريخ سابق يحدد التاريخ الذي يعيد نظام الرواتب الاحتساب منه.</p>",
+  "aliasIndex": {
+    "loc:Name": "SysObject.Name",
+    "dom:SysObject_Name": "SysObject.Name",
+    "loc:FullName": "SysObject.FullName",
+    "dom:SysObject_FullName": "SysObject.FullName",
+    "loc:IsPayrollSensitive": "SysObject.IsPayrollSensitive",
+    "dom:SysObject_IsPayrollSensitive": "SysObject.IsPayrollSensitive",
+    "loc:RespectPermission": "SysObject.RespectPermission",
+    "dom:SysObject_RespectPermission": "SysObject.RespectPermission",
+    "loc:MustRetroRun": "SysObject.MustRetroRun",
+    "dom:SysObject_MustRetroRun": "SysObject.MustRetroRun",
+    "loc:IsTimeSensitive": "SysObject.IsTimeSensitive",
+    "dom:SysObject_IsTimeSensitive": "SysObject.IsTimeSensitive"
+  },
+  "fields": [
+    {
+      "id": "SysObject.Name",
+      "label": "Name",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:Name",
+        "dom:SysObject_Name"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم نوع السجل.</p><p><strong>مثال.</strong> EmployeeBasicPay</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.FullName",
+      "label": "FullName",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:FullName",
+        "dom:SysObject_FullName"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاسم الكامل لصنف نوع السجل.</p><p><strong>مثال.</strong> <code>HCMv3.PersonnelAdministration.EmployeeBasicPay</code></p><p><strong>لماذا يهم.</strong> بهذا يطابق النظام السطر مع السجلات — فيجب أن يكون دقيقاً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.IsPayrollSensitive",
+      "label": "IsPayrollSensitive",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:IsPayrollSensitive",
+        "dom:SysObject_IsPayrollSensitive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات هذا النوع تؤثر في الرواتب.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُرفض التغييرات أثناء إقفال منطقة رواتب الموظف، والتعديل بتاريخ سابق يُسجَّل ويجعل نظام الرواتب يعيد الاحتساب من ذلك التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.RespectPermission",
+      "label": "RespectPermission",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:RespectPermission",
+        "dom:SysObject_RespectPermission"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الصلاحيات يُتحقق منها لهذا النوع.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.MustRetroRun",
+      "label": "MustRetroRun",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:MustRetroRun",
+        "dom:SysObject_MustRetroRun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التعديلات بتاريخ سابق من هذا النوع مسموحة دائماً.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه لا يمنع إعداد الرواتب <em>تعطيل الاحتساب بأثر رجعي</em> هذا النوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.IsTimeSensitive",
+      "label": "IsTimeSensitive",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:IsTimeSensitive",
+        "dom:SysObject_IsTimeSensitive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت تغييرات هذا النوع تؤثر في احتساب الوقت.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يجعل التعديلُ بتاريخ سابق محركَ الوقت يعيد احتساب الموظف من ذلك التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

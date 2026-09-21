@@ -1,0 +1,107 @@
+{
+  "helpId": "sec.sys-object.edit",
+  "lang": "en",
+  "title": "Sys Objects — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.SysObject",
+  "overviewHtml": "<p>The system's list of record types, and how sensitive each is to payroll and time. Marking a type <em>payroll sensitive</em> is what brings it under the payroll lock and retro tracking: while a payroll area is locked, its employees' records of that type cannot be changed, and a back-dated change sets the date payroll recalculates from.</p>",
+  "aliasIndex": {
+    "loc:Name": "SysObject.Name",
+    "dom:SysObject_Name": "SysObject.Name",
+    "loc:FullName": "SysObject.FullName",
+    "dom:SysObject_FullName": "SysObject.FullName",
+    "loc:IsPayrollSensitive": "SysObject.IsPayrollSensitive",
+    "dom:SysObject_IsPayrollSensitive": "SysObject.IsPayrollSensitive",
+    "loc:RespectPermission": "SysObject.RespectPermission",
+    "dom:SysObject_RespectPermission": "SysObject.RespectPermission",
+    "loc:MustRetroRun": "SysObject.MustRetroRun",
+    "dom:SysObject_MustRetroRun": "SysObject.MustRetroRun",
+    "loc:IsTimeSensitive": "SysObject.IsTimeSensitive",
+    "dom:SysObject_IsTimeSensitive": "SysObject.IsTimeSensitive"
+  },
+  "fields": [
+    {
+      "id": "SysObject.Name",
+      "label": "Name",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:Name",
+        "dom:SysObject_Name"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The record type's name.</p><p><strong>Example.</strong> EmployeeBasicPay</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.FullName",
+      "label": "FullName",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:FullName",
+        "dom:SysObject_FullName"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The record type's full class name.</p><p><strong>Example.</strong> <code>HCMv3.PersonnelAdministration.EmployeeBasicPay</code></p><p><strong>Why it matters.</strong> This is how the system matches the row to records — it must be exact.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.IsPayrollSensitive",
+      "label": "IsPayrollSensitive",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:IsPayrollSensitive",
+        "dom:SysObject_IsPayrollSensitive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether changes to this type affect payroll.</p><p><strong>Why it matters.</strong> Ticked, changes are refused while the employee's payroll area is locked, and a back-dated change is logged and makes payroll recalculate from that date.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.RespectPermission",
+      "label": "RespectPermission",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:RespectPermission",
+        "dom:SysObject_RespectPermission"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether permissions are checked for this type.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.MustRetroRun",
+      "label": "MustRetroRun",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:MustRetroRun",
+        "dom:SysObject_MustRetroRun"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether back-dated changes of this type are always allowed.</p><p><strong>Why it matters.</strong> Ticked, the payroll setting <em>Disable Retro Calculation</em> does not block this type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysObject.IsTimeSensitive",
+      "label": "IsTimeSensitive",
+      "section": "SysObjects",
+      "aliases": [
+        "loc:IsTimeSensitive",
+        "dom:SysObject_IsTimeSensitive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether changes to this type affect time evaluation.</p><p><strong>Why it matters.</strong> Ticked, a back-dated change makes the time engine re-evaluate the employee from that date.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

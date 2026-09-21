@@ -1,0 +1,91 @@
+{
+  "helpId": "sec.sys-user-org-unit-data.edit",
+  "lang": "ar",
+  "title": "بيانات وحدات الشركة للمستخدمين — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.SysUserOrgUnitData",
+  "overviewHtml": "<p>نطاق أمان مستوى السجلات: الجزء من التنظيم الذي يستطيع مستخدمو الدور رؤيته. فيرى المستخدم الموظفين في الوحدات التنظيمية الممنوحة لأي من أدواره، وكل ما تحت تلك الوحدات. والسطر على أعلى مستوى تنظيمي يتيح للدور رؤية الجميع.</p><p>ولا يُطبَّق إلا إذا أُشِّر على <em>EnableRowLevelSecurity</em> في إعدادات الأمان.</p>",
+  "aliasIndex": {
+    "loc:Employee": "SysUserOrgUnitData.EmployeeId",
+    "dom:SysUserOrgUnitData_EmployeeId": "SysUserOrgUnitData.EmployeeId",
+    "loc:Role": "SysUserOrgUnitData.RoleId",
+    "dom:SysUserOrgUnitData_RoleId": "SysUserOrgUnitData.RoleId",
+    "loc:OrgLevel": "SysUserOrgUnitData.OrgLevelId",
+    "dom:SysUserOrgUnitData_OrgLevelId": "SysUserOrgUnitData.OrgLevelId",
+    "loc:OrgUnit": "SysUserOrgUnitData.OrganizationUnitId",
+    "dom:SysUserOrgUnitData_OrganizationUnitId": "SysUserOrgUnitData.OrganizationUnitId",
+    "loc:ShowUnlocked": "SysUserOrgUnitData.ShowUnlocked",
+    "dom:SysUserOrgUnitData_ShowUnlocked": "SysUserOrgUnitData.ShowUnlocked"
+  },
+  "fields": [
+    {
+      "id": "SysUserOrgUnitData.EmployeeId",
+      "label": "Employee",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:Employee",
+        "dom:SysUserOrgUnitData_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موظف يخصه النطاق.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.RoleId",
+      "label": "Role",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:Role",
+        "dom:SysUserOrgUnitData_RoleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأدوار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدور الذي ينطبق عليه النطاق.</p><p><strong>مثال.</strong> مسؤول الموارد البشرية - الكويت</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.OrgLevelId",
+      "label": "OrgLevel",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:OrgLevel",
+        "dom:SysUserOrgUnitData_OrgLevelId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع وحدات الشركة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستوى التنظيمي للوحدة.</p><p><strong>لماذا يهم.</strong> يمنح المستوى الأعلى (المستوى 0) الدورَ كل الموظفين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.OrganizationUnitId",
+      "label": "OrgUnit",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:OrgUnit",
+        "dom:SysUserOrgUnitData_OrganizationUnitId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الوحدات التنظيمية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوحدة التنظيمية التي يستطيع الدور رؤيتها.</p><p><strong>مثال.</strong> فرع الكويت</p><p><strong>لماذا يهم.</strong> يرى الدور الموظفين في هذه الوحدة وفي كل وحدة تحتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysUserOrgUnitData.ShowUnlocked",
+      "label": "ShowUnlocked",
+      "section": "SysUserOrgUnitDatas",
+      "aliases": [
+        "loc:ShowUnlocked",
+        "dom:SysUserOrgUnitData_ShowUnlocked"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت السجلات غير المقفلة تُعرض.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

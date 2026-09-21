@@ -1,0 +1,187 @@
+{
+  "helpId": "sec.execution-log.edit",
+  "lang": "ar",
+  "title": "سجلات التنفيذ — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.ExecutionLog",
+  "overviewHtml": "<p>تشغيل واحد لمحرك أو استيراد أو تقرير أو طباعة: من شغّله، ومتى، وبأي معايير، وكيف انتهى. ويسرد تقرير سجل التنفيذ هذه القيود. يكتبه النظام أثناء عمله، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:UserName": "ExecutionLog.UserName",
+    "dom:ExecutionLog_UserName": "ExecutionLog.UserName",
+    "loc:ActionDateTime": "ExecutionLog.ActionDateTime",
+    "dom:ExecutionLog_ActionDateTime": "ExecutionLog.ActionDateTime",
+    "loc:Action": "ExecutionLog.Action",
+    "dom:ExecutionLog_Action": "ExecutionLog.Action",
+    "loc:Module": "ExecutionLog.Module",
+    "dom:ExecutionLog_Module": "ExecutionLog.Module",
+    "loc:ScreenName": "ExecutionLog.ScreenName",
+    "dom:ExecutionLog_ScreenName": "ExecutionLog.ScreenName",
+    "loc:ScreenCaption": "ExecutionLog.ScreenCaption",
+    "dom:ExecutionLog_ScreenCaption": "ExecutionLog.ScreenCaption",
+    "loc:ExecutionStatus": "ExecutionLog.ExecutionStatus",
+    "dom:ExecutionLog_ExecutionStatus": "ExecutionLog.ExecutionStatus",
+    "loc:TotalRecords": "ExecutionLog.TotalRecords",
+    "dom:ExecutionLog_TotalRecords": "ExecutionLog.TotalRecords",
+    "loc:Successfull": "ExecutionLog.Successfull",
+    "dom:ExecutionLog_Successfull": "ExecutionLog.Successfull",
+    "loc:Failed": "ExecutionLog.Failed",
+    "dom:ExecutionLog_Failed": "ExecutionLog.Failed",
+    "loc:Parameters": "ExecutionLog.Parameters",
+    "dom:ExecutionLog_Parameters": "ExecutionLog.Parameters"
+  },
+  "fields": [
+    {
+      "id": "ExecutionLog.UserName",
+      "label": "UserName",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:UserName",
+        "dom:ExecutionLog_UserName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من شغّله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ActionDateTime",
+      "label": "ActionDateTime",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ActionDateTime",
+        "dom:ExecutionLog_ActionDateTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى جرى التشغيل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Action",
+      "label": "Action",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Action",
+        "dom:ExecutionLog_Action"
+      ],
+      "rules": "إلزامي. إحدى القيم: تشغيل، إنشاء، عرض، تصدير، طباعة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي نُفِّذ.</p><p><strong>مثال.</strong> تشغيل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Module",
+      "label": "Module",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Module",
+        "dom:ExecutionLog_Module"
+      ],
+      "rules": "إلزامي. إحدى القيم: محرك الوقت، محرك الرواتب، ملف البنك، تقرير جدولي، طباعة التقرير، محرك التكلفة، محرك المشاريع.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أي جزء من النظام.</p><p><strong>مثال.</strong> محرك الرواتب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ScreenName",
+      "label": "ScreenName",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ScreenName",
+        "dom:ExecutionLog_ScreenName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الشاشة التي شُغِّل منها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ScreenCaption",
+      "label": "ScreenCaption",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ScreenCaption",
+        "dom:ExecutionLog_ScreenCaption"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> عنوان الشاشة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.ExecutionStatus",
+      "label": "ExecutionStatus",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:ExecutionStatus",
+        "dom:ExecutionLog_ExecutionStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: قيد التنفيذ، نجاح، فشل، جزئي، متوقف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كيف انتهى.</p><p><strong>مثال.</strong> نجاح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.TotalRecords",
+      "label": "TotalRecords",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:TotalRecords",
+        "dom:ExecutionLog_TotalRecords"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجلات المعالجة.</p><p><strong>مثال.</strong> <code>240</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Successfull",
+      "label": "Successfull",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Successfull",
+        "dom:ExecutionLog_Successfull"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجلات الناجحة.</p><p><strong>مثال.</strong> <code>238</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Failed",
+      "label": "Failed",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Failed",
+        "dom:ExecutionLog_Failed"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجلات الفاشلة.</p><p><strong>مثال.</strong> <code>2</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ExecutionLog.Parameters",
+      "label": "Parameters",
+      "section": "ExecutionLogs",
+      "aliases": [
+        "loc:Parameters",
+        "dom:ExecutionLog_Parameters"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعايير التي شُغِّل بها.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

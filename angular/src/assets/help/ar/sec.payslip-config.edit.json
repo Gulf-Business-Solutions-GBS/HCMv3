@@ -1,0 +1,27 @@
+{
+  "helpId": "sec.payslip-config.edit",
+  "lang": "ar",
+  "title": "إعدادات قسيمة الراتب — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.PayslipConfig",
+  "overviewHtml": "<p>نموذج البريد الذي تستخدمه رسائل كشوف الرواتب. ولا يُسمح إلا بسجل واحد.</p><p>لا يُقرأ حالياً: لا تأخذ رسائل كشوف الرواتب نموذجها من هنا.</p>",
+  "aliasIndex": {
+    "loc:EmailTemplate": "PayslipConfig.EmailTemplateId",
+    "dom:PayslipConfig_EmailTemplateId": "PayslipConfig.EmailTemplateId"
+  },
+  "fields": [
+    {
+      "id": "PayslipConfig.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "PayslipConfigs",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:PayslipConfig_EmailTemplateId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة قوالب البريد الإلكتروني.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النموذج.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

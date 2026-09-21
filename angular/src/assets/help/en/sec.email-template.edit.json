@@ -1,0 +1,123 @@
+{
+  "helpId": "sec.email-template.edit",
+  "lang": "en",
+  "title": "Email Templates — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.EmailTemplate",
+  "overviewHtml": "<p>The text of an email the system sends — notifications, reminders, payslips, bulk passwords. Placeholders written as <code>$#TokenName#$</code> in the subject and body are replaced using the template's email tokens.</p>",
+  "aliasIndex": {
+    "loc:Code": "EmailTemplate.Code",
+    "dom:EmailTemplate_Code": "EmailTemplate.Code",
+    "loc:NameEn": "EmailTemplate.NameEn",
+    "dom:EmailTemplate_NameEn": "EmailTemplate.NameEn",
+    "loc:NameAr": "EmailTemplate.NameAr",
+    "dom:EmailTemplate_NameAr": "EmailTemplate.NameAr",
+    "loc:SmtpProfile": "EmailTemplate.SmtpProfile",
+    "dom:EmailTemplate_SmtpProfile": "EmailTemplate.SmtpProfile",
+    "loc:Subject": "EmailTemplate.Subject",
+    "dom:EmailTemplate_Subject": "EmailTemplate.Subject",
+    "loc:EmailBodyHtml": "EmailTemplate.EmailBodyHtml",
+    "dom:EmailTemplate_EmailBodyHtml": "EmailTemplate.EmailBodyHtml",
+    "loc:EmailBodyText": "EmailTemplate.EmailBodyText",
+    "dom:EmailTemplate_EmailBodyText": "EmailTemplate.EmailBodyText"
+  },
+  "fields": [
+    {
+      "id": "EmailTemplate.Code",
+      "label": "Code",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:Code",
+        "dom:EmailTemplate_Code"
+      ],
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.NameEn",
+      "label": "NameEn",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:NameEn",
+        "dom:EmailTemplate_NameEn"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.NameAr",
+      "label": "NameAr",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:NameAr",
+        "dom:EmailTemplate_NameAr"
+      ],
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.SmtpProfile",
+      "label": "SmtpProfile",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:SmtpProfile",
+        "dom:EmailTemplate_SmtpProfile"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The mail server profile to send from.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.Subject",
+      "label": "Subject",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:Subject",
+        "dom:EmailTemplate_Subject"
+      ],
+      "rules": "Optional. Maximum 500 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The email's subject. Placeholders are replaced.</p><p><strong>Example.</strong> Leave resumption reminder for $#EmployeeName#$</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.EmailBodyHtml",
+      "label": "EmailBodyHtml",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:EmailBodyHtml",
+        "dom:EmailTemplate_EmailBodyHtml"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The email's body, as HTML. Placeholders are replaced.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailTemplate.EmailBodyText",
+      "label": "EmailBodyText",
+      "section": "EmailTemplates",
+      "aliases": [
+        "loc:EmailBodyText",
+        "dom:EmailTemplate_EmailBodyText"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A plain-text version of the body.</p><p><strong>Why it matters.</strong> Where filled in, it is used instead of the HTML body for emails sent straight to an address, and the bulk password email needs it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

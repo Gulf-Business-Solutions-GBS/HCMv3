@@ -5678,6 +5678,231 @@
     ],
     "OnbTemplateDetail_TemplateData": [
       "rec.onb-template-detail.edit"
+    ],
+    "BulkUploadLog_EmployeeId": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_LogType": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_RunTimeStamp": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_InPeriod": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_Status": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_NoOfEmployee": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_RecordNo": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_StopFlag": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "BulkUploadLog_Message": [
+      "sec.bulk-upload-log.edit"
+    ],
+    "EmailNotificationLog_Date": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_Email": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_Source": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_Subject": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_IsSuccessful": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_Body": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailNotificationLog_Exception": [
+      "sec.email-notification-log.edit"
+    ],
+    "EmailTemplate_Code": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_NameEn": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_NameAr": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_SmtpProfile": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_Subject": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_EmailBodyHtml": [
+      "sec.email-template.edit"
+    ],
+    "EmailTemplate_EmailBodyText": [
+      "sec.email-template.edit"
+    ],
+    "EmailToken_TokenName": [
+      "sec.email-token.edit"
+    ],
+    "EmailToken_TokenValue": [
+      "sec.email-token.edit"
+    ],
+    "EmailToken_EmailTemplateId": [
+      "sec.email-token.edit"
+    ],
+    "EmailToken_IsDateTimeType": [
+      "sec.email-token.edit"
+    ],
+    "EmailToken_ObjectKey": [
+      "sec.email-token.edit"
+    ],
+    "ExecutionLog_UserName": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_ActionDateTime": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_Action": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_Module": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_ScreenName": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_ScreenCaption": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_ExecutionStatus": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_TotalRecords": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_Successfull": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_Failed": [
+      "sec.execution-log.edit"
+    ],
+    "ExecutionLog_Parameters": [
+      "sec.execution-log.edit"
+    ],
+    "NotificationMaster_NotificationType": [
+      "sec.notification-master.edit"
+    ],
+    "NotificationMaster_NotificationConfigId": [
+      "sec.notification-master.edit"
+    ],
+    "NotificationMaster_Criterion": [
+      "sec.notification-master.edit"
+    ],
+    "NotificationMaster_IsEnabled": [
+      "sec.notification-master.edit"
+    ],
+    "PayslipConfig_EmailTemplateId": [
+      "sec.payslip-config.edit"
+    ],
+    "PunchNotificationLog_EmployeeDutyPeriodId": [
+      "sec.punch-notification-log.edit"
+    ],
+    "PunchNotificationLog_EmailNotificationLogId": [
+      "sec.punch-notification-log.edit"
+    ],
+    "PunchNotificationLog_Type": [
+      "sec.punch-notification-log.edit"
+    ],
+    "PunchNotificationLog_Date": [
+      "sec.punch-notification-log.edit"
+    ],
+    "RetroReasonLog_EmployeeId": [
+      "sec.retro-reason-log.edit"
+    ],
+    "RetroReasonLog_ChangedOn": [
+      "sec.retro-reason-log.edit"
+    ],
+    "RetroReasonLog_RetroDate": [
+      "sec.retro-reason-log.edit"
+    ],
+    "RetroReasonLog_EntityObjectName": [
+      "sec.retro-reason-log.edit"
+    ],
+    "RetroReasonLog_EntityObjectId": [
+      "sec.retro-reason-log.edit"
+    ],
+    "RetroReasonLog_RetroReason": [
+      "sec.retro-reason-log.edit"
+    ],
+    "SysObject_Name": [
+      "sec.sys-object.edit"
+    ],
+    "SysObject_FullName": [
+      "sec.sys-object.edit"
+    ],
+    "SysObject_IsPayrollSensitive": [
+      "sec.sys-object.edit"
+    ],
+    "SysObject_RespectPermission": [
+      "sec.sys-object.edit"
+    ],
+    "SysObject_MustRetroRun": [
+      "sec.sys-object.edit"
+    ],
+    "SysObject_IsTimeSensitive": [
+      "sec.sys-object.edit"
+    ],
+    "SysTenantConfig_Key": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysTenantConfig_ConfigCategory": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysTenantConfig_StartDate": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysTenantConfig_EndDate": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysTenantConfig_KeyValue": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysTenantConfig_ConfigDescription": [
+      "sec.sys-tenant-config.edit"
+    ],
+    "SysUserOrgUnitData_EmployeeId": [
+      "sec.sys-user-org-unit-data.edit"
+    ],
+    "SysUserOrgUnitData_RoleId": [
+      "sec.sys-user-org-unit-data.edit"
+    ],
+    "SysUserOrgUnitData_OrgLevelId": [
+      "sec.sys-user-org-unit-data.edit"
+    ],
+    "SysUserOrgUnitData_OrganizationUnitId": [
+      "sec.sys-user-org-unit-data.edit"
+    ],
+    "SysUserOrgUnitData_ShowUnlocked": [
+      "sec.sys-user-org-unit-data.edit"
+    ],
+    "SystemNotification_NotificationName": [
+      "sec.system-notification.edit"
+    ],
+    "SystemNotification_NotificationConfigId": [
+      "sec.system-notification.edit"
+    ],
+    "SystemNotification_ReminderDays": [
+      "sec.system-notification.edit"
+    ],
+    "SystemNotification_IsActive": [
+      "sec.system-notification.edit"
     ]
   }
 }

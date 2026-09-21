@@ -1,0 +1,123 @@
+{
+  "helpId": "sec.email-notification-log.edit",
+  "lang": "ar",
+  "title": "سجلات إشعارات البريد الإلكتروني — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.EmailNotificationLog",
+  "overviewHtml": "<p>رسالة بريد واحدة حاول النظام إرسالها، وما إذا أُرسلت. يكتبه النظام أثناء عمله، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:Date": "EmailNotificationLog.Date",
+    "dom:EmailNotificationLog_Date": "EmailNotificationLog.Date",
+    "loc:Email": "EmailNotificationLog.Email",
+    "dom:EmailNotificationLog_Email": "EmailNotificationLog.Email",
+    "loc:Source": "EmailNotificationLog.Source",
+    "dom:EmailNotificationLog_Source": "EmailNotificationLog.Source",
+    "loc:Subject": "EmailNotificationLog.Subject",
+    "dom:EmailNotificationLog_Subject": "EmailNotificationLog.Subject",
+    "loc:IsSuccessful": "EmailNotificationLog.IsSuccessful",
+    "dom:EmailNotificationLog_IsSuccessful": "EmailNotificationLog.IsSuccessful",
+    "loc:Body": "EmailNotificationLog.Body",
+    "dom:EmailNotificationLog_Body": "EmailNotificationLog.Body",
+    "loc:Exception": "EmailNotificationLog.Exception",
+    "dom:EmailNotificationLog_Exception": "EmailNotificationLog.Exception"
+  },
+  "fields": [
+    {
+      "id": "EmailNotificationLog.Date",
+      "label": "Date",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Date",
+        "dom:EmailNotificationLog_Date"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أُرسلت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Email",
+      "label": "Email",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Email",
+        "dom:EmailNotificationLog_Email"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> العنوان الذي أُرسلت إليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Source",
+      "label": "Source",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Source",
+        "dom:EmailNotificationLog_Source"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي أرسلها.</p><p><strong>مثال.</strong> إشعار البصمة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Subject",
+      "label": "Subject",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Subject",
+        "dom:EmailNotificationLog_Subject"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموضوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.IsSuccessful",
+      "label": "IsSuccessful",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:IsSuccessful",
+        "dom:EmailNotificationLog_IsSuccessful"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا أُرسلت.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Body",
+      "label": "Body",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Body",
+        "dom:EmailNotificationLog_Body"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> النص.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "EmailNotificationLog.Exception",
+      "label": "Exception",
+      "section": "EmailNotificationLogs",
+      "aliases": [
+        "loc:Exception",
+        "dom:EmailNotificationLog_Exception"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطأ، إن فشلت.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

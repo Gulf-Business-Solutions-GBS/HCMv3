@@ -1,0 +1,107 @@
+{
+  "helpId": "sec.sys-tenant-config.edit",
+  "lang": "ar",
+  "title": "إعدادات المستأجر — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.SysTenantConfig",
+  "overviewHtml": "<p>مفتاح وقيمة يمكن للنظام البحث عنهما بالمفتاح، اعتباراً من تاريخ معيّن. ولا يقرؤها حالياً إلا اتصال Dynamics 365 Finance — احتياطاً إذا لم تُضبط القيمة في مركز التكامل.</p>",
+  "aliasIndex": {
+    "loc:Key": "SysTenantConfig.Key",
+    "dom:SysTenantConfig_Key": "SysTenantConfig.Key",
+    "loc:ConfigCategory": "SysTenantConfig.ConfigCategory",
+    "dom:SysTenantConfig_ConfigCategory": "SysTenantConfig.ConfigCategory",
+    "loc:StartDate": "SysTenantConfig.StartDate",
+    "dom:SysTenantConfig_StartDate": "SysTenantConfig.StartDate",
+    "loc:EndDate": "SysTenantConfig.EndDate",
+    "dom:SysTenantConfig_EndDate": "SysTenantConfig.EndDate",
+    "loc:KeyValue": "SysTenantConfig.KeyValue",
+    "dom:SysTenantConfig_KeyValue": "SysTenantConfig.KeyValue",
+    "loc:ConfigDescription": "SysTenantConfig.ConfigDescription",
+    "dom:SysTenantConfig_ConfigDescription": "SysTenantConfig.ConfigDescription"
+  },
+  "fields": [
+    {
+      "id": "SysTenantConfig.Key",
+      "label": "Key",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:Key",
+        "dom:SysTenantConfig_Key"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المفتاح الذي يُبحث بالقيمة من خلاله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysTenantConfig.ConfigCategory",
+      "label": "ConfigCategory",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:ConfigCategory",
+        "dom:SysTenantConfig_ConfigCategory"
+      ],
+      "rules": "إلزامي. إحدى القيم: الموظف، الرواتب، الحضور والانصراف، تنسيق، التقرير، الموقع الجغرافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المجال الذي يتبعه الإعداد، للتجميع.</p><p><strong>مثال.</strong> الرواتب</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysTenantConfig.StartDate",
+      "label": "StartDate",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:StartDate",
+        "dom:SysTenantConfig_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysTenantConfig.EndDate",
+      "label": "EndDate",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:EndDate",
+        "dom:SysTenantConfig_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysTenantConfig.KeyValue",
+      "label": "KeyValue",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:KeyValue",
+        "dom:SysTenantConfig_KeyValue"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> القيمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SysTenantConfig.ConfigDescription",
+      "label": "ConfigDescription",
+      "section": "SysTenantConfigs",
+      "aliases": [
+        "loc:ConfigDescription",
+        "dom:SysTenantConfig_ConfigDescription"
+      ],
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الغرض من الإعداد.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "helpId": "sec.payslip-config.edit",
+  "lang": "en",
+  "title": "Payslip Configs — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.PayslipConfig",
+  "overviewHtml": "<p>Which email template payslip emails use. Only one record is allowed.</p><p>Not read at present: payslip emails do not take their template from here.</p>",
+  "aliasIndex": {
+    "loc:EmailTemplate": "PayslipConfig.EmailTemplateId",
+    "dom:PayslipConfig_EmailTemplateId": "PayslipConfig.EmailTemplateId"
+  },
+  "fields": [
+    {
+      "id": "PayslipConfig.EmailTemplateId",
+      "label": "EmailTemplate",
+      "section": "PayslipConfigs",
+      "aliases": [
+        "loc:EmailTemplate",
+        "dom:PayslipConfig_EmailTemplateId"
+      ],
+      "rules": "Required. Chosen from Email Template master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The template.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

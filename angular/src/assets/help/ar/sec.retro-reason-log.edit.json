@@ -1,0 +1,107 @@
+{
+  "helpId": "sec.retro-reason-log.edit",
+  "lang": "ar",
+  "title": "سجلات أسباب الاحتساب بأثر رجعي — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.RetroReasonLog",
+  "overviewHtml": "<p>سجل لتعديل بتاريخ سابق جعل نظام الرواتب يعيد احتساب موظف من تاريخ أسبق: ما الذي تغيّر، ومتى، وتاريخ الأثر الرجعي. يكتبه النظام أثناء عمله، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:Employee": "RetroReasonLog.EmployeeId",
+    "dom:RetroReasonLog_EmployeeId": "RetroReasonLog.EmployeeId",
+    "loc:ChangedOn": "RetroReasonLog.ChangedOn",
+    "dom:RetroReasonLog_ChangedOn": "RetroReasonLog.ChangedOn",
+    "loc:RetroDate": "RetroReasonLog.RetroDate",
+    "dom:RetroReasonLog_RetroDate": "RetroReasonLog.RetroDate",
+    "loc:EntityObjectName": "RetroReasonLog.EntityObjectName",
+    "dom:RetroReasonLog_EntityObjectName": "RetroReasonLog.EntityObjectName",
+    "loc:EntityObjectId": "RetroReasonLog.EntityObjectId",
+    "dom:RetroReasonLog_EntityObjectId": "RetroReasonLog.EntityObjectId",
+    "loc:RetroReason": "RetroReasonLog.RetroReason",
+    "dom:RetroReasonLog_RetroReason": "RetroReasonLog.RetroReason"
+  },
+  "fields": [
+    {
+      "id": "RetroReasonLog.EmployeeId",
+      "label": "Employee",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:RetroReasonLog_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.ChangedOn",
+      "label": "ChangedOn",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:ChangedOn",
+        "dom:RetroReasonLog_ChangedOn"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أُجري التعديل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.RetroDate",
+      "label": "RetroDate",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:RetroDate",
+        "dom:RetroReasonLog_RetroDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يعيد نظام الرواتب الاحتساب منه.</p><p><strong>مثال.</strong> <code>2026-02-01</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.EntityObjectName",
+      "label": "EntityObjectName",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:EntityObjectName",
+        "dom:RetroReasonLog_EntityObjectName"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع السجل المعدَّل.</p><p><strong>مثال.</strong> <code>HCMv3.PersonnelAdministration.EmployeeBasicPay</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.EntityObjectId",
+      "label": "EntityObjectId",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:EntityObjectId",
+        "dom:RetroReasonLog_EntityObjectId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السجل المعدَّل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RetroReasonLog.RetroReason",
+      "label": "RetroReason",
+      "section": "RetroReasonLogs",
+      "aliases": [
+        "loc:RetroReason",
+        "dom:RetroReasonLog_RetroReason"
+      ],
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> سبب ضبط تاريخ الأثر الرجعي.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.notification-master.edit",
+  "lang": "ar",
+  "title": "الإشعارات الرئيسية — إنشاء / تحرير",
+  "entity": "HCMv3.SystemSecurity.NotificationMaster",
+  "overviewHtml": "<p>قاعدة إشعار مرتبطة بنوع إشعار. ولكل نوع قاعدة واحدة.</p><p>لا تُقرأ حالياً: تعمل الإشعارات من إشعارات النظام وإعدادات الإشعارات، لا من هذه القائمة.</p>",
+  "aliasIndex": {
+    "loc:NotificationType": "NotificationMaster.NotificationType",
+    "dom:NotificationMaster_NotificationType": "NotificationMaster.NotificationType",
+    "loc:NotificationConfig": "NotificationMaster.NotificationConfigId",
+    "dom:NotificationMaster_NotificationConfigId": "NotificationMaster.NotificationConfigId",
+    "loc:Criterion": "NotificationMaster.Criterion",
+    "dom:NotificationMaster_Criterion": "NotificationMaster.Criterion",
+    "loc:IsEnabled": "NotificationMaster.IsEnabled",
+    "dom:NotificationMaster_IsEnabled": "NotificationMaster.IsEnabled"
+  },
+  "fields": [
+    {
+      "id": "NotificationMaster.NotificationType",
+      "label": "NotificationType",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationType",
+        "dom:NotificationMaster_NotificationType"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الإشعار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationMaster_NotificationConfigId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة إعدادات الإخطار.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> إعداد الإشعار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.Criterion",
+      "label": "Criterion",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:Criterion",
+        "dom:NotificationMaster_Criterion"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> شرط للإشعار.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.IsEnabled",
+      "label": "IsEnabled",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:IsEnabled",
+        "dom:NotificationMaster_IsEnabled"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت القاعدة مفعّلة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

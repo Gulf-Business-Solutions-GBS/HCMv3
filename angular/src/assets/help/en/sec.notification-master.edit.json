@@ -1,0 +1,75 @@
+{
+  "helpId": "sec.notification-master.edit",
+  "lang": "en",
+  "title": "Notification Masters — Create / Edit",
+  "entity": "HCMv3.SystemSecurity.NotificationMaster",
+  "overviewHtml": "<p>A notification rule tied to a notification type. Each type can have one rule.</p><p>Not read at present: notifications are driven by System Notifications and notification configs, not by this list.</p>",
+  "aliasIndex": {
+    "loc:NotificationType": "NotificationMaster.NotificationType",
+    "dom:NotificationMaster_NotificationType": "NotificationMaster.NotificationType",
+    "loc:NotificationConfig": "NotificationMaster.NotificationConfigId",
+    "dom:NotificationMaster_NotificationConfigId": "NotificationMaster.NotificationConfigId",
+    "loc:Criterion": "NotificationMaster.Criterion",
+    "dom:NotificationMaster_Criterion": "NotificationMaster.Criterion",
+    "loc:IsEnabled": "NotificationMaster.IsEnabled",
+    "dom:NotificationMaster_IsEnabled": "NotificationMaster.IsEnabled"
+  },
+  "fields": [
+    {
+      "id": "NotificationMaster.NotificationType",
+      "label": "NotificationType",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationType",
+        "dom:NotificationMaster_NotificationType"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification type.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.NotificationConfigId",
+      "label": "NotificationConfig",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:NotificationConfig",
+        "dom:NotificationMaster_NotificationConfigId"
+      ],
+      "rules": "Required. Chosen from Notification Config master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The notification configuration.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.Criterion",
+      "label": "Criterion",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:Criterion",
+        "dom:NotificationMaster_Criterion"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A condition for the notification.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "NotificationMaster.IsEnabled",
+      "label": "IsEnabled",
+      "section": "NotificationMasters",
+      "aliases": [
+        "loc:IsEnabled",
+        "dom:NotificationMaster_IsEnabled"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the rule is on.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

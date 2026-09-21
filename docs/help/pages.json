@@ -5295,6 +5295,277 @@
       },
       "service": "OnbTemplateDetailsAppService",
       "domPrefix": "OnbTemplateDetail"
+    },
+    {
+      "helpId": "sec.bulk-upload-log.edit",
+      "title": "Bulk Upload Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.BulkUploadLogs.Create"
+      ],
+      "entity": {
+        "name": "BulkUploadLog",
+        "fullName": "HCMv3.SystemSecurity.BulkUploadLog",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/BulkUploadLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/bulk-upload-logs/create-or-edit-bulk-upload-log-modal.component.html"
+        }
+      },
+      "defaultSection": "BulkUploadLogs"
+    },
+    {
+      "helpId": "sec.email-notification-log.edit",
+      "title": "Email Notification Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.EmailNotificationLogs.Create"
+      ],
+      "entity": {
+        "name": "EmailNotificationLog",
+        "fullName": "HCMv3.SystemSecurity.EmailNotificationLog",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/EmailNotificationLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/email-notification-logs/create-or-edit-email-notification-log-modal.component.html"
+        }
+      },
+      "defaultSection": "EmailNotificationLogs"
+    },
+    {
+      "helpId": "sec.email-template.edit",
+      "title": "Email Templates — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.EmailTemplates.Create"
+      ],
+      "entity": {
+        "name": "EmailTemplate",
+        "fullName": "HCMv3.SystemSecurity.EmailTemplate",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/EmailTemplate.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/email-templates/create-or-edit-email-template-modal.component.html"
+        }
+      },
+      "defaultSection": "EmailTemplates"
+    },
+    {
+      "helpId": "sec.email-token.edit",
+      "title": "Email Tokens — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.EmailTokens.Create"
+      ],
+      "entity": {
+        "name": "EmailToken",
+        "fullName": "HCMv3.SystemSecurity.EmailToken",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/EmailToken.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/email-tokens/create-or-edit-email-token-modal.component.html"
+        }
+      },
+      "defaultSection": "EmailTokens"
+    },
+    {
+      "helpId": "sec.execution-log.edit",
+      "title": "Execution Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.ExecutionLogs.Create"
+      ],
+      "entity": {
+        "name": "ExecutionLog",
+        "fullName": "HCMv3.SystemSecurity.ExecutionLog",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/ExecutionLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/execution-logs/create-or-edit-execution-log-modal.component.html"
+        }
+      },
+      "defaultSection": "ExecutionLogs"
+    },
+    {
+      "helpId": "sec.notification-master.edit",
+      "title": "Notification Masters — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.NotificationMasters.Create"
+      ],
+      "entity": {
+        "name": "NotificationMaster",
+        "fullName": "HCMv3.SystemSecurity.NotificationMaster",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/NotificationMaster.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/notification-masters/create-or-edit-notification-master-modal.component.html"
+        }
+      },
+      "defaultSection": "NotificationMasters"
+    },
+    {
+      "helpId": "sec.payslip-config.edit",
+      "title": "Payslip Configs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.PayslipConfigs.Create"
+      ],
+      "entity": {
+        "name": "PayslipConfig",
+        "fullName": "HCMv3.SystemSecurity.PayslipConfig",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/PayslipConfig.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/payslip-configs/create-or-edit-payslip-config-modal.component.html"
+        }
+      },
+      "defaultSection": "PayslipConfigs"
+    },
+    {
+      "helpId": "sec.punch-notification-log.edit",
+      "title": "Punch Notification Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.PunchNotificationLogs.Create"
+      ],
+      "entity": {
+        "name": "PunchNotificationLog",
+        "fullName": "HCMv3.SystemSecurity.PunchNotificationLog",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/PunchNotificationLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/punch-notification-logs/create-or-edit-punch-notification-log-modal.component.html"
+        }
+      },
+      "defaultSection": "PunchNotificationLogs"
+    },
+    {
+      "helpId": "sec.retro-reason-log.edit",
+      "title": "Retro Reason Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.RetroReasonLogs.Create"
+      ],
+      "entity": {
+        "name": "RetroReasonLog",
+        "fullName": "HCMv3.SystemSecurity.RetroReasonLog",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/RetroReasonLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/retro-reason-logs/create-or-edit-retro-reason-log-modal.component.html"
+        }
+      },
+      "defaultSection": "RetroReasonLogs"
+    },
+    {
+      "helpId": "sec.sys-object.edit",
+      "title": "Sys Objects — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.SysObjects.Create"
+      ],
+      "entity": {
+        "name": "SysObject",
+        "fullName": "HCMv3.SystemSecurity.SysObject",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/SysObject.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/sys-objects/create-or-edit-sys-object-modal.component.html"
+        }
+      },
+      "defaultSection": "SysObjects"
+    },
+    {
+      "helpId": "sec.sys-tenant-config.edit",
+      "title": "Tenant Configs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.SysTenantConfigs.Create"
+      ],
+      "entity": {
+        "name": "SysTenantConfig",
+        "fullName": "HCMv3.SystemSecurity.SysTenantConfig",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/SysTenantConfig.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/sys-tenant-configs/create-or-edit-sys-tenant-config-modal.component.html"
+        }
+      },
+      "defaultSection": "SysTenantConfigs"
+    },
+    {
+      "helpId": "sec.sys-user-org-unit-data.edit",
+      "title": "User Org Unit Data — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "SysUserOrgUnitData",
+        "fullName": "HCMv3.SystemSecurity.SysUserOrgUnitData",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/SysUserOrgUnitData.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/sys-user-org-unit-datas/create-or-edit-sys-user-org-unit-data-modal.component.html"
+        }
+      },
+      "defaultSection": "SysUserOrgUnitDatas"
+    },
+    {
+      "helpId": "sec.system-notification.edit",
+      "title": "System Notifications — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSecurity.SystemNotifications.Create"
+      ],
+      "entity": {
+        "name": "SystemNotification",
+        "fullName": "HCMv3.SystemSecurity.SystemNotification",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSecurity/SystemNotification.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-security/system-notifications/create-or-edit-system-notification-modal.component.html"
+        }
+      },
+      "defaultSection": "SystemNotifications"
     }
   ]
 }
