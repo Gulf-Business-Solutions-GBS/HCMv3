@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.report-detail.edit",
+  "lang": "en",
+  "title": "Report Details — Create / Edit",
+  "entity": "HCMv3.ReportManagement.ReportDetail",
+  "overviewHtml": "<p>One level of a drill-down report. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:ReportMaster": "ReportDetail.ReportMasterId",
+    "dom:ReportDetail_ReportMasterId": "ReportDetail.ReportMasterId",
+    "loc:ReportSetting": "ReportDetail.ReportSettingId",
+    "dom:ReportDetail_ReportSettingId": "ReportDetail.ReportSettingId",
+    "loc:DrillDownLevel": "ReportDetail.DrillDownLevel",
+    "dom:ReportDetail_DrillDownLevel": "ReportDetail.DrillDownLevel"
+  },
+  "fields": [
+    {
+      "id": "ReportDetail.ReportMasterId",
+      "label": "ReportMaster",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:ReportMaster",
+        "dom:ReportDetail_ReportMasterId"
+      ],
+      "rules": "Required. Chosen from Report Master master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The drill-down report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportDetail.ReportSettingId",
+      "label": "ReportSetting",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:ReportSetting",
+        "dom:ReportDetail_ReportSettingId"
+      ],
+      "rules": "Optional. Chosen from Report Setting master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The column layout for this level.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportDetail.DrillDownLevel",
+      "label": "DrillDownLevel",
+      "section": "ReportDetails",
+      "aliases": [
+        "loc:DrillDownLevel",
+        "dom:ReportDetail_DrillDownLevel"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The level number, from 1.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

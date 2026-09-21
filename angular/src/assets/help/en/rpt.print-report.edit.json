@@ -1,0 +1,139 @@
+{
+  "helpId": "rpt.print-report.edit",
+  "lang": "en",
+  "title": "Print Reports — Create / Edit",
+  "entity": "HCMv3.ReportManagement.PrintReport",
+  "overviewHtml": "<p>One report in the Print Reports list. Each company is given the standard list when it is created; a report you rename, switch off or delete is left as you set it. A report can be run only if the product has that report built in — otherwise it is listed but cannot be run.</p>",
+  "aliasIndex": {
+    "loc:Code": "PrintReport.Code",
+    "dom:PrintReport_Code": "PrintReport.Code",
+    "loc:NameEn": "PrintReport.NameEn",
+    "dom:PrintReport_NameEn": "PrintReport.NameEn",
+    "loc:NameAr": "PrintReport.NameAr",
+    "dom:PrintReport_NameAr": "PrintReport.NameAr",
+    "loc:ReportName": "PrintReport.ReportName",
+    "dom:PrintReport_ReportName": "PrintReport.ReportName",
+    "loc:ReportCategory": "PrintReport.ReportCategory",
+    "dom:PrintReport_ReportCategory": "PrintReport.ReportCategory",
+    "loc:CustomPercentage": "PrintReport.CustomPercentage",
+    "dom:PrintReport_CustomPercentage": "PrintReport.CustomPercentage",
+    "loc:ReportCreatedOn": "PrintReport.ReportCreatedOn",
+    "dom:PrintReport_ReportCreatedOn": "PrintReport.ReportCreatedOn",
+    "loc:IsActive": "PrintReport.IsActive",
+    "dom:PrintReport_IsActive": "PrintReport.IsActive"
+  },
+  "fields": [
+    {
+      "id": "PrintReport.Code",
+      "label": "Code",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:Code",
+        "dom:PrintReport_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.NameEn",
+      "label": "NameEn",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:NameEn",
+        "dom:PrintReport_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.NameAr",
+      "label": "NameAr",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:NameAr",
+        "dom:PrintReport_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.ReportName",
+      "label": "ReportName",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:ReportName",
+        "dom:PrintReport_ReportName"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The name of the built-in report this entry runs.</p><p><strong>Why it matters.</strong> Must match a built-in report exactly, or the entry cannot be run. Change it only to point at another built-in report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.ReportCategory",
+      "label": "ReportCategory",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:ReportCategory",
+        "dom:PrintReport_ReportCategory"
+      ],
+      "rules": "Required. One of: Default, Custom.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this is a standard or a custom report.</p><p><strong>Why it matters.</strong> Shown as a column in the Print Reports list; it changes nothing else.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.CustomPercentage",
+      "label": "CustomPercentage",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:CustomPercentage",
+        "dom:PrintReport_CustomPercentage"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How far the report has been customised, as a percentage.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.ReportCreatedOn",
+      "label": "ReportCreatedOn",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:ReportCreatedOn",
+        "dom:PrintReport_ReportCreatedOn"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the report was made.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReport.IsActive",
+      "label": "IsActive",
+      "section": "PrintReports",
+      "aliases": [
+        "loc:IsActive",
+        "dom:PrintReport_IsActive"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the report is listed.</p><p><strong>Why it matters.</strong> Unticked reports are left out of the Print Reports list for everyone.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

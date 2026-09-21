@@ -1,0 +1,43 @@
+{
+  "helpId": "rpt.report-type.edit",
+  "lang": "ar",
+  "title": "أنواع التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportType",
+  "overviewHtml": "<p>نوع من التقارير المصممة. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:Code": "ReportType.Code",
+    "dom:ReportType_Code": "ReportType.Code",
+    "loc:NameEn": "ReportType.NameEn",
+    "dom:ReportType_NameEn": "ReportType.NameEn"
+  },
+  "fields": [
+    {
+      "id": "ReportType.Code",
+      "label": "Code",
+      "section": "ReportTypes",
+      "aliases": [
+        "loc:Code",
+        "dom:ReportType_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportType.NameEn",
+      "label": "NameEn",
+      "section": "ReportTypes",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ReportType_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

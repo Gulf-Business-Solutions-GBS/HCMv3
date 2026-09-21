@@ -1,0 +1,43 @@
+{
+  "helpId": "rpt.print-report-permission.edit",
+  "lang": "en",
+  "title": "Print Report Permissions — Create / Edit",
+  "entity": "HCMv3.ReportManagement.PrintReportPermission",
+  "overviewHtml": "<p>Which print reports the users in one role may run. A user sees the reports granted to any of their roles. A user with no grants sees none, but company administrators and host users always see every active report. Each role can have one entry.</p>",
+  "aliasIndex": {
+    "loc:Code": "PrintReportPermission.Code",
+    "dom:PrintReportPermission_Code": "PrintReportPermission.Code",
+    "loc:Role": "PrintReportPermission.RoleId",
+    "dom:PrintReportPermission_RoleId": "PrintReportPermission.RoleId"
+  },
+  "fields": [
+    {
+      "id": "PrintReportPermission.Code",
+      "label": "Code",
+      "section": "PrintReportPermissions",
+      "aliases": [
+        "loc:Code",
+        "dom:PrintReportPermission_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReportPermission.RoleId",
+      "label": "Role",
+      "section": "PrintReportPermissions",
+      "aliases": [
+        "loc:Role",
+        "dom:PrintReportPermission_RoleId"
+      ],
+      "rules": "Required. Chosen from Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The role being granted reports.</p><p><strong>Example.</strong> Payroll</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

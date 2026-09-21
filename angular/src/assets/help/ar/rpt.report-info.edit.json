@@ -1,0 +1,107 @@
+{
+  "helpId": "rpt.report-info.edit",
+  "lang": "ar",
+  "title": "بيانات التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportInfo",
+  "overviewHtml": "<p>تقرير مصمم. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:ReportName": "ReportInfo.ReportName",
+    "dom:ReportInfo_ReportName": "ReportInfo.ReportName",
+    "loc:ReportType": "ReportInfo.ReportTypeId",
+    "dom:ReportInfo_ReportTypeId": "ReportInfo.ReportTypeId",
+    "loc:DomainType": "ReportInfo.DomainTypeId",
+    "dom:ReportInfo_DomainTypeId": "ReportInfo.DomainTypeId",
+    "loc:Description": "ReportInfo.Description",
+    "dom:ReportInfo_Description": "ReportInfo.Description",
+    "loc:ReportQuery": "ReportInfo.ReportQuery",
+    "dom:ReportInfo_ReportQuery": "ReportInfo.ReportQuery",
+    "loc:IsActive": "ReportInfo.IsActive",
+    "dom:ReportInfo_IsActive": "ReportInfo.IsActive"
+  },
+  "fields": [
+    {
+      "id": "ReportInfo.ReportName",
+      "label": "ReportName",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportName",
+        "dom:ReportInfo_ReportName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم التقرير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.ReportTypeId",
+      "label": "ReportType",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportType",
+        "dom:ReportInfo_ReportTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع التقارير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع التقرير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.DomainTypeId",
+      "label": "DomainType",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:DomainType",
+        "dom:ReportInfo_DomainTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع النطاقات.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجال البيانات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.Description",
+      "label": "Description",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:Description",
+        "dom:ReportInfo_Description"
+      ],
+      "rules": "اختياري. الحد الأقصى 512 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وصف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.ReportQuery",
+      "label": "ReportQuery",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:ReportQuery",
+        "dom:ReportInfo_ReportQuery"
+      ],
+      "rules": "اختياري. الحد الأقصى 1500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستعلام الذي يقوم عليه التقرير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportInfo.IsActive",
+      "label": "IsActive",
+      "section": "ReportInfos",
+      "aliases": [
+        "loc:IsActive",
+        "dom:ReportInfo_IsActive"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان التقرير مستخدماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

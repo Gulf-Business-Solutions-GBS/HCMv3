@@ -1,0 +1,187 @@
+{
+  "helpId": "rpt.report-setting-detail.edit",
+  "lang": "en",
+  "title": "Report Setting Details — Create / Edit",
+  "entity": "HCMv3.ReportManagement.ReportSettingDetail",
+  "overviewHtml": "<p>One column of a saved layout. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:ReportSetting": "ReportSettingDetail.ReportSettingId",
+    "dom:ReportSettingDetail_ReportSettingId": "ReportSettingDetail.ReportSettingId",
+    "loc:FieldName": "ReportSettingDetail.FieldName",
+    "dom:ReportSettingDetail_FieldName": "ReportSettingDetail.FieldName",
+    "loc:CaptionEn": "ReportSettingDetail.CaptionEn",
+    "dom:ReportSettingDetail_CaptionEn": "ReportSettingDetail.CaptionEn",
+    "loc:CaptionAr": "ReportSettingDetail.CaptionAr",
+    "dom:ReportSettingDetail_CaptionAr": "ReportSettingDetail.CaptionAr",
+    "loc:Order": "ReportSettingDetail.Order",
+    "dom:ReportSettingDetail_Order": "ReportSettingDetail.Order",
+    "loc:ColumnDataType": "ReportSettingDetail.ColumnDataType",
+    "dom:ReportSettingDetail_ColumnDataType": "ReportSettingDetail.ColumnDataType",
+    "loc:Width": "ReportSettingDetail.Width",
+    "dom:ReportSettingDetail_Width": "ReportSettingDetail.Width",
+    "loc:DataHAlignment": "ReportSettingDetail.DataHAlignment",
+    "dom:ReportSettingDetail_DataHAlignment": "ReportSettingDetail.DataHAlignment",
+    "loc:DisplayFormat": "ReportSettingDetail.DisplayFormat",
+    "dom:ReportSettingDetail_DisplayFormat": "ReportSettingDetail.DisplayFormat",
+    "loc:VisibleInEn": "ReportSettingDetail.VisibleInEn",
+    "dom:ReportSettingDetail_VisibleInEn": "ReportSettingDetail.VisibleInEn",
+    "loc:VisibleInAr": "ReportSettingDetail.VisibleInAr",
+    "dom:ReportSettingDetail_VisibleInAr": "ReportSettingDetail.VisibleInAr"
+  },
+  "fields": [
+    {
+      "id": "ReportSettingDetail.ReportSettingId",
+      "label": "ReportSetting",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:ReportSetting",
+        "dom:ReportSettingDetail_ReportSettingId"
+      ],
+      "rules": "Required. Chosen from Report Setting master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The layout.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.FieldName",
+      "label": "FieldName",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:FieldName",
+        "dom:ReportSettingDetail_FieldName"
+      ],
+      "rules": "Required. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The field shown.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.CaptionEn",
+      "label": "CaptionEn",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:CaptionEn",
+        "dom:ReportSettingDetail_CaptionEn"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The English column heading.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.CaptionAr",
+      "label": "CaptionAr",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:CaptionAr",
+        "dom:ReportSettingDetail_CaptionAr"
+      ],
+      "rules": "Optional. Maximum 256 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The Arabic column heading.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.Order",
+      "label": "Order",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:Order",
+        "dom:ReportSettingDetail_Order"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The column's position.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.ColumnDataType",
+      "label": "ColumnDataType",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:ColumnDataType",
+        "dom:ReportSettingDetail_ColumnDataType"
+      ],
+      "rules": "Required. One of: Int, Double, String, Date Time, Boolean.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of value.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.Width",
+      "label": "Width",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:Width",
+        "dom:ReportSettingDetail_Width"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The column width.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.DataHAlignment",
+      "label": "DataHAlignment",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:DataHAlignment",
+        "dom:ReportSettingDetail_DataHAlignment"
+      ],
+      "rules": "Required. One of: Left, Center, Right.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How values line up.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.DisplayFormat",
+      "label": "DisplayFormat",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:DisplayFormat",
+        "dom:ReportSettingDetail_DisplayFormat"
+      ],
+      "rules": "Optional. Maximum 50 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How values are formatted.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.VisibleInEn",
+      "label": "VisibleInEn",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:VisibleInEn",
+        "dom:ReportSettingDetail_VisibleInEn"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the column shows in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSettingDetail.VisibleInAr",
+      "label": "VisibleInAr",
+      "section": "ReportSettingDetails",
+      "aliases": [
+        "loc:VisibleInAr",
+        "dom:ReportSettingDetail_VisibleInAr"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the column shows in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

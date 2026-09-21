@@ -1,0 +1,91 @@
+{
+  "helpId": "rpt.report-setting.edit",
+  "lang": "en",
+  "title": "Report Settings — Create / Edit",
+  "entity": "HCMv3.ReportManagement.ReportSetting",
+  "overviewHtml": "<p>A saved column layout for a report level. Part of the report designer carried over from the old system. Not read at present: nothing in HCMv3 runs these definitions, so records here have no effect.</p>",
+  "aliasIndex": {
+    "loc:Code": "ReportSetting.Code",
+    "dom:ReportSetting_Code": "ReportSetting.Code",
+    "loc:NameEn": "ReportSetting.NameEn",
+    "dom:ReportSetting_NameEn": "ReportSetting.NameEn",
+    "loc:NameAr": "ReportSetting.NameAr",
+    "dom:ReportSetting_NameAr": "ReportSetting.NameAr",
+    "loc:ReportId": "ReportSetting.ReportId",
+    "dom:ReportSetting_ReportId": "ReportSetting.ReportId",
+    "loc:Level": "ReportSetting.Level",
+    "dom:ReportSetting_Level": "ReportSetting.Level"
+  },
+  "fields": [
+    {
+      "id": "ReportSetting.Code",
+      "label": "Code",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:Code",
+        "dom:ReportSetting_Code"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.NameEn",
+      "label": "NameEn",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ReportSetting_NameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.NameAr",
+      "label": "NameAr",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:ReportSetting_NameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.ReportId",
+      "label": "ReportId",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:ReportId",
+        "dom:ReportSetting_ReportId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The report.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.Level",
+      "label": "Level",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:Level",
+        "dom:ReportSetting_Level"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The level it is for.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

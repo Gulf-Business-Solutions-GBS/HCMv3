@@ -6293,6 +6293,183 @@
     ],
     "AccommodationService_Comments": [
       "acc.accommodation-services.edit"
+    ],
+    "DomainType_Code": [
+      "rpt.domain-type.edit"
+    ],
+    "DomainType_NameEn": [
+      "rpt.domain-type.edit"
+    ],
+    "DomainType_EntityType": [
+      "rpt.domain-type.edit"
+    ],
+    "PrintReportPermissionDetail_PrintReportPermissionId": [
+      "rpt.print-report-permission-detail.edit"
+    ],
+    "PrintReportPermissionDetail_PrintReportId": [
+      "rpt.print-report-permission-detail.edit"
+    ],
+    "PrintReportPermission_Code": [
+      "rpt.print-report-permission.edit"
+    ],
+    "PrintReportPermission_RoleId": [
+      "rpt.print-report-permission.edit"
+    ],
+    "PrintReport_Code": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_NameEn": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_NameAr": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_ReportName": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_ReportCategory": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_CustomPercentage": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_ReportCreatedOn": [
+      "rpt.print-report.edit"
+    ],
+    "PrintReport_IsActive": [
+      "rpt.print-report.edit"
+    ],
+    "ReportDetail_ReportMasterId": [
+      "rpt.report-detail.edit"
+    ],
+    "ReportDetail_ReportSettingId": [
+      "rpt.report-detail.edit"
+    ],
+    "ReportDetail_DrillDownLevel": [
+      "rpt.report-detail.edit"
+    ],
+    "ReportInfoDetail_ReportInfoId": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_NodeId": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_NodeAlias": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_EntityName": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_PropertyName": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_PropertyDisplayName": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_PropertyType": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_BaseType": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_AssemblyName": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_ParentEntity": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_ParentAssembly": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_IsAssociate": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_AssociateEntity": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfoDetail_AssociateProperty": [
+      "rpt.report-info-detail.edit"
+    ],
+    "ReportInfo_ReportName": [
+      "rpt.report-info.edit"
+    ],
+    "ReportInfo_ReportTypeId": [
+      "rpt.report-info.edit"
+    ],
+    "ReportInfo_DomainTypeId": [
+      "rpt.report-info.edit"
+    ],
+    "ReportInfo_Description": [
+      "rpt.report-info.edit"
+    ],
+    "ReportInfo_ReportQuery": [
+      "rpt.report-info.edit"
+    ],
+    "ReportInfo_IsActive": [
+      "rpt.report-info.edit"
+    ],
+    "ReportMaster_Code": [
+      "rpt.report-master.edit"
+    ],
+    "ReportMaster_NameEn": [
+      "rpt.report-master.edit"
+    ],
+    "ReportMaster_NameAr": [
+      "rpt.report-master.edit"
+    ],
+    "ReportSettingDetail_ReportSettingId": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_FieldName": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_CaptionEn": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_CaptionAr": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_Order": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_ColumnDataType": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_Width": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_DataHAlignment": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_DisplayFormat": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_VisibleInEn": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSettingDetail_VisibleInAr": [
+      "rpt.report-setting-detail.edit"
+    ],
+    "ReportSetting_Code": [
+      "rpt.report-setting.edit"
+    ],
+    "ReportSetting_NameEn": [
+      "rpt.report-setting.edit"
+    ],
+    "ReportSetting_NameAr": [
+      "rpt.report-setting.edit"
+    ],
+    "ReportSetting_ReportId": [
+      "rpt.report-setting.edit"
+    ],
+    "ReportSetting_Level": [
+      "rpt.report-setting.edit"
+    ],
+    "ReportType_Code": [
+      "rpt.report-type.edit"
+    ],
+    "ReportType_NameEn": [
+      "rpt.report-type.edit"
     ]
   }
 }

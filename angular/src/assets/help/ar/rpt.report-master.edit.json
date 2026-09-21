@@ -1,0 +1,59 @@
+{
+  "helpId": "rpt.report-master.edit",
+  "lang": "ar",
+  "title": "التقارير الرئيسية — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportMaster",
+  "overviewHtml": "<p>تقرير تفصيلي متدرج، مستوياته هي تفاصيله. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:Code": "ReportMaster.Code",
+    "dom:ReportMaster_Code": "ReportMaster.Code",
+    "loc:NameEn": "ReportMaster.NameEn",
+    "dom:ReportMaster_NameEn": "ReportMaster.NameEn",
+    "loc:NameAr": "ReportMaster.NameAr",
+    "dom:ReportMaster_NameAr": "ReportMaster.NameAr"
+  },
+  "fields": [
+    {
+      "id": "ReportMaster.Code",
+      "label": "Code",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:Code",
+        "dom:ReportMaster_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportMaster.NameEn",
+      "label": "NameEn",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ReportMaster_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportMaster.NameAr",
+      "label": "NameAr",
+      "section": "ReportMasters",
+      "aliases": [
+        "loc:NameAr",
+        "dom:ReportMaster_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

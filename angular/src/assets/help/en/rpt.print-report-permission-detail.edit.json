@@ -1,0 +1,43 @@
+{
+  "helpId": "rpt.print-report-permission-detail.edit",
+  "lang": "en",
+  "title": "Print Report Permission Details — Create / Edit",
+  "entity": "HCMv3.ReportManagement.PrintReportPermissionDetail",
+  "overviewHtml": "<p>One report granted to a role. The same report can be added once per role.</p>",
+  "aliasIndex": {
+    "loc:PrintReportPermission": "PrintReportPermissionDetail.PrintReportPermissionId",
+    "dom:PrintReportPermissionDetail_PrintReportPermissionId": "PrintReportPermissionDetail.PrintReportPermissionId",
+    "loc:PrintReport": "PrintReportPermissionDetail.PrintReportId",
+    "dom:PrintReportPermissionDetail_PrintReportId": "PrintReportPermissionDetail.PrintReportId"
+  },
+  "fields": [
+    {
+      "id": "PrintReportPermissionDetail.PrintReportPermissionId",
+      "label": "PrintReportPermission",
+      "section": "PrintReportPermissionDetails",
+      "aliases": [
+        "loc:PrintReportPermission",
+        "dom:PrintReportPermissionDetail_PrintReportPermissionId"
+      ],
+      "rules": "Required. Chosen from Print Report Permission master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The role's report grant this belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PrintReportPermissionDetail.PrintReportId",
+      "label": "PrintReport",
+      "section": "PrintReportPermissionDetails",
+      "aliases": [
+        "loc:PrintReport",
+        "dom:PrintReportPermissionDetail_PrintReportId"
+      ],
+      "rules": "Required. Chosen from Print Report master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The report granted.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

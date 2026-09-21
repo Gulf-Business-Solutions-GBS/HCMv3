@@ -6050,6 +6050,237 @@
       },
       "defaultSection": "AccommodationServices",
       "domPrefix": "AccommodationService"
+    },
+    {
+      "helpId": "rpt.domain-type.edit",
+      "title": "Domain Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.DomainTypes.Create"
+      ],
+      "entity": {
+        "name": "DomainType",
+        "fullName": "HCMv3.ReportManagement.DomainType",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/DomainType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/domain-types/create-or-edit-domain-type-modal.component.html"
+        }
+      },
+      "defaultSection": "DomainTypes"
+    },
+    {
+      "helpId": "rpt.print-report-permission-detail.edit",
+      "title": "Print Report Permission Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.PrintReportPermissionDetails.Create"
+      ],
+      "entity": {
+        "name": "PrintReportPermissionDetail",
+        "fullName": "HCMv3.ReportManagement.PrintReportPermissionDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/PrintReportPermissionDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/print-report-permission-details/create-or-edit-print-report-permission-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "PrintReportPermissionDetails"
+    },
+    {
+      "helpId": "rpt.print-report-permission.edit",
+      "title": "Print Report Permissions — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.PrintReportPermissions.Create"
+      ],
+      "entity": {
+        "name": "PrintReportPermission",
+        "fullName": "HCMv3.ReportManagement.PrintReportPermission",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/PrintReportPermission.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/print-report-permissions/create-or-edit-print-report-permission-modal.component.html"
+        }
+      },
+      "defaultSection": "PrintReportPermissions"
+    },
+    {
+      "helpId": "rpt.print-report.edit",
+      "title": "Print Reports — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.PrintReports.Create"
+      ],
+      "entity": {
+        "name": "PrintReport",
+        "fullName": "HCMv3.ReportManagement.PrintReport",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/PrintReport.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/print-reports/create-or-edit-print-report-modal.component.html"
+        }
+      },
+      "defaultSection": "PrintReports"
+    },
+    {
+      "helpId": "rpt.report-detail.edit",
+      "title": "Report Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportDetails.Create"
+      ],
+      "entity": {
+        "name": "ReportDetail",
+        "fullName": "HCMv3.ReportManagement.ReportDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-details/create-or-edit-report-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportDetails"
+    },
+    {
+      "helpId": "rpt.report-info-detail.edit",
+      "title": "Report Info Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportInfoDetails.Create"
+      ],
+      "entity": {
+        "name": "ReportInfoDetail",
+        "fullName": "HCMv3.ReportManagement.ReportInfoDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportInfoDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-info-details/create-or-edit-report-info-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportInfoDetails"
+    },
+    {
+      "helpId": "rpt.report-info.edit",
+      "title": "Report Infos — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportInfos.Create"
+      ],
+      "entity": {
+        "name": "ReportInfo",
+        "fullName": "HCMv3.ReportManagement.ReportInfo",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportInfo.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-infos/create-or-edit-report-info-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportInfos"
+    },
+    {
+      "helpId": "rpt.report-master.edit",
+      "title": "Report Masters — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportMasters.Create"
+      ],
+      "entity": {
+        "name": "ReportMaster",
+        "fullName": "HCMv3.ReportManagement.ReportMaster",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportMaster.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-masters/create-or-edit-report-master-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportMasters"
+    },
+    {
+      "helpId": "rpt.report-setting-detail.edit",
+      "title": "Report Setting Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportSettingDetails.Create"
+      ],
+      "entity": {
+        "name": "ReportSettingDetail",
+        "fullName": "HCMv3.ReportManagement.ReportSettingDetail",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportSettingDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-setting-details/create-or-edit-report-setting-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportSettingDetails"
+    },
+    {
+      "helpId": "rpt.report-setting.edit",
+      "title": "Report Settings — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportSettings.Create"
+      ],
+      "entity": {
+        "name": "ReportSetting",
+        "fullName": "HCMv3.ReportManagement.ReportSetting",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportSetting.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-settings/create-or-edit-report-setting-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportSettings"
+    },
+    {
+      "helpId": "rpt.report-type.edit",
+      "title": "Report Types — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.ReportManagement.ReportTypes.Create"
+      ],
+      "entity": {
+        "name": "ReportType",
+        "fullName": "HCMv3.ReportManagement.ReportType",
+        "file": "aspnet-core/src/HCMv3.Core/ReportManagement/ReportType.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/report-management/report-types/create-or-edit-report-type-modal.component.html"
+        }
+      },
+      "defaultSection": "ReportTypes"
     }
   ]
 }

@@ -1,0 +1,91 @@
+{
+  "helpId": "rpt.report-setting.edit",
+  "lang": "ar",
+  "title": "إعدادات التقارير — إنشاء / تحرير",
+  "entity": "HCMv3.ReportManagement.ReportSetting",
+  "overviewHtml": "<p>تخطيط أعمدة محفوظ لمستوى تقرير. جزء من مصمم التقارير المنقول من النظام القديم. لا يُقرأ حالياً: لا يوجد في HCMv3 ما يشغّل هذه التعريفات، فلا أثر للسجلات هنا.</p>",
+  "aliasIndex": {
+    "loc:Code": "ReportSetting.Code",
+    "dom:ReportSetting_Code": "ReportSetting.Code",
+    "loc:NameEn": "ReportSetting.NameEn",
+    "dom:ReportSetting_NameEn": "ReportSetting.NameEn",
+    "loc:NameAr": "ReportSetting.NameAr",
+    "dom:ReportSetting_NameAr": "ReportSetting.NameAr",
+    "loc:ReportId": "ReportSetting.ReportId",
+    "dom:ReportSetting_ReportId": "ReportSetting.ReportId",
+    "loc:Level": "ReportSetting.Level",
+    "dom:ReportSetting_Level": "ReportSetting.Level"
+  },
+  "fields": [
+    {
+      "id": "ReportSetting.Code",
+      "label": "Code",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:Code",
+        "dom:ReportSetting_Code"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.NameEn",
+      "label": "NameEn",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:NameEn",
+        "dom:ReportSetting_NameEn"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.NameAr",
+      "label": "NameAr",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:NameAr",
+        "dom:ReportSetting_NameAr"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.ReportId",
+      "label": "ReportId",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:ReportId",
+        "dom:ReportSetting_ReportId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التقرير.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ReportSetting.Level",
+      "label": "Level",
+      "section": "ReportSettings",
+      "aliases": [
+        "loc:Level",
+        "dom:ReportSetting_Level"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المستوى الذي يخصه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}
