@@ -22,7 +22,9 @@ const CONTENT_DIR = 'docs/help';
 const LANGS = ['en', 'ar'];
 
 const abs = (rel) => path.join(ROOT, rel);
-const read = (rel) => fs.readFileSync(abs(rel), 'utf8');
+// Line endings normalised to LF: with core.autocrlf=true the Markdown is checked out CRLF, and the
+// `\n`-anchored patterns below (the `## Overview` split, the section split) would silently miss.
+const read = (rel) => fs.readFileSync(abs(rel), 'utf8').replace(/\r\n?/g, '\n');
 const exists = (rel) => fs.existsSync(abs(rel));
 
 // ---------------------------------------------------------------------------------------------
@@ -825,6 +827,12 @@ function frontmatter(page, lang) {
     ].join('\n');
 }
 
+/** The Markdown under a head's `## Overview` heading, or null when the head has none. */
+function overviewOf(head) {
+    const parts = head.split(/\n## Overview\n/);
+    return parts.length > 1 ? parts[1] : null;
+}
+
 /** Split an existing file into a head (frontmatter + Overview) and sections keyed by anchor. */
 function splitExisting(md) {
     const parts = md.split(/\n(?=## )/);
@@ -1090,7 +1098,7 @@ function cmdBuild(argv) {
             }
             const { head } = splitExisting(read(rel));
             // Each language names the page itself; the registry title is the English fallback.
-            const overviewMd = head.split(/\n## Overview\n/)[1] || '';
+            const overviewMd = overviewOf(head) ?? '';
 
             const fields = [];
             const aliasIndex = {};
@@ -1181,6 +1189,16 @@ function cmdCoverage(argv) {
                 console.log(`  ${isError ? 'ERROR' : 'warn '}  no content file (${rel})`);
                 isError ? errors++ : warnings++;
                 continue;
+            }
+
+            // A page with an Overview must build to a non-empty one. An empty result means the build
+            // could not read it -- CRLF line endings once did that to every page, and nothing noticed.
+            // The heading is found by a pattern that tolerates any line ending, and the body exactly
+            // as cmdBuild takes it, so a parse the build gets wrong is reported here.
+            const { head } = splitExisting(read(rel));
+            if (/^## Overview\s*$/m.test(head) && !blocksToHtml((overviewOf(head) ?? '').split('\n'))) {
+                console.log(`  ERROR  ## Overview builds to empty HTML (${rel})`);
+                errors++;
             }
 
             let written = 0;
