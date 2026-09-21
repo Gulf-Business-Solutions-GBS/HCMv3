@@ -177,7 +177,7 @@
         "loc:Comments",
         "dom:GatePass_Comments"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 1000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
       "adminHtml": "",

@@ -153,32 +153,32 @@ permissions: [Pages.PerformanceManagement.PAForms.Create]
 
 **ما هو.** نقاط قوة الموظف المُقيَّم. تظهر في تقرير ملخص التقييم.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.
 
 ## AreasOfImprovement {#PAForm.AreasOfImprovement}
 <!-- alias: loc:AreasOfImprovement, dom:PAForm_AreasOfImprovement -->
 
 **ما هو.** مجالات التحسين. تظهر في تقرير ملخص التقييم.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.
 
 ## ReviewofPreviousGoals {#PAForm.ReviewofPreviousGoals}
 <!-- alias: loc:ReviewofPreviousGoals, dom:PAForm_ReviewofPreviousGoals -->
 
 **ما هو.** مراجعة أهداف الفترة السابقة.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.
 
 ## NewlySetGoals {#PAForm.NewlySetGoals}
 <!-- alias: loc:NewlySetGoals, dom:PAForm_NewlySetGoals -->
 
 **ما هو.** الأهداف المحددة للفترة التالية. تظهر في تقرير ملخص التقييم.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.
 
 ## OverallComments {#PAForm.OverallComments}
 <!-- alias: loc:OverallComments, dom:PAForm_OverallComments -->
 
 **ما هو.** تعليقات عامة. تظهر في تقرير ملخص التقييم.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 4000 حرف.

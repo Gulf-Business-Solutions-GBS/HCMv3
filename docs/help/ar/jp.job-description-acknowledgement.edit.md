@@ -43,7 +43,7 @@ permissions: [Pages.JobProfileManagement.JobDescriptionAcknowledgements.Create]
 
 **لماذا يهم.** يُكتب يدوياً، ولا يُنسخ من الوصف الوظيفي.
 
-**القواعد.** اختياري.
+**القواعد.** اختياري. الحد الأقصى 64 حرفاً.
 
 ## Acknowledged {#JobDescriptionAcknowledgement.Acknowledged}
 <!-- alias: loc:Acknowledged, dom:JobDescriptionAcknowledgement_Acknowledged -->

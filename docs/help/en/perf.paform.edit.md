@@ -153,32 +153,32 @@ The submission boxes record progress; they do not lock the form. The dashboard c
 
 **What it is.** The appraisee's strengths. Shown on the PA summary report.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 4000 characters.
 
 ## AreasOfImprovement {#PAForm.AreasOfImprovement}
 <!-- alias: loc:AreasOfImprovement, dom:PAForm_AreasOfImprovement -->
 
 **What it is.** Areas to improve. Shown on the PA summary report.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 4000 characters.
 
 ## ReviewofPreviousGoals {#PAForm.ReviewofPreviousGoals}
 <!-- alias: loc:ReviewofPreviousGoals, dom:PAForm_ReviewofPreviousGoals -->
 
 **What it is.** A review of the previous period's goals.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 4000 characters.
 
 ## NewlySetGoals {#PAForm.NewlySetGoals}
 <!-- alias: loc:NewlySetGoals, dom:PAForm_NewlySetGoals -->
 
 **What it is.** Goals set for the next period. Shown on the PA summary report.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 4000 characters.
 
 ## OverallComments {#PAForm.OverallComments}
 <!-- alias: loc:OverallComments, dom:PAForm_OverallComments -->
 
 **What it is.** Overall comments. Shown on the PA summary report.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 4000 characters.

@@ -25,7 +25,7 @@
         "loc:Code",
         "dom:FormType_Code"
       ],
-      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "rules": "Optional. Maximum 64 characters. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
       "when": null,
       "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
       "adminHtml": "",
@@ -39,7 +39,7 @@
         "loc:NameEn",
         "dom:FormType_NameEn"
       ],
-      "rules": "Required. Must be unique in this list.",
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
       "adminHtml": "",
@@ -53,7 +53,7 @@
         "loc:NameAr",
         "dom:FormType_NameAr"
       ],
-      "rules": "Required. Must be unique in this list.",
+      "rules": "Required. Maximum 256 characters. Must be unique in this list.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
       "adminHtml": "",

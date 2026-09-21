@@ -267,7 +267,7 @@
         "loc:AppraiseeStrength",
         "dom:PAForm_AppraiseeStrength"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The appraisee's strengths. Shown on the PA summary report.</p>",
       "adminHtml": "",
@@ -281,7 +281,7 @@
         "loc:AreasOfImprovement",
         "dom:PAForm_AreasOfImprovement"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Areas to improve. Shown on the PA summary report.</p>",
       "adminHtml": "",
@@ -295,7 +295,7 @@
         "loc:ReviewofPreviousGoals",
         "dom:PAForm_ReviewofPreviousGoals"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> A review of the previous period's goals.</p>",
       "adminHtml": "",
@@ -309,7 +309,7 @@
         "loc:NewlySetGoals",
         "dom:PAForm_NewlySetGoals"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Goals set for the next period. Shown on the PA summary report.</p>",
       "adminHtml": "",
@@ -323,7 +323,7 @@
         "loc:OverallComments",
         "dom:PAForm_OverallComments"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Overall comments. Shown on the PA summary report.</p>",
       "adminHtml": "",
@@ -337,7 +337,7 @@
         "loc:Comments",
         "dom:PAForm_Comments"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 4000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
       "adminHtml": "",

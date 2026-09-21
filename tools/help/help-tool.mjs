@@ -264,6 +264,7 @@ const RULE_TEXT = {
     en: {
         system: () => 'Set by the system when the record is saved; not entered on the form.',
         required: () => 'Required.',
+        requiredOnCreate: () => 'Required when you create the record.',
         optional: () => 'Optional.',
         maxLen: (r) => `Maximum ${r.n} characters.`,
         range: (r) => `Between ${r.a} and ${r.b}.`,
@@ -291,6 +292,7 @@ const RULE_TEXT = {
     ar: {
         system: () => 'يحدده النظام عند حفظ السجل، ولا يُدخل في النموذج.',
         required: () => 'إلزامي.',
+        requiredOnCreate: () => 'إلزامي عند إنشاء السجل.',
         optional: () => 'اختياري.',
         maxLen: (r) => `الحد الأقصى ${r.n} ${arCountedNoun(Number(r.n))}.`,
         range: (r) => `بين ${r.a} و${r.b}.`,
@@ -323,7 +325,7 @@ const RULES_LINE = /^\*\*(?:Rules|القواعد)\.\*\*.*$/m;
  * DESIGN.md §10 -- the Rules block, derived and never hand-written. Decided once as a list of
  * rule parts, then rendered per language, so the Arabic can never state a different rule.
  */
-function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviour = null, formOptions = null } = {}) {
+function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviour = null, formOptions = null, inputProp = null } = {}) {
     if (!prop) return null;
     const parts = [];
     const attrText = prop.attrs.join(' ');
@@ -341,10 +343,15 @@ function rulesFor(prop, { uiRequired = false, systemMaintained = false, behaviou
         const alwaysHasValue = !prop.isNullable && prop.isEnumCandidate && !prop.lookupTarget;
         // A tick box is always either ticked or not -- neither required nor optional.
         if (prop.bareType === 'bool') parts.push({ k: 'yesNo' });
+        else if (uiRequired === 'create' && !/\[Required\]/.test(attrText)) parts.push({ k: 'requiredOnCreate' });
         else parts.push({ k: /\[Required\]/.test(attrText) || uiRequired || alwaysHasValue ? 'required' : 'optional' });
 
-        const len = attrText.match(/\[(?:StringLength|MaxLength)\((\d+)\)/);
-        if (len) parts.push({ k: 'maxLen', n: len[1] });
+        // The input DTO can accept less than the column holds -- the BioTime password is capped at
+        // 128 so its ciphertext fits the 256-character column -- and the tighter limit is the one
+        // the reader meets.
+        const maxLenOf = (text) => Number(text.match(/\[(?:StringLength|MaxLength)\((\d+)\)/)?.[1]) || null;
+        const lens = [maxLenOf(attrText), inputProp && maxLenOf(inputProp.attrs.join(' '))].filter(Boolean);
+        if (lens.length) parts.push({ k: 'maxLen', n: String(Math.min(...lens)) });
 
         const range = attrText.match(/\[Range\(([^,]+),\s*([^)]+)\)/);
         if (range) parts.push({ k: 'range', a: range[1].trim(), b: range[2].trim() });
@@ -499,7 +506,11 @@ function parseEditTemplate(rel, entityName, sectionTitleClass) {
             locKey: m[4 + o],
             domId,
             property: domId.slice(entityName.length + 1),
-            uiRequired: /class="[^"]*\brequired\b/.test(`${m[1 + o]} ${m[3 + o]}`),
+            // `[class.required]="!record().id"` marks a field required only while the record is new:
+            // the Time Attendance API password, which an edit may leave blank to keep the saved one.
+            uiRequired: /class="[^"]*\brequired\b/.test(`${m[1 + o]} ${m[3 + o]}`)
+                ? true
+                : /\[class\.required\]="!\s*\w+(?:\(\))?\.id"/.test(`${m[1 + o]} ${m[3 + o]}`) ? 'create' : false,
             section,
             at: m.index,
         });
@@ -640,6 +651,9 @@ function buildInventory() {
     for (const page of registry.pages) {
         const props = parseEntity(page.entity.file);
         const behaviour = serviceBehaviour(page.entity.name, page.service);
+        // What the form posts: its length limits can be tighter than the column's.
+        const inputDto = indexCsFiles().get(`CreateOrEdit${page.entity.name}Dto`);
+        const inputProps = inputDto ? parseEntity(path.relative(ROOT, inputDto)) : new Map();
         const editFields = page.surfaces.edit
             ? parseEditTemplate(
                   page.surfaces.edit.template,
@@ -695,6 +709,7 @@ function buildInventory() {
                 systemMaintained: editFields.length > 0 && !onForm,
                 behaviour,
                 formOptions: onForm?.options,
+                inputProp: inputProps.get(hit.property),
             });
             fields.push({
                 canonicalId,

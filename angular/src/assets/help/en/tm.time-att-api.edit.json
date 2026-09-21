@@ -95,9 +95,9 @@
         "loc:Password",
         "dom:TimeAttAPI_Password"
       ],
-      "rules": "Optional. Maximum 256 characters.",
+      "rules": "Required when you create the record. Maximum 128 characters.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> The password for that account.</p>",
+      "html": "<p><strong>What it is.</strong> The password for that account. When you edit, the field is empty because the saved password is never shown; leave it blank to keep it, or type a new one to replace it.</p>",
       "adminHtml": "<p>The password is stored encrypted, whether it is saved from this form or from Integration Center. A password saved before encryption was introduced still works and is encrypted the next time the record is saved.</p>",
       "stub": false
     },

@@ -67,7 +67,7 @@
         "loc:Version",
         "dom:JobDescriptionAcknowledgement_Version"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الإصدار الذي أُقرّ به.</p><p><strong>مثال.</strong> 2.0</p><p><strong>لماذا يهم.</strong> يُكتب يدوياً، ولا يُنسخ من الوصف الوظيفي.</p>",
       "adminHtml": "",

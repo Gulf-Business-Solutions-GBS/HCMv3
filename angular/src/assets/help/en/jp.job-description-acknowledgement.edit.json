@@ -67,7 +67,7 @@
         "loc:Version",
         "dom:JobDescriptionAcknowledgement_Version"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 64 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> The version acknowledged.</p><p><strong>Example.</strong> 2.0</p><p><strong>Why it matters.</strong> Typed in; it is not copied from the job description.</p>",
       "adminHtml": "",

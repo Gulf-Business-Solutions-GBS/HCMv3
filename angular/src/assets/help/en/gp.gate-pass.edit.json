@@ -177,7 +177,7 @@
         "loc:Comments",
         "dom:GatePass_Comments"
       ],
-      "rules": "Optional.",
+      "rules": "Optional. Maximum 1000 characters.",
       "when": null,
       "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
       "adminHtml": "",

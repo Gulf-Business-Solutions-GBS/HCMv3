@@ -43,7 +43,7 @@ A record that an employee has read and accepted a job description. An employee c
 
 **Why it matters.** Typed in; it is not copied from the job description.
 
-**Rules.** Optional.
+**Rules.** Optional. Maximum 64 characters.
 
 ## Acknowledged {#JobDescriptionAcknowledgement.Acknowledged}
 <!-- alias: loc:Acknowledged, dom:JobDescriptionAcknowledgement_Acknowledged -->

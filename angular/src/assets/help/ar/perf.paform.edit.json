@@ -267,7 +267,7 @@
         "loc:AppraiseeStrength",
         "dom:PAForm_AppraiseeStrength"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> نقاط قوة الموظف المُقيَّم. تظهر في تقرير ملخص التقييم.</p>",
       "adminHtml": "",
@@ -281,7 +281,7 @@
         "loc:AreasOfImprovement",
         "dom:PAForm_AreasOfImprovement"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> مجالات التحسين. تظهر في تقرير ملخص التقييم.</p>",
       "adminHtml": "",
@@ -295,7 +295,7 @@
         "loc:ReviewofPreviousGoals",
         "dom:PAForm_ReviewofPreviousGoals"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> مراجعة أهداف الفترة السابقة.</p>",
       "adminHtml": "",
@@ -309,7 +309,7 @@
         "loc:NewlySetGoals",
         "dom:PAForm_NewlySetGoals"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> الأهداف المحددة للفترة التالية. تظهر في تقرير ملخص التقييم.</p>",
       "adminHtml": "",
@@ -323,7 +323,7 @@
         "loc:OverallComments",
         "dom:PAForm_OverallComments"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> تعليقات عامة. تظهر في تقرير ملخص التقييم.</p>",
       "adminHtml": "",
@@ -337,7 +337,7 @@
         "loc:Comments",
         "dom:PAForm_Comments"
       ],
-      "rules": "اختياري.",
+      "rules": "اختياري. الحد الأقصى 4000 حرف.",
       "when": null,
       "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
       "adminHtml": "",
