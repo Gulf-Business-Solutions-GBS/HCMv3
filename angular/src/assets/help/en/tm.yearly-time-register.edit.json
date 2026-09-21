@@ -1,0 +1,539 @@
+{
+  "helpId": "tm.yearly-time-register.edit",
+  "lang": "en",
+  "title": "Yearly Time Registers — Create / Edit",
+  "entity": "HCMv3.TimeManagement.YearlyTimeRegister",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Employee": "YearlyTimeRegister.EmployeeId",
+    "dom:YearlyTimeRegister_EmployeeId": "YearlyTimeRegister.EmployeeId",
+    "loc:Year": "YearlyTimeRegister.Year",
+    "dom:YearlyTimeRegister_Year": "YearlyTimeRegister.Year",
+    "loc:AnnualLeaveDays": "YearlyTimeRegister.AnnualLeaveDays",
+    "dom:YearlyTimeRegister_AnnualLeaveDays": "YearlyTimeRegister.AnnualLeaveDays",
+    "loc:UnpaidLeaveDays": "YearlyTimeRegister.UnpaidLeaveDays",
+    "dom:YearlyTimeRegister_UnpaidLeaveDays": "YearlyTimeRegister.UnpaidLeaveDays",
+    "loc:SickLeavePaidDays": "YearlyTimeRegister.SickLeavePaidDays",
+    "dom:YearlyTimeRegister_SickLeavePaidDays": "YearlyTimeRegister.SickLeavePaidDays",
+    "loc:SickLeaveUnpaidDays": "YearlyTimeRegister.SickLeaveUnpaidDays",
+    "dom:YearlyTimeRegister_SickLeaveUnpaidDays": "YearlyTimeRegister.SickLeaveUnpaidDays",
+    "loc:GratuityDays": "YearlyTimeRegister.GratuityDays",
+    "dom:YearlyTimeRegister_GratuityDays": "YearlyTimeRegister.GratuityDays",
+    "loc:GratuityPaidDays": "YearlyTimeRegister.GratuityPaidDays",
+    "dom:YearlyTimeRegister_GratuityPaidDays": "YearlyTimeRegister.GratuityPaidDays",
+    "loc:PublicHolidays": "YearlyTimeRegister.PublicHolidays",
+    "dom:YearlyTimeRegister_PublicHolidays": "YearlyTimeRegister.PublicHolidays",
+    "loc:WeeklyOffs": "YearlyTimeRegister.WeeklyOffs",
+    "dom:YearlyTimeRegister_WeeklyOffs": "YearlyTimeRegister.WeeklyOffs",
+    "loc:RestDays": "YearlyTimeRegister.RestDays",
+    "dom:YearlyTimeRegister_RestDays": "YearlyTimeRegister.RestDays",
+    "loc:AnnualLeaveAccrualDays": "YearlyTimeRegister.AnnualLeaveAccrualDays",
+    "dom:YearlyTimeRegister_AnnualLeaveAccrualDays": "YearlyTimeRegister.AnnualLeaveAccrualDays",
+    "loc:AnnualLeaveOpeningBal": "YearlyTimeRegister.AnnualLeaveOpeningBal",
+    "dom:YearlyTimeRegister_AnnualLeaveOpeningBal": "YearlyTimeRegister.AnnualLeaveOpeningBal",
+    "loc:AnnualLeaveClosingBal": "YearlyTimeRegister.AnnualLeaveClosingBal",
+    "dom:YearlyTimeRegister_AnnualLeaveClosingBal": "YearlyTimeRegister.AnnualLeaveClosingBal",
+    "loc:TicketAccrualDays": "YearlyTimeRegister.TicketAccrualDays",
+    "dom:YearlyTimeRegister_TicketAccrualDays": "YearlyTimeRegister.TicketAccrualDays",
+    "loc:TicketAccrualOpeningBal": "YearlyTimeRegister.TicketAccrualOpeningBal",
+    "dom:YearlyTimeRegister_TicketAccrualOpeningBal": "YearlyTimeRegister.TicketAccrualOpeningBal",
+    "loc:TicketAccrualClosingBal": "YearlyTimeRegister.TicketAccrualClosingBal",
+    "dom:YearlyTimeRegister_TicketAccrualClosingBal": "YearlyTimeRegister.TicketAccrualClosingBal",
+    "loc:AirTicketPaidDays": "YearlyTimeRegister.AirTicketPaidDays",
+    "dom:YearlyTimeRegister_AirTicketPaidDays": "YearlyTimeRegister.AirTicketPaidDays",
+    "loc:ActiveDays": "YearlyTimeRegister.ActiveDays",
+    "dom:YearlyTimeRegister_ActiveDays": "YearlyTimeRegister.ActiveDays",
+    "loc:PlannedWorkingMins": "YearlyTimeRegister.PlannedWorkingMins",
+    "dom:YearlyTimeRegister_PlannedWorkingMins": "YearlyTimeRegister.PlannedWorkingMins",
+    "loc:ActualWorkingMins": "YearlyTimeRegister.ActualWorkingMins",
+    "dom:YearlyTimeRegister_ActualWorkingMins": "YearlyTimeRegister.ActualWorkingMins",
+    "loc:ActualAbsenceMins": "YearlyTimeRegister.ActualAbsenceMins",
+    "dom:YearlyTimeRegister_ActualAbsenceMins": "YearlyTimeRegister.ActualAbsenceMins",
+    "loc:PlannedWorkingDays": "YearlyTimeRegister.PlannedWorkingDays",
+    "dom:YearlyTimeRegister_PlannedWorkingDays": "YearlyTimeRegister.PlannedWorkingDays",
+    "loc:ActualWorkingDays": "YearlyTimeRegister.ActualWorkingDays",
+    "dom:YearlyTimeRegister_ActualWorkingDays": "YearlyTimeRegister.ActualWorkingDays",
+    "loc:ExtraWorkingDays": "YearlyTimeRegister.ExtraWorkingDays",
+    "dom:YearlyTimeRegister_ExtraWorkingDays": "YearlyTimeRegister.ExtraWorkingDays",
+    "loc:LieuDays": "YearlyTimeRegister.LieuDays",
+    "dom:YearlyTimeRegister_LieuDays": "YearlyTimeRegister.LieuDays",
+    "loc:AdvLeaveRecoveryDays": "YearlyTimeRegister.AdvLeaveRecoveryDays",
+    "dom:YearlyTimeRegister_AdvLeaveRecoveryDays": "YearlyTimeRegister.AdvLeaveRecoveryDays",
+    "loc:NormalDayOTMins": "YearlyTimeRegister.NormalDayOTMins",
+    "dom:YearlyTimeRegister_NormalDayOTMins": "YearlyTimeRegister.NormalDayOTMins",
+    "loc:RestDayOTMins": "YearlyTimeRegister.RestDayOTMins",
+    "dom:YearlyTimeRegister_RestDayOTMins": "YearlyTimeRegister.RestDayOTMins",
+    "loc:HolidayOTMins": "YearlyTimeRegister.HolidayOTMins",
+    "dom:YearlyTimeRegister_HolidayOTMins": "YearlyTimeRegister.HolidayOTMins",
+    "loc:WeekendOTMins": "YearlyTimeRegister.WeekendOTMins",
+    "dom:YearlyTimeRegister_WeekendOTMins": "YearlyTimeRegister.WeekendOTMins",
+    "loc:AdvanceLeavePaids": "YearlyTimeRegister.AdvanceLeavePaids",
+    "dom:YearlyTimeRegister_AdvanceLeavePaids": "YearlyTimeRegister.AdvanceLeavePaids",
+    "loc:AdvanceTicketPaids": "YearlyTimeRegister.AdvanceTicketPaids",
+    "dom:YearlyTimeRegister_AdvanceTicketPaids": "YearlyTimeRegister.AdvanceTicketPaids"
+  },
+  "fields": [
+    {
+      "id": "YearlyTimeRegister.EmployeeId",
+      "label": "Employee",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:YearlyTimeRegister_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.Year",
+      "label": "Year",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:Year",
+        "dom:YearlyTimeRegister_Year"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AnnualLeaveDays",
+      "label": "AnnualLeaveDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveDays",
+        "dom:YearlyTimeRegister_AnnualLeaveDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.UnpaidLeaveDays",
+      "label": "UnpaidLeaveDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:UnpaidLeaveDays",
+        "dom:YearlyTimeRegister_UnpaidLeaveDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.SickLeavePaidDays",
+      "label": "SickLeavePaidDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:SickLeavePaidDays",
+        "dom:YearlyTimeRegister_SickLeavePaidDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.SickLeaveUnpaidDays",
+      "label": "SickLeaveUnpaidDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:SickLeaveUnpaidDays",
+        "dom:YearlyTimeRegister_SickLeaveUnpaidDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.GratuityDays",
+      "label": "GratuityDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:GratuityDays",
+        "dom:YearlyTimeRegister_GratuityDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.GratuityPaidDays",
+      "label": "GratuityPaidDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:GratuityPaidDays",
+        "dom:YearlyTimeRegister_GratuityPaidDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.PublicHolidays",
+      "label": "PublicHolidays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:PublicHolidays",
+        "dom:YearlyTimeRegister_PublicHolidays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.WeeklyOffs",
+      "label": "WeeklyOffs",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:WeeklyOffs",
+        "dom:YearlyTimeRegister_WeeklyOffs"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.RestDays",
+      "label": "RestDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:RestDays",
+        "dom:YearlyTimeRegister_RestDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AnnualLeaveAccrualDays",
+      "label": "AnnualLeaveAccrualDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveAccrualDays",
+        "dom:YearlyTimeRegister_AnnualLeaveAccrualDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AnnualLeaveOpeningBal",
+      "label": "AnnualLeaveOpeningBal",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveOpeningBal",
+        "dom:YearlyTimeRegister_AnnualLeaveOpeningBal"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AnnualLeaveClosingBal",
+      "label": "AnnualLeaveClosingBal",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveClosingBal",
+        "dom:YearlyTimeRegister_AnnualLeaveClosingBal"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.TicketAccrualDays",
+      "label": "TicketAccrualDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualDays",
+        "dom:YearlyTimeRegister_TicketAccrualDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.TicketAccrualOpeningBal",
+      "label": "TicketAccrualOpeningBal",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualOpeningBal",
+        "dom:YearlyTimeRegister_TicketAccrualOpeningBal"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.TicketAccrualClosingBal",
+      "label": "TicketAccrualClosingBal",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualClosingBal",
+        "dom:YearlyTimeRegister_TicketAccrualClosingBal"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AirTicketPaidDays",
+      "label": "AirTicketPaidDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AirTicketPaidDays",
+        "dom:YearlyTimeRegister_AirTicketPaidDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.ActiveDays",
+      "label": "ActiveDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:ActiveDays",
+        "dom:YearlyTimeRegister_ActiveDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.PlannedWorkingMins",
+      "label": "PlannedWorkingMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingMins",
+        "dom:YearlyTimeRegister_PlannedWorkingMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.ActualWorkingMins",
+      "label": "ActualWorkingMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingMins",
+        "dom:YearlyTimeRegister_ActualWorkingMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.ActualAbsenceMins",
+      "label": "ActualAbsenceMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:ActualAbsenceMins",
+        "dom:YearlyTimeRegister_ActualAbsenceMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.PlannedWorkingDays",
+      "label": "PlannedWorkingDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingDays",
+        "dom:YearlyTimeRegister_PlannedWorkingDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.ActualWorkingDays",
+      "label": "ActualWorkingDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingDays",
+        "dom:YearlyTimeRegister_ActualWorkingDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.ExtraWorkingDays",
+      "label": "ExtraWorkingDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:ExtraWorkingDays",
+        "dom:YearlyTimeRegister_ExtraWorkingDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.LieuDays",
+      "label": "LieuDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:LieuDays",
+        "dom:YearlyTimeRegister_LieuDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AdvLeaveRecoveryDays",
+      "label": "AdvLeaveRecoveryDays",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AdvLeaveRecoveryDays",
+        "dom:YearlyTimeRegister_AdvLeaveRecoveryDays"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.NormalDayOTMins",
+      "label": "NormalDayOTMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:NormalDayOTMins",
+        "dom:YearlyTimeRegister_NormalDayOTMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.RestDayOTMins",
+      "label": "RestDayOTMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:RestDayOTMins",
+        "dom:YearlyTimeRegister_RestDayOTMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.HolidayOTMins",
+      "label": "HolidayOTMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:HolidayOTMins",
+        "dom:YearlyTimeRegister_HolidayOTMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.WeekendOTMins",
+      "label": "WeekendOTMins",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:WeekendOTMins",
+        "dom:YearlyTimeRegister_WeekendOTMins"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AdvanceLeavePaids",
+      "label": "AdvanceLeavePaids",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AdvanceLeavePaids",
+        "dom:YearlyTimeRegister_AdvanceLeavePaids"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegister.AdvanceTicketPaids",
+      "label": "AdvanceTicketPaids",
+      "section": "YearlyTimeRegisters",
+      "aliases": [
+        "loc:AdvanceTicketPaids",
+        "dom:YearlyTimeRegister_AdvanceTicketPaids"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

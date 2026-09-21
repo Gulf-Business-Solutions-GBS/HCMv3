@@ -1,0 +1,203 @@
+{
+  "helpId": "tm.time-att-api.edit",
+  "lang": "ar",
+  "title": "واجهات ربط أجهزة البصمة — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeAttAPI",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:TokenUrl": "TimeAttAPI.TokenUrl",
+    "dom:TimeAttAPI_TokenUrl": "TimeAttAPI.TokenUrl",
+    "loc:TransactionsUrl": "TimeAttAPI.TransactionsUrl",
+    "dom:TimeAttAPI_TransactionsUrl": "TimeAttAPI.TransactionsUrl",
+    "loc:DevicesUrl": "TimeAttAPI.DevicesUrl",
+    "dom:TimeAttAPI_DevicesUrl": "TimeAttAPI.DevicesUrl",
+    "loc:Username": "TimeAttAPI.Username",
+    "dom:TimeAttAPI_Username": "TimeAttAPI.Username",
+    "loc:Password": "TimeAttAPI.Password",
+    "dom:TimeAttAPI_Password": "TimeAttAPI.Password",
+    "loc:NoOfRecords": "TimeAttAPI.NoOfRecords",
+    "dom:TimeAttAPI_NoOfRecords": "TimeAttAPI.NoOfRecords",
+    "loc:Email": "TimeAttAPI.Email",
+    "dom:TimeAttAPI_Email": "TimeAttAPI.Email",
+    "loc:Company": "TimeAttAPI.Company",
+    "dom:TimeAttAPI_Company": "TimeAttAPI.Company",
+    "loc:PunchInCode": "TimeAttAPI.PunchInCode",
+    "dom:TimeAttAPI_PunchInCode": "TimeAttAPI.PunchInCode",
+    "loc:PunchOutCode": "TimeAttAPI.PunchOutCode",
+    "dom:TimeAttAPI_PunchOutCode": "TimeAttAPI.PunchOutCode",
+    "loc:BreakOutCode": "TimeAttAPI.BreakOutCode",
+    "dom:TimeAttAPI_BreakOutCode": "TimeAttAPI.BreakOutCode",
+    "loc:BreakInCode": "TimeAttAPI.BreakInCode",
+    "dom:TimeAttAPI_BreakInCode": "TimeAttAPI.BreakInCode"
+  },
+  "fields": [
+    {
+      "id": "TimeAttAPI.TokenUrl",
+      "label": "TokenUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:TokenUrl",
+        "dom:TimeAttAPI_TokenUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.TransactionsUrl",
+      "label": "TransactionsUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:TransactionsUrl",
+        "dom:TimeAttAPI_TransactionsUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.DevicesUrl",
+      "label": "DevicesUrl",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:DevicesUrl",
+        "dom:TimeAttAPI_DevicesUrl"
+      ],
+      "rules": "إلزامي. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.Username",
+      "label": "Username",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Username",
+        "dom:TimeAttAPI_Username"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.Password",
+      "label": "Password",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Password",
+        "dom:TimeAttAPI_Password"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.NoOfRecords",
+      "label": "NoOfRecords",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:NoOfRecords",
+        "dom:TimeAttAPI_NoOfRecords"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.Email",
+      "label": "Email",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Email",
+        "dom:TimeAttAPI_Email"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.Company",
+      "label": "Company",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:Company",
+        "dom:TimeAttAPI_Company"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.PunchInCode",
+      "label": "PunchInCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:PunchInCode",
+        "dom:TimeAttAPI_PunchInCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.PunchOutCode",
+      "label": "PunchOutCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:PunchOutCode",
+        "dom:TimeAttAPI_PunchOutCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.BreakOutCode",
+      "label": "BreakOutCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:BreakOutCode",
+        "dom:TimeAttAPI_BreakOutCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeAttAPI.BreakInCode",
+      "label": "BreakInCode",
+      "section": "TimeAttAPIs",
+      "aliases": [
+        "loc:BreakInCode",
+        "dom:TimeAttAPI_BreakInCode"
+      ],
+      "rules": "اختياري. الحد الأقصى 50 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

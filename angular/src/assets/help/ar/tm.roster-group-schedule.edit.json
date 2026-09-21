@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.roster-group-schedule.edit",
+  "lang": "ar",
+  "title": "جداول مجموعات الورديات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterGroupSchedule",
+  "overviewHtml": "<p>فترة الدوام التي تتبعها مجموعة المناوبة لفترة، ومن أين تبدأ في الدورة.</p>",
+  "aliasIndex": {
+    "loc:RosterGroup": "RosterGroupSchedule.RosterGroupId",
+    "dom:RosterGroupSchedule_RosterGroupId": "RosterGroupSchedule.RosterGroupId",
+    "loc:DutyPeriod": "RosterGroupSchedule.DutyPeriodId",
+    "dom:RosterGroupSchedule_DutyPeriodId": "RosterGroupSchedule.DutyPeriodId",
+    "loc:StartDate": "RosterGroupSchedule.StartDate",
+    "dom:RosterGroupSchedule_StartDate": "RosterGroupSchedule.StartDate",
+    "loc:EndDate": "RosterGroupSchedule.EndDate",
+    "dom:RosterGroupSchedule_EndDate": "RosterGroupSchedule.EndDate",
+    "loc:StartPoint": "RosterGroupSchedule.StartPoint",
+    "dom:RosterGroupSchedule_StartPoint": "RosterGroupSchedule.StartPoint"
+  },
+  "fields": [
+    {
+      "id": "RosterGroupSchedule.RosterGroupId",
+      "label": "RosterGroup",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:RosterGroup",
+        "dom:RosterGroupSchedule_RosterGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات الجداول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة المناوبة.</p><p><strong>مثال.</strong> الفريق أ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:RosterGroupSchedule_DutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام التي تتبعها المجموعة.</p><p><strong>مثال.</strong> دورة 4 أيام عمل و4 أيام راحة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.StartDate",
+      "label": "StartDate",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterGroupSchedule_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.EndDate",
+      "label": "EndDate",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:RosterGroupSchedule_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.StartPoint",
+      "label": "StartPoint",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:StartPoint",
+        "dom:RosterGroupSchedule_StartPoint"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم الدورة الذي تكون فيه المجموعة في تاريخ بداية الجدول.</p><p><strong>مثال.</strong> <code>5</code> — يبدأ الفريق ب في منتصف دورة من 8 أيام.</p><p><strong>لماذا يهم.</strong> إذا كان أكبر من صفر تتبع المجموعة دورة أسابيع فترة الدوام من هذا اليوم. والقيمة 0 تستخدم دوامات أيام الأسبوع في فترة الدوام بدلاً من ذلك.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

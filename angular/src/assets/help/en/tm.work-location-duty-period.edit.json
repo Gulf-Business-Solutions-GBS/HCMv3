@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.work-location-duty-period.edit",
+  "lang": "en",
+  "title": "Work Location Duty Periods — Create / Edit",
+  "entity": "HCMv3.TimeManagement.WorkLocationDutyPeriod",
+  "overviewHtml": "<p>The duty period used at a work location, from a given date.</p><p>Not read at present: employees' duties come from their own duty periods and roster groups, and nothing reads this list.</p>",
+  "aliasIndex": {
+    "loc:WorkLocation": "WorkLocationDutyPeriod.WorkLocationId",
+    "dom:WorkLocationDutyPeriod_WorkLocationId": "WorkLocationDutyPeriod.WorkLocationId",
+    "loc:DutyPeriod": "WorkLocationDutyPeriod.DutyPeriodId",
+    "dom:WorkLocationDutyPeriod_DutyPeriodId": "WorkLocationDutyPeriod.DutyPeriodId",
+    "loc:StartDate": "WorkLocationDutyPeriod.StartDate",
+    "dom:WorkLocationDutyPeriod_StartDate": "WorkLocationDutyPeriod.StartDate"
+  },
+  "fields": [
+    {
+      "id": "WorkLocationDutyPeriod.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:WorkLocationDutyPeriod_WorkLocationId"
+      ],
+      "rules": "Required. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location.</p><p><strong>Example.</strong> Shuwaikh Warehouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocationDutyPeriod.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:WorkLocationDutyPeriod_DutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period used there.</p><p><strong>Example.</strong> Warehouse Shifts</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocationDutyPeriod.StartDate",
+      "label": "StartDate",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:WorkLocationDutyPeriod_StartDate"
+      ],
+      "rules": "Required. Date value. No two records for the same work location can start on the same date. Saving closes the previous record for the same work location on the day before this date; the latest record stays open.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

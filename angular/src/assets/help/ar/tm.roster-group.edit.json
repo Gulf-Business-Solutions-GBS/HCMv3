@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-group.edit",
+  "lang": "ar",
+  "title": "مجموعات الجداول — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterGroup",
+  "overviewHtml": "<p>مجموعة من الموظفين يتشاركون مناوبة واحدة — مثل فريق مناوبة. ويُدرج أعضاؤها في تفاصيل المجموعة، وفترة الدوام التي تتبعها المجموعة في جداولها.</p><p>ويأتي دوام الموظف في يوم ما أولاً من الدوام البديل لذلك التاريخ، ثم من فترة الدوام الخاصة به، ثم من مجموعة المناوبة فقط بعد ذلك.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterGroup.Code",
+    "dom:RosterGroup_Code": "RosterGroup.Code",
+    "loc:NameEn": "RosterGroup.NameEn",
+    "dom:RosterGroup_NameEn": "RosterGroup.NameEn",
+    "loc:NameAr": "RosterGroup.NameAr",
+    "dom:RosterGroup_NameAr": "RosterGroup.NameAr"
+  },
+  "fields": [
+    {
+      "id": "RosterGroup.Code",
+      "label": "Code",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterGroup_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroup.NameEn",
+      "label": "NameEn",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterGroup_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroup.NameAr",
+      "label": "NameAr",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterGroup_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

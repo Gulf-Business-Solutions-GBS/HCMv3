@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.roster-group-schedule.edit",
+  "lang": "en",
+  "title": "Roster Group Schedules — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterGroupSchedule",
+  "overviewHtml": "<p>The duty period a roster group follows for a period, and where in the rotation it starts.</p>",
+  "aliasIndex": {
+    "loc:RosterGroup": "RosterGroupSchedule.RosterGroupId",
+    "dom:RosterGroupSchedule_RosterGroupId": "RosterGroupSchedule.RosterGroupId",
+    "loc:DutyPeriod": "RosterGroupSchedule.DutyPeriodId",
+    "dom:RosterGroupSchedule_DutyPeriodId": "RosterGroupSchedule.DutyPeriodId",
+    "loc:StartDate": "RosterGroupSchedule.StartDate",
+    "dom:RosterGroupSchedule_StartDate": "RosterGroupSchedule.StartDate",
+    "loc:EndDate": "RosterGroupSchedule.EndDate",
+    "dom:RosterGroupSchedule_EndDate": "RosterGroupSchedule.EndDate",
+    "loc:StartPoint": "RosterGroupSchedule.StartPoint",
+    "dom:RosterGroupSchedule_StartPoint": "RosterGroupSchedule.StartPoint"
+  },
+  "fields": [
+    {
+      "id": "RosterGroupSchedule.RosterGroupId",
+      "label": "RosterGroup",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:RosterGroup",
+        "dom:RosterGroupSchedule_RosterGroupId"
+      ],
+      "rules": "Required. Chosen from Roster Group master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The roster group.</p><p><strong>Example.</strong> Team A</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:RosterGroupSchedule_DutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period the group follows.</p><p><strong>Example.</strong> 4-on 4-off Rotation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.StartDate",
+      "label": "StartDate",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterGroupSchedule_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.EndDate",
+      "label": "EndDate",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:EndDate",
+        "dom:RosterGroupSchedule_EndDate"
+      ],
+      "rules": "Required. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupSchedule.StartPoint",
+      "label": "StartPoint",
+      "section": "RosterGroupSchedules",
+      "aliases": [
+        "loc:StartPoint",
+        "dom:RosterGroupSchedule_StartPoint"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day of the rotation the group is on at the schedule's start date.</p><p><strong>Example.</strong> <code>5</code> — Team B starts halfway through an 8-day cycle.</p><p><strong>Why it matters.</strong> Above 0, the group follows the duty period's week rotation from this day. 0 uses the duty period's weekday duties instead.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -17,6 +17,21 @@ Many wagetypes are recognised by the payroll engine **by their code** and calcul
 
 The many **Include In …** boxes each add this wagetype's monthly amount to the base of another calculation: the social security deduction adds up every wagetype marked *Include In Social Security*, and so on.
 
+## Code {#WageType.Code}
+<!-- alias: loc:Code, dom:WageType_Code -->
+
+**What it is.** The wagetype's code. Unlike most lists it is never assigned automatically -- you must enter it.
+
+**Example.** `1000` -- basic pay.
+
+**Why it matters.** The payroll engine finds its own wagetypes by code: `1000` basic pay, `9000` net pay, `4001` unpaid leave, `4029` absent days and several dozen more each have their own calculation. A wagetype whose code the engine does not recognise is paid only through what points to it -- an employee's basic pay, a payment, or an absence, overtime or loan type.
+
+:::admin
+The code can still be edited after saving, even on a Technical wagetype. Changing the code of one the engine recognises stops its calculation -- the engine will no longer find it.
+:::
+
+**Rules.** Required. Must be unique in this list.
+
 ## ShortNameEn {#WageType.ShortNameEn}
 <!-- alias: loc:ShortNameEn, dom:WageType_ShortNameEn -->
 
@@ -303,16 +318,3 @@ On the time types `4001` (unpaid leave) and `4029` (absent days) the box means s
 **Why it matters.** Not enforced at present: the roles can be listed under **Wagetype Security Roles**, but nothing restricts who sees or pays the wagetype.
 
 **Rules.** Yes or no.
-
-## Code {#WageType.Code}
-<!-- alias: loc:Code, dom:WageType_Code -->
-
-**What it is.** The wagetype's code. Unlike most lists it is never assigned automatically -- you must enter it.
-
-**Example.** `1000` -- basic pay.
-
-**Why it matters.** The payroll engine finds its own wagetypes by code: `1000` basic pay, `9000` net pay, `4001` unpaid leave, `4029` absent days and several dozen more each have their own calculation. A wagetype whose code the engine does not recognise is paid only through what points to it -- an employee's basic pay, a payment, or an absence, overtime or loan type.
-
-:::admin
-The code can still be edited after saving, even on a Technical wagetype. Changing the code of one the engine recognises stops its calculation -- the engine will no longer find it.
-:::

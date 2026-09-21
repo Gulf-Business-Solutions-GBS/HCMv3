@@ -1,0 +1,91 @@
+{
+  "helpId": "tm.time-transfer.edit",
+  "lang": "ar",
+  "title": "عمليات نقل الوقت — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeTransfer",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Employee": "TimeTransfer.EmployeeId",
+    "dom:TimeTransfer_EmployeeId": "TimeTransfer.EmployeeId",
+    "loc:TransferDate": "TimeTransfer.TransferDate",
+    "dom:TimeTransfer_TransferDate": "TimeTransfer.TransferDate",
+    "loc:TransferType": "TimeTransfer.TransferTypeId",
+    "dom:TimeTransfer_TransferTypeId": "TimeTransfer.TransferTypeId",
+    "loc:TransferCount": "TimeTransfer.TransferCount",
+    "dom:TimeTransfer_TransferCount": "TimeTransfer.TransferCount",
+    "loc:Comments": "TimeTransfer.Comments",
+    "dom:TimeTransfer_Comments": "TimeTransfer.Comments"
+  },
+  "fields": [
+    {
+      "id": "TimeTransfer.EmployeeId",
+      "label": "Employee",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeTransfer_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeTransfer.TransferDate",
+      "label": "TransferDate",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferDate",
+        "dom:TimeTransfer_TransferDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeTransfer.TransferTypeId",
+      "label": "TransferType",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferType",
+        "dom:TimeTransfer_TransferTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع نقل الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeTransfer.TransferCount",
+      "label": "TransferCount",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:TransferCount",
+        "dom:TimeTransfer_TransferCount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeTransfer.Comments",
+      "label": "Comments",
+      "section": "TimeTransfers",
+      "aliases": [
+        "loc:Comments",
+        "dom:TimeTransfer_Comments"
+      ],
+      "rules": "اختياري. الحد الأقصى 500 حرف.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

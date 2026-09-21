@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.yearly-time-register-detail.edit",
+  "lang": "en",
+  "title": "Yearly Time Register Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.YearlyTimeRegisterDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:YearlyTimeRegister": "YearlyTimeRegisterDetail.YearlyTimeRegisterId",
+    "dom:YearlyTimeRegisterDetail_YearlyTimeRegisterId": "YearlyTimeRegisterDetail.YearlyTimeRegisterId",
+    "loc:TimeType": "YearlyTimeRegisterDetail.TimeTypeId",
+    "dom:YearlyTimeRegisterDetail_TimeTypeId": "YearlyTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "YearlyTimeRegisterDetail.TimeValue",
+    "dom:YearlyTimeRegisterDetail_TimeValue": "YearlyTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "YearlyTimeRegisterDetail.YearlyTimeRegisterId",
+      "label": "YearlyTimeRegister",
+      "section": "YearlyTimeRegisterDetails",
+      "aliases": [
+        "loc:YearlyTimeRegister",
+        "dom:YearlyTimeRegisterDetail_YearlyTimeRegisterId"
+      ],
+      "rules": "Required. Chosen from Yearly Time Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "YearlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:YearlyTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "Required. Chosen from Time Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "YearlyTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "YearlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:YearlyTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

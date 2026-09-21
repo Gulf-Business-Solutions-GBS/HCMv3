@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.work-location-duty-period.edit",
+  "lang": "ar",
+  "title": "فترات دوام مكان العمل — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.WorkLocationDutyPeriod",
+  "overviewHtml": "<p>فترة الدوام المستخدمة في موقع عمل، اعتباراً من تاريخ معيّن.</p><p>لا يُقرأ حالياً: تأتي دوامات الموظفين من فترات دوامهم ومجموعات المناوبة، ولا شيء يقرأ هذه القائمة.</p>",
+  "aliasIndex": {
+    "loc:WorkLocation": "WorkLocationDutyPeriod.WorkLocationId",
+    "dom:WorkLocationDutyPeriod_WorkLocationId": "WorkLocationDutyPeriod.WorkLocationId",
+    "loc:DutyPeriod": "WorkLocationDutyPeriod.DutyPeriodId",
+    "dom:WorkLocationDutyPeriod_DutyPeriodId": "WorkLocationDutyPeriod.DutyPeriodId",
+    "loc:StartDate": "WorkLocationDutyPeriod.StartDate",
+    "dom:WorkLocationDutyPeriod_StartDate": "WorkLocationDutyPeriod.StartDate"
+  },
+  "fields": [
+    {
+      "id": "WorkLocationDutyPeriod.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:WorkLocationDutyPeriod_WorkLocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل.</p><p><strong>مثال.</strong> مستودع الشويخ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocationDutyPeriod.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:WorkLocationDutyPeriod_DutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة الدوام المستخدمة فيه.</p><p><strong>مثال.</strong> مناوبات المستودع</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkLocationDutyPeriod.StartDate",
+      "label": "StartDate",
+      "section": "WorkLocationDutyPeriods",
+      "aliases": [
+        "loc:StartDate",
+        "dom:WorkLocationDutyPeriod_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يبدأ سجلان لمكان العمل نفسه في التاريخ نفسه. عند الحفظ يُغلق السجل السابق لمكان العمل نفسه في اليوم السابق لهذا التاريخ، ويبقى أحدث سجل مفتوحاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.holiday-calendar.edit",
+  "lang": "en",
+  "title": "Holiday Calendars — Create / Edit",
+  "entity": "HCMv3.TimeManagement.HolidayCalendar",
+  "overviewHtml": "<p>A set of public holidays — usually one per country or site. Each duty period names the holiday calendar its employees follow; a day is a public holiday for an employee only if it is in their duty period's calendar.</p>",
+  "aliasIndex": {
+    "loc:Code": "HolidayCalendar.Code",
+    "dom:HolidayCalendar_Code": "HolidayCalendar.Code",
+    "loc:NameEn": "HolidayCalendar.NameEn",
+    "dom:HolidayCalendar_NameEn": "HolidayCalendar.NameEn",
+    "loc:NameAr": "HolidayCalendar.NameAr",
+    "dom:HolidayCalendar_NameAr": "HolidayCalendar.NameAr"
+  },
+  "fields": [
+    {
+      "id": "HolidayCalendar.Code",
+      "label": "Code",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:Code",
+        "dom:HolidayCalendar_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayCalendar.NameEn",
+      "label": "NameEn",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:NameEn",
+        "dom:HolidayCalendar_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayCalendar.NameAr",
+      "label": "NameAr",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:NameAr",
+        "dom:HolidayCalendar_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,539 @@
+{
+  "helpId": "tm.monthly-time-register.edit",
+  "lang": "ar",
+  "title": "سجلات الوقت الشهرية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.MonthlyTimeRegister",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Employee": "MonthlyTimeRegister.EmployeeId",
+    "dom:MonthlyTimeRegister_EmployeeId": "MonthlyTimeRegister.EmployeeId",
+    "loc:Month": "MonthlyTimeRegister.Month",
+    "dom:MonthlyTimeRegister_Month": "MonthlyTimeRegister.Month",
+    "loc:AnnualLeaveDays": "MonthlyTimeRegister.AnnualLeaveDays",
+    "dom:MonthlyTimeRegister_AnnualLeaveDays": "MonthlyTimeRegister.AnnualLeaveDays",
+    "loc:UnpaidLeaveDays": "MonthlyTimeRegister.UnpaidLeaveDays",
+    "dom:MonthlyTimeRegister_UnpaidLeaveDays": "MonthlyTimeRegister.UnpaidLeaveDays",
+    "loc:SickLeavePaidDays": "MonthlyTimeRegister.SickLeavePaidDays",
+    "dom:MonthlyTimeRegister_SickLeavePaidDays": "MonthlyTimeRegister.SickLeavePaidDays",
+    "loc:SickLeaveUnpaidDays": "MonthlyTimeRegister.SickLeaveUnpaidDays",
+    "dom:MonthlyTimeRegister_SickLeaveUnpaidDays": "MonthlyTimeRegister.SickLeaveUnpaidDays",
+    "loc:GratuityDays": "MonthlyTimeRegister.GratuityDays",
+    "dom:MonthlyTimeRegister_GratuityDays": "MonthlyTimeRegister.GratuityDays",
+    "loc:GratuityPaidDays": "MonthlyTimeRegister.GratuityPaidDays",
+    "dom:MonthlyTimeRegister_GratuityPaidDays": "MonthlyTimeRegister.GratuityPaidDays",
+    "loc:PublicHolidays": "MonthlyTimeRegister.PublicHolidays",
+    "dom:MonthlyTimeRegister_PublicHolidays": "MonthlyTimeRegister.PublicHolidays",
+    "loc:WeeklyOffs": "MonthlyTimeRegister.WeeklyOffs",
+    "dom:MonthlyTimeRegister_WeeklyOffs": "MonthlyTimeRegister.WeeklyOffs",
+    "loc:RestDays": "MonthlyTimeRegister.RestDays",
+    "dom:MonthlyTimeRegister_RestDays": "MonthlyTimeRegister.RestDays",
+    "loc:AnnualLeaveAccrualDays": "MonthlyTimeRegister.AnnualLeaveAccrualDays",
+    "dom:MonthlyTimeRegister_AnnualLeaveAccrualDays": "MonthlyTimeRegister.AnnualLeaveAccrualDays",
+    "loc:AnnualLeaveOpeningBal": "MonthlyTimeRegister.AnnualLeaveOpeningBal",
+    "dom:MonthlyTimeRegister_AnnualLeaveOpeningBal": "MonthlyTimeRegister.AnnualLeaveOpeningBal",
+    "loc:AnnualLeaveClosingBal": "MonthlyTimeRegister.AnnualLeaveClosingBal",
+    "dom:MonthlyTimeRegister_AnnualLeaveClosingBal": "MonthlyTimeRegister.AnnualLeaveClosingBal",
+    "loc:TicketAccrualDays": "MonthlyTimeRegister.TicketAccrualDays",
+    "dom:MonthlyTimeRegister_TicketAccrualDays": "MonthlyTimeRegister.TicketAccrualDays",
+    "loc:TicketAccrualOpeningBal": "MonthlyTimeRegister.TicketAccrualOpeningBal",
+    "dom:MonthlyTimeRegister_TicketAccrualOpeningBal": "MonthlyTimeRegister.TicketAccrualOpeningBal",
+    "loc:TicketAccrualClosingBal": "MonthlyTimeRegister.TicketAccrualClosingBal",
+    "dom:MonthlyTimeRegister_TicketAccrualClosingBal": "MonthlyTimeRegister.TicketAccrualClosingBal",
+    "loc:AirTicketPaidDays": "MonthlyTimeRegister.AirTicketPaidDays",
+    "dom:MonthlyTimeRegister_AirTicketPaidDays": "MonthlyTimeRegister.AirTicketPaidDays",
+    "loc:ActiveDays": "MonthlyTimeRegister.ActiveDays",
+    "dom:MonthlyTimeRegister_ActiveDays": "MonthlyTimeRegister.ActiveDays",
+    "loc:PlannedWorkingMins": "MonthlyTimeRegister.PlannedWorkingMins",
+    "dom:MonthlyTimeRegister_PlannedWorkingMins": "MonthlyTimeRegister.PlannedWorkingMins",
+    "loc:ActualWorkingMins": "MonthlyTimeRegister.ActualWorkingMins",
+    "dom:MonthlyTimeRegister_ActualWorkingMins": "MonthlyTimeRegister.ActualWorkingMins",
+    "loc:ActualAbsenceMins": "MonthlyTimeRegister.ActualAbsenceMins",
+    "dom:MonthlyTimeRegister_ActualAbsenceMins": "MonthlyTimeRegister.ActualAbsenceMins",
+    "loc:PlannedWorkingDays": "MonthlyTimeRegister.PlannedWorkingDays",
+    "dom:MonthlyTimeRegister_PlannedWorkingDays": "MonthlyTimeRegister.PlannedWorkingDays",
+    "loc:ActualWorkingDays": "MonthlyTimeRegister.ActualWorkingDays",
+    "dom:MonthlyTimeRegister_ActualWorkingDays": "MonthlyTimeRegister.ActualWorkingDays",
+    "loc:ExtraWorkingDays": "MonthlyTimeRegister.ExtraWorkingDays",
+    "dom:MonthlyTimeRegister_ExtraWorkingDays": "MonthlyTimeRegister.ExtraWorkingDays",
+    "loc:LieuDays": "MonthlyTimeRegister.LieuDays",
+    "dom:MonthlyTimeRegister_LieuDays": "MonthlyTimeRegister.LieuDays",
+    "loc:AdvLeaveRecoveryDays": "MonthlyTimeRegister.AdvLeaveRecoveryDays",
+    "dom:MonthlyTimeRegister_AdvLeaveRecoveryDays": "MonthlyTimeRegister.AdvLeaveRecoveryDays",
+    "loc:NormalDayOTMins": "MonthlyTimeRegister.NormalDayOTMins",
+    "dom:MonthlyTimeRegister_NormalDayOTMins": "MonthlyTimeRegister.NormalDayOTMins",
+    "loc:RestDayOTMins": "MonthlyTimeRegister.RestDayOTMins",
+    "dom:MonthlyTimeRegister_RestDayOTMins": "MonthlyTimeRegister.RestDayOTMins",
+    "loc:HolidayOTMins": "MonthlyTimeRegister.HolidayOTMins",
+    "dom:MonthlyTimeRegister_HolidayOTMins": "MonthlyTimeRegister.HolidayOTMins",
+    "loc:WeekendOTMins": "MonthlyTimeRegister.WeekendOTMins",
+    "dom:MonthlyTimeRegister_WeekendOTMins": "MonthlyTimeRegister.WeekendOTMins",
+    "loc:AdvanceLeavePaids": "MonthlyTimeRegister.AdvanceLeavePaids",
+    "dom:MonthlyTimeRegister_AdvanceLeavePaids": "MonthlyTimeRegister.AdvanceLeavePaids",
+    "loc:AdvanceTicketPaids": "MonthlyTimeRegister.AdvanceTicketPaids",
+    "dom:MonthlyTimeRegister_AdvanceTicketPaids": "MonthlyTimeRegister.AdvanceTicketPaids"
+  },
+  "fields": [
+    {
+      "id": "MonthlyTimeRegister.EmployeeId",
+      "label": "Employee",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:Employee",
+        "dom:MonthlyTimeRegister_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.Month",
+      "label": "Month",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:Month",
+        "dom:MonthlyTimeRegister_Month"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AnnualLeaveDays",
+      "label": "AnnualLeaveDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveDays",
+        "dom:MonthlyTimeRegister_AnnualLeaveDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.UnpaidLeaveDays",
+      "label": "UnpaidLeaveDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:UnpaidLeaveDays",
+        "dom:MonthlyTimeRegister_UnpaidLeaveDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.SickLeavePaidDays",
+      "label": "SickLeavePaidDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:SickLeavePaidDays",
+        "dom:MonthlyTimeRegister_SickLeavePaidDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.SickLeaveUnpaidDays",
+      "label": "SickLeaveUnpaidDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:SickLeaveUnpaidDays",
+        "dom:MonthlyTimeRegister_SickLeaveUnpaidDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.GratuityDays",
+      "label": "GratuityDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:GratuityDays",
+        "dom:MonthlyTimeRegister_GratuityDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.GratuityPaidDays",
+      "label": "GratuityPaidDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:GratuityPaidDays",
+        "dom:MonthlyTimeRegister_GratuityPaidDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.PublicHolidays",
+      "label": "PublicHolidays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:PublicHolidays",
+        "dom:MonthlyTimeRegister_PublicHolidays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.WeeklyOffs",
+      "label": "WeeklyOffs",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:WeeklyOffs",
+        "dom:MonthlyTimeRegister_WeeklyOffs"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.RestDays",
+      "label": "RestDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:RestDays",
+        "dom:MonthlyTimeRegister_RestDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AnnualLeaveAccrualDays",
+      "label": "AnnualLeaveAccrualDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveAccrualDays",
+        "dom:MonthlyTimeRegister_AnnualLeaveAccrualDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AnnualLeaveOpeningBal",
+      "label": "AnnualLeaveOpeningBal",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveOpeningBal",
+        "dom:MonthlyTimeRegister_AnnualLeaveOpeningBal"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AnnualLeaveClosingBal",
+      "label": "AnnualLeaveClosingBal",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AnnualLeaveClosingBal",
+        "dom:MonthlyTimeRegister_AnnualLeaveClosingBal"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.TicketAccrualDays",
+      "label": "TicketAccrualDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualDays",
+        "dom:MonthlyTimeRegister_TicketAccrualDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.TicketAccrualOpeningBal",
+      "label": "TicketAccrualOpeningBal",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualOpeningBal",
+        "dom:MonthlyTimeRegister_TicketAccrualOpeningBal"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.TicketAccrualClosingBal",
+      "label": "TicketAccrualClosingBal",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:TicketAccrualClosingBal",
+        "dom:MonthlyTimeRegister_TicketAccrualClosingBal"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AirTicketPaidDays",
+      "label": "AirTicketPaidDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AirTicketPaidDays",
+        "dom:MonthlyTimeRegister_AirTicketPaidDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.ActiveDays",
+      "label": "ActiveDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:ActiveDays",
+        "dom:MonthlyTimeRegister_ActiveDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.PlannedWorkingMins",
+      "label": "PlannedWorkingMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingMins",
+        "dom:MonthlyTimeRegister_PlannedWorkingMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.ActualWorkingMins",
+      "label": "ActualWorkingMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingMins",
+        "dom:MonthlyTimeRegister_ActualWorkingMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.ActualAbsenceMins",
+      "label": "ActualAbsenceMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:ActualAbsenceMins",
+        "dom:MonthlyTimeRegister_ActualAbsenceMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.PlannedWorkingDays",
+      "label": "PlannedWorkingDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:PlannedWorkingDays",
+        "dom:MonthlyTimeRegister_PlannedWorkingDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.ActualWorkingDays",
+      "label": "ActualWorkingDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:ActualWorkingDays",
+        "dom:MonthlyTimeRegister_ActualWorkingDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.ExtraWorkingDays",
+      "label": "ExtraWorkingDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:ExtraWorkingDays",
+        "dom:MonthlyTimeRegister_ExtraWorkingDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.LieuDays",
+      "label": "LieuDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:LieuDays",
+        "dom:MonthlyTimeRegister_LieuDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AdvLeaveRecoveryDays",
+      "label": "AdvLeaveRecoveryDays",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AdvLeaveRecoveryDays",
+        "dom:MonthlyTimeRegister_AdvLeaveRecoveryDays"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.NormalDayOTMins",
+      "label": "NormalDayOTMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:NormalDayOTMins",
+        "dom:MonthlyTimeRegister_NormalDayOTMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.RestDayOTMins",
+      "label": "RestDayOTMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:RestDayOTMins",
+        "dom:MonthlyTimeRegister_RestDayOTMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.HolidayOTMins",
+      "label": "HolidayOTMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:HolidayOTMins",
+        "dom:MonthlyTimeRegister_HolidayOTMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.WeekendOTMins",
+      "label": "WeekendOTMins",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:WeekendOTMins",
+        "dom:MonthlyTimeRegister_WeekendOTMins"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AdvanceLeavePaids",
+      "label": "AdvanceLeavePaids",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AdvanceLeavePaids",
+        "dom:MonthlyTimeRegister_AdvanceLeavePaids"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegister.AdvanceTicketPaids",
+      "label": "AdvanceTicketPaids",
+      "section": "MonthlyTimeRegisters",
+      "aliases": [
+        "loc:AdvanceTicketPaids",
+        "dom:MonthlyTimeRegister_AdvanceTicketPaids"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

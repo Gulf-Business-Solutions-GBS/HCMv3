@@ -17,6 +17,17 @@ What each employee is entitled to is set per employee sub group, on the sub grou
 
 **Many settings on this form are saved but not enforced.** The limits and restrictions on applying for leave -- maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits -- are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under **Configure Business Rules**; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.
 
+## Code {#AbsenceType.Code}
+<!-- alias: loc:Code, dom:AbsenceType_Code -->
+
+**What it is.** The leave type's code.
+
+**Example.** `1` -- annual leave.
+
+**Why it matters.** Payroll and the time engine recognise some leave types by code: `1` annual leave, `2` unpaid leave, `3` sick leave and `15` unapproved absence each have their own rules for balances, indemnity and pay. Use those codes only for those types.
+
+**Rules.** Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.
+
 ## IsActive {#AbsenceType.IsActive}
 <!-- alias: loc:IsActive, dom:AbsenceType_IsActive -->
 
@@ -533,12 +544,3 @@ What each employee is entitled to is set per employee sub group, on the sub grou
 **Why it matters.** Not checked at present -- the setting is saved, but nothing enforces it when leave is entered or approved.
 
 **Rules.** Yes or no.
-
-## Code {#AbsenceType.Code}
-<!-- alias: loc:Code, dom:AbsenceType_Code -->
-
-**What it is.** The leave type's code.
-
-**Example.** `1` -- annual leave.
-
-**Why it matters.** Payroll and the time engine recognise some leave types by code: `1` annual leave, `2` unpaid leave, `3` sick leave and `15` unapproved absence each have their own rules for balances, indemnity and pay. Use those codes only for those types.

@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-duty-period.edit",
+  "lang": "en",
+  "title": "Roster Duty Periods — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterDutyPeriod",
+  "overviewHtml": "<p>A roster version of a duty period, built from daily duties.</p><p>Not read at present: the time engine and payroll take employees' duties from duty periods and roster groups, not from this list. The roster generator that would have used it was never live in the legacy system and was not ported.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterDutyPeriod.Code",
+    "dom:RosterDutyPeriod_Code": "RosterDutyPeriod.Code",
+    "loc:NameEn": "RosterDutyPeriod.NameEn",
+    "dom:RosterDutyPeriod_NameEn": "RosterDutyPeriod.NameEn",
+    "loc:NameAr": "RosterDutyPeriod.NameAr",
+    "dom:RosterDutyPeriod_NameAr": "RosterDutyPeriod.NameAr"
+  },
+  "fields": [
+    {
+      "id": "RosterDutyPeriod.Code",
+      "label": "Code",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterDutyPeriod_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriod.NameEn",
+      "label": "NameEn",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterDutyPeriod_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriod.NameAr",
+      "label": "NameAr",
+      "section": "RosterDutyPeriods",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterDutyPeriod_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

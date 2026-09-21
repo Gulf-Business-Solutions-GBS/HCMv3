@@ -1,0 +1,283 @@
+{
+  "helpId": "tm.duty.edit",
+  "lang": "ar",
+  "title": "الدوامات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.Duty",
+  "overviewHtml": "<p>نمط يوم عمل واحد: متى تبدأ المناوبة وتنتهي، واستراحتها، وما إذا كان اليوم يوم عمل أو راحة أسبوعية أو يوم راحة. وتُرتّب الدوامات في فترات دوام تعطي كل موظف دواماً لكل يوم.</p>",
+  "aliasIndex": {
+    "loc:Code": "Duty.Code",
+    "dom:Duty_Code": "Duty.Code",
+    "loc:NameEn": "Duty.NameEn",
+    "dom:Duty_NameEn": "Duty.NameEn",
+    "loc:NameAr": "Duty.NameAr",
+    "dom:Duty_NameAr": "Duty.NameAr",
+    "loc:StartDate": "Duty.StartDate",
+    "dom:Duty_StartDate": "Duty.StartDate",
+    "loc:EndDate": "Duty.EndDate",
+    "dom:Duty_EndDate": "Duty.EndDate",
+    "loc:StartTime": "Duty.StartTime",
+    "dom:Duty_StartTime": "Duty.StartTime",
+    "loc:EndTime": "Duty.EndTime",
+    "dom:Duty_EndTime": "Duty.EndTime",
+    "loc:FlexiStartTime": "Duty.FlexiStartTime",
+    "dom:Duty_FlexiStartTime": "Duty.FlexiStartTime",
+    "loc:FlexiEndTime": "Duty.FlexiEndTime",
+    "dom:Duty_FlexiEndTime": "Duty.FlexiEndTime",
+    "loc:BreakShift": "Duty.BreakShiftId",
+    "dom:Duty_BreakShiftId": "Duty.BreakShiftId",
+    "loc:OvertimeType": "Duty.OvertimeTypeId",
+    "dom:Duty_OvertimeTypeId": "Duty.OvertimeTypeId",
+    "loc:AllowTransStart": "Duty.AllowTransStart",
+    "dom:Duty_AllowTransStart": "Duty.AllowTransStart",
+    "loc:AllowTransEnd": "Duty.AllowTransEnd",
+    "dom:Duty_AllowTransEnd": "Duty.AllowTransEnd",
+    "loc:IsNightShift": "Duty.IsNightShift",
+    "dom:Duty_IsNightShift": "Duty.IsNightShift",
+    "loc:IsWeeklyOff": "Duty.IsWeeklyOff",
+    "dom:Duty_IsWeeklyOff": "Duty.IsWeeklyOff",
+    "loc:IsRestDay": "Duty.IsRestDay",
+    "dom:Duty_IsRestDay": "Duty.IsRestDay",
+    "loc:IsHalfDay": "Duty.IsHalfDay",
+    "dom:Duty_IsHalfDay": "Duty.IsHalfDay"
+  },
+  "fields": [
+    {
+      "id": "Duty.Code",
+      "label": "Code",
+      "section": "Duties",
+      "aliases": [
+        "loc:Code",
+        "dom:Duty_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.NameEn",
+      "label": "NameEn",
+      "section": "Duties",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Duty_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.NameAr",
+      "label": "NameAr",
+      "section": "Duties",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Duty_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.StartDate",
+      "label": "StartDate",
+      "section": "Duties",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Duty_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.EndDate",
+      "label": "EndDate",
+      "section": "Duties",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Duty_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.StartTime",
+      "label": "StartTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:StartTime",
+        "dom:Duty_StartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء المناوبة.</p><p><strong>مثال.</strong> <code>07:30</code></p><p><strong>لماذا يهم.</strong> يُقاس التأخير منه، وهو بداية وقت العمل المخطط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.EndTime",
+      "label": "EndTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:EndTime",
+        "dom:Duty_EndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء المناوبة.</p><p><strong>مثال.</strong> <code>14:30</code></p><p><strong>لماذا يهم.</strong> يُقاس الانصراف المبكر مقابله. وفي المناوبة الليلية يكون هذا الوقت في اليوم التالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.FlexiStartTime",
+      "label": "FlexiStartTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:FlexiStartTime",
+        "dom:Duty_FlexiStartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> بداية نافذة قراءة البصمات في اليوم المرن.</p><p><strong>مثال.</strong> <code>06:00</code></p><p><strong>لماذا يهم.</strong> للموظفين الذين سياسة وقتهم وقت مرن أو وقت مخطط، يقرأ محرك الوقت بصمتي الدخول والخروج لليوم من بين بداية المرونة ونهايتها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.FlexiEndTime",
+      "label": "FlexiEndTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:FlexiEndTime",
+        "dom:Duty_FlexiEndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نهاية نافذة قراءة البصمات في اليوم المرن.</p><p><strong>مثال.</strong> <code>20:00</code></p><p><strong>لماذا يهم.</strong> إذا كانت النهاية أبكر من البداية فالنافذة تمتد بعد منتصف الليل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.BreakShiftId",
+      "label": "BreakShift",
+      "section": "Duties",
+      "aliases": [
+        "loc:BreakShift",
+        "dom:Duty_BreakShiftId"
+      ],
+      "rules": "اختياري. يُختار من قائمة استراحات الوردية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستراحة التي تُؤخذ خلال هذا الدوام.</p><p><strong>مثال.</strong> غداء 12:00–12:30</p><p><strong>لماذا يهم.</strong> عند وجود استراحة يُحتسب وقت العمل قبلها وبعدها، فلا تُحتسب الاستراحة عملاً، وتستبعدها أيضاً الساعات المخططة والإجازة بالساعات.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "Duties",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:Duty_OvertimeTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أنواع العمل الإضافي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع العمل الإضافي للعمل الإضافي في هذا الدوام.</p><p><strong>مثال.</strong> عمل إضافي عادي</p><p><strong>لماذا يهم.</strong> يُسجَّل العمل الإضافي الموجود في يوم من هذا الدوام تحت هذا النوع. وفي المجموعة الفرعية التي تصرف العمل الإضافي، اليوم الذي فيه عمل إضافي دون نوع يجعل محرك الوقت يُظهر خطأ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.AllowTransStart",
+      "label": "AllowTransStart",
+      "section": "Duties",
+      "aliases": [
+        "loc:AllowTransStart",
+        "dom:Duty_AllowTransStart"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أن تبدأ الإجازة في أيام هذا الدوام إذا كانت أيام راحة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.AllowTransEnd",
+      "label": "AllowTransEnd",
+      "section": "Duties",
+      "aliases": [
+        "loc:AllowTransEnd",
+        "dom:Duty_AllowTransEnd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن احتساب أيام الراحة الأسبوعية وأيام الراحة في هذا الدوام ضمن أيام الإجازة.</p><p><strong>لماذا يهم.</strong> عندما يعدّ النظام الأيام إلى الأمام لتحديد نهاية الإجازة، يتجاوز يوم الراحة الأسبوعية أو يوم الراحة في دوام غير مؤشَّر عليه هذا. أما العطلات الرسمية فتُتجاوز دائماً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsNightShift",
+      "label": "IsNightShift",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsNightShift",
+        "dom:Duty_IsNightShift"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المناوبة تنتهي في اليوم التالي.</p><p><strong>مثال.</strong> مؤشَّر عليه للمناوبة 22:00–06:00.</p><p><strong>لماذا يهم.</strong> يوضع وقت النهاية، والاستراحة التي تتجاوز منتصف الليل، في اليوم التالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsWeeklyOff",
+      "label": "IsWeeklyOff",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsWeeklyOff",
+        "dom:Duty_IsWeeklyOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هذا الدوام يوم راحة أسبوعية.</p><p><strong>لماذا يهم.</strong> تُعدّ أيام الراحة الأسبوعية في أعداد الأيام للرواتب (مثل قاسم أيام العمل في الشهر)، وفي الإجازات التي تستبعد عطلات نهاية الأسبوع، وفي قواعد الأجر المتعلقة بأيام الراحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsRestDay",
+      "label": "IsRestDay",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsRestDay",
+        "dom:Duty_IsRestDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هذا الدوام يوم راحة.</p><p><strong>لماذا يهم.</strong> تُفصل أيام الراحة عن أيام الراحة الأسبوعية: فأنواع الإجازات وأنواع المواظبة تحدد كلٌّ على حدة ما إذا كان يوم الراحة يُحتسب، وبعض طرق الاحتساب التناسبي تصرف أيام الراحة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsHalfDay",
+      "label": "IsHalfDay",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsHalfDay",
+        "dom:Duty_IsHalfDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هذا الدوام نصف يوم عمل.</p><p><strong>لماذا يهم.</strong> يظهر في عارض جدول المناوبات فقط، ولا يعامل محرك الوقت اليوم بطريقة مختلفة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

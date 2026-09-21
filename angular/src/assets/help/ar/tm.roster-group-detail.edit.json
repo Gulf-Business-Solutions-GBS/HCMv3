@@ -1,0 +1,75 @@
+{
+  "helpId": "tm.roster-group-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مجموعات الجداول — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterGroupDetail",
+  "overviewHtml": "<p>عضوية الموظف في مجموعة مناوبة لفترة. ويتبع الموظف جدول المجموعة في التواريخ المشمولة، ما لم تكن له فترة دوام خاصة أو دوام بديل.</p>",
+  "aliasIndex": {
+    "loc:RosterGroup": "RosterGroupDetail.RosterGroupId",
+    "dom:RosterGroupDetail_RosterGroupId": "RosterGroupDetail.RosterGroupId",
+    "loc:Employee": "RosterGroupDetail.EmployeeId",
+    "dom:RosterGroupDetail_EmployeeId": "RosterGroupDetail.EmployeeId",
+    "loc:StartDate": "RosterGroupDetail.StartDate",
+    "dom:RosterGroupDetail_StartDate": "RosterGroupDetail.StartDate",
+    "loc:EndDate": "RosterGroupDetail.EndDate",
+    "dom:RosterGroupDetail_EndDate": "RosterGroupDetail.EndDate"
+  },
+  "fields": [
+    {
+      "id": "RosterGroupDetail.RosterGroupId",
+      "label": "RosterGroup",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:RosterGroup",
+        "dom:RosterGroupDetail_RosterGroupId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة مجموعات الجداول.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مجموعة المناوبة.</p><p><strong>مثال.</strong> الفريق أ</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.EmployeeId",
+      "label": "Employee",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:Employee",
+        "dom:RosterGroupDetail_EmployeeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف.</p><p><strong>لماذا يهم.</strong> لا يجوز أن تتداخل فترات الموظف في مجموعة المناوبة نفسها.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.StartDate",
+      "label": "StartDate",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterGroupDetail_StartDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن تتداخل فترته مع سجل آخر لمجموعة الجداول نفسه والموظف نفسه.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroupDetail.EndDate",
+      "label": "EndDate",
+      "section": "RosterGroupDetails",
+      "aliases": [
+        "loc:EndDate",
+        "dom:RosterGroupDetail_EndDate"
+      ],
+      "rules": "إلزامي. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

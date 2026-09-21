@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.monthly-time-register-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل سجلات الوقت الشهرية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.MonthlyTimeRegisterDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:MonthlyTimeRegister": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+    "dom:MonthlyTimeRegisterDetail_MonthlyTimeRegisterId": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+    "loc:TimeType": "MonthlyTimeRegisterDetail.TimeTypeId",
+    "dom:MonthlyTimeRegisterDetail_TimeTypeId": "MonthlyTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "MonthlyTimeRegisterDetail.TimeValue",
+    "dom:MonthlyTimeRegisterDetail_TimeValue": "MonthlyTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "MonthlyTimeRegisterDetail.MonthlyTimeRegisterId",
+      "label": "MonthlyTimeRegister",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:MonthlyTimeRegister",
+        "dom:MonthlyTimeRegisterDetail_MonthlyTimeRegisterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الوقت الشهرية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:MonthlyTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الوقت.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "MonthlyTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "MonthlyTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:MonthlyTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

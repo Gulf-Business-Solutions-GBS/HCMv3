@@ -1,0 +1,155 @@
+{
+  "helpId": "tm.roster-duty-period-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل فترات ورديات العمل — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterDutyPeriodDetail",
+  "overviewHtml": "<p>أسبوع واحد من فترة دوام المناوبات.</p><p>لا يُقرأ حالياً: يأخذ محرك الوقت ونظام الرواتب دوامات الموظفين من فترات الدوام ومجموعات المناوبة، لا من هذه القائمة. ومولّد المناوبات الذي كان سيستخدمها لم يعمل قط في النظام السابق ولم يُنقل.</p>",
+  "aliasIndex": {
+    "loc:RosterDutyPeriod": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+    "dom:RosterDutyPeriodDetail_RosterDutyPeriodId": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+    "loc:Week": "RosterDutyPeriodDetail.Week",
+    "dom:RosterDutyPeriodDetail_Week": "RosterDutyPeriodDetail.Week",
+    "loc:Day1": "RosterDutyPeriodDetail.Day1DutyId",
+    "dom:RosterDutyPeriodDetail_Day1DutyId": "RosterDutyPeriodDetail.Day1DutyId",
+    "loc:Day2": "RosterDutyPeriodDetail.Day2DutyId",
+    "dom:RosterDutyPeriodDetail_Day2DutyId": "RosterDutyPeriodDetail.Day2DutyId",
+    "loc:Day3": "RosterDutyPeriodDetail.Day3DutyId",
+    "dom:RosterDutyPeriodDetail_Day3DutyId": "RosterDutyPeriodDetail.Day3DutyId",
+    "loc:Day4": "RosterDutyPeriodDetail.Day4DutyId",
+    "dom:RosterDutyPeriodDetail_Day4DutyId": "RosterDutyPeriodDetail.Day4DutyId",
+    "loc:Day5": "RosterDutyPeriodDetail.Day5DutyId",
+    "dom:RosterDutyPeriodDetail_Day5DutyId": "RosterDutyPeriodDetail.Day5DutyId",
+    "loc:Day6": "RosterDutyPeriodDetail.Day6DutyId",
+    "dom:RosterDutyPeriodDetail_Day6DutyId": "RosterDutyPeriodDetail.Day6DutyId",
+    "loc:Day7": "RosterDutyPeriodDetail.Day7DutyId",
+    "dom:RosterDutyPeriodDetail_Day7DutyId": "RosterDutyPeriodDetail.Day7DutyId"
+  },
+  "fields": [
+    {
+      "id": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+      "label": "RosterDutyPeriod",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:RosterDutyPeriod",
+        "dom:RosterDutyPeriodDetail_RosterDutyPeriodId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة فترات ورديات العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> فترة دوام المناوبات التي يتبعها هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Week",
+      "label": "Week",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Week",
+        "dom:RosterDutyPeriodDetail_Week"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الأسبوع.</p><p><strong>مثال.</strong> <code>1</code></p><p><strong>لماذا يهم.</strong> يجب أن يكون أكبر من صفر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day1DutyId",
+      "label": "Day1",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day1",
+        "dom:RosterDutyPeriodDetail_Day1DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 1 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day2DutyId",
+      "label": "Day2",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day2",
+        "dom:RosterDutyPeriodDetail_Day2DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 2 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day3DutyId",
+      "label": "Day3",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day3",
+        "dom:RosterDutyPeriodDetail_Day3DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 3 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day4DutyId",
+      "label": "Day4",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day4",
+        "dom:RosterDutyPeriodDetail_Day4DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 4 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day5DutyId",
+      "label": "Day5",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day5",
+        "dom:RosterDutyPeriodDetail_Day5DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 5 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day6DutyId",
+      "label": "Day6",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day6",
+        "dom:RosterDutyPeriodDetail_Day6DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 6 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day7DutyId",
+      "label": "Day7",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day7",
+        "dom:RosterDutyPeriodDetail_Day7DutyId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في اليوم 7 من هذا الأسبوع.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

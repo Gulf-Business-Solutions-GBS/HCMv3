@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-daily-duty.edit",
+  "lang": "ar",
+  "title": "الدوامات اليومية للورديات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.RosterDailyDuty",
+  "overviewHtml": "<p>دوام يومي في تاريخ ضمن جدول مناوبات.</p><p>لا يُقرأ حالياً: يأخذ محرك الوقت ونظام الرواتب دوامات الموظفين من فترات الدوام ومجموعات المناوبة، لا من هذه القائمة. ومولّد المناوبات الذي كان سيستخدمها لم يعمل قط في النظام السابق ولم يُنقل.</p>",
+  "aliasIndex": {
+    "loc:CalendarDate": "RosterDailyDuty.CalendarDate",
+    "dom:RosterDailyDuty_CalendarDate": "RosterDailyDuty.CalendarDate",
+    "loc:RosterDutySchedule": "RosterDailyDuty.RosterDutyScheduleId",
+    "dom:RosterDailyDuty_RosterDutyScheduleId": "RosterDailyDuty.RosterDutyScheduleId",
+    "loc:DailyDuty": "RosterDailyDuty.DailyDutyId",
+    "dom:RosterDailyDuty_DailyDutyId": "RosterDailyDuty.DailyDutyId"
+  },
+  "fields": [
+    {
+      "id": "RosterDailyDuty.CalendarDate",
+      "label": "CalendarDate",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:CalendarDate",
+        "dom:RosterDailyDuty_CalendarDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ.</p><p><strong>مثال.</strong> <code>2026-04-14</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDailyDuty.RosterDutyScheduleId",
+      "label": "RosterDutySchedule",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:RosterDutySchedule",
+        "dom:RosterDailyDuty_RosterDutyScheduleId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة جداول ورديات العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> جدول المناوبات الذي يتبعه التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDailyDuty.DailyDutyId",
+      "label": "DailyDuty",
+      "section": "RosterDailyDuties",
+      "aliases": [
+        "loc:DailyDuty",
+        "dom:RosterDailyDuty_DailyDutyId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الدوامات اليومية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الدوام اليومي في ذلك التاريخ.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

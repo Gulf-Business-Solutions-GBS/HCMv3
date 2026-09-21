@@ -1,0 +1,283 @@
+{
+  "helpId": "tm.duty.edit",
+  "lang": "en",
+  "title": "Duties — Create / Edit",
+  "entity": "HCMv3.TimeManagement.Duty",
+  "overviewHtml": "<p>One working day's pattern: when the shift starts and ends, its break, and whether the day is a working day, a weekly off or a rest day. Duties are arranged into duty periods, which give each employee a duty for each day.</p>",
+  "aliasIndex": {
+    "loc:Code": "Duty.Code",
+    "dom:Duty_Code": "Duty.Code",
+    "loc:NameEn": "Duty.NameEn",
+    "dom:Duty_NameEn": "Duty.NameEn",
+    "loc:NameAr": "Duty.NameAr",
+    "dom:Duty_NameAr": "Duty.NameAr",
+    "loc:StartDate": "Duty.StartDate",
+    "dom:Duty_StartDate": "Duty.StartDate",
+    "loc:EndDate": "Duty.EndDate",
+    "dom:Duty_EndDate": "Duty.EndDate",
+    "loc:StartTime": "Duty.StartTime",
+    "dom:Duty_StartTime": "Duty.StartTime",
+    "loc:EndTime": "Duty.EndTime",
+    "dom:Duty_EndTime": "Duty.EndTime",
+    "loc:FlexiStartTime": "Duty.FlexiStartTime",
+    "dom:Duty_FlexiStartTime": "Duty.FlexiStartTime",
+    "loc:FlexiEndTime": "Duty.FlexiEndTime",
+    "dom:Duty_FlexiEndTime": "Duty.FlexiEndTime",
+    "loc:BreakShift": "Duty.BreakShiftId",
+    "dom:Duty_BreakShiftId": "Duty.BreakShiftId",
+    "loc:OvertimeType": "Duty.OvertimeTypeId",
+    "dom:Duty_OvertimeTypeId": "Duty.OvertimeTypeId",
+    "loc:AllowTransStart": "Duty.AllowTransStart",
+    "dom:Duty_AllowTransStart": "Duty.AllowTransStart",
+    "loc:AllowTransEnd": "Duty.AllowTransEnd",
+    "dom:Duty_AllowTransEnd": "Duty.AllowTransEnd",
+    "loc:IsNightShift": "Duty.IsNightShift",
+    "dom:Duty_IsNightShift": "Duty.IsNightShift",
+    "loc:IsWeeklyOff": "Duty.IsWeeklyOff",
+    "dom:Duty_IsWeeklyOff": "Duty.IsWeeklyOff",
+    "loc:IsRestDay": "Duty.IsRestDay",
+    "dom:Duty_IsRestDay": "Duty.IsRestDay",
+    "loc:IsHalfDay": "Duty.IsHalfDay",
+    "dom:Duty_IsHalfDay": "Duty.IsHalfDay"
+  },
+  "fields": [
+    {
+      "id": "Duty.Code",
+      "label": "Code",
+      "section": "Duties",
+      "aliases": [
+        "loc:Code",
+        "dom:Duty_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.NameEn",
+      "label": "NameEn",
+      "section": "Duties",
+      "aliases": [
+        "loc:NameEn",
+        "dom:Duty_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.NameAr",
+      "label": "NameAr",
+      "section": "Duties",
+      "aliases": [
+        "loc:NameAr",
+        "dom:Duty_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.StartDate",
+      "label": "StartDate",
+      "section": "Duties",
+      "aliases": [
+        "loc:StartDate",
+        "dom:Duty_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.EndDate",
+      "label": "EndDate",
+      "section": "Duties",
+      "aliases": [
+        "loc:EndDate",
+        "dom:Duty_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.StartTime",
+      "label": "StartTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:StartTime",
+        "dom:Duty_StartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the shift starts.</p><p><strong>Example.</strong> <code>07:30</code></p><p><strong>Why it matters.</strong> Lateness is measured from it, and it is the start of the planned working time.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.EndTime",
+      "label": "EndTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:EndTime",
+        "dom:Duty_EndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the shift ends.</p><p><strong>Example.</strong> <code>14:30</code></p><p><strong>Why it matters.</strong> Early leaving is measured against it. For a night shift this time is on the next day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.FlexiStartTime",
+      "label": "FlexiStartTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:FlexiStartTime",
+        "dom:Duty_FlexiStartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The start of the window for reading punches on a flexible day.</p><p><strong>Example.</strong> <code>06:00</code></p><p><strong>Why it matters.</strong> For employees whose time policy is flexi time or planned time, the time engine reads the day's clock-in and clock-out from between the flexi start and flexi end.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.FlexiEndTime",
+      "label": "FlexiEndTime",
+      "section": "Duties",
+      "aliases": [
+        "loc:FlexiEndTime",
+        "dom:Duty_FlexiEndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The end of the window for reading punches on a flexible day.</p><p><strong>Example.</strong> <code>20:00</code></p><p><strong>Why it matters.</strong> An end earlier than the start means the window runs past midnight.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.BreakShiftId",
+      "label": "BreakShift",
+      "section": "Duties",
+      "aliases": [
+        "loc:BreakShift",
+        "dom:Duty_BreakShiftId"
+      ],
+      "rules": "Optional. Chosen from Break Shift master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The break taken during this duty.</p><p><strong>Example.</strong> Lunch 12:00–12:30</p><p><strong>Why it matters.</strong> With a break, working time is counted before and after it, so the break is not counted as work; planned hours and hourly leave leave it out too.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.OvertimeTypeId",
+      "label": "OvertimeType",
+      "section": "Duties",
+      "aliases": [
+        "loc:OvertimeType",
+        "dom:Duty_OvertimeTypeId"
+      ],
+      "rules": "Optional. Chosen from Overtime Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The overtime type for overtime worked on this duty.</p><p><strong>Example.</strong> Normal Overtime</p><p><strong>Why it matters.</strong> Overtime found on a day of this duty is recorded under this type. For a sub group that pays overtime, a day with overtime and no overtime type makes the time engine raise an error.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.AllowTransStart",
+      "label": "AllowTransStart",
+      "section": "Duties",
+      "aliases": [
+        "loc:AllowTransStart",
+        "dom:Duty_AllowTransStart"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a leave may start on this duty's days when they are off days.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.AllowTransEnd",
+      "label": "AllowTransEnd",
+      "section": "Duties",
+      "aliases": [
+        "loc:AllowTransEnd",
+        "dom:Duty_AllowTransEnd"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether weekly offs and rest days on this duty can count towards a leave's days.</p><p><strong>Why it matters.</strong> When the system counts days forward to find where a leave ends, a weekly off or rest day on a duty without this ticked is skipped. Public holidays are always skipped.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsNightShift",
+      "label": "IsNightShift",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsNightShift",
+        "dom:Duty_IsNightShift"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the shift ends on the next day.</p><p><strong>Example.</strong> Ticked for 22:00–06:00.</p><p><strong>Why it matters.</strong> The end time, and a break that crosses midnight, are placed on the following day.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsWeeklyOff",
+      "label": "IsWeeklyOff",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsWeeklyOff",
+        "dom:Duty_IsWeeklyOff"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this duty is a weekly off day.</p><p><strong>Why it matters.</strong> Weekly offs are counted for payroll day counts (for example the working days per month divisor), for leave that excludes weekends, and for the weekly-off and rest-day rules of pay.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsRestDay",
+      "label": "IsRestDay",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsRestDay",
+        "dom:Duty_IsRestDay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this duty is a rest day.</p><p><strong>Why it matters.</strong> Rest days are kept apart from weekly offs: leave types and attendance types decide separately whether a rest day counts, and some prorate methods pay rest days.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "Duty.IsHalfDay",
+      "label": "IsHalfDay",
+      "section": "Duties",
+      "aliases": [
+        "loc:IsHalfDay",
+        "dom:Duty_IsHalfDay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this duty is a half working day.</p><p><strong>Why it matters.</strong> Shown on the roster schedule viewer only; the time engine does not treat the day differently.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

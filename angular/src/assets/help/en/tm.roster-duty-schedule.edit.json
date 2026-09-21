@@ -1,0 +1,123 @@
+{
+  "helpId": "tm.roster-duty-schedule.edit",
+  "lang": "en",
+  "title": "Roster Duty Schedules — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterDutySchedule",
+  "overviewHtml": "<p>A roster schedule: a duty period with a start point and holiday calendar, meant for generating roster daily duties.</p><p>Not read at present: the time engine and payroll take employees' duties from duty periods and roster groups, not from this list. The roster generator that would have used it was never live in the legacy system and was not ported.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterDutySchedule.Code",
+    "dom:RosterDutySchedule_Code": "RosterDutySchedule.Code",
+    "loc:NameEn": "RosterDutySchedule.NameEn",
+    "dom:RosterDutySchedule_NameEn": "RosterDutySchedule.NameEn",
+    "loc:NameAr": "RosterDutySchedule.NameAr",
+    "dom:RosterDutySchedule_NameAr": "RosterDutySchedule.NameAr",
+    "loc:StartDate": "RosterDutySchedule.StartDate",
+    "dom:RosterDutySchedule_StartDate": "RosterDutySchedule.StartDate",
+    "loc:DutyPeriod": "RosterDutySchedule.DutyPeriodId",
+    "dom:RosterDutySchedule_DutyPeriodId": "RosterDutySchedule.DutyPeriodId",
+    "loc:StartPoint": "RosterDutySchedule.StartPoint",
+    "dom:RosterDutySchedule_StartPoint": "RosterDutySchedule.StartPoint",
+    "loc:HolidayCalendar": "RosterDutySchedule.HolidayCalendarId",
+    "dom:RosterDutySchedule_HolidayCalendarId": "RosterDutySchedule.HolidayCalendarId"
+  },
+  "fields": [
+    {
+      "id": "RosterDutySchedule.Code",
+      "label": "Code",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterDutySchedule_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.NameEn",
+      "label": "NameEn",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterDutySchedule_NameEn"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.NameAr",
+      "label": "NameAr",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterDutySchedule_NameAr"
+      ],
+      "rules": "Required.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.StartDate",
+      "label": "StartDate",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:StartDate",
+        "dom:RosterDutySchedule_StartDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.DutyPeriodId",
+      "label": "DutyPeriod",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:DutyPeriod",
+        "dom:RosterDutySchedule_DutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The duty period the schedule follows.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.StartPoint",
+      "label": "StartPoint",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:StartPoint",
+        "dom:RosterDutySchedule_StartPoint"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day of the rotation the schedule starts on.</p><p><strong>Example.</strong> <code>1</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutySchedule.HolidayCalendarId",
+      "label": "HolidayCalendar",
+      "section": "RosterDutySchedules",
+      "aliases": [
+        "loc:HolidayCalendar",
+        "dom:RosterDutySchedule_HolidayCalendarId"
+      ],
+      "rules": "Optional. Chosen from Holiday Calendar master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The holiday calendar for the schedule.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

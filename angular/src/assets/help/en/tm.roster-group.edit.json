@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.roster-group.edit",
+  "lang": "en",
+  "title": "Roster Groups — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterGroup",
+  "overviewHtml": "<p>A group of employees who share a roster — for example a shift team. Its members are listed in the group's details, and the duty period the group follows in its schedules.</p><p>An employee's duty for a day comes first from a substitute duty for that date, then from their own employee duty period, and only then from their roster group.</p>",
+  "aliasIndex": {
+    "loc:Code": "RosterGroup.Code",
+    "dom:RosterGroup_Code": "RosterGroup.Code",
+    "loc:NameEn": "RosterGroup.NameEn",
+    "dom:RosterGroup_NameEn": "RosterGroup.NameEn",
+    "loc:NameAr": "RosterGroup.NameAr",
+    "dom:RosterGroup_NameAr": "RosterGroup.NameAr"
+  },
+  "fields": [
+    {
+      "id": "RosterGroup.Code",
+      "label": "Code",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:RosterGroup_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroup.NameEn",
+      "label": "NameEn",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:RosterGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterGroup.NameAr",
+      "label": "NameAr",
+      "section": "RosterGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:RosterGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

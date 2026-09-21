@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.holiday-calendar.edit",
+  "lang": "ar",
+  "title": "تقاويم العطلات — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.HolidayCalendar",
+  "overviewHtml": "<p>مجموعة من العطلات الرسمية — عادةً واحدة لكل بلد أو موقع. وتحدد كل فترة دوام تقويم العطلات الذي يتبعه موظفوها، ولا يكون اليوم عطلة رسمية للموظف إلا إذا كان في تقويم فترة دوامه.</p>",
+  "aliasIndex": {
+    "loc:Code": "HolidayCalendar.Code",
+    "dom:HolidayCalendar_Code": "HolidayCalendar.Code",
+    "loc:NameEn": "HolidayCalendar.NameEn",
+    "dom:HolidayCalendar_NameEn": "HolidayCalendar.NameEn",
+    "loc:NameAr": "HolidayCalendar.NameAr",
+    "dom:HolidayCalendar_NameAr": "HolidayCalendar.NameAr"
+  },
+  "fields": [
+    {
+      "id": "HolidayCalendar.Code",
+      "label": "Code",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:Code",
+        "dom:HolidayCalendar_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayCalendar.NameEn",
+      "label": "NameEn",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:NameEn",
+        "dom:HolidayCalendar_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "HolidayCalendar.NameAr",
+      "label": "NameAr",
+      "section": "HolidayCalendars",
+      "aliases": [
+        "loc:NameAr",
+        "dom:HolidayCalendar_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

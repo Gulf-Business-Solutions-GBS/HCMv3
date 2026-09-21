@@ -1,0 +1,651 @@
+{
+  "helpId": "tm.time-policy.edit",
+  "lang": "ar",
+  "title": "سياسات الوقت — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimePolicy",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Code": "TimePolicy.Code",
+    "dom:TimePolicy_Code": "TimePolicy.Code",
+    "loc:NameEn": "TimePolicy.NameEn",
+    "dom:TimePolicy_NameEn": "TimePolicy.NameEn",
+    "loc:NameAr": "TimePolicy.NameAr",
+    "dom:TimePolicy_NameAr": "TimePolicy.NameAr",
+    "loc:ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "dom:TimePolicy_ShouldSignIn": "TimePolicy.ShouldSignIn",
+    "loc:ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "dom:TimePolicy_ShouldSignOut": "TimePolicy.ShouldSignOut",
+    "loc:ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "dom:TimePolicy_ShouldBreakSignIn": "TimePolicy.ShouldBreakSignIn",
+    "loc:ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "dom:TimePolicy_ShouldBreakSignOut": "TimePolicy.ShouldBreakSignOut",
+    "loc:MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
+    "dom:TimePolicy_MarkWeekoffOnHoliday": "TimePolicy.MarkWeekoffOnHoliday",
+    "loc:IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "dom:TimePolicy_IsFaceRequired": "TimePolicy.IsFaceRequired",
+    "loc:CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "dom:TimePolicy_CalcLateInAfterTolerance": "TimePolicy.CalcLateInAfterTolerance",
+    "loc:LateInTolerance": "TimePolicy.LateInTolerance",
+    "dom:TimePolicy_LateInTolerance": "TimePolicy.LateInTolerance",
+    "loc:CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcEarlyOutAfterTolerance": "TimePolicy.CalcEarlyOutAfterTolerance",
+    "loc:EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "dom:TimePolicy_EarlyOutTolerance": "TimePolicy.EarlyOutTolerance",
+    "loc:CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "dom:TimePolicy_CalcBreakLateInAfterTolerance": "TimePolicy.CalcBreakLateInAfterTolerance",
+    "loc:BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "dom:TimePolicy_BreakLateInTolerance": "TimePolicy.BreakLateInTolerance",
+    "loc:CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+    "loc:BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
+    "dom:TimePolicy_BreakEarlyOutTolerance": "TimePolicy.BreakEarlyOutTolerance",
+    "loc:MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
+    "dom:TimePolicy_MonthlyToleranceType": "TimePolicy.MonthlyToleranceType",
+    "loc:MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
+    "dom:TimePolicy_MonthlyAfterTolerance": "TimePolicy.MonthlyAfterTolerance",
+    "loc:MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "dom:TimePolicy_MonthlyLateInTolerance": "TimePolicy.MonthlyLateInTolerance",
+    "loc:MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
+    "dom:TimePolicy_MonthlyEarlyOutTolerance": "TimePolicy.MonthlyEarlyOutTolerance",
+    "loc:ClockInLimit": "TimePolicy.ClockInLimit",
+    "dom:TimePolicy_ClockInLimit": "TimePolicy.ClockInLimit",
+    "loc:ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "dom:TimePolicy_ClockOutLimit": "TimePolicy.ClockOutLimit",
+    "loc:BreakInLimit": "TimePolicy.BreakInLimit",
+    "dom:TimePolicy_BreakInLimit": "TimePolicy.BreakInLimit",
+    "loc:BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "dom:TimePolicy_BreakOutLimit": "TimePolicy.BreakOutLimit",
+    "loc:OtMinLimit": "TimePolicy.OTMinLimit",
+    "dom:TimePolicy_OtMinLimit": "TimePolicy.OTMinLimit",
+    "loc:TimeEventRule": "TimePolicy.TimeEventRule",
+    "dom:TimePolicy_TimeEventRule": "TimePolicy.TimeEventRule",
+    "loc:TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "dom:TimePolicy_TimeMgmtStatus": "TimePolicy.TimeMgmtStatus",
+    "loc:AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+    "dom:TimePolicy_AllowPunchInFromWorkLocationOnly": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+    "loc:AllowPunchOutFromWorkLocationOnly": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+    "dom:TimePolicy_AllowPunchOutFromWorkLocationOnly": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+    "loc:AllowPunchInFromExtWorklocation": "TimePolicy.AllowPunchInFromExtWorklocation",
+    "dom:TimePolicy_AllowPunchInFromExtWorklocation": "TimePolicy.AllowPunchInFromExtWorklocation",
+    "loc:AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
+    "dom:TimePolicy_AllowPunchOutFromExtWorklocation": "TimePolicy.AllowPunchOutFromExtWorklocation",
+    "loc:IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
+    "dom:TimePolicy_IsMissedPunchInNotiEnabled": "TimePolicy.IsMissedPunchInNotiEnabled",
+    "loc:MissedPunchInNotiTimeLimit": "TimePolicy.MissedPunchInNotiTimeLimit",
+    "dom:TimePolicy_MissedPunchInNotiTimeLimit": "TimePolicy.MissedPunchInNotiTimeLimit",
+    "loc:IsLatePunchInNotiEnabled": "TimePolicy.IsLatePunchInNotiEnabled",
+    "dom:TimePolicy_IsLatePunchInNotiEnabled": "TimePolicy.IsLatePunchInNotiEnabled",
+    "loc:LatePunchInNotiTimeLimit": "TimePolicy.LatePunchInNotiTimeLimit",
+    "dom:TimePolicy_LatePunchInNotiTimeLimit": "TimePolicy.LatePunchInNotiTimeLimit",
+    "loc:IsMissedPunchOutNotiEnabled": "TimePolicy.IsMissedPunchOutNotiEnabled",
+    "dom:TimePolicy_IsMissedPunchOutNotiEnabled": "TimePolicy.IsMissedPunchOutNotiEnabled",
+    "loc:MissedPunchOutNotiTimeLimit": "TimePolicy.MissedPunchOutNotiTimeLimit",
+    "dom:TimePolicy_MissedPunchOutNotiTimeLimit": "TimePolicy.MissedPunchOutNotiTimeLimit",
+    "loc:IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+    "dom:TimePolicy_IsEarlyPunchOutNotiEnabled": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+    "loc:EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+    "dom:TimePolicy_EarlyPunchOutNotiTimeLimit": "TimePolicy.EarlyPunchOutNotiTimeLimit"
+  },
+  "fields": [
+    {
+      "id": "TimePolicy.Code",
+      "label": "Code",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:Code",
+        "dom:TimePolicy_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.NameEn",
+      "label": "NameEn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:NameEn",
+        "dom:TimePolicy_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.NameAr",
+      "label": "NameAr",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:NameAr",
+        "dom:TimePolicy_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "TimePolicy.ShouldSignIn",
+      "label": "ShouldSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignIn",
+        "dom:TimePolicy_ShouldSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.ShouldSignOut",
+      "label": "ShouldSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldSignOut",
+        "dom:TimePolicy_ShouldSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignIn",
+      "label": "ShouldBreakSignIn",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignIn",
+        "dom:TimePolicy_ShouldBreakSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.ShouldBreakSignOut",
+      "label": "ShouldBreakSignOut",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ShouldBreakSignOut",
+        "dom:TimePolicy_ShouldBreakSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MarkWeekoffOnHoliday",
+      "label": "MarkWeekoffOnHoliday",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MarkWeekoffOnHoliday",
+        "dom:TimePolicy_MarkWeekoffOnHoliday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.IsFaceRequired",
+      "label": "IsFaceRequired",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsFaceRequired",
+        "dom:TimePolicy_IsFaceRequired"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.CalcLateInAfterTolerance",
+      "label": "CalcLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcLateInAfterTolerance",
+        "dom:TimePolicy_CalcLateInAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.LateInTolerance",
+      "label": "LateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:LateInTolerance",
+        "dom:TimePolicy_LateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.CalcEarlyOutAfterTolerance",
+      "label": "CalcEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcEarlyOutAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.EarlyOutTolerance",
+      "label": "EarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:EarlyOutTolerance",
+        "dom:TimePolicy_EarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.CalcBreakLateInAfterTolerance",
+      "label": "CalcBreakLateInAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakLateInAfterTolerance",
+        "dom:TimePolicy_CalcBreakLateInAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.BreakLateInTolerance",
+      "label": "BreakLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakLateInTolerance",
+        "dom:TimePolicy_BreakLateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.CalcBreakEarlyOutAfterTolerance",
+      "label": "CalcBreakEarlyOutAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:CalcBreakEarlyOutAfterTolerance",
+        "dom:TimePolicy_CalcBreakEarlyOutAfterTolerance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.BreakEarlyOutTolerance",
+      "label": "BreakEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakEarlyOutTolerance",
+        "dom:TimePolicy_BreakEarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MonthlyToleranceType",
+      "label": "MonthlyToleranceType",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyToleranceType",
+        "dom:TimePolicy_MonthlyToleranceType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لم يتم اختياره، احتساب فترة السماح الشهرية على الفعلي، احتساب فترة السماح الشهرية على الخصم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MonthlyAfterTolerance",
+      "label": "MonthlyAfterTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyAfterTolerance",
+        "dom:TimePolicy_MonthlyAfterTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MonthlyLateInTolerance",
+      "label": "MonthlyLateInTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyLateInTolerance",
+        "dom:TimePolicy_MonthlyLateInTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MonthlyEarlyOutTolerance",
+      "label": "MonthlyEarlyOutTolerance",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MonthlyEarlyOutTolerance",
+        "dom:TimePolicy_MonthlyEarlyOutTolerance"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.ClockInLimit",
+      "label": "ClockInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockInLimit",
+        "dom:TimePolicy_ClockInLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.ClockOutLimit",
+      "label": "ClockOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:ClockOutLimit",
+        "dom:TimePolicy_ClockOutLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.BreakInLimit",
+      "label": "BreakInLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakInLimit",
+        "dom:TimePolicy_BreakInLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.BreakOutLimit",
+      "label": "BreakOutLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:BreakOutLimit",
+        "dom:TimePolicy_BreakOutLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.OTMinLimit",
+      "label": "OtMinLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:OtMinLimit",
+        "dom:TimePolicy_OtMinLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.TimeEventRule",
+      "label": "TimeEventRule",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:TimeEventRule",
+        "dom:TimePolicy_TimeEventRule"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، أول دخول وأول خروج، أول دخول وآخر خروج، آخر دخول وأول خروج، آخر دخول وآخر خروج.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.TimeMgmtStatus",
+      "label": "TimeMgmtStatus",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:TimeMgmtStatus",
+        "dom:TimePolicy_TimeMgmtStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا ينطبق، الوقت المخطط، الوقت الفعلي، كشف الدوام، الوقت المرن، الوقت المتغير.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.AllowPunchInFromWorkLocationOnly",
+      "label": "AllowPunchInFromWorkLocationOnly",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchInFromWorkLocationOnly",
+        "dom:TimePolicy_AllowPunchInFromWorkLocationOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.AllowPunchOutFromWorkLocationOnly",
+      "label": "AllowPunchOutFromWorkLocationOnly",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchOutFromWorkLocationOnly",
+        "dom:TimePolicy_AllowPunchOutFromWorkLocationOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.AllowPunchInFromExtWorklocation",
+      "label": "AllowPunchInFromExtWorklocation",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchInFromExtWorklocation",
+        "dom:TimePolicy_AllowPunchInFromExtWorklocation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.AllowPunchOutFromExtWorklocation",
+      "label": "AllowPunchOutFromExtWorklocation",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:AllowPunchOutFromExtWorklocation",
+        "dom:TimePolicy_AllowPunchOutFromExtWorklocation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.IsMissedPunchInNotiEnabled",
+      "label": "IsMissedPunchInNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsMissedPunchInNotiEnabled",
+        "dom:TimePolicy_IsMissedPunchInNotiEnabled"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MissedPunchInNotiTimeLimit",
+      "label": "MissedPunchInNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MissedPunchInNotiTimeLimit",
+        "dom:TimePolicy_MissedPunchInNotiTimeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.IsLatePunchInNotiEnabled",
+      "label": "IsLatePunchInNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsLatePunchInNotiEnabled",
+        "dom:TimePolicy_IsLatePunchInNotiEnabled"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.LatePunchInNotiTimeLimit",
+      "label": "LatePunchInNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:LatePunchInNotiTimeLimit",
+        "dom:TimePolicy_LatePunchInNotiTimeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.IsMissedPunchOutNotiEnabled",
+      "label": "IsMissedPunchOutNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsMissedPunchOutNotiEnabled",
+        "dom:TimePolicy_IsMissedPunchOutNotiEnabled"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.MissedPunchOutNotiTimeLimit",
+      "label": "MissedPunchOutNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:MissedPunchOutNotiTimeLimit",
+        "dom:TimePolicy_MissedPunchOutNotiTimeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.IsEarlyPunchOutNotiEnabled",
+      "label": "IsEarlyPunchOutNotiEnabled",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:IsEarlyPunchOutNotiEnabled",
+        "dom:TimePolicy_IsEarlyPunchOutNotiEnabled"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimePolicy.EarlyPunchOutNotiTimeLimit",
+      "label": "EarlyPunchOutNotiTimeLimit",
+      "section": "TimePolicies",
+      "aliases": [
+        "loc:EarlyPunchOutNotiTimeLimit",
+        "dom:TimePolicy_EarlyPunchOutNotiTimeLimit"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

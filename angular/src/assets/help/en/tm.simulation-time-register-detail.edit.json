@@ -1,0 +1,59 @@
+{
+  "helpId": "tm.simulation-time-register-detail.edit",
+  "lang": "en",
+  "title": "Simulation Time Register Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.SimulationTimeRegisterDetail",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:SimulationTimeRegister": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+    "loc:TimeType": "SimulationTimeRegisterDetail.TimeTypeId",
+    "dom:SimulationTimeRegisterDetail_TimeTypeId": "SimulationTimeRegisterDetail.TimeTypeId",
+    "loc:TimeValue": "SimulationTimeRegisterDetail.TimeValue",
+    "dom:SimulationTimeRegisterDetail_TimeValue": "SimulationTimeRegisterDetail.TimeValue"
+  },
+  "fields": [
+    {
+      "id": "SimulationTimeRegisterDetail.SimulationTimeRegisterId",
+      "label": "SimulationTimeRegister",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:SimulationTimeRegister",
+        "dom:SimulationTimeRegisterDetail_SimulationTimeRegisterId"
+      ],
+      "rules": "Required. Chosen from Simulation Time Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeTypeId",
+      "label": "TimeType",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeType",
+        "dom:SimulationTimeRegisterDetail_TimeTypeId"
+      ],
+      "rules": "Required. Chosen from Time Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "SimulationTimeRegisterDetail.TimeValue",
+      "label": "TimeValue",
+      "section": "SimulationTimeRegisterDetails",
+      "aliases": [
+        "loc:TimeValue",
+        "dom:SimulationTimeRegisterDetail_TimeValue"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

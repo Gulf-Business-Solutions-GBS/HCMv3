@@ -1,0 +1,155 @@
+{
+  "helpId": "tm.roster-duty-period-detail.edit",
+  "lang": "en",
+  "title": "Roster Duty Period Details — Create / Edit",
+  "entity": "HCMv3.TimeManagement.RosterDutyPeriodDetail",
+  "overviewHtml": "<p>One week of a roster duty period.</p><p>Not read at present: the time engine and payroll take employees' duties from duty periods and roster groups, not from this list. The roster generator that would have used it was never live in the legacy system and was not ported.</p>",
+  "aliasIndex": {
+    "loc:RosterDutyPeriod": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+    "dom:RosterDutyPeriodDetail_RosterDutyPeriodId": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+    "loc:Week": "RosterDutyPeriodDetail.Week",
+    "dom:RosterDutyPeriodDetail_Week": "RosterDutyPeriodDetail.Week",
+    "loc:Day1": "RosterDutyPeriodDetail.Day1DutyId",
+    "dom:RosterDutyPeriodDetail_Day1DutyId": "RosterDutyPeriodDetail.Day1DutyId",
+    "loc:Day2": "RosterDutyPeriodDetail.Day2DutyId",
+    "dom:RosterDutyPeriodDetail_Day2DutyId": "RosterDutyPeriodDetail.Day2DutyId",
+    "loc:Day3": "RosterDutyPeriodDetail.Day3DutyId",
+    "dom:RosterDutyPeriodDetail_Day3DutyId": "RosterDutyPeriodDetail.Day3DutyId",
+    "loc:Day4": "RosterDutyPeriodDetail.Day4DutyId",
+    "dom:RosterDutyPeriodDetail_Day4DutyId": "RosterDutyPeriodDetail.Day4DutyId",
+    "loc:Day5": "RosterDutyPeriodDetail.Day5DutyId",
+    "dom:RosterDutyPeriodDetail_Day5DutyId": "RosterDutyPeriodDetail.Day5DutyId",
+    "loc:Day6": "RosterDutyPeriodDetail.Day6DutyId",
+    "dom:RosterDutyPeriodDetail_Day6DutyId": "RosterDutyPeriodDetail.Day6DutyId",
+    "loc:Day7": "RosterDutyPeriodDetail.Day7DutyId",
+    "dom:RosterDutyPeriodDetail_Day7DutyId": "RosterDutyPeriodDetail.Day7DutyId"
+  },
+  "fields": [
+    {
+      "id": "RosterDutyPeriodDetail.RosterDutyPeriodId",
+      "label": "RosterDutyPeriod",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:RosterDutyPeriod",
+        "dom:RosterDutyPeriodDetail_RosterDutyPeriodId"
+      ],
+      "rules": "Required. Chosen from Roster Duty Period master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The roster duty period this week belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Week",
+      "label": "Week",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Week",
+        "dom:RosterDutyPeriodDetail_Week"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The week's number.</p><p><strong>Example.</strong> <code>1</code></p><p><strong>Why it matters.</strong> Must be greater than 0.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day1DutyId",
+      "label": "Day1",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day1",
+        "dom:RosterDutyPeriodDetail_Day1DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 1 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day2DutyId",
+      "label": "Day2",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day2",
+        "dom:RosterDutyPeriodDetail_Day2DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 2 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day3DutyId",
+      "label": "Day3",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day3",
+        "dom:RosterDutyPeriodDetail_Day3DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 3 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day4DutyId",
+      "label": "Day4",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day4",
+        "dom:RosterDutyPeriodDetail_Day4DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 4 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day5DutyId",
+      "label": "Day5",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day5",
+        "dom:RosterDutyPeriodDetail_Day5DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 5 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day6DutyId",
+      "label": "Day6",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day6",
+        "dom:RosterDutyPeriodDetail_Day6DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 6 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RosterDutyPeriodDetail.Day7DutyId",
+      "label": "Day7",
+      "section": "RosterDutyPeriodDetails",
+      "aliases": [
+        "loc:Day7",
+        "dom:RosterDutyPeriodDetail_Day7DutyId"
+      ],
+      "rules": "Optional. Chosen from Daily Duty master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The daily duty on day 7 of this week.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

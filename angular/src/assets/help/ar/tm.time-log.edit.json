@@ -1,0 +1,123 @@
+{
+  "helpId": "tm.time-log.edit",
+  "lang": "ar",
+  "title": "سجلات الوقت — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.TimeLog",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:RunTimeStamp": "TimeLog.RunTimeStamp",
+    "dom:TimeLog_RunTimeStamp": "TimeLog.RunTimeStamp",
+    "loc:DayDate": "TimeLog.DayDate",
+    "dom:TimeLog_DayDate": "TimeLog.DayDate",
+    "loc:Employee": "TimeLog.EmployeeId",
+    "dom:TimeLog_EmployeeId": "TimeLog.EmployeeId",
+    "loc:Status": "TimeLog.Status",
+    "dom:TimeLog_Status": "TimeLog.Status",
+    "loc:NoOfEmployee": "TimeLog.NoOfEmployee",
+    "dom:TimeLog_NoOfEmployee": "TimeLog.NoOfEmployee",
+    "loc:StopFlag": "TimeLog.StopFlag",
+    "dom:TimeLog_StopFlag": "TimeLog.StopFlag",
+    "loc:Message": "TimeLog.Message",
+    "dom:TimeLog_Message": "TimeLog.Message"
+  },
+  "fields": [
+    {
+      "id": "TimeLog.RunTimeStamp",
+      "label": "RunTimeStamp",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:RunTimeStamp",
+        "dom:TimeLog_RunTimeStamp"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.DayDate",
+      "label": "DayDate",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:DayDate",
+        "dom:TimeLog_DayDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.EmployeeId",
+      "label": "Employee",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeLog_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.Status",
+      "label": "Status",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:Status",
+        "dom:TimeLog_Status"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.NoOfEmployee",
+      "label": "NoOfEmployee",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:NoOfEmployee",
+        "dom:TimeLog_NoOfEmployee"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.StopFlag",
+      "label": "StopFlag",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:StopFlag",
+        "dom:TimeLog_StopFlag"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeLog.Message",
+      "label": "Message",
+      "section": "TimeLogs",
+      "aliases": [
+        "loc:Message",
+        "dom:TimeLog_Message"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+{
+  "helpId": "tm.time-event.edit",
+  "lang": "en",
+  "title": "Time Events — Create / Edit",
+  "entity": "HCMv3.TimeManagement.TimeEvent",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:Employee": "TimeEvent.EmployeeId",
+    "dom:TimeEvent_EmployeeId": "TimeEvent.EmployeeId",
+    "loc:Pin": "TimeEvent.PIN",
+    "dom:TimeEvent_Pin": "TimeEvent.PIN",
+    "loc:TransType": "TimeEvent.TransTypeId",
+    "dom:TimeEvent_TransTypeId": "TimeEvent.TransTypeId",
+    "loc:ActualTransType": "TimeEvent.ActualTransTypeId",
+    "dom:TimeEvent_ActualTransTypeId": "TimeEvent.ActualTransTypeId",
+    "loc:TransDate": "TimeEvent.TransDate",
+    "dom:TimeEvent_TransDate": "TimeEvent.TransDate",
+    "loc:TransTime": "TimeEvent.TransTime",
+    "dom:TimeEvent_TransTime": "TimeEvent.TransTime",
+    "loc:TransSource": "TimeEvent.TransSource",
+    "dom:TimeEvent_TransSource": "TimeEvent.TransSource",
+    "loc:AccessUnit": "TimeEvent.AccessUnitId",
+    "dom:TimeEvent_AccessUnitId": "TimeEvent.AccessUnitId",
+    "loc:WorkLocation": "TimeEvent.WorkLocationId",
+    "dom:TimeEvent_WorkLocationId": "TimeEvent.WorkLocationId",
+    "loc:IpAddress": "TimeEvent.IPAddress",
+    "dom:TimeEvent_IpAddress": "TimeEvent.IPAddress",
+    "loc:GeoSelfiePath": "TimeEvent.GeoSelfiePath",
+    "dom:TimeEvent_GeoSelfiePath": "TimeEvent.GeoSelfiePath",
+    "loc:Latitude": "TimeEvent.Latitude",
+    "dom:TimeEvent_Latitude": "TimeEvent.Latitude",
+    "loc:Longitude": "TimeEvent.Longitude",
+    "dom:TimeEvent_Longitude": "TimeEvent.Longitude",
+    "loc:RangeDifference": "TimeEvent.RangeDifference",
+    "dom:TimeEvent_RangeDifference": "TimeEvent.RangeDifference",
+    "loc:Temperature": "TimeEvent.Temperature",
+    "dom:TimeEvent_Temperature": "TimeEvent.Temperature",
+    "loc:PunchInRange": "TimeEvent.PunchInRange",
+    "dom:TimeEvent_PunchInRange": "TimeEvent.PunchInRange"
+  },
+  "fields": [
+    {
+      "id": "TimeEvent.EmployeeId",
+      "label": "Employee",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Employee",
+        "dom:TimeEvent_EmployeeId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.PIN",
+      "label": "Pin",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Pin",
+        "dom:TimeEvent_Pin"
+      ],
+      "rules": "Optional. Maximum 50 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.TransTypeId",
+      "label": "TransType",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransType",
+        "dom:TimeEvent_TransTypeId"
+      ],
+      "rules": "Optional. Chosen from Trans Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.ActualTransTypeId",
+      "label": "ActualTransType",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:ActualTransType",
+        "dom:TimeEvent_ActualTransTypeId"
+      ],
+      "rules": "Optional. Chosen from Trans Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.TransDate",
+      "label": "TransDate",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransDate",
+        "dom:TimeEvent_TransDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.TransTime",
+      "label": "TransTime",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransTime",
+        "dom:TimeEvent_TransTime"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.TransSource",
+      "label": "TransSource",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:TransSource",
+        "dom:TimeEvent_TransSource"
+      ],
+      "rules": "Required. One of: Machine, Manual, System, ESS, MobileAPI, ExternalAPI.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.AccessUnitId",
+      "label": "AccessUnit",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:AccessUnit",
+        "dom:TimeEvent_AccessUnitId"
+      ],
+      "rules": "Optional. Chosen from Access Unit master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.WorkLocationId",
+      "label": "WorkLocation",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:WorkLocation",
+        "dom:TimeEvent_WorkLocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.IPAddress",
+      "label": "IpAddress",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:IpAddress",
+        "dom:TimeEvent_IpAddress"
+      ],
+      "rules": "Optional. Maximum 50 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.GeoSelfiePath",
+      "label": "GeoSelfiePath",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:GeoSelfiePath",
+        "dom:TimeEvent_GeoSelfiePath"
+      ],
+      "rules": "Optional. Maximum 1000 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.Latitude",
+      "label": "Latitude",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Latitude",
+        "dom:TimeEvent_Latitude"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.Longitude",
+      "label": "Longitude",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Longitude",
+        "dom:TimeEvent_Longitude"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.RangeDifference",
+      "label": "RangeDifference",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:RangeDifference",
+        "dom:TimeEvent_RangeDifference"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.Temperature",
+      "label": "Temperature",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:Temperature",
+        "dom:TimeEvent_Temperature"
+      ],
+      "rules": "Optional. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "TimeEvent.PunchInRange",
+      "label": "PunchInRange",
+      "section": "TimeEvents",
+      "aliases": [
+        "loc:PunchInRange",
+        "dom:TimeEvent_PunchInRange"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

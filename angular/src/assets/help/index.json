@@ -3425,6 +3425,327 @@
     ],
     "PayrollEngine_OffCyclePaymentDate": [
       "pay.payroll-engine.run"
+    ],
+    "BreakShift_Code": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_NameEn": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_NameAr": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_StartDate": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_EndDate": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_StartTime": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_EndTime": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_IsPaid": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_IsBreakStartNextDay": [
+      "tm.break-shift.edit"
+    ],
+    "BreakShift_IsBreakEndNextDay": [
+      "tm.break-shift.edit"
+    ],
+    "DailyDuty_Code": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_NameEn": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_NameAr": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_StartDate": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_EndDate": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_StartTime": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_EndTime": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_BreakShiftId": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_IsNightShift": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_AllowTransStart": [
+      "tm.daily-duty.edit"
+    ],
+    "DailyDuty_AllowTransEnd": [
+      "tm.daily-duty.edit"
+    ],
+    "Duty_Code": [
+      "tm.duty.edit"
+    ],
+    "Duty_NameEn": [
+      "tm.duty.edit"
+    ],
+    "Duty_NameAr": [
+      "tm.duty.edit"
+    ],
+    "Duty_StartDate": [
+      "tm.duty.edit"
+    ],
+    "Duty_EndDate": [
+      "tm.duty.edit"
+    ],
+    "Duty_StartTime": [
+      "tm.duty.edit"
+    ],
+    "Duty_EndTime": [
+      "tm.duty.edit"
+    ],
+    "Duty_FlexiStartTime": [
+      "tm.duty.edit"
+    ],
+    "Duty_FlexiEndTime": [
+      "tm.duty.edit"
+    ],
+    "Duty_BreakShiftId": [
+      "tm.duty.edit"
+    ],
+    "Duty_OvertimeTypeId": [
+      "tm.duty.edit"
+    ],
+    "Duty_AllowTransStart": [
+      "tm.duty.edit"
+    ],
+    "Duty_AllowTransEnd": [
+      "tm.duty.edit"
+    ],
+    "Duty_IsNightShift": [
+      "tm.duty.edit"
+    ],
+    "Duty_IsWeeklyOff": [
+      "tm.duty.edit"
+    ],
+    "Duty_IsRestDay": [
+      "tm.duty.edit"
+    ],
+    "Duty_IsHalfDay": [
+      "tm.duty.edit"
+    ],
+    "DutyPeriodDetail_DutyPeriodId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Week": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day1DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day2DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day3DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day4DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day5DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day6DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriodDetail_Day7DutyId": [
+      "tm.duty-period-detail.edit"
+    ],
+    "DutyPeriod_Code": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_NameEn": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_NameAr": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_StartDate": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_EndDate": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_HolidayCalendarId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_SundayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_MondayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_TuesdayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_WednesdayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_ThursdayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_FridayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "DutyPeriod_SaturdayDutyId": [
+      "tm.duty-period.edit"
+    ],
+    "HolidayCalendar_Code": [
+      "tm.holiday-calendar.edit"
+    ],
+    "HolidayCalendar_NameEn": [
+      "tm.holiday-calendar.edit"
+    ],
+    "HolidayCalendar_NameAr": [
+      "tm.holiday-calendar.edit"
+    ],
+    "HolidayPeriod_HolidayId": [
+      "tm.holiday-period.edit"
+    ],
+    "HolidayPeriod_HolidayDate": [
+      "tm.holiday-period.edit"
+    ],
+    "Holiday_Code": [
+      "tm.holiday.edit"
+    ],
+    "Holiday_NameEn": [
+      "tm.holiday.edit"
+    ],
+    "Holiday_NameAr": [
+      "tm.holiday.edit"
+    ],
+    "Holiday_HolidayCalendarId": [
+      "tm.holiday.edit"
+    ],
+    "Holiday_OvertimeTypeId": [
+      "tm.holiday.edit"
+    ],
+    "RosterDailyDuty_CalendarDate": [
+      "tm.roster-daily-duty.edit"
+    ],
+    "RosterDailyDuty_RosterDutyScheduleId": [
+      "tm.roster-daily-duty.edit"
+    ],
+    "RosterDailyDuty_DailyDutyId": [
+      "tm.roster-daily-duty.edit"
+    ],
+    "RosterDutyPeriodDetail_RosterDutyPeriodId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Week": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day1DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day2DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day3DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day4DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day5DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day6DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriodDetail_Day7DutyId": [
+      "tm.roster-duty-period-detail.edit"
+    ],
+    "RosterDutyPeriod_Code": [
+      "tm.roster-duty-period.edit"
+    ],
+    "RosterDutyPeriod_NameEn": [
+      "tm.roster-duty-period.edit"
+    ],
+    "RosterDutyPeriod_NameAr": [
+      "tm.roster-duty-period.edit"
+    ],
+    "RosterDutySchedule_Code": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_NameEn": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_NameAr": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_StartDate": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_DutyPeriodId": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_StartPoint": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterDutySchedule_HolidayCalendarId": [
+      "tm.roster-duty-schedule.edit"
+    ],
+    "RosterGroupDetail_RosterGroupId": [
+      "tm.roster-group-detail.edit"
+    ],
+    "RosterGroupDetail_EmployeeId": [
+      "tm.roster-group-detail.edit"
+    ],
+    "RosterGroupDetail_StartDate": [
+      "tm.roster-group-detail.edit"
+    ],
+    "RosterGroupDetail_EndDate": [
+      "tm.roster-group-detail.edit"
+    ],
+    "RosterGroupSchedule_RosterGroupId": [
+      "tm.roster-group-schedule.edit"
+    ],
+    "RosterGroupSchedule_DutyPeriodId": [
+      "tm.roster-group-schedule.edit"
+    ],
+    "RosterGroupSchedule_StartDate": [
+      "tm.roster-group-schedule.edit"
+    ],
+    "RosterGroupSchedule_EndDate": [
+      "tm.roster-group-schedule.edit"
+    ],
+    "RosterGroupSchedule_StartPoint": [
+      "tm.roster-group-schedule.edit"
+    ],
+    "RosterGroup_Code": [
+      "tm.roster-group.edit"
+    ],
+    "RosterGroup_NameEn": [
+      "tm.roster-group.edit"
+    ],
+    "RosterGroup_NameAr": [
+      "tm.roster-group.edit"
+    ],
+    "WorkLocationDutyPeriod_WorkLocationId": [
+      "tm.work-location-duty-period.edit"
+    ],
+    "WorkLocationDutyPeriod_DutyPeriodId": [
+      "tm.work-location-duty-period.edit"
+    ],
+    "WorkLocationDutyPeriod_StartDate": [
+      "tm.work-location-duty-period.edit"
     ]
   }
 }

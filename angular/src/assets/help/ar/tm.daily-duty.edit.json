@@ -1,0 +1,187 @@
+{
+  "helpId": "tm.daily-duty.edit",
+  "lang": "ar",
+  "title": "الدوامات اليومية — إنشاء / تحرير",
+  "entity": "HCMv3.TimeManagement.DailyDuty",
+  "overviewHtml": "<p>دوام لقوائم المناوبات (فترات دوام المناوبات والدوامات اليومية للمناوبات)، مع أوقات مناوبته.</p><p>لا يُقرأ حالياً: يأخذ محرك الوقت ونظام الرواتب دوامات الموظفين من فترات الدوام ومجموعات المناوبة، لا من هذه القائمة. ومولّد المناوبات الذي كان سيستخدمها لم يعمل قط في النظام السابق ولم يُنقل. ويعرض عارض جدول المناوبات أوقاته عندما يظهر في مناوبة.</p>",
+  "aliasIndex": {
+    "loc:Code": "DailyDuty.Code",
+    "dom:DailyDuty_Code": "DailyDuty.Code",
+    "loc:NameEn": "DailyDuty.NameEn",
+    "dom:DailyDuty_NameEn": "DailyDuty.NameEn",
+    "loc:NameAr": "DailyDuty.NameAr",
+    "dom:DailyDuty_NameAr": "DailyDuty.NameAr",
+    "loc:StartDate": "DailyDuty.StartDate",
+    "dom:DailyDuty_StartDate": "DailyDuty.StartDate",
+    "loc:EndDate": "DailyDuty.EndDate",
+    "dom:DailyDuty_EndDate": "DailyDuty.EndDate",
+    "loc:StartTime": "DailyDuty.StartTime",
+    "dom:DailyDuty_StartTime": "DailyDuty.StartTime",
+    "loc:EndTime": "DailyDuty.EndTime",
+    "dom:DailyDuty_EndTime": "DailyDuty.EndTime",
+    "loc:BreakShift": "DailyDuty.BreakShiftId",
+    "dom:DailyDuty_BreakShiftId": "DailyDuty.BreakShiftId",
+    "loc:IsNightShift": "DailyDuty.IsNightShift",
+    "dom:DailyDuty_IsNightShift": "DailyDuty.IsNightShift",
+    "loc:AllowTransStart": "DailyDuty.AllowTransStart",
+    "dom:DailyDuty_AllowTransStart": "DailyDuty.AllowTransStart",
+    "loc:AllowTransEnd": "DailyDuty.AllowTransEnd",
+    "dom:DailyDuty_AllowTransEnd": "DailyDuty.AllowTransEnd"
+  },
+  "fields": [
+    {
+      "id": "DailyDuty.Code",
+      "label": "Code",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:Code",
+        "dom:DailyDuty_Code"
+      ],
+      "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.NameEn",
+      "label": "NameEn",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:NameEn",
+        "dom:DailyDuty_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.NameAr",
+      "label": "NameAr",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:NameAr",
+        "dom:DailyDuty_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.StartDate",
+      "label": "StartDate",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:StartDate",
+        "dom:DailyDuty_StartDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أول يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.EndDate",
+      "label": "EndDate",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:EndDate",
+        "dom:DailyDuty_EndDate"
+      ],
+      "rules": "اختياري. تاريخ. لا يجوز أن يسبق تاريخ البداية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> آخر يوم يسري فيه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.StartTime",
+      "label": "StartTime",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:StartTime",
+        "dom:DailyDuty_StartTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت بدء المناوبة.</p><p><strong>مثال.</strong> <code>07:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.EndTime",
+      "label": "EndTime",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:EndTime",
+        "dom:DailyDuty_EndTime"
+      ],
+      "rules": "اختياري. وقت من اليوم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> وقت انتهاء المناوبة.</p><p><strong>مثال.</strong> <code>19:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.BreakShiftId",
+      "label": "BreakShift",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:BreakShift",
+        "dom:DailyDuty_BreakShiftId"
+      ],
+      "rules": "اختياري. يُختار من قائمة استراحات الوردية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الاستراحة التي تُؤخذ خلال هذا الدوام.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.IsNightShift",
+      "label": "IsNightShift",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:IsNightShift",
+        "dom:DailyDuty_IsNightShift"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت المناوبة تنتهي في اليوم التالي.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.AllowTransStart",
+      "label": "AllowTransStart",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:AllowTransStart",
+        "dom:DailyDuty_AllowTransStart"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أن تبدأ الإجازة في أيام الراحة لهذا الدوام.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "DailyDuty.AllowTransEnd",
+      "label": "AllowTransEnd",
+      "section": "DailyDuties",
+      "aliases": [
+        "loc:AllowTransEnd",
+        "dom:DailyDuty_AllowTransEnd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن احتساب أيام الراحة لهذا الدوام ضمن الإجازة.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

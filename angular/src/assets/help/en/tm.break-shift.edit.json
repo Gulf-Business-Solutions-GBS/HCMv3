@@ -1,0 +1,171 @@
+{
+  "helpId": "tm.break-shift.edit",
+  "lang": "en",
+  "title": "Break Shifts — Create / Edit",
+  "entity": "HCMv3.TimeManagement.BreakShift",
+  "overviewHtml": "<p>A break within a duty — for lunch or prayer — with its start and end time. A duty with a break counts working time before and after the break, not across it.</p>",
+  "aliasIndex": {
+    "loc:Code": "BreakShift.Code",
+    "dom:BreakShift_Code": "BreakShift.Code",
+    "loc:NameEn": "BreakShift.NameEn",
+    "dom:BreakShift_NameEn": "BreakShift.NameEn",
+    "loc:NameAr": "BreakShift.NameAr",
+    "dom:BreakShift_NameAr": "BreakShift.NameAr",
+    "loc:StartDate": "BreakShift.StartDate",
+    "dom:BreakShift_StartDate": "BreakShift.StartDate",
+    "loc:EndDate": "BreakShift.EndDate",
+    "dom:BreakShift_EndDate": "BreakShift.EndDate",
+    "loc:StartTime": "BreakShift.StartTime",
+    "dom:BreakShift_StartTime": "BreakShift.StartTime",
+    "loc:EndTime": "BreakShift.EndTime",
+    "dom:BreakShift_EndTime": "BreakShift.EndTime",
+    "loc:IsPaid": "BreakShift.IsPaid",
+    "dom:BreakShift_IsPaid": "BreakShift.IsPaid",
+    "loc:IsBreakStartNextDay": "BreakShift.IsBreakStartNextDay",
+    "dom:BreakShift_IsBreakStartNextDay": "BreakShift.IsBreakStartNextDay",
+    "loc:IsBreakEndNextDay": "BreakShift.IsBreakEndNextDay",
+    "dom:BreakShift_IsBreakEndNextDay": "BreakShift.IsBreakEndNextDay"
+  },
+  "fields": [
+    {
+      "id": "BreakShift.Code",
+      "label": "Code",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:Code",
+        "dom:BreakShift_Code"
+      ],
+      "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.NameEn",
+      "label": "NameEn",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:NameEn",
+        "dom:BreakShift_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.NameAr",
+      "label": "NameAr",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:NameAr",
+        "dom:BreakShift_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.StartDate",
+      "label": "StartDate",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:StartDate",
+        "dom:BreakShift_StartDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The first day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.EndDate",
+      "label": "EndDate",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:EndDate",
+        "dom:BreakShift_EndDate"
+      ],
+      "rules": "Optional. Date value. Cannot be before the start date.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The last day this record applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.StartTime",
+      "label": "StartTime",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:StartTime",
+        "dom:BreakShift_StartTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the break starts.</p><p><strong>Example.</strong> <code>12:00</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.EndTime",
+      "label": "EndTime",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:EndTime",
+        "dom:BreakShift_EndTime"
+      ],
+      "rules": "Optional. Time of day.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the break ends.</p><p><strong>Example.</strong> <code>12:30</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsPaid",
+      "label": "IsPaid",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsPaid",
+        "dom:BreakShift_IsPaid"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the break is paid.</p><p><strong>Why it matters.</strong> Not read at present: the break is left out of working time whether this is ticked or not.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsBreakStartNextDay",
+      "label": "IsBreakStartNextDay",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsBreakStartNextDay",
+        "dom:BreakShift_IsBreakStartNextDay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> On a night shift, whether the break starts on the next day.</p><p><strong>Example.</strong> Ticked for a 02:00 break on a 22:00–06:00 shift.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "BreakShift.IsBreakEndNextDay",
+      "label": "IsBreakEndNextDay",
+      "section": "BreakShifts",
+      "aliases": [
+        "loc:IsBreakEndNextDay",
+        "dom:BreakShift_IsBreakEndNextDay"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the break ends on the next day.</p><p><strong>Why it matters.</strong> Tick it for a break that crosses midnight. A break that starts on the next day is always treated as ending on it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

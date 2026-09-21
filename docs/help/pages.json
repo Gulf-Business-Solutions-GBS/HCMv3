@@ -3521,6 +3521,594 @@
         "RunType": "PayrollRunType",
         "PayrollArea": "PayrollAreaName"
       }
+    },
+    {
+      "helpId": "tm.break-shift.edit",
+      "title": "Break Shifts — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.BreakShifts.Create"
+      ],
+      "entity": {
+        "name": "BreakShift",
+        "fullName": "HCMv3.TimeManagement.BreakShift",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/BreakShift.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/break-shifts/create-or-edit-break-shift-modal.component.html"
+        }
+      },
+      "defaultSection": "BreakShifts"
+    },
+    {
+      "helpId": "tm.daily-duty.edit",
+      "title": "Daily Duties — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.DailyDuties.Create"
+      ],
+      "entity": {
+        "name": "DailyDuty",
+        "fullName": "HCMv3.TimeManagement.DailyDuty",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/DailyDuty.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/daily-duties/create-or-edit-daily-duty-modal.component.html"
+        }
+      },
+      "defaultSection": "DailyDuties"
+    },
+    {
+      "helpId": "tm.duty.edit",
+      "title": "Duties — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.Duties.Create"
+      ],
+      "entity": {
+        "name": "Duty",
+        "fullName": "HCMv3.TimeManagement.Duty",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/Duty.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/duties/create-or-edit-duty-modal.component.html"
+        }
+      },
+      "defaultSection": "Duties"
+    },
+    {
+      "helpId": "tm.duty-period-detail.edit",
+      "title": "Duty Period Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.DutyPeriodDetails.Create"
+      ],
+      "entity": {
+        "name": "DutyPeriodDetail",
+        "fullName": "HCMv3.TimeManagement.DutyPeriodDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/DutyPeriodDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/duty-period-details/create-or-edit-duty-period-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "DutyPeriodDetails"
+    },
+    {
+      "helpId": "tm.duty-period.edit",
+      "title": "Duty Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.DutyPeriods.Create"
+      ],
+      "entity": {
+        "name": "DutyPeriod",
+        "fullName": "HCMv3.TimeManagement.DutyPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/DutyPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/duty-periods/create-or-edit-duty-period-modal.component.html"
+        }
+      },
+      "defaultSection": "DutyPeriods"
+    },
+    {
+      "helpId": "tm.holiday-calendar.edit",
+      "title": "Holiday Calendars — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.HolidayCalendars.Create"
+      ],
+      "entity": {
+        "name": "HolidayCalendar",
+        "fullName": "HCMv3.TimeManagement.HolidayCalendar",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/HolidayCalendar.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/holiday-calendars/create-or-edit-holiday-calendar-modal.component.html"
+        }
+      },
+      "defaultSection": "HolidayCalendars"
+    },
+    {
+      "helpId": "tm.holiday-period.edit",
+      "title": "Holiday Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.HolidayPeriods.Create"
+      ],
+      "entity": {
+        "name": "HolidayPeriod",
+        "fullName": "HCMv3.TimeManagement.HolidayPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/HolidayPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/holiday-periods/create-or-edit-holiday-period-modal.component.html"
+        }
+      },
+      "defaultSection": "HolidayPeriods"
+    },
+    {
+      "helpId": "tm.holiday.edit",
+      "title": "Holidays — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.Holidays.Create"
+      ],
+      "entity": {
+        "name": "Holiday",
+        "fullName": "HCMv3.TimeManagement.Holiday",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/Holiday.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/holidays/create-or-edit-holiday-modal.component.html"
+        }
+      },
+      "defaultSection": "Holidays"
+    },
+    {
+      "helpId": "tm.monthly-time-register-detail.edit",
+      "title": "Monthly Time Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.MonthlyTimeRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "MonthlyTimeRegisterDetail",
+        "fullName": "HCMv3.TimeManagement.MonthlyTimeRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/MonthlyTimeRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/monthly-time-register-details/create-or-edit-monthly-time-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "MonthlyTimeRegisterDetails"
+    },
+    {
+      "helpId": "tm.monthly-time-register.edit",
+      "title": "Monthly Time Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.MonthlyTimeRegisters.Create"
+      ],
+      "entity": {
+        "name": "MonthlyTimeRegister",
+        "fullName": "HCMv3.TimeManagement.MonthlyTimeRegister",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/MonthlyTimeRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/monthly-time-registers/create-or-edit-monthly-time-register-modal.component.html"
+        }
+      },
+      "defaultSection": "MonthlyTimeRegisters"
+    },
+    {
+      "helpId": "tm.roster-daily-duty.edit",
+      "title": "Roster Daily Duties — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterDailyDuties.Create"
+      ],
+      "entity": {
+        "name": "RosterDailyDuty",
+        "fullName": "HCMv3.TimeManagement.RosterDailyDuty",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterDailyDuty.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-daily-duties/create-or-edit-roster-daily-duty-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterDailyDuties"
+    },
+    {
+      "helpId": "tm.roster-duty-period-detail.edit",
+      "title": "Roster Duty Period Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterDutyPeriodDetails.Create"
+      ],
+      "entity": {
+        "name": "RosterDutyPeriodDetail",
+        "fullName": "HCMv3.TimeManagement.RosterDutyPeriodDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterDutyPeriodDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-duty-period-details/create-or-edit-roster-duty-period-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterDutyPeriodDetails"
+    },
+    {
+      "helpId": "tm.roster-duty-period.edit",
+      "title": "Roster Duty Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterDutyPeriods.Create"
+      ],
+      "entity": {
+        "name": "RosterDutyPeriod",
+        "fullName": "HCMv3.TimeManagement.RosterDutyPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterDutyPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-duty-periods/create-or-edit-roster-duty-period-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterDutyPeriods"
+    },
+    {
+      "helpId": "tm.roster-duty-schedule.edit",
+      "title": "Roster Duty Schedules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterDutySchedules.Create"
+      ],
+      "entity": {
+        "name": "RosterDutySchedule",
+        "fullName": "HCMv3.TimeManagement.RosterDutySchedule",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterDutySchedule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-duty-schedules/create-or-edit-roster-duty-schedule-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterDutySchedules"
+    },
+    {
+      "helpId": "tm.roster-group-detail.edit",
+      "title": "Roster Group Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterGroupDetails.Create"
+      ],
+      "entity": {
+        "name": "RosterGroupDetail",
+        "fullName": "HCMv3.TimeManagement.RosterGroupDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterGroupDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-group-details/create-or-edit-roster-group-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterGroupDetails"
+    },
+    {
+      "helpId": "tm.roster-group-schedule.edit",
+      "title": "Roster Group Schedules — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterGroupSchedules.Create"
+      ],
+      "entity": {
+        "name": "RosterGroupSchedule",
+        "fullName": "HCMv3.TimeManagement.RosterGroupSchedule",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterGroupSchedule.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-group-schedules/create-or-edit-roster-group-schedule-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterGroupSchedules"
+    },
+    {
+      "helpId": "tm.roster-group.edit",
+      "title": "Roster Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.RosterGroups.Create"
+      ],
+      "entity": {
+        "name": "RosterGroup",
+        "fullName": "HCMv3.TimeManagement.RosterGroup",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/RosterGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/roster-groups/create-or-edit-roster-group-modal.component.html"
+        }
+      },
+      "defaultSection": "RosterGroups"
+    },
+    {
+      "helpId": "tm.simulation-time-register-detail.edit",
+      "title": "Simulation Time Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.SimulationTimeRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "SimulationTimeRegisterDetail",
+        "fullName": "HCMv3.TimeManagement.SimulationTimeRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/SimulationTimeRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/simulation-time-register-details/create-or-edit-simulation-time-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SimulationTimeRegisterDetails"
+    },
+    {
+      "helpId": "tm.simulation-time-register.edit",
+      "title": "Simulation Time Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.SimulationTimeRegisters.Create"
+      ],
+      "entity": {
+        "name": "SimulationTimeRegister",
+        "fullName": "HCMv3.TimeManagement.SimulationTimeRegister",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/SimulationTimeRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/simulation-time-registers/create-or-edit-simulation-time-register-modal.component.html"
+        }
+      },
+      "defaultSection": "SimulationTimeRegisters"
+    },
+    {
+      "helpId": "tm.time-att-api.edit",
+      "title": "Time Attendance APIs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeAttAPIs.Create"
+      ],
+      "entity": {
+        "name": "TimeAttAPI",
+        "fullName": "HCMv3.TimeManagement.TimeAttAPI",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimeAttAPI.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-att-apis/create-or-edit-time-att-api-modal.component.html"
+        }
+      },
+      "defaultSection": "TimeAttAPIs"
+    },
+    {
+      "helpId": "tm.time-event.edit",
+      "title": "Time Events — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeEvents.Create"
+      ],
+      "entity": {
+        "name": "TimeEvent",
+        "fullName": "HCMv3.TimeManagement.TimeEvent",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimeEvent.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-events/create-or-edit-time-event-modal.component.html"
+        }
+      },
+      "defaultSection": "TimeEvents"
+    },
+    {
+      "helpId": "tm.time-log.edit",
+      "title": "Time Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeLogs.Create"
+      ],
+      "entity": {
+        "name": "TimeLog",
+        "fullName": "HCMv3.TimeManagement.TimeLog",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimeLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-logs/create-or-edit-time-log-modal.component.html"
+        }
+      },
+      "defaultSection": "TimeLogs"
+    },
+    {
+      "helpId": "tm.time-policy.edit",
+      "title": "Time Policies — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimePolicies.Create"
+      ],
+      "entity": {
+        "name": "TimePolicy",
+        "fullName": "HCMv3.TimeManagement.TimePolicy",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimePolicy.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-policies/create-or-edit-time-policy-modal.component.html"
+        }
+      },
+      "defaultSection": "TimePolicies"
+    },
+    {
+      "helpId": "tm.time-register.edit",
+      "title": "Time Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeRegisters.Create"
+      ],
+      "entity": {
+        "name": "TimeRegister",
+        "fullName": "HCMv3.TimeManagement.TimeRegister",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimeRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-registers/create-or-edit-time-register-modal.component.html"
+        }
+      },
+      "defaultSection": "TimeRegisters"
+    },
+    {
+      "helpId": "tm.time-transfer.edit",
+      "title": "Time Transfers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.TimeTransfers.Create"
+      ],
+      "entity": {
+        "name": "TimeTransfer",
+        "fullName": "HCMv3.TimeManagement.TimeTransfer",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/TimeTransfer.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/time-transfers/create-or-edit-time-transfer-modal.component.html"
+        }
+      },
+      "defaultSection": "TimeTransfers"
+    },
+    {
+      "helpId": "tm.work-location-duty-period.edit",
+      "title": "Work Location Duty Periods — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.WorkLocationDutyPeriods.Create"
+      ],
+      "entity": {
+        "name": "WorkLocationDutyPeriod",
+        "fullName": "HCMv3.TimeManagement.WorkLocationDutyPeriod",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/WorkLocationDutyPeriod.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/work-location-duty-periods/create-or-edit-work-location-duty-period-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkLocationDutyPeriods"
+    },
+    {
+      "helpId": "tm.yearly-time-register-detail.edit",
+      "title": "Yearly Time Register Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.YearlyTimeRegisterDetails.Create"
+      ],
+      "entity": {
+        "name": "YearlyTimeRegisterDetail",
+        "fullName": "HCMv3.TimeManagement.YearlyTimeRegisterDetail",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/YearlyTimeRegisterDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/yearly-time-register-details/create-or-edit-yearly-time-register-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "YearlyTimeRegisterDetails"
+    },
+    {
+      "helpId": "tm.yearly-time-register.edit",
+      "title": "Yearly Time Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.TimeManagement.YearlyTimeRegisters.Create"
+      ],
+      "entity": {
+        "name": "YearlyTimeRegister",
+        "fullName": "HCMv3.TimeManagement.YearlyTimeRegister",
+        "file": "aspnet-core/src/HCMv3.Core/TimeManagement/YearlyTimeRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/time-management/yearly-time-registers/create-or-edit-yearly-time-register-modal.component.html"
+        }
+      },
+      "defaultSection": "YearlyTimeRegisters"
     }
   ]
 }
