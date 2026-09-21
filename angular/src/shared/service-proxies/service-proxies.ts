@@ -38902,6 +38902,62 @@ export class EmployeeFnFPaymentsServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getFullAndFinalBalances(id?: number | undefined): Observable<FullAndFinalBalancesDto> {
+        let url_ = this.baseUrl + "/api/services/app/EmployeeFnFPayments/GetFullAndFinalBalances?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFullAndFinalBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFullAndFinalBalances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FullAndFinalBalancesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FullAndFinalBalancesDto>;
+        }));
+    }
+
+    protected processGetFullAndFinalBalances(response: HttpResponseBase): Observable<FullAndFinalBalancesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FullAndFinalBalancesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -74672,6 +74728,281 @@ export class InsuranceProvidersServiceProxy {
 }
 
 @Injectable()
+export class IntegrationCenterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getIntegrations(): Observable<ListResultDtoOfIntegrationTileDto> {
+        let url_ = this.baseUrl + "/api/services/app/IntegrationCenter/GetIntegrations";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetIntegrations(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetIntegrations(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListResultDtoOfIntegrationTileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListResultDtoOfIntegrationTileDto>;
+        }));
+    }
+
+    protected processGetIntegrations(response: HttpResponseBase): Observable<ListResultDtoOfIntegrationTileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResultDtoOfIntegrationTileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param key (optional) 
+     * @return OK
+     */
+    getIntegrationDetail(key?: string | null | undefined): Observable<IntegrationDetailDto> {
+        let url_ = this.baseUrl + "/api/services/app/IntegrationCenter/GetIntegrationDetail?";
+        if (key !== undefined && key !== null)
+            url_ += "key=" + encodeURIComponent("" + key) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetIntegrationDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetIntegrationDetail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<IntegrationDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<IntegrationDetailDto>;
+        }));
+    }
+
+    protected processGetIntegrationDetail(response: HttpResponseBase): Observable<IntegrationDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = IntegrationDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    saveSettings(body?: SaveIntegrationSettingsInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/IntegrationCenter/SaveSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSaveSettings(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    setEnabled(body?: SetIntegrationEnabledInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/IntegrationCenter/SetEnabled";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetEnabled(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetEnabled(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSetEnabled(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param key (optional) 
+     * @return OK
+     */
+    testConnection(key?: string | null | undefined): Observable<IntegrationTestResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/IntegrationCenter/TestConnection?";
+        if (key !== undefined && key !== null)
+            url_ += "key=" + encodeURIComponent("" + key) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTestConnection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTestConnection(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<IntegrationTestResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<IntegrationTestResultDto>;
+        }));
+    }
+
+    protected processTestConnection(response: HttpResponseBase): Observable<IntegrationTestResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = IntegrationTestResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class InterviewDetailsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -89688,6 +90019,237 @@ export class MyExitPermitServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class MyGeoPunchServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getMyGeoPunchContext(): Observable<MyGeoPunchContextDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyGeoPunch/GetMyGeoPunchContext";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyGeoPunchContext(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyGeoPunchContext(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyGeoPunchContextDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyGeoPunchContextDto>;
+        }));
+    }
+
+    protected processGetMyGeoPunchContext(response: HttpResponseBase): Observable<MyGeoPunchContextDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyGeoPunchContextDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    checkMyGeoPunchLocation(body?: CheckMyGeoPunchLocationInput | undefined): Observable<MyGeoPunchLocationCheckDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyGeoPunch/CheckMyGeoPunchLocation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckMyGeoPunchLocation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckMyGeoPunchLocation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyGeoPunchLocationCheckDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyGeoPunchLocationCheckDto>;
+        }));
+    }
+
+    protected processCheckMyGeoPunchLocation(response: HttpResponseBase): Observable<MyGeoPunchLocationCheckDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyGeoPunchLocationCheckDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    recordMyGeoPunch(body?: RecordMyGeoPunchInput | undefined): Observable<MyGeoPunchResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyGeoPunch/RecordMyGeoPunch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRecordMyGeoPunch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRecordMyGeoPunch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyGeoPunchResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyGeoPunchResultDto>;
+        }));
+    }
+
+    protected processRecordMyGeoPunch(response: HttpResponseBase): Observable<MyGeoPunchResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyGeoPunchResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getMyGeoPunchSelfie(id?: number | undefined): Observable<MyGeoPunchSelfieDto> {
+        let url_ = this.baseUrl + "/api/services/app/MyGeoPunch/GetMyGeoPunchSelfie?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMyGeoPunchSelfie(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMyGeoPunchSelfie(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MyGeoPunchSelfieDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MyGeoPunchSelfieDto>;
+        }));
+    }
+
+    protected processGetMyGeoPunchSelfie(response: HttpResponseBase): Observable<MyGeoPunchSelfieDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MyGeoPunchSelfieDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -168839,6 +169401,50 @@ export interface ICheckDatabaseOutput {
     isDatabaseExist: boolean;
 }
 
+export class CheckMyGeoPunchLocationInput implements ICheckMyGeoPunchLocationInput {
+    latitude!: number;
+    longitude!: number;
+    workLocationId!: number | undefined;
+
+    constructor(data?: ICheckMyGeoPunchLocationInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
+            this.workLocationId = _data["workLocationId"];
+        }
+    }
+
+    static fromJS(data: any): CheckMyGeoPunchLocationInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckMyGeoPunchLocationInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["workLocationId"] = this.workLocationId;
+        return data;
+    }
+}
+
+export interface ICheckMyGeoPunchLocationInput {
+    latitude: number;
+    longitude: number;
+    workLocationId: number | undefined;
+}
+
 export class CityDto implements ICityDto {
     id!: number;
     code!: string | undefined;
@@ -216854,6 +217460,98 @@ export enum FriendshipState {
     Blocked = 2,
 }
 
+export class FullAndFinalBalancesDto implements IFullAndFinalBalancesDto {
+    leaveAccrualDays!: number;
+    leaveRemainingDays!: number;
+    gratuityAccrualDays!: number;
+    gratuityRemainingDays!: number;
+    suggestedIndemnityDays!: number;
+    ticketAccrualCount!: number;
+    ticketRemainingCount!: number;
+    dependant1TicketCount!: number;
+    dependant1TicketRemainingCount!: number;
+    dependant2TicketCount!: number;
+    dependant2TicketRemainingCount!: number;
+    dependant3TicketCount!: number;
+    dependant3TicketRemainingCount!: number;
+    autoFillLeaveCompensateDays!: number;
+    autoFillGratuityCompensateDays!: number;
+
+    constructor(data?: IFullAndFinalBalancesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.leaveAccrualDays = _data["leaveAccrualDays"];
+            this.leaveRemainingDays = _data["leaveRemainingDays"];
+            this.gratuityAccrualDays = _data["gratuityAccrualDays"];
+            this.gratuityRemainingDays = _data["gratuityRemainingDays"];
+            this.suggestedIndemnityDays = _data["suggestedIndemnityDays"];
+            this.ticketAccrualCount = _data["ticketAccrualCount"];
+            this.ticketRemainingCount = _data["ticketRemainingCount"];
+            this.dependant1TicketCount = _data["dependant1TicketCount"];
+            this.dependant1TicketRemainingCount = _data["dependant1TicketRemainingCount"];
+            this.dependant2TicketCount = _data["dependant2TicketCount"];
+            this.dependant2TicketRemainingCount = _data["dependant2TicketRemainingCount"];
+            this.dependant3TicketCount = _data["dependant3TicketCount"];
+            this.dependant3TicketRemainingCount = _data["dependant3TicketRemainingCount"];
+            this.autoFillLeaveCompensateDays = _data["autoFillLeaveCompensateDays"];
+            this.autoFillGratuityCompensateDays = _data["autoFillGratuityCompensateDays"];
+        }
+    }
+
+    static fromJS(data: any): FullAndFinalBalancesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FullAndFinalBalancesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["leaveAccrualDays"] = this.leaveAccrualDays;
+        data["leaveRemainingDays"] = this.leaveRemainingDays;
+        data["gratuityAccrualDays"] = this.gratuityAccrualDays;
+        data["gratuityRemainingDays"] = this.gratuityRemainingDays;
+        data["suggestedIndemnityDays"] = this.suggestedIndemnityDays;
+        data["ticketAccrualCount"] = this.ticketAccrualCount;
+        data["ticketRemainingCount"] = this.ticketRemainingCount;
+        data["dependant1TicketCount"] = this.dependant1TicketCount;
+        data["dependant1TicketRemainingCount"] = this.dependant1TicketRemainingCount;
+        data["dependant2TicketCount"] = this.dependant2TicketCount;
+        data["dependant2TicketRemainingCount"] = this.dependant2TicketRemainingCount;
+        data["dependant3TicketCount"] = this.dependant3TicketCount;
+        data["dependant3TicketRemainingCount"] = this.dependant3TicketRemainingCount;
+        data["autoFillLeaveCompensateDays"] = this.autoFillLeaveCompensateDays;
+        data["autoFillGratuityCompensateDays"] = this.autoFillGratuityCompensateDays;
+        return data;
+    }
+}
+
+export interface IFullAndFinalBalancesDto {
+    leaveAccrualDays: number;
+    leaveRemainingDays: number;
+    gratuityAccrualDays: number;
+    gratuityRemainingDays: number;
+    suggestedIndemnityDays: number;
+    ticketAccrualCount: number;
+    ticketRemainingCount: number;
+    dependant1TicketCount: number;
+    dependant1TicketRemainingCount: number;
+    dependant2TicketCount: number;
+    dependant2TicketRemainingCount: number;
+    dependant3TicketCount: number;
+    dependant3TicketRemainingCount: number;
+    autoFillLeaveCompensateDays: number;
+    autoFillGratuityCompensateDays: number;
+}
+
 export enum FundDedType {
     Percentage = 0,
     PercentageWithinLimit = 1,
@@ -217447,6 +218145,12 @@ export interface IGeneratePayrollCalendarInput {
     payrollAreaId: number;
     startDate: DateTime;
     endDate: DateTime;
+}
+
+export enum GeoPunchRangeVerdict {
+    InRange = 0,
+    OutOfRangeAllowed = 1,
+    OutOfRangeRefused = 2,
 }
 
 export class GetAXBatchForEditOutput implements IGetAXBatchForEditOutput {
@@ -267112,6 +267816,371 @@ export interface IInstitutionDto {
     universityName: string | undefined;
 }
 
+export class IntegrationAttemptDto implements IIntegrationAttemptDto {
+    time!: DateTime;
+    attemptType!: IntegrationAttemptType;
+    succeeded!: boolean;
+    message!: string | undefined;
+    itemCount!: number | undefined;
+    durationMs!: number;
+
+    constructor(data?: IIntegrationAttemptDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.time = _data["time"] ? DateTime.fromISO(_data["time"].toString()) : undefined as any;
+            this.attemptType = _data["attemptType"];
+            this.succeeded = _data["succeeded"];
+            this.message = _data["message"];
+            this.itemCount = _data["itemCount"];
+            this.durationMs = _data["durationMs"];
+        }
+    }
+
+    static fromJS(data: any): IntegrationAttemptDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntegrationAttemptDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["time"] = this.time ? this.time.toString() : undefined as any;
+        data["attemptType"] = this.attemptType;
+        data["succeeded"] = this.succeeded;
+        data["message"] = this.message;
+        data["itemCount"] = this.itemCount;
+        data["durationMs"] = this.durationMs;
+        return data;
+    }
+}
+
+export interface IIntegrationAttemptDto {
+    time: DateTime;
+    attemptType: IntegrationAttemptType;
+    succeeded: boolean;
+    message: string | undefined;
+    itemCount: number | undefined;
+    durationMs: number;
+}
+
+export enum IntegrationAttemptType {
+    Test = 0,
+    Sync = 1,
+}
+
+export enum IntegrationCategory {
+    Identity = 1,
+    Communication = 2,
+    Finance = 3,
+    TimeAttendance = 4,
+    Outbound = 5,
+}
+
+export class IntegrationDetailDto implements IIntegrationDetailDto {
+    tile!: IntegrationTileDto;
+    fields!: IntegrationFieldDto[] | undefined;
+    recentAttempts!: IntegrationAttemptDto[] | undefined;
+
+    constructor(data?: IIntegrationDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tile = _data["tile"] ? IntegrationTileDto.fromJS(_data["tile"]) : undefined as any;
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields!.push(IntegrationFieldDto.fromJS(item));
+            }
+            if (Array.isArray(_data["recentAttempts"])) {
+                this.recentAttempts = [] as any;
+                for (let item of _data["recentAttempts"])
+                    this.recentAttempts!.push(IntegrationAttemptDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): IntegrationDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntegrationDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tile"] = this.tile ? this.tile.toJSON() : undefined as any;
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item ? item.toJSON() : undefined as any);
+        }
+        if (Array.isArray(this.recentAttempts)) {
+            data["recentAttempts"] = [];
+            for (let item of this.recentAttempts)
+                data["recentAttempts"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IIntegrationDetailDto {
+    tile: IntegrationTileDto;
+    fields: IntegrationFieldDto[] | undefined;
+    recentAttempts: IntegrationAttemptDto[] | undefined;
+}
+
+export class IntegrationFieldDto implements IIntegrationFieldDto {
+    key!: string | undefined;
+    labelKey!: string | undefined;
+    helpKey!: string | undefined;
+    type!: IntegrationFieldType;
+    isRequired!: boolean;
+    isSecret!: boolean;
+    value!: string | undefined;
+    hasStoredValue!: boolean;
+    defaultValue!: string | undefined;
+
+    constructor(data?: IIntegrationFieldDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.labelKey = _data["labelKey"];
+            this.helpKey = _data["helpKey"];
+            this.type = _data["type"];
+            this.isRequired = _data["isRequired"];
+            this.isSecret = _data["isSecret"];
+            this.value = _data["value"];
+            this.hasStoredValue = _data["hasStoredValue"];
+            this.defaultValue = _data["defaultValue"];
+        }
+    }
+
+    static fromJS(data: any): IntegrationFieldDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntegrationFieldDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["labelKey"] = this.labelKey;
+        data["helpKey"] = this.helpKey;
+        data["type"] = this.type;
+        data["isRequired"] = this.isRequired;
+        data["isSecret"] = this.isSecret;
+        data["value"] = this.value;
+        data["hasStoredValue"] = this.hasStoredValue;
+        data["defaultValue"] = this.defaultValue;
+        return data;
+    }
+}
+
+export interface IIntegrationFieldDto {
+    key: string | undefined;
+    labelKey: string | undefined;
+    helpKey: string | undefined;
+    type: IntegrationFieldType;
+    isRequired: boolean;
+    isSecret: boolean;
+    value: string | undefined;
+    hasStoredValue: boolean;
+    defaultValue: string | undefined;
+}
+
+export enum IntegrationFieldType {
+    Text = 0,
+    Password = 1,
+    Url = 2,
+    Number = 3,
+    Boolean = 4,
+    Email = 5,
+}
+
+export enum IntegrationStatusType {
+    NotConfigured = 0,
+    Configured = 1,
+    Enabled = 2,
+    Error = 3,
+}
+
+export class IntegrationTestResultDto implements IIntegrationTestResultDto {
+    succeeded!: boolean;
+    message!: string | undefined;
+    durationMs!: number;
+
+    constructor(data?: IIntegrationTestResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.succeeded = _data["succeeded"];
+            this.message = _data["message"];
+            this.durationMs = _data["durationMs"];
+        }
+    }
+
+    static fromJS(data: any): IntegrationTestResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntegrationTestResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["succeeded"] = this.succeeded;
+        data["message"] = this.message;
+        data["durationMs"] = this.durationMs;
+        return data;
+    }
+}
+
+export interface IIntegrationTestResultDto {
+    succeeded: boolean;
+    message: string | undefined;
+    durationMs: number;
+}
+
+export class IntegrationTileDto implements IIntegrationTileDto {
+    key!: string | undefined;
+    nameKey!: string | undefined;
+    descriptionKey!: string | undefined;
+    category!: IntegrationCategory;
+    status!: IntegrationStatusType;
+    isConfigured!: boolean;
+    isEnabled!: boolean;
+    statusDetail!: string | undefined;
+    supportsTest!: boolean;
+    supportsEnableToggle!: boolean;
+    exclusiveGroup!: string | undefined;
+    externalManageRoute!: string | undefined;
+    hasFields!: boolean;
+    lastTestTime!: DateTime | undefined;
+    lastTestSucceeded!: boolean | undefined;
+    lastTestMessage!: string | undefined;
+    lastSyncTime!: DateTime | undefined;
+    lastSyncSucceeded!: boolean | undefined;
+    lastSyncItemCount!: number | undefined;
+
+    constructor(data?: IIntegrationTileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.nameKey = _data["nameKey"];
+            this.descriptionKey = _data["descriptionKey"];
+            this.category = _data["category"];
+            this.status = _data["status"];
+            this.isConfigured = _data["isConfigured"];
+            this.isEnabled = _data["isEnabled"];
+            this.statusDetail = _data["statusDetail"];
+            this.supportsTest = _data["supportsTest"];
+            this.supportsEnableToggle = _data["supportsEnableToggle"];
+            this.exclusiveGroup = _data["exclusiveGroup"];
+            this.externalManageRoute = _data["externalManageRoute"];
+            this.hasFields = _data["hasFields"];
+            this.lastTestTime = _data["lastTestTime"] ? DateTime.fromISO(_data["lastTestTime"].toString()) : undefined as any;
+            this.lastTestSucceeded = _data["lastTestSucceeded"];
+            this.lastTestMessage = _data["lastTestMessage"];
+            this.lastSyncTime = _data["lastSyncTime"] ? DateTime.fromISO(_data["lastSyncTime"].toString()) : undefined as any;
+            this.lastSyncSucceeded = _data["lastSyncSucceeded"];
+            this.lastSyncItemCount = _data["lastSyncItemCount"];
+        }
+    }
+
+    static fromJS(data: any): IntegrationTileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntegrationTileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["nameKey"] = this.nameKey;
+        data["descriptionKey"] = this.descriptionKey;
+        data["category"] = this.category;
+        data["status"] = this.status;
+        data["isConfigured"] = this.isConfigured;
+        data["isEnabled"] = this.isEnabled;
+        data["statusDetail"] = this.statusDetail;
+        data["supportsTest"] = this.supportsTest;
+        data["supportsEnableToggle"] = this.supportsEnableToggle;
+        data["exclusiveGroup"] = this.exclusiveGroup;
+        data["externalManageRoute"] = this.externalManageRoute;
+        data["hasFields"] = this.hasFields;
+        data["lastTestTime"] = this.lastTestTime ? this.lastTestTime.toString() : undefined as any;
+        data["lastTestSucceeded"] = this.lastTestSucceeded;
+        data["lastTestMessage"] = this.lastTestMessage;
+        data["lastSyncTime"] = this.lastSyncTime ? this.lastSyncTime.toString() : undefined as any;
+        data["lastSyncSucceeded"] = this.lastSyncSucceeded;
+        data["lastSyncItemCount"] = this.lastSyncItemCount;
+        return data;
+    }
+}
+
+export interface IIntegrationTileDto {
+    key: string | undefined;
+    nameKey: string | undefined;
+    descriptionKey: string | undefined;
+    category: IntegrationCategory;
+    status: IntegrationStatusType;
+    isConfigured: boolean;
+    isEnabled: boolean;
+    statusDetail: string | undefined;
+    supportsTest: boolean;
+    supportsEnableToggle: boolean;
+    exclusiveGroup: string | undefined;
+    externalManageRoute: string | undefined;
+    hasFields: boolean;
+    lastTestTime: DateTime | undefined;
+    lastTestSucceeded: boolean | undefined;
+    lastTestMessage: string | undefined;
+    lastSyncTime: DateTime | undefined;
+    lastSyncSucceeded: boolean | undefined;
+    lastSyncItemCount: number | undefined;
+}
+
 export class InterviewDetailsDto implements IInterviewDetailsDto {
     id!: number;
     applicationStatusId!: number;
@@ -271391,6 +272460,50 @@ export interface IListResultDtoOfHealthCheckItemDto {
     items: HealthCheckItemDto[] | undefined;
 }
 
+export class ListResultDtoOfIntegrationTileDto implements IListResultDtoOfIntegrationTileDto {
+    items!: IntegrationTileDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfIntegrationTileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(IntegrationTileDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfIntegrationTileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfIntegrationTileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IListResultDtoOfIntegrationTileDto {
+    items: IntegrationTileDto[] | undefined;
+}
+
 export class ListResultDtoOfLinkedUserDto implements IListResultDtoOfLinkedUserDto {
     items!: LinkedUserDto[] | undefined;
 
@@ -274376,6 +275489,390 @@ export interface IMyExitPermitDto {
     exitDate: DateTime;
     startDate: DateTime;
     comments: string | undefined;
+}
+
+export class MyGeoPunchContextDto implements IMyGeoPunchContextDto {
+    canClockIn!: boolean;
+    canClockOut!: boolean;
+    canOvertimeIn!: boolean;
+    canOvertimeOut!: boolean;
+    isOvertimeAllowed!: boolean;
+    hasDutyPeriodToday!: boolean;
+    workLocations!: MyGeoPunchWorkLocationDto[] | undefined;
+    defaultWorkLocationId!: number | undefined;
+    isOpenLocation!: boolean;
+    requiresSelfie!: boolean;
+    allowPunchOutsideRange!: boolean;
+    autoLogoutAfterPunch!: boolean;
+    hideLocationInfo!: boolean;
+    hidePunchList!: boolean;
+    serverTime!: DateTime;
+    todaysPunches!: MyGeoPunchDto[] | undefined;
+
+    constructor(data?: IMyGeoPunchContextDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.canClockIn = _data["canClockIn"];
+            this.canClockOut = _data["canClockOut"];
+            this.canOvertimeIn = _data["canOvertimeIn"];
+            this.canOvertimeOut = _data["canOvertimeOut"];
+            this.isOvertimeAllowed = _data["isOvertimeAllowed"];
+            this.hasDutyPeriodToday = _data["hasDutyPeriodToday"];
+            if (Array.isArray(_data["workLocations"])) {
+                this.workLocations = [] as any;
+                for (let item of _data["workLocations"])
+                    this.workLocations!.push(MyGeoPunchWorkLocationDto.fromJS(item));
+            }
+            this.defaultWorkLocationId = _data["defaultWorkLocationId"];
+            this.isOpenLocation = _data["isOpenLocation"];
+            this.requiresSelfie = _data["requiresSelfie"];
+            this.allowPunchOutsideRange = _data["allowPunchOutsideRange"];
+            this.autoLogoutAfterPunch = _data["autoLogoutAfterPunch"];
+            this.hideLocationInfo = _data["hideLocationInfo"];
+            this.hidePunchList = _data["hidePunchList"];
+            this.serverTime = _data["serverTime"] ? DateTime.fromISO(_data["serverTime"].toString()) : undefined as any;
+            if (Array.isArray(_data["todaysPunches"])) {
+                this.todaysPunches = [] as any;
+                for (let item of _data["todaysPunches"])
+                    this.todaysPunches!.push(MyGeoPunchDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchContextDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchContextDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["canClockIn"] = this.canClockIn;
+        data["canClockOut"] = this.canClockOut;
+        data["canOvertimeIn"] = this.canOvertimeIn;
+        data["canOvertimeOut"] = this.canOvertimeOut;
+        data["isOvertimeAllowed"] = this.isOvertimeAllowed;
+        data["hasDutyPeriodToday"] = this.hasDutyPeriodToday;
+        if (Array.isArray(this.workLocations)) {
+            data["workLocations"] = [];
+            for (let item of this.workLocations)
+                data["workLocations"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["defaultWorkLocationId"] = this.defaultWorkLocationId;
+        data["isOpenLocation"] = this.isOpenLocation;
+        data["requiresSelfie"] = this.requiresSelfie;
+        data["allowPunchOutsideRange"] = this.allowPunchOutsideRange;
+        data["autoLogoutAfterPunch"] = this.autoLogoutAfterPunch;
+        data["hideLocationInfo"] = this.hideLocationInfo;
+        data["hidePunchList"] = this.hidePunchList;
+        data["serverTime"] = this.serverTime ? this.serverTime.toString() : undefined as any;
+        if (Array.isArray(this.todaysPunches)) {
+            data["todaysPunches"] = [];
+            for (let item of this.todaysPunches)
+                data["todaysPunches"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IMyGeoPunchContextDto {
+    canClockIn: boolean;
+    canClockOut: boolean;
+    canOvertimeIn: boolean;
+    canOvertimeOut: boolean;
+    isOvertimeAllowed: boolean;
+    hasDutyPeriodToday: boolean;
+    workLocations: MyGeoPunchWorkLocationDto[] | undefined;
+    defaultWorkLocationId: number | undefined;
+    isOpenLocation: boolean;
+    requiresSelfie: boolean;
+    allowPunchOutsideRange: boolean;
+    autoLogoutAfterPunch: boolean;
+    hideLocationInfo: boolean;
+    hidePunchList: boolean;
+    serverTime: DateTime;
+    todaysPunches: MyGeoPunchDto[] | undefined;
+}
+
+export class MyGeoPunchDto implements IMyGeoPunchDto {
+    id!: number;
+    transTypeCode!: string | undefined;
+    transTypeNameEn!: string | undefined;
+    transTypeNameAr!: string | undefined;
+    transDate!: DateTime;
+    transTime!: DateTime;
+    workLocationNameEn!: string | undefined;
+    workLocationNameAr!: string | undefined;
+    punchInRange!: boolean;
+    rangeDifference!: number;
+    hasSelfie!: boolean;
+
+    constructor(data?: IMyGeoPunchDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.transTypeCode = _data["transTypeCode"];
+            this.transTypeNameEn = _data["transTypeNameEn"];
+            this.transTypeNameAr = _data["transTypeNameAr"];
+            this.transDate = _data["transDate"] ? DateTime.fromISO(_data["transDate"].toString()) : undefined as any;
+            this.transTime = _data["transTime"] ? DateTime.fromISO(_data["transTime"].toString()) : undefined as any;
+            this.workLocationNameEn = _data["workLocationNameEn"];
+            this.workLocationNameAr = _data["workLocationNameAr"];
+            this.punchInRange = _data["punchInRange"];
+            this.rangeDifference = _data["rangeDifference"];
+            this.hasSelfie = _data["hasSelfie"];
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["transTypeCode"] = this.transTypeCode;
+        data["transTypeNameEn"] = this.transTypeNameEn;
+        data["transTypeNameAr"] = this.transTypeNameAr;
+        data["transDate"] = this.transDate ? this.transDate.toString() : undefined as any;
+        data["transTime"] = this.transTime ? this.transTime.toString() : undefined as any;
+        data["workLocationNameEn"] = this.workLocationNameEn;
+        data["workLocationNameAr"] = this.workLocationNameAr;
+        data["punchInRange"] = this.punchInRange;
+        data["rangeDifference"] = this.rangeDifference;
+        data["hasSelfie"] = this.hasSelfie;
+        return data;
+    }
+}
+
+export interface IMyGeoPunchDto {
+    id: number;
+    transTypeCode: string | undefined;
+    transTypeNameEn: string | undefined;
+    transTypeNameAr: string | undefined;
+    transDate: DateTime;
+    transTime: DateTime;
+    workLocationNameEn: string | undefined;
+    workLocationNameAr: string | undefined;
+    punchInRange: boolean;
+    rangeDifference: number;
+    hasSelfie: boolean;
+}
+
+export class MyGeoPunchLocationCheckDto implements IMyGeoPunchLocationCheckDto {
+    distanceMeters!: number;
+    rangeMeters!: number | undefined;
+    verdict!: GeoPunchRangeVerdict;
+
+    constructor(data?: IMyGeoPunchLocationCheckDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.distanceMeters = _data["distanceMeters"];
+            this.rangeMeters = _data["rangeMeters"];
+            this.verdict = _data["verdict"];
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchLocationCheckDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchLocationCheckDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["distanceMeters"] = this.distanceMeters;
+        data["rangeMeters"] = this.rangeMeters;
+        data["verdict"] = this.verdict;
+        return data;
+    }
+}
+
+export interface IMyGeoPunchLocationCheckDto {
+    distanceMeters: number;
+    rangeMeters: number | undefined;
+    verdict: GeoPunchRangeVerdict;
+}
+
+export class MyGeoPunchResultDto implements IMyGeoPunchResultDto {
+    id!: number;
+    punchInRange!: boolean;
+    distanceMeters!: number;
+    rangeDifference!: number;
+    autoLogout!: boolean;
+
+    constructor(data?: IMyGeoPunchResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.punchInRange = _data["punchInRange"];
+            this.distanceMeters = _data["distanceMeters"];
+            this.rangeDifference = _data["rangeDifference"];
+            this.autoLogout = _data["autoLogout"];
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["punchInRange"] = this.punchInRange;
+        data["distanceMeters"] = this.distanceMeters;
+        data["rangeDifference"] = this.rangeDifference;
+        data["autoLogout"] = this.autoLogout;
+        return data;
+    }
+}
+
+export interface IMyGeoPunchResultDto {
+    id: number;
+    punchInRange: boolean;
+    distanceMeters: number;
+    rangeDifference: number;
+    autoLogout: boolean;
+}
+
+export class MyGeoPunchSelfieDto implements IMyGeoPunchSelfieDto {
+    dataUrl!: string | undefined;
+
+    constructor(data?: IMyGeoPunchSelfieDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dataUrl = _data["dataUrl"];
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchSelfieDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchSelfieDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dataUrl"] = this.dataUrl;
+        return data;
+    }
+}
+
+export interface IMyGeoPunchSelfieDto {
+    dataUrl: string | undefined;
+}
+
+export class MyGeoPunchWorkLocationDto implements IMyGeoPunchWorkLocationDto {
+    id!: number;
+    code!: string | undefined;
+    nameEn!: string | undefined;
+    nameAr!: string | undefined;
+    latitude!: number;
+    longitude!: number;
+    geoRange!: number;
+    isDefault!: boolean;
+
+    constructor(data?: IMyGeoPunchWorkLocationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.code = _data["code"];
+            this.nameEn = _data["nameEn"];
+            this.nameAr = _data["nameAr"];
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
+            this.geoRange = _data["geoRange"];
+            this.isDefault = _data["isDefault"];
+        }
+    }
+
+    static fromJS(data: any): MyGeoPunchWorkLocationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MyGeoPunchWorkLocationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["nameEn"] = this.nameEn;
+        data["nameAr"] = this.nameAr;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["geoRange"] = this.geoRange;
+        data["isDefault"] = this.isDefault;
+        return data;
+    }
+}
+
+export interface IMyGeoPunchWorkLocationDto {
+    id: number;
+    code: string | undefined;
+    nameEn: string | undefined;
+    nameAr: string | undefined;
+    latitude: number;
+    longitude: number;
+    geoRange: number;
+    isDefault: boolean;
 }
 
 export class MyHRServiceRequestDto implements IMyHRServiceRequestDto {
@@ -315562,6 +317059,58 @@ export interface IRecentTenant {
     creationTime: DateTime;
 }
 
+export class RecordMyGeoPunchInput implements IRecordMyGeoPunchInput {
+    transTypeCode!: string;
+    latitude!: number;
+    longitude!: number;
+    workLocationId!: number | undefined;
+    selfie!: string | undefined;
+
+    constructor(data?: IRecordMyGeoPunchInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.transTypeCode = _data["transTypeCode"];
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
+            this.workLocationId = _data["workLocationId"];
+            this.selfie = _data["selfie"];
+        }
+    }
+
+    static fromJS(data: any): RecordMyGeoPunchInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordMyGeoPunchInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["transTypeCode"] = this.transTypeCode;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["workLocationId"] = this.workLocationId;
+        data["selfie"] = this.selfie;
+        return data;
+    }
+}
+
+export interface IRecordMyGeoPunchInput {
+    transTypeCode: string;
+    latitude: number;
+    longitude: number;
+    workLocationId: number | undefined;
+    selfie: string | undefined;
+}
+
 export class RecordScreenVisitInput implements IRecordScreenVisitInput {
     screenKey!: string;
 
@@ -322781,6 +324330,58 @@ export interface ISaveClearanceChecklistInput {
     answers: ClearanceChecklistAnswerInput[] | undefined;
 }
 
+export class SaveIntegrationSettingsInput implements ISaveIntegrationSettingsInput {
+    key!: string;
+    values!: { [key: string]: string; } | undefined;
+
+    constructor(data?: ISaveIntegrationSettingsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            if (_data["values"]) {
+                this.values = {} as any;
+                for (let key in _data["values"]) {
+                    if (_data["values"].hasOwnProperty(key))
+                        (this.values as any)![key] = _data["values"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): SaveIntegrationSettingsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaveIntegrationSettingsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        if (this.values) {
+            data["values"] = {};
+            for (let key in this.values) {
+                if (this.values.hasOwnProperty(key))
+                    (data["values"] as any)[key] = (this.values as any)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface ISaveIntegrationSettingsInput {
+    key: string;
+    values: { [key: string]: string; } | undefined;
+}
+
 export class SavePageInput implements ISavePageInput {
     dashboardName!: string | undefined;
     application!: string | undefined;
@@ -324360,6 +325961,46 @@ export class SetDefaultLanguageInput implements ISetDefaultLanguageInput {
 
 export interface ISetDefaultLanguageInput {
     name: string;
+}
+
+export class SetIntegrationEnabledInput implements ISetIntegrationEnabledInput {
+    key!: string;
+    enabled!: boolean;
+
+    constructor(data?: ISetIntegrationEnabledInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.enabled = _data["enabled"];
+        }
+    }
+
+    static fromJS(data: any): SetIntegrationEnabledInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetIntegrationEnabledInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["enabled"] = this.enabled;
+        return data;
+    }
+}
+
+export interface ISetIntegrationEnabledInput {
+    key: string;
+    enabled: boolean;
 }
 
 export class SetNotificationAsReadOutput implements ISetNotificationAsReadOutput {

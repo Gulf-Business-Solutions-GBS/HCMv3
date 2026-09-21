@@ -25,4 +25,10 @@ public static class TransTypeCodes
 
     /// <summary>Clock out / departure. Legacy <c>clockOutOid</c>.</summary>
     public const string ClockOut = "2";
+
+    /// <summary>Overtime in. Legacy ESS geo punch <c>TransTypeOtInCode</c>.</summary>
+    public const string OvertimeIn = "3";
+
+    /// <summary>Overtime out. Legacy ESS geo punch <c>TransTypeOtOutCode</c>.</summary>
+    public const string OvertimeOut = "4";
 }

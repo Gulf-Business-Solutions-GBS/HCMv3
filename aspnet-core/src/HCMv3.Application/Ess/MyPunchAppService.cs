@@ -60,11 +60,13 @@ public class MyPunchAppService : MyTransactionAppServiceBase<TimeEvent>, IMyPunc
             // my missing-punch request got to", and an imported or device punch has no answer to give.
             // TransSource.ESS is in the predicate because a row created while workflow is switched off for
             // this type has neither a request nor a status -- without it, the punch would vanish from the
-            // very screen that created it.
+            // very screen that created it. A geo punch is ESS-sourced too but is a live clock event, not a
+            // request; it always carries the position it was taken at, which a missing-punch request never
+            // does, and it is listed on the geo punch screen instead.
             var query = MyRowsQuery(employeeId)
                 .Where(e => e.WorkflowRequestId != null
                             || e.WorkflowStatus != null
-                            || e.TransSource == TransSource.ESS)
+                            || (e.TransSource == TransSource.ESS && e.Latitude == 0 && e.Longitude == 0))
                 .WhereIf(!input.IncludeHistory,
                     e => e.WorkflowStatus == RequestStatus.Draft || e.WorkflowStatus == RequestStatus.Open);
 

@@ -32,6 +32,7 @@ export const SERVICE_PROXY_PROVIDERS = [
     ApiServiceProxies.MyTravelServiceProxy,
     ApiServiceProxies.MyDelegationServiceProxy,
     ApiServiceProxies.MyPunchServiceProxy,
+    ApiServiceProxies.MyGeoPunchServiceProxy,
     ApiServiceProxies.MyClearanceServiceProxy,
     ApiServiceProxies.MyHealthReimburseServiceProxy,
     ApiServiceProxies.MyPersonalDataChangeServiceProxy,

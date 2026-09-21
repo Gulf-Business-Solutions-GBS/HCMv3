@@ -1921,6 +1921,13 @@ public static class AppPermissions
     public const string Ess_MyMobileDevices = "Ess.MyMobileDevices";
 
     /// <summary>
+    /// Live clock in / out from the browser, stamped with the employee's GPS position (legacy ESS "Geo
+    /// Punching"). Separate from Ess.MyPunches on purpose: that one ASKS for a punch that was never recorded
+    /// and waits for approval, whereas this one IS the punch and counts the moment it is saved.
+    /// </summary>
+    public const string Ess_GeoPunch = "Ess.GeoPunch";
+
+    /// <summary>
     /// The AI assistant page. Only opens the door: every question it answers runs through a tool that checks
     /// the permission of the screen it stands in for (Ess.MyLeave for leave, Ess.MyTeam for team views), so
     /// granting this alone shows a user nothing they could not already see. Not in the default Employee role

@@ -285,6 +285,12 @@ export const appRoutes: Routes = [
                         data: { permission: 'Ess.MyPunches' },
                     },
                     {
+                        path: 'ess/geo-punch',
+                        loadComponent: () =>
+                            import('./main/ess/my-geo-punch/my-geo-punch.component').then((m) => m.MyGeoPunchComponent),
+                        data: { permission: 'Ess.GeoPunch' },
+                    },
+                    {
                         path: 'ess/clearance',
                         loadComponent: () =>
                             import('./main/ess/my-clearance/my-clearance.component').then((m) => m.MyClearanceComponent),

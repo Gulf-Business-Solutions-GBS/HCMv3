@@ -73,6 +73,7 @@ export class AppNavigationService {
                 new AppMenuItem('EssMyTravel', 'Ess.MyTravel', 'flaticon-airplane', '/app/main/ess/travel'),
                 new AppMenuItem('EssMyDelegations', 'Ess.MyDelegations', 'flaticon-user-ok', '/app/main/ess/delegation'),
                 new AppMenuItem('EssMyLoanExemptions', 'Ess.MyLoanExemptions', 'flaticon-coins', '/app/main/ess/loan-exemption'),
+                new AppMenuItem('EssGeoPunch', 'Ess.GeoPunch', 'flaticon-placeholder-3', '/app/main/ess/geo-punch'),
                 new AppMenuItem('EssMyPunches', 'Ess.MyPunches', 'flaticon-alarm', '/app/main/ess/punch'),
                 new AppMenuItem('EssMyClearances', 'Ess.MyClearances', 'flaticon-list-3', '/app/main/ess/clearance'),
                 new AppMenuItem(
