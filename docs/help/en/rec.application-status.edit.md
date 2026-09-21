@@ -42,6 +42,10 @@ Setting it to *Joined* creates the employee record from the applicant (see the a
 
 **Rules.** Required. One of: Applied, Shortlisted, Interviewed, JobOffer, Hired, Rejected, Joined.
 
+:::admin
+The employee created on *Joined* has no employee code, and its full names are set to the first names only. Open the new employee and save it once: saving gives it the next code and builds the full names from all the name parts.
+:::
+
 ## CoverLetter {#ApplicationStatus.CoverLetter}
 <!-- alias: loc:CoverLetter, dom:ApplicationStatus_CoverLetter -->
 

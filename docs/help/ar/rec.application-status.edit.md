@@ -42,6 +42,10 @@ permissions: [Pages.Recruitment.ApplicationStatuses.Create]
 
 **القواعد.** إلزامي. إحدى القيم: Applied، Shortlisted، Interviewed، JobOffer، Hired، مرفوض، Joined.
 
+:::admin
+الموظف المُنشأ عند *التحق* ليس له رمز موظف، ويُضبط اسماه الكاملان على الاسمين الأولين فقط. افتح الموظف الجديد واحفظه مرة واحدة: فالحفظ يمنحه الرمز التالي ويبني الاسمين الكاملين من كل أجزاء الاسم.
+:::
+
 ## CoverLetter {#ApplicationStatus.CoverLetter}
 <!-- alias: loc:CoverLetter, dom:ApplicationStatus_CoverLetter -->
 
