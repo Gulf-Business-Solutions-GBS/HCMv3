@@ -3,7 +3,7 @@
   "lang": "ar",
   "title": "أنواع الغياب — إنشاء / تحرير",
   "entity": "HCMv3.PayrollManagement.AbsenceType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>نوع من الإجازات أو الغياب — السنوية والمرضية وغير المدفوعة والحج والأمومة وغيرها — وطريقة عدّه وصرفه واستحقاقه.</p><p>ويُحدَّد ما يستحقه كل موظف لكل مجموعة فرعية للموظفين، في قواعد الإجازات للمجموعة الفرعية، أما هذا النموذج فيحدد سلوك النوع نفسه.</p><p><strong>كثير من الإعدادات في هذا النموذج تُحفظ ولا تُطبَّق.</strong> فالحدود والقيود على طلب الإجازة — الحد الأقصى والأدنى للأيام، والأيام التي لا يجوز أن تبدأ فيها، والمرفقات، وفترة التجربة، وفترة الإنذار، والجنس، والديانة، والرصيد السالب، وحدود الساعات — لا يُتحقق منها عند إدخال الإجازة أو اعتمادها، وكل حقل من هذا النوع مبيَّن أدناه. ولتطبيق سياسة للإجازات استخدم قاعدة عمل على الإجازة من <strong>إعداد قواعد العمل</strong>، إذ يمكن للقواعد أن تقرأ رمز نوع الإجازة، وهل هي مدفوعة، وهل هي مفعّلة، والحد الأدنى لأيام الخدمة.</p>",
   "aliasIndex": {
     "loc:Code": "AbsenceType.Code",
     "dom:AbsenceType_Code": "AbsenceType.Code",
@@ -133,7 +133,7 @@
       ],
       "rules": "اختياري. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "html": "<p><strong>ما هو.</strong> رمز نوع الإجازة.</p><p><strong>مثال.</strong> <code>1</code> — الإجازة السنوية.</p><p><strong>لماذا يهم.</strong> يتعرّف نظام الرواتب ومحرك الوقت على بعض أنواع الإجازات برمزها: <code>1</code> الإجازة السنوية، و<code>2</code> الإجازة غير المدفوعة، و<code>3</code> الإجازة المرضية، و<code>15</code> الغياب غير المعتمد، ولكل منها قواعده الخاصة في الأرصدة ومكافأة نهاية الخدمة والصرف. فلا تستخدم هذه الرموز إلا لهذه الأنواع.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -175,9 +175,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الإجازة مستخدماً.</p><p><strong>لماذا يهم.</strong> لا يُطبَّق حالياً: يبقى النوع غير المفعّل معروضاً عند إدخال الإجازة، بما في ذلك الخدمة الذاتية. ويمكن لقواعد العمل على الإجازة قراءته، فتستطيع قاعدة أن ترفض الإجازة من نوع غير مفعّل.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveBasisPeriod",
@@ -189,9 +189,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: أيام التقويم، أيام ثابتة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يوم الإجازة يُقيَّم على أساس أيام التقويم أو عدد ثابت من الأيام.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveBasisFixedDays",
@@ -203,9 +203,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> العدد الثابت من الأيام، لأساس الأيام الثابتة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsPaid",
@@ -217,9 +217,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة مدفوعة.</p><p><strong>لماذا يهم.</strong> لا تُصرف مقدماً إلا الإجازة المدفوعة: فالتشغيل خارج الدورة للإجازة المقدمة لا يلتقط إلا إجازات الأنواع المدفوعة المضبوطة على <em>الدفع مقدماً</em>. وإذا كان إعداد الرواتب <em>التحويل من ثابت إلى فعلي عند وجود إجازة غير مدفوعة</em> مفعّلاً، يُصرف الشهر الذي فيه إجازة من نوع غير مدفوع على أساس الأيام الفعلية بدلاً من الأيام الثابتة. ويمكن لقواعد العمل على الإجازة قراءته.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.WageTypeId",
@@ -231,9 +231,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> نوع الأجر الذي تُصرف تحته هذه الإجازة.</p><p><strong>مثال.</strong> أجر الإجازة السنوية</p><p><strong>لماذا يهم.</strong> تُصرف دفعة الإجازة لهذا النوع على نوع الأجر هذا، وتحدد طريقة فوترته كيف يُقيَّم يوم الإجازة المستحق. أما أنواع الأجور التي يتكوّن منها المبلغ اليومي فتُحدَّد في <strong>إجازات أنواع الأجور</strong>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeWeekend",
@@ -245,9 +245,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يوم الراحة الأسبوعية الواقع ضمن الإجازة يُحتسب يوم إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُحتسب أيام الراحة الأسبوعية ضمن الإجازة أيامَ إجازة وتُخصم من الرصيد، وإلا فلا.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeRestDay",
@@ -259,9 +259,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يوم الراحة الواقع ضمن الإجازة يُحتسب يوم إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تُحتسب أيام الراحة ضمن الإجازة أيامَ إجازة وتُخصم من الرصيد، وإلا فلا.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludePublicHoliday",
@@ -273,9 +273,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت العطلة الرسمية الواقعة ضمن الإجازة تُحتسب يوم إجازة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليها تُحتسب العطلات الرسمية ضمن الإجازة أيامَ إجازة وتُخصم من الرصيد، وإلا فلا.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeInWorkflow",
@@ -287,9 +287,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة من هذا النوع تمر بموافقة سير العمل.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.HaveQuotaAccrual",
@@ -301,9 +301,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف يراكم رصيداً من هذه الإجازة مع الوقت.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُحتسب الرصيد من سجلات حصص الإجازة للموظف، ويُظهر تقريرا رصيد حصص الإجازات ومخصص الحصص رصيداً متراكماً. وإلا فلا يُحفظ رصيد متراكم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AccrualPeriod",
@@ -315,9 +315,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: بلا تراكم، السنة الميلادية، السنة المالية، سنة العمل، نصف سنوي، لكل فترة توظيف، مخصص.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الدورة التي يسري عليها رصيد الإجازة.</p><p><strong>مثال.</strong> سنة العمل</p><p><strong>لماذا يهم.</strong> <em>السنة الميلادية</em> تبدأ كل دورة في 1 يناير، و<em>السنة المالية</em> في 1 أبريل، و<em>سنة العمل</em> في ذكرى التحاق الموظف، و<em>مخصص</em> في أول يوم من <strong>شهر البداية المخصص</strong>. أما <em>لكل فترة توظيف</em> فتجعل دورة واحدة من تاريخ الالتحاق إلى نهاية آخر عقد للموظف — وتفشل للموظف الذي ليس له عقد. أما <em>نصف سنوي</em> و<em>بلا تراكم</em> فتُحتسبان من تاريخ الالتحاق مثل <em>سنة العمل</em>. وأياً كان الاختيار فإن الدورة تستمر <strong>إعادة التهيئة بعد</strong> سنة.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CustomStartMonth",
@@ -329,9 +329,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا شيء، يناير، فبراير، مارس، أبريل، مايو، يونيو، يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الشهر الذي تبدأ فيه الدورة، لفترة الاستحقاق <em>مخصص</em>.</p><p><strong>مثال.</strong> يوليو</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ExcludePaidLeaveAccrual",
@@ -343,9 +343,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام هذه الإجازة توقف تراكم الإجازة السنوية.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه لا يراكم محرك الوقت أي إجازة سنوية عن الأيام التي يقضيها الموظف في هذا النوع من الإجازات.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MinActiveDaysInService",
@@ -357,9 +357,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أيام الخدمة التي يحتاجها الموظف قبل أن يأخذ هذه الإجازة.</p><p><strong>مثال.</strong> <code>730</code> — إجازة الحج بعد سنتين.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه وحده. ويمكن لقواعد العمل على الإجازة قراءته، فتستطيع قاعدة أن ترفض الإجازة للموظف الذي أيام خدمته أقل.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyAgain",
@@ -371,9 +371,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن أخذ الإجازة أكثر من مرة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyAfterDays",
@@ -385,9 +385,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الأيام التي يجب أن تمضي قبل أخذ الإجازة مرة أخرى.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyBeforeDays",
@@ -399,9 +399,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي يجب طلب الإجازة قبلها.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ReInitialize",
@@ -413,9 +413,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الرصيد يبدأ من جديد في نهاية كل دورة.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه تبدأ الدورة من جديد كل <strong>إعادة التهيئة بعد</strong> سنة من بدايتها. وإلا فلا تنتهي الدورة الأولى أبداً.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ReInitializeAfter",
@@ -427,9 +427,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد السنوات التي تستمر فيها كل دورة قبل أن يبدأ الرصيد من جديد.</p><p><strong>مثال.</strong> <code>1</code></p><p><strong>لماذا يهم.</strong> يُستخدم إذا أُشِّر على <strong>إعادة التهيئة</strong>، ويجب أن يكون أكبر من صفر عندئذ.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyLeaveInAdvance",
@@ -441,9 +441,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أخذ الإجازة قبل استحقاقها.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyLeaveInAdvanceDays",
@@ -455,9 +455,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الأيام غير المستحقة التي يجوز أخذها مقدماً.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyMaxLeave",
@@ -469,9 +469,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هناك حد أقصى لمدة الإجازة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxLimitInDays",
@@ -483,9 +483,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقصى عدد من الأيام يجوز أن تستغرقه الإجازة الواحدة.</p><p><strong>مثال.</strong> <code>30</code></p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
@@ -497,9 +497,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الأيام التي تتجاوز الحد الأقصى تتحول إلى إجازة غير مدفوعة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyMinLeave",
@@ -511,9 +511,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هناك حد أدنى لمدة الإجازة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MinLimitInDays",
@@ -525,9 +525,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> أقل عدد من الأيام يجوز أن تستغرقه الإجازة الواحدة.</p><p><strong>مثال.</strong> <code>3</code></p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ResetFrequency",
@@ -539,9 +539,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: يومي، إسبوعي، شهري، ربع سنوي، سنوياً.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> للإجازة بالساعات: الفترة التي تسري عليها حدود الساعات.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.TotalMinutes",
@@ -553,9 +553,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> للإجازة بالساعات: مجموع الدقائق المسموح بها في الفترة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxMinutes",
@@ -567,9 +567,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> للإجازة بالساعات: أقصى عدد من الدقائق في الطلب الواحد.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxCount",
@@ -581,9 +581,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> للإجازة بالساعات: أقصى عدد من الطلبات في الفترة الواحدة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.PolicyRestrictType",
@@ -595,9 +595,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: تحذير، خطأ.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تجاوز حدود الساعات يُنبّه أو يَرفض.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AbsenceViolationRuleId",
@@ -609,9 +609,9 @@
       ],
       "rules": "اختياري. يُختار من قائمة قواعد مخالفات الغياب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> قاعدة مخالفة غياب مرتبطة بنوع الإجازة هذا.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveGender",
@@ -623,9 +623,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: الجميع، ذكر، أنثى.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الجنس الذي تخصه الإجازة.</p><p><strong>مثال.</strong> أنثى — إجازة الأمومة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveReligion",
@@ -637,9 +637,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: الجميع، مسلم، غير مسلم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الديانة التي تخصها الإجازة.</p><p><strong>مثال.</strong> مسلم — إجازة الحج.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.QuotaType",
@@ -651,9 +651,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: لا شيء، الإجازة السنوية، الإجازة المرضية.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان نوع الإجازة هذا يتبع قواعد رصيد الإجازة السنوية أو المرضية.</p><p><strong>مثال.</strong> الإجازة السنوية</p><p><strong>لماذا يهم.</strong> <em>الإجازة السنوية</em> تجعل رصيده كالإجازة السنوية: يتراكم يوماً بيوم خلال السنة، بحدّ أقصى هو حد المجموعة الفرعية. و<em>الإجازة المرضية</em> تجعل رصيده كالإجازة المرضية: استحقاق سنوي لكل دورة ناقص ما أُخذ منه. و<em>لا شيء</em> لا يجعله يتبع أياً منهما.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveEntitlement",
@@ -665,9 +665,9 @@
       ],
       "rules": "إلزامي. إحدى القيم: كامل، بالتناسب.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان الموظف الذي يلتحق في منتصف الدورة يحصل على الاستحقاق كاملاً أو على حصة منه.</p><p><strong>مثال.</strong> بالتناسب</p><p><strong>لماذا يهم.</strong> يُستخدم للإجازة التي يُحتسب رصيدها كالإجازة المرضية، ومع فترة الاستحقاق <em>السنة الميلادية</em> فقط: <em>بالتناسب</em> يخفض استحقاق السنة الأولى بنسبة ما بقي من السنة بعد الالتحاق.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowBackDatedDays",
@@ -679,9 +679,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> عدد الأيام التي يجوز إدخال الإجازة بأثر رجعي عنها.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.TotalDaysAllowed",
@@ -693,9 +693,9 @@
       ],
       "rules": "اختياري. رقم.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> الاستحقاق السنوي، للموظفين الذين لا تحدد مجموعتهم الفرعية استحقاقاً.</p><p><strong>مثال.</strong> <code>30</code></p><p><strong>لماذا يهم.</strong> إذا كان لمجموعة الموظف الفرعية قاعدة إجازة لهذا النوع يُستخدم مجموع أيامها بدلاً منه. ويُظهر تقرير رصيد حصص الإجازات الرقم المستخدم.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.NegativeBalanceLimit",
@@ -707,9 +707,9 @@
       ],
       "rules": "اختياري. رقم صحيح.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> إلى أي حد يجوز أن ينزل الرصيد تحت الصفر.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.EnableNegativeBalance",
@@ -721,9 +721,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أن ينزل الرصيد تحت الصفر.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeInSalaryProfile",
@@ -735,9 +735,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت الإجازة تظهر في ملف الراتب.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowDuringProbation",
@@ -749,9 +749,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أخذ الإجازة خلال فترة التجربة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowToReturnEarly",
@@ -763,9 +763,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يمكن تقصير الإجازة.</p><p><strong>لماذا يهم.</strong> إذا لم يُؤشَّر عليه يُرفض طلب تقصير الإجازة أو العودة منها مبكراً برسالة \"يجب أخذ … كاملة، لذا لا يمكن تقصيرها أو العودة منها مبكراً\".</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowInTerminationNoticeOnly",
@@ -777,9 +777,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أخذ الإجازة إلا خلال فترة إنذار إنهاء الخدمة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsReturnDateRequired",
@@ -791,9 +791,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب تسجيل عودة الموظف من هذه الإجازة.</p><p><strong>لماذا يهم.</strong> الموظف الذي انتهت إجازته من هذا النوع دون تسجيل عودته يُعامل على أنه لم يعد، ويُرسل تذكير بالعودة من الإجازة إذا كان هذا الإشعار مُعدّاً. وإذا كان إعداد الرواتب <em>تفعيل منطق عدم العودة من الإجازة</em> مفعّلاً، لا يُصرف راتبه الأساسي في ذلك التشغيل، ويحتسب محرك الوقت أيام راحته — وأيام الراحة الأسبوعية إذا كان الراتب الأساسي على أيام التقويم — غياباً إلى أن تُسجَّل عودته.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsAttachmentRequired",
@@ -805,9 +805,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجب إرفاق مستند بالإجازة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowPartialLeave",
@@ -819,9 +819,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يجوز أخذ جزء من يوم.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.SendNotification",
@@ -833,9 +833,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان يُرسل إشعار لهذه الإجازة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnSunday",
@@ -847,9 +847,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الأحد.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnMonday",
@@ -861,9 +861,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الاثنين.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnTuesday",
@@ -875,9 +875,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الثلاثاء.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnWednesday",
@@ -889,9 +889,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الأربعاء.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnThursday",
@@ -903,9 +903,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الخميس.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnFriday",
@@ -917,9 +917,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم الجمعة.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnSaturday",
@@ -931,9 +931,9 @@
       ],
       "rules": "نعم أو لا.",
       "when": null,
-      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "html": "<p><strong>ما هو.</strong> ما إذا كان لا يجوز أن تبدأ الإجازة من هذا النوع يوم السبت.</p><p><strong>لماذا يهم.</strong> لا يُتحقق منه حالياً — يُحفظ الإعداد، لكن لا شيء يطبّقه عند إدخال الإجازة أو اعتمادها.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

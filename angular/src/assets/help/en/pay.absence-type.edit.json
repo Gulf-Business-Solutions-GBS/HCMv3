@@ -3,7 +3,7 @@
   "lang": "en",
   "title": "Absence Types — Create / Edit",
   "entity": "HCMv3.PayrollManagement.AbsenceType",
-  "overviewHtml": "<p>_TODO_</p>",
+  "overviewHtml": "<p>A type of leave or absence — annual, sick, unpaid, Hajj, maternity and so on — and how it is counted, paid and accrued.</p><p>What each employee is entitled to is set per employee sub group, on the sub group's leave rules; this form sets how the type behaves.</p><p><strong>Many settings on this form are saved but not enforced.</strong> The limits and restrictions on applying for leave — maximum and minimum days, days it may not start on, attachments, probation, notice period, gender, religion, negative balance, hourly limits — are not checked when leave is entered or approved. Each such field says so below. To enforce a leave policy, use a business rule on leave under <strong>Configure Business Rules</strong>; rules can read the leave type's code, whether it is paid, whether it is active and its minimum days in service.</p>",
   "aliasIndex": {
     "loc:Code": "AbsenceType.Code",
     "dom:AbsenceType_Code": "AbsenceType.Code",
@@ -133,7 +133,7 @@
       ],
       "rules": "Optional. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "html": "<p><strong>What it is.</strong> The leave type's code.</p><p><strong>Example.</strong> <code>1</code> — annual leave.</p><p><strong>Why it matters.</strong> Payroll and the time engine recognise some leave types by code: <code>1</code> annual leave, <code>2</code> unpaid leave, <code>3</code> sick leave and <code>15</code> unapproved absence each have their own rules for balances, indemnity and pay. Use those codes only for those types.</p>",
       "adminHtml": "",
       "stub": false
     },
@@ -175,9 +175,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave type is in use.</p><p><strong>Why it matters.</strong> Not enforced at present: an inactive type is still offered when leave is entered, including in self-service. Business rules on leave can read it, so a rule can refuse leave of an inactive type.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveBasisPeriod",
@@ -189,9 +189,9 @@
       ],
       "rules": "Required. One of: Calendar Days, Fixed Days.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a leave day is valued on calendar days or on a fixed number of days.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveBasisFixedDays",
@@ -203,9 +203,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The fixed number of days, for the fixed-days basis.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsPaid",
@@ -217,9 +217,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave is paid.</p><p><strong>Why it matters.</strong> Only paid leave can be paid in advance: an advance-leave off-cycle run picks up only leave of paid types set to <em>Pay In Advance</em>. When the payroll setting <em>Fixed To Actual When Unpaid Leave Found</em> is on, a month containing leave of an unpaid type is paid on actual days instead of fixed days. Business rules on leave can read it.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.WageTypeId",
@@ -231,9 +231,9 @@
       ],
       "rules": "Optional. Chosen from a list.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The wagetype this leave is paid under.</p><p><strong>Example.</strong> Annual Leave Pay</p><p><strong>Why it matters.</strong> Leave pay for this type is paid on this wagetype, and its billing method decides how an accrued leave day is valued. Which wagetypes make up the daily amount is set in <strong>Wagetype Leaves</strong>.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeWeekend",
@@ -245,9 +245,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a weekly off inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, weekly offs within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeRestDay",
@@ -259,9 +259,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a rest day inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, rest days within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludePublicHoliday",
@@ -273,9 +273,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a public holiday inside the leave counts as a leave day.</p><p><strong>Why it matters.</strong> Ticked, public holidays within the leave are counted as leave and taken from the balance. Unticked, they are not.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeInWorkflow",
@@ -287,9 +287,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type goes through workflow approval.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.HaveQuotaAccrual",
@@ -301,9 +301,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee builds up a balance of this leave over time.</p><p><strong>Why it matters.</strong> Ticked, the balance is worked out from the employee's leave quota records, and the leave quota balance and quota provision reports show an accrued balance. Unticked, no accrued balance is kept.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AccrualPeriod",
@@ -315,9 +315,9 @@
       ],
       "rules": "Required. One of: No Accrual, Calendar Year, Fiscal Year, Work Year, Bi-Annual, Per Employment, Custom.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The cycle the leave balance runs over.</p><p><strong>Example.</strong> Work Year</p><p><strong>Why it matters.</strong> <em>Calendar Year</em> starts each cycle on 1 January, <em>Fiscal Year</em> on 1 April, <em>Work Year</em> on the employee's joining anniversary, and <em>Custom</em> on the first of the <strong>Custom Start Month</strong>. <em>Per Employment</em> makes one cycle from the joining date to the end of the employee's latest contract — and fails for an employee with no contract. <em>Bi-Annual</em> and <em>No Accrual</em> count from the joining date like <em>Work Year</em>. Whichever is chosen, a cycle lasts <strong>Re-Initialize After</strong> years.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CustomStartMonth",
@@ -329,9 +329,9 @@
       ],
       "rules": "Required. One of: None, January, February, March, April, May, June, July, August, September, October, November, December.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The month the cycle starts, for the <em>Custom</em> accrual period.</p><p><strong>Example.</strong> July</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ExcludePaidLeaveAccrual",
@@ -343,9 +343,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether days on this leave stop annual leave from building up.</p><p><strong>Why it matters.</strong> Ticked, the time engine accrues no annual leave for days the employee spends on this type of leave.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MinActiveDaysInService",
@@ -357,9 +357,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The days of service an employee needs before taking this leave.</p><p><strong>Example.</strong> <code>730</code> — Hajj leave after two years.</p><p><strong>Why it matters.</strong> Not checked by itself. Business rules on leave can read it, so a rule can refuse the leave for an employee with fewer days of service.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyAgain",
@@ -371,9 +371,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave can be taken more than once.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyAfterDays",
@@ -385,9 +385,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The days that must pass before the leave can be taken again.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CanApplyBeforeDays",
@@ -399,9 +399,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many days ahead the leave must be applied for.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ReInitialize",
@@ -413,9 +413,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the balance starts again at the end of each cycle.</p><p><strong>Why it matters.</strong> Ticked, the cycle restarts every <strong>Re-Initialize After</strong> years from its start. Unticked, the first cycle never ends.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ReInitializeAfter",
@@ -427,9 +427,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many years each cycle lasts before the balance starts again.</p><p><strong>Example.</strong> <code>1</code></p><p><strong>Why it matters.</strong> Used when <strong>Re-Initialize</strong> is ticked. It must be greater than 0 when that box is ticked.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyLeaveInAdvance",
@@ -441,9 +441,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken before it has been earned.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyLeaveInAdvanceDays",
@@ -455,9 +455,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many unearned days may be taken in advance.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyMaxLeave",
@@ -469,9 +469,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a maximum length applies to one leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxLimitInDays",
@@ -483,9 +483,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The most days one leave may last.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.CreateUnpaidAboveMaxLimitDays",
@@ -497,9 +497,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether days beyond the maximum are turned into unpaid leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ApplyMinLeave",
@@ -511,9 +511,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a minimum length applies to one leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MinLimitInDays",
@@ -525,9 +525,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The fewest days one leave may last.</p><p><strong>Example.</strong> <code>3</code></p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.ResetFrequency",
@@ -539,9 +539,9 @@
       ],
       "rules": "Required. One of: Daily, Weekly, Monthly, Quarterly, Annually.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the period the hourly limits apply over.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.TotalMinutes",
@@ -553,9 +553,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the total minutes allowed in one period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxMinutes",
@@ -567,9 +567,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the most minutes in one request.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.MaxCount",
@@ -581,9 +581,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> For leave taken in hours: the most requests in one period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.PolicyRestrictType",
@@ -595,9 +595,9 @@
       ],
       "rules": "Required. One of: Warning, Error!.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether breaking the hourly limits warns or refuses.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AbsenceViolationRuleId",
@@ -609,9 +609,9 @@
       ],
       "rules": "Optional. Chosen from Absence Violation Rule master data.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> An absence violation rule linked to this leave type.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveGender",
@@ -623,9 +623,9 @@
       ],
       "rules": "Required. One of: All, Male, Female.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Which gender the leave is for.</p><p><strong>Example.</strong> Female — maternity leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveReligion",
@@ -637,9 +637,9 @@
       ],
       "rules": "Required. One of: All, Muslim, Non Muslim.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Which religion the leave is for.</p><p><strong>Example.</strong> Muslim — Hajj leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.QuotaType",
@@ -651,9 +651,9 @@
       ],
       "rules": "Required. One of: None, Annual Leave, Sick Leave.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether this leave type shares the annual leave or sick leave balance rules.</p><p><strong>Example.</strong> Annual Leave</p><p><strong>Why it matters.</strong> <em>Annual Leave</em> balances it like annual leave: accrued day by day through the year, capped by the sub group's maximum. <em>Sick Leave</em> balances it like sick leave: a yearly entitlement per cycle, less what has been taken. <em>None</em> gives it neither.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.LeaveEntitlement",
@@ -665,9 +665,9 @@
       ],
       "rules": "Required. One of: Full, Prorated.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether an employee who joins part-way through a cycle gets the full entitlement or a share of it.</p><p><strong>Example.</strong> Prorated</p><p><strong>Why it matters.</strong> Used for leave balanced like sick leave, and only with the <em>Calendar Year</em> accrual period: <em>Prorated</em> reduces the first year's entitlement in proportion to the part of the year left after joining.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowBackDatedDays",
@@ -679,9 +679,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How many days back leave may be entered.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.TotalDaysAllowed",
@@ -693,9 +693,9 @@
       ],
       "rules": "Optional. Number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> The yearly entitlement, for employees whose sub group sets none.</p><p><strong>Example.</strong> <code>30</code></p><p><strong>Why it matters.</strong> When the employee's sub group has a leave rule for this type, the sub group's total days are used instead. The leave quota balance report shows the figure in use.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.NegativeBalanceLimit",
@@ -707,9 +707,9 @@
       ],
       "rules": "Optional. Whole number.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> How far the balance may go below zero.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.EnableNegativeBalance",
@@ -721,9 +721,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the balance may go below zero.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IncludeInSalaryProfile",
@@ -735,9 +735,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave appears on the salary profile.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowDuringProbation",
@@ -749,9 +749,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken during probation.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowToReturnEarly",
@@ -763,9 +763,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave can be cut short.</p><p><strong>Why it matters.</strong> Unticked, a request to shorten the leave or return early is refused: \"… must be taken in full, so it cannot be shortened or returned from early.\"</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowInTerminationNoticeOnly",
@@ -777,9 +777,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the leave may be taken only during a termination notice period.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsReturnDateRequired",
@@ -791,9 +791,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether the employee's return from this leave must be recorded.</p><p><strong>Why it matters.</strong> An employee whose leave of this type has ended with no return recorded is treated as not returned. A leave-resumption reminder goes out, when that notification is set up. When the payroll setting <em>Enable Not Return From Leave Logic</em> is on, the employee's basic pay is not paid for that run, and the time engine counts their rest days — and weekly offs, where basic pay is on calendar days — as absent until the return is recorded.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.IsAttachmentRequired",
@@ -805,9 +805,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a document must be attached to the leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.AllowPartialLeave",
@@ -819,9 +819,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether part of a day may be taken.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.SendNotification",
@@ -833,9 +833,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether a notification is sent for this leave.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnSunday",
@@ -847,9 +847,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Sunday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnMonday",
@@ -861,9 +861,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Monday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnTuesday",
@@ -875,9 +875,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Tuesday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnWednesday",
@@ -889,9 +889,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Wednesday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnThursday",
@@ -903,9 +903,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Thursday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnFriday",
@@ -917,9 +917,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Friday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     },
     {
       "id": "AbsenceType.DontAllowToStartOnSaturday",
@@ -931,9 +931,9 @@
       ],
       "rules": "Yes or no.",
       "when": null,
-      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "html": "<p><strong>What it is.</strong> Whether leave of this type may not start on a Saturday.</p><p><strong>Why it matters.</strong> Not checked at present — the setting is saved, but nothing enforces it when leave is entered or approved.</p>",
       "adminHtml": "",
-      "stub": true
+      "stub": false
     }
   ]
 }

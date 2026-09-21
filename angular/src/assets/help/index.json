@@ -2109,6 +2109,180 @@
     "VisaInfo_EndDate": [
       "pa.employee-visa-info.edit"
     ],
+    "AbsenceType_Code": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_NameEn": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_NameAr": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IsActive": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_LeaveBasisPeriod": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_LeaveBasisFixedDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IsPaid": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_WageTypeId": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IncludeWeekend": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IncludeRestDay": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IncludePublicHoliday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IncludeInWorkflow": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_HaveQuotaAccrual": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AccrualPeriod": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_CustomStartMonth": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ExcludePaidLeaveAccrual": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_MinActiveDaysInService": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_CanApplyAgain": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_CanApplyAfterDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_CanApplyBeforeDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ReInitialize": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ReInitializeAfter": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ApplyLeaveInAdvance": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ApplyLeaveInAdvanceDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ApplyMaxLeave": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_MaxLimitInDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_CreateUnpaidAboveMaxLimitDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ApplyMinLeave": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_MinLimitInDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_ResetFrequency": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_TotalMinutes": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_MaxMinutes": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_MaxCount": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_PolicyRestrictType": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AbsenceViolationRuleId": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_LeaveGender": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_LeaveReligion": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_QuotaType": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_LeaveEntitlement": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AllowBackDatedDays": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_TotalDaysAllowed": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_NegativeBalanceLimit": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_EnableNegativeBalance": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IncludeInSalaryProfile": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AllowDuringProbation": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AllowToReturnEarly": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AllowInTerminationNoticeOnly": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IsReturnDateRequired": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_IsAttachmentRequired": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_AllowPartialLeave": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_SendNotification": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnSunday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnMonday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnTuesday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnWednesday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnThursday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnFriday": [
+      "pay.absence-type.edit"
+    ],
+    "AbsenceType_DontAllowToStartOnSaturday": [
+      "pay.absence-type.edit"
+    ],
     "AccountInfo_Code": [
       "pay.account-info.edit"
     ],
