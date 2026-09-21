@@ -1,0 +1,347 @@
+{
+  "helpId": "wf.request-detail.edit",
+  "lang": "en",
+  "title": "Request Details — Create / Edit",
+  "entity": "HCMv3.Workflow.RequestDetail",
+  "overviewHtml": "<p>One step of an approval chain: who approves it, whether one or all of them must, what they may do, and when the request is chased or escalated. Steps are numbered from 1 and the request moves up one step at each approval; approving the last step approves the request. Reminder days must be less than escalate-after days.</p>",
+  "aliasIndex": {
+    "loc:RequestMaster": "RequestDetail.RequestMasterId",
+    "dom:RequestDetail_RequestMasterId": "RequestDetail.RequestMasterId",
+    "loc:Step": "RequestDetail.Step",
+    "dom:RequestDetail_Step": "RequestDetail.Step",
+    "loc:WorkflowRole": "RequestDetail.WorkflowRoleId",
+    "dom:RequestDetail_WorkflowRoleId": "RequestDetail.WorkflowRoleId",
+    "loc:ApprovalRequire": "RequestDetail.ApprovalRequire",
+    "dom:RequestDetail_ApprovalRequire": "RequestDetail.ApprovalRequire",
+    "loc:WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
+    "dom:RequestDetail_WorkflowRoleGroup": "RequestDetail.WorkflowRoleGroup",
+    "loc:OrganizationUnit": "RequestDetail.WorkflowRoleOrgId",
+    "dom:RequestDetail_WorkflowRoleOrgId": "RequestDetail.WorkflowRoleOrgId",
+    "loc:Person": "RequestDetail.Person",
+    "dom:RequestDetail_Person": "RequestDetail.Person",
+    "loc:ApproverPerson": "RequestDetail.ApproverPerson",
+    "dom:RequestDetail_ApproverPerson": "RequestDetail.ApproverPerson",
+    "loc:EscalateAfterDays": "RequestDetail.EscalateAfterDays",
+    "dom:RequestDetail_EscalateAfterDays": "RequestDetail.EscalateAfterDays",
+    "loc:EscalateWorkflowRole": "RequestDetail.EscalateWorkflowRoleId",
+    "dom:RequestDetail_EscalateWorkflowRoleId": "RequestDetail.EscalateWorkflowRoleId",
+    "loc:EscalateWorkflowRoleGroup": "RequestDetail.EscalateWorkflowRoleGroup",
+    "dom:RequestDetail_EscalateWorkflowRoleGroup": "RequestDetail.EscalateWorkflowRoleGroup",
+    "loc:EscalateWorkflowRoleOrg": "RequestDetail.EscalateWorkflowRoleOrgId",
+    "dom:RequestDetail_EscalateWorkflowRoleOrgId": "RequestDetail.EscalateWorkflowRoleOrgId",
+    "loc:ReminderDays": "RequestDetail.ReminderDays",
+    "dom:RequestDetail_ReminderDays": "RequestDetail.ReminderDays",
+    "loc:ShowPayment": "RequestDetail.ShowPayment",
+    "dom:RequestDetail_ShowPayment": "RequestDetail.ShowPayment",
+    "loc:CanSendBack": "RequestDetail.CanSendBack",
+    "dom:RequestDetail_CanSendBack": "RequestDetail.CanSendBack",
+    "loc:CanReject": "RequestDetail.CanReject",
+    "dom:RequestDetail_CanReject": "RequestDetail.CanReject",
+    "loc:ShouldEscalate": "RequestDetail.ShouldEscalate",
+    "dom:RequestDetail_ShouldEscalate": "RequestDetail.ShouldEscalate",
+    "loc:EscalateNextLevel": "RequestDetail.EscalateNextLevel",
+    "dom:RequestDetail_EscalateNextLevel": "RequestDetail.EscalateNextLevel",
+    "loc:EnableReadLog": "RequestDetail.EnableReadLog",
+    "dom:RequestDetail_EnableReadLog": "RequestDetail.EnableReadLog",
+    "loc:IsCommentRequire": "RequestDetail.IsCommentRequire",
+    "dom:RequestDetail_IsCommentRequire": "RequestDetail.IsCommentRequire",
+    "loc:SignatoryStep": "RequestDetail.SignatoryStep",
+    "dom:RequestDetail_SignatoryStep": "RequestDetail.SignatoryStep"
+  },
+  "fields": [
+    {
+      "id": "RequestDetail.RequestMasterId",
+      "label": "RequestMaster",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:RequestMaster",
+        "dom:RequestDetail_RequestMasterId"
+      ],
+      "rules": "Required. Chosen from Request Master master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The approval chain this step belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.Step",
+      "label": "Step",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:Step",
+        "dom:RequestDetail_Step"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The step's position in the chain, from 1.</p><p><strong>Example.</strong> 2</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:RequestDetail_WorkflowRoleId"
+      ],
+      "rules": "Optional. Chosen from Workflow Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow role whose holders approve this step.</p><p><strong>Example.</strong> Payroll Officer</p><p><strong>Why it matters.</strong> Used only when Approver Person is Person: every employee holding the role becomes an approver, narrowed by Workflow Role Group. For the manager options this is not used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ApprovalRequire",
+      "label": "ApprovalRequire",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ApprovalRequire",
+        "dom:RequestDetail_ApprovalRequire"
+      ],
+      "rules": "Required. One of: Single, Parallel.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether one approver is enough or all must approve.</p><p><strong>Why it matters.</strong> Single: the first approver to approve completes the step. Parallel: the step completes only when every approver on it has approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleGroup",
+      "label": "WorkflowRoleGroup",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:WorkflowRoleGroup",
+        "dom:RequestDetail_WorkflowRoleGroup"
+      ],
+      "rules": "Required. One of: None, Company, Department, Branch, CostCenter.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Limits the role's holders to the requester's part of the organisation.</p><p><strong>Why it matters.</strong> Department keeps holders in the requester's current organisation unit, Branch those at the same work location, Cost Center those on the same cost centre. None and Company keep everyone. If nobody matches, all holders are kept rather than none.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.WorkflowRoleOrgId",
+      "label": "OrganizationUnit",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:OrganizationUnit",
+        "dom:RequestDetail_WorkflowRoleOrgId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An organisation unit level for the role.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.Person",
+      "label": "Person",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:Person",
+        "dom:RequestDetail_Person"
+      ],
+      "rules": "Required. One of: None, Themselves, Department, SelfSubordinates.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whose request the step applies to.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ApproverPerson",
+      "label": "ApproverPerson",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ApproverPerson",
+        "dom:RequestDetail_ApproverPerson"
+      ],
+      "rules": "Required. One of: None, Person, PersonManager, ManagerLevel2, ManagerLevel3, ManagerLevel4, ManagerLevel5, ManagerLevel6, ManagerLevel7.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who approves: role holders, or a manager above the requester.</p><p><strong>Example.</strong> Person Manager</p><p><strong>Why it matters.</strong> Person uses the workflow role. Person Manager is the requester's direct manager, and Manager Level 2 to 7 climb that many levels up the reporting line. If the line runs out before that level, or the option is None, the chain's default approver is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateAfterDays",
+      "label": "EscalateAfterDays",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateAfterDays",
+        "dom:RequestDetail_EscalateAfterDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How many days without action before the request escalates.</p><p><strong>Example.</strong> 5</p><p><strong>Why it matters.</strong> Counted from the request's last logged action. Used only when Should Escalate is ticked; 0 turns escalation off.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleId",
+      "label": "EscalateWorkflowRole",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRole",
+        "dom:RequestDetail_EscalateWorkflowRoleId"
+      ],
+      "rules": "Optional. Chosen from Workflow Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow role a stalled request is handed to.</p><p><strong>Why it matters.</strong> Used when Escalate Next Level is not ticked: the request stays on the same step and its approvers are replaced by this role's holders, leaving out anyone already on it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleGroup",
+      "label": "EscalateWorkflowRoleGroup",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRoleGroup",
+        "dom:RequestDetail_EscalateWorkflowRoleGroup"
+      ],
+      "rules": "Required. One of: None, Company, Department, Branch, CostCenter.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Limits the escalation role's holders to the requester's part of the organisation.</p><p><strong>Why it matters.</strong> Works the same way as Workflow Role Group.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateWorkflowRoleOrgId",
+      "label": "EscalateWorkflowRoleOrg",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateWorkflowRoleOrg",
+        "dom:RequestDetail_EscalateWorkflowRoleOrgId"
+      ],
+      "rules": "Optional. Chosen from Organization Unit Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> An organisation unit level for the escalation role.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ReminderDays",
+      "label": "ReminderDays",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ReminderDays",
+        "dom:RequestDetail_ReminderDays"
+      ],
+      "rules": "Required. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How often pending approvers are reminded, in days.</p><p><strong>Example.</strong> 2 — reminders on days 2, 4, 6</p><p><strong>Why it matters.</strong> A reminder goes to the approvers who have not yet acted every time the days since the last action reach a multiple of this number. 0 sends no reminders.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ShowPayment",
+      "label": "ShowPayment",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ShowPayment",
+        "dom:RequestDetail_ShowPayment"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the approver sees payment details.</p><p><strong>Why it matters.</strong> Not read at present.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.CanSendBack",
+      "label": "CanSendBack",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:CanSendBack",
+        "dom:RequestDetail_CanSendBack"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approvers at this step may send the request back.</p><p><strong>Why it matters.</strong> Sending back returns the request to its creator as a draft at step 1, where it can be changed and submitted again. When unticked the option is hidden and refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.CanReject",
+      "label": "CanReject",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:CanReject",
+        "dom:RequestDetail_CanReject"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approvers at this step may reject the request.</p><p><strong>Why it matters.</strong> A rejection ends the request. When unticked the option is hidden and refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.ShouldEscalate",
+      "label": "ShouldEscalate",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:ShouldEscalate",
+        "dom:RequestDetail_ShouldEscalate"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether a stalled request at this step escalates.</p><p><strong>Why it matters.</strong> Needs Escalate After Days above 0.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EscalateNextLevel",
+      "label": "EscalateNextLevel",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EscalateNextLevel",
+        "dom:RequestDetail_EscalateNextLevel"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether escalation moves the request on to the next step.</p><p><strong>Why it matters.</strong> When ticked, a stalled request moves to the next step as if approved, but the transaction itself is not applied — only a person's approval of the last step does that. A request on its last step is left where it is. When unticked, the escalation role takes over the same step.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.EnableReadLog",
+      "label": "EnableReadLog",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:EnableReadLog",
+        "dom:RequestDetail_EnableReadLog"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether opening the request at this step is recorded.</p><p><strong>Why it matters.</strong> The first time each person opens it at this step, a read entry is added to the read log and the activity feed.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.IsCommentRequire",
+      "label": "IsCommentRequire",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:IsCommentRequire",
+        "dom:RequestDetail_IsCommentRequire"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether approvers must write a comment to approve.</p><p><strong>Why it matters.</strong> An approval without a comment is refused.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetail.SignatoryStep",
+      "label": "SignatoryStep",
+      "section": "RequestDetails",
+      "aliases": [
+        "loc:SignatoryStep",
+        "dom:RequestDetail_SignatoryStep"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this is a signatory step, needing someone who has not signed before.</p><p><strong>Why it matters.</strong> Anyone who approved an earlier signatory step of the same request is left out here, so one person cannot sign twice. If that leaves nobody, the chain's default approver is used.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

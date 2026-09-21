@@ -1,0 +1,75 @@
+{
+  "helpId": "wf.workflow-group.edit",
+  "lang": "en",
+  "title": "Workflow Groups — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkflowGroup",
+  "overviewHtml": "<p>A set of chain choices for a group of employees, so that, for example, head-office staff use a different leave chain. An employee's group comes from their current organisation assignment; an employee with none uses the default group. Groups are used only when the workflow setting EnableWorkflowGroup is on.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkflowGroup.Code",
+    "dom:WorkflowGroup_Code": "WorkflowGroup.Code",
+    "loc:IsDefault": "WorkflowGroup.IsDefault",
+    "dom:WorkflowGroup_IsDefault": "WorkflowGroup.IsDefault",
+    "loc:NameEn": "WorkflowGroup.NameEn",
+    "dom:WorkflowGroup_NameEn": "WorkflowGroup.NameEn",
+    "loc:NameAr": "WorkflowGroup.NameAr",
+    "dom:WorkflowGroup_NameAr": "WorkflowGroup.NameAr"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroup.Code",
+      "label": "Code",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkflowGroup_Code"
+      ],
+      "rules": "Required. Left blank, the next number is assigned when the record is saved. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> A short code that identifies this item in its list.</p><p><strong>Example.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.IsDefault",
+      "label": "IsDefault",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:IsDefault",
+        "dom:WorkflowGroup_IsDefault"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this is the group for employees who have none.</p><p><strong>Why it matters.</strong> Only one group can be the default.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.NameEn",
+      "label": "NameEn",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkflowGroup_NameEn"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in English.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.NameAr",
+      "label": "NameAr",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkflowGroup_NameAr"
+      ],
+      "rules": "Required. Must be unique in this list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The item's name in Arabic.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

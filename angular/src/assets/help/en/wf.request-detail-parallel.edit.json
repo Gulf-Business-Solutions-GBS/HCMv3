@@ -1,0 +1,59 @@
+{
+  "helpId": "wf.request-detail-parallel.edit",
+  "lang": "en",
+  "title": "Request Detail Parallels — Create / Edit",
+  "entity": "HCMv3.Workflow.RequestDetailParallel",
+  "overviewHtml": "<p>An extra approver for a step, named by job title and workflow role. Workflow role cannot be blank. Not read at present: approvers come only from the step itself, so these rows do not add anyone.</p>",
+  "aliasIndex": {
+    "loc:RequestDetails": "RequestDetailParallel.RequestDetailId",
+    "dom:RequestDetailParallel_RequestDetailId": "RequestDetailParallel.RequestDetailId",
+    "loc:JobTitle": "RequestDetailParallel.JobTitleId",
+    "dom:RequestDetailParallel_JobTitleId": "RequestDetailParallel.JobTitleId",
+    "loc:WorkflowRole": "RequestDetailParallel.WorkflowRoleId",
+    "dom:RequestDetailParallel_WorkflowRoleId": "RequestDetailParallel.WorkflowRoleId"
+  },
+  "fields": [
+    {
+      "id": "RequestDetailParallel.RequestDetailId",
+      "label": "RequestDetails",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:RequestDetails",
+        "dom:RequestDetailParallel_RequestDetailId"
+      ],
+      "rules": "Required. Chosen from Request Detail master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The step this approver is added to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetailParallel.JobTitleId",
+      "label": "JobTitle",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:JobTitle",
+        "dom:RequestDetailParallel_JobTitleId"
+      ],
+      "rules": "Optional. Chosen from Job Title master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The job title of the extra approver.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RequestDetailParallel.WorkflowRoleId",
+      "label": "WorkflowRole",
+      "section": "RequestDetailParallels",
+      "aliases": [
+        "loc:WorkflowRole",
+        "dom:RequestDetailParallel_WorkflowRoleId"
+      ],
+      "rules": "Required. Chosen from Workflow Role master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow role of the extra approver.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

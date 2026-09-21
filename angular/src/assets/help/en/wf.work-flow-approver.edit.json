@@ -1,0 +1,59 @@
+{
+  "helpId": "wf.work-flow-approver.edit",
+  "lang": "en",
+  "title": "Workflow Approvers — Create / Edit",
+  "entity": "HCMv3.Workflow.WorkFlowApprover",
+  "overviewHtml": "<p>One person a request is waiting on at its current step. On a Parallel step there is one row per approver. Written by the workflow engine as requests move; there is normally no reason to add or change entries by hand.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WorkFlowApprover.WorkflowRequestId",
+    "dom:WorkFlowApprover_WorkflowRequestId": "WorkFlowApprover.WorkflowRequestId",
+    "loc:Approver": "WorkFlowApprover.ApproverId",
+    "dom:WorkFlowApprover_ApproverId": "WorkFlowApprover.ApproverId",
+    "loc:IsApproved": "WorkFlowApprover.IsApproved",
+    "dom:WorkFlowApprover_IsApproved": "WorkFlowApprover.IsApproved"
+  },
+  "fields": [
+    {
+      "id": "WorkFlowApprover.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WorkFlowApprover_WorkflowRequestId"
+      ],
+      "rules": "Required. Chosen from Workflow Request master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The workflow request this record belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkFlowApprover.ApproverId",
+      "label": "Approver",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:Approver",
+        "dom:WorkFlowApprover_ApproverId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The approver.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkFlowApprover.IsApproved",
+      "label": "IsApproved",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:IsApproved",
+        "dom:WorkFlowApprover_IsApproved"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether this approver has approved.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

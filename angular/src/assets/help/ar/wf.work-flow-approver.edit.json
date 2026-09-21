@@ -1,0 +1,59 @@
+{
+  "helpId": "wf.work-flow-approver.edit",
+  "lang": "ar",
+  "title": "معتمدو سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkFlowApprover",
+  "overviewHtml": "<p>شخص واحد ينتظره الطلب في خطوته الحالية. وفي الخطوة المتوازية يوجد سجل لكل معتمد. يكتبه محرك سير العمل أثناء تنقّل الطلبات، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WorkFlowApprover.WorkflowRequestId",
+    "dom:WorkFlowApprover_WorkflowRequestId": "WorkFlowApprover.WorkflowRequestId",
+    "loc:Approver": "WorkFlowApprover.ApproverId",
+    "dom:WorkFlowApprover_ApproverId": "WorkFlowApprover.ApproverId",
+    "loc:IsApproved": "WorkFlowApprover.IsApproved",
+    "dom:WorkFlowApprover_IsApproved": "WorkFlowApprover.IsApproved"
+  },
+  "fields": [
+    {
+      "id": "WorkFlowApprover.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WorkFlowApprover_WorkflowRequestId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طلبات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب سير العمل الذي يخصه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkFlowApprover.ApproverId",
+      "label": "Approver",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:Approver",
+        "dom:WorkFlowApprover_ApproverId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعتمد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkFlowApprover.IsApproved",
+      "label": "IsApproved",
+      "section": "WorkFlowApprovers",
+      "aliases": [
+        "loc:IsApproved",
+        "dom:WorkFlowApprover_IsApproved"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان هذا المعتمد قد وافق.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

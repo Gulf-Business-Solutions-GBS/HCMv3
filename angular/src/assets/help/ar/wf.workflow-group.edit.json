@@ -1,0 +1,75 @@
+{
+  "helpId": "wf.workflow-group.edit",
+  "lang": "ar",
+  "title": "مجموعات سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowGroup",
+  "overviewHtml": "<p>مجموعة من اختيارات السلاسل لفئة من الموظفين، بحيث يستخدم موظفو المكتب الرئيسي مثلاً سلسلة إجازات مختلفة. تأتي مجموعة الموظف من تعيينه التنظيمي الحالي، ويستخدم الموظف الذي ليس له مجموعة المجموعة الافتراضية. ولا تُستخدم المجموعات إلا عند تفعيل إعداد سير العمل EnableWorkflowGroup.</p>",
+  "aliasIndex": {
+    "loc:Code": "WorkflowGroup.Code",
+    "dom:WorkflowGroup_Code": "WorkflowGroup.Code",
+    "loc:IsDefault": "WorkflowGroup.IsDefault",
+    "dom:WorkflowGroup_IsDefault": "WorkflowGroup.IsDefault",
+    "loc:NameEn": "WorkflowGroup.NameEn",
+    "dom:WorkflowGroup_NameEn": "WorkflowGroup.NameEn",
+    "loc:NameAr": "WorkflowGroup.NameAr",
+    "dom:WorkflowGroup_NameAr": "WorkflowGroup.NameAr"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroup.Code",
+      "label": "Code",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:Code",
+        "dom:WorkflowGroup_Code"
+      ],
+      "rules": "إلزامي. إذا تُرك فارغاً، يُمنح الرقم التالي عند حفظ السجل. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.IsDefault",
+      "label": "IsDefault",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:IsDefault",
+        "dom:WorkflowGroup_IsDefault"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت هذه مجموعة الموظفين الذين ليست لهم مجموعة.</p><p><strong>لماذا يهم.</strong> لا يمكن أن تكون إلا مجموعة واحدة افتراضية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.NameEn",
+      "label": "NameEn",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:NameEn",
+        "dom:WorkflowGroup_NameEn"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالإنجليزية.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroup.NameAr",
+      "label": "NameAr",
+      "section": "WorkflowGroups",
+      "aliases": [
+        "loc:NameAr",
+        "dom:WorkflowGroup_NameAr"
+      ],
+      "rules": "إلزامي. يجب ألا يتكرر في هذه القائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> اسم البند بالعربية.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

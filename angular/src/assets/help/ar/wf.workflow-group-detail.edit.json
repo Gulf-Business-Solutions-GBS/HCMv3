@@ -1,0 +1,75 @@
+{
+  "helpId": "wf.workflow-group-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل مجموعات سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowGroupDetail",
+  "overviewHtml": "<p>السلسلة التي تستخدمها مجموعة سير عمل لنوع واحد من الطلبات. داخل المجموعة يُختار السجل الأكثر تحديداً: النوع مع النوع الفرعي والنوع الفرعي المخصص، ثم النوع مع النوع الفرعي، ثم سجل النوع وحده. وإن لم يوجد تطابق في المجموعة، تُستخدم السلسلة الافتراضية لنوع المعاملة. ولا يمكن إسناد نوع طلب إلا إلى سلسلة واحدة في كل مجموعة.</p>",
+  "aliasIndex": {
+    "loc:RequestMaster": "WorkflowGroupDetail.RequestMasterId",
+    "dom:WorkflowGroupDetail_RequestMasterId": "WorkflowGroupDetail.RequestMasterId",
+    "loc:RequestType": "WorkflowGroupDetail.RequestTypeName",
+    "dom:WorkflowGroupDetail_RequestTypeName": "WorkflowGroupDetail.RequestTypeName",
+    "loc:RequestSubType": "WorkflowGroupDetail.RequestSubTypeId",
+    "dom:WorkflowGroupDetail_RequestSubTypeId": "WorkflowGroupDetail.RequestSubTypeId",
+    "loc:CustomSubType": "WorkflowGroupDetail.CustomSubTypeId",
+    "dom:WorkflowGroupDetail_CustomSubTypeId": "WorkflowGroupDetail.CustomSubTypeId"
+  },
+  "fields": [
+    {
+      "id": "WorkflowGroupDetail.RequestMasterId",
+      "label": "RequestMaster",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestMaster",
+        "dom:WorkflowGroupDetail_RequestMasterId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الطلبات الأساسية.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السلسلة المستخدمة.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestTypeName",
+      "label": "RequestType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestType",
+        "dom:WorkflowGroupDetail_RequestTypeName"
+      ],
+      "rules": "إلزامي. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الطلب.</p><p><strong>مثال.</strong> طلب إجازة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.RequestSubTypeId",
+      "label": "RequestSubType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:RequestSubType",
+        "dom:WorkflowGroupDetail_RequestSubTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحصر السجل في نوع فرعي واحد، مثل نوع إجازة واحد.</p><p><strong>مثال.</strong> الإجازة السنوية</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowGroupDetail.CustomSubTypeId",
+      "label": "CustomSubType",
+      "section": "WorkflowGroupDetails",
+      "aliases": [
+        "loc:CustomSubType",
+        "dom:WorkflowGroupDetail_CustomSubTypeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يحصر السجل أكثر.</p><p><strong>لماذا يهم.</strong> تُوجَّه الطلبات حالياً دون نوع فرعي مخصص، فلا يضيّق هذا شيئاً: السجل الذي فيه نوع فرعي يُطابَق على النوع الفرعي وحده، والسجل الذي فيه هذا الحقل وحده لا يُختار أبداً.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -5566,6 +5566,258 @@
         }
       },
       "defaultSection": "SystemNotifications"
+    },
+    {
+      "helpId": "wf.request-detail-parallel.edit",
+      "title": "Request Detail Parallels — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.RequestDetailParallels.Create"
+      ],
+      "entity": {
+        "name": "RequestDetailParallel",
+        "fullName": "HCMv3.Workflow.RequestDetailParallel",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/RequestDetailParallel.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/request-detail-parallels/create-or-edit-request-detail-parallel-modal.component.html"
+        }
+      },
+      "defaultSection": "RequestDetailParallels"
+    },
+    {
+      "helpId": "wf.request-detail.edit",
+      "title": "Request Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.RequestDetails.Create"
+      ],
+      "entity": {
+        "name": "RequestDetail",
+        "fullName": "HCMv3.Workflow.RequestDetail",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/RequestDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/request-details/create-or-edit-request-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "RequestDetails"
+    },
+    {
+      "helpId": "wf.request-log.edit",
+      "title": "Request Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.RequestLogs.Create"
+      ],
+      "entity": {
+        "name": "RequestLog",
+        "fullName": "HCMv3.Workflow.RequestLog",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/RequestLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/request-logs/create-request-log-modal.component.html"
+        }
+      },
+      "defaultSection": "RequestLogs"
+    },
+    {
+      "helpId": "wf.request-master.edit",
+      "title": "Request Masters — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.RequestMasters.Create"
+      ],
+      "entity": {
+        "name": "RequestMaster",
+        "fullName": "HCMv3.Workflow.RequestMaster",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/RequestMaster.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/request-masters/create-or-edit-request-master-modal.component.html"
+        }
+      },
+      "defaultSection": "RequestMasters"
+    },
+    {
+      "helpId": "wf.wfread-log.edit",
+      "title": "Workflow Read Logs — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WFReadLogs.Create"
+      ],
+      "entity": {
+        "name": "WFReadLog",
+        "fullName": "HCMv3.Workflow.WFReadLog",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WFReadLog.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/wf-read-logs/create-wf-read-log-modal.component.html"
+        }
+      },
+      "defaultSection": "WFReadLogs"
+    },
+    {
+      "helpId": "wf.work-flow-approver.edit",
+      "title": "Workflow Approvers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkFlowApprovers.Create"
+      ],
+      "entity": {
+        "name": "WorkFlowApprover",
+        "fullName": "HCMv3.Workflow.WorkFlowApprover",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkFlowApprover.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/work-flow-approvers/create-or-edit-work-flow-approver-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkFlowApprovers"
+    },
+    {
+      "helpId": "wf.workflow-group-detail.edit",
+      "title": "Workflow Group Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowGroupDetails.Create"
+      ],
+      "entity": {
+        "name": "WorkflowGroupDetail",
+        "fullName": "HCMv3.Workflow.WorkflowGroupDetail",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowGroupDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-group-detail/workflow-group-details/create-or-edit-workflow-group-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowGroupDetails"
+    },
+    {
+      "helpId": "wf.workflow-group-field-access.edit",
+      "title": "Workflow Group Field Accesses — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowGroupFieldAccesses.Create"
+      ],
+      "entity": {
+        "name": "WorkflowGroupFieldAccess",
+        "fullName": "HCMv3.Workflow.WorkflowGroupFieldAccess",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowGroupFieldAccess.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-group-detail/workflow-group-field-accesses/create-or-edit-workflow-group-field-access-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowGroupFieldAccesses"
+    },
+    {
+      "helpId": "wf.workflow-group.edit",
+      "title": "Workflow Groups — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowGroups.Create"
+      ],
+      "entity": {
+        "name": "WorkflowGroup",
+        "fullName": "HCMv3.Workflow.WorkflowGroup",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowGroup.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-groups/create-or-edit-workflow-group-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowGroups"
+    },
+    {
+      "helpId": "wf.workflow-remark.edit",
+      "title": "Workflow Remarks — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowRemarks.Create"
+      ],
+      "entity": {
+        "name": "WorkflowRemark",
+        "fullName": "HCMv3.Workflow.WorkflowRemark",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowRemark.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-remarks/create-or-edit-workflow-remark-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowRemarks"
+    },
+    {
+      "helpId": "wf.workflow-request.edit",
+      "title": "Workflow Requests — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowRequests.Create"
+      ],
+      "entity": {
+        "name": "WorkflowRequest",
+        "fullName": "HCMv3.Workflow.WorkflowRequest",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowRequest.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-requests/create-or-edit-workflow-request-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowRequests"
+    },
+    {
+      "helpId": "wf.workflow-role.edit",
+      "title": "Workflow Roles — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.Workflow.WorkflowRoles.Create"
+      ],
+      "entity": {
+        "name": "WorkflowRole",
+        "fullName": "HCMv3.Workflow.WorkflowRole",
+        "file": "aspnet-core/src/HCMv3.Core/Workflow/WorkflowRole.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/workflow/workflow-roles/create-or-edit-workflow-role-modal.component.html"
+        }
+      },
+      "defaultSection": "WorkflowRoles"
     }
   ]
 }

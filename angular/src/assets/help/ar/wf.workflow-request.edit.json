@@ -1,0 +1,123 @@
+{
+  "helpId": "wf.workflow-request.edit",
+  "lang": "ar",
+  "title": "طلبات سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WorkflowRequest",
+  "overviewHtml": "<p>طلب واحد يمر عبر سلسلة موافقاته — إجازة أو قرض أو طلب مستند. يُنشأ عند تقديم الطلب. يكتبه محرك سير العمل أثناء تنقّل الطلبات، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:Employee": "WorkflowRequest.EmployeeId",
+    "dom:WorkflowRequest_EmployeeId": "WorkflowRequest.EmployeeId",
+    "loc:Approver": "WorkflowRequest.ApproverId",
+    "dom:WorkflowRequest_ApproverId": "WorkflowRequest.ApproverId",
+    "loc:RequestType": "WorkflowRequest.RequestType",
+    "dom:WorkflowRequest_RequestType": "WorkflowRequest.RequestType",
+    "loc:RequestNumber": "WorkflowRequest.RequestNumber",
+    "dom:WorkflowRequest_RequestNumber": "WorkflowRequest.RequestNumber",
+    "loc:WorkflowStep": "WorkflowRequest.WorkflowStep",
+    "dom:WorkflowRequest_WorkflowStep": "WorkflowRequest.WorkflowStep",
+    "loc:RequestStatus": "WorkflowRequest.RequestStatus",
+    "dom:WorkflowRequest_RequestStatus": "WorkflowRequest.RequestStatus",
+    "loc:ApprovalProcessTime": "WorkflowRequest.ApprovalProcessTime",
+    "dom:WorkflowRequest_ApprovalProcessTime": "WorkflowRequest.ApprovalProcessTime"
+  },
+  "fields": [
+    {
+      "id": "WorkflowRequest.EmployeeId",
+      "label": "Employee",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:Employee",
+        "dom:WorkflowRequest_EmployeeId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي يخصه الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.ApproverId",
+      "label": "Approver",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:Approver",
+        "dom:WorkflowRequest_ApproverId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المعتمد الذي ينتظره الطلب حالياً.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.RequestType",
+      "label": "RequestType",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:RequestType",
+        "dom:WorkflowRequest_RequestType"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الطلب، الذي يحدد السلسلة وما يحدث عند الموافقة.</p><p><strong>مثال.</strong> طلب إجازة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.RequestNumber",
+      "label": "RequestNumber",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:RequestNumber",
+        "dom:WorkflowRequest_RequestNumber"
+      ],
+      "rules": "اختياري. الحد الأقصى 64 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رقم الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.WorkflowStep",
+      "label": "WorkflowStep",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:WorkflowStep",
+        "dom:WorkflowRequest_WorkflowStep"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطوة التي فيها الطلب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.RequestStatus",
+      "label": "RequestStatus",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:RequestStatus",
+        "dom:WorkflowRequest_RequestStatus"
+      ],
+      "rules": "إلزامي. إحدى القيم: مفتوح، معتمد، مرفوض، مغلق، مسودة، محوّل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة الطلب.</p><p><strong>لماذا يهم.</strong> مفتوح أثناء انتظار الموافقة، وموافق عليه بعد الخطوة الأخيرة، ومرفوض، أو مسودة عند إعادته إلى منشئه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WorkflowRequest.ApprovalProcessTime",
+      "label": "ApprovalProcessTime",
+      "section": "WorkflowRequests",
+      "aliases": [
+        "loc:ApprovalProcessTime",
+        "dom:WorkflowRequest_ApprovalProcessTime"
+      ],
+      "rules": "إلزامي. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الأيام الكاملة من آخر تغيير على الطلب حتى الموافقة النهائية عليه.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

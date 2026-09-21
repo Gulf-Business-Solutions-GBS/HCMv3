@@ -1,0 +1,43 @@
+{
+  "helpId": "wf.wfread-log.edit",
+  "lang": "ar",
+  "title": "سجلات قراءة سير العمل — إنشاء / تحرير",
+  "entity": "HCMv3.Workflow.WFReadLog",
+  "overviewHtml": "<p>فتح شخص طلباً في خطوة يكون فيها سجل القراءة مفعّلاً. يكتبه محرك سير العمل أثناء تنقّل الطلبات، ولا يوجد عادةً سبب لإضافة قيود أو تعديلها يدوياً.</p>",
+  "aliasIndex": {
+    "loc:WorkflowRequests": "WFReadLog.WorkflowRequestId",
+    "dom:WFReadLog_WorkflowRequestId": "WFReadLog.WorkflowRequestId",
+    "loc:User": "WFReadLog.User",
+    "dom:WFReadLog_User": "WFReadLog.User"
+  },
+  "fields": [
+    {
+      "id": "WFReadLog.WorkflowRequestId",
+      "label": "WorkflowRequests",
+      "section": "WFReadLogs",
+      "aliases": [
+        "loc:WorkflowRequests",
+        "dom:WFReadLog_WorkflowRequestId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طلبات سير العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طلب سير العمل الذي يخصه هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "WFReadLog.User",
+      "label": "User",
+      "section": "WFReadLogs",
+      "aliases": [
+        "loc:User",
+        "dom:WFReadLog_User"
+      ],
+      "rules": "اختياري. الحد الأقصى 256 حرفاً.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف الذي فتحه، برقمه الداخلي في النظام.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

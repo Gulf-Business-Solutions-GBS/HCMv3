@@ -5903,6 +5903,222 @@
     ],
     "SystemNotification_IsActive": [
       "sec.system-notification.edit"
+    ],
+    "RequestDetailParallel_RequestDetailId": [
+      "wf.request-detail-parallel.edit"
+    ],
+    "RequestDetailParallel_JobTitleId": [
+      "wf.request-detail-parallel.edit"
+    ],
+    "RequestDetailParallel_WorkflowRoleId": [
+      "wf.request-detail-parallel.edit"
+    ],
+    "RequestDetail_RequestMasterId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_Step": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_WorkflowRoleId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ApprovalRequire": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_WorkflowRoleGroup": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_WorkflowRoleOrgId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_Person": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ApproverPerson": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EscalateAfterDays": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EscalateWorkflowRoleId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EscalateWorkflowRoleGroup": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EscalateWorkflowRoleOrgId": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ReminderDays": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ShowPayment": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_CanSendBack": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_CanReject": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_ShouldEscalate": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EscalateNextLevel": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_EnableReadLog": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_IsCommentRequire": [
+      "wf.request-detail.edit"
+    ],
+    "RequestDetail_SignatoryStep": [
+      "wf.request-detail.edit"
+    ],
+    "RequestLog_WorkflowRequestId": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_ActionById": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_ActionType": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_WorkflowStep": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_ActionDays": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_Platform": [
+      "wf.request-log.edit"
+    ],
+    "RequestLog_RequestActionComment": [
+      "wf.request-log.edit"
+    ],
+    "RequestMaster_Code": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_SecurityLevel": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_NameEn": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_NameAr": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_DefaultApproverId": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_AutoCloseInDays": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_DueInDays": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_AutoClose": [
+      "wf.request-master.edit"
+    ],
+    "RequestMaster_IsCommentRequire": [
+      "wf.request-master.edit"
+    ],
+    "WFReadLog_WorkflowRequestId": [
+      "wf.wfread-log.edit"
+    ],
+    "WFReadLog_User": [
+      "wf.wfread-log.edit"
+    ],
+    "WorkFlowApprover_WorkflowRequestId": [
+      "wf.work-flow-approver.edit"
+    ],
+    "WorkFlowApprover_ApproverId": [
+      "wf.work-flow-approver.edit"
+    ],
+    "WorkFlowApprover_IsApproved": [
+      "wf.work-flow-approver.edit"
+    ],
+    "WorkflowGroupDetail_RequestMasterId": [
+      "wf.workflow-group-detail.edit"
+    ],
+    "WorkflowGroupDetail_RequestTypeName": [
+      "wf.workflow-group-detail.edit"
+    ],
+    "WorkflowGroupDetail_RequestSubTypeId": [
+      "wf.workflow-group-detail.edit"
+    ],
+    "WorkflowGroupDetail_CustomSubTypeId": [
+      "wf.workflow-group-detail.edit"
+    ],
+    "WorkflowGroupFieldAccess_Step": [
+      "wf.workflow-group-field-access.edit"
+    ],
+    "WorkflowGroupFieldAccess_Field": [
+      "wf.workflow-group-field-access.edit"
+    ],
+    "WorkflowGroupFieldAccess_IsVisible": [
+      "wf.workflow-group-field-access.edit"
+    ],
+    "WorkflowGroupFieldAccess_IsEditable": [
+      "wf.workflow-group-field-access.edit"
+    ],
+    "WorkflowGroupFieldAccess_IsRequired": [
+      "wf.workflow-group-field-access.edit"
+    ],
+    "WorkflowGroup_Code": [
+      "wf.workflow-group.edit"
+    ],
+    "WorkflowGroup_IsDefault": [
+      "wf.workflow-group.edit"
+    ],
+    "WorkflowGroup_NameEn": [
+      "wf.workflow-group.edit"
+    ],
+    "WorkflowGroup_NameAr": [
+      "wf.workflow-group.edit"
+    ],
+    "WorkflowRemark_WorkflowRequestId": [
+      "wf.workflow-remark.edit"
+    ],
+    "WorkflowRemark_CCReceiverId": [
+      "wf.workflow-remark.edit"
+    ],
+    "WorkflowRequest_EmployeeId": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_ApproverId": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_RequestType": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_RequestNumber": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_WorkflowStep": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_RequestStatus": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRequest_ApprovalProcessTime": [
+      "wf.workflow-request.edit"
+    ],
+    "WorkflowRole_Code": [
+      "wf.workflow-role.edit"
+    ],
+    "WorkflowRole_WorkflowRoleGroup": [
+      "wf.workflow-role.edit"
+    ],
+    "WorkflowRole_NameEn": [
+      "wf.workflow-role.edit"
+    ],
+    "WorkflowRole_NameAr": [
+      "wf.workflow-role.edit"
+    ],
+    "WorkflowRole_WorkflowRoleOrgId": [
+      "wf.workflow-role.edit"
     ]
   }
 }
