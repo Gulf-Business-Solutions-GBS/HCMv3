@@ -1,0 +1,203 @@
+{
+  "helpId": "sys.report-settings.edit",
+  "lang": "en",
+  "title": "Report Settings",
+  "entity": "HCMv3.SystemSettings.ManageReportSettings",
+  "overviewHtml": "<p>Settings for reports and payslips.</p><p>Only the two payroll sheet settings are read at present; the others have no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:ShowSubordinatesPayslip": "ManageReportSettings.ShowSubordinatesPayslip",
+    "dom:ReportSettings_ShowSubordinatesPayslip": "ManageReportSettings.ShowSubordinatesPayslip",
+    "loc:ShowPayslipOnDay": "ManageReportSettings.ShowPayslipOnDay",
+    "dom:ReportSettings_ShowPayslipOnDay": "ManageReportSettings.ShowPayslipOnDay",
+    "loc:ShowPayslipFromDate": "ManageReportSettings.ShowPayslipFromDate",
+    "dom:ReportSettings_ShowPayslipFromDate": "ManageReportSettings.ShowPayslipFromDate",
+    "loc:ExportGridReportWithHeader": "ManageReportSettings.ExportGridReportWithHeader",
+    "dom:ReportSettings_ExportGridReportWithHeader": "ManageReportSettings.ExportGridReportWithHeader",
+    "loc:ExportGridReportWithFooter": "ManageReportSettings.ExportGridReportWithFooter",
+    "dom:ReportSettings_ExportGridReportWithFooter": "ManageReportSettings.ExportGridReportWithFooter",
+    "loc:DecimalInReports": "ManageReportSettings.DecimalInReports",
+    "dom:ReportSettings_DecimalInReports": "ManageReportSettings.DecimalInReports",
+    "loc:ShowPeriodInPayrollSheet": "ManageReportSettings.ShowPeriodInPayrollSheet",
+    "dom:ReportSettings_ShowPeriodInPayrollSheet": "ManageReportSettings.ShowPeriodInPayrollSheet",
+    "loc:ShowPeriodInLeaveProvision": "ManageReportSettings.ShowPeriodInLeaveProvision",
+    "dom:ReportSettings_ShowPeriodInLeaveProvision": "ManageReportSettings.ShowPeriodInLeaveProvision",
+    "loc:ShowPeriodInIndemnityProvision": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+    "dom:ReportSettings_ShowPeriodInIndemnityProvision": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+    "loc:PeriodMonthLimitInPayrollSheet": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+    "dom:ReportSettings_PeriodMonthLimitInPayrollSheet": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+    "loc:PeriodMonthLimitInLeaveProvision": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+    "dom:ReportSettings_PeriodMonthLimitInLeaveProvision": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+    "loc:PeriodMonthLimitInIndemnityProvision": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision",
+    "dom:ReportSettings_PeriodMonthLimitInIndemnityProvision": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision"
+  },
+  "fields": [
+    {
+      "id": "ManageReportSettings.ShowSubordinatesPayslip",
+      "label": "ShowSubordinatesPayslip",
+      "section": null,
+      "aliases": [
+        "loc:ShowSubordinatesPayslip",
+        "dom:ReportSettings_ShowSubordinatesPayslip"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether managers can see their team's payslips.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPayslipOnDay",
+      "label": "ShowPayslipOnDay",
+      "section": null,
+      "aliases": [
+        "loc:ShowPayslipOnDay",
+        "dom:ReportSettings_ShowPayslipOnDay"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The day of the month payslips become visible.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPayslipFromDate",
+      "label": "ShowPayslipFromDate",
+      "section": null,
+      "aliases": [
+        "loc:ShowPayslipFromDate",
+        "dom:ReportSettings_ShowPayslipFromDate"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The earliest payslip employees can see.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ExportGridReportWithHeader",
+      "label": "ExportGridReportWithHeader",
+      "section": null,
+      "aliases": [
+        "loc:ExportGridReportWithHeader",
+        "dom:ReportSettings_ExportGridReportWithHeader"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether exported reports include a header.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ExportGridReportWithFooter",
+      "label": "ExportGridReportWithFooter",
+      "section": null,
+      "aliases": [
+        "loc:ExportGridReportWithFooter",
+        "dom:ReportSettings_ExportGridReportWithFooter"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether exported reports include a footer.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.DecimalInReports",
+      "label": "DecimalInReports",
+      "section": null,
+      "aliases": [
+        "loc:DecimalInReports",
+        "dom:ReportSettings_DecimalInReports"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The decimal places shown in reports.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInPayrollSheet",
+      "label": "ShowPeriodInPayrollSheet",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInPayrollSheet",
+        "dom:ReportSettings_ShowPeriodInPayrollSheet"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the payroll sheet report can cover a range of months.</p><p><strong>Why it matters.</strong> Ticked, the report's To month and year are used, so it can run over several months. Unticked, it covers the From month only.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInLeaveProvision",
+      "label": "ShowPeriodInLeaveProvision",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInLeaveProvision",
+        "dom:ReportSettings_ShowPeriodInLeaveProvision"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the leave provision report can cover a range of months.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+      "label": "ShowPeriodInIndemnityProvision",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInIndemnityProvision",
+        "dom:ReportSettings_ShowPeriodInIndemnityProvision"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the indemnity provision report can cover a range of months.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+      "label": "PeriodMonthLimitInPayrollSheet",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInPayrollSheet",
+        "dom:ReportSettings_PeriodMonthLimitInPayrollSheet"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most months a payroll sheet report may cover.</p><p><strong>Example.</strong> <code>12</code></p><p><strong>Why it matters.</strong> A longer range is refused. 0 means no limit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+      "label": "PeriodMonthLimitInLeaveProvision",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInLeaveProvision",
+        "dom:ReportSettings_PeriodMonthLimitInLeaveProvision"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most months a leave provision report may cover.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision",
+      "label": "PeriodMonthLimitInIndemnityProvision",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInIndemnityProvision",
+        "dom:ReportSettings_PeriodMonthLimitInIndemnityProvision"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most months an indemnity provision report may cover.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

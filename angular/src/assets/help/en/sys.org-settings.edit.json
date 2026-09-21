@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.org-settings.edit",
+  "lang": "en",
+  "title": "Organization settings",
+  "entity": "HCMv3.SystemSettings.ManageOrgSettings",
+  "overviewHtml": "<p>Which organisation-management features are switched on.</p><p>None of these settings is read at present: the features they control were not carried over from the legacy system, so changing them has no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:EnablePostingGroup": "ManageOrgSettings.EnablePostingGroup",
+    "dom:OrgSettings_EnablePostingGroup": "ManageOrgSettings.EnablePostingGroup",
+    "loc:EnableBudgetingGroup": "ManageOrgSettings.EnableBudgetingGroup",
+    "dom:OrgSettings_EnableBudgetingGroup": "ManageOrgSettings.EnableBudgetingGroup",
+    "loc:EnablePosition": "ManageOrgSettings.EnablePosition",
+    "dom:OrgSettings_EnablePosition": "ManageOrgSettings.EnablePosition",
+    "loc:EnableOrgChart3Levels": "ManageOrgSettings.EnableOrgChart3Levels",
+    "dom:OrgSettings_EnableOrgChart3Levels": "ManageOrgSettings.EnableOrgChart3Levels"
+  },
+  "fields": [
+    {
+      "id": "ManageOrgSettings.EnablePostingGroup",
+      "label": "EnablePostingGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnablePostingGroup",
+        "dom:OrgSettings_EnablePostingGroup"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether posting groups are used.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnableBudgetingGroup",
+      "label": "EnableBudgetingGroup",
+      "section": null,
+      "aliases": [
+        "loc:EnableBudgetingGroup",
+        "dom:OrgSettings_EnableBudgetingGroup"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether budgeting groups are used.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnablePosition",
+      "label": "EnablePosition",
+      "section": null,
+      "aliases": [
+        "loc:EnablePosition",
+        "dom:OrgSettings_EnablePosition"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether positions are used.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageOrgSettings.EnableOrgChart3Levels",
+      "label": "EnableOrgChart3Levels",
+      "section": null,
+      "aliases": [
+        "loc:EnableOrgChart3Levels",
+        "dom:OrgSettings_EnableOrgChart3Levels"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether the organisation chart shows three levels.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

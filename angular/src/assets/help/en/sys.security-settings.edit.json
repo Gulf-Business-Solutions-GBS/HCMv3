@@ -1,0 +1,139 @@
+{
+  "helpId": "sys.security-settings.edit",
+  "lang": "en",
+  "title": "Security settings",
+  "entity": "HCMv3.SystemSettings.ManageSecuritySettings",
+  "overviewHtml": "<p>Security and audit settings.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:EnableRowLevelSecurity": "ManageSecuritySettings.EnableRowLevelSecurity",
+    "dom:SecuritySettings_EnableRowLevelSecurity": "ManageSecuritySettings.EnableRowLevelSecurity",
+    "loc:EnableReportExportPwd": "ManageSecuritySettings.EnableReportExportPwd",
+    "dom:SecuritySettings_EnableReportExportPwd": "ManageSecuritySettings.EnableReportExportPwd",
+    "loc:EnableAuditLogInTimeEngine": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+    "dom:SecuritySettings_EnableAuditLogInTimeEngine": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+    "loc:EnableAuditLogInPayrollEngine": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+    "dom:SecuritySettings_EnableAuditLogInPayrollEngine": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+    "loc:EnableAuditLogInProjectCostEngine": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+    "dom:SecuritySettings_EnableAuditLogInProjectCostEngine": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+    "loc:EnableAuditLogInCostEngine": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+    "dom:SecuritySettings_EnableAuditLogInCostEngine": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+    "loc:EnableAuditLogInGridReport": "ManageSecuritySettings.EnableAuditLogInGridReport",
+    "dom:SecuritySettings_EnableAuditLogInGridReport": "ManageSecuritySettings.EnableAuditLogInGridReport",
+    "loc:EnableAuditLogInPrintReport": "ManageSecuritySettings.EnableAuditLogInPrintReport",
+    "dom:SecuritySettings_EnableAuditLogInPrintReport": "ManageSecuritySettings.EnableAuditLogInPrintReport"
+  },
+  "fields": [
+    {
+      "id": "ManageSecuritySettings.EnableRowLevelSecurity",
+      "label": "EnableRowLevelSecurity",
+      "section": null,
+      "aliases": [
+        "loc:EnableRowLevelSecurity",
+        "dom:SecuritySettings_EnableRowLevelSecurity"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether row-level security is applied.</p><p><strong>Why it matters.</strong> Ticked, the places that apply row-level security limit users to the employees their security assignments allow, and scheduled report recipients are limited the same way. Unticked, no row-level restriction applies.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableReportExportPwd",
+      "label": "EnableReportExportPwd",
+      "section": null,
+      "aliases": [
+        "loc:EnableReportExportPwd",
+        "dom:SecuritySettings_EnableReportExportPwd"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether exported reports are password protected.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInTimeEngine",
+      "label": "EnableAuditLogInTimeEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInTimeEngine",
+        "dom:SecuritySettings_EnableAuditLogInTimeEngine"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether time engine changes are written to the audit log.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInPayrollEngine",
+      "label": "EnableAuditLogInPayrollEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInPayrollEngine",
+        "dom:SecuritySettings_EnableAuditLogInPayrollEngine"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether payroll engine changes are written to the audit log.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInProjectCostEngine",
+      "label": "EnableAuditLogInProjectCostEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInProjectCostEngine",
+        "dom:SecuritySettings_EnableAuditLogInProjectCostEngine"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether project cost engine changes are written to the audit log.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInCostEngine",
+      "label": "EnableAuditLogInCostEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInCostEngine",
+        "dom:SecuritySettings_EnableAuditLogInCostEngine"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether cost engine changes are written to the audit log.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInGridReport",
+      "label": "EnableAuditLogInGridReport",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInGridReport",
+        "dom:SecuritySettings_EnableAuditLogInGridReport"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether running a report is logged.</p><p><strong>Why it matters.</strong> Ticked, each report run writes an execution log entry. Unticked, report runs are not logged.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageSecuritySettings.EnableAuditLogInPrintReport",
+      "label": "EnableAuditLogInPrintReport",
+      "section": null,
+      "aliases": [
+        "loc:EnableAuditLogInPrintReport",
+        "dom:SecuritySettings_EnableAuditLogInPrintReport"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether printing a report is logged.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

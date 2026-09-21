@@ -1,0 +1,123 @@
+{
+  "helpId": "sys.document-settings.edit",
+  "lang": "en",
+  "title": "Document settings",
+  "entity": "HCMv3.SystemSettings.ManageDocumentSettings",
+  "overviewHtml": "<p>Where attachments are kept and how large they may be.</p><p>Only <strong>Save Documents In File System</strong> is read at present, by the late/early attendance report with photos; the size and extension limits are not enforced.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+    "dom:DocumentSettings_EnableDocSaveInFileSystem": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+    "loc:FileSystemAttachmentPath": "ManageDocumentSettings.FileSystemAttachmentPath",
+    "dom:DocumentSettings_FileSystemAttachmentPath": "ManageDocumentSettings.FileSystemAttachmentPath",
+    "loc:AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
+    "dom:DocumentSettings_AllowedFileExtensions": "ManageDocumentSettings.AllowedFileExtensions",
+    "loc:MaxAttachmentsPerTransaction": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+    "dom:DocumentSettings_MaxAttachmentsPerTransaction": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+    "loc:MaxFileSizePerAttachmentMB": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+    "dom:DocumentSettings_MaxFileSizePerAttachmentMB": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+    "loc:MaxStorageSizeMB": "ManageDocumentSettings.MaxStorageSizeMB",
+    "dom:DocumentSettings_MaxStorageSizeMB": "ManageDocumentSettings.MaxStorageSizeMB",
+    "loc:StorageWarningThresholdMB": "ManageDocumentSettings.StorageWarningThresholdMB",
+    "dom:DocumentSettings_StorageWarningThresholdMB": "ManageDocumentSettings.StorageWarningThresholdMB"
+  },
+  "fields": [
+    {
+      "id": "ManageDocumentSettings.EnableDocSaveInFileSystem",
+      "label": "EnableDocSaveInFileSystem",
+      "section": null,
+      "aliases": [
+        "loc:EnableDocSaveInFileSystem",
+        "dom:DocumentSettings_EnableDocSaveInFileSystem"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether documents are kept in the file system instead of the database.</p><p><strong>Why it matters.</strong> The late/early attendance report with photos reads it to know where punch photos are.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.FileSystemAttachmentPath",
+      "label": "FileSystemAttachmentPath",
+      "section": null,
+      "aliases": [
+        "loc:FileSystemAttachmentPath",
+        "dom:DocumentSettings_FileSystemAttachmentPath"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The folder documents are kept in.</p><p><strong>Example.</strong> <code>D:\\HCMv3\\Attachments</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.AllowedFileExtensions",
+      "label": "AllowedFileExtensions",
+      "section": null,
+      "aliases": [
+        "loc:AllowedFileExtensions",
+        "dom:DocumentSettings_AllowedFileExtensions"
+      ],
+      "rules": "Optional. Maximum 200 characters.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The file types that may be attached.</p><p><strong>Example.</strong> <code>.pdf,.jpg,.png</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxAttachmentsPerTransaction",
+      "label": "MaxAttachmentsPerTransaction",
+      "section": null,
+      "aliases": [
+        "loc:MaxAttachmentsPerTransaction",
+        "dom:DocumentSettings_MaxAttachmentsPerTransaction"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most attachments on one record.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxFileSizePerAttachmentMB",
+      "label": "MaxFileSizePerAttachmentMB",
+      "section": null,
+      "aliases": [
+        "loc:MaxFileSizePerAttachmentMB",
+        "dom:DocumentSettings_MaxFileSizePerAttachmentMB"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The largest attachment, in MB.</p><p><strong>Example.</strong> <code>10</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.MaxStorageSizeMB",
+      "label": "MaxStorageSizeMB",
+      "section": null,
+      "aliases": [
+        "loc:MaxStorageSizeMB",
+        "dom:DocumentSettings_MaxStorageSizeMB"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The total storage allowed, in MB.</p><p><strong>Example.</strong> <code>5000</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageDocumentSettings.StorageWarningThresholdMB",
+      "label": "StorageWarningThresholdMB",
+      "section": null,
+      "aliases": [
+        "loc:StorageWarningThresholdMB",
+        "dom:DocumentSettings_StorageWarningThresholdMB"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The storage used at which a warning is given, in MB.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

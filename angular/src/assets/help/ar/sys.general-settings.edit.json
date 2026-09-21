@@ -1,0 +1,171 @@
+{
+  "helpId": "sys.general-settings.edit",
+  "lang": "ar",
+  "title": "General settings",
+  "entity": "HCMv3.SystemSettings.ManageGeneralSettings",
+  "overviewHtml": "<p>إعدادات العرض العامة.</p><p>لا يُقرأ حالياً إلا تنسيقا التاريخ والوقت — للتواريخ والأوقات المكتوبة في رسائل البريد الإلكتروني والرسائل المولّدة. أما البقية فلا أثر لها.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:DateEditMask": "ManageGeneralSettings.DateEditMask",
+    "dom:GeneralSettings_DateEditMask": "ManageGeneralSettings.DateEditMask",
+    "loc:DateDisplayFormat": "ManageGeneralSettings.DateDisplayFormat",
+    "dom:GeneralSettings_DateDisplayFormat": "ManageGeneralSettings.DateDisplayFormat",
+    "loc:TimeEditMask": "ManageGeneralSettings.TimeEditMask",
+    "dom:GeneralSettings_TimeEditMask": "ManageGeneralSettings.TimeEditMask",
+    "loc:TimeDisplayFormat": "ManageGeneralSettings.TimeDisplayFormat",
+    "dom:GeneralSettings_TimeDisplayFormat": "ManageGeneralSettings.TimeDisplayFormat",
+    "loc:StartupDashboard": "ManageGeneralSettings.StartupDashboard",
+    "dom:GeneralSettings_StartupDashboard": "ManageGeneralSettings.StartupDashboard",
+    "loc:AutoFilterColumnCondition": "ManageGeneralSettings.AutoFilterColumnCondition",
+    "dom:GeneralSettings_AutoFilterColumnCondition": "ManageGeneralSettings.AutoFilterColumnCondition",
+    "loc:DisableAutoEmpcode": "ManageGeneralSettings.DisableAutoEmpcode",
+    "dom:GeneralSettings_DisableAutoEmpcode": "ManageGeneralSettings.DisableAutoEmpcode",
+    "loc:NoticePeriodDaysExcludingSubmissionDate": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+    "dom:GeneralSettings_NoticePeriodDaysExcludingSubmissionDate": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+    "loc:EnableGridDataAccessModeServer": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+    "dom:GeneralSettings_EnableGridDataAccessModeServer": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+    "loc:StartHangfire": "ManageGeneralSettings.StartHangfire",
+    "dom:GeneralSettings_StartHangfire": "ManageGeneralSettings.StartHangfire"
+  },
+  "fields": [
+    {
+      "id": "ManageGeneralSettings.DateEditMask",
+      "label": "DateEditMask",
+      "section": null,
+      "aliases": [
+        "loc:DateEditMask",
+        "dom:GeneralSettings_DateEditMask"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق التاريخ المستخدم في رسائل البريد الإلكتروني والرسائل المولّدة.</p><p><strong>مثال.</strong> <code>dd/MM/yyyy</code></p><p><strong>لماذا يهم.</strong> إذا تُرك فارغاً يُستخدم <code>dd/MM/yyyy</code>. أما الشاشات فتستخدم تنسيق لغة المستخدم، لا هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.DateDisplayFormat",
+      "label": "DateDisplayFormat",
+      "section": null,
+      "aliases": [
+        "loc:DateDisplayFormat",
+        "dom:GeneralSettings_DateDisplayFormat"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق عرض التاريخ.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.TimeEditMask",
+      "label": "TimeEditMask",
+      "section": null,
+      "aliases": [
+        "loc:TimeEditMask",
+        "dom:GeneralSettings_TimeEditMask"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق الوقت المستخدم في رسائل البريد الإلكتروني والرسائل المولّدة.</p><p><strong>مثال.</strong> <code>HH:mm</code></p><p><strong>لماذا يهم.</strong> إذا تُرك فارغاً يُستخدم <code>HH:mm</code>.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.TimeDisplayFormat",
+      "label": "TimeDisplayFormat",
+      "section": null,
+      "aliases": [
+        "loc:TimeDisplayFormat",
+        "dom:GeneralSettings_TimeDisplayFormat"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> تنسيق عرض الوقت.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.StartupDashboard",
+      "label": "StartupDashboard",
+      "section": null,
+      "aliases": [
+        "loc:StartupDashboard",
+        "dom:GeneralSettings_StartupDashboard"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> لوحة المعلومات المعروضة بعد تسجيل الدخول.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.AutoFilterColumnCondition",
+      "label": "AutoFilterColumnCondition",
+      "section": null,
+      "aliases": [
+        "loc:AutoFilterColumnCondition",
+        "dom:GeneralSettings_AutoFilterColumnCondition"
+      ],
+      "rules": "إلزامي. إحدى القيم: يبدأ بـ، يحتوي على، يساوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طريقة مطابقة مرشحات القوائم للنص.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.DisableAutoEmpcode",
+      "label": "DisableAutoEmpcode",
+      "section": null,
+      "aliases": [
+        "loc:DisableAutoEmpcode",
+        "dom:GeneralSettings_DisableAutoEmpcode"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت رموز الموظفين لم تعد تُمنح تلقائياً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً: يُمنح رمز الموظف الفارغ الرقم التالي عند حفظ الموظف كما هو.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.NoticePeriodDaysExcludingSubmissionDate",
+      "label": "NoticePeriodDaysExcludingSubmissionDate",
+      "section": null,
+      "aliases": [
+        "loc:NoticePeriodDaysExcludingSubmissionDate",
+        "dom:GeneralSettings_NoticePeriodDaysExcludingSubmissionDate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت فترة الإشعار تستثني يوم تقديم الإشعار.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.EnableGridDataAccessModeServer",
+      "label": "EnableGridDataAccessModeServer",
+      "section": null,
+      "aliases": [
+        "loc:EnableGridDataAccessModeServer",
+        "dom:GeneralSettings_EnableGridDataAccessModeServer"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت القوائم تحمّل بياناتها صفحة بصفحة من الخادم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageGeneralSettings.StartHangfire",
+      "label": "StartHangfire",
+      "section": null,
+      "aliases": [
+        "loc:StartHangfire",
+        "dom:GeneralSettings_StartHangfire"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان مجدول المهام الخلفية يبدأ.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

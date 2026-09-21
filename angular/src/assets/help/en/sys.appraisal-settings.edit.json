@@ -1,0 +1,107 @@
+{
+  "helpId": "sys.appraisal-settings.edit",
+  "lang": "en",
+  "title": "Appraisal settings",
+  "entity": "HCMv3.SystemSettings.ManageAppraisalSettings",
+  "overviewHtml": "<p>How performance appraisals are run: the cycle, how marks are given and peer review.</p><p>None of these settings is read at present: the features they control were not carried over from the legacy system, so changing them has no effect.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:AppraisalCycle": "ManageAppraisalSettings.AppraisalCycle",
+    "dom:AppraisalSettings_AppraisalCycle": "ManageAppraisalSettings.AppraisalCycle",
+    "loc:MarksOn": "ManageAppraisalSettings.MarksOn",
+    "dom:AppraisalSettings_MarksOn": "ManageAppraisalSettings.MarksOn",
+    "loc:EnablePAPeerReview": "ManageAppraisalSettings.EnablePAPeerReview",
+    "dom:AppraisalSettings_EnablePAPeerReview": "ManageAppraisalSettings.EnablePAPeerReview",
+    "loc:EnableMarksInPAReview": "ManageAppraisalSettings.EnableMarksInPAReview",
+    "dom:AppraisalSettings_EnableMarksInPAReview": "ManageAppraisalSettings.EnableMarksInPAReview",
+    "loc:SetPeerMinLimit": "ManageAppraisalSettings.SetPeerMinLimit",
+    "dom:AppraisalSettings_SetPeerMinLimit": "ManageAppraisalSettings.SetPeerMinLimit",
+    "loc:SetPeerMaxLimit": "ManageAppraisalSettings.SetPeerMaxLimit",
+    "dom:AppraisalSettings_SetPeerMaxLimit": "ManageAppraisalSettings.SetPeerMaxLimit"
+  },
+  "fields": [
+    {
+      "id": "ManageAppraisalSettings.AppraisalCycle",
+      "label": "AppraisalCycle",
+      "section": null,
+      "aliases": [
+        "loc:AppraisalCycle",
+        "dom:AppraisalSettings_AppraisalCycle"
+      ],
+      "rules": "Required. One of: Quarterly, Half Yearly, Annually.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How often appraisals are held.</p><p><strong>Example.</strong> Annually</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageAppraisalSettings.MarksOn",
+      "label": "MarksOn",
+      "section": null,
+      "aliases": [
+        "loc:MarksOn",
+        "dom:AppraisalSettings_MarksOn"
+      ],
+      "rules": "Required. One of: Ratings, Weight.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether appraisal marks are based on ratings or weights.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageAppraisalSettings.EnablePAPeerReview",
+      "label": "EnablePAPeerReview",
+      "section": null,
+      "aliases": [
+        "loc:EnablePAPeerReview",
+        "dom:AppraisalSettings_EnablePAPeerReview"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether peers can review each other.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageAppraisalSettings.EnableMarksInPAReview",
+      "label": "EnableMarksInPAReview",
+      "section": null,
+      "aliases": [
+        "loc:EnableMarksInPAReview",
+        "dom:AppraisalSettings_EnableMarksInPAReview"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether marks are entered in the review.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageAppraisalSettings.SetPeerMinLimit",
+      "label": "SetPeerMinLimit",
+      "section": null,
+      "aliases": [
+        "loc:SetPeerMinLimit",
+        "dom:AppraisalSettings_SetPeerMinLimit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The fewest peers to nominate.</p><p><strong>Example.</strong> <code>2</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageAppraisalSettings.SetPeerMaxLimit",
+      "label": "SetPeerMaxLimit",
+      "section": null,
+      "aliases": [
+        "loc:SetPeerMaxLimit",
+        "dom:AppraisalSettings_SetPeerMaxLimit"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The most peers to nominate.</p><p><strong>Example.</strong> <code>5</code></p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

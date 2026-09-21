@@ -4406,6 +4406,210 @@
     ],
     "YearlyTimeRegister_AdvanceTicketPaids": [
       "tm.yearly-time-register.edit"
+    ],
+    "PayrollDriver_CountryId": [
+      "sys.payroll-driver.edit"
+    ],
+    "PayrollDriver_LeaveDeductionStartMonth": [
+      "sys.payroll-driver.edit"
+    ],
+    "AppraisalSettings_AppraisalCycle": [
+      "sys.appraisal-settings.edit"
+    ],
+    "AppraisalSettings_MarksOn": [
+      "sys.appraisal-settings.edit"
+    ],
+    "AppraisalSettings_EnablePAPeerReview": [
+      "sys.appraisal-settings.edit"
+    ],
+    "AppraisalSettings_EnableMarksInPAReview": [
+      "sys.appraisal-settings.edit"
+    ],
+    "AppraisalSettings_SetPeerMinLimit": [
+      "sys.appraisal-settings.edit"
+    ],
+    "AppraisalSettings_SetPeerMaxLimit": [
+      "sys.appraisal-settings.edit"
+    ],
+    "DocumentSettings_EnableDocSaveInFileSystem": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_FileSystemAttachmentPath": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_AllowedFileExtensions": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_MaxAttachmentsPerTransaction": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_MaxFileSizePerAttachmentMB": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_MaxStorageSizeMB": [
+      "sys.document-settings.edit"
+    ],
+    "DocumentSettings_StorageWarningThresholdMB": [
+      "sys.document-settings.edit"
+    ],
+    "FIPostingSettings_SeparateProvisionPosting": [
+      "sys.fi-posting-settings.edit"
+    ],
+    "FIPostingSettings_EnableAutoWageAccountEntry": [
+      "sys.fi-posting-settings.edit"
+    ],
+    "FIPostingSettings_AllowDuplicateCodeInCostElement": [
+      "sys.fi-posting-settings.edit"
+    ],
+    "FIPostingSettings_FIPostingAfterPayrollExit": [
+      "sys.fi-posting-settings.edit"
+    ],
+    "GeneralSettings_DateEditMask": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_DateDisplayFormat": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_TimeEditMask": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_TimeDisplayFormat": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_StartupDashboard": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_AutoFilterColumnCondition": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_DisableAutoEmpcode": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_NoticePeriodDaysExcludingSubmissionDate": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_EnableGridDataAccessModeServer": [
+      "sys.general-settings.edit"
+    ],
+    "GeneralSettings_StartHangfire": [
+      "sys.general-settings.edit"
+    ],
+    "NotificationSettings_DisableNotificationWindow": [
+      "sys.notification-settings.edit"
+    ],
+    "NotificationSettings_AdvancePaymentReminderDateType": [
+      "sys.notification-settings.edit"
+    ],
+    "OrgSettings_EnablePostingGroup": [
+      "sys.org-settings.edit"
+    ],
+    "OrgSettings_EnableBudgetingGroup": [
+      "sys.org-settings.edit"
+    ],
+    "OrgSettings_EnablePosition": [
+      "sys.org-settings.edit"
+    ],
+    "OrgSettings_EnableOrgChart3Levels": [
+      "sys.org-settings.edit"
+    ],
+    "PersonnelSettings_ProbationDaysCalculation": [
+      "sys.personnel-settings.edit"
+    ],
+    "PersonnelSettings_MaxPhotoSize": [
+      "sys.personnel-settings.edit"
+    ],
+    "PersonnelSettings_EnableSponsorGovtJobTitleQuota": [
+      "sys.personnel-settings.edit"
+    ],
+    "PersonnelSettings_AutoWageAssignOnHire": [
+      "sys.personnel-settings.edit"
+    ],
+    "ProjectCostingSettings_CalculateNetPayProjectWise": [
+      "sys.project-costing-settings.edit"
+    ],
+    "ReportSettings_ShowSubordinatesPayslip": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ShowPayslipOnDay": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ShowPayslipFromDate": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ExportGridReportWithHeader": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ExportGridReportWithFooter": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_DecimalInReports": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ShowPeriodInPayrollSheet": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ShowPeriodInLeaveProvision": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_ShowPeriodInIndemnityProvision": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_PeriodMonthLimitInPayrollSheet": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_PeriodMonthLimitInLeaveProvision": [
+      "sys.report-settings.edit"
+    ],
+    "ReportSettings_PeriodMonthLimitInIndemnityProvision": [
+      "sys.report-settings.edit"
+    ],
+    "SecuritySettings_EnableRowLevelSecurity": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableReportExportPwd": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInTimeEngine": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInPayrollEngine": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInProjectCostEngine": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInCostEngine": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInGridReport": [
+      "sys.security-settings.edit"
+    ],
+    "SecuritySettings_EnableAuditLogInPrintReport": [
+      "sys.security-settings.edit"
+    ],
+    "WorkflowSettings_EnableWorkflowGroup": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_EnableOrgUnitTypeInWorkflow": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_HideLeavePayDetailsInWorkflow": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_DynamicWorkflowSteps": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_SendBackToCreator": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_DelegateEmployeeListByOrganizationUnitTypeId": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_EnableTravelCostOnWorkflowstep": [
+      "sys.workflow-settings.edit"
+    ],
+    "WorkflowSettings_OvertimeRequestModificationStep": [
+      "sys.workflow-settings.edit"
     ]
   }
 }

@@ -1,0 +1,203 @@
+{
+  "helpId": "sys.report-settings.edit",
+  "lang": "ar",
+  "title": "Report Settings",
+  "entity": "HCMv3.SystemSettings.ManageReportSettings",
+  "overviewHtml": "<p>إعدادات التقارير وكشوف الرواتب.</p><p>لا يُقرأ حالياً إلا إعدادا تقرير كشف الرواتب، أما البقية فلا أثر لها.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:ShowSubordinatesPayslip": "ManageReportSettings.ShowSubordinatesPayslip",
+    "dom:ReportSettings_ShowSubordinatesPayslip": "ManageReportSettings.ShowSubordinatesPayslip",
+    "loc:ShowPayslipOnDay": "ManageReportSettings.ShowPayslipOnDay",
+    "dom:ReportSettings_ShowPayslipOnDay": "ManageReportSettings.ShowPayslipOnDay",
+    "loc:ShowPayslipFromDate": "ManageReportSettings.ShowPayslipFromDate",
+    "dom:ReportSettings_ShowPayslipFromDate": "ManageReportSettings.ShowPayslipFromDate",
+    "loc:ExportGridReportWithHeader": "ManageReportSettings.ExportGridReportWithHeader",
+    "dom:ReportSettings_ExportGridReportWithHeader": "ManageReportSettings.ExportGridReportWithHeader",
+    "loc:ExportGridReportWithFooter": "ManageReportSettings.ExportGridReportWithFooter",
+    "dom:ReportSettings_ExportGridReportWithFooter": "ManageReportSettings.ExportGridReportWithFooter",
+    "loc:DecimalInReports": "ManageReportSettings.DecimalInReports",
+    "dom:ReportSettings_DecimalInReports": "ManageReportSettings.DecimalInReports",
+    "loc:ShowPeriodInPayrollSheet": "ManageReportSettings.ShowPeriodInPayrollSheet",
+    "dom:ReportSettings_ShowPeriodInPayrollSheet": "ManageReportSettings.ShowPeriodInPayrollSheet",
+    "loc:ShowPeriodInLeaveProvision": "ManageReportSettings.ShowPeriodInLeaveProvision",
+    "dom:ReportSettings_ShowPeriodInLeaveProvision": "ManageReportSettings.ShowPeriodInLeaveProvision",
+    "loc:ShowPeriodInIndemnityProvision": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+    "dom:ReportSettings_ShowPeriodInIndemnityProvision": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+    "loc:PeriodMonthLimitInPayrollSheet": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+    "dom:ReportSettings_PeriodMonthLimitInPayrollSheet": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+    "loc:PeriodMonthLimitInLeaveProvision": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+    "dom:ReportSettings_PeriodMonthLimitInLeaveProvision": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+    "loc:PeriodMonthLimitInIndemnityProvision": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision",
+    "dom:ReportSettings_PeriodMonthLimitInIndemnityProvision": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision"
+  },
+  "fields": [
+    {
+      "id": "ManageReportSettings.ShowSubordinatesPayslip",
+      "label": "ShowSubordinatesPayslip",
+      "section": null,
+      "aliases": [
+        "loc:ShowSubordinatesPayslip",
+        "dom:ReportSettings_ShowSubordinatesPayslip"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان المديرون يستطيعون رؤية كشوف رواتب فرقهم.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPayslipOnDay",
+      "label": "ShowPayslipOnDay",
+      "section": null,
+      "aliases": [
+        "loc:ShowPayslipOnDay",
+        "dom:ReportSettings_ShowPayslipOnDay"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> يوم الشهر الذي تصبح فيه كشوف الرواتب مرئية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPayslipFromDate",
+      "label": "ShowPayslipFromDate",
+      "section": null,
+      "aliases": [
+        "loc:ShowPayslipFromDate",
+        "dom:ReportSettings_ShowPayslipFromDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أقدم كشف راتب يستطيع الموظفون رؤيته.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ExportGridReportWithHeader",
+      "label": "ExportGridReportWithHeader",
+      "section": null,
+      "aliases": [
+        "loc:ExportGridReportWithHeader",
+        "dom:ReportSettings_ExportGridReportWithHeader"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التقارير المصدَّرة تتضمن ترويسة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ExportGridReportWithFooter",
+      "label": "ExportGridReportWithFooter",
+      "section": null,
+      "aliases": [
+        "loc:ExportGridReportWithFooter",
+        "dom:ReportSettings_ExportGridReportWithFooter"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت التقارير المصدَّرة تتضمن تذييلاً.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.DecimalInReports",
+      "label": "DecimalInReports",
+      "section": null,
+      "aliases": [
+        "loc:DecimalInReports",
+        "dom:ReportSettings_DecimalInReports"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> المنازل العشرية المعروضة في التقارير.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInPayrollSheet",
+      "label": "ShowPeriodInPayrollSheet",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInPayrollSheet",
+        "dom:ReportSettings_ShowPeriodInPayrollSheet"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تقرير كشف الرواتب يمكن أن يغطي نطاقاً من الأشهر.</p><p><strong>لماذا يهم.</strong> إذا أُشِّر عليه يُستخدم الشهر والسنة \"إلى\" في التقرير، فيمكن تشغيله على عدة أشهر. وإلا فيغطي الشهر \"من\" فقط.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInLeaveProvision",
+      "label": "ShowPeriodInLeaveProvision",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInLeaveProvision",
+        "dom:ReportSettings_ShowPeriodInLeaveProvision"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تقرير مخصص الإجازات يمكن أن يغطي نطاقاً من الأشهر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.ShowPeriodInIndemnityProvision",
+      "label": "ShowPeriodInIndemnityProvision",
+      "section": null,
+      "aliases": [
+        "loc:ShowPeriodInIndemnityProvision",
+        "dom:ReportSettings_ShowPeriodInIndemnityProvision"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كان تقرير مخصص مكافأة نهاية الخدمة يمكن أن يغطي نطاقاً من الأشهر.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInPayrollSheet",
+      "label": "PeriodMonthLimitInPayrollSheet",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInPayrollSheet",
+        "dom:ReportSettings_PeriodMonthLimitInPayrollSheet"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من الأشهر يجوز أن يغطيه تقرير كشف الرواتب.</p><p><strong>مثال.</strong> <code>12</code></p><p><strong>لماذا يهم.</strong> يُرفض النطاق الأطول. والقيمة 0 تعني بلا حد.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInLeaveProvision",
+      "label": "PeriodMonthLimitInLeaveProvision",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInLeaveProvision",
+        "dom:ReportSettings_PeriodMonthLimitInLeaveProvision"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من الأشهر يجوز أن يغطيه تقرير مخصص الإجازات.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageReportSettings.PeriodMonthLimitInIndemnityProvision",
+      "label": "PeriodMonthLimitInIndemnityProvision",
+      "section": null,
+      "aliases": [
+        "loc:PeriodMonthLimitInIndemnityProvision",
+        "dom:ReportSettings_PeriodMonthLimitInIndemnityProvision"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر عدد من الأشهر يجوز أن يغطيه تقرير مخصص مكافأة نهاية الخدمة.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

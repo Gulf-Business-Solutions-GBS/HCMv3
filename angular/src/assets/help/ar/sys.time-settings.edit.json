@@ -1,0 +1,699 @@
+{
+  "helpId": "sys.time-settings.edit",
+  "lang": "ar",
+  "title": "Time settings",
+  "entity": "HCMv3.SystemSettings.ManageTimeSettings",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
+    "dom:TimeSettings_EarliestEvaluationDate": "ManageTimeSettings.EarliestEvaluationDate",
+    "loc:FutureEvaluationInDays": "ManageTimeSettings.FutureEvaluationInDays",
+    "dom:TimeSettings_FutureEvaluationInDays": "ManageTimeSettings.FutureEvaluationInDays",
+    "loc:RosterPlannerFrequency": "ManageTimeSettings.RosterPlannerFrequency",
+    "dom:TimeSettings_RosterPlannerFrequency": "ManageTimeSettings.RosterPlannerFrequency",
+    "loc:EnableRosterDuty": "ManageTimeSettings.EnableRosterDuty",
+    "dom:TimeSettings_EnableRosterDuty": "ManageTimeSettings.EnableRosterDuty",
+    "loc:EnableTimeEngineAutorun": "ManageTimeSettings.EnableTimeEngineAutorun",
+    "dom:TimeSettings_EnableTimeEngineAutorun": "ManageTimeSettings.EnableTimeEngineAutorun",
+    "loc:EnableMiddleTierTimeEvents": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+    "dom:TimeSettings_EnableMiddleTierTimeEvents": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+    "loc:EnableGeoFence": "ManageTimeSettings.EnableGeoFence",
+    "dom:TimeSettings_EnableGeoFence": "ManageTimeSettings.EnableGeoFence",
+    "loc:EnableTimeAttendanceIntegration": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+    "dom:TimeSettings_EnableTimeAttendanceIntegration": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+    "loc:EnableAttendanceOnHoliday": "ManageTimeSettings.EnableAttendanceOnHoliday",
+    "dom:TimeSettings_EnableAttendanceOnHoliday": "ManageTimeSettings.EnableAttendanceOnHoliday",
+    "loc:EnableAttendanceOnWeekOff": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+    "dom:TimeSettings_EnableAttendanceOnWeekOff": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+    "loc:EnableAttendanceOnRestDay": "ManageTimeSettings.EnableAttendanceOnRestDay",
+    "dom:TimeSettings_EnableAttendanceOnRestDay": "ManageTimeSettings.EnableAttendanceOnRestDay",
+    "loc:CountWeekoffOnPH": "ManageTimeSettings.CountWeekoffOnPH",
+    "dom:TimeSettings_CountWeekoffOnPH": "ManageTimeSettings.CountWeekoffOnPH",
+    "loc:CountRestDayOnPH": "ManageTimeSettings.CountRestDayOnPH",
+    "dom:TimeSettings_CountRestDayOnPH": "ManageTimeSettings.CountRestDayOnPH",
+    "loc:EnableTimeAttIntegrationAPI": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+    "dom:TimeSettings_EnableTimeAttIntegrationAPI": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+    "loc:AllowDuplicateInTimeEvent": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+    "dom:TimeSettings_AllowDuplicateInTimeEvent": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+    "loc:UseActualTransInPlannedTimePolicy": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+    "dom:TimeSettings_UseActualTransInPlannedTimePolicy": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+    "loc:EnableMySqlIntegration": "ManageTimeSettings.EnableMySqlIntegration",
+    "dom:TimeSettings_EnableMySqlIntegration": "ManageTimeSettings.EnableMySqlIntegration",
+    "loc:TimeEventImportPath": "ManageTimeSettings.TimeEventImportPath",
+    "dom:TimeSettings_TimeEventImportPath": "ManageTimeSettings.TimeEventImportPath",
+    "loc:TimeEventSyncBatchCount": "ManageTimeSettings.TimeEventSyncBatchCount",
+    "dom:TimeSettings_TimeEventSyncBatchCount": "ManageTimeSettings.TimeEventSyncBatchCount",
+    "loc:TimeEventSyncFreq": "ManageTimeSettings.TimeEventSyncFreq",
+    "dom:TimeSettings_TimeEventSyncFreq": "ManageTimeSettings.TimeEventSyncFreq",
+    "loc:MidTierSyncBatchCount": "ManageTimeSettings.MidTierSyncBatchCount",
+    "dom:TimeSettings_MidTierSyncBatchCount": "ManageTimeSettings.MidTierSyncBatchCount",
+    "loc:MidTierSyncFreq": "ManageTimeSettings.MidTierSyncFreq",
+    "dom:TimeSettings_MidTierSyncFreq": "ManageTimeSettings.MidTierSyncFreq",
+    "loc:ExcludePaidLeaveAccrualOnAbsent": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+    "dom:TimeSettings_ExcludePaidLeaveAccrualOnAbsent": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+    "loc:HourlyLeavelogicEnable": "ManageTimeSettings.HourlyLeavelogicEnable",
+    "dom:TimeSettings_HourlyLeavelogicEnable": "ManageTimeSettings.HourlyLeavelogicEnable",
+    "loc:HourlyLeaveShouldSignIn": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+    "dom:TimeSettings_HourlyLeaveShouldSignIn": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+    "loc:HourlyLeaveShouldSignOut": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+    "dom:TimeSettings_HourlyLeaveShouldSignOut": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+    "loc:RestrictUnpaidleaveIfAnnualleaveAvailable": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+    "dom:TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+    "loc:AllowPaidleaveBackdateEntry": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+    "dom:TimeSettings_AllowPaidleaveBackdateEntry": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+    "loc:SickLeaveAttachMandatory": "ManageTimeSettings.SickLeaveAttachMandatory",
+    "dom:TimeSettings_SickLeaveAttachMandatory": "ManageTimeSettings.SickLeaveAttachMandatory",
+    "loc:EnableAutoReturnInConsecutiveLeave": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+    "dom:TimeSettings_EnableAutoReturnInConsecutiveLeave": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+    "loc:AllowFutureDatedReturnFromLeave": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+    "dom:TimeSettings_AllowFutureDatedReturnFromLeave": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+    "loc:EnableAutoHalfDayLeave": "ManageTimeSettings.EnableAutoHalfDayLeave",
+    "dom:TimeSettings_EnableAutoHalfDayLeave": "ManageTimeSettings.EnableAutoHalfDayLeave",
+    "loc:EnableSettleFractionalLeaveBalance": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+    "dom:TimeSettings_EnableSettleFractionalLeaveBalance": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+    "loc:EnableBookingQuotaInLeaveRequest": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+    "dom:TimeSettings_EnableBookingQuotaInLeaveRequest": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+    "loc:LeaveDeductionStartMonth": "ManageTimeSettings.LeaveDeductionStartMonth",
+    "dom:TimeSettings_LeaveDeductionStartMonth": "ManageTimeSettings.LeaveDeductionStartMonth",
+    "loc:ForfeitRule": "ManageTimeSettings.ForfeitRule",
+    "dom:TimeSettings_ForfeitRule": "ManageTimeSettings.ForfeitRule",
+    "loc:AbsenceViolationRuleId": "ManageTimeSettings.AbsenceViolationRuleId",
+    "dom:TimeSettings_AbsenceViolationRuleId": "ManageTimeSettings.AbsenceViolationRuleId",
+    "loc:AbsenceViolationEffectiveDate": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+    "dom:TimeSettings_AbsenceViolationEffectiveDate": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+    "loc:EnableOvertimeInTimeEngine": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+    "dom:TimeSettings_EnableOvertimeInTimeEngine": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+    "loc:EnableIsTravelling": "ManageTimeSettings.EnableIsTravelling",
+    "dom:TimeSettings_EnableIsTravelling": "ManageTimeSettings.EnableIsTravelling",
+    "loc:EnablePayFullWithPayroll": "ManageTimeSettings.EnablePayFullWithPayroll",
+    "dom:TimeSettings_EnablePayFullWithPayroll": "ManageTimeSettings.EnablePayFullWithPayroll",
+    "loc:EnableTimeRegisterApproval": "ManageTimeSettings.EnableTimeRegisterApproval",
+    "dom:TimeSettings_EnableTimeRegisterApproval": "ManageTimeSettings.EnableTimeRegisterApproval",
+    "loc:AutoApproveTimeLog": "ManageTimeSettings.AutoApproveTimeLog",
+    "dom:TimeSettings_AutoApproveTimeLog": "ManageTimeSettings.AutoApproveTimeLog"
+  },
+  "fields": [
+    {
+      "id": "ManageTimeSettings.EarliestEvaluationDate",
+      "label": "EarliestEvaluationDate",
+      "section": null,
+      "aliases": [
+        "loc:EarliestEvaluationDate",
+        "dom:TimeSettings_EarliestEvaluationDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.FutureEvaluationInDays",
+      "label": "FutureEvaluationInDays",
+      "section": null,
+      "aliases": [
+        "loc:FutureEvaluationInDays",
+        "dom:TimeSettings_FutureEvaluationInDays"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.RosterPlannerFrequency",
+      "label": "RosterPlannerFrequency",
+      "section": null,
+      "aliases": [
+        "loc:RosterPlannerFrequency",
+        "dom:TimeSettings_RosterPlannerFrequency"
+      ],
+      "rules": "إلزامي. إحدى القيم: إسبوعي، شهري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableRosterDuty",
+      "label": "EnableRosterDuty",
+      "section": null,
+      "aliases": [
+        "loc:EnableRosterDuty",
+        "dom:TimeSettings_EnableRosterDuty"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeEngineAutorun",
+      "label": "EnableTimeEngineAutorun",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeEngineAutorun",
+        "dom:TimeSettings_EnableTimeEngineAutorun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableMiddleTierTimeEvents",
+      "label": "EnableMiddleTierTimeEvents",
+      "section": null,
+      "aliases": [
+        "loc:EnableMiddleTierTimeEvents",
+        "dom:TimeSettings_EnableMiddleTierTimeEvents"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableGeoFence",
+      "label": "EnableGeoFence",
+      "section": null,
+      "aliases": [
+        "loc:EnableGeoFence",
+        "dom:TimeSettings_EnableGeoFence"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeAttendanceIntegration",
+      "label": "EnableTimeAttendanceIntegration",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeAttendanceIntegration",
+        "dom:TimeSettings_EnableTimeAttendanceIntegration"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnHoliday",
+      "label": "EnableAttendanceOnHoliday",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnHoliday",
+        "dom:TimeSettings_EnableAttendanceOnHoliday"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnWeekOff",
+      "label": "EnableAttendanceOnWeekOff",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnWeekOff",
+        "dom:TimeSettings_EnableAttendanceOnWeekOff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableAttendanceOnRestDay",
+      "label": "EnableAttendanceOnRestDay",
+      "section": null,
+      "aliases": [
+        "loc:EnableAttendanceOnRestDay",
+        "dom:TimeSettings_EnableAttendanceOnRestDay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.CountWeekoffOnPH",
+      "label": "CountWeekoffOnPH",
+      "section": null,
+      "aliases": [
+        "loc:CountWeekoffOnPH",
+        "dom:TimeSettings_CountWeekoffOnPH"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.CountRestDayOnPH",
+      "label": "CountRestDayOnPH",
+      "section": null,
+      "aliases": [
+        "loc:CountRestDayOnPH",
+        "dom:TimeSettings_CountRestDayOnPH"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeAttIntegrationAPI",
+      "label": "EnableTimeAttIntegrationAPI",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeAttIntegrationAPI",
+        "dom:TimeSettings_EnableTimeAttIntegrationAPI"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AllowDuplicateInTimeEvent",
+      "label": "AllowDuplicateInTimeEvent",
+      "section": null,
+      "aliases": [
+        "loc:AllowDuplicateInTimeEvent",
+        "dom:TimeSettings_AllowDuplicateInTimeEvent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.UseActualTransInPlannedTimePolicy",
+      "label": "UseActualTransInPlannedTimePolicy",
+      "section": null,
+      "aliases": [
+        "loc:UseActualTransInPlannedTimePolicy",
+        "dom:TimeSettings_UseActualTransInPlannedTimePolicy"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableMySqlIntegration",
+      "label": "EnableMySqlIntegration",
+      "section": null,
+      "aliases": [
+        "loc:EnableMySqlIntegration",
+        "dom:TimeSettings_EnableMySqlIntegration"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventImportPath",
+      "label": "TimeEventImportPath",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventImportPath",
+        "dom:TimeSettings_TimeEventImportPath"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventSyncBatchCount",
+      "label": "TimeEventSyncBatchCount",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventSyncBatchCount",
+        "dom:TimeSettings_TimeEventSyncBatchCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.TimeEventSyncFreq",
+      "label": "TimeEventSyncFreq",
+      "section": null,
+      "aliases": [
+        "loc:TimeEventSyncFreq",
+        "dom:TimeSettings_TimeEventSyncFreq"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.MidTierSyncBatchCount",
+      "label": "MidTierSyncBatchCount",
+      "section": null,
+      "aliases": [
+        "loc:MidTierSyncBatchCount",
+        "dom:TimeSettings_MidTierSyncBatchCount"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.MidTierSyncFreq",
+      "label": "MidTierSyncFreq",
+      "section": null,
+      "aliases": [
+        "loc:MidTierSyncFreq",
+        "dom:TimeSettings_MidTierSyncFreq"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.ExcludePaidLeaveAccrualOnAbsent",
+      "label": "ExcludePaidLeaveAccrualOnAbsent",
+      "section": null,
+      "aliases": [
+        "loc:ExcludePaidLeaveAccrualOnAbsent",
+        "dom:TimeSettings_ExcludePaidLeaveAccrualOnAbsent"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeavelogicEnable",
+      "label": "HourlyLeavelogicEnable",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeavelogicEnable",
+        "dom:TimeSettings_HourlyLeavelogicEnable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeaveShouldSignIn",
+      "label": "HourlyLeaveShouldSignIn",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeaveShouldSignIn",
+        "dom:TimeSettings_HourlyLeaveShouldSignIn"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.HourlyLeaveShouldSignOut",
+      "label": "HourlyLeaveShouldSignOut",
+      "section": null,
+      "aliases": [
+        "loc:HourlyLeaveShouldSignOut",
+        "dom:TimeSettings_HourlyLeaveShouldSignOut"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.RestrictUnpaidleaveIfAnnualleaveAvailable",
+      "label": "RestrictUnpaidleaveIfAnnualleaveAvailable",
+      "section": null,
+      "aliases": [
+        "loc:RestrictUnpaidleaveIfAnnualleaveAvailable",
+        "dom:TimeSettings_RestrictUnpaidleaveIfAnnualleaveAvailable"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AllowPaidleaveBackdateEntry",
+      "label": "AllowPaidleaveBackdateEntry",
+      "section": null,
+      "aliases": [
+        "loc:AllowPaidleaveBackdateEntry",
+        "dom:TimeSettings_AllowPaidleaveBackdateEntry"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.SickLeaveAttachMandatory",
+      "label": "SickLeaveAttachMandatory",
+      "section": null,
+      "aliases": [
+        "loc:SickLeaveAttachMandatory",
+        "dom:TimeSettings_SickLeaveAttachMandatory"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableAutoReturnInConsecutiveLeave",
+      "label": "EnableAutoReturnInConsecutiveLeave",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoReturnInConsecutiveLeave",
+        "dom:TimeSettings_EnableAutoReturnInConsecutiveLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AllowFutureDatedReturnFromLeave",
+      "label": "AllowFutureDatedReturnFromLeave",
+      "section": null,
+      "aliases": [
+        "loc:AllowFutureDatedReturnFromLeave",
+        "dom:TimeSettings_AllowFutureDatedReturnFromLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableAutoHalfDayLeave",
+      "label": "EnableAutoHalfDayLeave",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoHalfDayLeave",
+        "dom:TimeSettings_EnableAutoHalfDayLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableSettleFractionalLeaveBalance",
+      "label": "EnableSettleFractionalLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:EnableSettleFractionalLeaveBalance",
+        "dom:TimeSettings_EnableSettleFractionalLeaveBalance"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableBookingQuotaInLeaveRequest",
+      "label": "EnableBookingQuotaInLeaveRequest",
+      "section": null,
+      "aliases": [
+        "loc:EnableBookingQuotaInLeaveRequest",
+        "dom:TimeSettings_EnableBookingQuotaInLeaveRequest"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.LeaveDeductionStartMonth",
+      "label": "LeaveDeductionStartMonth",
+      "section": null,
+      "aliases": [
+        "loc:LeaveDeductionStartMonth",
+        "dom:TimeSettings_LeaveDeductionStartMonth"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.ForfeitRule",
+      "label": "ForfeitRule",
+      "section": null,
+      "aliases": [
+        "loc:ForfeitRule",
+        "dom:TimeSettings_ForfeitRule"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، شهري، سنوي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AbsenceViolationRuleId",
+      "label": "AbsenceViolationRuleId",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceViolationRuleId",
+        "dom:TimeSettings_AbsenceViolationRuleId"
+      ],
+      "rules": "اختياري. يُختار من قائمة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AbsenceViolationEffectiveDate",
+      "label": "AbsenceViolationEffectiveDate",
+      "section": null,
+      "aliases": [
+        "loc:AbsenceViolationEffectiveDate",
+        "dom:TimeSettings_AbsenceViolationEffectiveDate"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableOvertimeInTimeEngine",
+      "label": "EnableOvertimeInTimeEngine",
+      "section": null,
+      "aliases": [
+        "loc:EnableOvertimeInTimeEngine",
+        "dom:TimeSettings_EnableOvertimeInTimeEngine"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableIsTravelling",
+      "label": "EnableIsTravelling",
+      "section": null,
+      "aliases": [
+        "loc:EnableIsTravelling",
+        "dom:TimeSettings_EnableIsTravelling"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnablePayFullWithPayroll",
+      "label": "EnablePayFullWithPayroll",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayFullWithPayroll",
+        "dom:TimeSettings_EnablePayFullWithPayroll"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.EnableTimeRegisterApproval",
+      "label": "EnableTimeRegisterApproval",
+      "section": null,
+      "aliases": [
+        "loc:EnableTimeRegisterApproval",
+        "dom:TimeSettings_EnableTimeRegisterApproval"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageTimeSettings.AutoApproveTimeLog",
+      "label": "AutoApproveTimeLog",
+      "section": null,
+      "aliases": [
+        "loc:AutoApproveTimeLog",
+        "dom:TimeSettings_AutoApproveTimeLog"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

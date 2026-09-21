@@ -1,0 +1,43 @@
+{
+  "helpId": "sys.notification-settings.edit",
+  "lang": "ar",
+  "title": "Notification settings",
+  "entity": "HCMv3.SystemSettings.ManageNotificationSettings",
+  "overviewHtml": "<p>إعدادات الإشعارات.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:DisableNotificationWindow": "ManageNotificationSettings.DisableNotificationWindow",
+    "dom:NotificationSettings_DisableNotificationWindow": "ManageNotificationSettings.DisableNotificationWindow",
+    "loc:AdvancePaymentReminderDateType": "ManageNotificationSettings.AdvancePaymentReminderDateType",
+    "dom:NotificationSettings_AdvancePaymentReminderDateType": "ManageNotificationSettings.AdvancePaymentReminderDateType"
+  },
+  "fields": [
+    {
+      "id": "ManageNotificationSettings.DisableNotificationWindow",
+      "label": "DisableNotificationWindow",
+      "section": null,
+      "aliases": [
+        "loc:DisableNotificationWindow",
+        "dom:NotificationSettings_DisableNotificationWindow"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت نافذة الإشعارات مخفية.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageNotificationSettings.AdvancePaymentReminderDateType",
+      "label": "AdvancePaymentReminderDateType",
+      "section": null,
+      "aliases": [
+        "loc:AdvancePaymentReminderDateType",
+        "dom:NotificationSettings_AdvancePaymentReminderDateType"
+      ],
+      "rules": "إلزامي. إحدى القيم: تاريخ بداية الإجازة، تاريخ دفع الإجازة.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> التاريخ الذي يُعدّ منه تذكير الدفعة المقدمة إلى الوراء.</p><p><strong>مثال.</strong> تاريخ بداية الإجازة</p><p><strong>لماذا يهم.</strong> يُرسل التذكير بالإجازة المدفوعة قبل عدد محدد من الأيام من تاريخ بداية الإجازة أو من تاريخ دفعها، بحسب الاختيار هنا.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

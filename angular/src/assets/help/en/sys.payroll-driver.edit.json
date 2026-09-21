@@ -1,0 +1,43 @@
+{
+  "helpId": "sys.payroll-driver.edit",
+  "lang": "en",
+  "title": "Payroll drivers — Create / Edit",
+  "entity": "HCMv3.SystemSettings.PayrollDriver",
+  "overviewHtml": "<p>A per-country payroll setting. Not read at present: the leave-deduction behaviour it names is taken from <strong>Time Settings</strong>, and nothing reads this list.</p>",
+  "aliasIndex": {
+    "loc:CountryId": "PayrollDriver.CountryId",
+    "dom:PayrollDriver_CountryId": "PayrollDriver.CountryId",
+    "loc:LeaveDeductionStartMonth": "PayrollDriver.LeaveDeductionStartMonth",
+    "dom:PayrollDriver_LeaveDeductionStartMonth": "PayrollDriver.LeaveDeductionStartMonth"
+  },
+  "fields": [
+    {
+      "id": "PayrollDriver.CountryId",
+      "label": "CountryId",
+      "section": "PayrollDrivers",
+      "aliases": [
+        "loc:CountryId",
+        "dom:PayrollDriver_CountryId"
+      ],
+      "rules": "Required. Chosen from a list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The country the setting is for.</p><p><strong>Example.</strong> Kuwait</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "PayrollDriver.LeaveDeductionStartMonth",
+      "label": "LeaveDeductionStartMonth",
+      "section": "PayrollDrivers",
+      "aliases": [
+        "loc:LeaveDeductionStartMonth",
+        "dom:PayrollDriver_LeaveDeductionStartMonth"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether leave is deducted from the month it starts in.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

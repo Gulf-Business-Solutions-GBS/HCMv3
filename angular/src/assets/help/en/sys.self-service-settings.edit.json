@@ -1,0 +1,331 @@
+{
+  "helpId": "sys.self-service-settings.edit",
+  "lang": "en",
+  "title": "Self service settings",
+  "entity": "HCMv3.SystemSettings.ManageSelfServiceSettings",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
+    "dom:SelfServiceSettings_RedirectAfterWFApproval": "ManageSelfServiceSettings.RedirectAfterWFApproval",
+    "loc:DefaultLoginPage": "ManageSelfServiceSettings.DefaultLoginPage",
+    "dom:SelfServiceSettings_DefaultLoginPage": "ManageSelfServiceSettings.DefaultLoginPage",
+    "loc:CaptchaKey": "ManageSelfServiceSettings.CaptchaKey",
+    "dom:SelfServiceSettings_CaptchaKey": "ManageSelfServiceSettings.CaptchaKey",
+    "loc:EmailNotification": "ManageSelfServiceSettings.EmailNotification",
+    "dom:SelfServiceSettings_EmailNotification": "ManageSelfServiceSettings.EmailNotification",
+    "loc:ShowEmployeeInfo": "ManageSelfServiceSettings.ShowEmployeeInfo",
+    "dom:SelfServiceSettings_ShowEmployeeInfo": "ManageSelfServiceSettings.ShowEmployeeInfo",
+    "loc:IsAttachmentAllowed": "ManageSelfServiceSettings.IsAttachmentAllowed",
+    "dom:SelfServiceSettings_IsAttachmentAllowed": "ManageSelfServiceSettings.IsAttachmentAllowed",
+    "loc:AllowPunchOutsideRange": "ManageSelfServiceSettings.AllowPunchOutsideRange",
+    "dom:SelfServiceSettings_AllowPunchOutsideRange": "ManageSelfServiceSettings.AllowPunchOutsideRange",
+    "loc:AutoLogoutAfterPunch": "ManageSelfServiceSettings.AutoLogoutAfterPunch",
+    "dom:SelfServiceSettings_AutoLogoutAfterPunch": "ManageSelfServiceSettings.AutoLogoutAfterPunch",
+    "loc:AllowGeolocationSelfie": "ManageSelfServiceSettings.AllowGeolocationSelfie",
+    "dom:SelfServiceSettings_AllowGeolocationSelfie": "ManageSelfServiceSettings.AllowGeolocationSelfie",
+    "loc:HideGeolocationInfo": "ManageSelfServiceSettings.HideGeolocationInfo",
+    "dom:SelfServiceSettings_HideGeolocationInfo": "ManageSelfServiceSettings.HideGeolocationInfo",
+    "loc:HideGeolocationPunchInfo": "ManageSelfServiceSettings.HideGeolocationPunchInfo",
+    "dom:SelfServiceSettings_HideGeolocationPunchInfo": "ManageSelfServiceSettings.HideGeolocationPunchInfo",
+    "loc:ShowLeaveInfo": "ManageSelfServiceSettings.ShowLeaveInfo",
+    "dom:SelfServiceSettings_ShowLeaveInfo": "ManageSelfServiceSettings.ShowLeaveInfo",
+    "loc:ShowCurrentLeaveBalance": "ManageSelfServiceSettings.ShowCurrentLeaveBalance",
+    "dom:SelfServiceSettings_ShowCurrentLeaveBalance": "ManageSelfServiceSettings.ShowCurrentLeaveBalance",
+    "loc:ShowUpdatedLeaveBalance": "ManageSelfServiceSettings.ShowUpdatedLeaveBalance",
+    "dom:SelfServiceSettings_ShowUpdatedLeaveBalance": "ManageSelfServiceSettings.ShowUpdatedLeaveBalance",
+    "loc:IsAdditionalUnpaidLeaveAllowed": "ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed",
+    "dom:SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed": "ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed",
+    "loc:ShowPaymentDate": "ManageSelfServiceSettings.ShowPaymentDate",
+    "dom:SelfServiceSettings_ShowPaymentDate": "ManageSelfServiceSettings.ShowPaymentDate",
+    "loc:EnablePayWithPayroll": "ManageSelfServiceSettings.EnablePayWithPayroll",
+    "dom:SelfServiceSettings_EnablePayWithPayroll": "ManageSelfServiceSettings.EnablePayWithPayroll",
+    "loc:EnablePayInAdvance": "ManageSelfServiceSettings.EnablePayInAdvance",
+    "dom:SelfServiceSettings_EnablePayInAdvance": "ManageSelfServiceSettings.EnablePayInAdvance",
+    "loc:IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
+    "dom:SelfServiceSettings_IsPassportWithdrawalRequired": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
+    "loc:PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
+    "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep"
+  },
+  "fields": [
+    {
+      "id": "ManageSelfServiceSettings.RedirectAfterWFApproval",
+      "label": "RedirectAfterWFApproval",
+      "section": null,
+      "aliases": [
+        "loc:RedirectAfterWFApproval",
+        "dom:SelfServiceSettings_RedirectAfterWFApproval"
+      ],
+      "rules": "Required. One of: Default, ListView, Dashboard.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.DefaultLoginPage",
+      "label": "DefaultLoginPage",
+      "section": null,
+      "aliases": [
+        "loc:DefaultLoginPage",
+        "dom:SelfServiceSettings_DefaultLoginPage"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.CaptchaKey",
+      "label": "CaptchaKey",
+      "section": null,
+      "aliases": [
+        "loc:CaptchaKey",
+        "dom:SelfServiceSettings_CaptchaKey"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.EmailNotification",
+      "label": "EmailNotification",
+      "section": null,
+      "aliases": [
+        "loc:EmailNotification",
+        "dom:SelfServiceSettings_EmailNotification"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.ShowEmployeeInfo",
+      "label": "ShowEmployeeInfo",
+      "section": null,
+      "aliases": [
+        "loc:ShowEmployeeInfo",
+        "dom:SelfServiceSettings_ShowEmployeeInfo"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.IsAttachmentAllowed",
+      "label": "IsAttachmentAllowed",
+      "section": null,
+      "aliases": [
+        "loc:IsAttachmentAllowed",
+        "dom:SelfServiceSettings_IsAttachmentAllowed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.AllowPunchOutsideRange",
+      "label": "AllowPunchOutsideRange",
+      "section": null,
+      "aliases": [
+        "loc:AllowPunchOutsideRange",
+        "dom:SelfServiceSettings_AllowPunchOutsideRange"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.AutoLogoutAfterPunch",
+      "label": "AutoLogoutAfterPunch",
+      "section": null,
+      "aliases": [
+        "loc:AutoLogoutAfterPunch",
+        "dom:SelfServiceSettings_AutoLogoutAfterPunch"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.AllowGeolocationSelfie",
+      "label": "AllowGeolocationSelfie",
+      "section": null,
+      "aliases": [
+        "loc:AllowGeolocationSelfie",
+        "dom:SelfServiceSettings_AllowGeolocationSelfie"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.HideGeolocationInfo",
+      "label": "HideGeolocationInfo",
+      "section": null,
+      "aliases": [
+        "loc:HideGeolocationInfo",
+        "dom:SelfServiceSettings_HideGeolocationInfo"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.HideGeolocationPunchInfo",
+      "label": "HideGeolocationPunchInfo",
+      "section": null,
+      "aliases": [
+        "loc:HideGeolocationPunchInfo",
+        "dom:SelfServiceSettings_HideGeolocationPunchInfo"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.ShowLeaveInfo",
+      "label": "ShowLeaveInfo",
+      "section": null,
+      "aliases": [
+        "loc:ShowLeaveInfo",
+        "dom:SelfServiceSettings_ShowLeaveInfo"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.ShowCurrentLeaveBalance",
+      "label": "ShowCurrentLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:ShowCurrentLeaveBalance",
+        "dom:SelfServiceSettings_ShowCurrentLeaveBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.ShowUpdatedLeaveBalance",
+      "label": "ShowUpdatedLeaveBalance",
+      "section": null,
+      "aliases": [
+        "loc:ShowUpdatedLeaveBalance",
+        "dom:SelfServiceSettings_ShowUpdatedLeaveBalance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.IsAdditionalUnpaidLeaveAllowed",
+      "label": "IsAdditionalUnpaidLeaveAllowed",
+      "section": null,
+      "aliases": [
+        "loc:IsAdditionalUnpaidLeaveAllowed",
+        "dom:SelfServiceSettings_IsAdditionalUnpaidLeaveAllowed"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.ShowPaymentDate",
+      "label": "ShowPaymentDate",
+      "section": null,
+      "aliases": [
+        "loc:ShowPaymentDate",
+        "dom:SelfServiceSettings_ShowPaymentDate"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.EnablePayWithPayroll",
+      "label": "EnablePayWithPayroll",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayWithPayroll",
+        "dom:SelfServiceSettings_EnablePayWithPayroll"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.EnablePayInAdvance",
+      "label": "EnablePayInAdvance",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayInAdvance",
+        "dom:SelfServiceSettings_EnablePayInAdvance"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.IsPassportWithdrawalRequired",
+      "label": "IsPassportWithdrawalRequired",
+      "section": null,
+      "aliases": [
+        "loc:IsPassportWithdrawalRequired",
+        "dom:SelfServiceSettings_IsPassportWithdrawalRequired"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManageSelfServiceSettings.PassportWithdrawalSubmissionStep",
+      "label": "PassportWithdrawalSubmissionStep",
+      "section": null,
+      "aliases": [
+        "loc:PassportWithdrawalSubmissionStep",
+        "dom:SelfServiceSettings_PassportWithdrawalSubmissionStep"
+      ],
+      "rules": "Optional. Whole number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> _TODO_</p><p><strong>Example.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

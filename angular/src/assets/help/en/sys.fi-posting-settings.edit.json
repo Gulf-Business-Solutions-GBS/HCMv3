@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.fi-posting-settings.edit",
+  "lang": "en",
+  "title": "FI posting settings",
+  "entity": "HCMv3.SystemSettings.ManageFIPostingSettings",
+  "overviewHtml": "<p>How payroll is posted to finance.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:SeparateProvisionPosting": "ManageFIPostingSettings.SeparateProvisionPosting",
+    "dom:FIPostingSettings_SeparateProvisionPosting": "ManageFIPostingSettings.SeparateProvisionPosting",
+    "loc:EnableAutoWageAccountEntry": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+    "dom:FIPostingSettings_EnableAutoWageAccountEntry": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+    "loc:AllowDuplicateCodeInCostElement": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+    "dom:FIPostingSettings_AllowDuplicateCodeInCostElement": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+    "loc:FIPostingAfterPayrollExit": "ManageFIPostingSettings.FiPostingAfterPayrollExit",
+    "dom:FIPostingSettings_FIPostingAfterPayrollExit": "ManageFIPostingSettings.FiPostingAfterPayrollExit"
+  },
+  "fields": [
+    {
+      "id": "ManageFIPostingSettings.SeparateProvisionPosting",
+      "label": "SeparateProvisionPosting",
+      "section": null,
+      "aliases": [
+        "loc:SeparateProvisionPosting",
+        "dom:FIPostingSettings_SeparateProvisionPosting"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether provisions are posted as a separate journal.</p><p><strong>Why it matters.</strong> Ticked, posting the journal voucher splits it in two: salary lines in one journal and provision lines (leave, indemnity, ticket provisions) in another. Unticked, everything goes into one salary journal.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.EnableAutoWageAccountEntry",
+      "label": "EnableAutoWageAccountEntry",
+      "section": null,
+      "aliases": [
+        "loc:EnableAutoWageAccountEntry",
+        "dom:FIPostingSettings_EnableAutoWageAccountEntry"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether wage accounts are created automatically.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.AllowDuplicateCodeInCostElement",
+      "label": "AllowDuplicateCodeInCostElement",
+      "section": null,
+      "aliases": [
+        "loc:AllowDuplicateCodeInCostElement",
+        "dom:FIPostingSettings_AllowDuplicateCodeInCostElement"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether two cost elements may share a code.</p><p><strong>Why it matters.</strong> Not read at present — changing it has no effect.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManageFIPostingSettings.FiPostingAfterPayrollExit",
+      "label": "FIPostingAfterPayrollExit",
+      "section": null,
+      "aliases": [
+        "loc:FIPostingAfterPayrollExit",
+        "dom:FIPostingSettings_FIPostingAfterPayrollExit"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether bank files may only be produced for closed payroll periods.</p><p><strong>Why it matters.</strong> Despite its name, it gates bank files: ticked, a bank file whose end date is after the payroll area's last closed period is refused. Unticked, bank files can be produced for any dates.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

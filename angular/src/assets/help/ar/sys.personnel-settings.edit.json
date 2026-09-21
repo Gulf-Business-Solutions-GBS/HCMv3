@@ -1,0 +1,75 @@
+{
+  "helpId": "sys.personnel-settings.edit",
+  "lang": "ar",
+  "title": "Personnel settings",
+  "entity": "HCMv3.SystemSettings.ManagePersonnelSettings",
+  "overviewHtml": "<p>إعدادات شؤون الموظفين.</p><p>لكل شركة سجل إعدادات واحد، ولا يمكن حذفه.</p>",
+  "aliasIndex": {
+    "loc:ProbationDaysCalculation": "ManagePersonnelSettings.ProbationDaysCalculation",
+    "dom:PersonnelSettings_ProbationDaysCalculation": "ManagePersonnelSettings.ProbationDaysCalculation",
+    "loc:MaxPhotoSize": "ManagePersonnelSettings.MaxPhotoSize",
+    "dom:PersonnelSettings_MaxPhotoSize": "ManagePersonnelSettings.MaxPhotoSize",
+    "loc:EnableSponsorGovtJobTitleQuota": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+    "dom:PersonnelSettings_EnableSponsorGovtJobTitleQuota": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+    "loc:AutoWageAssignOnHire": "ManagePersonnelSettings.AutoWageAssignOnHire",
+    "dom:PersonnelSettings_AutoWageAssignOnHire": "ManagePersonnelSettings.AutoWageAssignOnHire"
+  },
+  "fields": [
+    {
+      "id": "ManagePersonnelSettings.ProbationDaysCalculation",
+      "label": "ProbationDaysCalculation",
+      "section": null,
+      "aliases": [
+        "loc:ProbationDaysCalculation",
+        "dom:PersonnelSettings_ProbationDaysCalculation"
+      ],
+      "rules": "إلزامي. إحدى القيم: أيام التقويم، أيام العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أيام التجربة تُعدّ بأيام التقويم أو بأيام العمل.</p><p><strong>مثال.</strong> أيام التقويم</p><p><strong>لماذا يهم.</strong> لا يُدعم إلا <em>أيام التقويم</em>: فنهاية التجربة دائماً تاريخ الالتحاق مضافاً إليه أيام التجربة. ومع <em>أيام العمل</em> ترفض أداة إعادة احتساب التجربة العمل.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.MaxPhotoSize",
+      "label": "MaxPhotoSize",
+      "section": null,
+      "aliases": [
+        "loc:MaxPhotoSize",
+        "dom:PersonnelSettings_MaxPhotoSize"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أكبر صورة موظف يقبلها الاستيراد الجماعي للصور، بالكيلوبايت.</p><p><strong>مثال.</strong> <code>500</code></p><p><strong>لماذا يهم.</strong> القيمة 0 تستخدم القيمة الافتراضية للاستيراد. ولا يحدّ الصور المختارة في نموذج الموظف.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.EnableSponsorGovtJobTitleQuota",
+      "label": "EnableSponsorGovtJobTitleQuota",
+      "section": null,
+      "aliases": [
+        "loc:EnableSponsorGovtJobTitleQuota",
+        "dom:PersonnelSettings_EnableSponsorGovtJobTitleQuota"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت حصص المسميات الوظيفية للكفلاء تُحتسب.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ManagePersonnelSettings.AutoWageAssignOnHire",
+      "label": "AutoWageAssignOnHire",
+      "section": null,
+      "aliases": [
+        "loc:AutoWageAssignOnHire",
+        "dom:PersonnelSettings_AutoWageAssignOnHire"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما إذا كانت أنواع الأجور تُعيَّن تلقائياً عند تعيين موظف.</p><p><strong>لماذا يهم.</strong> لا يُقرأ حالياً — تغييره لا أثر له.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

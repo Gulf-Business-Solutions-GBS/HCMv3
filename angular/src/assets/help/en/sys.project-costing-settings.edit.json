@@ -1,0 +1,27 @@
+{
+  "helpId": "sys.project-costing-settings.edit",
+  "lang": "en",
+  "title": "Project costing settings",
+  "entity": "HCMv3.SystemSettings.ManageProjectCostingSettings",
+  "overviewHtml": "<p>Settings for project costing.</p><p>There is one settings record per company; it cannot be deleted.</p>",
+  "aliasIndex": {
+    "loc:CalculateNetPayProjectWise": "ManageProjectCostingSettings.CalculateNetPayProjectWise",
+    "dom:ProjectCostingSettings_CalculateNetPayProjectWise": "ManageProjectCostingSettings.CalculateNetPayProjectWise"
+  },
+  "fields": [
+    {
+      "id": "ManageProjectCostingSettings.CalculateNetPayProjectWise",
+      "label": "CalculateNetPayProjectWise",
+      "section": null,
+      "aliases": [
+        "loc:CalculateNetPayProjectWise",
+        "dom:ProjectCostingSettings_CalculateNetPayProjectWise"
+      ],
+      "rules": "Yes or no.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Whether net pay is spread across the employee's projects.</p><p><strong>Why it matters.</strong> Ticked, the project cost engine distributes net pay to projects as well as the individual wagetypes. Unticked, net pay is not costed to projects.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

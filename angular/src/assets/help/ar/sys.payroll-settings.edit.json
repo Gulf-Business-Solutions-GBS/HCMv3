@@ -1,0 +1,747 @@
+{
+  "helpId": "sys.payroll-settings.edit",
+  "lang": "ar",
+  "title": "Payroll settings",
+  "entity": "HCMv3.SystemSettings.ManagePayrollSettings",
+  "overviewHtml": "<p>_TODO_</p>",
+  "aliasIndex": {
+    "loc:ClientId": "ManagePayrollSettings.ClientId",
+    "dom:PayrollSettings_ClientId": "ManagePayrollSettings.ClientId",
+    "loc:DefaultWorkingHours": "ManagePayrollSettings.DefaultWorkingHours",
+    "dom:PayrollSettings_DefaultWorkingHours": "ManagePayrollSettings.DefaultWorkingHours",
+    "loc:DecimalInSalaryRegister": "ManagePayrollSettings.DecimalInSalaryRegister",
+    "dom:PayrollSettings_DecimalInSalaryRegister": "ManagePayrollSettings.DecimalInSalaryRegister",
+    "loc:Decimal6RoundingFrom": "ManagePayrollSettings.Decimal6RoundingFrom",
+    "dom:PayrollSettings_Decimal6RoundingFrom": "ManagePayrollSettings.Decimal6RoundingFrom",
+    "loc:PayslipSignature": "ManagePayrollSettings.PayslipSignature",
+    "dom:PayrollSettings_PayslipSignature": "ManagePayrollSettings.PayslipSignature",
+    "loc:RoundNetPay": "ManagePayrollSettings.RoundNetPay",
+    "dom:PayrollSettings_RoundNetPay": "ManagePayrollSettings.RoundNetPay",
+    "loc:EnablePayrollEngineAutorun": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+    "dom:PayrollSettings_EnablePayrollEngineAutorun": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+    "loc:AllowSimulationRun": "ManagePayrollSettings.AllowSimulationRun",
+    "dom:PayrollSettings_AllowSimulationRun": "ManagePayrollSettings.AllowSimulationRun",
+    "loc:DisableRetroCalculation": "ManagePayrollSettings.DisableRetroCalculation",
+    "dom:PayrollSettings_DisableRetroCalculation": "ManagePayrollSettings.DisableRetroCalculation",
+    "loc:LockSalaryRegisterOnPayrollExit": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+    "dom:PayrollSettings_LockSalaryRegisterOnPayrollExit": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+    "loc:DefaultLeavePaymentType": "ManagePayrollSettings.DefaultLeavePaymentType",
+    "dom:PayrollSettings_DefaultLeavePaymentType": "ManagePayrollSettings.DefaultLeavePaymentType",
+    "loc:LeaveAdvPaymentdateBefore15": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+    "dom:PayrollSettings_LeaveAdvPaymentdateBefore15": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+    "loc:LeaveAdvPaymentdateAfter15": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+    "dom:PayrollSettings_LeaveAdvPaymentdateAfter15": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+    "loc:LeaveProvisionAsPerCurrentSalary": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+    "dom:PayrollSettings_LeaveProvisionAsPerCurrentSalary": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+    "loc:EnableNotReturnFromLeaveLogic": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+    "dom:PayrollSettings_EnableNotReturnFromLeaveLogic": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+    "loc:GenerateRegisterOnNotReturnFromLeave": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+    "dom:PayrollSettings_GenerateRegisterOnNotReturnFromLeave": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+    "loc:ApplyAnnualleaveNoImpactLogic": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+    "dom:PayrollSettings_ApplyAnnualleaveNoImpactLogic": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+    "loc:FullMonthLeaveAdjForFixedDays": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+    "dom:PayrollSettings_FullMonthLeaveAdjForFixedDays": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+    "loc:PayLeaveAsPerCutoff": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+    "dom:PayrollSettings_PayLeaveAsPerCutoff": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+    "loc:RegularLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+    "dom:PayrollSettings_RegularLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+    "loc:FnFLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+    "dom:PayrollSettings_FnFLeaveEncashOnBasicPayOnly": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+    "loc:EnableBasicpayMoreThenFixedDays": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+    "dom:PayrollSettings_EnableBasicpayMoreThenFixedDays": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+    "loc:EnableUnpaidDedSlabWise": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+    "dom:PayrollSettings_EnableUnpaidDedSlabWise": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+    "loc:EnableFixedDaysLogicChange": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+    "dom:PayrollSettings_EnableFixedDaysLogicChange": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+    "loc:ChangePartialPeriodFactoringInFixedDaysBilling": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+    "dom:PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+    "loc:FixedToActualWhenLeaveOverlapOnMonthStart": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+    "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+    "loc:FixedToActualWhenLeaveOverlapOnMonthEnd": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+    "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+    "loc:FixedToActualWhenUpaidLeaveFound": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+    "dom:PayrollSettings_FixedToActualWhenUpaidLeaveFound": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+    "loc:FixedToActualWhenAbsentDayFound": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+    "dom:PayrollSettings_FixedToActualWhenAbsentDayFound": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+    "loc:PartialPeriodCutoffDayInFixedDaysBilling": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+    "dom:PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+    "loc:OvertimeHoursBasis": "ManagePayrollSettings.OvertimeHoursBasis",
+    "dom:PayrollSettings_OvertimeHoursBasis": "ManagePayrollSettings.OvertimeHoursBasis",
+    "loc:SocialSecurityRateRule": "ManagePayrollSettings.SocialSecurityRateRule",
+    "dom:PayrollSettings_SocialSecurityRateRule": "ManagePayrollSettings.SocialSecurityRateRule",
+    "loc:CarryAllowanceOnSalaryImport": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+    "dom:PayrollSettings_CarryAllowanceOnSalaryImport": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+    "loc:AllowHealthReimburseBalCarryFwd": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+    "dom:PayrollSettings_AllowHealthReimburseBalCarryFwd": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+    "loc:OffcycleBankFileCutoff": "ManagePayrollSettings.OffcycleBankFileCutoff",
+    "dom:PayrollSettings_OffcycleBankFileCutoff": "ManagePayrollSettings.OffcycleBankFileCutoff",
+    "loc:BankFileMinAmount": "ManagePayrollSettings.BankFileMinAmount",
+    "dom:PayrollSettings_BankFileMinAmount": "ManagePayrollSettings.BankFileMinAmount",
+    "loc:PickOffcyclePayment": "ManagePayrollSettings.PickOffcyclePayment",
+    "dom:PayrollSettings_PickOffcyclePayment": "ManagePayrollSettings.PickOffcyclePayment",
+    "loc:RunOffCycleForFutureDate": "ManagePayrollSettings.RunOffCycleForFutureDate",
+    "dom:PayrollSettings_RunOffCycleForFutureDate": "ManagePayrollSettings.RunOffCycleForFutureDate",
+    "loc:AutoUpdateLoanRecoveryEndDate": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+    "dom:PayrollSettings_AutoUpdateLoanRecoveryEndDate": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+    "loc:EnableEffectiveDateInRecPayment": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+    "dom:PayrollSettings_EnableEffectiveDateInRecPayment": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+    "loc:AllowDeleteBackdatedSalaryRegister": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+    "dom:PayrollSettings_AllowDeleteBackdatedSalaryRegister": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+    "loc:AutoFillFnFCompensation": "ManagePayrollSettings.AutoFillFnFCompensation",
+    "dom:PayrollSettings_AutoFillFnFCompensation": "ManagePayrollSettings.AutoFillFnFCompensation",
+    "loc:EditableAutoFillFnFCompensation": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+    "dom:PayrollSettings_EditableAutoFillFnFCompensation": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+    "loc:ShowBillingTypeInPaymentScreen": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+    "dom:PayrollSettings_ShowBillingTypeInPaymentScreen": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+    "loc:IncludeSalaryIncProvDiffInSalReg": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+    "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalReg": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+    "loc:IncludeSalaryIncProvDiffInSalRegEffDt": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt",
+    "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt"
+  },
+  "fields": [
+    {
+      "id": "ManagePayrollSettings.ClientId",
+      "label": "ClientId",
+      "section": null,
+      "aliases": [
+        "loc:ClientId",
+        "dom:PayrollSettings_ClientId"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.DefaultWorkingHours",
+      "label": "DefaultWorkingHours",
+      "section": null,
+      "aliases": [
+        "loc:DefaultWorkingHours",
+        "dom:PayrollSettings_DefaultWorkingHours"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.DecimalInSalaryRegister",
+      "label": "DecimalInSalaryRegister",
+      "section": null,
+      "aliases": [
+        "loc:DecimalInSalaryRegister",
+        "dom:PayrollSettings_DecimalInSalaryRegister"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.Decimal6RoundingFrom",
+      "label": "Decimal6RoundingFrom",
+      "section": null,
+      "aliases": [
+        "loc:Decimal6RoundingFrom",
+        "dom:PayrollSettings_Decimal6RoundingFrom"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.PayslipSignature",
+      "label": "PayslipSignature",
+      "section": null,
+      "aliases": [
+        "loc:PayslipSignature",
+        "dom:PayrollSettings_PayslipSignature"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.RoundNetPay",
+      "label": "RoundNetPay",
+      "section": null,
+      "aliases": [
+        "loc:RoundNetPay",
+        "dom:PayrollSettings_RoundNetPay"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnablePayrollEngineAutorun",
+      "label": "EnablePayrollEngineAutorun",
+      "section": null,
+      "aliases": [
+        "loc:EnablePayrollEngineAutorun",
+        "dom:PayrollSettings_EnablePayrollEngineAutorun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.AllowSimulationRun",
+      "label": "AllowSimulationRun",
+      "section": null,
+      "aliases": [
+        "loc:AllowSimulationRun",
+        "dom:PayrollSettings_AllowSimulationRun"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.DisableRetroCalculation",
+      "label": "DisableRetroCalculation",
+      "section": null,
+      "aliases": [
+        "loc:DisableRetroCalculation",
+        "dom:PayrollSettings_DisableRetroCalculation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.LockSalaryRegisterOnPayrollExit",
+      "label": "LockSalaryRegisterOnPayrollExit",
+      "section": null,
+      "aliases": [
+        "loc:LockSalaryRegisterOnPayrollExit",
+        "dom:PayrollSettings_LockSalaryRegisterOnPayrollExit"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.DefaultLeavePaymentType",
+      "label": "DefaultLeavePaymentType",
+      "section": null,
+      "aliases": [
+        "loc:DefaultLeavePaymentType",
+        "dom:PayrollSettings_DefaultLeavePaymentType"
+      ],
+      "rules": "إلزامي. إحدى القيم: لا شيء، الدفع مع الرواتب، الدفع مقدماً، الدفع كاملاً مع الرواتب.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveAdvPaymentdateBefore15",
+      "label": "LeaveAdvPaymentdateBefore15",
+      "section": null,
+      "aliases": [
+        "loc:LeaveAdvPaymentdateBefore15",
+        "dom:PayrollSettings_LeaveAdvPaymentdateBefore15"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveAdvPaymentdateAfter15",
+      "label": "LeaveAdvPaymentdateAfter15",
+      "section": null,
+      "aliases": [
+        "loc:LeaveAdvPaymentdateAfter15",
+        "dom:PayrollSettings_LeaveAdvPaymentdateAfter15"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.LeaveProvisionAsPerCurrentSalary",
+      "label": "LeaveProvisionAsPerCurrentSalary",
+      "section": null,
+      "aliases": [
+        "loc:LeaveProvisionAsPerCurrentSalary",
+        "dom:PayrollSettings_LeaveProvisionAsPerCurrentSalary"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnableNotReturnFromLeaveLogic",
+      "label": "EnableNotReturnFromLeaveLogic",
+      "section": null,
+      "aliases": [
+        "loc:EnableNotReturnFromLeaveLogic",
+        "dom:PayrollSettings_EnableNotReturnFromLeaveLogic"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.GenerateRegisterOnNotReturnFromLeave",
+      "label": "GenerateRegisterOnNotReturnFromLeave",
+      "section": null,
+      "aliases": [
+        "loc:GenerateRegisterOnNotReturnFromLeave",
+        "dom:PayrollSettings_GenerateRegisterOnNotReturnFromLeave"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.ApplyAnnualleaveNoImpactLogic",
+      "label": "ApplyAnnualleaveNoImpactLogic",
+      "section": null,
+      "aliases": [
+        "loc:ApplyAnnualleaveNoImpactLogic",
+        "dom:PayrollSettings_ApplyAnnualleaveNoImpactLogic"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FullMonthLeaveAdjForFixedDays",
+      "label": "FullMonthLeaveAdjForFixedDays",
+      "section": null,
+      "aliases": [
+        "loc:FullMonthLeaveAdjForFixedDays",
+        "dom:PayrollSettings_FullMonthLeaveAdjForFixedDays"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.PayLeaveAsPerCutoff",
+      "label": "PayLeaveAsPerCutoff",
+      "section": null,
+      "aliases": [
+        "loc:PayLeaveAsPerCutoff",
+        "dom:PayrollSettings_PayLeaveAsPerCutoff"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.RegularLeaveEncashOnBasicPayOnly",
+      "label": "RegularLeaveEncashOnBasicPayOnly",
+      "section": null,
+      "aliases": [
+        "loc:RegularLeaveEncashOnBasicPayOnly",
+        "dom:PayrollSettings_RegularLeaveEncashOnBasicPayOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FnFLeaveEncashOnBasicPayOnly",
+      "label": "FnFLeaveEncashOnBasicPayOnly",
+      "section": null,
+      "aliases": [
+        "loc:FnFLeaveEncashOnBasicPayOnly",
+        "dom:PayrollSettings_FnFLeaveEncashOnBasicPayOnly"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnableBasicpayMoreThenFixedDays",
+      "label": "EnableBasicpayMoreThenFixedDays",
+      "section": null,
+      "aliases": [
+        "loc:EnableBasicpayMoreThenFixedDays",
+        "dom:PayrollSettings_EnableBasicpayMoreThenFixedDays"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnableUnpaidDedSlabWise",
+      "label": "EnableUnpaidDedSlabWise",
+      "section": null,
+      "aliases": [
+        "loc:EnableUnpaidDedSlabWise",
+        "dom:PayrollSettings_EnableUnpaidDedSlabWise"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnableFixedDaysLogicChange",
+      "label": "EnableFixedDaysLogicChange",
+      "section": null,
+      "aliases": [
+        "loc:EnableFixedDaysLogicChange",
+        "dom:PayrollSettings_EnableFixedDaysLogicChange"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.ChangePartialPeriodFactoringInFixedDaysBilling",
+      "label": "ChangePartialPeriodFactoringInFixedDaysBilling",
+      "section": null,
+      "aliases": [
+        "loc:ChangePartialPeriodFactoringInFixedDaysBilling",
+        "dom:PayrollSettings_ChangePartialPeriodFactoringInFixedDaysBilling"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthStart",
+      "label": "FixedToActualWhenLeaveOverlapOnMonthStart",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenLeaveOverlapOnMonthStart",
+        "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthStart"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenLeaveOverlapOnMonthEnd",
+      "label": "FixedToActualWhenLeaveOverlapOnMonthEnd",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenLeaveOverlapOnMonthEnd",
+        "dom:PayrollSettings_FixedToActualWhenLeaveOverlapOnMonthEnd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenUpaidLeaveFound",
+      "label": "FixedToActualWhenUpaidLeaveFound",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenUpaidLeaveFound",
+        "dom:PayrollSettings_FixedToActualWhenUpaidLeaveFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.FixedToActualWhenAbsentDayFound",
+      "label": "FixedToActualWhenAbsentDayFound",
+      "section": null,
+      "aliases": [
+        "loc:FixedToActualWhenAbsentDayFound",
+        "dom:PayrollSettings_FixedToActualWhenAbsentDayFound"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.PartialPeriodCutoffDayInFixedDaysBilling",
+      "label": "PartialPeriodCutoffDayInFixedDaysBilling",
+      "section": null,
+      "aliases": [
+        "loc:PartialPeriodCutoffDayInFixedDaysBilling",
+        "dom:PayrollSettings_PartialPeriodCutoffDayInFixedDaysBilling"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.OvertimeHoursBasis",
+      "label": "OvertimeHoursBasis",
+      "section": null,
+      "aliases": [
+        "loc:OvertimeHoursBasis",
+        "dom:PayrollSettings_OvertimeHoursBasis"
+      ],
+      "rules": "إلزامي. إحدى القيم: ساعات ثابتة، ساعات الدوام.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.SocialSecurityRateRule",
+      "label": "SocialSecurityRateRule",
+      "section": null,
+      "aliases": [
+        "loc:SocialSecurityRateRule",
+        "dom:PayrollSettings_SocialSecurityRateRule"
+      ],
+      "rules": "إلزامي. إحدى القيم: الأجر والراتب، راتب العقد.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.CarryAllowanceOnSalaryImport",
+      "label": "CarryAllowanceOnSalaryImport",
+      "section": null,
+      "aliases": [
+        "loc:CarryAllowanceOnSalaryImport",
+        "dom:PayrollSettings_CarryAllowanceOnSalaryImport"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.AllowHealthReimburseBalCarryFwd",
+      "label": "AllowHealthReimburseBalCarryFwd",
+      "section": null,
+      "aliases": [
+        "loc:AllowHealthReimburseBalCarryFwd",
+        "dom:PayrollSettings_AllowHealthReimburseBalCarryFwd"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.OffcycleBankFileCutoff",
+      "label": "OffcycleBankFileCutoff",
+      "section": null,
+      "aliases": [
+        "loc:OffcycleBankFileCutoff",
+        "dom:PayrollSettings_OffcycleBankFileCutoff"
+      ],
+      "rules": "اختياري. رقم صحيح.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.BankFileMinAmount",
+      "label": "BankFileMinAmount",
+      "section": null,
+      "aliases": [
+        "loc:BankFileMinAmount",
+        "dom:PayrollSettings_BankFileMinAmount"
+      ],
+      "rules": "اختياري. رقم.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.PickOffcyclePayment",
+      "label": "PickOffcyclePayment",
+      "section": null,
+      "aliases": [
+        "loc:PickOffcyclePayment",
+        "dom:PayrollSettings_PickOffcyclePayment"
+      ],
+      "rules": "إلزامي. إحدى القيم: التاريخ الحالي، الشهر الحالي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.RunOffCycleForFutureDate",
+      "label": "RunOffCycleForFutureDate",
+      "section": null,
+      "aliases": [
+        "loc:RunOffCycleForFutureDate",
+        "dom:PayrollSettings_RunOffCycleForFutureDate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.AutoUpdateLoanRecoveryEndDate",
+      "label": "AutoUpdateLoanRecoveryEndDate",
+      "section": null,
+      "aliases": [
+        "loc:AutoUpdateLoanRecoveryEndDate",
+        "dom:PayrollSettings_AutoUpdateLoanRecoveryEndDate"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EnableEffectiveDateInRecPayment",
+      "label": "EnableEffectiveDateInRecPayment",
+      "section": null,
+      "aliases": [
+        "loc:EnableEffectiveDateInRecPayment",
+        "dom:PayrollSettings_EnableEffectiveDateInRecPayment"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.AllowDeleteBackdatedSalaryRegister",
+      "label": "AllowDeleteBackdatedSalaryRegister",
+      "section": null,
+      "aliases": [
+        "loc:AllowDeleteBackdatedSalaryRegister",
+        "dom:PayrollSettings_AllowDeleteBackdatedSalaryRegister"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.AutoFillFnFCompensation",
+      "label": "AutoFillFnFCompensation",
+      "section": null,
+      "aliases": [
+        "loc:AutoFillFnFCompensation",
+        "dom:PayrollSettings_AutoFillFnFCompensation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.EditableAutoFillFnFCompensation",
+      "label": "EditableAutoFillFnFCompensation",
+      "section": null,
+      "aliases": [
+        "loc:EditableAutoFillFnFCompensation",
+        "dom:PayrollSettings_EditableAutoFillFnFCompensation"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.ShowBillingTypeInPaymentScreen",
+      "label": "ShowBillingTypeInPaymentScreen",
+      "section": null,
+      "aliases": [
+        "loc:ShowBillingTypeInPaymentScreen",
+        "dom:PayrollSettings_ShowBillingTypeInPaymentScreen"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalReg",
+      "label": "IncludeSalaryIncProvDiffInSalReg",
+      "section": null,
+      "aliases": [
+        "loc:IncludeSalaryIncProvDiffInSalReg",
+        "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalReg"
+      ],
+      "rules": "نعم أو لا.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    },
+    {
+      "id": "ManagePayrollSettings.IncludeSalaryIncProvDiffInSalRegEffDt",
+      "label": "IncludeSalaryIncProvDiffInSalRegEffDt",
+      "section": null,
+      "aliases": [
+        "loc:IncludeSalaryIncProvDiffInSalRegEffDt",
+        "dom:PayrollSettings_IncludeSalaryIncProvDiffInSalRegEffDt"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> _TODO_</p><p><strong>مثال.</strong> _TODO_</p>",
+      "adminHtml": "",
+      "stub": true
+    }
+  ]
+}

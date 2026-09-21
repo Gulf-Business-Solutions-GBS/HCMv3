@@ -4109,6 +4109,335 @@
         }
       },
       "defaultSection": "YearlyTimeRegisters"
+    },
+    {
+      "helpId": "sys.payroll-driver.edit",
+      "title": "Payroll drivers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.PayrollDrivers.Create"
+      ],
+      "entity": {
+        "name": "PayrollDriver",
+        "fullName": "HCMv3.SystemSettings.PayrollDriver",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/PayrollDriver.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/payroll-drivers/create-or-edit-payroll-driver-modal.component.html"
+        }
+      },
+      "defaultSection": "PayrollDrivers"
+    },
+    {
+      "helpId": "sys.appraisal-settings.edit",
+      "title": "Appraisal settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageAppraisalSettings"
+      ],
+      "entity": {
+        "name": "ManageAppraisalSettings",
+        "fullName": "HCMv3.SystemSettings.ManageAppraisalSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageAppraisalSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-appraisal-settings/create-or-edit-manage-appraisal-settings-modal.component.html"
+        }
+      },
+      "service": "ManageAppraisalSettingsAppService",
+      "domPrefix": "AppraisalSettings"
+    },
+    {
+      "helpId": "sys.document-settings.edit",
+      "title": "Document settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageDocumentSettings"
+      ],
+      "entity": {
+        "name": "ManageDocumentSettings",
+        "fullName": "HCMv3.SystemSettings.ManageDocumentSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageDocumentSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-document-settings/create-or-edit-manage-document-settings-modal.component.html"
+        }
+      },
+      "service": "ManageDocumentSettingsAppService",
+      "domPrefix": "DocumentSettings"
+    },
+    {
+      "helpId": "sys.fi-posting-settings.edit",
+      "title": "FI posting settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageFIPostingSettings"
+      ],
+      "entity": {
+        "name": "ManageFIPostingSettings",
+        "fullName": "HCMv3.SystemSettings.ManageFIPostingSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageFIPostingSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-fi-posting-settings/create-or-edit-manage-fi-posting-settings-modal.component.html"
+        }
+      },
+      "service": "ManageFIPostingSettingsAppService",
+      "domPrefix": "FIPostingSettings"
+    },
+    {
+      "helpId": "sys.general-settings.edit",
+      "title": "General settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageGeneralSettings"
+      ],
+      "entity": {
+        "name": "ManageGeneralSettings",
+        "fullName": "HCMv3.SystemSettings.ManageGeneralSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageGeneralSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-general-settings/create-or-edit-manage-general-settings-modal.component.html"
+        }
+      },
+      "service": "ManageGeneralSettingsAppService",
+      "domPrefix": "GeneralSettings"
+    },
+    {
+      "helpId": "sys.notification-settings.edit",
+      "title": "Notification settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageNotificationSettings"
+      ],
+      "entity": {
+        "name": "ManageNotificationSettings",
+        "fullName": "HCMv3.SystemSettings.ManageNotificationSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageNotificationSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-notification-settings/create-or-edit-manage-notification-settings-modal.component.html"
+        }
+      },
+      "service": "ManageNotificationSettingsAppService",
+      "domPrefix": "NotificationSettings"
+    },
+    {
+      "helpId": "sys.org-settings.edit",
+      "title": "Organization settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageOrgSettings"
+      ],
+      "entity": {
+        "name": "ManageOrgSettings",
+        "fullName": "HCMv3.SystemSettings.ManageOrgSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageOrgSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-org-settings/create-or-edit-manage-org-settings-modal.component.html"
+        }
+      },
+      "service": "ManageOrgSettingsAppService",
+      "domPrefix": "OrgSettings"
+    },
+    {
+      "helpId": "sys.payroll-settings.edit",
+      "title": "Payroll settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManagePayrollSettings"
+      ],
+      "entity": {
+        "name": "ManagePayrollSettings",
+        "fullName": "HCMv3.SystemSettings.ManagePayrollSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManagePayrollSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-payroll-settings/create-or-edit-manage-payroll-settings-modal.component.html"
+        }
+      },
+      "service": "ManagePayrollSettingsAppService",
+      "domPrefix": "PayrollSettings"
+    },
+    {
+      "helpId": "sys.personnel-settings.edit",
+      "title": "Personnel settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManagePersonnelSettings"
+      ],
+      "entity": {
+        "name": "ManagePersonnelSettings",
+        "fullName": "HCMv3.SystemSettings.ManagePersonnelSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManagePersonnelSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-personnel-settings/create-or-edit-manage-personnel-settings-modal.component.html"
+        }
+      },
+      "service": "ManagePersonnelSettingsAppService",
+      "domPrefix": "PersonnelSettings"
+    },
+    {
+      "helpId": "sys.project-costing-settings.edit",
+      "title": "Project costing settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageProjectCostingSettings"
+      ],
+      "entity": {
+        "name": "ManageProjectCostingSettings",
+        "fullName": "HCMv3.SystemSettings.ManageProjectCostingSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageProjectCostingSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-project-costing-settings/create-or-edit-manage-project-costing-settings-modal.component.html"
+        }
+      },
+      "service": "ManageProjectCostingSettingsAppService",
+      "domPrefix": "ProjectCostingSettings"
+    },
+    {
+      "helpId": "sys.report-settings.edit",
+      "title": "Report Settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageReportSettings"
+      ],
+      "entity": {
+        "name": "ManageReportSettings",
+        "fullName": "HCMv3.SystemSettings.ManageReportSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageReportSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-report-settings/create-or-edit-manage-report-settings-modal.component.html"
+        }
+      },
+      "service": "ManageReportSettingsAppService",
+      "domPrefix": "ReportSettings"
+    },
+    {
+      "helpId": "sys.security-settings.edit",
+      "title": "Security settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageSecuritySettings"
+      ],
+      "entity": {
+        "name": "ManageSecuritySettings",
+        "fullName": "HCMv3.SystemSettings.ManageSecuritySettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageSecuritySettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-security-settings/create-or-edit-manage-security-settings-modal.component.html"
+        }
+      },
+      "service": "ManageSecuritySettingsAppService",
+      "domPrefix": "SecuritySettings"
+    },
+    {
+      "helpId": "sys.self-service-settings.edit",
+      "title": "Self service settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageSelfServiceSettings"
+      ],
+      "entity": {
+        "name": "ManageSelfServiceSettings",
+        "fullName": "HCMv3.SystemSettings.ManageSelfServiceSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageSelfServiceSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-self-service-settings/create-or-edit-manage-self-service-settings-modal.component.html"
+        }
+      },
+      "service": "ManageSelfServiceSettingsAppService",
+      "domPrefix": "SelfServiceSettings"
+    },
+    {
+      "helpId": "sys.time-settings.edit",
+      "title": "Time settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageTimeSettings"
+      ],
+      "entity": {
+        "name": "ManageTimeSettings",
+        "fullName": "HCMv3.SystemSettings.ManageTimeSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageTimeSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-time-settings/create-or-edit-manage-time-settings-modal.component.html"
+        }
+      },
+      "service": "ManageTimeSettingsAppService",
+      "domPrefix": "TimeSettings"
+    },
+    {
+      "helpId": "sys.workflow-settings.edit",
+      "title": "Workflow settings",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.SystemSettings.ManageWorkflowSettings"
+      ],
+      "entity": {
+        "name": "ManageWorkflowSettings",
+        "fullName": "HCMv3.SystemSettings.ManageWorkflowSettings",
+        "file": "aspnet-core/src/HCMv3.Core/SystemSettings/ManageWorkflowSettings.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/system-settings/manage-workflow-settings/create-or-edit-manage-workflow-settings-modal.component.html"
+        }
+      },
+      "service": "ManageWorkflowSettingsAppService",
+      "domPrefix": "WorkflowSettings"
     }
   ]
 }
