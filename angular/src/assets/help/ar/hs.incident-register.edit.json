@@ -1,0 +1,235 @@
+{
+  "helpId": "hs.incident-register.edit",
+  "lang": "ar",
+  "title": "سجلات الحوادث — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentRegister",
+  "overviewHtml": "<p>حادث أو إصابة أو حادث وشيك أو أي حادث سلامة آخر. وتُسجَّل عليه التحقيقات والمطالبات والإجراءات.</p>",
+  "aliasIndex": {
+    "loc:IncidentDate": "IncidentRegister.IncidentDate",
+    "dom:IncidentRegister_IncidentDate": "IncidentRegister.IncidentDate",
+    "loc:IncidentTime": "IncidentRegister.IncidentTime",
+    "dom:IncidentRegister_IncidentTime": "IncidentRegister.IncidentTime",
+    "loc:IncidentType": "IncidentRegister.IncidentTypeId",
+    "dom:IncidentRegister_IncidentTypeId": "IncidentRegister.IncidentTypeId",
+    "loc:Status": "IncidentRegister.StatusId",
+    "dom:IncidentRegister_StatusId": "IncidentRegister.StatusId",
+    "loc:Nature": "IncidentRegister.NatureId",
+    "dom:IncidentRegister_NatureId": "IncidentRegister.NatureId",
+    "loc:Severity": "IncidentRegister.SeverityId",
+    "dom:IncidentRegister_SeverityId": "IncidentRegister.SeverityId",
+    "loc:Location": "IncidentRegister.LocationId",
+    "dom:IncidentRegister_LocationId": "IncidentRegister.LocationId",
+    "loc:ReportedBy": "IncidentRegister.ReportedById",
+    "dom:IncidentRegister_ReportedById": "IncidentRegister.ReportedById",
+    "loc:PersonInvolved": "IncidentRegister.PersonInvolvedId",
+    "dom:IncidentRegister_PersonInvolvedId": "IncidentRegister.PersonInvolvedId",
+    "loc:AssignedTo": "IncidentRegister.AssignedToId",
+    "dom:IncidentRegister_AssignedToId": "IncidentRegister.AssignedToId",
+    "loc:OtherPeopleInvolved": "IncidentRegister.OtherPeopleInvolved",
+    "dom:IncidentRegister_OtherPeopleInvolved": "IncidentRegister.OtherPeopleInvolved",
+    "loc:DisabilityPercentage": "IncidentRegister.DisabilityPercentage",
+    "dom:IncidentRegister_DisabilityPercentage": "IncidentRegister.DisabilityPercentage",
+    "loc:Description": "IncidentRegister.Description",
+    "dom:IncidentRegister_Description": "IncidentRegister.Description",
+    "loc:Comments": "IncidentRegister.Comments",
+    "dom:IncidentRegister_Comments": "IncidentRegister.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentRegister.IncidentDate",
+      "label": "IncidentDate",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentDate",
+        "dom:IncidentRegister_IncidentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى وقع.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.IncidentTime",
+      "label": "IncidentTime",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentTime",
+        "dom:IncidentRegister_IncidentTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت من اليوم، إن كان معروفاً.</p><p><strong>مثال.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.IncidentTypeId",
+      "label": "IncidentType",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentType",
+        "dom:IncidentRegister_IncidentTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الحادث.</p><p><strong>مثال.</strong> انزلاق أو سقوط</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.StatusId",
+      "label": "Status",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:IncidentRegister_StatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة حالات الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة الحادث.</p><p><strong>مثال.</strong> قيد التحقيق</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.NatureId",
+      "label": "Nature",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Nature",
+        "dom:IncidentRegister_NatureId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة طبيعة الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> طبيعة الحادث.</p><p><strong>مثال.</strong> إصابة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.SeverityId",
+      "label": "Severity",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Severity",
+        "dom:IncidentRegister_SeverityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة درجات خطورة الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى خطورته.</p><p><strong>مثال.</strong> بسيط</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.LocationId",
+      "label": "Location",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Location",
+        "dom:IncidentRegister_LocationId"
+      ],
+      "rules": "اختياري. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل، إن وُجد.</p><p><strong>مثال.</strong> المستودع الرئيسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.ReportedById",
+      "label": "ReportedBy",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:ReportedBy",
+        "dom:IncidentRegister_ReportedById"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من أبلغ عنه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.PersonInvolvedId",
+      "label": "PersonInvolved",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:PersonInvolved",
+        "dom:IncidentRegister_PersonInvolvedId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الموظف المعني.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:IncidentRegister_AssignedToId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتولى معالجته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.OtherPeopleInvolved",
+      "label": "OtherPeopleInvolved",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:OtherPeopleInvolved",
+        "dom:IncidentRegister_OtherPeopleInvolved"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> أي أشخاص آخرين معنيين، مثل الزوار أو المقاولين.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.DisabilityPercentage",
+      "label": "DisabilityPercentage",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:DisabilityPercentage",
+        "dom:IncidentRegister_DisabilityPercentage"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نسبة العجز الناتج عن الإصابة.</p><p><strong>مثال.</strong> 10%</p><p><strong>لماذا يهم.</strong> يُحفظ كنص للتسجيل، ولا يُستخدم في أي حساب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.Description",
+      "label": "Description",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:IncidentRegister_Description"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي حدث.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.Comments",
+      "label": "Comments",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentRegister_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

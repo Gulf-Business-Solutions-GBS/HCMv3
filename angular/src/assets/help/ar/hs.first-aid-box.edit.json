@@ -1,0 +1,91 @@
+{
+  "helpId": "hs.first-aid-box.edit",
+  "lang": "ar",
+  "title": "إدارة الصحة والسلامة — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.FirstAidBox",
+  "overviewHtml": "<p>صندوق إسعافات أولية، ومكانه ومن يتولى رعايته. وتُدرج أدويته كتفاصيل. اترك الرمز فارغاً ليُعطى الرقم التالي.</p>",
+  "aliasIndex": {
+    "loc:Code": "FirstAidBox.Code",
+    "dom:FirstAidBox_Code": "FirstAidBox.Code",
+    "loc:Location": "FirstAidBox.LocationId",
+    "dom:FirstAidBox_LocationId": "FirstAidBox.LocationId",
+    "loc:AllocationDate": "FirstAidBox.AllocationDate",
+    "dom:FirstAidBox_AllocationDate": "FirstAidBox.AllocationDate",
+    "loc:ResponsiblePerson": "FirstAidBox.ResponsiblePersonId",
+    "dom:FirstAidBox_ResponsiblePersonId": "FirstAidBox.ResponsiblePersonId",
+    "loc:Comments": "FirstAidBox.Comments",
+    "dom:FirstAidBox_Comments": "FirstAidBox.Comments"
+  },
+  "fields": [
+    {
+      "id": "FirstAidBox.Code",
+      "label": "Code",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Code",
+        "dom:FirstAidBox_Code"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> رمز قصير يعرّف هذا البند في قائمته.</p><p><strong>مثال.</strong> <code>001</code></p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.LocationId",
+      "label": "Location",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Location",
+        "dom:FirstAidBox_LocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل.</p><p><strong>مثال.</strong> المستودع الرئيسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.AllocationDate",
+      "label": "AllocationDate",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:AllocationDate",
+        "dom:FirstAidBox_AllocationDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى وُضع الصندوق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.ResponsiblePersonId",
+      "label": "ResponsiblePerson",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:ResponsiblePerson",
+        "dom:FirstAidBox_ResponsiblePersonId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتولى رعاية الصندوق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "FirstAidBox.Comments",
+      "label": "Comments",
+      "section": "HealthAndSafetyManagement",
+      "aliases": [
+        "loc:Comments",
+        "dom:FirstAidBox_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

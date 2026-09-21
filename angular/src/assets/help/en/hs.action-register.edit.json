@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.action-register.edit",
+  "lang": "en",
+  "title": "Action Registers — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.ActionRegister",
+  "overviewHtml": "<p>A corrective or preventive action. As in the old system, both an incident and a risk must be chosen.</p>",
+  "aliasIndex": {
+    "loc:ActionDate": "ActionRegister.ActionDate",
+    "dom:ActionRegister_ActionDate": "ActionRegister.ActionDate",
+    "loc:Status": "ActionRegister.StatusId",
+    "dom:ActionRegister_StatusId": "ActionRegister.StatusId",
+    "loc:Incident": "ActionRegister.IncidentId",
+    "dom:ActionRegister_IncidentId": "ActionRegister.IncidentId",
+    "loc:Risk": "ActionRegister.RiskId",
+    "dom:ActionRegister_RiskId": "ActionRegister.RiskId",
+    "loc:AssignedTo": "ActionRegister.AssignedToId",
+    "dom:ActionRegister_AssignedToId": "ActionRegister.AssignedToId",
+    "loc:Description": "ActionRegister.Description",
+    "dom:ActionRegister_Description": "ActionRegister.Description"
+  },
+  "fields": [
+    {
+      "id": "ActionRegister.ActionDate",
+      "label": "ActionDate",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:ActionDate",
+        "dom:ActionRegister_ActionDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the action was raised.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.StatusId",
+      "label": "Status",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:ActionRegister_StatusId"
+      ],
+      "rules": "Optional. Chosen from Action Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the action stands.</p><p><strong>Example.</strong> In progress</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.IncidentId",
+      "label": "Incident",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Incident",
+        "dom:ActionRegister_IncidentId"
+      ],
+      "rules": "Required. Chosen from Incident Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The incident this belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.RiskId",
+      "label": "Risk",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Risk",
+        "dom:ActionRegister_RiskId"
+      ],
+      "rules": "Required. Chosen from Risk Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The risk this belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:ActionRegister_AssignedToId"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who must carry it out.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "ActionRegister.Description",
+      "label": "Description",
+      "section": "ActionRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:ActionRegister_Description"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What is to be done.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

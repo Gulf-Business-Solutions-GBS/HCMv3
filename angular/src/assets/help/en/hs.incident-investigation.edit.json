@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.incident-investigation.edit",
+  "lang": "en",
+  "title": "Incident Investigations — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentInvestigation",
+  "overviewHtml": "<p>An investigation into an incident and its root cause.</p>",
+  "aliasIndex": {
+    "loc:InvestigationDate": "IncidentInvestigation.InvestigationDate",
+    "dom:IncidentInvestigation_InvestigationDate": "IncidentInvestigation.InvestigationDate",
+    "loc:InvestigationTime": "IncidentInvestigation.InvestigationTime",
+    "dom:IncidentInvestigation_InvestigationTime": "IncidentInvestigation.InvestigationTime",
+    "loc:Incident": "IncidentInvestigation.IncidentId",
+    "dom:IncidentInvestigation_IncidentId": "IncidentInvestigation.IncidentId",
+    "loc:RootCause": "IncidentInvestigation.RootCauseId",
+    "dom:IncidentInvestigation_RootCauseId": "IncidentInvestigation.RootCauseId",
+    "loc:RootCauseAnalysis": "IncidentInvestigation.RootCauseAnalysis",
+    "dom:IncidentInvestigation_RootCauseAnalysis": "IncidentInvestigation.RootCauseAnalysis",
+    "loc:Comments": "IncidentInvestigation.Comments",
+    "dom:IncidentInvestigation_Comments": "IncidentInvestigation.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentInvestigation.InvestigationDate",
+      "label": "InvestigationDate",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:InvestigationDate",
+        "dom:IncidentInvestigation_InvestigationDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the investigation took place.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.InvestigationTime",
+      "label": "InvestigationTime",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:InvestigationTime",
+        "dom:IncidentInvestigation_InvestigationTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of day, if known.</p><p><strong>Example.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.IncidentId",
+      "label": "Incident",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:Incident",
+        "dom:IncidentInvestigation_IncidentId"
+      ],
+      "rules": "Required. Chosen from Incident Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The incident this belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.RootCauseId",
+      "label": "RootCause",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:RootCause",
+        "dom:IncidentInvestigation_RootCauseId"
+      ],
+      "rules": "Required. Chosen from Investigation Root Cause master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The main cause found.</p><p><strong>Example.</strong> Wet floor not signed</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.RootCauseAnalysis",
+      "label": "RootCauseAnalysis",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:RootCauseAnalysis",
+        "dom:IncidentInvestigation_RootCauseAnalysis"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How the cause was reached.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.Comments",
+      "label": "Comments",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentInvestigation_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

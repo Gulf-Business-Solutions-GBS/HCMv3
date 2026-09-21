@@ -1,0 +1,43 @@
+{
+  "helpId": "hs.site-audit-detail.edit",
+  "lang": "ar",
+  "title": "تفاصيل تدقيق المواقع — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.SiteAuditDetail",
+  "overviewHtml": "<p>ملاحظة واحدة من تدقيق موقع.</p>",
+  "aliasIndex": {
+    "loc:Observation": "SiteAuditDetail.Observation",
+    "dom:SiteAuditDetail_Observation": "SiteAuditDetail.Observation",
+    "loc:CorrectionAction": "SiteAuditDetail.CorrectionAction",
+    "dom:SiteAuditDetail_CorrectionAction": "SiteAuditDetail.CorrectionAction"
+  },
+  "fields": [
+    {
+      "id": "SiteAuditDetail.Observation",
+      "label": "Observation",
+      "section": "SiteAuditDetails",
+      "aliases": [
+        "loc:Observation",
+        "dom:SiteAuditDetail_Observation"
+      ],
+      "rules": "إلزامي.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما الذي وُجد.</p><p><strong>مثال.</strong> مخرج الطوارئ مسدود بالمنصات</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAuditDetail.CorrectionAction",
+      "label": "CorrectionAction",
+      "section": "SiteAuditDetails",
+      "aliases": [
+        "loc:CorrectionAction",
+        "dom:SiteAuditDetail_CorrectionAction"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يجب فعله حياله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

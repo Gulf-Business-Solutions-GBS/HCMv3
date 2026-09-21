@@ -1,0 +1,235 @@
+{
+  "helpId": "hs.incident-register.edit",
+  "lang": "en",
+  "title": "Incident Registers — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentRegister",
+  "overviewHtml": "<p>An accident, injury, near miss or other safety incident. Investigations, claims and actions are recorded against it.</p>",
+  "aliasIndex": {
+    "loc:IncidentDate": "IncidentRegister.IncidentDate",
+    "dom:IncidentRegister_IncidentDate": "IncidentRegister.IncidentDate",
+    "loc:IncidentTime": "IncidentRegister.IncidentTime",
+    "dom:IncidentRegister_IncidentTime": "IncidentRegister.IncidentTime",
+    "loc:IncidentType": "IncidentRegister.IncidentTypeId",
+    "dom:IncidentRegister_IncidentTypeId": "IncidentRegister.IncidentTypeId",
+    "loc:Status": "IncidentRegister.StatusId",
+    "dom:IncidentRegister_StatusId": "IncidentRegister.StatusId",
+    "loc:Nature": "IncidentRegister.NatureId",
+    "dom:IncidentRegister_NatureId": "IncidentRegister.NatureId",
+    "loc:Severity": "IncidentRegister.SeverityId",
+    "dom:IncidentRegister_SeverityId": "IncidentRegister.SeverityId",
+    "loc:Location": "IncidentRegister.LocationId",
+    "dom:IncidentRegister_LocationId": "IncidentRegister.LocationId",
+    "loc:ReportedBy": "IncidentRegister.ReportedById",
+    "dom:IncidentRegister_ReportedById": "IncidentRegister.ReportedById",
+    "loc:PersonInvolved": "IncidentRegister.PersonInvolvedId",
+    "dom:IncidentRegister_PersonInvolvedId": "IncidentRegister.PersonInvolvedId",
+    "loc:AssignedTo": "IncidentRegister.AssignedToId",
+    "dom:IncidentRegister_AssignedToId": "IncidentRegister.AssignedToId",
+    "loc:OtherPeopleInvolved": "IncidentRegister.OtherPeopleInvolved",
+    "dom:IncidentRegister_OtherPeopleInvolved": "IncidentRegister.OtherPeopleInvolved",
+    "loc:DisabilityPercentage": "IncidentRegister.DisabilityPercentage",
+    "dom:IncidentRegister_DisabilityPercentage": "IncidentRegister.DisabilityPercentage",
+    "loc:Description": "IncidentRegister.Description",
+    "dom:IncidentRegister_Description": "IncidentRegister.Description",
+    "loc:Comments": "IncidentRegister.Comments",
+    "dom:IncidentRegister_Comments": "IncidentRegister.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentRegister.IncidentDate",
+      "label": "IncidentDate",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentDate",
+        "dom:IncidentRegister_IncidentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it happened.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.IncidentTime",
+      "label": "IncidentTime",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentTime",
+        "dom:IncidentRegister_IncidentTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of day, if known.</p><p><strong>Example.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.IncidentTypeId",
+      "label": "IncidentType",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:IncidentType",
+        "dom:IncidentRegister_IncidentTypeId"
+      ],
+      "rules": "Required. Chosen from Incident Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of incident.</p><p><strong>Example.</strong> Slip or fall</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.StatusId",
+      "label": "Status",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:IncidentRegister_StatusId"
+      ],
+      "rules": "Optional. Chosen from Incident Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the incident stands.</p><p><strong>Example.</strong> Under investigation</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.NatureId",
+      "label": "Nature",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Nature",
+        "dom:IncidentRegister_NatureId"
+      ],
+      "rules": "Required. Chosen from Incident Nature master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The nature of the incident.</p><p><strong>Example.</strong> Injury</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.SeverityId",
+      "label": "Severity",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Severity",
+        "dom:IncidentRegister_SeverityId"
+      ],
+      "rules": "Required. Chosen from Incident Severity master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How serious it was.</p><p><strong>Example.</strong> Minor</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.LocationId",
+      "label": "Location",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Location",
+        "dom:IncidentRegister_LocationId"
+      ],
+      "rules": "Optional. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location, if any.</p><p><strong>Example.</strong> Main warehouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.ReportedById",
+      "label": "ReportedBy",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:ReportedBy",
+        "dom:IncidentRegister_ReportedById"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who reported it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.PersonInvolvedId",
+      "label": "PersonInvolved",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:PersonInvolved",
+        "dom:IncidentRegister_PersonInvolvedId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The employee involved.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:IncidentRegister_AssignedToId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is dealing with it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.OtherPeopleInvolved",
+      "label": "OtherPeopleInvolved",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:OtherPeopleInvolved",
+        "dom:IncidentRegister_OtherPeopleInvolved"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Anyone else involved, such as visitors or contractors.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.DisabilityPercentage",
+      "label": "DisabilityPercentage",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:DisabilityPercentage",
+        "dom:IncidentRegister_DisabilityPercentage"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The disability resulting from an injury, as a percentage.</p><p><strong>Example.</strong> 10%</p><p><strong>Why it matters.</strong> Kept as text for the record; it is not used in any calculation.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.Description",
+      "label": "Description",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:IncidentRegister_Description"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What happened.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentRegister.Comments",
+      "label": "Comments",
+      "section": "IncidentRegisters",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentRegister_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.site-audit.edit",
+  "lang": "en",
+  "title": "Site Audits — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.SiteAudit",
+  "overviewHtml": "<p>A safety inspection of a site. Its observations are listed as details.</p>",
+  "aliasIndex": {
+    "loc:AuditDate": "SiteAudit.AuditDate",
+    "dom:SiteAudit_AuditDate": "SiteAudit.AuditDate",
+    "loc:AuditTime": "SiteAudit.AuditTime",
+    "dom:SiteAudit_AuditTime": "SiteAudit.AuditTime",
+    "loc:ReassessmentDate": "SiteAudit.ReassessmentDate",
+    "dom:SiteAudit_ReassessmentDate": "SiteAudit.ReassessmentDate",
+    "loc:Location": "SiteAudit.LocationId",
+    "dom:SiteAudit_LocationId": "SiteAudit.LocationId",
+    "loc:ConductedBy": "SiteAudit.ConductedById",
+    "dom:SiteAudit_ConductedById": "SiteAudit.ConductedById",
+    "loc:Comments": "SiteAudit.Comments",
+    "dom:SiteAudit_Comments": "SiteAudit.Comments"
+  },
+  "fields": [
+    {
+      "id": "SiteAudit.AuditDate",
+      "label": "AuditDate",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:AuditDate",
+        "dom:SiteAudit_AuditDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the audit took place.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.AuditTime",
+      "label": "AuditTime",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:AuditTime",
+        "dom:SiteAudit_AuditTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of day, if known.</p><p><strong>Example.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.ReassessmentDate",
+      "label": "ReassessmentDate",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:ReassessmentDate",
+        "dom:SiteAudit_ReassessmentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the site should be audited again.</p><p><strong>Why it matters.</strong> A record only: no reminder is sent when it comes round.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.LocationId",
+      "label": "Location",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:Location",
+        "dom:SiteAudit_LocationId"
+      ],
+      "rules": "Required. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location.</p><p><strong>Example.</strong> Main warehouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.ConductedById",
+      "label": "ConductedBy",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:ConductedBy",
+        "dom:SiteAudit_ConductedById"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who carried out the audit.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "SiteAudit.Comments",
+      "label": "Comments",
+      "section": "SiteAudits",
+      "aliases": [
+        "loc:Comments",
+        "dom:SiteAudit_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

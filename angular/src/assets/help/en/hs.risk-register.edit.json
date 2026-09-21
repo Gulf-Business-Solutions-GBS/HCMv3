@@ -1,0 +1,219 @@
+{
+  "helpId": "hs.risk-register.edit",
+  "lang": "en",
+  "title": "Risk Registers — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.RiskRegister",
+  "overviewHtml": "<p>A workplace hazard, how likely and how serious it is, and what is being done about it.</p>",
+  "aliasIndex": {
+    "loc:ReportingDate": "RiskRegister.ReportingDate",
+    "dom:RiskRegister_ReportingDate": "RiskRegister.ReportingDate",
+    "loc:ReportingTime": "RiskRegister.ReportingTime",
+    "dom:RiskRegister_ReportingTime": "RiskRegister.ReportingTime",
+    "loc:RiskType": "RiskRegister.RiskTypeId",
+    "dom:RiskRegister_RiskTypeId": "RiskRegister.RiskTypeId",
+    "loc:ReassessmentDate": "RiskRegister.ReassessmentDate",
+    "dom:RiskRegister_ReassessmentDate": "RiskRegister.ReassessmentDate",
+    "loc:Impact": "RiskRegister.ImpactId",
+    "dom:RiskRegister_ImpactId": "RiskRegister.ImpactId",
+    "loc:Possibility": "RiskRegister.PossibilityId",
+    "dom:RiskRegister_PossibilityId": "RiskRegister.PossibilityId",
+    "loc:Location": "RiskRegister.LocationId",
+    "dom:RiskRegister_LocationId": "RiskRegister.LocationId",
+    "loc:Status": "RiskRegister.StatusId",
+    "dom:RiskRegister_StatusId": "RiskRegister.StatusId",
+    "loc:ReportedBy": "RiskRegister.ReportedById",
+    "dom:RiskRegister_ReportedById": "RiskRegister.ReportedById",
+    "loc:AssignedTo": "RiskRegister.AssignedToId",
+    "dom:RiskRegister_AssignedToId": "RiskRegister.AssignedToId",
+    "loc:Action": "RiskRegister.ActionId",
+    "dom:RiskRegister_ActionId": "RiskRegister.ActionId",
+    "loc:Description": "RiskRegister.Description",
+    "dom:RiskRegister_Description": "RiskRegister.Description",
+    "loc:RiskMitigation": "RiskRegister.RiskMitigation",
+    "dom:RiskRegister_RiskMitigation": "RiskRegister.RiskMitigation"
+  },
+  "fields": [
+    {
+      "id": "RiskRegister.ReportingDate",
+      "label": "ReportingDate",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportingDate",
+        "dom:RiskRegister_ReportingDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the risk was reported.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReportingTime",
+      "label": "ReportingTime",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportingTime",
+        "dom:RiskRegister_ReportingTime"
+      ],
+      "rules": "Optional. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The time of day, if known.</p><p><strong>Example.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.RiskTypeId",
+      "label": "RiskType",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:RiskType",
+        "dom:RiskRegister_RiskTypeId"
+      ],
+      "rules": "Required. Chosen from Risk Type master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of risk.</p><p><strong>Example.</strong> Electrical</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReassessmentDate",
+      "label": "ReassessmentDate",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReassessmentDate",
+        "dom:RiskRegister_ReassessmentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the risk should be looked at again.</p><p><strong>Why it matters.</strong> A record only: no reminder is sent when it comes round.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ImpactId",
+      "label": "Impact",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Impact",
+        "dom:RiskRegister_ImpactId"
+      ],
+      "rules": "Required. Chosen from Risk Impact master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How bad it would be.</p><p><strong>Example.</strong> High</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.PossibilityId",
+      "label": "Possibility",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Possibility",
+        "dom:RiskRegister_PossibilityId"
+      ],
+      "rules": "Required. Chosen from Risk Possibility master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> How likely it is.</p><p><strong>Example.</strong> Unlikely</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.LocationId",
+      "label": "Location",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Location",
+        "dom:RiskRegister_LocationId"
+      ],
+      "rules": "Required. Chosen from Work Location master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The work location.</p><p><strong>Example.</strong> Main warehouse</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.StatusId",
+      "label": "Status",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:RiskRegister_StatusId"
+      ],
+      "rules": "Optional. Chosen from Risk Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the risk stands.</p><p><strong>Example.</strong> Open</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReportedById",
+      "label": "ReportedBy",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportedBy",
+        "dom:RiskRegister_ReportedById"
+      ],
+      "rules": "Required. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who reported it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:RiskRegister_AssignedToId"
+      ],
+      "rules": "Optional. Chosen from the employee list.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Who is dealing with it.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ActionId",
+      "label": "Action",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Action",
+        "dom:RiskRegister_ActionId"
+      ],
+      "rules": "Optional. Chosen from Risk Action master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The kind of response.</p><p><strong>Example.</strong> Reduce</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.Description",
+      "label": "Description",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:RiskRegister_Description"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The hazard.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.RiskMitigation",
+      "label": "RiskMitigation",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:RiskMitigation",
+        "dom:RiskRegister_RiskMitigation"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> What is being done to reduce it.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "helpId": "hs.incident-investigation.edit",
+  "lang": "ar",
+  "title": "تحقيقات الحوادث — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentInvestigation",
+  "overviewHtml": "<p>تحقيق في حادث وسببه الجذري.</p>",
+  "aliasIndex": {
+    "loc:InvestigationDate": "IncidentInvestigation.InvestigationDate",
+    "dom:IncidentInvestigation_InvestigationDate": "IncidentInvestigation.InvestigationDate",
+    "loc:InvestigationTime": "IncidentInvestigation.InvestigationTime",
+    "dom:IncidentInvestigation_InvestigationTime": "IncidentInvestigation.InvestigationTime",
+    "loc:Incident": "IncidentInvestigation.IncidentId",
+    "dom:IncidentInvestigation_IncidentId": "IncidentInvestigation.IncidentId",
+    "loc:RootCause": "IncidentInvestigation.RootCauseId",
+    "dom:IncidentInvestigation_RootCauseId": "IncidentInvestigation.RootCauseId",
+    "loc:RootCauseAnalysis": "IncidentInvestigation.RootCauseAnalysis",
+    "dom:IncidentInvestigation_RootCauseAnalysis": "IncidentInvestigation.RootCauseAnalysis",
+    "loc:Comments": "IncidentInvestigation.Comments",
+    "dom:IncidentInvestigation_Comments": "IncidentInvestigation.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentInvestigation.InvestigationDate",
+      "label": "InvestigationDate",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:InvestigationDate",
+        "dom:IncidentInvestigation_InvestigationDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى جرى التحقيق.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.InvestigationTime",
+      "label": "InvestigationTime",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:InvestigationTime",
+        "dom:IncidentInvestigation_InvestigationTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت من اليوم، إن كان معروفاً.</p><p><strong>مثال.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.IncidentId",
+      "label": "Incident",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:Incident",
+        "dom:IncidentInvestigation_IncidentId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة سجلات الحوادث.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الحادث الذي يخصه هذا.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.RootCauseId",
+      "label": "RootCause",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:RootCause",
+        "dom:IncidentInvestigation_RootCauseId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الأسباب الجذرية للتحقيق.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> السبب الرئيسي الذي وُجد.</p><p><strong>مثال.</strong> أرضية مبللة دون لافتة</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.RootCauseAnalysis",
+      "label": "RootCauseAnalysis",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:RootCauseAnalysis",
+        "dom:IncidentInvestigation_RootCauseAnalysis"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> كيف تم التوصل إلى السبب.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentInvestigation.Comments",
+      "label": "Comments",
+      "section": "IncidentInvestigations",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentInvestigation_Comments"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ملاحظات نصية حرة عن هذا السجل.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

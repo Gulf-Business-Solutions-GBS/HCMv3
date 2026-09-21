@@ -1,0 +1,219 @@
+{
+  "helpId": "hs.risk-register.edit",
+  "lang": "ar",
+  "title": "سجلات المخاطر — إنشاء / تحرير",
+  "entity": "HCMv3.HealthAndSafetyManagement.RiskRegister",
+  "overviewHtml": "<p>خطر في مكان العمل، ومدى احتماله وخطورته، وما يُتخذ بشأنه.</p>",
+  "aliasIndex": {
+    "loc:ReportingDate": "RiskRegister.ReportingDate",
+    "dom:RiskRegister_ReportingDate": "RiskRegister.ReportingDate",
+    "loc:ReportingTime": "RiskRegister.ReportingTime",
+    "dom:RiskRegister_ReportingTime": "RiskRegister.ReportingTime",
+    "loc:RiskType": "RiskRegister.RiskTypeId",
+    "dom:RiskRegister_RiskTypeId": "RiskRegister.RiskTypeId",
+    "loc:ReassessmentDate": "RiskRegister.ReassessmentDate",
+    "dom:RiskRegister_ReassessmentDate": "RiskRegister.ReassessmentDate",
+    "loc:Impact": "RiskRegister.ImpactId",
+    "dom:RiskRegister_ImpactId": "RiskRegister.ImpactId",
+    "loc:Possibility": "RiskRegister.PossibilityId",
+    "dom:RiskRegister_PossibilityId": "RiskRegister.PossibilityId",
+    "loc:Location": "RiskRegister.LocationId",
+    "dom:RiskRegister_LocationId": "RiskRegister.LocationId",
+    "loc:Status": "RiskRegister.StatusId",
+    "dom:RiskRegister_StatusId": "RiskRegister.StatusId",
+    "loc:ReportedBy": "RiskRegister.ReportedById",
+    "dom:RiskRegister_ReportedById": "RiskRegister.ReportedById",
+    "loc:AssignedTo": "RiskRegister.AssignedToId",
+    "dom:RiskRegister_AssignedToId": "RiskRegister.AssignedToId",
+    "loc:Action": "RiskRegister.ActionId",
+    "dom:RiskRegister_ActionId": "RiskRegister.ActionId",
+    "loc:Description": "RiskRegister.Description",
+    "dom:RiskRegister_Description": "RiskRegister.Description",
+    "loc:RiskMitigation": "RiskRegister.RiskMitigation",
+    "dom:RiskRegister_RiskMitigation": "RiskRegister.RiskMitigation"
+  },
+  "fields": [
+    {
+      "id": "RiskRegister.ReportingDate",
+      "label": "ReportingDate",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportingDate",
+        "dom:RiskRegister_ReportingDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى أُبلغ عن الخطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReportingTime",
+      "label": "ReportingTime",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportingTime",
+        "dom:RiskRegister_ReportingTime"
+      ],
+      "rules": "اختياري. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الوقت من اليوم، إن كان معروفاً.</p><p><strong>مثال.</strong> 14:30</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.RiskTypeId",
+      "label": "RiskType",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:RiskType",
+        "dom:RiskRegister_RiskTypeId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أنواع المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الخطر.</p><p><strong>مثال.</strong> كهربائي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReassessmentDate",
+      "label": "ReassessmentDate",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReassessmentDate",
+        "dom:RiskRegister_ReassessmentDate"
+      ],
+      "rules": "إلزامي. تاريخ.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> متى يجب إعادة النظر في الخطر.</p><p><strong>لماذا يهم.</strong> للتسجيل فقط: لا يُرسل تذكير عند حلوله.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ImpactId",
+      "label": "Impact",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Impact",
+        "dom:RiskRegister_ImpactId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة آثار المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى سوء أثره.</p><p><strong>مثال.</strong> مرتفع</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.PossibilityId",
+      "label": "Possibility",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Possibility",
+        "dom:RiskRegister_PossibilityId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة احتمالات المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> مدى احتماله.</p><p><strong>مثال.</strong> غير محتمل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.LocationId",
+      "label": "Location",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Location",
+        "dom:RiskRegister_LocationId"
+      ],
+      "rules": "إلزامي. يُختار من قائمة أماكن العمل.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> موقع العمل.</p><p><strong>مثال.</strong> المستودع الرئيسي</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.StatusId",
+      "label": "Status",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Status",
+        "dom:RiskRegister_StatusId"
+      ],
+      "rules": "اختياري. يُختار من قائمة حالات المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> حالة الخطر.</p><p><strong>مثال.</strong> مفتوح</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ReportedById",
+      "label": "ReportedBy",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:ReportedBy",
+        "dom:RiskRegister_ReportedById"
+      ],
+      "rules": "إلزامي. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من أبلغ عنه.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.AssignedToId",
+      "label": "AssignedTo",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:AssignedTo",
+        "dom:RiskRegister_AssignedToId"
+      ],
+      "rules": "اختياري. يُختار من قائمة الموظفين.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> من يتولى معالجته.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.ActionId",
+      "label": "Action",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Action",
+        "dom:RiskRegister_ActionId"
+      ],
+      "rules": "اختياري. يُختار من قائمة إجراءات المخاطر.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> نوع الاستجابة.</p><p><strong>مثال.</strong> تقليل</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.Description",
+      "label": "Description",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:Description",
+        "dom:RiskRegister_Description"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> الخطر.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "RiskRegister.RiskMitigation",
+      "label": "RiskMitigation",
+      "section": "RiskRegisters",
+      "aliases": [
+        "loc:RiskMitigation",
+        "dom:RiskRegister_RiskMitigation"
+      ],
+      "rules": "اختياري.",
+      "when": null,
+      "html": "<p><strong>ما هو.</strong> ما يُتخذ لتقليله.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

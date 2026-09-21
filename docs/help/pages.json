@@ -6487,6 +6487,214 @@
         }
       },
       "defaultSection": "CompetencyTypes"
+    },
+    {
+      "helpId": "hs.action-register.edit",
+      "title": "Action Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.ActionRegisters.Create"
+      ],
+      "entity": {
+        "name": "ActionRegister",
+        "fullName": "HCMv3.HealthAndSafetyManagement.ActionRegister",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/ActionRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/action-registers/create-or-edit-action-register-modal.component.html"
+        }
+      },
+      "defaultSection": "ActionRegisters"
+    },
+    {
+      "helpId": "hs.first-aid-box-detail.edit",
+      "title": "First Aid Box Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.FirstAidBoxDetails.Create"
+      ],
+      "entity": {
+        "name": "FirstAidBoxDetail",
+        "fullName": "HCMv3.HealthAndSafetyManagement.FirstAidBoxDetail",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/FirstAidBoxDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/first-aid-box-detail/details/create-or-edit-first-aid-box-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "FirstAidBoxDetails"
+    },
+    {
+      "helpId": "hs.first-aid-box.edit",
+      "title": "First Aid Box — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [],
+      "entity": {
+        "name": "FirstAidBox",
+        "fullName": "HCMv3.HealthAndSafetyManagement.FirstAidBox",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/FirstAidBox.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/first-aid-boxes/create-or-edit-first-aid-box-modal.component.html"
+        }
+      },
+      "defaultSection": "HealthAndSafetyManagement"
+    },
+    {
+      "helpId": "hs.incident-claim.edit",
+      "title": "Incident Claims — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.IncidentClaims.Create"
+      ],
+      "entity": {
+        "name": "IncidentClaim",
+        "fullName": "HCMv3.HealthAndSafetyManagement.IncidentClaim",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/IncidentClaim.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/incident-claims/create-or-edit-incident-claim-modal.component.html"
+        }
+      },
+      "defaultSection": "IncidentClaims"
+    },
+    {
+      "helpId": "hs.incident-investigation.edit",
+      "title": "Incident Investigations — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.IncidentInvestigations.Create"
+      ],
+      "entity": {
+        "name": "IncidentInvestigation",
+        "fullName": "HCMv3.HealthAndSafetyManagement.IncidentInvestigation",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/IncidentInvestigation.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/incident-investigations/create-or-edit-incident-investigation-modal.component.html"
+        }
+      },
+      "defaultSection": "IncidentInvestigations"
+    },
+    {
+      "helpId": "hs.incident-register.edit",
+      "title": "Incident Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.IncidentRegisters.Create"
+      ],
+      "entity": {
+        "name": "IncidentRegister",
+        "fullName": "HCMv3.HealthAndSafetyManagement.IncidentRegister",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/IncidentRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/incident-registers/create-or-edit-incident-register-modal.component.html"
+        }
+      },
+      "defaultSection": "IncidentRegisters"
+    },
+    {
+      "helpId": "hs.risk-register.edit",
+      "title": "Risk Registers — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.RiskRegisters.Create"
+      ],
+      "entity": {
+        "name": "RiskRegister",
+        "fullName": "HCMv3.HealthAndSafetyManagement.RiskRegister",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/RiskRegister.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/risk-registers/create-or-edit-risk-register-modal.component.html"
+        }
+      },
+      "defaultSection": "RiskRegisters"
+    },
+    {
+      "helpId": "hs.safety-checklist.edit",
+      "title": "Safety Checklists — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.SafetyChecklists.Create"
+      ],
+      "entity": {
+        "name": "SafetyChecklist",
+        "fullName": "HCMv3.HealthAndSafetyManagement.SafetyChecklist",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/SafetyChecklist.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/safety-checklists/create-or-edit-safety-checklist-modal.component.html"
+        }
+      },
+      "defaultSection": "SafetyChecklists"
+    },
+    {
+      "helpId": "hs.site-audit-detail.edit",
+      "title": "Site Audit Details — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.SiteAuditDetails.Create"
+      ],
+      "entity": {
+        "name": "SiteAuditDetail",
+        "fullName": "HCMv3.HealthAndSafetyManagement.SiteAuditDetail",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/SiteAuditDetail.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/site-audit-detail/details/create-or-edit-site-audit-detail-modal.component.html"
+        }
+      },
+      "defaultSection": "SiteAuditDetails"
+    },
+    {
+      "helpId": "hs.site-audit.edit",
+      "title": "Site Audits — Create / Edit",
+      "audience": [
+        "admin"
+      ],
+      "permissions": [
+        "Pages.HealthAndSafetyManagement.SiteAudits.Create"
+      ],
+      "entity": {
+        "name": "SiteAudit",
+        "fullName": "HCMv3.HealthAndSafetyManagement.SiteAudit",
+        "file": "aspnet-core/src/HCMv3.Core/HealthAndSafetyManagement/SiteAudit.cs"
+      },
+      "surfaces": {
+        "edit": {
+          "template": "angular/src/app/admin/health-and-safety-management/site-audits/create-or-edit-site-audit-modal.component.html"
+        }
+      },
+      "defaultSection": "SiteAudits"
     }
   ]
 }

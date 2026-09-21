@@ -1,0 +1,123 @@
+{
+  "helpId": "hs.incident-claim.edit",
+  "lang": "en",
+  "title": "Incident Claims — Create / Edit",
+  "entity": "HCMv3.HealthAndSafetyManagement.IncidentClaim",
+  "overviewHtml": "<p>An insurance or compensation claim arising from an incident. Kept as a record: it is not paid through payroll.</p>",
+  "aliasIndex": {
+    "loc:ClaimDate": "IncidentClaim.ClaimDate",
+    "dom:IncidentClaim_ClaimDate": "IncidentClaim.ClaimDate",
+    "loc:Incident": "IncidentClaim.IncidentId",
+    "dom:IncidentClaim_IncidentId": "IncidentClaim.IncidentId",
+    "loc:Amount": "IncidentClaim.Amount",
+    "dom:IncidentClaim_Amount": "IncidentClaim.Amount",
+    "loc:Currency": "IncidentClaim.CurrencyId",
+    "dom:IncidentClaim_CurrencyId": "IncidentClaim.CurrencyId",
+    "loc:PaymentDate": "IncidentClaim.PaymentDate",
+    "dom:IncidentClaim_PaymentDate": "IncidentClaim.PaymentDate",
+    "loc:ClaimStatus": "IncidentClaim.ClaimStatusId",
+    "dom:IncidentClaim_ClaimStatusId": "IncidentClaim.ClaimStatusId",
+    "loc:Comments": "IncidentClaim.Comments",
+    "dom:IncidentClaim_Comments": "IncidentClaim.Comments"
+  },
+  "fields": [
+    {
+      "id": "IncidentClaim.ClaimDate",
+      "label": "ClaimDate",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:ClaimDate",
+        "dom:IncidentClaim_ClaimDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When the claim was made.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.IncidentId",
+      "label": "Incident",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Incident",
+        "dom:IncidentClaim_IncidentId"
+      ],
+      "rules": "Required. Chosen from Incident Register master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The incident this belongs to.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.Amount",
+      "label": "Amount",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Amount",
+        "dom:IncidentClaim_Amount"
+      ],
+      "rules": "Required. Number.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The amount claimed.</p><p><strong>Example.</strong> 1,500.000</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.CurrencyId",
+      "label": "Currency",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Currency",
+        "dom:IncidentClaim_CurrencyId"
+      ],
+      "rules": "Required. Chosen from Currency master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> The currency of the amount.</p><p><strong>Example.</strong> KWD</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.PaymentDate",
+      "label": "PaymentDate",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:PaymentDate",
+        "dom:IncidentClaim_PaymentDate"
+      ],
+      "rules": "Required. Date value.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> When it was, or is expected to be, paid.</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.ClaimStatusId",
+      "label": "ClaimStatus",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:ClaimStatus",
+        "dom:IncidentClaim_ClaimStatusId"
+      ],
+      "rules": "Optional. Chosen from Incident Claim Status master data.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Where the claim stands.</p><p><strong>Example.</strong> Submitted</p>",
+      "adminHtml": "",
+      "stub": false
+    },
+    {
+      "id": "IncidentClaim.Comments",
+      "label": "Comments",
+      "section": "IncidentClaims",
+      "aliases": [
+        "loc:Comments",
+        "dom:IncidentClaim_Comments"
+      ],
+      "rules": "Optional.",
+      "when": null,
+      "html": "<p><strong>What it is.</strong> Free-text notes about this record.</p>",
+      "adminHtml": "",
+      "stub": false
+    }
+  ]
+}

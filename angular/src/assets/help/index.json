@@ -6602,6 +6602,216 @@
     ],
     "CompetencyType_ForeColor": [
       "cd.competency-type.edit"
+    ],
+    "ActionRegister_ActionDate": [
+      "hs.action-register.edit"
+    ],
+    "ActionRegister_StatusId": [
+      "hs.action-register.edit"
+    ],
+    "ActionRegister_IncidentId": [
+      "hs.action-register.edit"
+    ],
+    "ActionRegister_RiskId": [
+      "hs.action-register.edit"
+    ],
+    "ActionRegister_AssignedToId": [
+      "hs.action-register.edit"
+    ],
+    "ActionRegister_Description": [
+      "hs.action-register.edit"
+    ],
+    "FirstAidBoxDetail_MedicineId": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_AllocatedById": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_ExpiryDate": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_AllocationDate": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_IsExpired": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_IsReplaced": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBoxDetail_Comments": [
+      "hs.first-aid-box-detail.edit"
+    ],
+    "FirstAidBox_Code": [
+      "hs.first-aid-box.edit"
+    ],
+    "FirstAidBox_LocationId": [
+      "hs.first-aid-box.edit"
+    ],
+    "FirstAidBox_AllocationDate": [
+      "hs.first-aid-box.edit"
+    ],
+    "FirstAidBox_ResponsiblePersonId": [
+      "hs.first-aid-box.edit"
+    ],
+    "FirstAidBox_Comments": [
+      "hs.first-aid-box.edit"
+    ],
+    "IncidentClaim_ClaimDate": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_IncidentId": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_Amount": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_CurrencyId": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_PaymentDate": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_ClaimStatusId": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentClaim_Comments": [
+      "hs.incident-claim.edit"
+    ],
+    "IncidentInvestigation_InvestigationDate": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentInvestigation_InvestigationTime": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentInvestigation_IncidentId": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentInvestigation_RootCauseId": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentInvestigation_RootCauseAnalysis": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentInvestigation_Comments": [
+      "hs.incident-investigation.edit"
+    ],
+    "IncidentRegister_IncidentDate": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_IncidentTime": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_IncidentTypeId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_StatusId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_NatureId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_SeverityId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_LocationId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_ReportedById": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_PersonInvolvedId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_AssignedToId": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_OtherPeopleInvolved": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_DisabilityPercentage": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_Description": [
+      "hs.incident-register.edit"
+    ],
+    "IncidentRegister_Comments": [
+      "hs.incident-register.edit"
+    ],
+    "RiskRegister_ReportingDate": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_ReportingTime": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_RiskTypeId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_ReassessmentDate": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_ImpactId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_PossibilityId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_LocationId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_StatusId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_ReportedById": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_AssignedToId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_ActionId": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_Description": [
+      "hs.risk-register.edit"
+    ],
+    "RiskRegister_RiskMitigation": [
+      "hs.risk-register.edit"
+    ],
+    "SafetyChecklist_Code": [
+      "hs.safety-checklist.edit"
+    ],
+    "SafetyChecklist_SafetyAreaAssetId": [
+      "hs.safety-checklist.edit"
+    ],
+    "SafetyChecklist_IsActive": [
+      "hs.safety-checklist.edit"
+    ],
+    "SafetyChecklist_Description": [
+      "hs.safety-checklist.edit"
+    ],
+    "SiteAuditDetail_Observation": [
+      "hs.site-audit-detail.edit"
+    ],
+    "SiteAuditDetail_CorrectionAction": [
+      "hs.site-audit-detail.edit"
+    ],
+    "SiteAudit_AuditDate": [
+      "hs.site-audit.edit"
+    ],
+    "SiteAudit_AuditTime": [
+      "hs.site-audit.edit"
+    ],
+    "SiteAudit_ReassessmentDate": [
+      "hs.site-audit.edit"
+    ],
+    "SiteAudit_LocationId": [
+      "hs.site-audit.edit"
+    ],
+    "SiteAudit_ConductedById": [
+      "hs.site-audit.edit"
+    ],
+    "SiteAudit_Comments": [
+      "hs.site-audit.edit"
     ]
   }
 }
