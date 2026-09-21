@@ -717,11 +717,18 @@ function buildInventory() {
         }
         // An input whose id names no property: F1 on it would find nothing, even if its label
         // happens to resolve by another route.
+        // pages.json `ignoreInputs` lists input ids that are deliberately not record fields (e.g. the
+        // inputs of an on-form calculator); they are neither documented nor reported.
+        const ignoreInputs = new Set(page.ignoreInputs ?? []);
         for (const ef of editFields) {
-            if (findProp(props, ef.property)) continue;
+            if (findProp(props, ef.property) || ignoreInputs.has(ef.domId)) continue;
             const already = unresolved.find((u) => u.locKey === ef.locKey);
             if (already) already.domId = ef.domId;
             else unresolved.push({ locKey: ef.locKey, section: ef.section, domId: ef.domId });
+        }
+        const ignoredKeys = new Set(editFields.filter((ef) => ignoreInputs.has(ef.domId)).map((ef) => ef.locKey));
+        for (let i = unresolved.length - 1; i >= 0; i--) {
+            if (!unresolved[i].domId && ignoredKeys.has(unresolved[i].locKey)) unresolved.splice(i, 1);
         }
 
         pages.push({

@@ -7492,7 +7492,11 @@
           "template": "angular/src/app/admin/travel-management/travel-details/create-or-edit-travel-detail-modal.component.html"
         }
       },
-      "defaultSection": "TravelDetails"
+      "defaultSection": "TravelDetails",
+      "ignoreInputs": [
+        "TravelDetail_CalcEmployeeGroupId",
+        "TravelDetail_CalcEmployeeSubGroupId"
+      ]
     },
     {
       "helpId": "trv.travel-feedback.edit",
